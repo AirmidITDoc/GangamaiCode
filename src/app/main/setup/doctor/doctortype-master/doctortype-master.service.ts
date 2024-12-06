@@ -19,7 +19,12 @@ export class DoctortypeMasterService {
     createDoctortypeForm(): FormGroup {
         return this._formBuilder.group({
             id: [""],
-            doctorType: ["", Validators.required],
+            doctorType: ["",
+                [
+                    Validators.required, 
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isDeleted: ['1'],
         });
     }

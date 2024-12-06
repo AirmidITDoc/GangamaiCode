@@ -60,11 +60,14 @@ public testMasterSave(Param: any, id: string ,showLoader = true) {
         return this._httpClient.PostData("test", Param, showLoader);       
 }
 
-public deactivateTheStatus(m_data) {
-    return this._httpClient.PostData("test", m_data);
-}
+// public deactivateTheStatus(m_data) {
+//     return this._httpClient.PostData("test", m_data);
+// }
   populateForm(employee) {
     this.myform.patchValue(employee);
   }
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("test?Id=" + m_data.toString());
+}
 }
 // Retrieve_RadiologyTemplateMasterForComboMasterList

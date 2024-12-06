@@ -32,6 +32,12 @@ export class NewCategoryComponent implements OnInit {
       this.categoryForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.categoryForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.categoryForm.valid) {
         debugger
           this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
@@ -41,6 +47,7 @@ export class NewCategoryComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

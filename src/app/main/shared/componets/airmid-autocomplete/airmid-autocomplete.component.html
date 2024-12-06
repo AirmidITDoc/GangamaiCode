@@ -1,4 +1,5 @@
-<mat-form-field appearance="outline" fxFlex>
+{{IsMultiPle}}
+<mat-form-field appearance="outline" fxFlex *ngIf="!IsMultiPle">
     <mat-label>{{label}}</mat-label>
     <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)"
         [(ngModel)]="value"  [debounceTime]="300" [threshold]="'10%'" msInfiniteScroll >
@@ -7,6 +8,26 @@
                 noEntriesFoundLabel="No results found"></ngx-mat-select-search>
         </mat-option>
         <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl.value">
+            {{ddl.text}}
+        </mat-option>
+    </mat-select>
+    <div *ngIf="formGroup.controls[formControlName]?.invalid&& control?.touched && validations?.length>0">
+        <div *ngFor="let item of validations">
+            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
+                {{item.Message}}
+            </mat-error>
+        </div>
+    </div>
+</mat-form-field>
+<mat-form-field appearance="outline" fxFlex *ngIf="IsMultiPle">
+    <mat-label>{{label}}</mat-label>
+    <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)"
+        [(ngModel)]="value"  [debounceTime]="300" [threshold]="'10%'" msInfiniteScroll multiple>
+        <mat-option>
+            <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
+                noEntriesFoundLabel="No results found"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
             {{ddl.text}}
         </mat-option>
     </mat-select>

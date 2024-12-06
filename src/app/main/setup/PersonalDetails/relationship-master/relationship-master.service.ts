@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -21,7 +21,12 @@ export class RelationshipMasterService {
     createRelationshipForm(): FormGroup {
         return this._formBuilder.group({
             relationshipId: [""],
-            relationshipName: [""],
+            relationshipName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"],
             // addBy: ["0"],
             // updatedBy: ["0"],

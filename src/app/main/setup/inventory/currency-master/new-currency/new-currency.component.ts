@@ -30,6 +30,12 @@ export class NewCurrencyComponent implements OnInit {
       this.currencyForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.currencyForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.currencyForm.valid) {
           this._CurrencymasterService.currencyMasterSave(this.currencyForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -38,6 +44,7 @@ export class NewCurrencyComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

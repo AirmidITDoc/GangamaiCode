@@ -30,22 +30,30 @@ export class NewPrescriptionClassComponent implements OnInit {
     this.prescriptionForm.patchValue(m_data);
   }
   onSubmit() {
-    if(!this.prescriptionForm.get("ClassId").value){
-      var mdata={
-        "classId": 0,
-        "className": this.prescriptionForm.get("ClassName").value || ""
+    if (this.prescriptionForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.prescriptionForm.get("ClassId").value){
+        var mdata={
+          "classId": 0,
+          "className": this.prescriptionForm.get("ClassName").value || ""
+        }
+        console.log("class json:", mdata);
+  
+        this._PrescriptionclassService.prescriptionClassMasterSave(this.prescriptionForm.value).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        //update
       }
-      console.log("class json:", mdata);
-
-      this._PrescriptionclassService.prescriptionClassMasterSave(this.prescriptionForm.value).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      //update
     }
+    
     
 //     if (this.prescriptionForm.valid) {
 //         if (

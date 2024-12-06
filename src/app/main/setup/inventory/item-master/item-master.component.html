@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
 dynamicTableHeight>
 
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;"  >
@@ -28,7 +28,7 @@ dynamicTableHeight>
                             <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="4px" style="padding-bottom: 10px;">
                     
                                 <mat-form-field class="mr-sm-12" fxFlex>
-                                    <input matInput placeholder="Search --> Item Name" autocomplete="off" name="ItemNameSearch"
+                                    <input matInput placeholder="Search Item Name" autocomplete="off" name="ItemNameSearch"
                                         formControlName="ItemNameSearch" (keyup)="onSearch()" />
                                     <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()">
                                         <mat-icon>close</mat-icon>
@@ -264,4 +264,53 @@ dynamicTableHeight>
             </div> 
         </div> 
     </div>  
+</div>  -->
+
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+        <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Item Master
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onAdd()">New Item
+            </button>
+        </div>
+    </div>
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Store Name </mat-label>
+                                <input matInput placeholder="Search StoreName " autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[0].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field> -->
+                            
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Item Name</mat-label>
+                                <input matInput placeholder="Search ItemName" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
 </div>

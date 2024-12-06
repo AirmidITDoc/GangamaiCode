@@ -26,7 +26,7 @@ export class CreditReasonMasterComponent implements OnInit {
           apiUrl: "CreditReasonMaster/List",
           columnsList: [
               { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-              { heading: "credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA', width:600 },
+              { heading: "credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA', width:580 },
               { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
               {
                   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:190, actions: [

@@ -20,7 +20,12 @@ export class PrescriptionclassmasterService {
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
             ClassId: [""],
-            ClassName: ["", Validators.required, Validators.pattern("^[A-Za-z ]+$")],
+            ClassName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"]
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

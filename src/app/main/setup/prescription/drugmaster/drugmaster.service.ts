@@ -20,11 +20,16 @@ export class DrugmasterService {
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
             DrugId: [""],
-            DrugName: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
-            GenericId: [""],
-            GenericName: ["", Validators.required],
+            DrugName: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            GenericId: ["",  Validators.required],
+            GenericName: [""],
             ClassId: [""],
-            ClassName: ["", Validators.required],
+            ClassName: [""],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -34,7 +39,9 @@ export class DrugmasterService {
     getValidationMessages(){
         return{
             DrugName: [
-                { name: "required", Message: "Drug Name is required" }
+                { name: "required", Message: "Drug Name is required" },
+                { name: "maxlength", Message: "Drug name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
             ]
         }
     }

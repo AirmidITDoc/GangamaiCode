@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,7 +21,12 @@ export class ModeOfPaymentMasterService {
     createModeofpaymentForm(): FormGroup {
         return this._formBuilder.group({
             id: [""],
-            modeOfPayment: [""],
+            modeOfPayment: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -54,7 +59,11 @@ export class ModeOfPaymentMasterService {
         } else return this._httpClient.PostData("ModeOfPayment", Param, showLoader);
     }
 
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData("ModeOfPayment", m_data);
+    // }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ModeOfPayment", m_data);
+        return this._httpClient.DeleteData("ModeOfPayment?Id=" + m_data.toString());
     }
 }

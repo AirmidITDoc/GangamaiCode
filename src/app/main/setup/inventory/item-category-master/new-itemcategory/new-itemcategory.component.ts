@@ -12,6 +12,9 @@ import { ItemCategoryMasterService } from '../item-category-master.service';
 export class NewItemcategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
+
+  autocompleteModeItem: string = "Item";
+
   constructor(
       public _CategorymasterService: ItemCategoryMasterService,
       public dialogRef: MatDialogRef<NewItemcategoryComponent>,
@@ -32,15 +35,34 @@ export class NewItemcategoryComponent implements OnInit {
       this.categoryForm.patchValue(m_data);
   }
   onSubmit() {
-      if (this.categoryForm.valid) {
-        debugger
-          this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+        if (this.categoryForm.invalid) {
+            this.toastr.warning('please check form is invalid', 'Warning !', {
+              toastClass:'tostr-tost custom-toast-warning',
+          })
+          return;
+        }else{
+        var m_data =
+        {
+            "itemCategoryId": 0,
+            "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
+            "itemTypeId": this.categoryForm.get("itemTypeId").value,  
+        }
+
+        console.log("ItemCategoryMaster Insert:",m_data)
+        
+        this._CategorymasterService.categoryMasterSave(m_data).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+        }, (error) => {
+        this.toastr.error(error.message);
+        });
+   }
+}
+itemId=0;
+
+selectChangeItem(obj: any){
+    console.log(obj);
+    this.itemId=obj
   }
 
   onClear(val: boolean) {

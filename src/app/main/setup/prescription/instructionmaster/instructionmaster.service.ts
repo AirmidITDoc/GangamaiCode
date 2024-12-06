@@ -20,9 +20,14 @@ export class InstructionmasterService {
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
             InstructionId: [""],
-            InstructionName: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+            InstructionName: ["", 
+                [
+                    Validators.required, 
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
 
-            isActive: ["true"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -31,7 +36,9 @@ export class InstructionmasterService {
     getValidationMessages(){
         return{
             InstructionName: [
-                { name: "required", Message: "Instruction Name is required" }
+                { name: "required", Message: "Instruction Name is required" },
+                { name: "maxlength", Message: "Instruction name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
             ]
         }
     }

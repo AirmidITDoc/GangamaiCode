@@ -25,13 +25,13 @@ export class NewCityComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
-  
-    autocompleteModestate: string = "State";
+    
+    autocompleteModestatus: string = "State";
 
     ngOnInit(): void {
         debugger
         this.cityForm = this._CityMasterService.createCityForm();
-      if(this.data){
+        if(this.data){
             this.cityId= this.data?.cityId,
             this.cityName= this.data?.cityName.trim(),
             this.stateId= this.data?.stateId
@@ -50,7 +50,7 @@ export class NewCityComponent implements OnInit {
             var mdata={
                 "cityId": this.cityId,
                 "cityName": this.cityForm.get("cityName").value,
-                "stateId": this.stateId
+                "stateId": this.cityForm.get("stateId").value
             }
             this._CityMasterService.cityMasterSave(mdata).subscribe((response) => {
                 this.toastr.success(response.message);
@@ -60,6 +60,13 @@ export class NewCityComponent implements OnInit {
             });
         }
     }
+    getValidationStateMessages(){
+        return{
+            stateId: [
+            { name: "required", Message: "State is required" }
+          ]
+        }
+      }
   
     onClear(val: boolean) {
         this.cityForm.reset();

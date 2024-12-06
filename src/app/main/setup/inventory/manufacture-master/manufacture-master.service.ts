@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,7 +21,12 @@ export class ManufactureMasterService {
     createManufactureForm(): FormGroup {
         return this._formBuilder.group({
             itemManufactureId: [""],
-            manufactureName: [""],
+            manufactureName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             manufShortName: [""],
             isDeleted: ["false"],
             AddedBy: ["0"],
@@ -56,7 +61,11 @@ export class ManufactureMasterService {
         } else return this._httpClient.PostData("ItemManufactureMaster", Param, showLoader);
     }
 
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData("ItemManufactureMaster", m_data);
+    // }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ItemManufactureMaster", m_data);
+        return this._httpClient.DeleteData("ItemManufactureMaster?Id=" + m_data.toString());
     }
 }

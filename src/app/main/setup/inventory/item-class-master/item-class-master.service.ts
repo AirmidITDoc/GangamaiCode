@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,7 +21,12 @@ export class ItemClassMasterService {
     createItemclassForm(): FormGroup {
         return this._formBuilder.group({
             itemClassId: [""],
-            itemClassName: [""],
+            itemClassName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ] 
+            ],
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -53,7 +58,11 @@ export class ItemClassMasterService {
         } else return this._httpClient.PostData("ItemClassMaster", Param, showLoader);
     }
 
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData("ItemClassMaster", m_data);
+    // }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ItemClassMaster", m_data);
+        return this._httpClient.DeleteData("ItemClassMaster?Id=" + m_data.toString());
     }
 }

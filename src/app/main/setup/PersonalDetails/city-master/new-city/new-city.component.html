@@ -19,13 +19,23 @@
             <form [formGroup]="cityForm">
                 <input type="hidden" name="cityId" formControlName="cityId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox 
+                <airmid-textbox 
                     label="City name" 
                     formControlName="cityName" 
                     [value]="" [formGroup]="cityForm"
-                    [validations]="_CityMasterService.getValidationMessages().cityName" [maxLength]="300">
-                    </airmid-textbox>
-                    <airmid-autocomplete [mode]="autocompleteModestate" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete>
+                    [validations]="_CityMasterService.getValidationMessages().cityName" 
+                    [maxLength]="300">
+                </airmid-textbox>
+                
+                <!-- <airmid-autocomplete [mode]="autocompleteModestatus" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete> -->
+                <airmid-autocomplete label="stateName" formControlName="stateId"
+                    [formGroup]="cityForm"
+                    [validations]="getValidationStateMessages().stateId"
+                    (selectDdlObject)="selectChangestate($event)"
+                    [mode]="autocompleteModestatus"
+                    [maxLength]="300">
+                </airmid-autocomplete>
+                
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>

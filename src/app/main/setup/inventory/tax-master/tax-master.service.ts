@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,7 @@ export class TaxMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: HttpClient,public _httpClient1: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createTaxMasterForm();
@@ -54,4 +55,8 @@ export class TaxMasterService {
     populateForm(param) {
         this.myform.patchValue(param);
     }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient1.PostData("BedMaster", m_data);
+      }
 }

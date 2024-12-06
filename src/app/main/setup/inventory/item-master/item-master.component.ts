@@ -10,6 +10,10 @@ import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
+import { StockAdjustmentService } from "app/main/inventory/stock-adjustment/stock-adjustment.service";
 
 @Component({
     selector: "app-item-master",
@@ -19,6 +23,94 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
     animations: fuseAnimations,
 })
 export class ItemMasterComponent implements OnInit {
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    hasSelectedContacts: boolean;
+   
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+    apiUrl: "ItemMaster/ItemMasterList",
+    columnsList: [
+        { heading: "Code", key: "ItemID", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemName", key: "ItemName", sort: true, align: 'left', emptySign: 'NA',width :90 },
+        { heading: "ItemTypeName", key: "ItemTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemCategoryName", key: "ItemCategoryName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "ItemGenericName", key: "ItemGenericName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "ItemClassName", key: "ItemClassName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "UnitofMeasurementName", key: "UnitofMeasurementName", sort: true, align: 'left', emptySign: 'NA',width :90 },
+        { heading: "StockUOMId", key: "StockUOMId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ConversionFactor", key: "ConversionFactor", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "CurrencyName", key: "CurrencyName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "TaxPer", key: "TaxPer", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "MinQty", key: "MinQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "MaxQty", key: "MaxQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ReOrder", key: "ReOrder", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "HSNcode", key: "HSNcode", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "CGST", key: "CGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "SGST", key: "SGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IGST", key: "IGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ManufName", key: "ManufName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "ProdLocation", key: "ProdLocation", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "AddedByName", key: "AddedByName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsNursingFlag", key: "IsNursingFlag", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsNursingFlag", key: "IsNursingFlag", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._itemService.deactivateTheStatus(data.stockId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ItemID",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+   
+    onSave(row: any = null) {
+        let that = this;
+        // const dialogRef = this._matDialog.open(,
+        //     {
+        //         maxWidth: "95vw",
+        //         height: '95%',
+        //         width: '70%',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        // });
+    }
+
     isLoading = true;
     msg: any;
     step = 0;
@@ -30,35 +122,6 @@ export class ItemMasterComponent implements OnInit {
     sIsLoading: string = ''; 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-
-    displayedColumns: string[] = [
-        "ItemID",
-        // "ItemShortName",
-        "ItemName",
-        "ItemTypeName",
-        "ItemCategoryName",
-        "ItemGenericName",
-        "ItemClassName",
-        "UnitofMeasurementName",
-        "StockUOMId",
-        "ConversionFactor",
-        "CurrencyName",
-        "TaxPer",
-        "MinQty",
-        "MaxQty",
-        "ReOrder",
-        "HSNcode",
-        "CGST",
-        "SGST",
-        "IGST",
-        "ManufName",
-        "ProdLocation",
-        "AddedByName",
-        "IsNursingFlag",
-        "IsBatchRequired",
-        "Isdeleted",
-        "action",
-    ];
 
     DSItemMasterList = new MatTableDataSource<ItemMaster>();
 
@@ -162,7 +225,7 @@ export class ItemMasterComponent implements OnInit {
             this.getItemMasterList();
         });
     }
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     onDeactive(ItemID) {
         this.confirmDialogRef = this._matDialog.open(
@@ -295,13 +358,13 @@ export class ItemMaster {
     }
 }
 //Store master
-export class StoreMaster {
-    ItemID: number;
-    StoreId: number;
-    constructor(StoreMaster) {
-        {
-            this.StoreId = StoreMaster.StoreId || "";
-            this.ItemID = StoreMaster.ItemID || "";
-        }
-    }
-}
+// export class StoreMaster {
+//     ItemID: number;
+//     StoreId: number;
+//     constructor(StoreMaster) {
+//         {
+//             this.StoreId = StoreMaster.StoreId || "";
+//             this.ItemID = StoreMaster.ItemID || "";
+//         }
+//     }
+// }

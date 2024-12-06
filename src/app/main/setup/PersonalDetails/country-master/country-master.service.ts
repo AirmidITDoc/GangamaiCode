@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -27,7 +27,12 @@ export class CountryMasterService {
     createCountryForm(): FormGroup {
         return this._formBuilder.group({
             countryId: [""],
-            countryName: [""],
+            countryName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

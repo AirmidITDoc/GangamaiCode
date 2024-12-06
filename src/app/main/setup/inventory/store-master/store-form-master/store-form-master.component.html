@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> State Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Store Master</span>
             </div>
             <!-- <div class="modal-header-right">
                 <div class="close-icon">
@@ -27,8 +27,8 @@
                         [validations]="_StoreMasterService.getValidationMessages().storeShortName"
                         [maxLength]="300">
                     </airmid-textbox> 
-                </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <!-- </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
                     <airmid-textbox 
                         label="Store name"
                         formControlName="storeName"

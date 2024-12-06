@@ -1,10 +1,10 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    <!-- <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center">
 
         <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
                 </mat-icon>
@@ -12,24 +12,24 @@
                     Tax Master
                 </span>
             </div>
-        </div>
+        </div> --> -->
         <!-- / APP TITLE -->
         <!-- SEARCH -->
         <!-- / SEARCH -->
 
-    </div>
+    <!-- </div> -->
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content">
+    <!-- <div class="content"> -->
 
         <!-- SIDEBAR -->
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <!-- <div class="center p-24 pb-56" fusePerfectScrollbar> -->
             <!-- CONTENT -->
-            <div class="content-card">
+            <!-- <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
                         <div fxlayout="row" style="
@@ -39,29 +39,29 @@
                             <form [formGroup]="_taxmasterService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search -->  Tax Nature" autocomplete="off"
-                                            name="TaxNatureSearch" formControlName="TaxNatureSearch" />
+                                        <input matInput placeholder="Search  Tax Nature" autocomplete="off"
+                                            <!-- name="TaxNatureSearch" formControlName="TaxNatureSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                    <!-- <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
                                         <mat-radio-button value="2">All</mat-radio-button>
                                         <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
                                         <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
+                                    </mat-radio-group> -->
 
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                    <!-- <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
                                         <mat-icon>search</mat-icon>
                                         Search
                                     </button>
                                 </div>
-                            </form>
-                        </div>
-                        <div fxlayout="row">
+                            </form> -->
+                        <!-- </div> --> -->
+                        <!-- <div fxlayout="row">
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSTaxMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
@@ -94,9 +94,9 @@
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
+ -->
 
-
-                                    <ng-container matColumnDef="action" stickyEnd>
+                                    <!-- <ng-container matColumnDef="action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
                                             Action
                                         </mat-header-cell>
@@ -128,9 +128,9 @@
                                         [ngClass]="{'hide':DSTaxMasterList!=null}"></mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(DSTaxMasterList!=null && DSTaxMasterList.data.length==0)}"></mat-footer-row>
-                                </mat-table>
+                                </mat-table> -->
 
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
+                                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
                                     showFirstLastButtons></mat-paginator>
                             </div>
                         </div>
@@ -174,10 +174,58 @@
                     </div>
 
                 </div>
-            </div>
+            </div> --> 
             <!-- / CONTENT -->
-        </div>
+        <!-- </div> -->
         <!-- / CENTER -->
-    </div>
+    <!-- </div> -->
     <!-- / CONTENT-->
+<!-- </div> --> 
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+        <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Tax Master
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">Add Tax
+            </button>
+        </div>
+    </div>
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Store Name </mat-label>
+                                <input matInput placeholder="Search StoreName " autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[0].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field> -->
+                            
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Tax Nature</mat-label>
+                                <input matInput placeholder="Search TaxNature" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
 </div>

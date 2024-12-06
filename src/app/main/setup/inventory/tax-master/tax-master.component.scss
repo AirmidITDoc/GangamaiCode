@@ -1,54 +1,70 @@
+// .p-sm-24 {
+//     padding: 10px !important;
+// }
+// app-tax-master {
+//     .mat-header-row {
+//         width: 700px;
+//         max-width: 700px;
+//         min-width: 700px;
+//         font-weight: bold;
+//     }
+
+//     .mat-row {
+//         width: 700px;
+//         max-width: 700px;
+//         min-width: 700px;
+//     }
+
+//     .mat-column-Id {
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//     }
+
+//     .mat-column-TaxNature {
+//         width: 200px;
+//         max-width: 200px;
+//         min-width: 200px;
+//     }
+
+//     .mat-column-AddedBy {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//     }
+
+//     .mat-column-IsDeleted {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//         text-align: center;
+//         justify-content: center;
+//     }
+
+//     .mat-column-action {
+//         // color: white !important;
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//         text-align: right;
+//         justify-content: right;
+//     }
+//     .mat-icon-button {
+//         padding: 0;
+//         min-width: 0;
+//         width: 40px;
+//         height: 20px;
+//         flex-shrink: 0;
+//         line-height: 20px;
+//         border-radius: 50%;
+//     }
+// }
 .p-sm-24 {
     padding: 10px !important;
 }
-app-tax-master {
-    .mat-header-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-        font-weight: bold;
-    }
 
-    .mat-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-    }
+app-tax-master{
 
-    .mat-column-Id {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
-
-    .mat-column-TaxNature {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-    }
-
-    .mat-column-AddedBy {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

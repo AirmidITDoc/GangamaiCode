@@ -68,8 +68,8 @@ export class InstructionmasterComponent implements OnInit {
         sortField: "instructionId",
         sortOrder: 0,
         filters: [
-            { fieldName: "instructionName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "1", opType: OperatorComparer.Equals }
+            { fieldName: "instructionDescription", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row:25
     }

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -23,7 +23,12 @@ export class UnitmasterService {
     createUnitmasterForm(): FormGroup {
         return this._formBuilder.group({
             unitId: [""],
-            unitName: [""],
+            unitName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             // isDeleted: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
@@ -58,8 +63,11 @@ export class UnitmasterService {
         } else return this._httpClient.PostData("PathUnitMaster", Param, showLoader);
     }
 
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData("PathUnitMaster", m_data);
+    // }
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("PathUnitMaster", m_data);
+        return this._httpClient.DeleteData("PathUnitMaster?Id=" + m_data.toString());
     }
 }
 

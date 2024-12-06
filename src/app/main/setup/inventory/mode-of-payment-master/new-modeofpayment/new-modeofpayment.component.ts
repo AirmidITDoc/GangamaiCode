@@ -31,6 +31,12 @@ export class NewModeofpaymentComponent implements OnInit {
       this.modeofpayForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.modeofpayForm.invalid) {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.modeofpayForm.valid) {
           this._ModeOfPaymentMasterService.modeofpayMasterSave(this.modeofpayForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -39,6 +45,7 @@ export class NewModeofpaymentComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

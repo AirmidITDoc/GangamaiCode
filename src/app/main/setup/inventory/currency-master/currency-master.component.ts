@@ -22,8 +22,9 @@ import { NewCurrencyComponent } from "./new-currency/new-currency.component";
     animations: fuseAnimations,
 })
 export class CurrencyMasterComponent implements OnInit {
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
- 
+    
     constructor(public _CurrencymasterService: CurrencymasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;

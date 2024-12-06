@@ -68,7 +68,11 @@ export class RadiologyTemplateMasterService {
     } else return this._httpClient.PostData("RadiologyTemplate", Param, showLoader);
   }
   
+//   public deactivateTheStatus(m_data) {
+//     return this._httpClient.PostData("RadiologyTemplate", m_data);
+//   }
+
   public deactivateTheStatus(m_data) {
-    return this._httpClient.PostData("RadiologyTemplate", m_data);
-  }
+    return this._httpClient.DeleteData("RadiologyTemplate?Id=" + m_data.toString());
+}
   }

@@ -32,6 +32,12 @@ export class NewRelationshipComponent implements OnInit {
   }
   onSubmit() {
     debugger
+    if (this.relationshipForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.relationshipForm.valid) {
           this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -40,6 +46,7 @@ export class NewRelationshipComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

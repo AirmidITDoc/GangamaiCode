@@ -76,7 +76,20 @@ export class ServiceMasterService {
     initializeFormGroup() {
         this.createServicemasterForm();
     }
-
+    // getValidationGroupNameMessages(){
+    //     return {
+    //         GroupId: [
+    //           { name: "required", Message: "Group Name is required" }
+    //       ]
+    //   };
+    // }
+    // getValidationtariffMessages() {
+    //     return {
+    //       TariffId: [
+    //             { name: "required", Message: "Tariff Name is required" }
+    //         ]
+    //     };
+    // }
     // public getbankMasterList(param: gridRequest, showLoader = true) {
     //     return this._httpClient.PostData("BankMaster/List", param, showLoader);
     // }

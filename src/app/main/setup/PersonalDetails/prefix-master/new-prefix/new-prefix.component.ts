@@ -46,6 +46,12 @@ export class NewPrefixComponent implements OnInit {
   
     }
     onSubmit() {
+        if (this.prefixForm.invalid) {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+              toastClass:'tostr-tost custom-toast-warning',
+          })
+          return;
+        }else{
         if (this.prefixForm.valid) {
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
@@ -54,6 +60,7 @@ export class NewPrefixComponent implements OnInit {
                 this.toastr.error(error.message);
             });
         }
+      }
     }
 
     onClear(val: boolean) {
