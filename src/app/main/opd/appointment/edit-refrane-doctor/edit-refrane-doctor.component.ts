@@ -24,53 +24,53 @@ import { ToastrService } from 'ngx-toastr';
 export class EditRefraneDoctorComponent implements OnInit {
 
   dateTimeObj: any;
-  
-  VisitId:any;
+
+  VisitId: any;
   Doctor1List: any = [];
-  DoctorList :any =[];
-  RefDocName:any="S.R Patil";
+  DoctorList: any = [];
+  RefDocName: any = "S.R Patil";
   PatientHeaderObj = new SearchInforObj({});
-  RefDoctorId:any;
+  RefDoctorId: any;
   screenFromString = 'admission-form';
   searchFormGroup: FormGroup;
   AdmittedDoc1: any;
   PatientName: any;
-  VisitDate:any;
-  RegID:any=0;
+  VisitDate: any;
+  RegID: any = 0;
   filteredOptionsRefrenceDoc: any;
   RefDoctorList: any = [];
   isRefDoctorSelected: boolean = false;
   constructor(
-  
+
     public _OpAppointmentService: AppointmentSreviceService,
     private formBuilder: FormBuilder,
-    private dialogRef :MatDialogRef<EditRefraneDoctorComponent>,
+    private dialogRef: MatDialogRef<EditRefraneDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     private router: Router,
-    
-    ) { }
+
+  ) { }
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     if (this.data) {
 
       this.PatientHeaderObj = this.data.registerObj;
-      console.log(this.PatientHeaderObj )
+      console.log(this.PatientHeaderObj)
       this.VisitId = this.PatientHeaderObj.VisitId;
       // this.PatientName = this.PatientHeaderObj.PatientName;
       // this.RefDoctorId = this.PatientHeaderObj.RefDoctorId;
       // this.VisitDate=this.PatientHeaderObj.VistDateTime;
       this.RegID = this.PatientHeaderObj.RegId;
 
-    
+
     }
 
     // this.getDoctor1List();
     this.getRefDoctorList();
-   
+
     this.filteredOptionsRefrenceDoc = this.searchFormGroup.get('refDoctorId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterrefDoctorId(value)),
@@ -82,23 +82,14 @@ export class EditRefraneDoctorComponent implements OnInit {
     return this.formBuilder.group({
       refDoctorId: ['', [
         Validators.required]],
-     
+
     });
   }
   setDropdownObjs() {
-               
-        this.searchFormGroup.updateValueAndValidity();
-      }
 
+    this.searchFormGroup.updateValueAndValidity();
+  }
 
-  // getDoctor1List() {
-  //   this._OpAppointmentService.getDoctorMaster1Combo().subscribe(data => {
-  //     this.Doctor1List = data;
-  //     this.filteredDoctorone.next(this.Doctor1List.slice());
-  //   })
-  // }
-  
-  
   private _filterrefDoctorId(value: any): string[] {
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
@@ -127,10 +118,9 @@ export class EditRefraneDoctorComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
     if (this.searchFormGroup.get('refDoctorId').value) {
       if (!this.RefDoctorList.some(item => item.DoctorName === this.searchFormGroup.get('refDoctorId').value.DoctorName)) {
-        this.toastr.warning('Please Select valid RefDoctorName', 'Warning !', {
+        this.toastr.warning('Please Select valid Ref Doctor Name', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
@@ -138,54 +128,53 @@ export class EditRefraneDoctorComponent implements OnInit {
     }
 
     this.RefDoctorId = this.searchFormGroup.get('refDoctorId').value.DoctorId;
-   
-   let query = '';
-   if (this.data.FormName == "Appointment") {
+
+    let query = '';
+    if (this.data.FormName == "Appointment") {
       query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
-   }
- 
+    }
+
     console.log(query);
     this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
       if (response) {
-        Swal.fire('Congratulations !', 'Refrance Doctor Data Updated Successfully !', 'success').then((result) => {
+        Swal.fire('Congratulations !', 'Reference Doctor Updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
-
           }
         });
       } else {
-        Swal.fire('Error !', 'Refrance Doctor Data  not Updated', 'error');
+        Swal.fire('Error !', 'Reference Doctor not Updated', 'error');
       }
       // this.isLoading = '';
 
     });
 
   }
-  onCancleRefDoc (){
-    this.RefDoctorId =0;
-   let query = '';
-   if (this.data.FormName == "Appointment") {
+  onCancleRefDoc() {
+    this.RefDoctorId = 0;
+    let query = '';
+    if (this.data.FormName == "Appointment") {
       query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
-   }
- 
+    }
+
     console.log(query);
     this._OpAppointmentService.UpdateQueryByStatement(query).subscribe(response => {
       if (response) {
-        Swal.fire('Congratulations !', 'Refrance Doctor Data  Successfully !', 'success').then((result) => {
+        Swal.fire('Congratulations !', 'Reference Doctor removed Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
 
           }
         });
       } else {
-        Swal.fire('Error !', 'Refrance Doctor Data  not Updated', 'error');
+        Swal.fire('Error !', 'Reference Doctor removed ', 'error');
       }
       // this.isLoading = '';
 
     });
 
   }
-  
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
