@@ -134,7 +134,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:480px;">
+                            <div fxLayoutAlign="end">
+                                <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
+                                    <button class="btn btn-primary" (click)="onCancleRefDoc()">Cancel</button>
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                </div>
+                            </div> 
+
+                            <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:480px;">
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()"
                                     [disabled]="searchFormGroup.invalid">
@@ -144,7 +152,7 @@
                                 [disabled]="searchFormGroup.invalid">
                                 <span>Cancel</span>
                             </button>
-                            </div>
+                            </div> -->
                         </mat-card>
                     </div>
                 </div>
