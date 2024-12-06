@@ -176,8 +176,8 @@ export class DoctorMasterService {
 
     public doctortMasterInsert(Param: any, showLoader = true) {
         if (Param.doctorId) {
-            return this._httpClient.PutData("DoctoreMaster/" + Param.doctorId, Param, showLoader);
-        } else return this._httpClient.PostData("DoctoreMaster", Param, showLoader);
+            return this._httpClient.PutData("Doctor/Edit/" + Param.doctorId, Param, showLoader);
+        } else return this._httpClient.PostData("Doctor/InsertEDMX", Param, showLoader);
     }
 
     public doctortMasterUpdate(param) {
@@ -191,7 +191,7 @@ export class DoctorMasterService {
 //   }
 
     public assignDoctorDepartmentDet(param) {
-        return this._httpClient.PostData("DoctorMaster/DoctorSave", param);
+        return this._httpClient.PostData("Doctor/InsertEDMX", param);
     }
 
     public deleteAssignSupplierToStore(param) {

@@ -567,7 +567,7 @@ public onEnteraddress(event): void {
         //     }
         // }
 
-        if (!this.myForm.get("DoctorId").value) {
+        // if (!this.myForm.get("DoctorId").value) {
                           
             var data2 = [];
             // this.selectedItems.forEach((element) => {
@@ -579,14 +579,17 @@ public onEnteraddress(event): void {
             //         data2.push(DocInsertObj);
             // });
 
-            this.selectedItems.forEach((element) => {
+            // this.selectedItems.forEach((element) => {
                         let DocInsertObj = {};
                         // DocInsertObj['DepartmentId'] = element.DepartmentId;
                         DocInsertObj["docDeptId"]=1
-                        DocInsertObj['departmentId'] = this.departmentId;
-                        DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+                        DocInsertObj['departmentId'] =1,// this.departmentId;
+                        DocInsertObj['doctorId'] = 22,//!this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
                         data2.push(DocInsertObj);
-                    });
+                    // });
+
+
+
             console.log("Insert data2:",data2);
 
             var mdata =
@@ -603,12 +606,12 @@ public onEnteraddress(event): void {
                 "pin": "0", 
                 "phone": "0",
                 "mobile": this.myForm.get("MobileNo").value || "",
-                "genderId": this.myForm.get("GenderId").value || "",
+                "genderId": "1",//this.myForm.get("GenderId").value || "",
                 "education": this.myForm.get("Education").value.trim() || "",
                 "isConsultant": true,
                 "isRefDoc": true,
                 "isActive": true,
-                "doctorTypeId":this.myForm.get("DoctorTypeId").value || "0",// this.doctorId,
+                "doctorTypeId": 1,//this.myForm.get("DoctorTypeId").value || "0",// this.doctorId,
                 "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
                 "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
                 "ageDay": this.myForm.get("AgeDay").value.toString() || "",
@@ -628,79 +631,123 @@ public onEnteraddress(event): void {
             }
             console.log("Insert mdata:",mdata);
             
+var d={
+    
+        "doctorId": 0,
+        "prefixId": 154,
+        "firstName": "shilpa",
+        "middleName": "xyz",
+        "lastName": "meshram",
+        "dateofBirth": "1999-08-06",
+        "address": "satara",
+        "city": "pune",
+        "pin": "string",
+        "phone": "8764655455",
+        "mobile": "string",
+        "genderId": "0",
+        "education": "string",
+        "isConsultant": true,
+        "isRefDoc": true,
+        "isActive": true,
+        "doctorTypeId": 2223,
+        "ageYear": "string",
+        "ageMonth": "string",
+        "ageDay": "string",
+        "passportNo": "string",
+        "esino": "string",
+        "regNo": "string",
+        "regDate": "1999-08-06",
+        "mahRegNo": "string",
+        "mahRegDate": "1999-08-06",
+        "refDocHospitalName": "string",
+        "isInHouseDoctor": true,
+        "isOnCallDoctor": true,
+        "panCardNo": "string",
+        "aadharCardNo": "1236578935",
+        "mDoctorDepartmentDets": [
+          {
+            "docDeptId": 0,
+            "doctorId": 0,
+            "departmentId": 898
+          }
+        ]
+      }
+      
 
-            this._doctorService.doctortMasterInsert(mdata).subscribe((response) => {
+            this._doctorService.doctortMasterInsert(d).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
               this.toastr.error(error.message);
             });
             
-        } else {
+        // } 
+        
+        // else {
           
-            var data3 = [];
-            this.selectedItems.forEach((element) => {
-                let DocInsertObj = {};
-                DocInsertObj["docDeptId"]=1
-                DocInsertObj['departmentId'] = this.departmentId;
-                DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                data2.push(DocInsertObj);
-            });
+        //     var data3 = [];
+        //     this.selectedItems.forEach((element) => {
+        //         let DocInsertObj = {};
+        //         DocInsertObj["docDeptId"]=1
+        //         DocInsertObj['departmentId'] = this.departmentId;
+        //         DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+        //         data2.push(DocInsertObj);
+        //     });
 
-            console.log("update data3:",data3);
+        //     console.log("update data3:",data3);
 
-            var mdataUpdate={
+        //     var mdataUpdate={
               
-               "doctorId": 0,
-                // "prefixId": this.myForm.get("PrefixID").value.PrefixID,
-                "prefixId":this.PrefixId,
-                "firstName": this.myForm.get("FirstName").value.trim() || "",
-                "middleName": this.myForm.get("MiddleName").value.trim() || "",
-                "lastName": this.myForm.get("LastName").value.trim() || "",
-                "dateofBirth": "2021-03-31T12:27:24.771Z",
-                "address": this.myForm.get("Address").value.trim() || "",
-                "city": this.cityId,
-                "pin": "0",
-                "phone": this.myForm.get("Phone").value || "0",
-                "mobile": this.myForm.get("MobileNo").value || "",
-                "genderId": this.genderId,
-                "education": this.myForm.get("Education").value.trim() || "",
-                "isConsultant": true,
-                "isRefDoc": true,
-                "doctorTypeId": this.doctorId,
-                "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
-                "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
-                "ageDay": this.myForm.get("AgeDay").value.toString() || "",
-                "passportNo": 0,
-                "esino": this.myForm.get("ESINO").value || "0",
-                "regNo": this.myForm.get("RegNo").value || "0",
-                "regDate": this.myForm.get("RegDate").value || "1999-08-06",
-                // "regDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
-                "mahRegNo": this.myForm.get("MahRegNo").value || "0",
-                "mahRegDate": this.myForm.get("MahRegDate").value || "0",
-                "refDocHospitalName": this.myForm.get("RefDocHospitalName").value || "0",
-                "isInHouseDoctor": true,
-                "isOnCallDoctor": true,
-                "panCardNo": this.myForm.get("Pancardno").value || "0",
-                "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
-                "mDoctorDepartmentDets": data3
-            }
+        //        "doctorId": 0,
+        //         // "prefixId": this.myForm.get("PrefixID").value.PrefixID,
+        //         "prefixId":this.PrefixId,
+        //         "firstName": this.myForm.get("FirstName").value.trim() || "",
+        //         "middleName": this.myForm.get("MiddleName").value.trim() || "",
+        //         "lastName": this.myForm.get("LastName").value.trim() || "",
+        //         "dateofBirth": "2021-03-31T12:27:24.771Z",
+        //         "address": this.myForm.get("Address").value.trim() || "",
+        //         "city": this.cityId,
+        //         "pin": "0",
+        //         "phone": this.myForm.get("Phone").value || "0",
+        //         "mobile": this.myForm.get("MobileNo").value || "",
+        //         "genderId": this.genderId,
+        //         "education": this.myForm.get("Education").value.trim() || "",
+        //         "isConsultant": true,
+        //         "isRefDoc": true,
+        //         "doctorTypeId": this.doctorId,
+        //         "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
+        //         "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
+        //         "ageDay": this.myForm.get("AgeDay").value.toString() || "",
+        //         "passportNo": 0,
+        //         "esino": this.myForm.get("ESINO").value || "0",
+        //         "regNo": this.myForm.get("RegNo").value || "0",
+        //         "regDate": this.myForm.get("RegDate").value || "1999-08-06",
+        //         // "regDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
+        //         "mahRegNo": this.myForm.get("MahRegNo").value || "0",
+        //         "mahRegDate": this.myForm.get("MahRegDate").value || "0",
+        //         "refDocHospitalName": this.myForm.get("RefDocHospitalName").value || "0",
+        //         "isInHouseDoctor": true,
+        //         "isOnCallDoctor": true,
+        //         "panCardNo": this.myForm.get("Pancardno").value || "0",
+        //         "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
+        //         "mDoctorDepartmentDets": data3
+        //     }
 
-            console.log(mdataUpdate);
-            this._doctorService.doctortMasterUpdate(mdataUpdate).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record updated Successfully.', 'updated !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });  
-                           this.Savebtn=false;
-                    } else {
-                        this.toastr.error('Doctor-from Master Master Data not updated !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                });
-        }
+        //     console.log(mdataUpdate);
+        //     this._doctorService.doctortMasterUpdate(mdataUpdate).subscribe((data) => {
+        //             this.msg = data;
+        //             if (data) {
+        //                 this.toastr.success('Record updated Successfully.', 'updated !', {
+        //                     toastClass: 'tostr-tost custom-toast-success',
+        //                   });  
+        //                    this.Savebtn=false;
+        //             } else {
+        //                 this.toastr.error('Doctor-from Master Master Data not updated !, Please check API error..', 'Error !', {
+        //                     toastClass: 'tostr-tost custom-toast-error',
+        //                   });
+        //             }
+        //         });
+        // }
         this.onClose();
     }
 

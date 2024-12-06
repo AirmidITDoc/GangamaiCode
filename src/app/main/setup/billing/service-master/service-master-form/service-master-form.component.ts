@@ -120,9 +120,10 @@ import { error } from "console";
     
     
     displayedColumns: string[] = [
-      'ClassId',
-      'ClassName',
-      'ClassRate',
+      'classId',
+      'className',
+      // 'ClassRate',
+      'action'
     ];
     
   ngOnInit(): void {

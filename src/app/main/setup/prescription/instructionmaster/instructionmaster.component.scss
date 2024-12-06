@@ -1,62 +1,9 @@
+.p-sm-24 {
+    padding: 10px !important;
+}
+
 app-instructionmaster {
-    .mat-header-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-        font-weight: bold;
-    }
 
-    .mat-row {
-        width: 700px;
-        max-width: 700px;
-        min-width: 700px;
-    }
-
-    .mat-column-InstructionId {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: left;
-    }
-
-    .mat-column-InstructionName {
-        width: 200px;
-        max-width: 200px;
-        min-width: 200px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-
-    // .mat-column-AddedByName {
-    //     width: 150px;
-    //     max-width: 150px;
-    //     min-width: 150px;
-    // }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: left;
-        justify-content: left;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: right;
-        justify-content: right;
-    }
     .mat-icon-button {
         padding: 0;
         min-width: 0;

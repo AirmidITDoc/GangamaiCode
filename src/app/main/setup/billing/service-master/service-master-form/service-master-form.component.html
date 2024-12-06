@@ -127,21 +127,21 @@
                             [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
 
 
-                            <ng-container matColumnDef="ClassId">
+                            <ng-container matColumnDef="classId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ClassId}}
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.classId}}
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="ClassName">
+                            <ng-container matColumnDef="className">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Class Name</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ClassName}}
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.className}}
                                 </mat-cell>
                             </ng-container>
 
 
-                            <ng-container matColumnDef="ClassRate">
+                            <!-- <ng-container matColumnDef="ClassRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
@@ -151,9 +151,9 @@
                                             (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
-                            <!-- <ng-container matColumnDef="action" stickyEnd>
+                            <ng-container matColumnDef="action" stickyEnd>
                             <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
                                 Action
                             </mat-header-cell>
@@ -163,7 +163,7 @@
                                 <button mat-icon-button (click)="onDeactive(row.BankId)"
                                     color="warn"><mat-icon>delete_outline</mat-icon></button>
                             </mat-cell>
-                        </ng-container> -->
+                        </ng-container>
 
                             <ng-container matColumnDef="loading">
                                 <mat-footer-cell *matFooterCellDef colspan="6">
