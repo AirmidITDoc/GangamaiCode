@@ -27,6 +27,12 @@ export class NewCountryMasterComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.countryForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
     if (this.countryForm.valid) {
         debugger
         this._CountryMasterService.countryMasterSave(this.countryForm.value).subscribe((response) => {
@@ -36,6 +42,7 @@ export class NewCountryMasterComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+  }
 }
 
 onClear(val: boolean) {

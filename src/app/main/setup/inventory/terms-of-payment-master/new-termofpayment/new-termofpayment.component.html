@@ -1,8 +1,8 @@
-<!-- <div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Item Type Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Terms Of Payment Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -16,20 +16,20 @@
     </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="itemtypeForm">
-                <input type="hidden" name="itemTypeId" formControlName="itemTypeId">
+            <form [formGroup]="termsofpaymentForm">
+                <input type="hidden" name="Id" formControlName="Id">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <airmid-textbox 
-                        label="Item Type name"
-                        formControlName="itemTypeName"
+                        label="TermsOfPaymentType name"
+                        formControlName="TermsOfPayment"
                         [value]=""
-                        [formGroup]="itemtypeForm"
-                        [validations]="_ItemTypeMasterService.getValidationMessages().itemTypeName"
+                        [formGroup]="termsofpaymentForm"
+                        [validations]="_ItemTypeMasterService.getValidationMessages().TermsOfPayment"
                         [maxLength]="300">
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
+                    <mat-radio-group name="isActive" formControlName="isActive" value='false'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
@@ -39,11 +39,10 @@
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
             <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>
         </div>
     </div>
-</div> -->
+</div>

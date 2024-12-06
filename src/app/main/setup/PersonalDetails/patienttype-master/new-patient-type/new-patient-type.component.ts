@@ -30,14 +30,22 @@ export class NewPatientTypeComponent implements OnInit {
       this.patienttypeForm.patchValue(m_data);
   }
   onSubmit() {
-      if (this.patienttypeForm.valid) {
-          this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+    if (this.patienttypeForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
+        if (this.patienttypeForm.valid) {
+            this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
+    }
+      
 //     if (this.personalFormGroup.valid) {
 
 //         console.log(this.personalFormGroup.get('PrefixId').value)

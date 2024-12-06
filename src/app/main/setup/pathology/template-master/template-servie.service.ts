@@ -53,8 +53,12 @@ public templateMasterSave(Param: any, showLoader = true) {
   } else return this._httpClient.PostData("PathologyTemplate", Param, showLoader);
 }
 
+// public deactivateTheStatus(m_data) {
+//   return this._httpClient.PostData("PathologyTemplate", m_data);
+// }
+
 public deactivateTheStatus(m_data) {
-  return this._httpClient.PostData("PathologyTemplate", m_data);
+    return this._httpClient.DeleteData("PathologyTemplate?Id=" + m_data.toString());
 }
 }
 

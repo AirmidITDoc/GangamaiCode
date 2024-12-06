@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,7 +21,12 @@ export class AreaMasterService {
     createAreaForm(): FormGroup {
         return this._formBuilder.group({
             areaId: [""],
-            areaName: [""],
+            areaName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             cityId: [""],
             cityName: [""],
             IsActive: ["true"],

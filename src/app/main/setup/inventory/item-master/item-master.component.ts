@@ -74,8 +74,8 @@ export class ItemMasterComponent implements OnInit {
                                 if (result) {
                                     let that = this;
                                     this._itemService.deactivateTheStatus(data.stockId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
+                                    this.toastr.success(response.message);
+                                    that.grid.bindGridData();
                                     });
                                 }
                                 this.confirmDialogRef = null;

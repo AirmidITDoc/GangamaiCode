@@ -23,6 +23,12 @@ import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
 import { NewTermofpaymentComponent } from './new-termofpayment/new-termofpayment.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { SharedModule } from "app/main/shared/shared.module";
+import { AngularEditorModule } from "@kolkov/angular-editor";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatCardModule } from "@angular/material/card";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatTabsModule } from "@angular/material/tabs";
 
 const routes: Routes = [
     {
@@ -35,13 +41,15 @@ const routes: Routes = [
     declarations: [TermsOfPaymentMasterComponent, NewTermofpaymentComponent],
     imports: [
         RouterModule.forChild(routes),
-        SharedModule,
+        AngularEditorModule,
         MatButtonModule,
         MatCheckboxModule,
+        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
+        MatRippleModule,
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -50,8 +58,15 @@ const routes: Routes = [
         MatRadioModule,
         MatSnackBarModule,
         FuseSharedModule,
+        FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatDialogModule,
+        CommonModule,
+        MatExpansionModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatTabsModule,
+        MatAutocompleteModule,
+        SharedModule
     ],
     providers: [TermsOfPaymentMasterService,DatePipe],
     entryComponents: [TermsOfPaymentMasterComponent],

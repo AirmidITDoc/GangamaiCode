@@ -30,6 +30,12 @@ export class NewItemtypeComponent implements OnInit {
       this.itemtypeForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.itemtypeForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.itemtypeForm.valid) {
           this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -38,6 +44,7 @@ export class NewItemtypeComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

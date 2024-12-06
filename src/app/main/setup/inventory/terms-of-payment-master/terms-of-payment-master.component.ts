@@ -26,13 +26,13 @@ export class TermsOfPaymentMasterComponent implements OnInit {
     public toastr : ToastrService,) {}
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "ItemType/List",
+            apiUrl: "TermsOfPayment/List",
             columnsList: [
-                { heading: "Code", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ItemType Name", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-                {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                { heading: "Code", key: "Id", sort: true, align: 'left', emptySign: 'NA', width:100 },
+                { heading: "TermsOfPayment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width:350 },
+                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width:350 },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                { heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);

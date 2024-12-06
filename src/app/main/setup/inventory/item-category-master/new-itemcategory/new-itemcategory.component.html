@@ -25,10 +25,22 @@
                         [validations]="_CategorymasterService.getValidationMessages().itemCategoryName"
                         [maxLength]="300">
                     </airmid-textbox>
-                    <airmid-textbox label="ItemId" formControlName="itemTypeId" [value]=""
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="ItemName" formControlName="itemTypeId"
                         [formGroup]="categoryForm"
+                        [validations]="_CategorymasterService.getValidationMessages().itemTypeId"
+                        (selectDdlObject)="selectChangeItem($event)"
+                        [mode]="autocompleteModeItem">
+                        </airmid-autocomplete>
+                    </div>
+                    
+
+                    <!-- <airmid-textbox label="ItemId" formControlName="itemTypeId" [value]=""
+                        [formGroup]="categoryForm"
+                        [validations]="_CategorymasterService.getValidationMessages().itemTypeId"
                         [maxLength]="300">
-                    </airmid-textbox>
+                    </airmid-textbox> -->
                 </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

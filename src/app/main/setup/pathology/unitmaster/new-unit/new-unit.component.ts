@@ -31,6 +31,12 @@ export class NewUnitComponent implements OnInit {
       this.unitForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.unitForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.unitForm.valid) {
         debugger
           this._UnitmasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
@@ -40,6 +46,7 @@ export class NewUnitComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

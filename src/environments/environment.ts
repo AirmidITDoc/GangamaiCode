@@ -5,7 +5,7 @@
 export const environment = {
     production: true,
     API_BASE_PATH: 'http://192.168.2.100:9090/api/v1/',
-    //API_BASE_PATH: 'http://localhost:5251/api/v1/',
+    // API_BASE_PATH: 'http://localhost:5251/api/v1/',
     hmr       : false
 };
 

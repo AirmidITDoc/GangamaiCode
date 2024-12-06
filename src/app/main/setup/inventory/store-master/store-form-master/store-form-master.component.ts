@@ -31,46 +31,31 @@ export class StoreFormMasterComponent implements OnInit {
       this.storeForm = this._StoreMasterService.createStoremasterForm();
       var m_data = {
         storeId: this.data?.storeId,
-        currencyName: this.data?.currencyName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
+        storeShortName: this.data?.storeShortName.trim(),
+        storeName: this.data?.storeName.trim(),
+        isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.storeForm.patchValue(m_data);
     }
-    
+
     onSubmit() {
-    /**
-     * {
-        "storeId": 0,
-        "storeShortName": "string",
-        "storeName": "string"
-        }
-     */
-    /**
-     * 
-            storeId
-            : 
-            0
-            storeName
-            : 
-            "HELLO"
-            storeShortName
-            : 
-            "HELLO"
-            [[Prototype]]
-            : 
-            Object
-     */
+        if (this.storeForm.invalid) {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
+            toastClass:'tostr-tost custom-toast-warning',
+        })
+        return;
+        }else{
         debugger
-        var m_data =
+        var mdata =
         {
             "storeId": 0,
             "storeShortName": this.storeForm.get("storeShortName").value,
             "storeName": this.storeForm.get("storeName").value,    
         }
 
-        console.log("StoreCategoryMaster Insert:",m_data)
+        console.log("StoreCategoryMaster Insert:",mdata)
         
-        this._StoreMasterService.storeMasterSave(m_data).subscribe((response) => {
+        this._StoreMasterService.storeMasterSave(mdata).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
         }, (error) => {
@@ -86,6 +71,7 @@ export class StoreFormMasterComponent implements OnInit {
     //           this.toastr.error(error.message);
     //       });
     //   }
+      }
   }
 
   onClear(val: boolean) {

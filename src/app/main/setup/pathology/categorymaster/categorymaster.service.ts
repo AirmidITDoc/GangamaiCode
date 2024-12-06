@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -20,7 +20,12 @@ export class CategorymasterService {
     createCategorymasterForm(): FormGroup {
         return this._formBuilder.group({
             categoryId: [""],
-            categoryName: [""],
+            categoryName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -55,7 +60,11 @@ export class CategorymasterService {
         } else return this._httpClient.PostData("PathCategoryMaster", Param, showLoader);
     }
 
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData("PathCategoryMaster", m_data);
+    // }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("PathCategoryMaster", m_data);
+        return this._httpClient.DeleteData("PathCategoryMaster?Id=" + m_data.toString());
     }
 }

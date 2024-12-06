@@ -27,20 +27,17 @@ export class SupplierMasterComponent implements OnInit {
     gridConfig: gridModel={
         apiUrl:"Supplier/SupplierList",
         columnsList:[
-            // {heading: "Code" , key:"" , sort:true, align:'left',emptySign: 'NA' },
-
-            {heading: "Supplier", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:250 },
+            {heading: "Supplier", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "ContactPerson", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:500 },
+            {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:250 },
             {heading: "CityName", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:200 },
+            // {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:100 },
+            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "GSTNo", key: "gstNo", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "PanNo", key: "panNo", sort:true, align:'left',emptySign: 'NA', width:100 },
-            // {heading: "User Name", key: "", sort:true, align:'left',emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:50 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:150, actions: [
                     {
@@ -59,8 +56,8 @@ export class SupplierMasterComponent implements OnInit {
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
             {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals},
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            {fieldName:"Length", fieldValue:"100", opType:OperatorComparer.Equals},
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // {fieldName:"Length", fieldValue:"30", opType:OperatorComparer.Equals},
         ],
         row:25
     }

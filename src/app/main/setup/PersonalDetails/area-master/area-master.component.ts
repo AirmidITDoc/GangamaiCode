@@ -40,7 +40,8 @@ export class AreaMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    },
+                    {
                         action: gridActions.delete, callback: (data: any) => {
                             this.confirmDialogRef = this._matDialog.open(
                                 FuseConfirmDialogComponent,

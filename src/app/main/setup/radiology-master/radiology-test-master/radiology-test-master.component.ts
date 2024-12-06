@@ -35,10 +35,10 @@ export class RadiologyTestMasterComponent implements OnInit {
         apiUrl: "RadiologyTest/List",
         columnsList: [
             { heading: "Code", key: "testId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Test Name", key: "testName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "print Test Name", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "categoryId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Service Name", key: "serviceId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TestName", key: "testName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "printTest Name", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CategoryName", key: "categoryId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ServiceName", key: "serviceId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
             
             { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
             {

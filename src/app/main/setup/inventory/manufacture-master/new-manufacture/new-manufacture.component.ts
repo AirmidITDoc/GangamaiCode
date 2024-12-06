@@ -30,6 +30,12 @@ export class NewManufactureComponent implements OnInit {
       this.manufForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.manufForm.invalid) {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.manufForm.valid) {
           this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -38,6 +44,7 @@ export class NewManufactureComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

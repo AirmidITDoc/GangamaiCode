@@ -21,7 +21,7 @@ export class NewStateMasterComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-  autocompleteModecountry: string = "Country";
+  autocompleteModecountry: string = "State";
 
   countryId = 0;
 
@@ -32,11 +32,17 @@ export class NewStateMasterComponent implements OnInit {
         stateId: this.data?.stateId,
         stateName: this.data?.stateName.trim(),
         countryId: this.data?.countryId || this.countryId ,
-          isDeleted: JSON.stringify(this.data?.isActive),
+        isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.stateForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.stateForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.stateForm.valid) {
           this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -45,6 +51,7 @@ export class NewStateMasterComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }  
   }
 
   getValidationCountryMessages() {

@@ -27,6 +27,12 @@ export class NewLocationComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.locationForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
     if (this.locationForm.valid) {
         this._LocationMasterService.locationMasterSave(this.locationForm.value).subscribe((response) => {
             this.toastr.success(response.message);
@@ -35,6 +41,7 @@ export class NewLocationComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+  }
 }
 
 onClear(val: boolean) {

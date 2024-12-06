@@ -27,6 +27,12 @@ export class NewMaritalstatusComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.maritalForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
     if (this.maritalForm.valid) {
         this._MaritalstatusMasterService.MaritalStatusMasterSave(this.maritalForm.value).subscribe((response) => {
             this.toastr.success(response.message);
@@ -35,6 +41,7 @@ export class NewMaritalstatusComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+  }
 }
 
 onClear(val: boolean) {

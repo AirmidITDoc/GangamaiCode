@@ -19,25 +19,25 @@
             <form [formGroup]="stateForm">
                 <input type="hidden" name="stateId" formControlName="stateId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                 
-                 
-                    <airmid-textbox 
-                    label="State name" 
-                    formControlName="stateName" 
-                    [value]="" 
-                    [formGroup]="stateForm"
-                    [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
-                    </airmid-textbox>
 
-                    <!-- <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete> -->
+            <airmid-textbox 
+            label="State name" 
+            formControlName="stateName" 
+            [value]="" 
+            [formGroup]="stateForm"
+            [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
+            </airmid-textbox>
 
-                    <airmid-autocomplete label="countryId" formControlName="countryId"
-                    [value]="data?.countryId" [formGroup]="stateForm"
-                    [validations]="getValidationCountryMessages().countryId"
-                    [mode]="autocompleteModecountry"
-                    (selectDdlObject)="selectChangecountry($event)">
-                </airmid-autocomplete>
-                </div>
+            <!-- <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete> -->
+
+            <airmid-autocomplete label="countryId" formControlName="countryId"
+            [value]="data?.countryId" [formGroup]="stateForm"
+            [validations]="getValidationCountryMessages().countryId"
+            [mode]="autocompleteModecountry"
+            (selectDdlObject)="selectChangecountry($event)">
+            </airmid-autocomplete>
+
+            </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive

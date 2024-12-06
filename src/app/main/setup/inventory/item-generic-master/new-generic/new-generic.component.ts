@@ -29,6 +29,12 @@ export class NewGenericComponent implements OnInit {
       this.genericForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.genericForm.invalid) {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.genericForm.valid) {
           this._ItemGenericMasterService.genericMasterSave(this.genericForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -37,6 +43,7 @@ export class NewGenericComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

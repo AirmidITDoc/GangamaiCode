@@ -27,6 +27,7 @@ export class TermsOfPaymentMasterService {
             UpdatedBy: ["0"],
         });
     }
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TermsOfPaymentSearch: [""],
@@ -39,9 +40,9 @@ export class TermsOfPaymentMasterService {
 
     getValidationMessages() {
         return {
-            itemTypeName: [
-                { name: "required", Message: "ItemType Name is required" },
-                { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
+            TermsOfPayment: [
+                { name: "required", Message: "TermsOfPayment Name is required" },
+                { name: "maxlength", Message: "TermsOfPayment name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         };
@@ -53,7 +54,11 @@ export class TermsOfPaymentMasterService {
         } else return this._httpClient.PostData("ItemType", Param, showLoader);
     }
 
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData("ItemType", m_data);
+    // }
+
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData("ItemType", m_data);
+        return this._httpClient.DeleteData("ItemType?Id=" + m_data.toString());
     }
 }

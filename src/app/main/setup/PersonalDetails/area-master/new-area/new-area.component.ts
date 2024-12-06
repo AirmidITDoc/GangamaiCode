@@ -33,6 +33,12 @@ export class NewAreaComponent implements OnInit {
       this.areaForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.areaForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.areaForm.valid) {
           this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -41,6 +47,7 @@ export class NewAreaComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
   
   getValidationCityMessages() {

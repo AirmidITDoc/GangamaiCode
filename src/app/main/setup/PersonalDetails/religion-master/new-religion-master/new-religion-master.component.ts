@@ -28,6 +28,12 @@ export class NewReligionMasterComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.religionForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
     if (this.religionForm.valid) {
         this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {
             this.toastr.success(response.message);
@@ -36,6 +42,7 @@ export class NewReligionMasterComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+  }
 }
 
 onClear(val: boolean) {

@@ -30,6 +30,12 @@ export class NewUMOComponent implements OnInit {
       this.unitForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.unitForm.invalid) {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
       if (this.unitForm.valid) {
           this._UomMasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -38,6 +44,7 @@ export class NewUMOComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
   }
 
   onClear(val: boolean) {

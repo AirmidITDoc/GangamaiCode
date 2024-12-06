@@ -40,17 +40,13 @@ export class NewWardComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
-    // if(!this.roomForm.get("roomId").value){
+    if (this.roomForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
         debugger
-        // {
-        //     "roomId": 0,
-        //     "roomName": "kiran",
-        //     "roomType": 0,
-        //     "locationId": 0,
-        //     "isAvailible": true,
-        //     "classId": 0
-        //   }
         var mdata =
         {
             "roomId": 0,
@@ -68,20 +64,8 @@ export class NewWardComponent implements OnInit {
       }, (error) => {
         this.toastr.error(error.message);
       });
-    // } 
-    // else
-    // {
-    //     // update
-    // }
-    // if (this.roomForm.valid) {
-    // //   debugger
-    //     this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
-    //       this.toastr.success(response.message);
-    //         this.onClear(true);
-    //     }, (error) => {
-    //         this.toastr.error(error.message);
-    //     });
-    // }
+    
+    }
 }
 
 getValidationlocationMessages() {
