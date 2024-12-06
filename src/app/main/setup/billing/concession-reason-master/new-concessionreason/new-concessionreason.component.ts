@@ -31,13 +31,20 @@ export class NewConcessionreasonComponent implements OnInit {
       this.concessionForm.patchValue(m_data);
   }
   onSubmit() {
-      if (this.concessionForm.valid) {
-          this._ConcessionReasonMasterService.concessionreasonMasterSave(this.concessionForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
+    if (this.concessionForm.invalid) {
+        this.toastr.warning('Please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+      }else{
+        if (this.concessionForm.valid) {
+            this._ConcessionReasonMasterService.concessionreasonMasterSave(this.concessionForm.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
       }
   }
 

@@ -241,7 +241,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._PurchaseOrder.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -551,7 +551,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     let updatePurchaseOrderHeaderObj = {};
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date /// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
-    updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    updatePurchaseOrderHeaderObj['storeId'] = this.accountService.currentUserValue.storeId;
     updatePurchaseOrderHeaderObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
     updatePurchaseOrderHeaderObj['totalAmount'] = this.FinalTotalAmt;
     updatePurchaseOrderHeaderObj['discAmount'] = (parseFloat(this.DiscAmount)).toFixed(2);
@@ -563,7 +563,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     updatePurchaseOrderHeaderObj['isVerified'] = false;
     updatePurchaseOrderHeaderObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     updatePurchaseOrderHeaderObj['taxID'] = 0;
-    updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+    updatePurchaseOrderHeaderObj['updatedBy'] = this.accountService.currentUserValue.userId,
     updatePurchaseOrderHeaderObj['paymentTermId'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentTerm').value.Id || 0;
     updatePurchaseOrderHeaderObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     updatePurchaseOrderHeaderObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;
@@ -652,7 +652,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     let purchaseHeaderInsertObj = {};
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
-    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.user.storeId;
+    purchaseHeaderInsertObj['storeId'] = this.accountService.currentUserValue.storeId;
     purchaseHeaderInsertObj['supplierID'] = this._PurchaseOrder.userFormGroup.get('SupplierId').value.SupplierId || 0;
     purchaseHeaderInsertObj['totalAmount'] = this.FinalTotalAmt;
     purchaseHeaderInsertObj['discAmount'] = this.DiscAmount;
@@ -664,8 +664,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
     purchaseHeaderInsertObj['isVerified'] = false;
     purchaseHeaderInsertObj['remarks'] = this._PurchaseOrder.FinalPurchaseform.get('Remark').value || '';
     purchaseHeaderInsertObj['taxID'] = 0;
-    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.user.id,
-      purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.user.id,
+    purchaseHeaderInsertObj['addedBy'] = this.accountService.currentUserValue.userId,
+      purchaseHeaderInsertObj['updatedBy'] = this.accountService.currentUserValue.userId,
       purchaseHeaderInsertObj['paymentTermId'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentTerm').value.Id || 0;
     purchaseHeaderInsertObj['modeofPayment'] = this._PurchaseOrder.FinalPurchaseform.get('PaymentMode').value.Id || 0;
     purchaseHeaderInsertObj['worrenty'] = this._PurchaseOrder.FinalPurchaseform.get('Worrenty').value || 0;

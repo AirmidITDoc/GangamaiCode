@@ -338,7 +338,7 @@ export class OPRefundofBillComponent implements OnInit {
     InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
     InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
     InsertRefundObj['TransactionId'] = 1;
-    InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.userId,
     InsertRefundObj['IsCancelled'] = 0;
     InsertRefundObj['IsCancelledBy'] = 0;
     InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -356,7 +356,7 @@ export class OPRefundofBillComponent implements OnInit {
       InsertRefundDetailObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value) || 0;
       InsertRefundDetailObj['DoctorId'] =1;// this.myRefundBillForm.get('DoctorId').value;// this.selectedAdvanceObj.Doctorname;
       InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-      InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
+      InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.userId,
       InsertRefundDetailObj['ChargesId'] = this.ChargeId;
 
       RefundDetailarr.push(InsertRefundDetailObj);

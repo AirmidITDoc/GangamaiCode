@@ -98,7 +98,7 @@ export class BrowsSalesReturnBillComponent implements OnInit {
   getIssueTodept() {
     this.sIsLoading = '';
     var Param = {
-      "ToStoreId ": this._loggedService.currentUserValue.user.storeId,
+      "ToStoreId ": this._loggedService.currentUserValue.storeId,
       "From_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._SalesReturn.MaterialReturnFrDept.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsVerify ": parseInt(this._SalesReturn.MaterialReturnFrDept.get('Status').value) || 0
@@ -174,7 +174,7 @@ export class BrowsSalesReturnBillComponent implements OnInit {
   }
   getIndentStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._SalesReturn.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;

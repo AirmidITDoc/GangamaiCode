@@ -21,7 +21,12 @@ export class BillingClassMasterService {
     createClassForm(): FormGroup {
         return this._formBuilder.group({
             classId: [""],
-            className: ["", Validators.required],
+            className: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

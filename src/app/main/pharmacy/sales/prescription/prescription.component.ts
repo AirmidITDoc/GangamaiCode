@@ -75,7 +75,7 @@ AddmissionId:any;
 RegId:any;
   getPrescriptionList(){
     var Param = {
-      "StoreId": this._loggedService.currentUserValue.user.storeId, 
+      "StoreId": this._loggedService.currentUserValue.storeId, 
       "FromDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "IsStatus": this._SalesService.PrescriptionFrom.get("Status").value || 0,

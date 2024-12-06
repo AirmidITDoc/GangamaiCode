@@ -32,15 +32,29 @@ export class NewGroupComponent implements OnInit {
       console.log("group m_data:", m_data)
   }
   onSubmit() {
-      if (this.groupForm.valid) {
+    if (this.groupForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.groupForm.get("groupId").value){
         debugger
-          this._GroupMasterService.GroupMasterSave(this.groupForm.value).subscribe((response) => {
+        var mdata=
+        {
+          "groupId": 0,
+          "groupName": this.groupForm.get("groupName").value || ""
+        }
+
+        console.log("bank json:", mdata);
+          this._GroupMasterService.GroupMasterSave(mdata).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
           }, (error) => {
               this.toastr.error(error.message);
           });
       }
+    }      
   }
 
   onClear(val: boolean) {

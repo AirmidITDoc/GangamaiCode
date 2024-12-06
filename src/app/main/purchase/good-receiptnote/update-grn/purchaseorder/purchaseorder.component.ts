@@ -117,7 +117,7 @@ export class PurchaseorderComponent implements OnInit {
   } 
   gePharStoreList() {
     var vdata = {
-      Id: this.accountService.currentUserValue.user.storeId
+      Id: this.accountService.currentUserValue.storeId
     }
     this._GRNList.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -127,7 +127,7 @@ export class PurchaseorderComponent implements OnInit {
   }
   getDirectPOList(){
       var Param = {
-        "ToStoreId": this.accountService.currentUserValue.user.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
+        "ToStoreId": this.accountService.currentUserValue.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
         "From_Dt": this.datePipe.transform(this._GRNList.POFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         "To_Dt": this.datePipe.transform(this._GRNList.POFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         "Status": this._GRNList.POFrom.get("Status").value || 0,

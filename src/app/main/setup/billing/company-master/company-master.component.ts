@@ -39,7 +39,7 @@ export class CompanyMasterComponent implements OnInit {
             { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:200 },
             { heading: "CompTypeId", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA',width:150 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA',width:200 },
             { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA',width:150 },
             { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA',width:150 },

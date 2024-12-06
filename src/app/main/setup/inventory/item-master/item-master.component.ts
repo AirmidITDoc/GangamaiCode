@@ -157,7 +157,7 @@ export class ItemMasterComponent implements OnInit {
         this.sIsLoading = '';
         var m_data = {
             ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
-            StoreID: this._loggedService.currentUserValue.user.storeId
+            StoreID: this._loggedService.currentUserValue.storeId
         };
         console.log(m_data)
         this._itemService.getItemMasterList(m_data).subscribe((data) => {

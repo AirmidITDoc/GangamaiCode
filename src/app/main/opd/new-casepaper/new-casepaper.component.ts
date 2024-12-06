@@ -405,7 +405,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     var m_data = {
       "ItemName": `${this.MedicineItemForm.get('ItemId').value}%`,
-      "StoreId": this._loggedService.currentUserValue.user.storeId
+      "StoreId": this._loggedService.currentUserValue.storeId
     }
     console.log(m_data);
     this._CasepaperService.getItemlist(m_data).subscribe(data => {
@@ -721,10 +721,10 @@ onTemplDetAdd(){
       insertOPDPrescription['temp'] = this.caseFormGroup.get('Temp').value || '';
       insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
       insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
-      insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.user.storeId;
+      insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.storeId;
       insertOPDPrescription['patientReferDocId'] = ReferDocNameID || 0;
       insertOPDPrescription['advice'] = this.MedicineItemForm.get('Remark').value || '';
-      insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.user.id;
+      insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.userId;
 
       insertOPDPrescriptionarray.push(insertOPDPrescription);
     });

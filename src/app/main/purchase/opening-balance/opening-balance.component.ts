@@ -70,7 +70,7 @@ export class OpeningBalanceComponent {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     console.log(vdata);
     this._OpeningBalanceService.getLoggedStoreList(vdata).subscribe(data => {
@@ -81,7 +81,7 @@ export class OpeningBalanceComponent {
   }
   getOpeningBalList(){ 
     var vdata={
-      'StoreId':this._loggedService.currentUserValue.user.storeId,
+      'StoreId':this._loggedService.currentUserValue.storeId,
       'From_Dt':this.datePipe.transform(this._OpeningBalanceService.UseFormGroup.get('startdate').value ,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'To_Dt':this.datePipe.transform(this._OpeningBalanceService.UseFormGroup.get('enddate').value ,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }

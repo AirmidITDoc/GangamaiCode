@@ -28,20 +28,21 @@
                          [maxLength]="300">
                     </airmid-textbox>
 
-                    <airmid-autocomplete label="Generic Name" formControlName="GenericId"
-                        [formGroup]="drugForm"
-                        [validations]="getValidationGeneric().GenericId"
-                        [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
-                    </airmid-autocomplete>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="Generic Name" formControlName="GenericId"
+                            [formGroup]="drugForm"
+                            [validations]="getValidationGeneric().GenericId"
+                            [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
+                        </airmid-autocomplete>
 
-                <!-- </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
-
-                    <airmid-autocomplete label="Class Name" formControlName="ClassId"
-                        [formGroup]="drugForm"
-                        [validations]="getValidationClass().ClassId"
-                        [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
-                    </airmid-autocomplete>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="Class Name" formControlName="ClassId"
+                            [formGroup]="drugForm"
+                            [validations]="getValidationClass().ClassId"
+                            [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
+                        </airmid-autocomplete>
+                    </div>
 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

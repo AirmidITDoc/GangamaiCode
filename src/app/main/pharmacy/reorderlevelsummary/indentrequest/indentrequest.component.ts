@@ -115,9 +115,9 @@ export class IndentrequestComponent implements OnInit {
       let InsertIndentObj = {};
       InsertIndentObj['indentDate'] = this.dateTimeObj.date;
       InsertIndentObj['indentTime'] = this.dateTimeObj.time;
-      InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId;
+      InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.storeId;
       InsertIndentObj['toStoreId'] = this._Reorderlevelsummery.RaisedIndentFrom.get('ToStoreId').value.StoreId;
-      InsertIndentObj['addedby'] = this.accountService.currentUserValue.user.id;
+      InsertIndentObj['addedby'] = this.accountService.currentUserValue.userId;
       InsertIndentObj['comments'] = '';
   
       let InsertIndentDetObj = [];

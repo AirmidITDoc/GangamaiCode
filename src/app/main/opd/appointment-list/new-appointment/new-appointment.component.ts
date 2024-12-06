@@ -223,6 +223,26 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
 
+    prefixId = 0;
+    genderId = 1;
+    areaId = 0;
+    cityId = 0;
+    stateId = 0;
+    countryId = 0;
+    regilionId = 0;
+    mstausId = 0;
+    cityName = '';
+    patientTypeId = 0;
+    tariffId = 0;
+    companyId = 0;
+    subcompanyId = 0;
+    departmetId = 0;
+    doctorID = '';
+    refDocId = 0;
+    purposeId = 0;
+    classId = 0;
+    unitId = 1;
+
     constructor(
         public _AppointmentlistService: AppointmentlistService,
 
@@ -261,6 +281,8 @@ export class NewAppointmentComponent implements OnInit {
             this.registerObj = this.data;
         console.log(this.registerObj)
         this.CalcDOB('', null);
+        this.data.tariffId=1
+        this.data.PatientTypeId=1
     }
 
 
@@ -660,7 +682,7 @@ export class NewAppointmentComponent implements OnInit {
 
     getValidationMessages() {
         return {
-            PrefixId: [
+            prefixId: [
                 { name: "required", Message: "Prefix Name is required" }
             ]
         };
@@ -713,14 +735,14 @@ export class NewAppointmentComponent implements OnInit {
 
     getValidationPatientTypeMessages() {
         return {
-            PatientTypeID: [
+            patientTypeId: [
                 { name: "required", Message: "Country Name is required" }
             ]
         };
     }
     getValidationTariffMessages() {
         return {
-            TariffId: [
+            tariffId: [
                 { name: "required", Message: "Mstatus Name is required" }
             ]
         };
@@ -728,7 +750,7 @@ export class NewAppointmentComponent implements OnInit {
 
     getValidationDepartmentMessages() {
         return {
-            Departmentid: [
+            departmentId: [
                 { name: "required", Message: "Department Name is required" }
             ]
         };
@@ -789,41 +811,41 @@ export class NewAppointmentComponent implements OnInit {
 
     onSave() {
 
-        this.PrefixID = this.personalFormGroup.get('PrefixId').value
-        if ((this.PrefixID == '' || this.PrefixID == null || this.PrefixID == undefined)) {
+        this.prefixId = this.personalFormGroup.get('PrefixId').value
+        if ((this.prefixId ==0)) {
             this.toastr.warning('Please select valid Prefix ', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        this.AreaId = this.personalFormGroup.get('AreaId').value
-        if ((this.AreaId == '' || this.AreaId == null || this.AreaId == undefined)) {
+        this.areaId = this.personalFormGroup.get('AreaId').value
+        if ((this.areaId == 0)) {
             this.toastr.warning('Please select valid Area ', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        this.CityId = this.personalFormGroup.get('CityId').value
-        if ((this.CityId == '' || this.CityId == null || this.CityId == undefined)) {
-            this.toastr.warning('Please select valid City ', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        this.Departmentid = this.VisitFormGroup.get('Departmentid').value
-        if ((this.Departmentid == '' || this.Departmentid == null || this.Departmentid == undefined)) {
-            this.toastr.warning('Please select valid Department ', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        this.DoctorID = this.VisitFormGroup.get('DoctorID').value
-        if ((this.DoctorID == '' || this.DoctorID == null || this.DoctorID == undefined)) {
-            this.toastr.warning('Please select valid Department Doctor ', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // this.cityId = this.personalFormGroup.get('CityId').value
+        // if ((this.CityId == '' || this.CityId == null || this.CityId == undefined)) {
+        //     this.toastr.warning('Please select valid City ', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
+        // this.departmentId = this.VisitFormGroup.get('Departmentid').value
+        // if ((this.Departmentid == '' || this.Departmentid == null || this.Departmentid == undefined)) {
+        //     this.toastr.warning('Please select valid Department ', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
+        // this.DoctorID = this.VisitFormGroup.get('DoctorID').value
+        // if ((this.DoctorID == '' || this.DoctorID == null || this.DoctorID == undefined)) {
+        //     this.toastr.warning('Please select valid Department Doctor ', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
         // this.vDoctorId = this.VisitFormGroup.get('RefDocId').value
         // if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
         //     this.toastr.warning('Please select valid Ref Doctor ', 'Warning !', {
@@ -834,7 +856,7 @@ export class NewAppointmentComponent implements OnInit {
         else {debugger
             var Ageflag=false
             // if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-                if (this.registerObj.AgeYear != 0 || this.registerObj.AgeMonth != 0 || this.registerObj.AgeDay != 0) {
+                if (this.registerObj.ageYear != 0 || this.registerObj.ageMonth != 0 || this.registerObj.ageDay != 0) {
                 
                 if (this.searchFormGroup.get('regRadio').value == "registration") {
                     //if (this.vPhoneAppId == 0 && this.Regflag == false) {
@@ -865,7 +887,7 @@ export class NewAppointmentComponent implements OnInit {
                 "regID": 0,
                 "regDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
                 "regTime": this.dateTimeObj.time,
-                "prefixId": this.personalFormGroup.get('PrefixId').value || 0,
+                "prefixId":this.prefixId,// this.personalFormGroup.get('PrefixId').value || 0,
                 "firstName": this.personalFormGroup.get('FirstName').value || '',
                 "middleName": this.personalFormGroup.get('MiddleName').value || '',
                 "lastName": this.personalFormGroup.get('LastName').value || '',
@@ -883,11 +905,11 @@ export class NewAppointmentComponent implements OnInit {
                 "ageMonth": this.personalFormGroup.get('AgeMonth').value.toString() || '',
                 "ageDay": this.personalFormGroup.get('AgeDay').value.toString() || '',
                 "countryId": 1,//this.personalFormGroup.get('CountryId').value || 0,
-                "stateId": this.personalFormGroup.get('StateId').value || 0,
-                "cityId": this.personalFormGroup.get('CityId').value || 0,
-                "maritalStatusId": this.personalFormGroup.get('MaritalStatusId').value || 0,
+                "stateId":this.stateId,// this.personalFormGroup.get('StateId').value || 0,
+                "cityId": this.cityId,//this.personalFormGroup.get('CityId').value || 0,
+                "maritalStatusId": this.MaritalStatusId,//this.personalFormGroup.get('MaritalStatusId').value || 0,
                 "isCharity": true,
-                "religionId": this.personalFormGroup.get('ReligionId').value || 0,
+                "religionId":this.regilionId,//this.personalFormGroup.get('ReligionId').value || 0,
                 "areaId": this.areaId,
                 "isSeniorCitizen": true,
                 "aadharCardNo": this.personalFormGroup.get('AadharCardNo').value.toString() || '',
@@ -900,21 +922,21 @@ export class NewAppointmentComponent implements OnInit {
                 "visitDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
                 "visitTime": this.dateTimeObj.time,
                 "unitId": this.unitId,
-                "patientTypeId": this.VisitFormGroup.get('PatientTypeID').value || 0,
-                "consultantDocId": this.VisitFormGroup.get('DoctorID').value || 0,
-                "refDocId": this.VisitFormGroup.get('RefDocId').value || 0,
-                "tariffId": this.VisitFormGroup.get('TariffId').value || 0,
-                "companyId": this.CompanyId,//this.VisitFormGroup.get('PatientTypeID').value || 0,
+                "patientTypeId":this.patientTypeId,// this.VisitFormGroup.get('PatientTypeID').value || 0,
+                "consultantDocId": this.doctorID,//this.VisitFormGroup.get('DoctorID').value || 0,
+                "refDocId":this.refDocId,// this.VisitFormGroup.get('RefDocId').value || 0,
+                "tariffId": this.tariffId,//this.VisitFormGroup.get('TariffId').value || 0,
+                "companyId": this.companyId,//this.CompanyId,//this.VisitFormGroup.get('PatientTypeID').value || 0,
                 "addedBy": 0,
                 "updatedBy": 0,
                 "isCancelledBy": 0,
                 "isCancelled": true,
                 "isCancelledDate": "2024-09-18T11:24:02.656Z",
                 "classId": 1,// this.VisitFormGroup.get('ClassId').value || 0,
-                "departmentId": this.VisitFormGroup.get('Departmentid').value || 0,
+                "departmentId":this.departmentId,// this.VisitFormGroup.get('Departmentid').value || 0,
                 "patientOldNew": 0,
                 "firstFollowupVisit": 0,
-                "appPurposeId": this.VisitFormGroup.get('PurposeId').value || 0,
+                "appPurposeId":this.purposeId,// this.VisitFormGroup.get('PurposeId').value || 0,
                 "followupDate": "2024-09-18T11:24:02.656Z",
                 "crossConsulFlag": 0,
                 "phoneAppId": 0
@@ -969,7 +991,7 @@ export class NewAppointmentComponent implements OnInit {
                 "regID": this.RegId,
                 "regDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
                 "regTime": this.dateTimeObj.time,
-                "prefixId": this.PrefixId,
+                "prefixId": this.prefixId,
                 "firstName": this.personalFormGroup.get('FirstName').value || '',
                 "middleName": this.personalFormGroup.get('MiddleName').value || '',
                 "lastName": this.personalFormGroup.get('LastName').value || '',
@@ -1004,9 +1026,9 @@ export class NewAppointmentComponent implements OnInit {
                 "visitDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
                 "visitTime": this.dateTimeObj.time,
                 "unitId": this.unitId,
-                "patientTypeId": this.patienttypeId,
-                "consultantDocId": this.deptdocId,
-                "refDocId": this.refdocId,
+                "patientTypeId": this.patientTypeId,
+                "consultantDocId": this.doctorID,
+                "refDocId": this.refDocId,
                 "tariffId": this.tariffId,
                 "companyId": this.companyId,
                 "addedBy": 0,
@@ -1558,10 +1580,10 @@ export class NewAppointmentComponent implements OnInit {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-            // this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-            // this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-            // this.registerObj.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
-            // this.registerObj.dateofBirth = DateOfBirth;
+            this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+            this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+            this.registerObj.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
+            this.registerObj.dateofBirth = DateOfBirth;
             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
         }
 
@@ -1675,29 +1697,11 @@ export class NewAppointmentComponent implements OnInit {
 
 
     // new Api?
-    PrefixId = 0;
-    genderId = 0;
-    areaId = 0;
-    cityId = 0;
-    stateId = 0;
-    countryId = 0;
-    regilionId = 0;
-    mstausId = 0;
-    cityName = '';
-    patienttypeId = 0;
-    tariffId = 0;
-    companyId = 0;
-    subcompanyId = 0;
-    departmetId = 0;
-    deptdocId = '';
-    refdocId = 0;
-    purposeId = 0;
-    classId = 0;
-    unitId = 0;
+  
 
     selectChangeprefix(obj: any) {
         console.log(obj);
-        this.PrefixId = obj.value
+        this.prefixId = obj
     }
 
     selectChangegender(obj: any) {
@@ -1707,53 +1711,53 @@ export class NewAppointmentComponent implements OnInit {
 
     selectChangearea(obj: any) {
         console.log(obj);
-        this.areaId = obj.value
+        this.areaId = obj
     }
 
     selectChangecity(obj: any) {
         console.log(obj);
-        this.cityId = obj.value
+        this.cityId = obj
         this.cityName = obj.text
     }
     selectChangestate(obj: any) {
         console.log(obj);
-        this.stateId = obj.value
+        this.stateId = obj
     }
 
     selectChangecountry(obj: any) {
         console.log(obj);
-        this.countryId = obj.value
+        this.countryId = obj
     }
 
     selectChangemstatus(obj: any) {
         console.log(obj);
-        this.mstausId = obj.value
+        this.mstausId = obj
     }
 
     selectChangereligion(obj: any) {
         console.log(obj);
-        this.regilionId = obj.value
+        this.regilionId = obj
     }
 
     //  visitform?
     selectChangeunit(obj: any) {
         console.log(obj);
-        this.patienttypeId = obj.value
+        // this.patienttypeId = obj.value
 
     }
     selectChangepatienttype(obj: any) {
         console.log(obj);
-        this.patienttypeId = obj.value
+        this.patientTypeId = obj
 
     }
     selectChangetariff(obj: any) {
         console.log(obj);
-        this.tariffId = obj.value
+        this.tariffId = obj
     }
 
     selectChangecompany(obj: any) {
         console.log(obj);
-        this.companyId = obj.value
+        this.companyId = obj
     }
 
 
@@ -1764,21 +1768,21 @@ export class NewAppointmentComponent implements OnInit {
     }
     selectChangedepartment(obj: any) {
         console.log(obj);
-        this.departmentId = obj.value
+        this.departmentId = obj
     }
 
     selectChangedeptdoc(obj: any) {
         console.log(obj);
-        this.deptdocId = obj.value
+        this.doctorID = obj
     }
 
     selectChangerefdoc(obj: any) {
         console.log(obj);
-        // this.refdocId = obj.value
+        this.refDocId = obj
     }
 
     selectChangepurpose(obj: any) {
         console.log(obj);
-        this.purposeId = obj.value
+        this.purposeId = obj
     }
 }

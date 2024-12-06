@@ -186,7 +186,7 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceObj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
       insertPHAdvanceObj['advanceUsedAmount'] = 0;
       insertPHAdvanceObj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-      insertPHAdvanceObj['addedBy'] = this._loggedService.currentUserValue.user.id;
+      insertPHAdvanceObj['addedBy'] = this._loggedService.currentUserValue.userId;
       insertPHAdvanceObj['isCancelled'] = false;
       insertPHAdvanceObj['isCancelledBy'] = '0';
       insertPHAdvanceObj['isCancelledDate'] = this.dateTimeObj.date || '01/01/1900'
@@ -205,12 +205,12 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceDetailobj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
       insertPHAdvanceDetailobj['refundAmount'] = 0;
       insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
-      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.user.id;
+      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.userId;
       insertPHAdvanceDetailobj['isCancelled'] = false;
       insertPHAdvanceDetailobj['isCancelledBy'] = 0;
       insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
       insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
-      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.storeId || 0;
 
 
       let PatientHeaderObj = {};
@@ -302,12 +302,12 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceDetailobj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
       insertPHAdvanceDetailobj['refundAmount'] = 0;
       insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
-      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.user.id;
+      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.userId;
       insertPHAdvanceDetailobj['isCancelled'] = false;
       insertPHAdvanceDetailobj['isCancelledBy'] = 0;
       insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
       insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
-      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.storeId || 0;
 
       let PatientHeaderObj = {};
       // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'

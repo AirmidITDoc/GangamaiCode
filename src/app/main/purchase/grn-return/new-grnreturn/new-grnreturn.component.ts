@@ -106,7 +106,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
   getStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.ToStoreList = data;
@@ -281,7 +281,7 @@ OnSave(){
   grnReturnSave['grnId'] = this.vGRNID || 0;
   grnReturnSave['grnReturnDate'] = this.dateTimeObj.date;
   grnReturnSave['grnReturnTime'] =this.dateTimeObj.time;
-  grnReturnSave['storeId'] =this._loggedService.currentUserValue.user.storeId || 0;
+  grnReturnSave['storeId'] =this._loggedService.currentUserValue.storeId || 0;
   grnReturnSave['supplierID'] =this._GRNReturnService.NewGRNReturnFrom.get('SupplierId').value.SupplierId;
   grnReturnSave['totalAmount'] = this.vFinalTotalAmount || 0;
   grnReturnSave['grnReturnAmount'] = this.vFinalTotalAmount || 0;
@@ -301,7 +301,7 @@ OnSave(){
   grnReturnSave['remark'] = this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value || '';
   grnReturnSave['isVerified'] = false;
   grnReturnSave['isClosed'] = false;
-  grnReturnSave['addedby'] =this._loggedService.currentUserValue.user.id || 0;
+  grnReturnSave['addedby'] =this._loggedService.currentUserValue.userId || 0;
   grnReturnSave['isCancelled'] =false;
   grnReturnSave['grnType'] = 0, 
   grnReturnSave['isGrnTypeFlag'] = true;
@@ -348,7 +348,7 @@ OnSave(){
     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
     grnReturnUpdateCurrentStockObj['issueQty'] =element.ReturnQty || 0;
     grnReturnUpdateCurrentStockObj['stkId'] = element.StkID || 0;
-    grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
+    grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.storeId || 0;
     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
   });
 

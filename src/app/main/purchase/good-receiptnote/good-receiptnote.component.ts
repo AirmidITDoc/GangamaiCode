@@ -288,7 +288,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     getGRNList() {
         var Param = {
-            "ToStoreId": this.accountService.currentUserValue.user.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
+            "ToStoreId": this.accountService.currentUserValue.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
             "From_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
             "To_Dt": this.datePipe.transform(this._GRNService.GRNSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
             "IsVerify": this._GRNService.GRNSearchGroup.get("Status1").value || 0,
@@ -308,7 +308,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     getToStoreSearchCombo() {
         var vdata = {
-            Id: this.accountService.currentUserValue.user.storeId
+            Id: this.accountService.currentUserValue.storeId
         }
         this._GRNService.getLoggedStoreList(vdata).subscribe(data => {
             this.StoreList = data;
@@ -319,7 +319,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     getToStoreSearchList() {
         var vdata = {
-            Id: this.accountService.currentUserValue.user.storeId
+            Id: this.accountService.currentUserValue.storeId
         }
         this._GRNService.getLoggedStoreList(vdata).subscribe(data => {
             this.ToStoreList = data;
@@ -579,7 +579,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     onVerify(row) {
         let updateGRNVerifyStatusobj = {};
         updateGRNVerifyStatusobj['GRNID'] = row.GRNID;
-        updateGRNVerifyStatusobj['IsVerifiedUserId'] = this.accountService.currentUserValue.user.id;
+        updateGRNVerifyStatusobj['IsVerifiedUserId'] = this.accountService.currentUserValue.userId;
         let submitObj = {
             "updateGRNVerifyStatus": updateGRNVerifyStatusobj
         }

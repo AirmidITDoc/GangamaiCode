@@ -468,7 +468,7 @@ var m = {
     //     // this.optionsStore = this.StorecmbList.slice();
     //     if (this.data) {
     //       debugger
-    //       this.data.registerObj.StoreId=this._loggedService.currentUserValue.user.storeId
+    //       this.data.registerObj.StoreId=this._loggedService.currentUserValue.storeId
     //       const ddValue = this.StorecmbList.filter(c => c.StoreId == this.data.registerObj.StoreId);
     //       this._supplierService.myform.get('StoreId').setValue(ddValue[0]);
     //      this._supplierService.myform.updateValueAndValidity();
@@ -667,7 +667,7 @@ var m = {
                 //       octroi:0,
                 //       freight:this._supplierService.myform.get("Freight").value ||"0",
                 //       isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
-                //       addedby:this._loggedService.currentUserValue.user.id || 0,
+                //       addedby:this._loggedService.currentUserValue.userId || 0,
                 //       gstNo: this._supplierService.myform.get("GSTNo").value || 0,
                 //       supplierId:this._supplierService.myform.get("SupplierId").value || 0,
                 //       panNo: this._supplierService.myform.get("PanNo").value || 0
@@ -758,7 +758,7 @@ var m = {
             //     //         octroi:0,
             //     //         freight:this._supplierService.myform.get("Freight").value ||"0",
             //     //         isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
-            //     //         updatedBy:this._loggedService.currentUserValue.user.id || 0,
+            //     //         updatedBy:this._loggedService.currentUserValue.userId || 0,
             //     //         gstNo: this._supplierService.myform.get("GSTNo").value || 0, 
             //     //         panNo: this._supplierService.myform.get("PanNo").value || 0
             //     //         // pinCode:this._supplierService.myform.get("Pincode").value || "0",

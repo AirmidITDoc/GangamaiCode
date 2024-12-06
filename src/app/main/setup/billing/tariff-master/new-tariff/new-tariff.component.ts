@@ -33,24 +33,31 @@ export class NewTariffComponent implements OnInit {
   }
 
   onSubmit(){
-    if(!this.tariffForm.get("tariffId").value){
-      debugger
-      var mdata={
-        "tariffId": 0,
-        "tariffName": this.tariffForm.get("tariffName").value || "",
-        "isActive": Boolean(JSON.parse(this.tariffForm.get("isActive").value))
+    if (this.tariffForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.tariffForm.get("tariffId").value){
+        debugger
+        var mdata={
+          "tariffId": 0,
+          "tariffName": this.tariffForm.get("tariffName").value || "",
+          "isActive": Boolean(JSON.parse(this.tariffForm.get("isActive").value))
+        }
+        console.log("insert tariff:", mdata)
+        
+        this._TariffMasterService.tariffMasterSave(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        //update
       }
-      console.log("insert tariff:", mdata)
-      
-      this._TariffMasterService.tariffMasterSave(mdata).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      //update
-    }
+    }    
   }
 
   onClear(val: boolean) {

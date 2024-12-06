@@ -194,7 +194,7 @@ export class StockAdjustmentComponent implements OnInit {
 //   }
 //   gePharStoreList() {
 //     var vdata = {
-//       Id: this._loggedService.currentUserValue.user.storeId
+//       Id: this._loggedService.currentUserValue.storeId
 //     }
 //     this._StockAdjustment.getLoggedStoreList(vdata).subscribe(data => {
 //       this.StoreList = data;
@@ -231,7 +231,7 @@ export class StockAdjustmentComponent implements OnInit {
 
 //   getStockList() {
 //     var Param = {
-//       "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+//       "StoreId": this._loggedService.currentUserValue.storeId || 0,
 //       "ItemId": this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0, //56784
 //     }
 //     //console.log(Param)
@@ -325,7 +325,7 @@ export class StockAdjustmentComponent implements OnInit {
 //       return;
 //     }
 //     let insertMRPStockadju = {};
-//     insertMRPStockadju['storeID'] = this.accountService.currentUserValue.user.storeId || 0;
+//     insertMRPStockadju['storeID'] = this.accountService.currentUserValue.storeId || 0;
 //     insertMRPStockadju['stkId'] = this.vStockId || 0;
 //     insertMRPStockadju['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
 //     insertMRPStockadju['batchNo'] = this.vBatchNo || '';
@@ -333,7 +333,7 @@ export class StockAdjustmentComponent implements OnInit {
 //     insertMRPStockadju['ad_DD_Qty'] = this.vQty || 0;
 //     insertMRPStockadju['preBalQty'] = this.vBalQty || 0;
 //     insertMRPStockadju['afterBalQty'] = this.vUpdatedQty || 0;
-//     insertMRPStockadju['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+//     insertMRPStockadju['addedBy'] = this.accountService.currentUserValue.userId || 0;
 //     insertMRPStockadju['stockAdgId'] = 0;
 
 //     let submitData = {
@@ -446,13 +446,13 @@ export class StockAdjustmentComponent implements OnInit {
 //     })
    
 //     let batchAdjustment = {};
-//     batchAdjustment['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+//     batchAdjustment['storeId'] = this.accountService.currentUserValue.storeId || 0;
 //     batchAdjustment['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
 //     batchAdjustment['oldBatchNo'] = this.vBatchNo || '';
 //     batchAdjustment['oldExpDate'] = this.vExpDate || 0;
 //     batchAdjustment['newBatchNo'] = this.vBatchEdit || '';
 //     batchAdjustment['newExpDate'] = this.vExpDate;
-//     batchAdjustment['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+//     batchAdjustment['addedBy'] = this.accountService.currentUserValue.userId || 0;
 //     batchAdjustment['stkId'] = this.vStockId || 0;
 
 //     let submitData = {

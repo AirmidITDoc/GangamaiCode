@@ -39,27 +39,36 @@ export class NewDrugMasterComponent implements OnInit {
 
   }
   onSubmit() {
-    if(!this.drugForm.get("DrugId").value){
-      debugger
-      var mdata=
-      {
-        "drugId": 0,
-        "drugName": this.drugForm.get("DrugName").value || "",
-        "genericId": parseInt(this.drugForm.get("GenericId").value) || 0,
-        "classId": parseInt(this.drugForm.get("ClassId").value) || 0,
-        "isActive": true
+    if (this.drugForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.drugForm.get("DrugId").value){
+        debugger
+        var mdata=
+        {
+          "drugId": 0,
+          "drugName": this.drugForm.get("DrugName").value || "",
+          "genericId": parseInt(this.drugForm.get("GenericId").value) || 0,
+          "classId": parseInt(this.drugForm.get("ClassId").value) || 0,
+          "isActive": true
+        }
+        console.log("drug json:", mdata);
+  
+        this._durgMasterService.drugMasterInsert(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        //update
       }
-      console.log("drug json:", mdata);
-
-      this._durgMasterService.drugMasterInsert(mdata).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      //update
     }
+    
+    
 
 //     if (this._drugService.myform.valid) {
 //         if (!this._drugService.myform.get("DrugId").value) {

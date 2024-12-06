@@ -24,27 +24,24 @@ export class DoctorMasterService {
             FirstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                // Validators.pattern("^[a-zA-Z._ -]*$"),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]],
             MiddleName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                // Validators.pattern("^[a-zA-Z._ -]*$"),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]],
             LastName:['', [
                 Validators.required,
                 Validators.maxLength(50),
-                // Validators.pattern("^[a-zA-Z._ -]*$"),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]],
             DateOfBirth: [{ value: new Date() }],
-            Address: [""],
+            Address: ["", Validators.required],
             Phone: [
                 "",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(15),
@@ -54,14 +51,19 @@ export class DoctorMasterService {
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[0-9]*$"),
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
             ],
             GenderId: ["", Validators.required],
             GenderName: [""],
-            Education: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+            Education: ["",
+                [
+                    Validators.required, 
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                 ]
+            ],
             IsConsultant: ["1"],
             IsRefDoc: ["0"],
             isActive: ['1'],
@@ -72,7 +74,7 @@ export class DoctorMasterService {
                 "",
                 [
                     Validators.required,
-                    //Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    // Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
@@ -81,7 +83,7 @@ export class DoctorMasterService {
                 "",
                 [
                     Validators.required,
-                  //  Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
@@ -91,7 +93,7 @@ export class DoctorMasterService {
                 "",
                 [
                     Validators.required,
-                  //  Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
@@ -99,19 +101,28 @@ export class DoctorMasterService {
             MahRegDate: [{ value: new Date() }],
             RefDocHospitalName: [
                 "",
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                [
+                    Validators.required
+                ]
             ],
-            Departmentid: [""],
+            Departmentid: ["", Validators.required],
             DepartmentName: [""],
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
             Pancardno: ["", Validators.required],
-            AadharCardNo: ["", Validators.required],
-            AgeYear:[""],
-            AgeMonth:[""],
-            AgeDay:[""],
-            CityId:[""]
+            AadharCardNo: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[0-9]*$"),
+                    Validators.minLength(12),
+                    Validators.maxLength(12),
+                  ]
+            ],
+            AgeYear:["",Validators.required],
+            AgeMonth:["",Validators.required],
+            AgeDay:["",Validators.required],
+            CityId:["", Validators.required]
         });
     }
 

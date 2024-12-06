@@ -19,10 +19,20 @@ export class DosemasterService {
     createDoseForm(): FormGroup {
         return this._formBuilder.group({
             DoseId: [""],
-            DoseName: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
-            DoseNameInEnglish: ["", Validators.required, Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+            DoseName: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            DoseNameInEnglish: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
 
-            DoseQtyPerDay: ["", Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")],
+            DoseQtyPerDay: ["",[ Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")]],
 
             isActive: ["true"],
             AddedBy: ["0"],
@@ -45,7 +55,7 @@ export class DosemasterService {
             DoseQtyPerDay: [
                 { name: "required", Message: "DoseQtyPerDay is required" },
                 { name: "maxlength", Message: "DoseQtyPerDay should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                { name: "pattern", Message: "Special char not allowed, only Digits." }
             ],
         }
     }

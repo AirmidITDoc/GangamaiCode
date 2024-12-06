@@ -21,7 +21,12 @@ export class GroupMasterService {
     createGroupForm(): FormGroup {
         return this._formBuilder.group({
             groupId: [""],
-            groupName: ["", Validators.required],
+            groupName: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             // printSeqNo: ["", Validators.pattern("[0-9]+")],
             // isconsolidated: ["false"],
             // isConsolidatedDR: ["false"],

@@ -202,7 +202,7 @@ export class SalesReturnComponent implements OnInit {
 
   getPharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._SalesReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -595,8 +595,8 @@ export class SalesReturnComponent implements OnInit {
     salesReturnHeader['isPrint'] = true,
     salesReturnHeader['isFree'] = true;
     salesReturnHeader['unitID'] = 1;
-    salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
-    salesReturnHeader['storeID '] =this._loggedService.currentUserValue.user.storeId,
+    salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.userId,
+    salesReturnHeader['storeID '] =this._loggedService.currentUserValue.storeId,
     salesReturnHeader['narration'] = '';
     salesReturnHeader['salesReturnId'] = 0
 
@@ -637,7 +637,7 @@ export class SalesReturnComponent implements OnInit {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
-      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.storeId,
         updateCurStkSalesCredit['stkID'] = element.StkID;
 
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
@@ -713,8 +713,8 @@ export class SalesReturnComponent implements OnInit {
     salesReturnHeader['IsPrint'] = 0,
     salesReturnHeader['IsFree'] = 0;
     salesReturnHeader['UnitID'] = 1;
-    salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.user.id,
-    salesReturnHeader['StoreID'] =this._loggedService.currentUserValue.user.storeId,
+    salesReturnHeader['addedBy'] = this._loggedService.currentUserValue.userId,
+    salesReturnHeader['StoreID'] =this._loggedService.currentUserValue.storeId,
     salesReturnHeader['Narration'] = "";
     salesReturnHeader['SalesReturnId'] = 0
 
@@ -756,7 +756,7 @@ export class SalesReturnComponent implements OnInit {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
-      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.user.storeId,
+      updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.storeId,
       updateCurStkSalesCredit['stkID'] = element.StkID;
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
     });
@@ -806,7 +806,7 @@ export class SalesReturnComponent implements OnInit {
         PaymentInsertobj['RefundId'] = 0;
         PaymentInsertobj['TransactionType'] = 5;
         PaymentInsertobj['Remark'] = '',
-        PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+        PaymentInsertobj['AddBy'] = this._loggedService.currentUserValue.userId,
         PaymentInsertobj['IsCancelled'] = 0;
         PaymentInsertobj['IsCancelledBy'] = 0;
         PaymentInsertobj['IsCancelledDate'] = '01/01/1900',

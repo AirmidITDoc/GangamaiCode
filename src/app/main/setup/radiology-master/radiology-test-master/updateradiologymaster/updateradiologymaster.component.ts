@@ -216,7 +216,7 @@ getOptionTextService(option) {
     //      insertRadiologyTestMaster['testName'] = this._radiologytestService.myform.get("TestName").value;
     //      insertRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
     //      insertRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
-    //      insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.user.id;
+    //      insertRadiologyTestMaster['addedBy'] = this.accountService.currentUserValue.userId;
     //      insertRadiologyTestMaster['Isdeleted'] = this._radiologytestService.myform.get("IsDeleted").value || 1;
     //      insertRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
         
@@ -258,7 +258,7 @@ getOptionTextService(option) {
     //     updateRadiologyTestMaster['printTestName'] = this._radiologytestService.myform.get("PrintTestName").value;
     //     updateRadiologyTestMaster['categoryId'] = this._radiologytestService.myform.get("CategoryId").value.CategoryId;
     //     updateRadiologyTestMaster['Isdeleted'] = this._radiologytestService.myform.get("IsDeleted").value || 1;
-    //     updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.user.id;
+    //     updateRadiologyTestMaster['updatedBy'] = this.accountService.currentUserValue.userId;
     //     updateRadiologyTestMaster['serviceId'] = this._radiologytestService.myform.get("ServiceId").value.ServiceId;
        
     //     let radiologyTemplateDetDelete={};

@@ -14,31 +14,40 @@
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
         </div>
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="EditConsultdr()">Edit Consultant Dr
-            </button>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="Editrefrancedr()">Edit Refrance Dr
-            </button>
-        </div> -->
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="Editcrossconsult()">Cross Consult
-            </button>
-        </div> -->
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="EditBedtransfer()">Bedtransfer
-            </button>
-        </div> -->
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="EditDischarge()">Discharge
-            </button>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="EditOpBill()">OpBill
-            </button>
-        </div> -->
+      
         
+    </div>
+    <div class="info-badge-top pb-2 border-bottom" style="padding-left: 400px;">
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
+                class="gap-4">
+                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
+            </div>
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
+                class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg"> New Patient : {{VNewcount}}</span>
+            </div>
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center"
+                class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span class="orange-600-fg">FollowUp : {{VFollowupcount}}</span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
+                class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
+                class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="blue-600-fg">Cross Consultant Count :
+                    {{VCrossConscount}}</span>
+
+            </div>
+
+        </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
@@ -111,28 +120,13 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-
-                <!-- [value]="fromtDate" -->
-                <!-- <mat-form-field appearance="outline">
-                    <mat-label>From Date</mat-label>
-                    <input matInput [matDatepicker]="validFromPicker"  [(ngModel)]="fromDate"
-                    placeholder="mm/dd/yyyy" [(ngModel)]="gridConfig.filters[4].fieldValue" (dateChange)="onChangeDate($event.value)"/>
-                    <mat-datepicker-toggle matSuffix
-                        [for]="validFromPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #validFromPicker></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>To Date</mat-label>
-                    <input matInput [matDatepicker]="validFromPicker1"  [value]="toDate"
-                    placeholder="mm/dd/yyyy" [(ngModel)]="gridConfig.filters[5].fieldValue" (dateChange)="onChangeDate1($event.value)"/>
-                    <mat-datepicker-toggle matSuffix
-                        [for]="validFromPicker1"></mat-datepicker-toggle>
-                    <mat-datepicker #validFromPicker1></mat-datepicker>
-                </mat-form-field> -->
-
                               
             </ng-container>
         </airmid-table>
     </div>
+    <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
+    class="gap-4">
+    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+    <span class="blue-600-fg">Total Result : {{resultsLength}}</span>
+</div> -->
 </div>

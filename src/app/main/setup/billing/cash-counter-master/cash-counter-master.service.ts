@@ -22,9 +22,24 @@ export class CashCounterMasterService {
     createcashcounterForm(): FormGroup {
         return this._formBuilder.group({
             cashCounterId: [""],
-            cashCounterName: ["", Validators.required],
-            prefix: ["", Validators.required],
-            billNo: ["", Validators.required],
+            cashCounterName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            prefix: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            billNo: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[0-9]*$")
+                ]
+            ],
            isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
@@ -56,7 +71,7 @@ export class CashCounterMasterService {
             billNo: [
                 { name: "required", Message: "BillNo Name is required" },
                 { name: "maxlength", Message: "BillNo name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                { name: "pattern", Message: "Special char not allowed, only digits." }
             ],
 
         };

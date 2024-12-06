@@ -131,7 +131,7 @@ getOptionTextStores(option) {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._IssueToDep.getLoggedStoreList(vdata).subscribe(data => {
       this.FromStoreList = data;

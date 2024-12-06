@@ -21,6 +21,10 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
+    
+    autocompleteModetariff: string = "Tariff";
+    autocompleteModegroupName:string="GroupName";
+    
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -93,7 +97,7 @@ export class ServiceMasterComponent implements OnInit {
             { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
         row:25
     }
@@ -128,7 +132,16 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.initializeFormGroup();
     }
 
-  
+    tariffId=0;
+    groupId=0;
+
+    selectChangegroupName(obj:any){
+      this.groupId=obj.value;
+    }
+    selectChangetariff(obj: any){
+        console.log(obj);
+        this.tariffId=obj
+    }
    
     onSave(row:any = null) {
         let that = this;

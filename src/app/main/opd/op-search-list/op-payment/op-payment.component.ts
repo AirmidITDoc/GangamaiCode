@@ -353,7 +353,7 @@ debugger
     // this.Paymentobj['RefundId'] = 0;
     // this.Paymentobj['TransactionType'] = 0;
     // this.Paymentobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
-    // this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    // this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
     // this.Paymentobj['IsCancelled'] = 0;
     // this.Paymentobj['IsCancelledBy'] = 0;
     // this.Paymentobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
@@ -399,7 +399,7 @@ debugger
       this.Paymentobj['RefundId'] = 0;
       this.Paymentobj['TransactionType'] = 0;
       this.Paymentobj['Remark'] = '';
-      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
         this.Paymentobj['IsCancelled'] = 0;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -431,7 +431,7 @@ debugger
       this.Paymentobj['RefundId'] = 0;
       this.Paymentobj['TransactionType'] = 4;
       this.Paymentobj['Remark'] = '';
-      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
         this.Paymentobj['IsCancelled'] = 0;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -473,7 +473,7 @@ debugger
       }
       this.Paymentobj['TransactionType'] = TransactionType;
       this.Paymentobj['Remark'] = " ";
-      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
         this.Paymentobj['IsCancelled'] = 0;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -512,7 +512,7 @@ debugger
         this.Paymentobj['TransactionType'] = 9;
       }
       this.Paymentobj['Remark'] = " ";
-      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
         this.Paymentobj['IsCancelled'] = 0;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -541,8 +541,8 @@ debugger
       this.Paymentobj['cardPayDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       this.Paymentobj['partyReceiptNo'] = " ";
       this.Paymentobj['remark'] = " ";
-      this.Paymentobj['isAddedBy'] = this._loggedService.currentUserValue.user.id,
-      this.Paymentobj['isUpdatedBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['isAddedBy'] = this._loggedService.currentUserValue.userId,
+      this.Paymentobj['isUpdatedBy'] = this._loggedService.currentUserValue.userId,
       this.Paymentobj['isCancelled'] = 0;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')

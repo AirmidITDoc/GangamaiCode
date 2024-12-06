@@ -909,7 +909,7 @@ export class EditAdmissionComponent implements OnInit {
         "AdmittedDoctor2": this.vadmittedDoctor2,// this.hospitalFormGroup.get('admittedDoctor2').value.DoctorID || 0,
         "RefByTypeId": 0,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
         "RefByName": 0,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
-        "isUpdatedBy": this.accountService.currentUserValue.user.id,
+        "isUpdatedBy": this.accountService.currentUserValue.userId,
         "SubTpaComId": this.SubCompanyId,// this.hospitalFormGroup.get('SubCompanyId').value.SubCompanyId || 0,
         "isOpToIPConv": 0
       }

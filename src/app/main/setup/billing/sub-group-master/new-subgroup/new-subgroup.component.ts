@@ -48,23 +48,30 @@ export class NewSubgroupComponent implements OnInit {
       //     });
       // }
       debugger
-      if(!this.subgroupForm.get("subGroupId").value){
-        var mdata={
-            "subGroupId": 0,
-            "groupId": this.subgroupForm.get("groupId").value || 0,
-            "subGroupName": this.subgroupForm.get("subGroupName").value || "",
+      if (this.subgroupForm.invalid) {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+      }else{
+        if(!this.subgroupForm.get("subGroupId").value){
+          var mdata={
+              "subGroupId": 0,
+              "groupId": this.subgroupForm.get("groupId").value || 0,
+              "subGroupName": this.subgroupForm.get("subGroupName").value || "",
+          }
+          console.log("sub group:", mdata);
+  
+          this._SubGroupMasterService.SubGroupMasterSave(mdata).subscribe((response)=>{
+            this.toastr.success(response.message);
+            this.onClear(true);
+          }, (error)=>{
+            this.toastr.error(error.message);
+          })
+        } else{
+          // update
         }
-        console.log("sub group:", mdata);
-
-        this._SubGroupMasterService.SubGroupMasterSave(mdata).subscribe((response)=>{
-          this.toastr.success(response.message);
-          this.onClear(true);
-        }, (error)=>{
-          this.toastr.error(error.message);
-        })
-      } else{
-        // update
-      }
+      }     
   }
 
   onClear(val: boolean) {

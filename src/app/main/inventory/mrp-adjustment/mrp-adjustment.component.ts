@@ -140,7 +140,7 @@ export class MRPAdjustmentComponent implements OnInit {
   
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     //console.log(vdata);
     this._MrpAdjustmentService.getLoggedStoreList(vdata).subscribe(data => {

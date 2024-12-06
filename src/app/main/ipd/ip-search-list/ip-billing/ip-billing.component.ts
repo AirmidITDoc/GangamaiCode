@@ -572,7 +572,7 @@ ServiceList:any=[];
         "docAmt": 0,
         "hospitalAmt": this.FAmount,// this.vServiceNetAmt,
         "isGenerated": 0,
-        "addedBy": this.accountService.currentUserValue.user.id,
+        "addedBy": this.accountService.currentUserValue.userId,
         "isCancelled": 0,
         "isCancelledBy": 0,
         "isCancelledDate": "01/01/1900",
@@ -748,7 +748,7 @@ ServiceList:any=[];
       "docAmt": 0,
       "hospitalAmt": 0,
       "isGenerated": 0,
-      "addedBy": this.accountService.currentUserValue.user.id,
+      "addedBy": this.accountService.currentUserValue.userId,
       "isCancelled": 0,
       "isCancelledBy": 0,
       "isCancelledDate": "01/01/1900",
@@ -1207,7 +1207,7 @@ CalculateAdminCharge(){
       if (flag.isConfirmed) {
         let Chargescancle = {};
         Chargescancle['ChargesId'] = contact.ChargesId;
-        Chargescancle['userId'] = this.accountService.currentUserValue.user.id;
+        Chargescancle['userId'] = this.accountService.currentUserValue.userId;
 
         let submitData = {
           "deleteCharges": Chargescancle
@@ -1367,7 +1367,7 @@ CalculateAdminCharge(){
         InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt, 
         InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
-        InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+        InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.userId,
         InsertBillUpdateBillNoObj['TotalAdvanceAmount'] =  this.vAdvTotalAmount || 0,
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.time;
         InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0
@@ -1490,7 +1490,7 @@ CalculateAdminCharge(){
     InsertBillUpdateBillNoObj['BalanceAmt'] =  this.Ipbillform.get('FinalAmount').value || 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.dateTimeObj.date;
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 1;
-    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.userId,
     InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = this.vAdvTotalAmount || 0,
     InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.time;
     InsertBillUpdateBillNoObj['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0 ,//this.ConcessionId;
@@ -1595,7 +1595,7 @@ CalculateAdminCharge(){
       InsertDraftBillOb['BalanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
       InsertDraftBillOb['BillDate'] = this.dateTimeObj.date;
       InsertDraftBillOb['OPD_IPD_Type'] = 1;
-      InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.user.id,
+      InsertDraftBillOb['AddedBy'] = this.accountService.currentUserValue.userId,
       InsertDraftBillOb['TotalAdvanceAmount'] = 0;
       InsertDraftBillOb['BillTime'] = this.dateTimeObj.time;
       InsertDraftBillOb['ConcessionReasonId'] = this.Ipbillform.get('ConcessionId').value.ConcessionId || 0

@@ -48,27 +48,34 @@ export class NewDoseMasterComponent implements OnInit {
 
 
 onSubmit() {
-  if(!this.doseForm.get("DoseId").value){
-    debugger
-    var mdata=
-    {
-      "doseId": 0,
-      "doseName": this.doseForm.get("DoseName").value || "",
-      "doseNameInEnglish": this.doseForm.get("DoseNameInEnglish").value,
-      "doseNameInMarathi": "pqr",
-      "doseQtyPerDay": parseInt(this.doseForm.get("DoseQtyPerDay").value )     
-    }
-    console.log("dose json:", mdata);
+  if (this.doseForm.invalid) {
+    this.toastr.warning('please check from is invalid', 'Warning !', {
+      toastClass:'tostr-tost custom-toast-warning',
+  })
+  return;
+  }else{
+    if(!this.doseForm.get("DoseId").value){
+      debugger
+      var mdata=
+      {
+        "doseId": 0,
+        "doseName": this.doseForm.get("DoseName").value || "",
+        "doseNameInEnglish": this.doseForm.get("DoseNameInEnglish").value,
+        "doseNameInMarathi": "pqr",
+        "doseQtyPerDay": parseInt(this.doseForm.get("DoseQtyPerDay").value )     
+      }
+      console.log("dose json:", mdata);
 
-    this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response)=>{
-      this.toastr.success(response.message);
-      this.onClear(true);
-    }, (error)=>{
-      this.toastr.error(error.message);
-    });
-  } else{
-    //update
-  }
+      this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response)=>{
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error)=>{
+        this.toastr.error(error.message);
+      });
+    } else{
+      //update
+    }
+}
 //   if (this._DoseService.myForm.valid) {
 //       if (!this._DoseService.myForm.get("DoseId").value) {
 //           var m_data = {

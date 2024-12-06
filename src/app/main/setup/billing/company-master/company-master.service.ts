@@ -23,7 +23,7 @@ export class CompanyMasterService {
             CompanyName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*$")
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             CompTypeId: [""],
@@ -32,8 +32,7 @@ export class CompanyMasterService {
             City: [
                 "",
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                    Validators.required
                 ],
             ],
             PinNo: ["", 
@@ -50,14 +49,14 @@ export class CompanyMasterService {
                     Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
-                    Validators.maxLength(15),
+                    Validators.maxLength(10),
                 ],
             ],
             MobileNo: [
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[0-9]*$"),
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
@@ -65,7 +64,7 @@ export class CompanyMasterService {
             FaxNo: [
                 "",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(15),
@@ -82,7 +81,7 @@ export class CompanyMasterService {
             IsCancelledBy: ["", Validators.pattern("[0-9]+")],
             IsCancelledDate: [""],
             AddedByName: [""],
-            isActive: ["true"],
+            IsDeleted: ["true"],
         });
     }
     createSearchForm(): FormGroup {

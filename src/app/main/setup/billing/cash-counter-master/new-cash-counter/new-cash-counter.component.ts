@@ -31,6 +31,12 @@ export class NewCashCounterComponent implements OnInit {
       this.cashcounterForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.cashcounterForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
       if (this.cashcounterForm.valid) {
         debugger
           this._CashCounterMasterService.cashcounterMasterSave(this.cashcounterForm.value).subscribe((response) => {
@@ -40,6 +46,7 @@ export class NewCashCounterComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }     
   }
 
   onClear(val: boolean) {

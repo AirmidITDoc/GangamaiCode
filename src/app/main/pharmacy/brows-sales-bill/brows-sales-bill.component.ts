@@ -352,7 +352,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._BrowsSalesBillService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -362,7 +362,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
   gePharStoreList1() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._BrowsSalesBillService.getLoggedStoreList(vdata).subscribe(data => {
       this.Store1List = data;
@@ -391,7 +391,7 @@ export class BrowsSalesBillComponent implements OnInit {
       Reg_No: this._BrowsSalesBillService.userForm.get('RegNo').value || 0,
       SalesNo: this._BrowsSalesBillService.userForm.get('SalesNo').value || '',
       OP_IP_Type: this._BrowsSalesBillService.userForm.get('OP_IP_Type').value,
-      StoreId:  this._loggedService.currentUserValue.user.storeId || 0,
+      StoreId:  this._loggedService.currentUserValue.storeId || 0,
       IPNo: this._BrowsSalesBillService.userForm.get('IPNo').value || 0 
     }
    // console.log(vdata); 
@@ -434,7 +434,7 @@ export class BrowsSalesBillComponent implements OnInit {
       Reg_No: this._BrowsSalesBillService.formReturn.get('RegNo').value || 0,
       SalesNo: this._BrowsSalesBillService.formReturn.get('SalesNo').value || 0,
       OP_IP_Type: this._BrowsSalesBillService.formReturn.get('OP_IP_Types').value || 0,
-      StoreId: this._loggedService.currentUserValue.user.storeId || 0
+      StoreId: this._loggedService.currentUserValue.storeId || 0
     }
     console.log(vdata); 
     setTimeout(() => {
@@ -511,7 +511,7 @@ export class BrowsSalesBillComponent implements OnInit {
   //       CreditPaymentobj['RefundId'] = 0;
   //       CreditPaymentobj['TransactionType'] = 4,// result.submitDataPay.ipPaymentInsert.TransactionType || 4;
   //         CreditPaymentobj['Remark'] = result.submitDataPay.ipPaymentInsert.Remark || '';
-  //       CreditPaymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+  //       CreditPaymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
   //         CreditPaymentobj['IsCancelled'] = 0;
   //       CreditPaymentobj['IsCancelledBy'] = 0;
   //       CreditPaymentobj['IsCancelledDate'] = "01/01/1900";
@@ -1552,7 +1552,7 @@ this.viewSalesstatement(contact);
  viewSalesstatement(el) {
   console.log(el) 
 //  debugger
-  let StoreId= this._loggedService.currentUserValue.user.storeId || 0
+  let StoreId= this._loggedService.currentUserValue.storeId || 0
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true; el.AdmissionID,StoreId

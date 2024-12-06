@@ -234,11 +234,11 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       insertPharRefundofAdvance['refundAmount'] = parseFloat(this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value) || 0;
       insertPharRefundofAdvance['remark'] =  this._PharAdvanceService.NewRefundForm.get('comment').value || '';
       insertPharRefundofAdvance['transactionId'] =9;
-      insertPharRefundofAdvance['addedBy'] =  this._loggedService.currentUserValue.user.id;
+      insertPharRefundofAdvance['addedBy'] =  this._loggedService.currentUserValue.userId;
       insertPharRefundofAdvance['isCancelled'] = false;
       insertPharRefundofAdvance['isCancelledBy'] = 0;
       insertPharRefundofAdvance['isCancelledDate'] ='01/01/1900';
-      insertPharRefundofAdvance['strId'] =  this._loggedService.currentUserValue.user.storeId || 0;
+      insertPharRefundofAdvance['strId'] =  this._loggedService.currentUserValue.storeId || 0;
       insertPharRefundofAdvance['refundId'] = 0; 
  
         let updatePharAdvanceHeaderobj = {};

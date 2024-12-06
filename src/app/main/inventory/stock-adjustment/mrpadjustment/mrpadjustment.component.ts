@@ -118,7 +118,7 @@ export class MRPAdjustmentComponent implements OnInit {
    
   this.Savebtn = true;
   let insertMRPAdju = {};
-  insertMRPAdju['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+  insertMRPAdju['storeId'] = this._loggedService.currentUserValue.storeId || 0;
   insertMRPAdju['itemId'] = this. registerObj.ItemId || 0;
   insertMRPAdju['batchNo'] =  this. registerObj.BatchNo || '';
   insertMRPAdju['oldMrp'] = this._StockAdjustment.MRPAdjform.get('OldMRP').value || 0;
@@ -128,11 +128,11 @@ export class MRPAdjustmentComponent implements OnInit {
   insertMRPAdju['mrp'] = this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
   insertMRPAdju['landedRate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
   insertMRPAdju['purRate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
-  insertMRPAdju['addedBy'] = this._loggedService.currentUserValue.user.id || 0;
+  insertMRPAdju['addedBy'] = this._loggedService.currentUserValue.userId || 0;
   insertMRPAdju['addedDateTime'] = new Date();
 
   let insertMRPAdjuNew = {};
-  insertMRPAdjuNew['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+  insertMRPAdjuNew['storeId'] = this._loggedService.currentUserValue.storeId || 0;
   insertMRPAdjuNew['stockid'] = this. registerObj.StockId || 0;
   insertMRPAdjuNew['itemId'] = this. registerObj.ItemId || 0;
   insertMRPAdjuNew['batchNo'] =  this. registerObj.BatchNo || '';

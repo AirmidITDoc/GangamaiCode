@@ -274,7 +274,7 @@ export class CrossConsultationComponent implements OnInit {
 
     crossConsult['TariffId'] = this.PatientHeaderObj.TariffId;
     crossConsult['CompanyId'] = this.PatientHeaderObj.CompanyId || 0;
-    crossConsult['AddedBy'] = this.accountService.currentUserValue.user.id;
+    crossConsult['AddedBy'] = this.accountService.currentUserValue.userId;
     crossConsult['updatedBy'] = 0,
     crossConsult['IsCancelled'] = 0;
     crossConsult['IsCancelledBy'] = 0;

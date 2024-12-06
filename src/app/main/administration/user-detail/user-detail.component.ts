@@ -133,7 +133,7 @@ export class UserDetailComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._UserService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -420,7 +420,7 @@ export class UserDetailComponent implements OnInit {
           "LastName": this.UserForm.get('LastName').value || '',
           "userName": this.UserForm.get('LoginName').value || '',
           "Password": this.UserForm.get('Password').value || 0,
-          "addedBy": this._loggedService.currentUserValue.user.id,
+          "addedBy": this._loggedService.currentUserValue.userId,
           "isActive": this.UserForm.get('IsActive').value || 0,
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
@@ -478,7 +478,7 @@ export class UserDetailComponent implements OnInit {
           "LastName": this.UserForm.get('LastName').value || '',
           "userName": this.UserForm.get('LoginName').value || '',
           // "Password": this.UserForm.get('Password').value || 0,
-          "addedBy": this._loggedService.currentUserValue.user.id,
+          "addedBy": this._loggedService.currentUserValue.userId,
           "isActive": this.UserForm.get('IsActive').value || 0,
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,

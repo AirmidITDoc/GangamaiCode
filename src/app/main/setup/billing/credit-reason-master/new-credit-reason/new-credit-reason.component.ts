@@ -30,14 +30,21 @@ export class NewCreditReasonComponent implements OnInit {
       this.creditreasonForm.patchValue(m_data);
   }
   onSubmit() {
-      if (this.creditreasonForm.valid) {
-          this._CreditreasonService.creditreasonMasterSave(this.creditreasonForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+    if (this.creditreasonForm.invalid) {
+        this.toastr.warning('Please check from is invalid', 'Warning !', {
+          toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+      }else{
+        if (this.creditreasonForm.valid) {
+            this._CreditreasonService.creditreasonMasterSave(this.creditreasonForm.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
+      }      
   }
 
   onClear(val: boolean) {

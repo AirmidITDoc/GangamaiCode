@@ -477,7 +477,7 @@ export class OPBillingComponent implements OnInit {
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
     InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.userId,
     InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
     InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
     InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; 
@@ -523,7 +523,7 @@ export class OPBillingComponent implements OnInit {
         InsertAddChargesObj['docAmt'] = 0,
         InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
         InsertAddChargesObj['isGenerated'] = 0,
-        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.userId,
         InsertAddChargesObj['isCancelled'] = 0,
         InsertAddChargesObj['isCancelledBy'] = 0,
         InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
@@ -588,7 +588,7 @@ export class OPBillingComponent implements OnInit {
         // InsertBillUpdateBillNoObj['BalanceAmt'] = this.balanceamt;
         // InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         //   InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-        // InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+        // InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.userId,
         //   InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
         //   InsertBillUpdateBillNoObj['BillTime'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         //   InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId; //this.BillingForm.get('ConcessionId').value.ConcessionId || 0;
@@ -633,7 +633,7 @@ export class OPBillingComponent implements OnInit {
         //     InsertAddChargesObj['docAmt'] = 0,
         //     InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
         //     InsertAddChargesObj['isGenerated'] = 0,
-        //     InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        //     InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.userId,
         //     InsertAddChargesObj['isCancelled'] = 0,
         //     InsertAddChargesObj['isCancelledBy'] = 0,
         //     InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
@@ -758,7 +758,7 @@ export class OPBillingComponent implements OnInit {
       Paymentobj['RefundId'] = 0;
       Paymentobj['TransactionType'] = 0;
       Paymentobj['Remark'] = "Cashpayment";
-      Paymentobj['AddBy'] = this.accountService.currentUserValue.user.id,
+      Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
         Paymentobj['IsCancelled'] = 0;
       Paymentobj['IsCancelledBy'] = 0;
       Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -850,7 +850,7 @@ export class OPBillingComponent implements OnInit {
           IsPathology: this.b_isPath,
           IsRadiology: this.b_isRad,
           ClassName: 'c1',// this.selectedAdvanceObj.ClassName || '',
-          ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
+          ChargesAddedName: this.accountService.currentUserValue.userId || 1,
 
         });
       this.isLoading = '';

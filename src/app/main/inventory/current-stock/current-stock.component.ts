@@ -230,7 +230,7 @@ throw new Error('Method not implemented.');
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     // console.log(vdata);
     this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
@@ -247,7 +247,7 @@ throw new Error('Method not implemented.');
   StoreId:any;
   gePharStoreList1() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     } 
   this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
     this.Store1List = data;
@@ -365,7 +365,7 @@ getOptionTextPurchaseItemList(option) {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
-      "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "StoreId": this._loggedService.currentUserValue.storeId || 0,
     }
     console.log(vdata)
       this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
@@ -394,7 +394,7 @@ getOptionTextPurchaseItemList(option) {
     this.sIsLoading = 'loading-data';
     var vdata = {
      "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.user.storeId || 0   ,
+     "StoreId": this._loggedService.currentUserValue.storeId || 0   ,
      "ItemId":this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID || 0,   
     }
     setTimeout(() => {
@@ -420,7 +420,7 @@ getOptionTextPurchaseItemList(option) {
     var vdata = {
      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+     "StoreId": this._loggedService.currentUserValue.storeId || 0,
      "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0 
     }
     setTimeout(() => {
@@ -447,7 +447,7 @@ getOptionTextPurchaseItemList(option) {
     var vdata = {
      "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
      "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+     "StoreId": this._loggedService.currentUserValue.storeId || 0,
       "ItemId": this._CurrentStockService.PurchaseItem.get('ItemCategory').value.ItemID || 0
     }
     setTimeout(() => {
@@ -580,7 +580,7 @@ getOptionTextPurchaseItemList(option) {
   viewgetDaywisestockReportPdf() {
     this.sIsLoading == 'loading-data'
     let LedgerDate =  this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let StoreId =this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+    let StoreId =this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;
@@ -610,7 +610,7 @@ getOptionTextPurchaseItemList(option) {
   viewgetCurrentstockReportPdf() {
     this.sIsLoading == 'loading-data'
     let ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
-    let StoreId = this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
+    let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
     setTimeout(() => {
       this.SpinLoading =true;
    this._CurrentStockService.getCurrentstockview(
@@ -640,7 +640,7 @@ getOptionTextPurchaseItemList(option) {
     this.sIsLoading == 'loading-data'
     let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let StoreId = this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
+    let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
     setTimeout(() => {
     this.SpinLoading =true;
     //  this.AdList=true;
@@ -667,7 +667,7 @@ getOptionTextPurchaseItemList(option) {
     this.sIsLoading == 'loading-data'
     let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let StoreId =this._loggedService.currentUserValue.user.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+    let StoreId =this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;

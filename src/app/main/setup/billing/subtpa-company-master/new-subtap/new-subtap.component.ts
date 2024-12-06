@@ -53,30 +53,36 @@ export class NewSubtapComponent implements OnInit {
 
   onSubmit(){
     debugger
-
-    if(!this.subTpaForm.get("SubCompanyId").value){
-      debugger
-      var mdata={
-          "subCompanyId": 0,
-          "compTypeId": this.typeId || 0,
-          "companyName": this.subTpaForm.get('CompanyName').value || "",
-          "address": this.subTpaForm.get('Address').value || "",
-          "city": this.subTpaForm.get('City').value || "0",
-          "pinNo": this.subTpaForm.get('PinNo').value || "",
-          "phoneNo": this.subTpaForm.get('Phone').value.toString() || "",
-          "mobileNo": this.subTpaForm.get('Mobile').value.toString() || "",
-          "faxNo": this.subTpaForm.get('FaxNo').value || ""        
+    if(this.subTpaForm.invalid){
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+      })
+      return;
+    }else{
+      if(!this.subTpaForm.get("SubCompanyId").value){
+        debugger
+        var mdata={
+            "subCompanyId": 0,
+            "compTypeId": this.typeId || 0,
+            "companyName": this.subTpaForm.get('CompanyName').value || "",
+            "address": this.subTpaForm.get('Address').value || "",
+            "city": this.subTpaForm.get('City').value || "0",
+            "pinNo": this.subTpaForm.get('PinNo').value || "",
+            "phoneNo": this.subTpaForm.get('Phone').value.toString() || "",
+            "mobileNo": this.subTpaForm.get('Mobile').value.toString() || "",
+            "faxNo": this.subTpaForm.get('FaxNo').value || ""        
+        }
+        console.log("SubTpa Json:", mdata);
+  
+        this._subTpaServiceMaster.subTpaCompanyMasterInsert(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        // update
       }
-      console.log("SubTpa Json:", mdata);
-
-      this._subTpaServiceMaster.subTpaCompanyMasterInsert(mdata).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      // update
     }
   }
   onClear(val: boolean) {

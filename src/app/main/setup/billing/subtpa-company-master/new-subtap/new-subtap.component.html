@@ -32,16 +32,31 @@
                             <mat-label>Company Name</mat-label>
                             <input name="CompanyName" placeholder="Enter CompanyName" formControlName="CompanyName" matInput
                                 (keydown)="onEnterCompany($event)" #CompanyName required [(ngModel)]="vCompany">
+                                <mat-error
+                                *ngIf="subTpaForm.get('CompanyName').invalid && subTpaForm.get('CompanyName').touched">
+                                CompanyName is required Enter only Alphabets
+                                </mat-error>
                         </mat-form-field>
+                        
                     </div>
+                    
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Company Type" formControlName="CompTypeId"
+                                [formGroup]="subTpaForm"
+                                [validations]="getValidationCompanyMessages().CompTypeId"
+                                [mode]="autocompleteModetypeName">
+                            </airmid-autocomplete>
+                        </div>
 
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Company Type" formControlName="CompTypeId"
-                            [formGroup]="subTpaForm"
-                            [validations]="getValidationCompanyMessages().CompTypeId"
-                            [mode]="autocompleteModetypeName">
-                        </airmid-autocomplete>
+                        <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="City Name" formControlName="City"
+                                [formGroup]="subTpaForm"
+                                [validations]="getValidationCityMessages().City"
+                                [mode]="autocompleteModecity">
+                            </airmid-autocomplete>
+                        </div>
+
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -49,39 +64,34 @@
                             <mat-label>Address</mat-label>
                             <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
                                 (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="vAddress">
-                            <!-- <mat-error>Please enter Address </mat-error> -->
+                                <mat-error
+                                *ngIf="subTpaForm.get('Address').invalid && subTpaForm.get('Address').touched">
+                                Address is required
+                                </mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="City Name" formControlName="City"
-                            [formGroup]="subTpaForm"
-                            [validations]="getValidationCityMessages().City"
-                            [mode]="autocompleteModecity">
-                        </airmid-autocomplete>
-                    </div>
-
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>PinNo</mat-label>
                             <input name="PinNo" placeholder="Enter PinNo" formControlName="PinNo" matInput
                                 (keydown)="onEnterPin($event)" #PinNo required [(ngModel)]="vPinNo" maxlength="6">
-                            <!-- <mat-error>Please enter Address </mat-error> -->
+                                <mat-error
+                                *ngIf="subTpaForm.get('PinNo').invalid && subTpaForm.get('PinNo').touched">
+                                PinNo is required Enter only 6 Digits
+                                </mat-error>
                         </mat-form-field>
-                    <!-- </div> -->
-
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
+                    
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Phone Number</mat-label>
                             <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
                                 [(ngModel)]="vPhone" #Phone (keydown)="onEnterphone($event)"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                 type="number" value="Mobile.length">
-                            <!-- <mat-error class="error"
-                                *ngIf="subTpaForm.invalid && subTpaForm.get('Mobile').touched">10
-                                digits Mobile number is
-                                required</mat-error> -->
+                            <mat-error class="error"
+                                *ngIf="subTpaForm.get('Phone').invalid && subTpaForm.get('Phone').touched">10
+                                digits Phone number is required
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
@@ -92,23 +102,25 @@
                                 [(ngModel)]="vMobile" #Mobile (keydown)="onEntermobile($event)"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                 type="number" value="Mobile.length">
-                            <!-- <mat-error class="error"
-                                *ngIf="_subTpaServiceMaster.myform.get('Mobile').invalid && _subTpaServiceMaster.myform.get('Mobile').touched">10
-                                digits Mobile number is
-                                required</mat-error> -->
+                            <mat-error class="error"
+                                *ngIf="subTpaForm.get('Mobile').invalid && subTpaForm.get('Mobile').touched">10
+                                digits Mobile number is required
+                            </mat-error>
                         </mat-form-field>
-                    <!-- </div>
 
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Fax</mat-label>
                             <input name="FaxNo" placeholder="Select Fax" formControlName="FaxNo" matInput
                                 (keydown)="onEnterfax($event)" #FaxNo maxlength="15" minlength="10" >
+                                <mat-error
+                                *ngIf="subTpaForm.get('FaxNo').invalid && subTpaForm.get('FaxNo').touched">
+                                FaxNo is required Enter only Digits
+                                </mat-error>
                         </mat-form-field>
                     </div>
 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <mat-radio-group name="isActive" formControlName="isActive" value='true'>
+                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
                             <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                             </mat-radio-button>
                             <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive

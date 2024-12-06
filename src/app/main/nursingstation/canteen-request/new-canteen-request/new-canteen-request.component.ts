@@ -367,7 +367,7 @@ export class NewCanteenRequestComponent implements OnInit {
     canteenRequestHeaderInsert['isFree'] = false ;
     canteenRequestHeaderInsert['unitID'] = 0
     canteenRequestHeaderInsert['isBillGenerated'] = false ;
-    canteenRequestHeaderInsert['addedBy'] = this._loggedService.currentUserValue.user.id;
+    canteenRequestHeaderInsert['addedBy'] = this._loggedService.currentUserValue.userId;
     canteenRequestHeaderInsert['isPrint'] = false;
     canteenRequestHeaderInsert['reqId'] = 0;
 

@@ -25,6 +25,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";
+    @Input() IsMultiPle:boolean;
 
     private _disabled: boolean = false;
     private _focused: boolean = false;

@@ -33,24 +33,32 @@ export class NewBankComponent implements OnInit {
   }
 
   onSubmit(){
-    if(!this.bankForm.get("bankId").value){
-      debugger
-      var mdata=
-      {
-        "bankId": 0,
-        "bankName": this.bankForm.get("bankName").value || ""
-      }
-      console.log("bank json:", mdata);
+    if (this.bankForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.bankForm.get("bankId").value){
+        debugger
+        var mdata=
+        {
+          "bankId": 0,
+          "bankName": this.bankForm.get("bankName").value || ""
+        }
+        console.log("bank json:", mdata);
 
-      this._BankMasterService.bankMasterSave(this.bankForm.value).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } else{
-      //update
+        this._BankMasterService.bankMasterSave(mdata).subscribe((response)=>{
+          this.toastr.success(response.message);
+          this.onClear(true);
+        }, (error)=>{
+          this.toastr.error(error.message);
+        });
+      } else{
+        //update
+      }
     }
+    
   }
 
   onClear(val: boolean) {

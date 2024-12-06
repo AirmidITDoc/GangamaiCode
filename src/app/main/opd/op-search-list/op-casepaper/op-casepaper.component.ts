@@ -864,7 +864,7 @@ export class OPCasepaperComponent implements OnInit {
         obj['bp'] = this.caseFormGroup.get("BP").value || 0;
         obj['bsl'] = this.caseFormGroup.get("BSL").value || 0;
         obj['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
-        obj['isAddBy'] = this.accountService.currentUserValue.user.id,
+        obj['isAddBy'] = this.accountService.currentUserValue.userId,
         obj['spO2'] = this.caseFormGroup.get("SPO2").value || 0;
         obj['storeId'] = 0;
         obj['doseOption2'] = element.doseName ? element.doseName.DoseId : 0;

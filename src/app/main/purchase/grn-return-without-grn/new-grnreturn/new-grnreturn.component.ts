@@ -86,7 +86,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
     this._GRNReturnService.getLoggedStoreList(vdata).subscribe(data => {
       this.StoreList = data;
@@ -334,7 +334,7 @@ export class NewGRNReturnComponent implements OnInit {
     grnReturnSave['grnId'] = 0;
     grnReturnSave['grnReturnDate'] = formattedDate;
     grnReturnSave['grnReturnTime'] = formattedTime;
-    grnReturnSave['storeId'] =this._loggedService.currentUserValue.user.storeId || 0;
+    grnReturnSave['storeId'] =this._loggedService.currentUserValue.storeId || 0;
     grnReturnSave['supplierID'] =this._GRNReturnService.NewGRNReturnFrom.get('SupplierName').value.SupplierId;
     grnReturnSave['totalAmount'] =  this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value|| 0;
     grnReturnSave['grnReturnAmount'] = this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0;
@@ -347,7 +347,7 @@ export class NewGRNReturnComponent implements OnInit {
     grnReturnSave['remark'] = this._GRNReturnService.ReturnFinalForm.get('Remark').value || '';
     grnReturnSave['isVerified'] = false;
     grnReturnSave['isClosed'] = false;
-    grnReturnSave['addedby'] =this._loggedService.currentUserValue.user.id || 0;
+    grnReturnSave['addedby'] =this._loggedService.currentUserValue.userId || 0;
     grnReturnSave['isCancelled'] =false;
     grnReturnSave['grnType'] = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || '';
     grnReturnSave['isGrnTypeFlag'] = true;
@@ -392,7 +392,7 @@ export class NewGRNReturnComponent implements OnInit {
       grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
       grnReturnUpdateCurrentStockObj['issueQty'] = element.Qty || 0;
       grnReturnUpdateCurrentStockObj['stkId'] = element.StockId || 0;
-      grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
+      grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.storeId || 0;
       grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
     });
   

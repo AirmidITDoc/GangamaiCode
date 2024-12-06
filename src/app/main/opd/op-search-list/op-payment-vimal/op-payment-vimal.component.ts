@@ -396,7 +396,7 @@ export class OpPaymentVimalComponent implements OnInit {
         // this.Paymentobj['RefundId'] = 0;
         // this.Paymentobj['TransactionType'] = 0;
         // this.Paymentobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
-        // this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+        // this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
         // this.Paymentobj['IsCancelled'] = 0;
         // this.Paymentobj['IsCancelledBy'] = 0;
         // this.Paymentobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
@@ -447,7 +447,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['RefundId'] = 0;
             this.Paymentobj['TransactionType'] = 0;
             this.Paymentobj['Remark'] = '';
-            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
+            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId || 0;
             this.Paymentobj['IsCancelled'] = 'false';
             this.Paymentobj['IsCancelledBy'] = '0';
             this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -490,7 +490,7 @@ export class OpPaymentVimalComponent implements OnInit {
             } 
             this.Paymentobj['TransactionType'] = 4;  
             this.Paymentobj['Remark'] = '';
-            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id || 0;
+            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId || 0;
             this.Paymentobj['IsCancelled'] = 0;
             this.Paymentobj['IsCancelledBy'] = 0; 
             this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
@@ -531,7 +531,7 @@ export class OpPaymentVimalComponent implements OnInit {
             }
             this.Paymentobj['TransactionType'] = TransactionType;
             this.Paymentobj['Remark'] = " ";
-            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+            this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
                 this.Paymentobj['IsCancelled'] = 0;
             this.Paymentobj['IsCancelledBy'] = 0;
             this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')

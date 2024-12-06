@@ -976,7 +976,7 @@ export class OpPaymentNewComponent implements OnInit {
     this.Paymentobj['RefundId'] = 0;
     this.Paymentobj['TransactionType'] = 0;
     this.Paymentobj['Remark'] = "" //this.patientDetailsFormGrp.get('commentsController').value;
-    this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+    this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
       this.Paymentobj['IsCancelled'] = 0;
     this.Paymentobj['IsCancelledBy'] = 0;
     this.Paymentobj['IsCancelledDate'] = "01/01/1900" //this.dateTimeObj.date;
@@ -1251,7 +1251,7 @@ export class OpPaymentNewComponent implements OnInit {
         this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
         this.Paymentobj['TransactionType'] = 4;
         this.Paymentobj['OPD_IPD_Type'] = 3;
-        this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+        this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.userId,
           this.Paymentobj['PaymentDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
         this.Paymentobj['PaymentTime'] = this.datePipe.transform(this.currentDate, 'hh:mm:ss')
 

@@ -349,7 +349,7 @@ export class NewRequestforlabComponent implements OnInit {
     ipPathOrRadiRequestInsertArray['reqTime'] = formattedTime;
     ipPathOrRadiRequestInsertArray['oP_IP_ID'] = this.vAdmissionID || 0;
     ipPathOrRadiRequestInsertArray['oP_IP_Type'] = 1;
-    ipPathOrRadiRequestInsertArray['isAddedBy'] = this._loggedService.currentUserValue.user.id;
+    ipPathOrRadiRequestInsertArray['isAddedBy'] = this._loggedService.currentUserValue.userId;
     ipPathOrRadiRequestInsertArray['isCancelled'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledBy'] = 0;
     ipPathOrRadiRequestInsertArray['isCancelledDate'] = formattedDate;

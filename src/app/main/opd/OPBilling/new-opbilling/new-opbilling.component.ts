@@ -523,7 +523,7 @@ autocompleteModecashcounter: string = "CashCounter";
         IsRadiology: this.IsRadiology,
         IsPackage: this.vIsPackage,
         ClassName: this.vClassName,// this.selectedAdvanceObj.ClassName || '',
-        ChargesAddedName: 1//this.accountService.currentUserValue.user.id || 1,
+        ChargesAddedName: 1//this.accountService.currentUserValue.userId || 1,
 
       });
     this.isLoading = '';
@@ -821,7 +821,7 @@ autocompleteModecashcounter: string = "CashCounter";
       InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
       InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-      InsertBillUpdateBillNoObj['AddedBy'] = 1,//this.accountService.currentUserValue.user.id,
+      InsertBillUpdateBillNoObj['AddedBy'] = 1,//this.accountService.currentUserValue.userId,
         InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
         InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
         InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId;
@@ -870,7 +870,7 @@ autocompleteModecashcounter: string = "CashCounter";
           InsertAddChargesObj['docAmt'] = 0,
           InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
           InsertAddChargesObj['isGenerated'] = 0,
-          InsertAddChargesObj['addedBy'] =1// this.accountService.currentUserValue.user.id,
+          InsertAddChargesObj['addedBy'] =1// this.accountService.currentUserValue.userId,
           InsertAddChargesObj['isCancelled'] = 0,
           InsertAddChargesObj['isCancelledBy'] = 0,
           InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
@@ -1015,7 +1015,7 @@ autocompleteModecashcounter: string = "CashCounter";
         Paymentobj['RefundId'] = 0;
         Paymentobj['TransactionType'] = 0;
         Paymentobj['Remark'] = "Cashpayment";
-        Paymentobj['AddBy'] = 1,//this.accountService.currentUserValue.user.id,
+        Paymentobj['AddBy'] = 1,//this.accountService.currentUserValue.userId,
           Paymentobj['IsCancelled'] = 0;
         Paymentobj['IsCancelledBy'] = 0;
         Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
@@ -1142,7 +1142,7 @@ autocompleteModecashcounter: string = "CashCounter";
     InsertBillUpdateBillNoObj['BalanceAmt'] = 0;
     InsertBillUpdateBillNoObj['BillDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       InsertBillUpdateBillNoObj['OPD_IPD_Type'] = 0;
-    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+    InsertBillUpdateBillNoObj['AddedBy'] = this.accountService.currentUserValue.userId,
       InsertBillUpdateBillNoObj['TotalAdvanceAmount'] = 0,
       InsertBillUpdateBillNoObj['BillTime'] = this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy hh:mm tt') || '01/01/1900',
       InsertBillUpdateBillNoObj['ConcessionReasonId'] = ConcessionId;
@@ -1188,7 +1188,7 @@ autocompleteModecashcounter: string = "CashCounter";
         InsertAddChargesObj['docAmt'] = 0,
         InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
         InsertAddChargesObj['isGenerated'] = 0,
-        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.user.id,
+        InsertAddChargesObj['addedBy'] = this.accountService.currentUserValue.userId,
         InsertAddChargesObj['isCancelled'] = 0,
         InsertAddChargesObj['isCancelledBy'] = 0,
         InsertAddChargesObj['isCancelledDate'] = "01/01/1900",

@@ -29,6 +29,12 @@ export class NewDoctorTypeComponent implements OnInit {
       this.doctortypeForm.patchValue(m_data);
   }
   onSubmit() {
+    if (this.doctortypeForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
       if (this.doctortypeForm.valid) {
         debugger
           this._DoctortypeMasterService.doctortypeMasterSave(this.doctortypeForm.value).subscribe((response) => {
@@ -38,6 +44,8 @@ export class NewDoctorTypeComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+    }
+      
   }
 
   onClear(val: boolean) {

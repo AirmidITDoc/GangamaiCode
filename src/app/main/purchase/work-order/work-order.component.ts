@@ -130,7 +130,7 @@ export class WorkOrderComponent implements OnInit {
 
   gePharStoreList() {
     var vdata = {
-      Id: this._loggedService.currentUserValue.user.storeId
+      Id: this._loggedService.currentUserValue.storeId
     }
    // console.log(vdata);
     this._WorkOrderService.getLoggedStoreList(vdata).subscribe(data => {

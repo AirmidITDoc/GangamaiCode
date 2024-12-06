@@ -21,7 +21,12 @@ export class SubGroupMasterService {
     createSubgroupForm(): FormGroup {
         return this._formBuilder.group({
             subGroupId: [""],
-            subGroupName: ["", Validators.required],
+            subGroupName: ["", 
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             groupId: [""],
             //GroupName: [""],
             isActive: ["true"],

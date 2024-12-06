@@ -183,7 +183,7 @@ OnRadioChange(){
       {
     var Param = {
       "RegNo":  this.vRegNo || 0,
-      "StoreId":  this.accountService.currentUserValue.user.storeId || 0,
+      "StoreId":  this.accountService.currentUserValue.storeId || 0,
       "ItemName":  `${this._IpSalesRetService.userFormGroup.get('ItemName').value}%`, 
       "BatchNo":  0
     }
@@ -202,7 +202,7 @@ OnRadioChange(){
   else{
     var Param = {
       "RegNo":  this.vRegNo || 0,
-      "StoreId":  this.accountService.currentUserValue.user.storeId || 0,
+      "StoreId":  this.accountService.currentUserValue.storeId || 0,
       "ItemName":  `${this._IpSalesRetService.userFormGroup.get('ItemName').value}%`, 
       "BatchNo":  0
     }
@@ -426,8 +426,8 @@ keyPressAlphanumeric(event) {
     salesReturnHeader['IsPrint'] = 0,
     salesReturnHeader['IsFree'] = 0;
     salesReturnHeader['UnitID'] = 1;
-    salesReturnHeader['addedBy'] = this.accountService.currentUserValue.user.id,
-    salesReturnHeader['StoreID'] = this.accountService.currentUserValue.user.storeId,
+    salesReturnHeader['addedBy'] = this.accountService.currentUserValue.userId,
+    salesReturnHeader['StoreID'] = this.accountService.currentUserValue.storeId,
     salesReturnHeader['Narration'] = "";
     salesReturnHeader['SalesReturnId'] = 0
 
@@ -475,7 +475,7 @@ keyPressAlphanumeric(event) {
       let updateCurStkSalesCredit = {};
       updateCurStkSalesCredit['itemId'] = element.ItemId;
       updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
-      updateCurStkSalesCredit['storeID'] = this.accountService.currentUserValue.user.storeId,
+      updateCurStkSalesCredit['storeID'] = this.accountService.currentUserValue.storeId,
       updateCurStkSalesCredit['stkID'] = element.StkID;
       updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
     });
@@ -517,7 +517,7 @@ keyPressAlphanumeric(event) {
     PaymentInsertobj['RefundId'] = 0;
     PaymentInsertobj['TransactionType'] = 5;
     PaymentInsertobj['Remark'] = '',
-    PaymentInsertobj['AddBy'] = this.accountService.currentUserValue.user.id,
+    PaymentInsertobj['AddBy'] = this.accountService.currentUserValue.userId,
     PaymentInsertobj['IsCancelled'] = 0;
     PaymentInsertobj['IsCancelledBy'] = 0;
     PaymentInsertobj['IsCancelledDate'] = '01/01/1900',

@@ -21,16 +21,27 @@ export class SubtpaCompanyMasterService {
             SubCompanyId: [""],
             CompTypeId: [""],
             TypeName: [""],
-            CompanyName: [""],
+            CompanyName: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             Address: ["", Validators.required],
             City: [
                 "",
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                    Validators.required
                 ],
             ],
-            PinNo: ["", [Validators.required,Validators.minLength(6), Validators.maxLength(6)]],
+            PinNo: ["", 
+                [
+                    Validators.required,
+                    Validators.minLength(6), 
+                    Validators.maxLength(6),
+                    Validators.pattern("^[0-9]*$")
+                ]
+            ],
             Phone: [
                 "",
                 [
@@ -59,7 +70,7 @@ export class SubtpaCompanyMasterService {
                     Validators.maxLength(15),
                 ],
             ],
-            isActive: ["true"],
+            IsDeleted: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // IsCancelled: ["false"],
@@ -94,8 +105,8 @@ export class SubtpaCompanyMasterService {
 
     public subTpaCompanyMasterInsert(Param: any, showLoader = true) {
         // return this._httpClient.PostData("Billing/SubTpaCompanySave", param);
-        if (Param.regID) {
-            return this._httpClient.PutData("SubTpaCompany/" + Param.regID, Param, showLoader);
+        if (Param.SubCompanyId) {
+            return this._httpClient.PutData("SubTpaCompany/" + Param.SubCompanyId, Param, showLoader);
         } else return this._httpClient.PostData("SubTpaCompany", Param, showLoader);
     }
 

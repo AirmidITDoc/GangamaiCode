@@ -20,23 +20,19 @@
             <form [formGroup]="subgroupForm">
                 <input type="hidden" name="subGroupId" formControlName="subGroupId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="SubGroup name" formControlName="subGroupName" [value]=""
-                        [formGroup]="subgroupForm"
-                        [validations]="_SubGroupMasterService.getValidationMessages().subGroupName"
-                        [maxLength]="300">
-                    </airmid-textbox>
+                        <airmid-textbox label="SubGroup name" formControlName="subGroupName" [value]=""
+                            [formGroup]="subgroupForm"
+                            [validations]="_SubGroupMasterService.getValidationMessages().subGroupName"
+                            [maxLength]="300">
+                        </airmid-textbox>
 
-                    <!-- <airmid-textbox label="Group name" formControlName="groupId" [value]=""
-                        [formGroup]="subgroupForm" [maxLength]="300">
-                    </airmid-textbox> -->
-
-                    <!-- <airmid-autocomplete [mode]="autocompleteModegroupName" (selectDdlObject)="selectChangegroupName($event)" ></airmid-autocomplete> -->
-
-                    <airmid-autocomplete label="Group Name" formControlName="groupId"
-                    [formGroup]="subgroupForm"
-                    [validations]="getValidationGroupNameMessages().groupId"
-                    [mode]="autocompleteModegroupName">
-                </airmid-autocomplete>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="Group Name" formControlName="groupId"
+                            [formGroup]="subgroupForm"
+                            [validations]="getValidationGroupNameMessages().groupId"
+                            [mode]="autocompleteModegroupName">
+                        </airmid-autocomplete>
+                    </div>
                     
                 </div>
 
