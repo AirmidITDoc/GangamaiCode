@@ -55,6 +55,7 @@ export class AddPackageDetComponent implements OnInit {
     if(this.data){
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
+      this.getRtevPackageDetList(this.registerObj)
     }
   }
   getDateTime(dateTimeObj) {
@@ -66,6 +67,21 @@ export class AddPackageDetComponent implements OnInit {
       SrvcName: [''],   
       MainServiceName:['']
     });
+  }
+  // getRtevPackageDetList
+  getRtevPackageDetList(obj) {
+    this.isLoading = 'loading-data';
+    var vdata={
+      "ServiceId": obj.ServiceId || 0
+    }
+    console.log(vdata)
+    setTimeout(() => {
+      this._serviceMasterService.getRtevPackageDetList(vdata).subscribe(data=>{
+        this.dsPackageDet.data =  data as PacakgeList[];
+        this.PacakgeList = data as PacakgeList
+        console.log(this.dsPackageDet.data)  
+      }); 
+    },1000); 
   }
   //Service list
   getServiceListCombobox() {

@@ -67,6 +67,7 @@ export class CompanyWiseServiceComponent implements OnInit {
     if(this.data){
       this.registerObj = this.data.Obj
       console.log(this.registerObj)
+      this.getRtrvCompanyServList(this.registerObj)
     } 
     this.getclassNameCombo();
   }
@@ -103,6 +104,22 @@ export class CompanyWiseServiceComponent implements OnInit {
   getSelectedObjClass(obj){
     this.getServiceListdata();
   }
+  //get RtrvCompanyService
+  getRtrvCompanyServList(obj) {
+    this.isLoading = 'loading-data';
+    var vdata={
+      "CompanyId": obj.CompanyId || 0
+    }
+    console.log(vdata)
+    setTimeout(() => {
+      this._companyService.getRtrvCompanyServList(vdata).subscribe(data=>{
+        this.dscompanyserv.data =  data as ServCompList[];
+        this.chargeslist = data as ServCompList
+        console.log(this.dscompanyserv.data)  
+      }); 
+    },1000); 
+  }
+
   getServiceListdata() {
     // debugger  
     if (this.vClassName == '' || this.vClassName == null || this.vClassName == undefined) {
@@ -158,8 +175,8 @@ export class CompanyWiseServiceComponent implements OnInit {
       {
         ServiceId: row.ServiceId,
         ServiceName: row.ServiceName,
-        Price: row.Price || 0,
-        Qty:1
+        ServicePrice: row.Price || 0,
+        ServiceQty:1
 
       });
     this.isLoading = '';
@@ -183,20 +200,20 @@ export class CompanyWiseServiceComponent implements OnInit {
   }
   gettablecalculation(element) {
     console.log(element)
-    if(element.Qty == 0 || element.Qty == ''){
-      element.Qty = 1 ;
+    if(element.ServiceQty == 0 || element.ServiceQty == ''){
+      element.ServiceQty = 1 ;
       this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });  
       return;
     }
     debugger 
-   if(element.Price > 0 && element.Qty > 0){ 
-    element.TotalAmt = element.Qty * element.Price || 0;
+   if(element.ServicePrice > 0 && element.ServiceQty > 0){ 
+    element.TotalAmt = element.ServiceQty * element.ServicePrice || 0;
     element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100  || 0;
     element.NetAmount =  element.TotalAmt - element.DiscAmt
     }  
-    else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
+    else if(element.ServicePrice == 0 || element.ServicePrice == '' || element.ServiceQty == '' || element.ServiceQty == 0){
       element.TotalAmt = 0;  
       element.DiscAmt =  0 ;
       element.NetAmount =  0 ;
@@ -214,8 +231,8 @@ export class CompanyWiseServiceComponent implements OnInit {
         let insert_CompanyServiceAssignMaster={
           "companyId":this.registerObj.CompanyId || 0,
           "serviceId": element.ServiceId || 0,
-          "servicePrice":element.Price || 0,
-          "serviceQty":element.Qty || 0,
+          "servicePrice":element.ServicePrice || 0,
+          "serviceQty":element.ServiceQty || 0,
           "isActive": String(this.registerObj.IsActive) == 'false' ? 0:1,
           "createdBy": 1,
         }
@@ -223,7 +240,7 @@ export class CompanyWiseServiceComponent implements OnInit {
       });
   
        let delete_CompantServiceDetails={
-        "companyId": this.registerObj.ServiceId || 0
+        "companyId": this.registerObj.CompanyId || 0
       }
   
       let submitData={
@@ -269,12 +286,12 @@ export class CompanyWiseServiceComponent implements OnInit {
 }
 export class ServCompList {
   ServiceName: any;
-  Price: number;
+  ServicePrice: number;
   ServiceId: any;
-  Qty:any;
+  ServiceQty:any;
   constructor(ServCompList) {
     this.ServiceName = ServCompList.ServiceName || '';
-    this.Price = ServCompList.Price || 0;
+    this.ServicePrice = ServCompList.ServicePrice || 0;
     this.ServiceId = ServCompList.ServiceId || 0;
   }
 }

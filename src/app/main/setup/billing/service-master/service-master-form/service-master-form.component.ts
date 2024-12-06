@@ -157,7 +157,12 @@ export class ServiceMasterFormComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterSubGroupName(value) : this.SubGroupcmbList.slice()),
       );
-      this._serviceMasterService.myform.get('SubGroupId').setValue(this._serviceMasterService.edit_data['SubGroupId']);
+      
+      if (this.data) {
+        const ddValue = this.SubGroupcmbList.filter(c => c.SubGroupId == this.data.registerObj.SubGroupid);
+        this._serviceMasterService.myform.get('SubGroupId').setValue(ddValue[0]);
+        return;
+      }  
     });
   }
   getClassList() {

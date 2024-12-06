@@ -199,7 +199,8 @@ export class NewOPBillingComponent implements OnInit {
     public toastr: ToastrService,
     private formBuilder: FormBuilder,
     public _WhatsAppEmailService: WhatsAppEmailService,
-    public _ConfigService : ConfigService
+    public _ConfigService : ConfigService, 
+    private _loggedService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
@@ -233,7 +234,8 @@ export class NewOPBillingComponent implements OnInit {
       this.PatientType = this.selectedAdvanceObj.PatientType;
     } 
     this.getCashCounterComboList();
-    this.getConcessionReasonList(); 
+    this.getConcessionReasonList();  
+   
   }
   createSearchForm() {
     return this.formBuilder.group({
@@ -715,27 +717,62 @@ getDiscAmtSum(element) {
   return  FinalDiscAmt;
 }  
 
-  CalcDiscPercentageonBill() { 
-    // let finalDiscPer = !this.BillingForm.get("FinalconcessionPer").value ? "0" : this.BillingForm.get("FinalconcessionPer").value || "0" ; //this.BillingForm.get('FinalconcessionPer').value? 0 : this.BillingForm.get('FinalconcessionPer').value || "0";
-    let finalDiscPer = this.BillingForm.get("FinalconcessionPer").value || 0;
-    if (finalDiscPer > 0 && finalDiscPer < 100 || finalDiscPer > 100) {
-      if (finalDiscPer > 100) {
-        Swal.fire("Please enter discount percentage less than 100");
+  CalcDiscPercentageonBill() {
+
+    if (this._loggedService.currentUserValue.user.isDiscApply == 1) {
+
+      let discPerLimit = this._loggedService.currentUserValue.user.discApplyPer || 0
+
+      let finalDiscPer = this.BillingForm.get("FinalconcessionPer").value || 0;
+      if (finalDiscPer > 0 && finalDiscPer < discPerLimit || finalDiscPer > discPerLimit) {
+        if (finalDiscPer > discPerLimit) {
+          Swal.fire({
+            title: 'The Administration Defined The Dicount Limit',
+            text: `Your discount limit is: ${discPerLimit}%`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
+          // Swal.fire("The Administration defined the dicount limit");
+          this.vFinalconcessionDiscPer = '';
+          this.vFinalConcessionAmt = '';
+          this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
+          this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
+          this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
+        } else {
+          this.vFinalConcessionAmt = Math.round((parseFloat(this.vFinalTotalAmt) * parseFloat(finalDiscPer)) / 100);
+          this.vFinalnetPaybleAmt = Math.round(parseFloat(this.vFinalTotalAmt) - parseFloat(this.vFinalConcessionAmt)).toFixed(2);
+          this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
+          this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
+        }
+      } else {
         this.vFinalConcessionAmt = '';
         this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
         this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
         this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
+      }
+    }
+    else {
+      let finalDiscPer = this.BillingForm.get("FinalconcessionPer").value || 0;
+      if (finalDiscPer > 0 && finalDiscPer < 100 || finalDiscPer > 100) {
+        if (finalDiscPer > 100) {
+          Swal.fire("Please enter discount percentage less than 100");
+          this.vFinalconcessionDiscPer = '';
+          this.vFinalConcessionAmt = '';
+          this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
+          this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
+          this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
+        } else {
+          this.vFinalConcessionAmt = Math.round((parseFloat(this.vFinalTotalAmt) * parseFloat(finalDiscPer)) / 100);
+          this.vFinalnetPaybleAmt = Math.round(parseFloat(this.vFinalTotalAmt) - parseFloat(this.vFinalConcessionAmt)).toFixed(2);
+          this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
+          this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
+        }
       } else {
-        this.vFinalConcessionAmt = Math.round((parseFloat(this.vFinalTotalAmt) * parseFloat(finalDiscPer)) / 100);
-        this.vFinalnetPaybleAmt = Math.round(parseFloat(this.vFinalTotalAmt) - parseFloat(this.vFinalConcessionAmt)).toFixed(2);
+        this.vFinalConcessionAmt = '';
+        this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
         this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
         this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
       }
-    } else {
-      this.vFinalConcessionAmt = '';
-      this.vFinalnetPaybleAmt = this.vFinalTotalAmt;
-      this.BillingForm.get('FinalconcessionAmt').setValue(this.vFinalConcessionAmt)
-      this.BillingForm.get('FinalNetAmt').setValue(this.vFinalnetPaybleAmt)
     }
     this.getConcessionChek();
   }

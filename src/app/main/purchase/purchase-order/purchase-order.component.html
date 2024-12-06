@@ -263,14 +263,13 @@
                                                                             *ngIf="row.IsVerified==0">
                                                                             edit</mat-icon>
                                                                     </button>
-                                                                    <button mat-icon-button (click)="onVerify(row)">
-                                                                        <mat-icon *ngIf="row.IsVerified == 1"
-                                                                            [disabled]="row.disabled"
+                                                                    <button mat-icon-button (click)="onVerify(row)"  *ngIf="IsPOVerified">
+                                                                        <mat-icon 
                                                                             class="disabled-icon"
                                                                             title="verify Menu">verified_user</mat-icon>
-                                                                        <mat-icon title="verify Menu"
+                                                                        <!-- <mat-icon title="verify Menu"
                                                                             *ngIf="row.IsVerified == 0">
-                                                                            verified_user</mat-icon>
+                                                                            verified_user</mat-icon> -->
                                                                     </button>
                                                                     <button mat-icon-button (click)="POEmail(row)">
                                                                         <mat-icon *ngIf="row.IsVerified == 0"

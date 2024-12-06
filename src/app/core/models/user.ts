@@ -20,7 +20,7 @@ export class LoginUser {
     storeId : number;
     IsDoctorType :boolean;
     DoctorID : number;
-    IsPOVerify :boolean;
+    isPOVerify :boolean;
     isGRNVerify :boolean;
     isCollection :boolean;
     isBedStatus :boolean;
@@ -40,6 +40,6 @@ export class LoginUser {
     pharExtOpt :number;
     pharOPOpt :number;
     pharIPOpt :number;
-    IsDiscApply :number;
-    DiscApplyPer :number;
+    isDiscApply :number;
+    discApplyPer :number;
 }

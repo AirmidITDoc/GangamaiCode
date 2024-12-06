@@ -12,11 +12,11 @@
             </span>
         </div>
     </mat-toolbar>
-    <mat-drawer-container autosize fxFlex>
+    <mat-drawer-container autosize fxFlex  style="background-color: rgb(242, 245, 245);">
 
            
-        <div class="content" style="background-color: rgb(242, 245, 245);">
-            <div class="center pb-56" style="border-radius: 4px;padding: 8px 8px 8px 8px;"> 
+        <div class="content">
+            <div class="center pb-56" style="border-radius: 4px;padding: 0px 5px 0px 0px;"> 
               
                 <div class="example-sidenav-content">
                   
@@ -106,9 +106,9 @@
                                     <div fxFlex.gt-sm="98%" fxFlex>  
                                         <mat-tab-group style="overflow: auto;">
                                             <mat-tab label="Pain Assessment">
-                                                <div class="content" style="overflow: auto;height:450px;">
+                                                <div class="content" style="overflow: auto;height:500px">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;">
-                                                        <form [formGroup]="_ClinicalcareService.PainAssessForm" fusePerfectScrollbar>
+                                                     
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
                             
                                                                 <div fxLayout="row" fxLayoutGap="10px">
@@ -128,7 +128,7 @@
                                                                                 <ng-container matColumnDef="givendate">
                                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                         fxShow.gt-sm>
-                                                                                        PainAssessment Date/Time </mat-header-cell>
+                                                                                        PainAssessmentDate</mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                                      {{element.PainAssessmentDate | date:'dd/MM/YYYY'}}-{{element.PainAssessmentTime | date:'HH:mm'}}</mat-cell>
                                                                                 </ng-container> 
@@ -144,7 +144,7 @@
                                                                                 <ng-container matColumnDef="Employeename">
                                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                                         fxShow.gt-sm>
-                                                                                        CreatedBy</mat-header-cell>
+                                                                                        AddedBy</mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                                         {{element.CreatedBy}} </mat-cell>
                                                                                 </ng-container>
@@ -178,7 +178,7 @@
                                                                                 <mat-header-row class="accent"
                                                                                     *matHeaderRowDef="displayedPainAsse; sticky: true">
                                                                                 </mat-header-row>
-                                                                                <mat-row *matRowDef="let element; columns: displayedColumns;"
+                                                                                <mat-row *matRowDef="let element; columns: displayedPainAsse;"
                                                                                     class="element"
                                                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                                 <mat-footer-row *matFooterRowDef="['noData']"
@@ -188,6 +188,7 @@
                                                                         </mat-card>
                                                                     </div>
                                                                     <div fxFlex.gt-sm="39%" fxLayout="column">
+                                                                        <form [formGroup]="_ClinicalcareService.PainAssessForm"  >
                                                                         <div fxLayout="row" fxLayoutAlign="space-between center">
                             
                                                                             <mat-form-field appearance="outline" fxFlex="50%">
@@ -205,6 +206,7 @@
                                                                                 </button>
                                                                             </div>
                                                                         </div>
+                                                                        </form>
                                                                         <div *ngIf="checkDailyWeight">
                                                                             <mat-card style="padding: 5px;height: 170px;overflow: auto;">
                                                                                 <mat-table class="table2" matSort [dataSource]="dsPainsAssessment2"
@@ -398,17 +400,18 @@
                                                                         type="button" value="Input">Phlebitis</button>
                                                                     <button class="btn btn-danger" style="color: white;" type="button"
                                                                         value="Input">Initial Nursing Assessment</button>
-                                                                    <button class="btn btn-primary" type="submit" value="submit">Save</button>
+                                                                    <button class="btn btn-primary" type="submit" value="submit" 
+                                                                     (click)="OnSavePainAsses()">Save</button>
                                                                 </div>
                             
                                                             </div>
-                                                        </form>
+                                                       
                                                     </div>
                                                 </div>
                                             </mat-tab>
                                             
                                             <mat-tab label="Lab Reports">
-                                                <div class="content" style="overflow: auto;height:460px;">
+                                                <div class="content" style="overflow: auto;height: 500px">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;"> 
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="6px">  
                                                               
@@ -486,7 +489,7 @@
                                             </mat-tab> 
 
                                             <mat-tab label="IP Prescription">
-                                                <div class="content" style="overflow: auto;height:450px;">
+                                                <div class="content" style="overflow: auto;height:500px;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;">
                                                         <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
                                             
@@ -650,7 +653,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="Lab Request">
-                                                <div class="content" style="overflow: auto;height:450px;">
+                                                <div class="content" style="overflow: auto;height:500px;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;overflow: auto;"> 
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="6px"> 
                                                         
@@ -862,7 +865,7 @@
                             
                                             <!-- //seconds tab -->
                                             <mat-tab label="Vitals">
-                                                <div class="content" style="overflow: auto;height:450px;">
+                                                <div class="content" style="overflow: auto;height:500px;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.VitalsForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
@@ -1160,7 +1163,7 @@
                             
                                             <!-- Third Tab -->
                                             <mat-tab label="Sugar Level">
-                                                <div class="content" style="height:450px ;overflow: auto;">
+                                                <div class="content" style="height:500px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.SugarForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
@@ -1383,7 +1386,7 @@
                                             </mat-tab>
                             
                                             <mat-tab label="Oxygen/ventilation">
-                                                <div class="content" style="height:450px ;overflow: auto;">
+                                                <div class="content" style="height:500px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.OxygenForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="2px">
@@ -1648,7 +1651,7 @@
                                                         
                                                                                     </mat-tab> -->
                                             <mat-tab label="Input/Output">
-                                                <div class="content" style="height:450px ;overflow: auto;">
+                                                <div class="content" style="height:500px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.InPutOutputForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="3px">
@@ -2038,7 +2041,7 @@
                                                         
                                                                                     </mat-tab> -->
                                             <mat-tab label="Apache Score">
-                                                <div class="content" style="height:448px ;overflow: auto;">
+                                                <div class="content" style="height:500px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.ApacheScoreForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
@@ -2319,7 +2322,7 @@
                                 <div class="spinner-border text-danger"></div>
                             </div>
                             <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient" [@animateStagger]="{value:'50'}"
-                                style="overflow: auto;height:375px;">
+                                style="overflow: auto;height:410px">
                 
                                 <ng-container matColumnDef="patientId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">

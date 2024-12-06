@@ -133,4 +133,10 @@ export class CompanyMasterService {
         }
         return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BillingClassName", Param)
     }
+    public getRtrvCompanyServList(Param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CompanyServiceInfo", Param)
+    }
 }

@@ -358,8 +358,8 @@ vIPDNo:any;
     }
     console.log(vdata);
     this._ClinicalcareService.getpainAssesmentWeightList(vdata).subscribe(data => {
-      this.dsPainsAssessment.data = data as PainAssesList[];
-      console.log(this.dsPainsAssessment.data);
+      this.dsPainsAssessment2.data = data as PainAssesList[];
+      console.log(this.dsPainsAssessment2.data);
     })
   }
   PWeightdeleteTableRow(event, element) { 
@@ -380,21 +380,21 @@ vIPDNo:any;
       ToDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       Reg_No: this.vRegNo|| 0 
     }
-     console.log(vdata);
+     //console.log(vdata);
     this._ClinicalcareService.getPrecriptionlistmain(vdata).subscribe(data =>{
         this.dsprescritionList.data = data as PrescriptionList[]; 
-        console.log(this.dsprescritionList.data);
+        //console.log(this.dsprescritionList.data);
     })
   }
   //IP Prescription Det list 
   getPrescriptiondetList(Param){
-    debugger
+    //debugger
     var vdata={
       IPMedID: Param.IPMedID 
     }
     this._ClinicalcareService.getPrecriptiondetlist(vdata).subscribe(data =>{
       this.dsprescriptiondetList.data = data as PrescriptiondetList[]; 
-       console.log(this.dsprescriptiondetList.data);
+       //console.log(this.dsprescriptiondetList.data);
     })
   }
   //lab request list
@@ -404,10 +404,10 @@ vIPDNo:any;
       ToDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       Reg_No: this.vRegNo|| 0
     }
-    console.log(vdata);
+   // console.log(vdata);
     this._ClinicalcareService.getRequesttList(vdata).subscribe(data =>{
       this.dsrequestList.data = data as RequestList[]; 
-      console.log(this.dsrequestList.data);
+     // console.log(this.dsrequestList.data);
     })
   }
     //lab request det list
@@ -417,7 +417,7 @@ vIPDNo:any;
     }
     this._ClinicalcareService.getRequestdetList(vdata).subscribe(data =>{
       this.dsrequestdetList.data = data as RequestdetList[]; 
-       console.log(this.dsrequestdetList.data);
+       //console.log(this.dsrequestdetList.data);
     })
   } 
 //lab Report list
@@ -427,7 +427,7 @@ gettestList(){
     "AdmissionId": this.registerObj.AdmissionID,
     "OP_IP_Type ": 1
    }
-   console.log(vdata)
+     console.log(vdata)
    this._ClinicalcareService.getLabTestList(vdata).subscribe((data) =>{
      this.datasource.data = data as LabtestList[]; 
      console.log(this.datasource.data); 
@@ -436,6 +436,94 @@ gettestList(){
    this.sIsLoading = ''; 
  }); 
  }
+ painAssessmentId:any;
+ //PainAssesment Save  
+OnSavePainAsses(){
+  const currentDate = new Date();
+  const datePipe = new DatePipe('en-US');
+  const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
+
+  if(!this.painAssessmentId){
+  let saveNursingPainAssessmentObj={
+    "painAssessmentDate": formattedDate,
+    "painAssessmentTime": formattedTime,
+    "admissionId": this.registerObj.AdmissionID || 0,
+    "painAssessementValue": this.selectedPainLevel || 0,
+    "createdBy": this._loggedService.currentUserValue.user.id || 0 
+  }
+  let submitData={
+   "saveNursingPainAssessment":saveNursingPainAssessmentObj
+  }
+  console.log(submitData)
+  this._ClinicalcareService.SavePainAssesment(submitData).subscribe(reponse =>{
+    if(reponse){
+      this.toastr.success('Record Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); 
+      this.getpainAssesmentList();
+    } else {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      }); 
+    }
+  }, error => {
+    this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });  
+  }
+  else{
+    let updateNursingPainAssessmentObj={
+      "painAssessmentId": this.registerObj.painAssessmentId || 0,
+      "painAssessmentDate": formattedDate,
+      "painAssessmentTime": formattedTime,
+      "admissionId": this.registerObj.AdmissionID || 0,
+      "painAssessementValue": this.selectedPainLevel || 0,
+      "modifiedBy": this._loggedService.currentUserValue.user.id || 0 
+    }
+    let submitData={
+     "updateNursingPainAssessment":updateNursingPainAssessmentObj
+    }
+    console.log(submitData)
+    this._ClinicalcareService.SavePainAssesment(submitData).subscribe(reponse =>{
+      if(reponse){
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+        this.getpainAssesmentList();
+      } else {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        }); 
+      }
+    }, error => {
+      this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });  
+  } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
   getDoctornote(){
    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
     this.toastr.warning('Please select Patient','Warning !',{
