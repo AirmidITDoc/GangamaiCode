@@ -26,6 +26,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { LabReportsViewComponent } from './lab-reports-view/lab-reports-view.component';
 import { RequestdetList, RequestList } from '../requestforlabtest/requestforlabtest.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-clinical-care-chart',
@@ -52,16 +53,25 @@ export class ClinicalCareChartComponent implements OnInit {
     'Action'
   ]
   displayedVitals: string[] = [
-    'date',
-    'time',
+    'date', 
     'Temperature',
     'Pulse',
     'Respiration',
     'BP',
-    'MewaScore',
-    'AVPU',
-    'TakenBy',
+    'ArterialBloodPressure',
+    'Peep',
+    'Brady',
     'CVP',
+    'PAPressureReading',
+    'Apnea',
+    'AbdominalGrith',
+    'Desaturation',
+    'SaturationWithO2',
+    'SaturationWithoutO2',
+    'PO2',
+    'FIO2',
+    'PFRation',
+    'Addedby',
     'Action'
   ]
   displayedInOutput: string[] = [
@@ -94,11 +104,14 @@ export class ClinicalCareChartComponent implements OnInit {
   ]
   displayedSugar: string[] = [
     'Date',
-    'Time',
-    'IV',
-    'Infusions',
-    'Boluses',
-    'Peroral', 
+    'BSL',
+    'UrineSugar',
+    'ETTpressure',
+    'UrineKetone',
+    'Bodies',
+    'IntakeMode',
+    'ReportedToRMO' ,
+    'Addedby',
     'Action'
   ]
   displayedColumnsLabReq: string[] = [ 
@@ -137,7 +150,8 @@ export class ClinicalCareChartComponent implements OnInit {
     'PBillNo'
   ]
 
-
+  Sugarlevellist:any=[]
+  SpinLoading:boolean=false;
   isLoading: String = '';
   sIsLoading: string = ""; 
   WardList:any=[];
@@ -161,7 +175,7 @@ export class ClinicalCareChartComponent implements OnInit {
   painLevel:any;
   additionalNotes:any;
   painLocation:any;
-  
+  vitallist:any;
   currentDate = new Date(); 
 
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
@@ -295,15 +309,23 @@ vIPDNo:any;
     this.getRequesttList();
     this.getpainAssesmentList();
     this.getpainAssesmentWeightList();
+    this.getRtrvVitallist();
+    this.getRtrvSugarlevellist();
   }
   PainList:any=[];
-  OnAdd() {
+  OnAddDailyWeight() {
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       })
       return;
     }
+    if (this.vDailyWeight == 0 || this.vDailyWeight == '' || this.vDailyWeight == null || this.vDailyWeight == undefined) {
+      this.toastr.warning('Please enter weight', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      })
+      return;
+    } 
     this.checkDailyWeight = true;
     this.PainList.push(
       {
@@ -358,8 +380,14 @@ vIPDNo:any;
     }
     console.log(vdata);
     this._ClinicalcareService.getpainAssesmentWeightList(vdata).subscribe(data => {
-      this.dsPainsAssessment2.data = data as PainAssesList[];
-      console.log(this.dsPainsAssessment2.data);
+      if(data){
+        this.dsPainsAssessment2.data = data as PainAssesList[];
+        this.checkDailyWeight = true;
+        console.log(this.dsPainsAssessment2.data);
+      }else{
+        this.checkDailyWeight = false;
+      }
+   
     })
   }
   PWeightdeleteTableRow(event, element) { 
@@ -404,10 +432,10 @@ vIPDNo:any;
       ToDate: this.datePipe.transform(new Date(), "yyyy-MM-dd 00:00:00.000") || '01/01/1900', //'09/01/2023',
       Reg_No: this.vRegNo|| 0
     }
-   // console.log(vdata);
+    console.log(vdata);
     this._ClinicalcareService.getRequesttList(vdata).subscribe(data =>{
       this.dsrequestList.data = data as RequestList[]; 
-     // console.log(this.dsrequestList.data);
+      console.log(this.dsrequestList.data);
     })
   }
     //lab request det list
@@ -415,9 +443,10 @@ vIPDNo:any;
     var vdata={
       RequestId: Param.RequestId
     }
+    console.log(vdata);
     this._ClinicalcareService.getRequestdetList(vdata).subscribe(data =>{
       this.dsrequestdetList.data = data as RequestdetList[]; 
-       //console.log(this.dsrequestdetList.data);
+       console.log(this.dsrequestdetList.data);
     })
   } 
 //lab Report list
@@ -436,6 +465,60 @@ gettestList(){
    this.sIsLoading = ''; 
  }); 
  }
+ //Vital table data rtrv
+ getRtrvVitallist(){
+  this.sIsLoading = ''
+  var vdata={
+   "AdmissionId": this.registerObj.AdmissionID
+  }
+    console.log(vdata)
+    this._ClinicalcareService.getRtrvVitallist(vdata).subscribe((data) =>{
+    this.dsvitalsList.data = data as VitalsList[]; 
+    this.vitallist = data as VitalsList[];
+    console.log(this.dsvitalsList.data); 
+  },
+error =>{
+  this.sIsLoading = ''; 
+});
+ }
+ deleteVitalTableRow(element) { 
+  let index = this.vitallist.indexOf(element);
+  if (index >= 0) {
+    this.vitallist.splice(index, 1);
+    this.dsvitalsList.data = [];
+    this.dsvitalsList.data = this.vitallist;
+  }
+  this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+    toastClass: 'tostr-tost custom-toast-success',
+  });  
+}
+ //Sugar table data rtrv
+ getRtrvSugarlevellist(){
+  this.sIsLoading = ''
+  var vdata={
+   "AdmissionId": this.registerObj.AdmissionID
+  }
+    console.log(vdata)
+    this._ClinicalcareService.getRtrvSugarlevellist(vdata).subscribe((data) =>{
+    this.dsSugarTable.data = data as VitalsList[]; 
+    this.Sugarlevellist = data as VitalsList[];
+    console.log(this.dsSugarTable.data); 
+  },
+error =>{
+  this.sIsLoading = ''; 
+});
+ }
+ deleteSugarTableRow(element) { 
+  let index = this.Sugarlevellist.indexOf(element);
+  if (index >= 0) {
+    this.Sugarlevellist.splice(index, 1);
+    this.dsSugarTable.data = [];
+    this.dsSugarTable.data = this.Sugarlevellist;
+  }
+  this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+    toastClass: 'tostr-tost custom-toast-success',
+  });  
+}
  painAssessmentId:any;
  //PainAssesment Save  
 OnSavePainAsses(){
@@ -512,6 +595,206 @@ OnSavePainAsses(){
   } 
 }
 
+ //Vital Save  
+ OnSaveVital(){
+  const currentDate = new Date();
+  const datePipe = new DatePipe('en-US');
+  const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
+
+  if(!this.painAssessmentId){ 
+  let saveNursingVitalsParamObj={
+    "vitalDate": formattedDate,
+    "vitalTime": formattedTime,
+    "admissionId":this.registerObj.AdmissionID || 0,
+    "temperature": this._ClinicalcareService.VitalsForm.get('Temperature').value  || '',
+    "pulse": this._ClinicalcareService.VitalsForm.get('Pulse').value  || '',
+    "respiration":this._ClinicalcareService.VitalsForm.get('Respiraiton').value  || '',
+    "bloodPresure": this._ClinicalcareService.VitalsForm.get('BloodPressure').value  || '',
+    "cvp": this._ClinicalcareService.VitalsForm.get('CVP').value  || '',
+    "peep": this._ClinicalcareService.VitalsForm.get('Peep').value  || '',
+    "arterialBloodPressure": this._ClinicalcareService.VitalsForm.get('ArterialBloodPressure').value  || '',
+    "paPressureReading": this._ClinicalcareService.VitalsForm.get('PressureReading').value  || '',
+    "brady": this._ClinicalcareService.VitalsForm.get('Brady').value  || '',
+    "apnea": this._ClinicalcareService.VitalsForm.get('Apnea').value  || '',
+    "abdominalGrith": this._ClinicalcareService.VitalsForm.get('AbdominalGrith').value  || '',
+    "desaturation": this._ClinicalcareService.VitalsForm.get('Desaturation').value  || '',
+    "saturationWithO2": this._ClinicalcareService.VitalsForm.get('SaturationWitho2').value  || '',
+    "saturationWithoutO2": this._ClinicalcareService.VitalsForm.get('SaturationWithOuto2').value  || '',
+    "pO2": this._ClinicalcareService.VitalsForm.get('PO2').value  || '',
+    "fiO2": this._ClinicalcareService.VitalsForm.get('Fio2').value  || '',
+    "pfRation": this._ClinicalcareService.VitalsForm.get('PFRation').value  || '',
+    "suctionType":  this._ClinicalcareService.VitalsForm.get('SuctionType').value,
+    "createdBy": this._loggedService.currentUserValue.user.id || 0 
+  }
+  let submitData={
+   "saveNursingVitalsParam":saveNursingVitalsParamObj
+  }
+  console.log(submitData)
+  this._ClinicalcareService.SaveVitalInfo(submitData).subscribe(reponse =>{
+    if(reponse){
+      this.toastr.success('Record Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); 
+      this.getRtrvVitallist();
+    } else {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      }); 
+    }
+  }, error => {
+    this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });  
+  }
+  else{ 
+    let updateSaveNursingVitalsParamObj={
+      "vitalId": 0,
+      "admissionId":this.registerObj.AdmissionID || 0,
+      "temperature": this._ClinicalcareService.VitalsForm.get('Temperature').value  || '',
+      "pulse": this._ClinicalcareService.VitalsForm.get('Pulse').value  || '',
+      "respiration":this._ClinicalcareService.VitalsForm.get('Respiraiton').value  || '',
+      "bloodPresure": this._ClinicalcareService.VitalsForm.get('BloodPressure').value  || '',
+      "cvp": this._ClinicalcareService.VitalsForm.get('CVP').value  || '',
+      "peep": this._ClinicalcareService.VitalsForm.get('Peep').value  || '',
+      "arterialBloodPressure": this._ClinicalcareService.VitalsForm.get('ArterialBloodPressure').value  || '',
+      "paPressureReading": this._ClinicalcareService.VitalsForm.get('PressureReading').value  || '',
+      "brady": this._ClinicalcareService.VitalsForm.get('Brady').value  || '',
+      "apnea": this._ClinicalcareService.VitalsForm.get('Apnea').value  || '',
+      "abdominalGrith": this._ClinicalcareService.VitalsForm.get('AbdominalGrith').value  || '',
+      "desaturation": this._ClinicalcareService.VitalsForm.get('Desaturation').value  || '',
+      "saturationWithO2": this._ClinicalcareService.VitalsForm.get('SaturationWitho2').value  || '',
+      "saturationWithoutO2": this._ClinicalcareService.VitalsForm.get('SaturationWithOuto2').value  || '',
+      "pO2": this._ClinicalcareService.VitalsForm.get('PO2').value  || '',
+      "fiO2": this._ClinicalcareService.VitalsForm.get('Fio2').value  || '',
+      "pfRation": this._ClinicalcareService.VitalsForm.get('PFRation').value  || '',
+      "suctionType":  this._ClinicalcareService.VitalsForm.get('SuctionType').value,
+      "modifiedBy": this._loggedService.currentUserValue.user.id || 0 
+    }
+    let submitData={
+     "updateSaveNursingVitalsParam":updateSaveNursingVitalsParamObj
+    }
+    console.log(submitData)
+    this._ClinicalcareService.UpdateVitalInfo(submitData).subscribe(reponse =>{
+      if(reponse){
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+        this.getRtrvVitallist();
+      } else {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        }); 
+      }
+    }, error => {
+      this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });  
+  } 
+}
+OnClosevital(){
+ this._ClinicalcareService.VitalsForm.reset();
+ this._ClinicalcareService.VitalsForm.get('SuctionType').setValue(0)
+}
+// sugar level save
+OnsaveSugarlevel(){
+  const currentDate = new Date();
+  const datePipe = new DatePipe('en-US');
+  const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
+
+  if(!this.painAssessmentId){  
+  let saveNursingSugarLevelParamsObj={
+    "entryDate": formattedDate,
+    "entryTime": formattedTime,
+    "admissionId":this.registerObj.AdmissionID || 0, 
+    "bsl":  this._ClinicalcareService.SugarForm.get('BSL').value || '',
+    "urineSugar": this._ClinicalcareService.SugarForm.get('UnirSugar').value || '',
+    "ettPressure":this._ClinicalcareService.SugarForm.get('ETTPressure').value || '',
+    "urineKetone": this._ClinicalcareService.SugarForm.get('UrineKeotne').value || '',
+    "bodies": this._ClinicalcareService.SugarForm.get('Bodies').value || '',
+    "intakeMode": 0,
+    "reportedToRMO": this._ClinicalcareService.SugarForm.get('RepotetoRMO').value || '',
+    "createdBy": this._loggedService.currentUserValue.user.id || 0 
+  }
+  let submitData={
+   "saveNursingSugarLevelParams":saveNursingSugarLevelParamsObj
+  }
+  console.log(submitData)
+  this._ClinicalcareService.SaveSugarlevel(submitData).subscribe(reponse =>{
+    if(reponse){
+      this.toastr.success('Record Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); 
+      this.getRtrvSugarlevellist();
+    } else {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      }); 
+    }
+  }, error => {
+    this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });  
+  }
+  else{ 
+    let updateNursingSugarLevelParamsObj={ 
+    "id": 0,
+    "entryDate": formattedDate,
+    "entryTime": formattedTime,
+    "admissionId":this.registerObj.AdmissionID || 0, 
+    "bsl":  this._ClinicalcareService.SugarForm.get('BSL').value || '',
+    "urineSugar": this._ClinicalcareService.SugarForm.get('UnirSugar').value || '',
+    "ettPressure":this._ClinicalcareService.SugarForm.get('ETTPressure').value || '',
+    "urineKetone": this._ClinicalcareService.SugarForm.get('UrineKeotne').value || '',
+    "bodies": this._ClinicalcareService.SugarForm.get('Bodies').value || '',
+    "intakeMode": 0,
+    "reportedToRMO": this._ClinicalcareService.SugarForm.get('RepotetoRMO').value || '', 
+    "modifiedBy": this._loggedService.currentUserValue.user.id || 0 
+    }
+    let submitData={
+     "updateNursingSugarLevelParams":updateNursingSugarLevelParamsObj
+    }
+    console.log(submitData)
+    this._ClinicalcareService.UpdateSugarlevel(submitData).subscribe(reponse =>{
+      if(reponse){
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+        this.getRtrvSugarlevellist();
+      } else {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        }); 
+      }
+    }, error => {
+      this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });  
+  } 
+}
+OnCloseSugar(){
+ this._ClinicalcareService.VitalsForm.reset();
+ this._ClinicalcareService.VitalsForm.get('SuctionType').setValue(0)
+}
 
 
 
@@ -522,7 +805,14 @@ OnSavePainAsses(){
 
 
 
-
+chkweightvalidation(){
+  if(this.vDailyWeight > 200){ 
+    this.toastr.warning('Weight cannot be greather than 200 kg','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    this.vDailyWeight = '';
+  }
+}
 
   getDoctornote(){
    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
@@ -696,6 +986,104 @@ getLabRequest(){
       console.log('The dialog was closed - Insert Action', result); 
     });
   }
+
+  //reports section ///////////////////////////////////////////
+
+  LabDataList:any=[];
+  LabReportView(contact) {
+    console.log(contact) 
+
+    if(contact.IsTemplateTest == '1'){
+      this._ClinicalcareService.getPathologyTempReport(contact.PathReportID,contact.OP_IP_Type).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pathology Template Report Viewer"
+            }
+          });
+      });
+    }
+    else{
+      this.LabDataList.push(
+        {
+          PathReportID :  contact.PathReportID, 
+        });
+        console.log(this.LabDataList)
+      let pathologyDelete = [];
+      this.LabDataList.forEach((element) => { 
+          let pathologyDeleteObj = {};
+          pathologyDeleteObj['pathReportId'] = element.PathReportID
+          pathologyDelete.push(pathologyDeleteObj);
+      });  
+      let submitData = {
+          "printInsert": pathologyDelete,
+      };
+      console.log(submitData);
+      this._ClinicalcareService.PathPrintResultentryInsert(submitData).subscribe(response => {
+          if (response) {
+              this.viewgetPathologyTestReportPdf(contact.OPD_IPD_Type)
+          }
+      }); 
+    } 
+}
+
+viewgetPathologyTestReportPdf(OPD_IP_Type ) { 
+  setTimeout(() => {
+      this.SpinLoading = true; 
+      this._ClinicalcareService.getPathTestReport(OPD_IP_Type).subscribe(res => {
+          const dialogRef = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "pathology Test Report Viewer"
+                  }
+              });
+          dialogRef.afterClosed().subscribe(result => { 
+              this.SpinLoading = false;
+          });
+      });
+
+  }, 100);
+}
+//ip prescription  report
+viewgetIpprescriptionReportPdf(row) {
+  debugger
+  setTimeout(() => {
+    this.SpinLoading =true;
+  //  this.AdList=true;
+  this._ClinicalcareService.getIpPrescriptionview(
+    row.IPMedID,row.OPD_IPD_Type
+    
+  ).subscribe(res => {
+    const dialogRef = this._matDialog.open(PdfviewerComponent,
+      {
+        maxWidth: "95vw",
+        height: '850px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "IP Prescription Viewer"
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.AdList=false;
+        this.SpinLoading = false;
+      });
+  });
+ 
+  },100);
+}
 }
 export class PatientList {
   DoctorName: any;

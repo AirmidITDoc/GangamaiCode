@@ -91,19 +91,19 @@
                                 style="height:250px !important;overflow: auto;">
 
                                 <ng-container matColumnDef="ServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         Service Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <span> {{contact.ServiceName}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="PackageServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
                                         Package Service Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <span> {{contact.PackageServiceName}}</span>
                                     </mat-cell>
                                 </ng-container>
