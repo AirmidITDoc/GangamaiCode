@@ -820,10 +820,13 @@
                                                             Visit Information
                                                         </span>
                                                         <div class="gap-8">
-                                                            <mat-icon (click)="viewgetOpprescriptionReportwithheaderPdf(visitId)" matTooltip="Print">print</mat-icon>
-                                                            <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"
-                                                            matTooltip="Send Prescription Details On WhatsApp">  
-                                                            
+                                                            <button mat-raised-button>
+                                                                <mat-icon (click)="viewgetOpprescriptionReportwithheaderPdf(visitId)" matTooltip="Print">print</mat-icon>
+                                                            </button>
+                                                            <button mat-raised-button>
+                                                                <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"
+                                                                    matTooltip="Send Prescription Details On WhatsApp">
+                                                            </button>  
                                                         </div>
                                                     </div>
                                                     <hr>

@@ -103,19 +103,18 @@
                                     <mat-table #table matSort [dataSource]="dsservicelist" class="h-280 fix-first-col"
                                         [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="ServiceName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-270">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Service Name
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-270">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm >
                                                 <span> {{contact.ServiceName}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="Action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
+                                            <mat-header-cell *matHeaderCellDef style="color: white;">
                                                 Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-80">
+                                            <mat-cell *matCellDef="let contact">
                                                 <button mat-icon-button (click)="onAssignServComp(contact)" color="warn">
                                                     <mat-icon>add</mat-icon>
                                                 </button>

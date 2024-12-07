@@ -1798,13 +1798,14 @@ export class AdmissionComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-success',
             });   
             // this.getAdmittedPatientCasepaperview(response, true);
-           
+              this.getAdmittedPatientList_1();
               this.getAdmittedPatientCasepaperTempview(response, true);
                 this.onReset(); 
           } else {
             this.toastr.success('Admission not saved', 'error', {
               toastClass: 'tostr-tost custom-toast-success',
             }); 
+            this.getAdmittedPatientList_1();
           }
           this.isLoading = '';
         });
@@ -1880,12 +1881,14 @@ export class AdmissionComponent implements OnInit {
               toastClass: 'tostr-tost custom-toast-success',
             });   
                 this._matDialog.closeAll();
+                this.getAdmittedPatientList_1();
                 this.getAdmittedPatientCasepaperTempview(response, true);
                 this.onReset();
           } else {
             this.toastr.success('Admission not saved', 'error', {
               toastClass: 'tostr-tost custom-toast-success',
             }); 
+            this.getAdmittedPatientList_1();
           }
           this.isLoading = '';
         });
