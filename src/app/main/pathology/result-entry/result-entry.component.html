@@ -366,9 +366,10 @@
                                     <button mat-raised-button (click)="Printresultentry()" *ngIf="selection.selected.length>0">
                                           Print Result
                                      </button>
-                                     <!-- <button mat-raised-button (click)="getPrint(contact)" *ngIf="selection.selected.length>0">
-                                        Print Template
-                                      </button> -->
+                                     <button mat-raised-button (click)="Printresultentrywithheader(contact)" *ngIf="selection.selected.length>0">
+                                        Print With Header
+                                      </button>
+                                      
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="select">
                                             <th mat-header-cell *matHeaderCellDef>
@@ -474,9 +475,7 @@
                                                 <button mat-icon-button (click)="getPrint(contact)" matTooltip="Print" *ngIf="contact.IsCompleted">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
-                                                <button mat-icon-button (click)="getPrint1(contact)" matTooltip="Print With Header" *ngIf="contact.IsCompleted">
-                                                    <mat-icon>print</mat-icon>
-                                                </button>
+                                                
                                                 <button mat-icon-button matTooltip="Send Result On WhatsApp" *ngIf="contact.IsCompleted"
                                                 (click)="getWhatsappshareResult(contact)">
                                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
