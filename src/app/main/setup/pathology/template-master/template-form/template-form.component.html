@@ -19,7 +19,7 @@
         </div>
     </mat-toolbar>
     <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <div class="center p-2" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
@@ -43,29 +43,32 @@
                                         </mat-form-field>
 
                                         <div  fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <!-- <mat-label>Template Details</mat-label> -->
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                            style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                                            formControlName="templateDesc"></angular-editor>
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-label>Template Details</mat-label>
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                                    formControlName="templateDesc">
+                                                </angular-editor>
+                                            </div>
                                             <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                 style="height:200px;" [(ngModel)]="vTemplateDesc" required
                                                 formControlName="TemplateDesc"></angular-editor> -->
                                         </div>
                                     </div>
-                                </div>
+                                </div>                                
+                            </form>
 
                                 <div fxLayout="row" fxLayoutAlign="end">
 
-                                    <!-- <mat-radio-button value='true' [checked]="true" name="IsDeleted"
+                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
                                         style="align-items: center;"
-                                        formControlName="IsDeleted">IsActive</mat-radio-button> -->
+                                        formControlName="IsDeleted">IsActive</mat-radio-button>
                                     <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
                                         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
                                         <button class="btn btn-primary" (click)="onSubmit()"
                                         [disabled]="templateForm.invalid">Save</button>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
 

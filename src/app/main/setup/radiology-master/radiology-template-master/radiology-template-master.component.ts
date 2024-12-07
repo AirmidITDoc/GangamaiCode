@@ -100,7 +100,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
         {
             maxWidth: "85vw",
-            height: '95%',
+            height: '75%',
             width: '90%',
             data: row
         });

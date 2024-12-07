@@ -63,7 +63,7 @@ export class ParametermasterService {
             parameterValues: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
             IsDefaultValue: [""],
             SexID:[""],
-            MinAge:[""],
+            MinAge:["",Validators.required],
             MaxAge: [""],
             MinValue: [""],
             MaxValue: [""],

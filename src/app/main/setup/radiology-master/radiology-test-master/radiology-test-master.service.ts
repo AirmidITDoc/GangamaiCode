@@ -78,8 +78,8 @@ export class RadiologyTestMasterService {
 
 public testMasterSave(Param: any, showLoader = true) {
   if (Param.TestId) {
-      return this._httpClient.PutData("RadiologyTest/Insert" + Param.TestId, Param, showLoader);
-  } else return this._httpClient.PostData("RadiologyTest/Insert", Param, showLoader);
+      return this._httpClient.PutData("RadiologyTest/InsertEDMX" + Param.TestId, Param, showLoader);
+  } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param, showLoader);
 }
 
 // public deactivateTheStatus(m_data) {
