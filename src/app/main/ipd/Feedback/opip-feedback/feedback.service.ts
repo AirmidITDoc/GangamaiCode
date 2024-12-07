@@ -22,7 +22,6 @@ export class FeedbackService {
       PatientName:[''],
       // PatientName:[''],
       Feedbackdetails:[''],
-      fbone:[''],
       FeedbackCategory:[''],
       FeedbackRating:[''],
       FeedbackResult:[1],
@@ -34,7 +33,7 @@ export class FeedbackService {
 
   public feedbackInsert(employee)
   {    
-    return this._httpClient.post("OutPatient/PatientFeedback",employee);
+    return this._httpClient.post("Administration/SaveFeedBack",employee);
   }
 
   public getWardList(){

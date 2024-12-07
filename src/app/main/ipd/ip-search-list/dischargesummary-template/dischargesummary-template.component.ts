@@ -352,9 +352,9 @@ export class DischargesummaryTemplateComponent implements OnInit {
     debugger
     this._IpSearchListService.getDischargeId(Query).subscribe(data => {
       if (data) {
-        this.registerObj1 = data[0];
-        if (this.registerObj1.IsDischarged)
-          this.vDischargeId = this.registerObj1.DischargeId
+        this.registerObj = data[0];
+        if (this.registerObj)
+          this.vDischargeId = this.registerObj.DischargeId
         console.log(data[0])
       }
     });
@@ -520,10 +520,8 @@ export class DischargesummaryTemplateComponent implements OnInit {
         this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
         // this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
         this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
+        }
         this.getRetevDropdownvalue();
-
-        // if(this.DischargeSummaryId !=0)
-        //   this.getTemplateDetails();
 
         if (this.IsNormalDeath == 1) {
           this.vIsNormalDeath = true;
@@ -534,7 +532,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
           this.discSummary.get("IsNormalOrDeath").setValue('false');
         }
 
-      }
+     
 
 
     });

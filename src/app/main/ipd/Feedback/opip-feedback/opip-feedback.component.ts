@@ -92,6 +92,20 @@ export class OPIPFeedbackComponent implements OnInit {
   PatientName:any;
   DoctorName:any;
 
+
+  RefDocName:any;
+  RoomName:any;
+  BedName:any;
+  PatientType:any;
+  DOA:any;
+  GenderName:any;
+Imgstatus1=0
+Imgstatus2=0
+Imgstatus3=0
+Imgstatus4=0
+Imgstatus5=0
+
+
 @ViewChild('stepper') stepper: MatHorizontalStepper;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -111,46 +125,19 @@ export class OPIPFeedbackComponent implements OnInit {
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     private _formBuilder: FormBuilder,
-    private advanceDataStored: AdvanceDataStored) { }
+    private advanceDataStored: AdvanceDataStored) {  this.getfeedbackquestionList(); }
 
   ngOnInit(): void {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
       FeedbackResult:['']
     });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
-    });
-    this.fourthFormGroup = this._formBuilder.group({
-      fourthCtrl: ['', Validators.required]
-    });
-    this.fiveFormGroup = this._formBuilder.group({
-      fiveCtrl: ['', Validators.required]
-    });
-    this.sixFormGroup = this._formBuilder.group({
-      sixCtrl: ['', Validators.required]
-    });
+    
     this.vSelectedOption = 'OP';
-    //  this.vCondition = true
-
-
+    
     this.getpatientsearchform();
-    this.getfeedbackform();
-    // this.getwardList();
-    this.getfeedbackquestionList();
-    // this.getPatientListwardWise(); 
-    // if (this.advanceDataStored.storage) {
-      
-    //    this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //    this.RegID= this.selectedAdvanceObj.RegID; 
-    //    this.AdmissionID= this.selectedAdvanceObj.AdmissionID; 
-    //    this.OPD_IPD_Type= this.selectedAdvanceObj.opD_IPD_Type; 
-    //       console.log( this.selectedAdvanceObj)
-         
-    //  }
+     this.getfeedbackquestionList();
+    
   }
 
 
@@ -159,14 +146,6 @@ export class OPIPFeedbackComponent implements OnInit {
     PatientType: ['OP'],
     PatientName: '',
     RegID:'',
-  });
-}
-
-getfeedbackform() {
-  this.Feedbackform = this._formBuilder.group({
-    // PatientType: ['OP'],
-    // PatientName: '',
-    // RegID:'',
   });
 }
 
@@ -200,9 +179,61 @@ onChangePatientType(event) {
   }
 }
 
-fetchresult(event){
+fetchlist: any[] = []
+Imgstatus=0
+fetchresult(event,flag){
   debugger
 console.log(event)
+// this.fetchlist.push(event)
+this.fetchlist.push(
+  {
+   
+    FeedbackId:event.FeedbackId,
+    FeedbackQuestion: event.FeedbackQuestion,
+    FeedbackQuestionMarathi:event.FeedbackQuestionMarathi,
+    DepartmentId:event.DepartmentId,
+    SequanceId:event.SequanceId,
+    Imgstatus: flag || 0,
+   
+  });
+
+if(flag==1){
+  this.Imgstatus1=1
+  this.Imgstatus2=0
+  this.Imgstatus3=0
+  this.Imgstatus4=0
+  this.Imgstatus5=0
+}
+if(flag==2){
+  this.Imgstatus2=1
+  this.Imgstatus1=0
+  this.Imgstatus3=0
+  this.Imgstatus4=0
+  this.Imgstatus5=0
+}
+if(flag==3){
+  this.Imgstatus3=1
+  this.Imgstatus2=0
+  this.Imgstatus1=0
+  this.Imgstatus4=0
+  this.Imgstatus5=0
+}
+if(flag==4){
+  this.Imgstatus2=0
+  this.Imgstatus3=0
+  this.Imgstatus1=0
+  this.Imgstatus5=0
+  this.Imgstatus4=1
+
+}
+if(flag==5){
+  this.Imgstatus5=1
+  this.Imgstatus2=0
+  this.Imgstatus3=0
+  this.Imgstatus4=0
+  this.Imgstatus1=0
+}
+
 }
 getSearchListIP() {
   var m_data = {
@@ -253,17 +284,26 @@ getSelectedObjRegIP(obj) {
     this.DoctorNamecheck = true;
     this.IPDNocheck = true;
     this.OPDNoCheck = false;
-    this.registerObj = obj;
+    // this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.LastName;
     this.RegId = obj.RegID;
     this.RegID = obj.RegID;
-    this.OP_IP_Id = this.registerObj.AdmissionID;
+    this.OP_IP_Id = obj.AdmissionID;
     this.IPDNo = obj.IPDNo;
     this.RegNo =obj.RegNo;
     this.DoctorName = obj.DoctorName;
     this.TariffName =obj.TariffName
     this.CompanyName = obj.CompanyName;
     this.Age = obj.Age;
+    this.vAgeYear = obj.AgeYear;
+    this.vAgeMonth = obj.AgeMonth;
+    this.vAgeDay = obj.AgeDay;
+    this.GenderName = obj.GenderName;
+    this.RefDocName= obj.RefDocName;
+    this.RoomName = obj.RoomName;
+    this.BedName= obj.BedName;
+    this.PatientType= obj.BedName;
+    this.DOA=obj.Adm
   } 
   
 }
@@ -273,14 +313,23 @@ getSelectedObjOP(obj) {
     this.OPDNoCheck = true;
     this.DoctorNamecheck = false;
     this.IPDNocheck = false;
-    this.registerObj = obj;
-    this.RegId = obj.RegId;
+    // this.registerObj = obj;
+    this.OP_IP_Id=obj.VisitId;
+    this.RegId = obj.RegID;
     this.PatientName = obj.FirstName + " " + obj.LastName; 
-    this.OP_IP_Id  = obj.VisitId;
-    this.RegNo =obj.RegNo; 
-    this.OPDNo = obj.OPDNo;
+    this.IPDNo = obj.OPDNo;
     this.CompanyName = obj.CompanyName;
     this.TariffName = obj.TariffName; 
+    this.CompanyName = obj.CompanyName;
+    this.Age = obj.Age;
+    this.vAgeYear = obj.AgeYear;
+    this.vAgeMonth = obj.AgeMonth;
+    this.vAgeDay = obj.AgeDay;
+    this.GenderName = obj.GenderName;
+    this.RefDocName= obj.RefDocName;
+    this.RoomName = obj.RoomName;
+    this.BedName= obj.BedName;
+    this.PatientType= obj.BedName;
     
 }
 
@@ -294,7 +343,8 @@ getOptionTextOPObj(option) {
 
 getfeedbackquestionList(){
   this._FeedbackService.getquestionList().subscribe((data) =>{
-    this.feedbackquest = data;
+    console.log(data)
+    this.feedbackquest =  data as any[];
     console.log(this.feedbackquest)
    
   });
@@ -304,22 +354,7 @@ getfeedbackquestionList(){
   onClose() {
     // this.dialogRef.close();
   }
- 
-registerObj:any;
-  getpatientDet(obj){ 
-    debugger
-    console.log(obj) 
-    this.registerObj = obj;
-    this.selectedAdvanceObj = obj;
-    this.RegID= obj.RegID; 
-    this.vpatientName = obj.PatientName;
-    this.vDoctorname = obj.DoctorName;
-    this.vAgeYear = obj.AgeYear;
-    this.vDepartmentName = obj.DepartmentName
-    this.vAgeMonth = obj.AgeMonth;
-    this.vAgeDay =obj.AgeDay;
-    this.vRegNo = obj.RegNo;
-  }
+
 
   selectedPainLevel: number; 
   onSliderChange(event: MatSliderChange) {
@@ -347,19 +382,28 @@ registerObj:any;
 
 onSubmit() {
    debugger
-  if (this.RegID) {
+  if (this.RegId) {
+
+    console.log(this.fetchlist)
+
+    
+    let ffeedbackarr = []; 
+    this.fetchlist.forEach((element) => {
+      let feedarray = {};
+      feedarray['PatientFeedbackId'] = 0;
+      feedarray['OP_IP_ID'] = this.OP_IP_Id;
+      feedarray['OP_IP_Type'] =  this.OPD_IPD_Type || 0;
+      feedarray['departmentId'] = element.DepartmentId;
+      feedarray['feedbackQuestionId'] =element.FeedbackId;
+      feedarray['feedbackRating'] = element.Imgstatus;
+      feedarray['FeedbackComments'] = this._FeedbackService.MyfeedbackForm.get("FeedbackComments").value;
+      feedarray['createdBy'] =this.accountService.currentUserValue.user.id;
+      ffeedbackarr.push(feedarray); 
+    });
 
     var m_data = {
-      "patientFeedbackInsert": {
-        "PatientFeedbackId": 0,
-        "OP_IP_ID": this.OP_IP_Id || "",
-        "OP_IP_Type": this.OPD_IPD_Type || 0,
-        "FeedbackCategory": this.registerObj1.FeedbackCategory || 0,
-        "FeedbackRating": this.registerObj1.FeedbackRating || "",
-        "FeedbackComments ": this._FeedbackService.MyfeedbackForm.get('FeedbackComments').value || '',
-        "AddedBy": this.accountService.currentUserValue.user.id,
-            
-      }
+      "patientFeedbackParams":ffeedbackarr
+    
     }
     console.log(m_data);
     this._FeedbackService.feedbackInsert(m_data).subscribe(response => {
@@ -368,70 +412,20 @@ onSubmit() {
         Swal.fire('Congratulations !', 'FeedBack Data save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             this._matDialog.closeAll();
-            // this.getRegistredPatientCasepaperview(response);
+            
           }
         });
       } else {
         Swal.fire('Error !', 'Feedback Data  not saved', 'error');
       }
     });
+  }else{
+    this.toastr.warning('Please select valid Patient Name', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
   }
-//     else
- 
-// debugger
-//       var m_data1 = {
-//         "opdRegistrationUpdate": {
-//           "RegID": this.RegID,
-//           "PrefixId": this._EmergencyListService.MyForm.get('PrefixID').value.PrefixID,
-//           "FirstName": this.registerObj.FirstName || "",
-//           "MiddleName": this.registerObj.MiddleName || "",
-//           "LastName": this.registerObj.LastName || "",
-//           "Address": this.registerObj.Address || "",
-//           "City": this._EmergencyListService.MyForm.get('CityId').value.CityName || 0,
-//           "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
-//           "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-//           "Age":this.registerObj.Age,
-//           "GenderID": this._EmergencyListService.MyForm.get('GenderId').value.GenderId || 0,
-//           "PhoneNo": this._EmergencyListService.MyForm.get("PhoneNo").value || "",
-//           "MobileNo": this._EmergencyListService.MyForm.get("MobileNo").value || "0",
-//           "UpdatedBy": this.accountService.currentUserValue.user.id,
-//           "AgeYear": this._EmergencyListService.MyForm.get("AgeYear").value || "0",
-//           "AgeMonth": this._EmergencyListService.MyForm.get("AgeMonth").value || "0",
-//           "AgeDay": this._EmergencyListService.MyForm.get("AgeDay").value || "0",
-//           "CountryId": this._EmergencyListService.MyForm.get('CountryId').value.CountryId,
-//           "StateId": this._EmergencyListService.MyForm.get('StateId').value.StateId,
-//           "CityId": this._EmergencyListService.MyForm.get('CityId').value.CityId,
-//           "MaritalStatusId": this._EmergencyListService.MyForm.get('MaritalStatusId').value ? this._EmergencyListService.MyForm.get('MaritalStatusId').value.MaritalStatusId : 0,
-//           "IsCharity": false,// Boolean(JSON.parse(this._EmergencyListService.MyForm.get("IsCharity").value)) || "0",
-//           "ReligionId": this._EmergencyListService.MyForm.get('ReligionId').value ? this._EmergencyListService.MyForm.get('ReligionId').value.ReligionId : 0,
-//           "AreaId": this._EmergencyListService.MyForm.get('AreaId').value ? this._EmergencyListService.MyForm.get('AreaId').value.AreaId : 0,
-//           // "isSeniorCitizen":0,
-//           "aadharcardno": this._EmergencyListService.MyForm.get('AadharCardNo').value ? this._EmergencyListService.MyForm.get('AadharCardNo').value : 0,
-//           "pancardno": this._EmergencyListService.MyForm.get('PanCardNo').value ? this._EmergencyListService.MyForm.get('PanCardNo').value : 0,
-//           "Photo": ''// this.file.name || '',
-//         }
-//       }
-//       console.log(m_data1)
-//       this._registerService.regUpdate(m_data1).subscribe(response => {
-//         if (response) {
-//           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
-//             if (result.isConfirmed) {
-//              debugger
-//               this.viewgetPatientAppointmentReportPdf(this.registerObj.VisitId);
-//               if(this.Submitflag)
-//                 this.getAdmittedPatientCasepaperview(this.registerObj.AdmissionID);
-//               this._matDialog.closeAll();
-//             }
-//           });
-//         }
 
-//         else {
-//           Swal.fire('Error !', 'Register Data  not Updated', 'error');
-//         }
-
-//       });
-
-    
   }
 getDateTime(dateTimeObj) {
   this.dateTimeObj = dateTimeObj;
@@ -446,9 +440,9 @@ export class PatientList {
   PatientName: string; 
   DepartmentName: string; 
   RegNo:any;
-  FeedbackCategory:any;
-  FeedbackRating:any;
-  Feedbackdetails:any;
+  // FeedbackCategory:any;
+  // FeedbackRating:any;
+  // Feedbackdetails:any;
 
   constructor(PatientList) {
     {
@@ -457,9 +451,9 @@ export class PatientList {
       this.PatientName = PatientList.PatientName || "";
       this.DepartmentName = PatientList.DepartmentName || "";
       this.AgeYear = PatientList.AgeYear || 0; 
-      this.FeedbackCategory = PatientList.FeedbackCategory || 0;
-      this.FeedbackRating = PatientList.FeedbackRating || "";
-      this.Feedbackdetails = PatientList.Feedbackdetails || ''; 
+      // this.FeedbackCategory = PatientList.FeedbackCategory || 0;
+      // this.FeedbackRating = PatientList.FeedbackRating || "";
+      // this.Feedbackdetails = PatientList.Feedbackdetails || ''; 
     }
   }
 }
