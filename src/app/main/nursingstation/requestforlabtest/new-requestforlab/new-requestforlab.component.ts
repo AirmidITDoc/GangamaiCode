@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RequestforlabtestService } from '../requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
@@ -80,6 +80,8 @@ export class NewRequestforlabComponent implements OnInit {
   
  
   constructor(private _FormBuilder: FormBuilder,
+    public datePipe: DatePipe,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     private _matDialog:MatDialog,
     public _RequestforlabtestService: RequestforlabtestService, 
@@ -101,8 +103,16 @@ export class NewRequestforlabComponent implements OnInit {
        this.selectedAdvanceObj = this.advanceDataStored.storage;
        this.RegNo =  this.selectedAdvanceObj.RegNo
        this.vClassId  = this.selectedAdvanceObj.WardId 
+       this.vAdmissionID  = this.selectedAdvanceObj.AdmissionID
        console.log( this.selectedAdvanceObj)
        this.getServiceListdata();
+     }
+     if(this.data){
+      this.selectedAdvanceObj = this.data.ChkNewReq
+      this.RegNo =  0
+      this.vClassId  = 0
+      this.vAdmissionID  = 0
+      console.log(this.selectedAdvanceObj)
      }
   }
 

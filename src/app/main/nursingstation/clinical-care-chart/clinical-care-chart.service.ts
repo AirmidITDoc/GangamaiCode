@@ -22,12 +22,12 @@ export class ClinicalCareChartService {
     private _loaderService: LoaderService
   ) {
     this.MyForm = this.createMyForm(),
-    this.VitalsForm = this.createVitalsForm(),
-    this.SugarForm = this.createSugarForm(),
-    this.OxygenForm = this.CreateOxygenForm(),
-    this.ApacheScoreForm = this.CreateApachescoreForm(),
-    this.InPutOutputForm = this.CreateInputoutForm(),
-    this.PainAssessForm = this.createPainAssesForm()
+      this.VitalsForm = this.createVitalsForm(),
+      this.SugarForm = this.createSugarForm(),
+      this.OxygenForm = this.CreateOxygenForm(),
+      this.ApacheScoreForm = this.CreateApachescoreForm(),
+      this.InPutOutputForm = this.CreateInputoutForm(),
+      this.PainAssessForm = this.createPainAssesForm()
   }
 
   createMyForm() {
@@ -48,6 +48,7 @@ export class ClinicalCareChartService {
   }
   createVitalsForm() {
     return this._formbuilder.group({
+      VitalId:[''],
       Temperature: [''],
       Pulse: [''],
       Respiraiton: [''],
@@ -71,6 +72,7 @@ export class ClinicalCareChartService {
   }
   createSugarForm() {
     return this._formbuilder.group({
+      SugarlevelId:[''],
       BSL: [''],
       UnirSugar: [''],
       ETTPressure: [''],
@@ -88,6 +90,7 @@ export class ClinicalCareChartService {
   }
   CreateOxygenForm() {
     return this._formbuilder.group({
+      OxygenId:[''],
       Tidol: [''],
       SetRange: [''],
       IPAP: [''],
@@ -258,23 +261,63 @@ export class ClinicalCareChartService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingVitals", param)
   }
-    // save sugar level
-    public SaveSugarlevel(Param, loader = true) {
-      if (loader) {
-        this._loaderService.show();
-      }
-      return this._httpClient.post("Nursing/SaveNursingSugarLevel", Param)
+  // save sugar level
+  public SaveSugarlevel(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
     }
-    public UpdateSugarlevel(Param, loader = true) {
-      if (loader) {
-        this._loaderService.show();
-      }
-      return this._httpClient.post("Nursing/UpdateNursingSugarLevel", Param)
+    return this._httpClient.post("Nursing/SaveNursingSugarLevel", Param)
+  }
+  public UpdateSugarlevel(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
     }
+    return this._httpClient.post("Nursing/UpdateNursingSugarLevel", Param)
+  }
   public getRtrvSugarlevellist(param, loader = true) {
     if (loader) {
       this._loaderService.show();
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingSugarlevel", param)
+  }
+  // save Oxygen ventilator
+  public SaveOxygenVentilator(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Nursing/SaveNursingOrygenVentilator", Param)
+  }
+  public UpdateOxygenVentilator(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Nursing/UpdateNursingOrygenVentilator", Param)
+  }
+  public getRtrvOxygenlist(param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingOxygenVentilator", param)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  VitalpopulateForm(param) {
+    this.VitalsForm.patchValue(param);
+  }
+  SugarlevelpopulateForm(param) {
+    this.SugarForm.patchValue(param);
+  }
+  OxygenpopulateForm(param) {
+    this.OxygenForm.patchValue(param);
   }
 }

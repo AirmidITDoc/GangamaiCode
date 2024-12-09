@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ClinicalCareChartService } from './clinical-care-chart.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
@@ -89,17 +89,24 @@ export class ClinicalCareChartComponent implements OnInit {
     'Action'
   ]
   displayedOxygen: string[] = [
-    'Date',
-    'Time',
-    'IV',
-    'Infusions',
-    'Boluses',
-    'Peroral',
-    'Perrt',
-    'Perjt',
-    'IntakeOther',
-    'Urine',
-    'Drange',
+    'Date', 
+    'Mode',
+    'TidolV',
+    'SetRange',
+    'IPAP',
+    'MinuteV',
+    'RateTotal',
+    'EPAP',
+    'Peep',
+    'PC',
+    'MVPercentage',
+    'PrSup',
+    'FIO2',
+    'IE',
+    'OxygenRate',
+    'SaturationWithO2',
+    'FlowTrigger',
+    'CreatedBy',
     'Action'
   ]
   displayedSugar: string[] = [
@@ -120,7 +127,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'WardName',
     'RequestType',
     'IsOnFileTest', 
-    'action',
+    //'action',
   ]
   displayedColumnsIPprescription: string[] = [  
     'Vst_Adm_Date',
@@ -151,6 +158,7 @@ export class ClinicalCareChartComponent implements OnInit {
   ]
 
   Sugarlevellist:any=[]
+  OxygenventiList:any=[];
   SpinLoading:boolean=false;
   isLoading: String = '';
   sIsLoading: string = ""; 
@@ -183,8 +191,8 @@ export class ClinicalCareChartComponent implements OnInit {
   dsPainsAssessment2 =new MatTableDataSource<PainAssesList>();
   dsvitalsList =new MatTableDataSource<VitalsList>();
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
-  dsOxygenTable = new MatTableDataSource<INputOutputList>();
-  dsSugarTable = new MatTableDataSource<INputOutputList>();
+  dsOxygenTable = new MatTableDataSource<OxygenVentilatorlist>();
+  dsSugarTable = new MatTableDataSource<SugarlevelList>();
   dsrequestList = new MatTableDataSource<RequestList>();
   datasource = new MatTableDataSource<LabtestList>();
   dsrequestdetList=new MatTableDataSource<RequestdetList>();
@@ -311,6 +319,7 @@ vIPDNo:any;
     this.getpainAssesmentWeightList();
     this.getRtrvVitallist();
     this.getRtrvSugarlevellist();
+    this.getRtrvOxygenlist();
   }
   PainList:any=[];
   OnAddDailyWeight() {
@@ -500,8 +509,8 @@ error =>{
   }
     console.log(vdata)
     this._ClinicalcareService.getRtrvSugarlevellist(vdata).subscribe((data) =>{
-    this.dsSugarTable.data = data as VitalsList[]; 
-    this.Sugarlevellist = data as VitalsList[];
+    this.dsSugarTable.data = data as SugarlevelList[]; 
+    this.Sugarlevellist = data as SugarlevelList[];
     console.log(this.dsSugarTable.data); 
   },
 error =>{
@@ -514,6 +523,33 @@ error =>{
     this.Sugarlevellist.splice(index, 1);
     this.dsSugarTable.data = [];
     this.dsSugarTable.data = this.Sugarlevellist;
+  }
+  this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+    toastClass: 'tostr-tost custom-toast-success',
+  });  
+}
+ //Oxygen ventilator table data rtrv
+ getRtrvOxygenlist(){
+  this.sIsLoading = ''
+  var vdata={
+   "AdmissionId": this.registerObj.AdmissionID
+  }
+    console.log(vdata)
+    this._ClinicalcareService.getRtrvOxygenlist(vdata).subscribe((data) =>{
+    this.dsOxygenTable.data = data as OxygenVentilatorlist[]; 
+    this.OxygenventiList = data as OxygenVentilatorlist[];
+    console.log(this.OxygenventiList.data); 
+  },
+error =>{
+  this.sIsLoading = ''; 
+});
+ }
+ deleteOxygenTableRow(element) { 
+  let index = this.OxygenventiList.indexOf(element);
+  if (index >= 0) {
+    this.OxygenventiList.splice(index, 1);
+    this.dsOxygenTable.data = [];
+    this.dsOxygenTable.data = this.OxygenventiList;
   }
   this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
     toastClass: 'tostr-tost custom-toast-success',
@@ -609,7 +645,7 @@ OnSavePainAsses(){
     return;
    }
 
-  if(!this.painAssessmentId){ 
+  if(!this._ClinicalcareService.VitalsForm.get('VitalId').value){ 
   let saveNursingVitalsParamObj={
     "vitalDate": formattedDate,
     "vitalTime": formattedTime,
@@ -644,6 +680,7 @@ OnSavePainAsses(){
         toastClass: 'tostr-tost custom-toast-success',
       }); 
       this.getRtrvVitallist();
+      this.OnClosevital();
     } else {
       this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -657,7 +694,7 @@ OnSavePainAsses(){
   }
   else{ 
     let updateSaveNursingVitalsParamObj={
-      "vitalId": 0,
+      "vitalId":  this._ClinicalcareService.VitalsForm.get('VitalId').value || 0,
       "admissionId":this.registerObj.AdmissionID || 0,
       "temperature": this._ClinicalcareService.VitalsForm.get('Temperature').value  || '',
       "pulse": this._ClinicalcareService.VitalsForm.get('Pulse').value  || '',
@@ -689,6 +726,7 @@ OnSavePainAsses(){
           toastClass: 'tostr-tost custom-toast-success',
         }); 
         this.getRtrvVitallist();
+        this.OnClosevital();
       } else {
         this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -703,7 +741,7 @@ OnSavePainAsses(){
 }
 OnClosevital(){
  this._ClinicalcareService.VitalsForm.reset();
- this._ClinicalcareService.VitalsForm.get('SuctionType').setValue(0)
+ this._ClinicalcareService.VitalsForm.get('SuctionType').setValue('0')
 }
 // sugar level save
 OnsaveSugarlevel(){
@@ -719,7 +757,7 @@ OnsaveSugarlevel(){
     return;
    }
 
-  if(!this.painAssessmentId){  
+  if(!this._ClinicalcareService.SugarForm.get('SugarlevelId').value){  
   let saveNursingSugarLevelParamsObj={
     "entryDate": formattedDate,
     "entryTime": formattedTime,
@@ -743,6 +781,7 @@ OnsaveSugarlevel(){
         toastClass: 'tostr-tost custom-toast-success',
       }); 
       this.getRtrvSugarlevellist();
+      this.OnCloseSugar();
     } else {
       this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
@@ -756,7 +795,7 @@ OnsaveSugarlevel(){
   }
   else{ 
     let updateNursingSugarLevelParamsObj={ 
-    "id": 0,
+    "id": this._ClinicalcareService.SugarForm.get('SugarlevelId').value || 0,
     "entryDate": formattedDate,
     "entryTime": formattedTime,
     "admissionId":this.registerObj.AdmissionID || 0, 
@@ -779,6 +818,7 @@ OnsaveSugarlevel(){
           toastClass: 'tostr-tost custom-toast-success',
         }); 
         this.getRtrvSugarlevellist();
+        this.OnCloseSugar();
       } else {
         this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -792,18 +832,186 @@ OnsaveSugarlevel(){
   } 
 }
 OnCloseSugar(){
- this._ClinicalcareService.VitalsForm.reset();
- this._ClinicalcareService.VitalsForm.get('SuctionType').setValue(0)
+ this._ClinicalcareService.SugarForm.reset(); 
+}
+
+//Oxygen Ventilator
+
+OnsaveOxygenVenti(){
+  const currentDate = new Date();
+  const datePipe = new DatePipe('en-US');
+  const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+  if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
+    this.toastr.warning('Please select Patient','Warning !',{
+      toastClass: 'tostr-tost custom-toast-warning',
+    }) 
+    return;
+   }
+
+  if(!this._ClinicalcareService.OxygenForm.get('OxygenId').value){   
+  let saveNursingOrygenVentilatorParamObj={
+    "entryDate": formattedDate,
+    "entryTime": formattedTime,
+    "admissionId":this.registerObj.AdmissionID || 0, 
+    "mode": 0,// this._ClinicalcareService.OxygenForm.get('Mode').value || 0,
+    "tidolV": this._ClinicalcareService.OxygenForm.get('Tidol').value || '',
+    "setRange":this._ClinicalcareService.OxygenForm.get('SetRange').value || '',
+    "ipap": this._ClinicalcareService.OxygenForm.get('IPAP').value || '',
+    "minuteV": this._ClinicalcareService.OxygenForm.get('minuteV').value || '',
+    "rateTotal":this._ClinicalcareService.OxygenForm.get('RateTotal').value || '',
+    "epap": this._ClinicalcareService.OxygenForm.get('EPAP').value || '',
+    "peep":  this._ClinicalcareService.OxygenForm.get('Peep').value || '',
+    "pc":  this._ClinicalcareService.OxygenForm.get('PC').value || '',
+    "mvPercentage":  this._ClinicalcareService.OxygenForm.get('MV').value || '',
+    "prSup": this._ClinicalcareService.OxygenForm.get('Sup').value || '',
+    "fiO2":  this._ClinicalcareService.OxygenForm.get('FiO2').value || '',
+    "ie":  this._ClinicalcareService.OxygenForm.get('IE').value || '',
+    "oxygenRate":  this._ClinicalcareService.OxygenForm.get('OxygenRate').value || '',
+    "saturationWithO2":  this._ClinicalcareService.OxygenForm.get('SaturationWitho2').value || '',
+    "flowTrigger": this._ClinicalcareService.OxygenForm.get('FlowTrigger').value || '',
+    "createdBy": this._loggedService.currentUserValue.user.id || 0  
+  }
+  let submitData={
+   "saveNursingOrygenVentilatorParam":saveNursingOrygenVentilatorParamObj
+  }
+  console.log(submitData)
+  this._ClinicalcareService.SaveOxygenVentilator(submitData).subscribe(reponse =>{
+    if(reponse){
+      this.toastr.success('Record Saved Successfully.', 'Saved !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      }); 
+      this.getRtrvOxygenlist();
+      this.OnCloseOxygen();
+    } else {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      }); 
+    }
+  }, error => {
+    this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+      toastClass: 'tostr-tost custom-toast-error',
+    });
+  });  
+  }
+  else{  
+    let updateNursingOrygenVentilatorParamObj={ 
+    "id": this._ClinicalcareService.OxygenForm.get('OxygenId').value || 0,
+    "admissionId":this.registerObj.AdmissionID || 0, 
+    "mode":  0 ,//this._ClinicalcareService.OxygenForm.get('BSL').value || 0,
+    "tidolV": this._ClinicalcareService.OxygenForm.get('Tidol').value || '',
+    "setRange":this._ClinicalcareService.OxygenForm.get('SetRange').value || '',
+    "ipap": this._ClinicalcareService.OxygenForm.get('IPAP').value || '',
+    "minuteV": this._ClinicalcareService.OxygenForm.get('minuteV').value || '',
+    "rateTotal":this._ClinicalcareService.OxygenForm.get('RateTotal').value || '',
+    "epap": this._ClinicalcareService.OxygenForm.get('EPAP').value || '',
+    "peep":  this._ClinicalcareService.OxygenForm.get('Peep').value || '',
+    "pc":  this._ClinicalcareService.OxygenForm.get('PC').value || '',
+    "mvPercentage":  this._ClinicalcareService.OxygenForm.get('MV').value || '',
+    "prSup": this._ClinicalcareService.OxygenForm.get('Sup').value || '',
+    "fiO2":  this._ClinicalcareService.OxygenForm.get('FiO2').value || '',
+    "ie":  this._ClinicalcareService.OxygenForm.get('IE').value || '',
+    "oxygenRate":  this._ClinicalcareService.OxygenForm.get('OxygenRate').value || '',
+    "saturationWithO2":  this._ClinicalcareService.OxygenForm.get('SaturationWitho2').value || '',
+    "flowTrigger": this._ClinicalcareService.OxygenForm.get('FlowTrigger').value || '',
+    "modifiedBy": this._loggedService.currentUserValue.user.id || 0 
+    }
+    let submitData={
+     "updateNursingOrygenVentilatorParam":updateNursingOrygenVentilatorParamObj
+    }
+    console.log(submitData)
+    this._ClinicalcareService.UpdateOxygenVentilator(submitData).subscribe(reponse =>{
+      if(reponse){
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+        this.getRtrvOxygenlist();
+        this.OnCloseOxygen();
+      } else {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        }); 
+      }
+    }, error => {
+      this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });  
+  } 
+}
+OnCloseOxygen(){
+ this._ClinicalcareService.OxygenForm.reset(); 
 }
 
 
+ 
+ 
 
-
-
-
-
-
-
+//edit vital Info 
+onEditVital(row) {
+  console.log(row)
+  var m_data = {
+    VitalId:row.VitalId,
+    Temperature: row.Temperature,
+    Pulse: row.Pulse,
+    Respiraiton: row.Respiration,
+    BloodPressure: row.BloodPresure,
+    CVP: row.CVP,
+    Peep: row.Peep,
+    ArterialBloodPressure: row.ArterialBloodPressure,
+    PressureReading: row.PAPressureReading,
+    Brady: row.Brady,
+    Apnea: row.Apnea,
+    AbdominalGrith: row.AbdominalGrith,
+    Desaturation: row.Desaturation,
+    SaturationWitho2: row.SaturationWithO2,
+    SaturationWithOuto2:row.SaturationWithoutO2,
+    PO2:row.PO2,
+    Fio2:row.FIO2,
+    PFRation:row.PFRation,
+    SuctionType: JSON.stringify(row.SuctionType) 
+  };
+  this._ClinicalcareService.VitalpopulateForm(m_data);
+}
+//edit Sugar level 
+onEditSuugarlevel(row) {
+  console.log(row)
+  var m_data = {  
+    SugarlevelId:row.Id,
+    BSL: row.BSL,
+    UnirSugar: row.UrineSugar,
+    ETTPressure: row.ETTpressure,
+    UrineKeotne: row.UrineKetone,
+    Bodies: row.Bodies,
+    Intakemode:row.IntakeMode,
+    RepotetoRMO: row.ReportedToRMO, 
+  };
+  this._ClinicalcareService.SugarlevelpopulateForm(m_data);
+}
+//edit oxygen 
+onEditOxygen(row) {
+  console.log(row)
+  var m_data = {
+    OxygenId:row.Id,
+    Tidol: row.TidolV,
+    SetRange: row.SetRange,
+    IPAP: row.IPAP,
+    minuteV: row.MinuteV,
+    RateTotal: row.RateTotal,
+    EPAP:row.EPAP,
+    Peep: row.Peep,
+    PC: row.PC,
+    MV: row.MVPercentage,
+    Sup: row.PrSup,
+    FiO2: row.FIO2,
+    IE:row.IE,
+    OxygenRate: row.OxygenRate,
+    SaturationWitho2: row.SaturationWithO2,
+    FlowTrigger: row.FlowTrigger
+  };
+  this._ClinicalcareService.OxygenpopulateForm(m_data);
+} 
 
 chkweightvalidation(){
   if(this.vDailyWeight > 200){ 
@@ -812,8 +1020,7 @@ chkweightvalidation(){
     });
     this.vDailyWeight = '';
   }
-}
-
+} 
   getDoctornote(){
    if(this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined){
     this.toastr.warning('Please select Patient','Warning !',{
@@ -1084,6 +1291,236 @@ viewgetIpprescriptionReportPdf(row) {
  
   },100);
 }
+
+//Onenter 
+@ViewChild('Pulse') Pulse: ElementRef;
+@ViewChild('Respiraiton') Respiraiton: ElementRef;
+@ViewChild('BloodPressure') BloodPressure: ElementRef;
+@ViewChild('CVP') CVP: ElementRef;
+@ViewChild('Peep') Peep: ElementRef;
+@ViewChild('ArterialBloodPressure') ArterialBloodPressure: ElementRef; 
+@ViewChild('PressureReading') PressureReading: ElementRef;
+@ViewChild('Brady') Brady: ElementRef;
+@ViewChild('Apnea') Apnea: ElementRef;
+@ViewChild('AbdominalGrith') AbdominalGrith: ElementRef;
+@ViewChild('Desaturation') Desaturation: ElementRef;
+@ViewChild('SaturationWitho2') SaturationWitho2: ElementRef;
+@ViewChild('SaturationWithOuto2') SaturationWithOuto2: ElementRef;
+@ViewChild('PO2') PO2: ElementRef;
+@ViewChild('Fio2') Fio2: ElementRef;
+@ViewChild('PFRation') PFRation: ElementRef; 
+ 
+public OnEnterTemparatuer(event): void {
+    if (event.which === 13) {
+        this.Pulse.nativeElement.focus();
+    }
+}
+public OnEnterPulse(event): void {
+    if (event.which === 13) {
+        this.Respiraiton.nativeElement.focus();
+    }
+}
+public OnEnterRespiraiton(event): void {
+  if (event.which === 13) {
+      this.BloodPressure.nativeElement.focus();
+  }
+}
+public OnEnterBloodPressure(event): void {
+  if (event.which === 13) {
+      this.CVP.nativeElement.focus();
+  }
+}
+public OnEnterCVP(event): void {
+  if (event.which === 13) {
+      this.Peep.nativeElement.focus();
+  }
+}
+public OnEnterPeep(event): void {
+  if (event.which === 13) {
+      this.ArterialBloodPressure.nativeElement.focus();
+  }
+} 
+public OnEnterArterialBloodPressure(event): void {
+  if (event.which === 13) {
+      this.PressureReading.nativeElement.focus();
+  }
+}
+public OnEnterPressureReading(event): void {
+  if (event.which === 13) {
+      this.Brady.nativeElement.focus();
+  }
+} 
+public OnEnterBrady(event): void {
+  if (event.which === 13) {
+      this.Apnea.nativeElement.focus();
+  }
+} 
+public OnEnterApnea(event): void {
+  if (event.which === 13) {
+      this.AbdominalGrith.nativeElement.focus();
+  }
+}
+public OnEnterAbdominalGrith(event): void {
+  if (event.which === 13) {
+      this.Desaturation.nativeElement.focus();
+  }
+} 
+public OnEnterDesaturation(event): void {
+  if (event.which === 13) {
+      this.SaturationWitho2.nativeElement.focus();
+  }
+}
+public OnEnterSaturationWitho2(event): void {
+  if (event.which === 13) {
+      this.SaturationWithOuto2.nativeElement.focus();
+  }
+}
+public OnEnterSaturationWithOuto2(event): void {
+  if (event.which === 13) {
+      this.PO2.nativeElement.focus();
+  }
+}
+public OnEnterPO2(event): void {
+  if (event.which === 13) {
+      this.Fio2.nativeElement.focus();
+  }
+}
+public OnEnterFio2(event): void {
+  if (event.which === 13) {
+      this.PFRation.nativeElement.focus();
+  }
+} 
+public OnEnterPFRation(event): void {
+  if (event.which === 13) {
+     // this.mname.nativeElement.focus();
+  }
+} 
+//Oxygen onEnter
+@ViewChild('Tidol') Tidol: ElementRef;
+@ViewChild('SetRange') SetRange: ElementRef;
+@ViewChild('IPAP') IPAP: ElementRef;
+@ViewChild('minuteV') minuteV: ElementRef;
+@ViewChild('RateTotal') RateTotal: ElementRef; 
+@ViewChild('EPAP') EPAP: ElementRef; 
+@ViewChild('Peep1') Peep1: ElementRef;
+@ViewChild('PC') PC: ElementRef;
+@ViewChild('MV') MV: ElementRef;
+@ViewChild('Sup') Sup: ElementRef;
+@ViewChild('FiO2') FiO2: ElementRef; 
+@ViewChild('IE') IE: ElementRef; 
+@ViewChild('OxygenRate') OxygenRate: ElementRef;
+@ViewChild('SaturationWitho21') SaturationWitho21: ElementRef; 
+@ViewChild('FlowTrigger') FlowTrigger: ElementRef;
+
+public OnEnterTidol(event): void {
+  if (event.which === 13) {
+      this.SetRange.nativeElement.focus();
+  }
+}
+public OnEnterSetRange(event): void {
+  if (event.which === 13) {
+      this.IPAP.nativeElement.focus();
+  }
+}
+public OnEnterIPAP(event): void {
+  if (event.which === 13) {
+      this.minuteV.nativeElement.focus();
+  }
+} 
+public OnEnterminuteV(event): void {
+  if (event.which === 13) {
+      this.RateTotal.nativeElement.focus();
+  }
+}
+public OnEnterRateTotal(event): void {
+  if (event.which === 13) {
+      this.EPAP.nativeElement.focus();
+  }
+}
+public OnEnterEPAP(event): void {
+  if (event.which === 13) {
+      this.Peep1.nativeElement.focus();
+  }
+}
+public OnEnterPeep1(event): void {
+  if (event.which === 13) {
+      this.PC.nativeElement.focus();
+  }
+}
+public OnEnterPC(event): void {
+  if (event.which === 13) {
+      this.MV.nativeElement.focus();
+  }
+} 
+public OnEnterMV(event): void {
+  if (event.which === 13) {
+      this.Sup.nativeElement.focus();
+  }
+}
+public OnEnterSup(event): void {
+  if (event.which === 13) {
+      this.FiO2.nativeElement.focus();
+  }
+}
+public OnEnterFiO2(event): void {
+  if (event.which === 13) {
+      this.IE.nativeElement.focus();
+  }
+}
+public OnEnterIE(event): void {
+  if (event.which === 13) {
+      this.OxygenRate.nativeElement.focus();
+  }
+}
+public OnEnterOxygenRate(event): void {
+  if (event.which === 13) {
+      this.SaturationWitho21.nativeElement.focus();
+  }
+}
+public OnEnterSaturationWitho21(event): void {
+  if (event.which === 13) {
+      this.FlowTrigger.nativeElement.focus();
+  }
+}
+public OnEnterFlowTrigger(event): void {
+  if (event.which === 13) {
+    //  this.OxygenRate.nativeElement.focus();
+  }
+}
+//sugar OnEnter 
+@ViewChild('BSL') BSL: ElementRef;
+@ViewChild('UnirSugar') UnirSugar: ElementRef;
+@ViewChild('ETTPressure') ETTPressure: ElementRef;
+@ViewChild('UrineKeotne') UrineKeotne: ElementRef;
+@ViewChild('Bodies') Bodies: ElementRef; 
+ 
+public OnEnterminutBSL(event): void {
+    if (event.which === 13) {
+        this.UnirSugar.nativeElement.focus();
+    }
+}
+public OnEnterminutUnirSugar(event): void {
+    if (event.which === 13) {
+        this.ETTPressure.nativeElement.focus();
+    }
+}
+public OnEnterminutETTPressure(event): void {
+  if (event.which === 13) {
+      this.UrineKeotne.nativeElement.focus();
+  }
+}
+public OnEnterminutUnirUrineKeotne(event): void {
+  if (event.which === 13) {
+      this.Bodies.nativeElement.focus();
+  }
+}
+public OnEnterminutBodies(event): void {
+  if (event.which === 13) {
+      this.ETTPressure.nativeElement.focus();
+  }
+}
+ 
+
 }
 export class PatientList {
   DoctorName: any;
@@ -1128,7 +1565,7 @@ export class PainAssesList {
   }
 }
 export class VitalsList {
-  date: any;
+  Date: any;
   time: any;
   Temperature: any;
   Pulse: any;
@@ -1142,7 +1579,7 @@ export class VitalsList {
   constructor(VitalsList) {
     {
 
-      this.date = VitalsList.date || 0;
+      this.Date = VitalsList.Date || 0;
       this.time = VitalsList.time || 0;
       this.Temperature = VitalsList.Temperature || 0;
       this.Pulse = VitalsList.Pulse || 0;
@@ -1155,9 +1592,77 @@ export class VitalsList {
       this.CVP = VitalsList.CVP || 0; 
     }
   }
+} 
+export class SugarlevelList {
+  Date: any;
+  BSL: any;
+  UrineSugar: any;
+  ETTpressure: any;
+  UrineKetone:any;
+  Bodies: any;
+  IntakeMode: any;
+  ReportedToRMO: any;
+  Addedby: any; 
+  CVP:any;
+  constructor(SugarlevelList) {
+    {
+
+      this.Date = SugarlevelList.Date || 0;
+      this.BSL = SugarlevelList.BSL || 0;
+      this.UrineSugar = SugarlevelList.UrineSugar || 0;
+      this.ETTpressure = SugarlevelList.ETTpressure || 0;
+      this.Bodies = SugarlevelList.Bodies || 0;
+      this.IntakeMode = SugarlevelList.IntakeMode || 0;
+      this.ReportedToRMO = SugarlevelList.ReportedToRMO || 0;
+      this.Addedby = SugarlevelList.Addedby || 0; 
+      this.UrineKetone = SugarlevelList.UrineKetone || 0; 
+    }
+  }
+}
+export class OxygenVentilatorlist {  
+  Date: any;
+  Mode: any;
+  TidolV: any;
+  SetRange: any;
+  IPAP: any;
+  MinuteV: any;
+  RateTotal: any;
+  EPAP: any;
+  Peep: any;
+  PC: any; 
+  MVPercentage:any;
+  PrSup: any;
+  FIO2: any;
+  IE: any;
+  OxygenRate: any;
+  SaturationWithO2: any;
+  FlowTrigger: any; 
+  CreatedBy:any;
+  constructor(OxygenVentilatorlist) {
+    { 
+      this.Date = OxygenVentilatorlist.Date || 0;
+      this.Mode = OxygenVentilatorlist.Mode || 0;
+      this.TidolV = OxygenVentilatorlist.TidolV || 0;
+      this.SetRange = OxygenVentilatorlist.SetRange || 0;
+      this.IPAP = OxygenVentilatorlist.IPAP || 0;
+      this.MinuteV = OxygenVentilatorlist.MinuteV || 0;
+      this.RateTotal = OxygenVentilatorlist.RateTotal || 0;
+      this.EPAP = OxygenVentilatorlist.EPAP || 0;
+      this.PC = OxygenVentilatorlist.PC || 0;
+      this.Peep = OxygenVentilatorlist.Peep || 0;  
+      this.MVPercentage = OxygenVentilatorlist.MVPercentage || 0; 
+      this.PrSup = OxygenVentilatorlist.PrSup || 0;
+      this.FIO2 = OxygenVentilatorlist.FIO2 || 0;
+      this.IE = OxygenVentilatorlist.IE || 0;
+      this.OxygenRate = OxygenVentilatorlist.OxygenRate || 0;
+      this.SaturationWithO2 = OxygenVentilatorlist.SaturationWithO2 || 0;
+      this.FlowTrigger = OxygenVentilatorlist.FlowTrigger || 0;  
+      this.CreatedBy = OxygenVentilatorlist.CreatedBy || 0; 
+    }
+  }
 }
 export class INputOutputList {
-  date: any;
+  Date: any;
   time: any;
   Temperature: any;
   Pulse: any;
@@ -1171,7 +1676,7 @@ export class INputOutputList {
   constructor(INputOutputList) {
     {
 
-      this.date = INputOutputList.date || 0;
+      this.Date = INputOutputList.Date || 0;
       this.time = INputOutputList.time || 0;
       this.Temperature = INputOutputList.Temperature || 0;
       this.Pulse = INputOutputList.Pulse || 0;

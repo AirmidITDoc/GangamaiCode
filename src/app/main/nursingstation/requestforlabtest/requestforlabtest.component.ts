@@ -97,7 +97,7 @@ export class RequestforlabtestComponent implements OnInit {
        console.log(this.dsrequestdetList.data);
     })
   }
-
+  ChkNewReq:any=1
   Openpopup(){
     // this.dialog.open(UpdateGRNComponent,
     //   {
@@ -111,7 +111,9 @@ export class RequestforlabtestComponent implements OnInit {
       {
         width:'70vw',
         height:'95vh',
-        panelClass: 'new-request-dialog'
+        data: { 
+          ChkNewReq: this.ChkNewReq
+      } 
       });
     dialogRef.afterClosed().subscribe(result => {
       this.getRequesttList();

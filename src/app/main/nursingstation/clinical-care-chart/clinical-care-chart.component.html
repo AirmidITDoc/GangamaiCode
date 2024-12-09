@@ -105,6 +105,8 @@
                                     <div fxFlex.gt-sm="2%" fxFlex>
                                         <mat-icon matTooltip="Patient List" style="margin: 200px 5px 0px 0px;"
                                             (click)="drawer.toggle()">keyboard_arrow_right</mat-icon>
+
+                                            <!-- <mat-icon>{{ isOpen ? 'arrow_back' : 'arrow_forward' }}</mat-icon> -->
                                     </div>
                                     <div fxFlex.gt-sm="98%" fxFlex>
                                         <mat-tab-group style="overflow: auto;">
@@ -868,7 +870,7 @@
                                                                         </mat-cell>
                                                                     </ng-container>
 
-                                                                    <ng-container matColumnDef="action" stickyEnd>
+                                                                    <!-- <ng-container matColumnDef="action" stickyEnd>
                                                                         <mat-header-cell *matHeaderCellDef
                                                                             fxShow.gt-sm>Action
                                                                         </mat-header-cell>
@@ -878,7 +880,7 @@
                                                                                 <mat-icon>print</mat-icon>
                                                                             </button>
                                                                         </mat-cell>
-                                                                    </ng-container>
+                                                                    </ng-container> -->
 
                                                                     <ng-container matColumnDef="loading">
                                                                         <mat-header-cell *matFooterCellDef colspan="6"
@@ -1061,7 +1063,7 @@
                                                                     <mat-table class="table2" matSort [dataSource]="dsvitalsList" [@animateStagger]="{value:'50'}"
                                                                         style="overflow: auto;">
 
-                                                                        <ng-container matColumnDef="date">
+                                                                        <ng-container matColumnDef="date" sticky>
                                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                                                                 VitalDateTime </mat-header-cell>
                                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
@@ -1194,10 +1196,13 @@
                                                                                 {{element.CreatedBy}} </mat-cell>
                                                                         </ng-container>
                                                                 
-                                                                        <ng-container matColumnDef="Action">
+                                                                        <ng-container matColumnDef="Action" stickyEnd> 
                                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                                 Action </mat-header-cell>
                                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                <button mat-icon-button (click)="onEditVital(element)" matTooltip="Edit">
+                                                                                    <mat-icon>edit</mat-icon>
+                                                                                </button>
                                                                                 <button mat-icon-button (click)="deleteVitalTableRow(element)" color="warn">
                                                                                     <mat-icon>delete_outline</mat-icon>
                                                                                 </button>
@@ -1228,13 +1233,16 @@
                                                             <form [formGroup]="_ClinicalcareService.VitalsForm">
                                                                 <div fxLayout="column" fxLayoutGap="4px">
                                                                     <div fxLayout="row" fxLayoutGap="4px">
+                                                                        <input matInput name="VitalId" 
+                                                                        formControlName="VitalId" type="hidden">
 
                                                                         <mat-form-field appearance="outline" fxFlex>
                                                                             <mat-label>Temperature</mat-label>
                                                                             <input matInput name="Temperature" required
                                                                                 formControlName="Temperature"
                                                                                 type="text" OnlyNumber id="Temperature"
-                                                                                autocomplete="off" #Temperature>
+                                                                                autocomplete="off" #Temperature
+                                                                                (keydown)="OnEnterTemparatuer($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1242,15 +1250,16 @@
                                                                             <input matInput name="Pulse" required
                                                                                 formControlName="Pulse" type="text"
                                                                                 OnlyNumber id="Pulse" autocomplete="off"
-                                                                                #Pulse>
+                                                                                #Pulse   (keydown)="OnEnterPulse($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
                                                                             <mat-label>Respiraiton</mat-label>
                                                                             <input matInput name="Respiraiton" required
-                                                                                formControlName="Respiraiton"
+                                                                                formControlName="Respiraiton" #Respiraiton
                                                                                 type="text" OnlyNumber id="Respiraiton"
-                                                                                autocomplete="off" #Respiraiton>
+                                                                                autocomplete="off" #Respiraiton
+                                                                                (keydown)="OnEnterRespiraiton($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1259,12 +1268,13 @@
                                                                                 required formControlName="BloodPressure"
                                                                                 type="text" OnlyNumber
                                                                                 id="BloodPressure" autocomplete="off"
-                                                                                #BloodPressure>
+                                                                                #BloodPressure
+                                                                                (keydown)="OnEnterBloodPressure($event)">
                                                                         </mat-form-field>
 
 
                                                                     </div>
-                                                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                                                    <!-- <div fxLayout="row" fxLayoutAlign="start center">
                                                                         <mat-radio-group name="TypeRadio"
                                                                             formControlName="TypeRadio">
                                                                             <mat-radio-button value="0"
@@ -1278,7 +1288,7 @@
                                                                                 style="padding: 6px;">
                                                                                 UnResponsive</mat-radio-button>
                                                                         </mat-radio-group>
-                                                                    </div>
+                                                                    </div> -->
 
                                                                     <div fxLayout="row" fxLayoutGap="4px"
                                                                         fxLayoutAlign="start center">
@@ -1288,7 +1298,7 @@
                                                                             <input matInput name="CVP" required
                                                                                 formControlName="CVP" type="text"
                                                                                 OnlyNumber id="CVP" autocomplete="off"
-                                                                                #CVP>
+                                                                                #CVP  (keydown)="OnEnterCVP($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1296,7 +1306,7 @@
                                                                             <input matInput name="Peep" required
                                                                                 formControlName="Peep" type="text"
                                                                                 OnlyNumber id="Peep" autocomplete="off"
-                                                                                #Peep>
+                                                                                #Peep (keydown)="OnEnterPeep($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1306,8 +1316,9 @@
                                                                                 formControlName="ArterialBloodPressure"
                                                                                 type="text" OnlyNumber
                                                                                 id="ArterialBloodPressure"
-                                                                                autocomplete="off"
-                                                                                #ArterialBloodPressure>
+                                                                                autocomplete="off" 
+                                                                                #ArterialBloodPressure
+                                                                                (keydown)="OnEnterArterialBloodPressure($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1317,7 +1328,8 @@
                                                                                 formControlName="PressureReading"
                                                                                 type="text" OnlyNumber
                                                                                 id="PressureReading" autocomplete="off"
-                                                                                #PressureReading>
+                                                                                #PressureReading
+                                                                                (keydown)="OnEnterPressureReading($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1325,7 +1337,7 @@
                                                                             <input matInput name="Brady" required
                                                                                 formControlName="Brady" type="text"
                                                                                 OnlyNumber id="Brady" autocomplete="off"
-                                                                                #Brady>
+                                                                                #Brady (keydown)="OnEnterBrady($event)">
                                                                         </mat-form-field>
                                                                     </div>
 
@@ -1337,7 +1349,7 @@
                                                                             <input matInput name="Apnea" required
                                                                                 formControlName="Apnea" type="text"
                                                                                 OnlyNumber id="Apnea" autocomplete="off"
-                                                                                #Apnea>
+                                                                                #Apnea (keydown)="OnEnterApnea($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1347,7 +1359,7 @@
                                                                                 formControlName="AbdominalGrith"
                                                                                 type="text" OnlyNumber
                                                                                 id="AbdominalGrith" autocomplete="off"
-                                                                                #AbdominalGrith>
+                                                                                #AbdominalGrith (keydown)="OnEnterAbdominalGrith($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1355,7 +1367,8 @@
                                                                             <input matInput name="Desaturation" required
                                                                                 formControlName="Desaturation"
                                                                                 type="text" OnlyNumber id="Desaturation"
-                                                                                autocomplete="off" #Desaturation>
+                                                                                autocomplete="off" #Desaturation
+                                                                                (keydown)="OnEnterDesaturation($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1365,7 +1378,8 @@
                                                                                 formControlName="SaturationWitho2"
                                                                                 type="text" OnlyNumber
                                                                                 id="SaturationWitho2" autocomplete="off"
-                                                                                #SaturationWitho2>
+                                                                                #SaturationWitho2
+                                                                                (keydown)="OnEnterSaturationWitho2($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline" fxFlex>
@@ -1375,11 +1389,9 @@
                                                                                 formControlName="SaturationWithOuto2"
                                                                                 type="text" OnlyNumber
                                                                                 id="SaturationWithOuto2"
-                                                                                autocomplete="off" #SaturationWithOuto2>
-                                                                        </mat-form-field>
-
-
-
+                                                                                autocomplete="off" #SaturationWithOuto2
+                                                                                (keydown)="OnEnterSaturationWithOuto2($event)">
+                                                                        </mat-form-field>  
                                                                     </div>
 
                                                                     <div fxLayout="row" fxLayoutGap="4px"
@@ -1390,7 +1402,7 @@
                                                                             <input matInput name="PO2" required
                                                                                 formControlName="PO2" type="text"
                                                                                 OnlyNumber id="PO2" autocomplete="off"
-                                                                                #PO2>
+                                                                                #PO2 (keydown)="OnEnterPO2($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline"
@@ -1399,7 +1411,7 @@
                                                                             <input matInput name="Fio2" required
                                                                                 formControlName="Fio2" type="text"
                                                                                 OnlyNumber id="Fio2" autocomplete="off"
-                                                                                #Fio2>
+                                                                                #Fio2 (keydown)="OnEnterFio2($event)">
                                                                         </mat-form-field>
 
                                                                         <mat-form-field appearance="outline"
@@ -1407,7 +1419,7 @@
                                                                             <mat-label>P.F Ratio</mat-label>
                                                                             <input matInput name="PFRation" required
                                                                                 formControlName="PFRation" type="text"
-                                                                                OnlyNumber id="PFRation"
+                                                                                OnlyNumber id="PFRation" (keydown)="OnEnterPFRation($event)"
                                                                                 autocomplete="off" #PFRation>
                                                                         </mat-form-field>
                                                                         <div fxLayout="row" fxLayoutGap="4px"
@@ -1470,7 +1482,7 @@
 
                                                                         <mat-table class="table2" class="h-250" matSort [dataSource]="dsSugarTable" [@animateStagger]="{value:'50'}"
                                                                             style="overflow: auto;">
-                                                                            <ng-container matColumnDef="Date">
+                                                                            <ng-container matColumnDef="Date" sticky>
                                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                                     DateTime </mat-header-cell>
                                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -1526,17 +1538,20 @@
                                                                                     {{element.ReportedToRMO}} </mat-cell>
                                                                             </ng-container>
 
-                                                                            <ng-container matColumnDef="Addedby">
+                                                                            <ng-container matColumnDef="Addedby" stickyEnd>
                                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                                     AddedBy </mat-header-cell>
                                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                                     {{element.CreatedBy}} </mat-cell>
                                                                             </ng-container>
                                                                         
-                                                                            <ng-container matColumnDef="Action">
+                                                                            <ng-container matColumnDef="Action" stickyEnd>
                                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                                     Action </mat-header-cell>
                                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                    <button mat-icon-button (click)="onEditSuugarlevel(element)" matTooltip="Edit">
+                                                                                        <mat-icon>edit</mat-icon>
+                                                                                    </button>
                                                                                     <button mat-icon-button (click)="deleteSugarTableRow(element)" color="warn">
                                                                                         <mat-icon>delete_outline</mat-icon>
                                                                                     </button>
@@ -1554,9 +1569,9 @@
                                                                                 </mat-footer-cell>
                                                                             </ng-container>
                                                                         
-                                                                            <mat-header-row class="accent min-width-1400" *matHeaderRowDef="displayedSugar; sticky: true">
+                                                                            <mat-header-row class="accent min-width-1300" *matHeaderRowDef="displayedSugar; sticky: true">
                                                                             </mat-header-row>
-                                                                            <mat-row *matRowDef="let element; columns: displayedSugar;" class="element min-width-1400"
+                                                                            <mat-row *matRowDef="let element; columns: displayedSugar;" class="element min-width-1300"
                                                                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                             <mat-footer-row *matFooterRowDef="['noData']"
                                                                                 [ngClass]="{'hide':!(dsSugarTable!=null && dsSugarTable.data.length==0)}">
@@ -1566,12 +1581,14 @@
                                                                                                                 </mat-paginator> -->
                                                                     </div>
                                                                 </mat-card>
-                                                                <div fxLayout="row" fxLayoutGap="4px">
+                                                                <div fxLayout="row" fxLayoutGap="4px">  
+                                                                    <input matInput name="SugarlevelId"  
+                                                                    formControlName="SugarlevelId" type="hidden">
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>BSL</mat-label>
                                                                         <input matInput name="BSL" required
                                                                             formControlName="BSL" type="text" OnlyNumber
-                                                                            id="BSL" autocomplete="off" #BSL>
+                                                                            id="BSL" autocomplete="off" #BSL (keydown)="OnEnterminutBSL($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -1579,14 +1596,14 @@
                                                                         <input matInput name="UnirSugar" required
                                                                             formControlName="UnirSugar" type="text"
                                                                             OnlyNumber id="UnirSugar" autocomplete="off"
-                                                                            #UnirSugar>
+                                                                            #UnirSugar (keydown)="OnEnterminutUnirSugar($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>ETT Pressure</mat-label>
                                                                         <input matInput name="ETTPressure" required
                                                                             formControlName="ETTPressure" type="text"
-                                                                            OnlyNumber id="ETTPressure"
+                                                                            OnlyNumber id="ETTPressure" (keydown)="OnEnterminutETTPressure($event)"
                                                                             autocomplete="off" #ETTPressure>
                                                                     </mat-form-field>
                                                                 </div>
@@ -1597,7 +1614,8 @@
                                                                         <input matInput name="UrineKeotne" required
                                                                             formControlName="UrineKeotne" type="text"
                                                                             OnlyNumber id="UrineKeotne"
-                                                                            autocomplete="off" #UrineKeotne>
+                                                                            autocomplete="off" #UrineKeotne
+                                                                            (keydown)="OnEnterminutUnirUrineKeotne($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -1605,13 +1623,13 @@
                                                                         <input matInput name="Bodies" required
                                                                             formControlName="Bodies" type="text"
                                                                             OnlyNumber id="Bodies" autocomplete="off"
-                                                                            #Bodies>
+                                                                            #Bodies (keydown)="OnEnterminutBodies($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>Intake Mode</mat-label>
                                                                         <mat-select formControlName="Intakemode"
-                                                                            name="Intakemode">
+                                                                            name="Intakemode" >
                                                                             <mat-option></mat-option>
                                                                             <!-- <mat-option *ngFor="let m of IntakemodeList" [value]="m">
                                                                                                                                                                     {{m.Intakemode}}
@@ -1742,168 +1760,184 @@
                                                                         <div fxFlex.gt-sm="100%" fxFlex
                                                                             fxLayout="column">
 
-                                                                            <mat-table class="table2" class="h-250"
-                                                                                matSort [dataSource]="dsOxygenTable"
-                                                                                [@animateStagger]="{value:'50'}"
+                                                                            <mat-table class="table2" class="h-250" matSort [dataSource]="dsOxygenTable" [@animateStagger]="{value:'50'}"
                                                                                 style="overflow: auto;">
-
-                                                                                <ng-container matColumnDef="Date">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Date </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Date}} </mat-cell>
+                                                                            
+                                                                                <ng-container matColumnDef="Date" sticky>
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
+                                                                                        DateTime </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
+                                                                                        {{element.EntryDate | date:'dd/MM/YYYY'}}-{{element.EntryTime | date:'hh:mm'}} </mat-cell>
+                                                                                </ng-container>  
+                                                                            
+                                                                                <ng-container matColumnDef="Mode">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        Mode </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.Mode}} </mat-cell>
                                                                                 </ng-container>
-
-                                                                                <ng-container matColumnDef="Time">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Time </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Time}} </mat-cell>
+                                                                            
+                                                                                <ng-container matColumnDef="TidolV">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        TidolV </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.TidolV}}
+                                                                                    </mat-cell>
                                                                                 </ng-container>
-
-
-                                                                                <ng-container matColumnDef="IV">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        IV </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.IV}} </mat-cell>
+                                                                            
+                                                                            
+                                                                                <ng-container matColumnDef="SetRange">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        SetRange </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.SetRange}} </mat-cell>
                                                                                 </ng-container>
-
-                                                                                <ng-container matColumnDef="Infusions">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Infusions </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Infusions}}
+                                                                            
+                                                                                <ng-container matColumnDef="IPAP">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        IPAP </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.IPAP}} </mat-cell>
+                                                                                </ng-container>
+                                                                            
+                                                                            
+                                                                                <ng-container matColumnDef="MinuteV">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        MinuteV </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.MinuteV}} </mat-cell>
+                                                                                </ng-container>
+                                                                            
+                                                                                <ng-container matColumnDef="RateTotal">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        RateTotal </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.RateTotal}} </mat-cell>
+                                                                                </ng-container>
+                                                                            
+                                                                                <ng-container matColumnDef="EPAP">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        EPAP </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.EPAP}}
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+                                                                            
+                                                                            
+                                                                                <ng-container matColumnDef="Peep">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        Peep </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.Peep}}
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+                                                                            
+                                                                                <ng-container matColumnDef="PC">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        PC </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.PC}}
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
-
-                                                                                <ng-container matColumnDef="Boluses">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Boluses </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Boluses}} </mat-cell>
-                                                                                </ng-container>
-
-                                                                                <ng-container matColumnDef="Peroral">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Peroral </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Peroral}} </mat-cell>
-                                                                                </ng-container>
-
-
-                                                                                <ng-container matColumnDef="Perrt">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Perrt </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Perrt}} </mat-cell>
-                                                                                </ng-container>
-
-                                                                                <ng-container matColumnDef="Perjt">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        Perjt </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Perjt}} </mat-cell>
-                                                                                </ng-container>
-
-                                                                                <ng-container
-                                                                                    matColumnDef="IntakeOther">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        IntakeOther </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.IntakeOther}}
+                                                                                <ng-container matColumnDef="MVPercentage">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        MVPercentage </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.MVPercentage}}
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
+                                                                                <ng-container matColumnDef="PrSup">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        PrSup </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.PrSup}}
+                                                                                    </mat-cell>
+                                                                                </ng-container> 
 
-                                                                                <ng-container matColumnDef="Urine">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        patientId </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.patientId}}
+                                                                                <ng-container matColumnDef="FIO2">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        FIO2 </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.FIO2}}
+                                                                                    </mat-cell>
+                                                                                </ng-container> 
+
+                                                                                <ng-container matColumnDef="IE">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        IE </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.IE}}
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
-                                                                                <ng-container matColumnDef="Drange">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
-                                                                                        PatientName </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.PatientName}}
+                                                                                <ng-container matColumnDef="OxygenRate">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        OxygenRate </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.OxygenRate}}
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
-                                                                                <ng-container matColumnDef="Action">
-                                                                                    <mat-header-cell *matHeaderCellDef
-                                                                                        mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
+                                                                                <ng-container matColumnDef="SaturationWithO2">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">
+                                                                                        SaturationWithO2 </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
+                                                                                        {{element.SaturationWithO2}}
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container matColumnDef="FlowTrigger">
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        FlowTrigger </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.FlowTrigger}}
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+
+                                                                                <ng-container matColumnDef="CreatedBy" stickyEnd>
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                        CreatedBy </mat-header-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                        {{element.CreatedBy}}
+                                                                                    </mat-cell>
+                                                                                </ng-container>
+                                                                            
+                                                                                <ng-container matColumnDef="Action" stickyEnd>
+                                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">
                                                                                         Action </mat-header-cell>
-                                                                                    <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.Action}} </mat-cell>
+                                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
+                                                                                        <button mat-icon-button (click)="onEditOxygen(element)" matTooltip="Edit">
+                                                                                            <mat-icon>edit</mat-icon>
+                                                                                        </button>
+                                                                                        <button mat-icon-button (click)="deleteOxygenTableRow(element)" color="warn">
+                                                                                            <mat-icon matTooltip="Delete">delete_outline</mat-icon>
+                                                                                        </button>  
+                                                                                    </mat-cell>
                                                                                 </ng-container>
-
+                                                                            
                                                                                 <ng-container matColumnDef="loading">
-                                                                                    <mat-header-cell *matFooterCellDef
-                                                                                        colspan="6"
-                                                                                        style="display: none;">
+                                                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                                                                     </mat-header-cell>
                                                                                 </ng-container>
-
+                                                                            
                                                                                 <ng-container matColumnDef="noData">
-                                                                                    <mat-footer-cell *matFooterCellDef
-                                                                                        colspan="6">
+                                                                                    <mat-footer-cell *matFooterCellDef colspan="6">
                                                                                         no data found...
                                                                                     </mat-footer-cell>
                                                                                 </ng-container>
-
-                                                                                <mat-header-row class="accent"
-                                                                                    *matHeaderRowDef="displayedOxygen; sticky: true">
+                                                                            
+                                                                                <mat-header-row class="accent min-width-1850" *matHeaderRowDef="displayedOxygen; sticky: true">
                                                                                 </mat-header-row>
-                                                                                <mat-row
-                                                                                    *matRowDef="let row; columns: displayedOxygen;"
-                                                                                    class="element"
+                                                                                <mat-row *matRowDef="let element; columns: displayedOxygen;" class="element min-width-1850"
                                                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                                                <mat-footer-row
-                                                                                    *matFooterRowDef="['noData']"
+                                                                                <mat-footer-row *matFooterRowDef="['noData']"
                                                                                     [ngClass]="{'hide':!(dsOxygenTable!=null && dsOxygenTable.data.length==0)}">
                                                                                 </mat-footer-row>
                                                                             </mat-table>
                                                                             <!-- <mat-paginator #Outputpaginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons>
-                                                                                                                    </mat-paginator> -->
+                                                                            </mat-paginator> -->
                                                                         </div>
                                                                     </mat-card>
                                                                 </div>
@@ -1921,13 +1955,15 @@
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px">
+                                                                    
+                                                                        <input matInput name="OxygenId"  type="hidden" formControlName="OxygenId"> 
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>Tidol V (ml)</mat-label>
                                                                         <input matInput name="Tidol" required
                                                                             formControlName="Tidol" type="text"
                                                                             OnlyNumber id="Tidol" autocomplete="off"
-                                                                            #Tidol>
+                                                                            #Tidol (keydown)="OnEnterTidol($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -1935,7 +1971,7 @@
                                                                         <input matInput name="SetRange" required
                                                                             formControlName="SetRange" type="text"
                                                                             OnlyNumber id="SetRange" autocomplete="off"
-                                                                            #SetRange>
+                                                                            #SetRange (keydown)="OnEnterSetRange($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -1943,7 +1979,7 @@
                                                                         <input matInput name="IPAP" required
                                                                             formControlName="IPAP" type="text"
                                                                             OnlyNumber id="IPAP" autocomplete="off"
-                                                                            #IPAP>
+                                                                            #IPAP (keydown)="OnEnterIPAP($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px">
@@ -1953,7 +1989,7 @@
                                                                         <input matInput name="minuteV" required
                                                                             formControlName="minuteV" type="text"
                                                                             OnlyNumber id="minuteV" autocomplete="off"
-                                                                            #minuteV>
+                                                                            #minuteV (keydown)="OnEnterminuteV($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -1961,7 +1997,7 @@
                                                                         <input matInput name="RateTotal" required
                                                                             formControlName="RateTotal" type="text"
                                                                             OnlyNumber id="RateTotal" autocomplete="off"
-                                                                            #RateTotal>
+                                                                            #RateTotal (keydown)="OnEnterRateTotal($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -1969,7 +2005,7 @@
                                                                         <input matInput name="EPAP" required
                                                                             formControlName="EPAP" type="text"
                                                                             OnlyNumber id="EPAP" autocomplete="off"
-                                                                            #EPAP>
+                                                                            #EPAP (keydown)="OnEnterEPAP($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px">
@@ -1979,21 +2015,21 @@
                                                                         <input matInput name="Peep" required
                                                                             formControlName="Peep" type="text"
                                                                             OnlyNumber id="Peep" autocomplete="off"
-                                                                            #Peep>
+                                                                            #Peep1  (keydown)="OnEnterPeep1($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>PC</mat-label>
                                                                         <input matInput name="PC" required
                                                                             formControlName="PC" type="text" OnlyNumber
-                                                                            id="PC" autocomplete="off" #PC>
+                                                                            id="PC" autocomplete="off" #PC  (keydown)="OnEnterPC($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>% MV</mat-label>
                                                                         <input matInput name="MV" required
                                                                             formControlName="MV" type="text" OnlyNumber
-                                                                            id="MV" autocomplete="off" #MV>
+                                                                            id="MV" autocomplete="off" #MV  (keydown)="OnEnterMV($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px">
@@ -2002,7 +2038,8 @@
                                                                         <mat-label>Pr.Sup (cm)</mat-label>
                                                                         <input matInput name="Sup" required
                                                                             formControlName="Sup" type="text" OnlyNumber
-                                                                            id="Sup" autocomplete="off" #Sup>
+                                                                            id="Sup" autocomplete="off" #Sup
+                                                                            (keydown)="OnEnterSup($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -2010,14 +2047,14 @@
                                                                         <input matInput name="FiO2" required
                                                                             formControlName="FiO2" type="text"
                                                                             OnlyNumber id="FiO2" autocomplete="off"
-                                                                            #FiO2>
+                                                                            #FiO2  (keydown)="OnEnterFiO2($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                                         <mat-label>I:E</mat-label>
                                                                         <input matInput name="IE" required
                                                                             formControlName="IE" type="text" OnlyNumber
-                                                                            id="IE" autocomplete="off" #IE>
+                                                                            id="IE" autocomplete="off" #IE  (keydown)="OnEnterIE($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px">
@@ -2027,7 +2064,8 @@
                                                                         <input matInput name="OxygenRate" required
                                                                             formControlName="OxygenRate" type="text"
                                                                             OnlyNumber id="OxygenRate"
-                                                                            autocomplete="off" #OxygenRate>
+                                                                            autocomplete="off" #OxygenRate
+                                                                            (keydown)="OnEnterOxygenRate($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -2035,7 +2073,8 @@
                                                                         <input matInput name="SaturationWitho2" required
                                                                             formControlName="SaturationWitho2"
                                                                             type="text" OnlyNumber id="SaturationWitho2"
-                                                                            autocomplete="off" #SaturationWitho2>
+                                                                            autocomplete="off" #SaturationWitho21
+                                                                            (keydown)="OnEnterSaturationWitho21($event)">
                                                                     </mat-form-field>
 
                                                                     <mat-form-field appearance="outline" fxFlex="30%">
@@ -2043,14 +2082,15 @@
                                                                         <input matInput name="FlowTrigger" required
                                                                             formControlName="FlowTrigger" type="text"
                                                                             OnlyNumber id="FlowTrigger"
-                                                                            autocomplete="off" #FlowTrigger>
+                                                                            autocomplete="off" #FlowTrigger
+                                                                            (keydown)="OnEnterFlowTrigger($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div fxLayout="row" fxLayoutGap="4px"
                                                                     fxLayoutAlign="end center">
                                                                     <button
-                                                                        class="btn btn-danger-outline">Reset</button>
-                                                                    <button class="btn btn-primary">Save</button>
+                                                                        class="btn btn-danger-outline" (click)="OnCloseOxygen()">Reset</button>
+                                                                    <button class="btn btn-primary" (click)="OnsaveOxygenVenti()">Save</button>
                                                                 </div>
                                                             </div>
                                                         </form>
