@@ -18,6 +18,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() options: any[] = [];
     @Input() mode: string;
     @Output() selectDdlObject = new EventEmitter<any>();
+    @Output() dataBoundFinished = new EventEmitter<any>();
     apiUrl: string = "Dropdown/GetBindDropDown?mode=";
 
     control = new FormControl();
@@ -25,7 +26,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";
-    @Input() IsMultiPle:boolean;
+    @Input() IsMultiPle: boolean;
 
     private _disabled: boolean = false;
     private _focused: boolean = false;
@@ -96,19 +97,21 @@ export class AirmidAutocompleteComponent implements OnInit {
         if (this.options?.length > 0) {
             this.ddls = this.options as [];
             this.filteredDdls.next(this.ddls.slice());
-
+            this.dataBoundFinished.emit({ controlName: this.formControlName, value: true });
         } else {
             this._httpClient
                 .GetData(this.apiUrl + this.mode)
                 .subscribe((data: any) => {
                     this.ddls = data as [];
                     this.filteredDdls.next(this.ddls.slice());
-                        if (this.value) {
-                            this.formGroup.get(this.formControlName).setValue(this.value.toString());
-                            this.control.setValue(this.value.toString());
-                            this.stateChanges.next();
-                            this.changeDetectorRefs.detectChanges();
-                        }
+                    if (this.value) {
+                        debugger
+                        this.formGroup.get(this.formControlName).setValue(this.value.toString());
+                        this.control.setValue(this.value.toString());
+                        this.stateChanges.next();
+                        this.changeDetectorRefs.detectChanges();
+                    }
+                    this.dataBoundFinished.emit({ controlName: this.formControlName, value: true });
                 });
         }
 
@@ -151,5 +154,10 @@ export class AirmidAutocompleteComponent implements OnInit {
     public onDdlChange($event) {
         this.formGroup.controls[this.formControlName].setValue($event.value);
         this.selectDdlObject.emit($event.value);
+    }
+    SetSelection(value) {
+        debugger
+        this.formGroup.controls[this.formControlName].setValue(value);
+        this.selectDdlObject.emit(value);
     }
 }

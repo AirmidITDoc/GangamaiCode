@@ -17,6 +17,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { MatDialogRef } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-doctor-master",
@@ -27,43 +28,56 @@ import { ToastrService } from "ngx-toastr";
 })
 export class DoctorMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "DoctoreMaster/List",
         columnsList: [
-            { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA', width:50},
-            { heading: "Prefix Id", key: "prefixId", sort: true, align: 'left', emptySign: 'NA', width:30 },
-            { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width:60 },
-            { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Prefix Id", key: "prefixId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+            { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorTypeId", key: "doctorTypeId", sort: true, align: 'left', emptySign: 'NA', width:30 },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "AgeDay Name", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "PassportNo", key: "passportNo", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "Esino", key: "esino", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "RegDate", key: "regDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "MahRegNo", key: "mahRegNo", type: gridColumnTypes.status, align: "center", width:50 },
-            { heading: "MahRegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "PanCardNo", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA', width:50 },
-            { heading: "AadharCardNo", key: "aadharCardNo", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "DoctorTypeId", key: "doctorTypeId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "AgeDay Name", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "PassportNo", key: "passportNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Esino", key: "esino", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "RegDate", key: "regDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "MahRegNo", key: "mahRegNo", type: gridColumnTypes.status, align: "center", width: 50 },
+            { heading: "MahRegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PanCardNo", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "AadharCardNo", key: "aadharCardNo", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            debugger
+                            let that = this;
+                            const dialogRef = this._matDialog.open(NewDoctorComponent,
+                                {
+                                    maxWidth: "95vw",
+                                    height: '95%',
+                                    width: '70%',
+                                    data:{doctorId: data.doctorId}
+                                });
+                            dialogRef.afterClosed().subscribe(result => {
+                                if (result) {
+                                    that.grid.bindGridData();
+                                }
+                            });
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -78,39 +92,39 @@ export class DoctorMasterComponent implements OnInit {
             { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
 
     constructor(
-        public _doctorService: DoctorMasterService,public toastr: ToastrService,
+        public _doctorService: DoctorMasterService, public toastr: ToastrService,
         private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog,
-       
+
     ) { }
 
     ngOnInit(): void {
-       
+
     }
     onSearchClear() {
         this._doctorService.myformSearch.reset({
             DoctorNameSearch: "",
             IsDeletedSearch: "2",
         });
-       
+
     }
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();
-      }
+    }
     onClear() {
         this._doctorService.myform.reset({ IsDeleted: "false" });
         this._doctorService.initializeFormGroup();
     }
 
     onSearch() {
-       
+
     }
-   
+
 
     // currentStatus = 1;
     // toggle(val: any) {
@@ -155,7 +169,7 @@ export class DoctorMasterComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-           
+
         });
     }
     changeStatus(status: any) {
@@ -173,7 +187,7 @@ export class DoctorMasterComponent implements OnInit {
                 break;
         }
     }
-  
+
     onDeactive(doctorId) {
         debugger
         this.confirmDialogRef = this._matDialog.open(
@@ -188,7 +202,7 @@ export class DoctorMasterComponent implements OnInit {
             debugger
             if (result) {
                 this._doctorService.deactivateTheStatus(doctorId).subscribe((data: any) => {
-                  //  this.msg = data
+                    //  this.msg = data
                     if (data.StatusCode == 200) {
                         this.toastr.success(
                             "Record updated Successfully.",
@@ -214,13 +228,13 @@ export class DoctorMasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-           
+
         });
     }
 
 
 
-    
+
 }
 
 export class DoctorMaster {
@@ -232,7 +246,7 @@ export class DoctorMaster {
     dateofBirth: any;
     address: string;
     city: string;
-    cityId:any;
+    cityId: any;
     pin: string;
     phone: string;
     mobile: string;
@@ -265,9 +279,9 @@ export class DoctorMaster {
     panCardNo: any;
     aadharCardNo: any;
     isInHouseDoctor: any;
-    Education:any;
-    ESINO:any;
-    Signature:string;
+    Education: any;
+    ESINO: any;
+    signature: string;
     isOnCallDoctor: any;
     /**
      * Constructor
@@ -293,7 +307,7 @@ export class DoctorMaster {
             this.education = DoctorMaster.education || "";
             this.isConsultant = DoctorMaster.isConsultant || 1;
             this.isRefDoc = DoctorMaster.isRefDoc || 0;
-          //  this.IsDeleted = DoctorMaster.IsDeleted || "false";
+            //  this.IsDeleted = DoctorMaster.IsDeleted || "false";
             this.doctorTypeId = DoctorMaster.doctorTypeId || "";
             this.Age = DoctorMaster.Age || "";
             this.ageYear = DoctorMaster.ageYear || "";
@@ -311,14 +325,14 @@ export class DoctorMaster {
             this.IsActive = DoctorMaster.IsActive || 1;
             this.refDocHospitalName = DoctorMaster.refDocHospitalName || "";
             this.IsDeletedSearch = DoctorMaster.IsDeletedSearch || "";
-            this.regNo= DoctorMaster.regNo || "";
-            this.mahRegNo= DoctorMaster.mahRegNo || "";
-            this.panCardNo= DoctorMaster.panCardNo || "";
-            this.aadharCardNo= DoctorMaster.aadharCardNo || "";
-            this.isInHouseDoctor= DoctorMaster.isInHouseDoctor || "";
-            this.ESINO= DoctorMaster.ESINO || "";
-            this.Signature=DoctorMaster.Signature||"";
-          this.isOnCallDoctor=DoctorMaster.isOnCallDoctor||0;
+            this.regNo = DoctorMaster.regNo || "";
+            this.mahRegNo = DoctorMaster.mahRegNo || "";
+            this.panCardNo = DoctorMaster.panCardNo || "";
+            this.aadharCardNo = DoctorMaster.aadharCardNo || "";
+            this.isInHouseDoctor = DoctorMaster.isInHouseDoctor || "";
+            this.ESINO = DoctorMaster.ESINO || "";
+            this.signature = DoctorMaster.Signature || "";
+            this.isOnCallDoctor = DoctorMaster.isOnCallDoctor || 0;
         }
     }
 }
