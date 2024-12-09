@@ -25,68 +25,119 @@ export class SupplierMasterService {
             SupplierId: [""],
             SupplierName:['', [
                 Validators.required,
-                Validators.pattern("^[a-zA-Z ]*$"),
-                Validators.maxLength(200),
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
               ]],
             ContactPerson:['', [ 
-                Validators.pattern("^[a-zA-Z._ -]+$"),
-                Validators.maxLength(100),
+                // Validators.required,
+                // Validators.pattern("^[a-zA-Z._ -]+$"),
+                // Validators.maxLength(100),
               ]],
 
-            Address: [""],
+            Address: ["", Validators.required],
             CityId: ["", Validators.required],
             CityName: [""],
             StateId: ["", Validators.required],
             StateName: [""],
-            CountryId: ["", Validators.required],
+            CountryId: [""],
             CountryName: [""],
-            CreditPeriod: [""],
-            Mobile:['', [Validators.required, Validators.pattern("^[0-9]*$"),
-            Validators.minLength(10),
-            Validators.maxLength(10),]],
-            Phone:['', [Validators.pattern("^[0-9]*$"),
-            Validators.minLength(10),
-            Validators.maxLength(10),]],
-            Fax: ["", Validators.maxLength(10)],
-            Email: [
-                "",
-                Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+            CreditPeriod: ["",
+                [
+                    Validators.required
+                ]
             ],
-            ModeOfPayment: [""],// Validators.pattern("[0-9]+")],
-            TermOfPayment: [""],// Validators.pattern("[0-9]+")],
-            TaxNature: ["", Validators.pattern("[0-9]+")],
-            CurrencyId: ["", Validators.pattern("[0-9]+")],
-            Octroi: ["", Validators.pattern("[0-9]+")],
-            Freight: ['', [Validators.pattern("^[0-9]*$"),
-                Validators.minLength(1),
-                Validators.maxLength(10),]],
-            GSTNo: ["", [Validators.minLength(15),
-            Validators.maxLength(15)],], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
-            PanNo: ["",Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")],
-            StoreId: ["", Validators.required],
+            Mobile:['', 
+                [
+                    Validators.required
+                ]
+            ],
+            Phone:['', 
+                [
+                    Validators.required
+                ]
+            ],
+            Fax: ["",
+                [
+                    Validators.required,
+                    Validators.maxLength(10)
+                ]
+            ],
+            Email: ["",
+                [
+                    Validators.required,
+                    Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
+                ]
+            ],
+            ModeOfPayment: ["", Validators.required],
+            TermOfPayment: ["", Validators.required],
+            TaxNature: ["", Validators.required],
+            CurrencyId: [""],// Validators.pattern("[0-9]+")
+            Octroi: [""],//Validators.pattern("[0-9]+")
+            Freight: ['', 
+                    [
+                        Validators.required,
+                        Validators.pattern("^[0-9]*$"),
+                        Validators.maxLength(10),
+                    ]
+                ],
+            GSTNo: ["", 
+                [
+                    Validators.required,
+                    Validators.maxLength(15)
+                ]
+            ], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
+            PanNo: ["",
+                [
+                    Validators.required,
+                    // Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+                ]
+            ],
+            StoreId: [""],
             StoreName: [""],
             AddedBy: [""],
             IsDeleted: ["true"],
             UpdatedBy: [""],
             SupplierType:[""],
-            LicNo: [""],
+            LicNo: ["", Validators.required],
             ExpDate:[{ value: this.registerObj.ExpDate}],
             // DlNo:["",Validators.pattern("^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$")],
           
-            DlNo:[''],
+            DlNo:['', Validators.required],
             MsmNo:[0],
             MSMNo:[0],
             Apprval:[""],
             Pincode:[""],
-            Taluka:[""],
-            BankName:[""],
-            BankNo:['', [Validators.pattern("[0-9]{9,18}")]],
-            BankBranch:[""],
-            IFSCcode:["",[Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
+            Taluka:['', [
+                Validators.required,
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+              ]],
+            BankName:["", Validators.required],
+            BankNo:['', 
+                [
+                    Validators.required,
+                    Validators.pattern("[0-9]{9,18}"),
+                    Validators.minLength(9),
+                    Validators.maxLength(18)
+                ]
+            ],
+            BankBranch:['', [
+                Validators.required,
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+              ]],
+            IFSCcode:["",
+                [
+                    Validators.required,
+                    // Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")
+                ]
+            ],
             VenderTypeId:[""],
-            OpeningBal:['', [Validators.pattern("^[0-9]*$"),
-                Validators.minLength(1),
-                Validators.maxLength(10),]],
+            OpeningBal:['', 
+                [
+                    Validators.required
+                    // Validators.pattern("^[0-9]*$"),
+                    // Validators.minLength(1),
+                    // Validators.maxLength(10)
+                ]
+            ],
             CreateApproval:[true],
         });
     }

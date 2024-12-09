@@ -26,6 +26,7 @@ export class ItemMasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
+    autocompleteModestoreName: string="StoreName";
    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -89,8 +90,8 @@ export class ItemMasterComponent implements OnInit {
         filters: [
             { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -110,6 +111,11 @@ export class ItemMasterComponent implements OnInit {
         //     }
         // });
     }
+
+    storeId=0;
+    selectChangestoreName(obj:any){
+        this.storeId=obj.value;
+      }
 
     isLoading = true;
     msg: any;
@@ -133,7 +139,7 @@ export class ItemMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.getItemMasterList();
+        // this.getItemMasterList();
     }
 
     onSearchClear() {
@@ -141,7 +147,7 @@ export class ItemMasterComponent implements OnInit {
             ItemNameSearch: "",
             IsDeletedSearch: "2",
         });
-        this.getItemMasterList();
+        // this.getItemMasterList();
     }
 
     onClear() {
@@ -150,25 +156,25 @@ export class ItemMasterComponent implements OnInit {
     }
 
     onSearch() {
-        this.getItemMasterList();
+        // this.getItemMasterList();
     }
     chargeslist:any=[];
-    getItemMasterList() {
-        this.sIsLoading = '';
-        var m_data = {
-            ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
-            StoreID: this._loggedService.currentUserValue.storeId
-        };
-        console.log(m_data)
-        this._itemService.getItemMasterList(m_data).subscribe((data) => {
-                this.DSItemMasterList.data = data as ItemMaster[];  
-                this.DSItemMasterList.sort = this.sort;
-                this.DSItemMasterList.paginator = this.paginator; 
-                console.log(this.DSItemMasterList.data)
-            },
-            (error) => (this.isLoading = false)
-        );
-    }
+    // getItemMasterList() {
+    //     this.sIsLoading = '';
+    //     var m_data = {
+    //         ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
+    //         StoreID: this._loggedService.currentUserValue.storeId
+    //     };
+    //     console.log(m_data)
+    //     this._itemService.getItemMasterList(m_data).subscribe((data) => {
+    //             this.DSItemMasterList.data = data as ItemMaster[];  
+    //             this.DSItemMasterList.sort = this.sort;
+    //             this.DSItemMasterList.paginator = this.paginator; 
+    //             console.log(this.DSItemMasterList.data)
+    //         },
+    //         (error) => (this.isLoading = false)
+    //     );
+    // }
 
     onEdit(row) {
         var m_data = {
@@ -222,7 +228,7 @@ export class ItemMasterComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getItemMasterList();
+            // this.getItemMasterList();
         });
     }
     // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -245,7 +251,7 @@ export class ItemMasterComponent implements OnInit {
                 this._itemService
                     .deactivateTheStatus(Query)
                     .subscribe((data) => (this.msg = data));
-                this.getItemMasterList();
+                // this.getItemMasterList();
             }
             this.confirmDialogRef = null;
         });
@@ -260,7 +266,7 @@ export class ItemMasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-            this.getItemMasterList();
+            // this.getItemMasterList();
         });
     }
 }

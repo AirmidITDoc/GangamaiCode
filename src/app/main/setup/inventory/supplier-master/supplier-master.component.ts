@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
     selector: "app-supplier-master",
@@ -22,8 +23,12 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
     animations: fuseAnimations,
 })
 export class SupplierMasterComponent implements OnInit {
+    
+    autocompleteModestoreName: string="StoreName";
     // new code
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel={
         apiUrl:"Supplier/SupplierList",
         columnsList:[
@@ -31,9 +36,11 @@ export class SupplierMasterComponent implements OnInit {
             {heading: "ContactPerson", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:250 },
             {heading: "CityName", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:100 },
+            {heading: "StateName", key: "stateName", sort:true, align:'left',emptySign: 'NA', width:100 },
+            {heading: "CreditPeriod", key: "creditPeriod", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:100 },
-            // {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:100 },
+            {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:100 },
             {heading: "GSTNo", key: "gstNo", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "PanNo", key: "panNo", sort:true, align:'left',emptySign: 'NA', width:100 },
@@ -46,7 +53,23 @@ export class SupplierMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            // this.onDeactive(data.bankId); // DELETE Records
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that= this;
+                                    this._supplierService.deactivateTheStatus(data.supplierId).subscribe((response: any) => {
+                                        this.toastr.success(response.Message);
+                                        that.grid.bindGridData();
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -55,9 +78,7 @@ export class SupplierMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals},
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // {fieldName:"Length", fieldValue:"30", opType:OperatorComparer.Equals},
+            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals}
         ],
         row:25
     }
@@ -82,6 +103,7 @@ export class SupplierMasterComponent implements OnInit {
         }
 
     onSave(obj:any=null){
+        let that = this;
         const dialogRef = this._matDialog.open(SupplierFormMasterComponent,
             {
                 maxWidth: "100vw",
@@ -90,34 +112,19 @@ export class SupplierMasterComponent implements OnInit {
                 data: obj
             });
             dialogRef.afterClosed().subscribe(result => {
-                if(result){
-                    // this.getGenderMasterList();
-                    // How to refresh Grid.
+                if (result) {
+                    that.grid.bindGridData();
                 }
                 console.log('The dialog was closed - Action', result);
             });
     }
+    storeId=0;
+    selectChangestoreName(obj:any){
+        this.storeId=obj.value;
+      }
 
     // onDeactive(bankId) {
-    //     this.confirmDialogRef = this._matDialog.open(
-    //         FuseConfirmDialogComponent,
-    //         {
-    //             disableClose: false,
-    //         }
-    //     );
-    //     this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
-    //         if (result) {
-    //             this._supplierService.deactivateTheStatus(bankId).subscribe((response: any) => {
-    //                 if (response.StatusCode == 200) {
-    //                     this.toastr.success(response.Message);
-    //                     // this.getGenderMasterList();
-    //                     // How to refresh Grid.
-    //                 }
-    //             });
-    //         }
-    //         this.confirmDialogRef = null;
-    //     });
+       
     // }
 
     onEdit(row) {

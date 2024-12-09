@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { map, startWith, takeUntil } from "rxjs/operators";
 import { SupplierMaster, SupplierMasterComponent } from "../supplier-master.component";
 import { SupplierMasterService } from "../supplier-master.service";
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { Observable, ReplaySubject, Subject } from "rxjs";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
@@ -20,6 +20,9 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class SupplierFormMasterComponent implements OnInit {
+
+  supplierForm:FormGroup;
+
     submitted = false;
     CountrycmbList: any = [];
     StatecmbList: any = [];
@@ -98,13 +101,15 @@ export class SupplierFormMasterComponent implements OnInit {
     private _onDestroy = new Subject<void>();
 
     // new API
-    autocompleteModecity:string="City";    
+
+    autocompleteModecity:string="City";   
     autocompleteModestate: string = "State";
     autocompleteModecountry: string = "CountryByState";
     autocompleteModeofpayment: string= "PaymentMode";
     autocompleteModetermofpayment: string= "TermofPayment";
     autocompleteModebankName: string="Bank";
-    autocompleteModestoreName: string="Store";
+    autocompleteModestoreName: string="StoreName";
+    autocompleteModeSupplierType:string="SupplierType"
 
     constructor(
         public _supplierService: SupplierMasterService,
@@ -117,6 +122,7 @@ export class SupplierFormMasterComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.supplierForm=this._supplierService.createSuppliermasterForm();
     // this.getSupplierTypeMasterList();
     // this.getModeofpaymentCombobox();
     // this.getTermofpaymentCombobox();
@@ -158,7 +164,7 @@ export class SupplierFormMasterComponent implements OnInit {
     
     }
     this.getStoreList();
-       this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+       this.filteredOptionsStore = this.supplierForm.get('StoreId').valueChanges.pipe(
             startWith(''),
             map(value => this._filterStore(value)),
 
@@ -167,7 +173,7 @@ export class SupplierFormMasterComponent implements OnInit {
 
 
     get f() {
-        return this._supplierService.myform.controls;
+        return this.supplierForm.controls;
     }
 
     getCountryNameCombobox() {
@@ -181,7 +187,7 @@ export class SupplierFormMasterComponent implements OnInit {
           this._supplierService.getBankMasterCombo().subscribe(data => {
             this.BankNameList1 = data;
             this.optionsBank1= this.BankNameList1.slice();
-            this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
+            this.filteredOptionsBank1 = this.supplierForm.get('BankName').valueChanges.pipe(
               startWith(''),
               map(value => value ? this._filterBankname(value) : this.BankNameList1.slice()),
             );
@@ -189,8 +195,8 @@ export class SupplierFormMasterComponent implements OnInit {
           });
           if (this.data) {
             const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
-            this._supplierService.myform.get('BankName').setValue(ddValue[0]);
-            this._supplierService.myform.updateValueAndValidity();
+            this.supplierForm.get('BankName').setValue(ddValue[0]);
+            this.supplierForm.updateValueAndValidity();
             return;
           } 
           
@@ -211,13 +217,13 @@ export class SupplierFormMasterComponent implements OnInit {
     // getBankNameList1() {
     //     this._supplierService.getBankMasterCombo().subscribe(data => {
     //       this.BankNameList1 = data;  
-    //       this.filteredOptionsBank1 = this._supplierService.myform.get('BankName').valueChanges.pipe(
+    //       this.filteredOptionsBank1 = this.supplierForm.get('BankName').valueChanges.pipe(
     //         map(value => value ? this._filterBank(value) : this.BankNameList1.slice()),
     //       );
     //      if (this.data) {
     //         const ddValue = this.BankNameList1.filter(c => c.BankId == this.data.registerObj.BankId);
-    //         this._supplierService.myform.get('BankName').setValue(ddValue[0]);
-    //         this._supplierService.myform.updateValueAndValidity();
+    //         this.supplierForm.get('BankName').setValue(ddValue[0]);
+    //         this.supplierForm.updateValueAndValidity();
     //         return;
     //       } 
           
@@ -245,16 +251,16 @@ export class SupplierFormMasterComponent implements OnInit {
       
     this._supplierService.getCityMasterCombo().subscribe(data => {
       this.CitycmbList = data;
-      this.filteredOptionsCity = this._supplierService.myform.get('CityId').valueChanges.pipe(
+      this.filteredOptionsCity = this.supplierForm.get('CityId').valueChanges.pipe(
         startWith(''), 
         map(value => value ? this._filterCity(value) : this.CitycmbList.slice()),
         
       );
       if (this.data) {
         const ddValue = this.CitycmbList.filter(c => c.CityId == this.data.registerObj.CityId);
-        this._supplierService.myform.get('CityId').setValue(ddValue[0]);
+        this.supplierForm.get('CityId').setValue(ddValue[0]);
         this.onChangeCityList(ddValue[0])
-        this._supplierService.myform.updateValueAndValidity();
+        this.supplierForm.updateValueAndValidity();
         return;
       } 
     });
@@ -283,7 +289,7 @@ var m = {
     this._supplierService.getSuppliertypeList(m).subscribe(data => {
       this.SuppliertypecmbList = data;
       this.optionsSuppliertype= this.SuppliertypecmbList.slice();
-      this.filteredOptionsSuppliertype = this._supplierService.myform.get('SupplierType').valueChanges.pipe(
+      this.filteredOptionsSuppliertype = this.supplierForm.get('SupplierType').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterSupplierType(value) : this.SuppliertypecmbList.slice()),
       );
@@ -301,9 +307,9 @@ var m = {
   //   this.SuppliertypecmbList = data;
   //     if (this.data) {
   //       const ddValue = this.SuppliertypecmbList.filter(c => c.ConstantId == this.data.registerObj.SupplierType);
-  //       this._supplierService.myform.get('SupplierType').setValue(ddValue[0]);
+  //       this.supplierForm.get('SupplierType').setValue(ddValue[0]);
   //       // this.onChangeCityList(this.data.registerObj.CityId)
-  //       this._supplierService.myform.updateValueAndValidity();
+  //       this.supplierForm.updateValueAndValidity();
   //       return;
   //     } 
   //   });
@@ -333,7 +339,7 @@ var m = {
   //   this._supplierService.getModeofpaymentMasterCombo().subscribe(data => {
   //     this.PaymentmodecmbList = data;
   //     this.optionsModeofpayment= this.PaymentmodecmbList.slice();
-  //     this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
+  //     this.filteredOptionsModeofpayment = this.supplierForm.get('ModeOfPayment').valueChanges.pipe(
   //       startWith(''),
   //       map(value => value ? this._filterModeofpayment(value) : this.PaymentmodecmbList.slice()),
   //     );
@@ -346,14 +352,14 @@ var m = {
       
     this._supplierService.getModeofpaymentMasterCombo().subscribe(data => {
       this.PaymentmodecmbList = data;
-      this.filteredOptionsModeofpayment = this._supplierService.myform.get('ModeOfPayment').valueChanges.pipe(
+      this.filteredOptionsModeofpayment = this.supplierForm.get('ModeOfPayment').valueChanges.pipe(
         startWith(''), 
         map(value => value ? this._filterModeofpayment(value) : this.PaymentmodecmbList.slice()),
       );
       if (this.data) {
         const ddValue = this.PaymentmodecmbList.filter(c => c.id == this.data.registerObj.ModeOfPayment);
-        this._supplierService.myform.get('ModeOfPayment').setValue(ddValue[0]);
-       this._supplierService.myform.updateValueAndValidity();
+        this.supplierForm.get('ModeOfPayment').setValue(ddValue[0]);
+       this.supplierForm.updateValueAndValidity();
         return;
       } 
     });
@@ -383,7 +389,7 @@ var m = {
   //   this._supplierService.getTermofpaymentMasterCombo().subscribe(data => {
   //     this.PaymenttermcmbList = data;
   //     this.optionsTermofpayment= this.PaymenttermcmbList.slice();
-  //     this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
+  //     this.filteredOptionsTermofpayment = this.supplierForm.get('TermOfPayment').valueChanges.pipe(
   //       startWith(''),
   //       map(value => value ? this._filterTermofpayment(value) : this.PaymenttermcmbList.slice()),
   //     );
@@ -397,14 +403,14 @@ var m = {
     this._supplierService.getTermofpaymentMasterCombo().subscribe(data => {
       this.PaymenttermcmbList = data;
       
-    this.filteredOptionsTermofpayment = this._supplierService.myform.get('TermOfPayment').valueChanges.pipe(
+    this.filteredOptionsTermofpayment = this.supplierForm.get('TermOfPayment').valueChanges.pipe(
       startWith(''), 
       map(value => value ? this._filterTermofpayment(value) : this.PaymenttermcmbList.slice()),
     );
       if (this.data) {
         const ddValue = this.PaymenttermcmbList.filter(c => c.Id == this.data.registerObj.TermOfPayment);
-        this._supplierService.myform.get('TermOfPayment').setValue(ddValue[0]);
-       this._supplierService.myform.updateValueAndValidity();
+        this.supplierForm.get('TermOfPayment').setValue(ddValue[0]);
+       this.supplierForm.updateValueAndValidity();
         return;
       } 
     });
@@ -462,7 +468,7 @@ var m = {
       
     //   this._supplierService.getStoreMasterCombo().subscribe(data => {
     //     this.StorecmbList = data;
-    //     this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe( 
+    //     this.filteredOptionsStore = this.supplierForm.get('StoreId').valueChanges.pipe( 
     //       map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
     //     );
     //     // this.optionsStore = this.StorecmbList.slice();
@@ -470,8 +476,8 @@ var m = {
     //       debugger
     //       this.data.registerObj.StoreId=this._loggedService.currentUserValue.storeId
     //       const ddValue = this.StorecmbList.filter(c => c.StoreId == this.data.registerObj.StoreId);
-    //       this._supplierService.myform.get('StoreId').setValue(ddValue[0]);
-    //      this._supplierService.myform.updateValueAndValidity();
+    //       this.supplierForm.get('StoreId').setValue(ddValue[0]);
+    //      this.supplierForm.updateValueAndValidity();
     //       return;
     //     } 
         
@@ -487,7 +493,7 @@ var m = {
           if (that.data)
               this.getStoreNameCombobox();
           this.optionsStore = this.StorecmbList.slice();
-          this.filteredOptionsStore = this._supplierService.myform.get('StoreId').valueChanges.pipe(
+          this.filteredOptionsStore = this.supplierForm.get('StoreId').valueChanges.pipe(
               startWith(''),
               map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
           );
@@ -535,15 +541,15 @@ var m = {
 
       this._supplierService.getVenderMasterCombo().subscribe(data => {
           this.VendercmbList = data; 
-          this.filteredOptionsVender = this._supplierService.myform.get('VenderTypeId').valueChanges.pipe(
+          this.filteredOptionsVender = this.supplierForm.get('VenderTypeId').valueChanges.pipe(
            
             map(value => value ? this._filtervender(value) : this.VendercmbList.slice()),
           );
       
           if (this.data) {
             const ddValue = this.VendercmbList.filter(c => c.VenderTypeId == this.data.registerObj.VenderTypeId);
-            this._supplierService.myform.get('VenderTypeId').setValue(ddValue[0]);
-           this._supplierService.myform.updateValueAndValidity();
+            this.supplierForm.get('VenderTypeId').setValue(ddValue[0]);
+           this.supplierForm.updateValueAndValidity();
             return;
           } 
       });
@@ -588,9 +594,9 @@ var m = {
 //         });
 //         return;
 //     }
-//     if (( this._supplierService.myform.get("CityId").value.CityId == undefined ||
-//      this._supplierService.myform.get("CityId").value.CityId == undefined ||
-//        this._supplierService.myform.get("CityId").value.CityId == undefined)) {
+//     if (( this.supplierForm.get("CityId").value.CityId == undefined ||
+//      this.supplierForm.get("CityId").value.CityId == undefined ||
+//        this.supplierForm.get("CityId").value.CityId == undefined)) {
 //         this.toastr.warning('Please select  City.', 'Warning !', {
 //             toastClass: 'tostr-tost custom-toast-warning',
 //         });
@@ -616,33 +622,39 @@ var m = {
 // }
 
     let termsofPayment = 0;
-    if (this._supplierService.myform.get("TermOfPayment").value)
-      termsofPayment =this._supplierService.myform.get("TermOfPayment").value.Id;
+    if (this.supplierForm.get("TermOfPayment").value)
+      termsofPayment =this.supplierForm.get("TermOfPayment").value.Id;
 
     let BankId = 0;
-    if (this._supplierService.myform.get("BankName").value)
-      BankId =this._supplierService.myform.get("BankName").value.BankId;
+    if (this.supplierForm.get("BankName").value)
+      BankId =this.supplierForm.get("BankName").value.BankId;
 
     let bankname = '';
-    if (this._supplierService.myform.get("BankName").value)
-      bankname = this._supplierService.myform.get("BankName").value.BankName;
+    if (this.supplierForm.get("BankName").value)
+      bankname = this.supplierForm.get("BankName").value.BankName;
 
     let venderTypeId = 0;
-    if (this._supplierService.myform.get("VenderTypeId").value)
-      venderTypeId = this._supplierService.myform.get("VenderTypeId").value.VenderTypeId ;
+    if (this.supplierForm.get("VenderTypeId").value)
+      venderTypeId = this.supplierForm.get("VenderTypeId").value.VenderTypeId ;
 
 
-            if (!this._supplierService.myform.get("SupplierId").value) {
+            if(this.supplierForm.invalid){
+              this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass:'tostr-tost custom-toast-warning',
+              })
+              return;
+            }else{
+              if (!this.supplierForm.get("SupplierId").value) {
             
               
                 var data2 = [];
                 // this.selectedItems.forEach((element) => {
-                    let deptInsertObj = {};
-                    deptInsertObj['assignId'] = 1//element.StoreId
-                    // deptInsertObj['storeId'] = element.StoreId
-                    deptInsertObj['storeId'] = 1 //this.storeId || "0";
-                    deptInsertObj['supplierId'] = 0,//!this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
-                    data2.push(deptInsertObj);
+                  let deptInsertObj = {};
+                  deptInsertObj['assignId'] = 0//element.StoreId
+                  // deptInsertObj['storeId'] = element.StoreId
+                  deptInsertObj['storeId'] = 12 //this.storeId || "0";
+                  deptInsertObj['supplierId'] = 0,//!this.supplierForm.get("SupplierId").value ? "0" : this.supplierForm.get("SupplierId").value || "0";
+                  data2.push(deptInsertObj);
                 // });
                 console.log("Insert data2:",data2);
 
@@ -650,40 +662,40 @@ var m = {
                 // var m_data = {
                  
                 //     insertSupplierMaster: {
-                //       supplierName: this._supplierService.myform.get("SupplierName").value,
-                //       contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
-                //       address:this._supplierService.myform.get("Address").value || "%",
-                //       cityId: this._supplierService.myform.get("CityId").value.CityId,
-                //       stateId:this._supplierService.myform.get("StateId").value.StateId,
-                //       countryId:this._supplierService.myform.get("CountryId").value.CountryId,
-                //       creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
-                //       mobile:this._supplierService.myform.get("Mobile").value || "0",
-                //       phone:this._supplierService.myform.get("Phone").value || "0",
-                //       fax:this._supplierService.myform.get("Fax").value || "0",
-                //       email:this._supplierService.myform.get("Email").value || "%",
-                //       modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
+                //       supplierName: this.supplierForm.get("SupplierName").value,
+                //       contactPerson:this.supplierForm.get("ContactPerson").value || "%",
+                //       address:this.supplierForm.get("Address").value || "%",
+                //       cityId: this.supplierForm.get("CityId").value.CityId,
+                //       stateId:this.supplierForm.get("StateId").value.StateId,
+                //       countryId:this.supplierForm.get("CountryId").value.CountryId,
+                //       creditPeriod:this.supplierForm.get("CreditPeriod").value || "0",
+                //       mobile:this.supplierForm.get("Mobile").value || "0",
+                //       phone:this.supplierForm.get("Phone").value || "0",
+                //       fax:this.supplierForm.get("Fax").value || "0",
+                //       email:this.supplierForm.get("Email").value || "%",
+                //       modeofPayment:this.supplierForm.get("ModeOfPayment").value.id || "0",
                 //       termsofPayment:termsofPayment || "0",
-                //       currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
+                //       currencyId:this.supplierForm.get("CurrencyId").value || "0",
                 //       octroi:0,
-                //       freight:this._supplierService.myform.get("Freight").value ||"0",
-                //       isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
+                //       freight:this.supplierForm.get("Freight").value ||"0",
+                //       isDeleted: Boolean(JSON.parse(this.supplierForm.get("IsDeleted").value)),
                 //       addedby:this._loggedService.currentUserValue.userId || 0,
-                //       gstNo: this._supplierService.myform.get("GSTNo").value || 0,
-                //       supplierId:this._supplierService.myform.get("SupplierId").value || 0,
-                //       panNo: this._supplierService.myform.get("PanNo").value || 0
-                //         // pinCode:this._supplierService.myform.get("Pincode").value || "0",
-                //         // taluka:this._supplierService.myform.get("Taluka").value || "0",
-                //         // licNo:this._supplierService.myform.get("LicNo").value || "0",
-                //         // expDate: this.registerObj.ExpDate,//this._supplierService.myform.get("ExpDate").value.ExpDate || "",
-                //         // dlNo:this._supplierService.myform.get("DlNo").value || "0",
+                //       gstNo: this.supplierForm.get("GSTNo").value || 0,
+                //       supplierId:this.supplierForm.get("SupplierId").value || 0,
+                //       panNo: this.supplierForm.get("PanNo").value || 0
+                //         // pinCode:this.supplierForm.get("Pincode").value || "0",
+                //         // taluka:this.supplierForm.get("Taluka").value || "0",
+                //         // licNo:this.supplierForm.get("LicNo").value || "0",
+                //         // expDate: this.registerObj.ExpDate,//this.supplierForm.get("ExpDate").value.ExpDate || "",
+                //         // dlNo:this.supplierForm.get("DlNo").value || "0",
                 //         // BankId:BankId || "0",
                 //         // bankname:bankname|| " ",
-                //         // branch:this._supplierService.myform.get("BankBranch").value || "0",
-                //         // bankNo:this._supplierService.myform.get("BankNo").value || "0",
-                //         // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+                //         // branch:this.supplierForm.get("BankBranch").value || "0",
+                //         // bankNo:this.supplierForm.get("BankNo").value || "0",
+                //         // ifsccode:this.supplierForm.get("IFSCcode").value || "0",
                 //         // venderTypeId:venderTypeId || "0",
-                //         // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0",
-                //         // TaxNature:this._supplierService.myform.get("TaxNature").value || "0",
+                //         // openingBalance:this.supplierForm.get("OpeningBal").value || "0",
+                //         // TaxNature:this.supplierForm.get("TaxNature").value || "0",
                 //     },
                 //     insertAssignSupplierToStore: data2,
                 // };
@@ -692,25 +704,25 @@ var m = {
                 {
                 
                   "supplierId": 0,
-                  "supplierName": this._supplierService.myform.get("SupplierName").value,
-                  "contactPerson":"a",// this._supplierService.myform.get("Mobile").value || " ",
-                  "address": this._supplierService.myform.get("Address").value || " ",
-                  "cityId" : 1,//parseInt(this.cityId),
-                  "stateId": 1, //this.stateId,
-                  "countryId": this._supplierService.myform.get("CountryId").value.value || "0",
-                  "creditPeriod": this._supplierService.myform.get("CreditPeriod").value || "0",
-                  "mobile": this._supplierService.myform.get("Mobile").value.toString() || "",
-                  "phone": this._supplierService.myform.get("Phone").value.toString() || "",
-                  "fax": this._supplierService.myform.get("Fax").value || "0",
-                  "email": this._supplierService.myform.get("Email").value || "%",
-                  "modeofPayment": this._supplierService.myform.get("ModeOfPayment").value || "0",
-                  "termofPayment": this._supplierService.myform.get("TermOfPayment").value || "0",
-                  "currencyId": this._supplierService.myform.get("CurrencyId").value || "0",
+                  "supplierName": this.supplierForm.get("SupplierName").value,
+                  "contactPerson":"abc",// this.supplierForm.get("Mobile").value || " ",
+                  "address": this.supplierForm.get("Address").value || " ",
+                  "cityId" : parseInt(this.supplierForm.get("CityId").value),
+                  "stateId": parseInt(this.supplierForm.get("StateId").value),
+                  "countryId": this.supplierForm.get("CountryId").value.value || 0,
+                  "creditPeriod": this.supplierForm.get("CreditPeriod").value || "0",
+                  "mobile": this.supplierForm.get("Mobile").value.toString() || "",
+                  "phone": this.supplierForm.get("Phone").value.toString() || "",
+                  "fax": this.supplierForm.get("Fax").value || "0",
+                  "email": this.supplierForm.get("Email").value || "%",
+                  "modeofPayment": parseInt(this.supplierForm.get("ModeOfPayment").value),
+                  "termofPayment": parseInt(this.supplierForm.get("TermOfPayment").value),
+                  "currencyId": parseInt(this.supplierForm.get("CurrencyId").value) || 0,
                   "octroi": 0,
-                  "freight": this._supplierService.myform.get("Freight").value ||"0",
-                  "gstNo": this._supplierService.myform.get("GSTNo").value || 0,
-                  "panNo": this._supplierService.myform.get("PanNo").value || 0,
-                  "supplierTime": "10:00:00 AM",//this._supplierService.myform.get("SupplierType").value || 0,
+                  "freight": parseInt(this.supplierForm.get("Freight").value),
+                  "gstNo": this.supplierForm.get("GSTNo").value || 0,
+                  "panNo": this.supplierForm.get("PanNo").value || 0,
+                  "supplierTime": "10:00:00 AM",//this.supplierForm.get("SupplierType").value || 0,
                   "mAssignSupplierToStores":data2
                 }
                 console.log("Insert mdata:",mdata);
@@ -732,7 +744,7 @@ var m = {
             //         let deptInsertObj = {};
             //         deptInsertObj['assignId'] = 1//element.StoreId
             //         deptInsertObj['StoreId'] = element.StoreId
-            //         deptInsertObj['SupplierId'] = !this._supplierService.myform.get("SupplierId").value ? "0" : this._supplierService.myform.get("SupplierId").value || "0";
+            //         deptInsertObj['SupplierId'] = !this.supplierForm.get("SupplierId").value ? "0" : this.supplierForm.get("SupplierId").value || "0";
             //         data3.push(deptInsertObj);
             //     });
 
@@ -740,68 +752,68 @@ var m = {
 
             //     // var m_dataUpdate = {
             //     //     updateSupplierMaster: {
-            //     //         supplierID:this._supplierService.myform.get("SupplierId").value || 0,
-            //     //         supplierName: this._supplierService.myform.get("SupplierName").value,
-            //     //         contactPerson:this._supplierService.myform.get("ContactPerson").value || "%",
-            //     //         address:this._supplierService.myform.get("Address").value || "%",
-            //     //         cityId: this._supplierService.myform.get("CityId").value.CityId,
-            //     //         stateID:this._supplierService.myform.get("StateId").value.StateId,
-            //     //         countryId:this._supplierService.myform.get("CountryId").value.CountryId,
-            //     //         creditPeriod:this._supplierService.myform.get("CreditPeriod").value || "0",
-            //     //         mobile:this._supplierService.myform.get("Mobile").value || "0",
-            //     //         phone:this._supplierService.myform.get("Phone").value || "0",
-            //     //         fax:this._supplierService.myform.get("Fax").value || "0",
-            //     //         email:this._supplierService.myform.get("Email").value || "%",
-            //     //         modeofPayment:this._supplierService.myform.get("ModeOfPayment").value.id || "0",
+            //     //         supplierID:this.supplierForm.get("SupplierId").value || 0,
+            //     //         supplierName: this.supplierForm.get("SupplierName").value,
+            //     //         contactPerson:this.supplierForm.get("ContactPerson").value || "%",
+            //     //         address:this.supplierForm.get("Address").value || "%",
+            //     //         cityId: this.supplierForm.get("CityId").value.CityId,
+            //     //         stateID:this.supplierForm.get("StateId").value.StateId,
+            //     //         countryId:this.supplierForm.get("CountryId").value.CountryId,
+            //     //         creditPeriod:this.supplierForm.get("CreditPeriod").value || "0",
+            //     //         mobile:this.supplierForm.get("Mobile").value || "0",
+            //     //         phone:this.supplierForm.get("Phone").value || "0",
+            //     //         fax:this.supplierForm.get("Fax").value || "0",
+            //     //         email:this.supplierForm.get("Email").value || "%",
+            //     //         modeofPayment:this.supplierForm.get("ModeOfPayment").value.id || "0",
             //     //         termsofPayment:termsofPayment || "0",
-            //     //         currencyId:this._supplierService.myform.get("CurrencyId").value || "0",
+            //     //         currencyId:this.supplierForm.get("CurrencyId").value || "0",
             //     //         octroi:0,
-            //     //         freight:this._supplierService.myform.get("Freight").value ||"0",
-            //     //         isDeleted: Boolean(JSON.parse(this._supplierService.myform.get("IsDeleted").value)),
+            //     //         freight:this.supplierForm.get("Freight").value ||"0",
+            //     //         isDeleted: Boolean(JSON.parse(this.supplierForm.get("IsDeleted").value)),
             //     //         updatedBy:this._loggedService.currentUserValue.userId || 0,
-            //     //         gstNo: this._supplierService.myform.get("GSTNo").value || 0, 
-            //     //         panNo: this._supplierService.myform.get("PanNo").value || 0
-            //     //         // pinCode:this._supplierService.myform.get("Pincode").value || "0",
-            //     //         // taluka:this._supplierService.myform.get("Taluka").value || "0",
-            //     //         // licNo:this._supplierService.myform.get("LicNo").value || "0",
-            //     //         // expDate:this._supplierService.myform.get("ExpDate").value || "0",
-            //     //         // dlNo:this._supplierService.myform.get("DlNo").value || "0",
+            //     //         gstNo: this.supplierForm.get("GSTNo").value || 0, 
+            //     //         panNo: this.supplierForm.get("PanNo").value || 0
+            //     //         // pinCode:this.supplierForm.get("Pincode").value || "0",
+            //     //         // taluka:this.supplierForm.get("Taluka").value || "0",
+            //     //         // licNo:this.supplierForm.get("LicNo").value || "0",
+            //     //         // expDate:this.supplierForm.get("ExpDate").value || "0",
+            //     //         // dlNo:this.supplierForm.get("DlNo").value || "0",
             //     //         // BankId:BankId || "0",
             //     //         // bankname:bankname|| " ",
-            //     //         // branch:this._supplierService.myform.get("BankBranch").value || "0",
-            //     //         // bankNo:this._supplierService.myform.get("BankNo").value || "0",
-            //     //         // ifsccode:this._supplierService.myform.get("IFSCcode").value || "0",
+            //     //         // branch:this.supplierForm.get("BankBranch").value || "0",
+            //     //         // bankNo:this.supplierForm.get("BankNo").value || "0",
+            //     //         // ifsccode:this.supplierForm.get("IFSCcode").value || "0",
             //     //         // venderTypeId:venderTypeId || "0",
-            //     //         // openingBalance:this._supplierService.myform.get("OpeningBal").value || "0"
+            //     //         // openingBalance:this.supplierForm.get("OpeningBal").value || "0"
             //     //     },
             //     //     deleteAssignSupplierToStore: {
             //     //         supplierId:
-            //     //             this._supplierService.myform.get("SupplierId").value,
+            //     //             this.supplierForm.get("SupplierId").value,
             //     //     },
             //     //     insertAssignSupplierToStore: data3,
             //     // };
 
             //     var mdataUpdate={
             //       "supplierId": 0,
-            //       "supplierName": this._supplierService.myform.get("SupplierName").value,
-            //       "contactPerson": this._supplierService.myform.get("Mobile").value || "%",
-            //       "address": this._supplierService.myform.get("Address").value || "%",
-            //       "cityId": this._supplierService.myform.get("CityId").value.value,
-            //       "stateId": this._supplierService.myform.get("StateId").value.value,
-            //       "countryId": this._supplierService.myform.get("CountryId").value.value,
-            //       "creditPeriod": this._supplierService.myform.get("CreditPeriod").value || "0",
-            //       "mobile": this._supplierService.myform.get("Mobile").value || "0",
-            //       "phone": this._supplierService.myform.get("Phone").value || "0",
-            //       "fax": this._supplierService.myform.get("Fax").value || "0",
-            //       "email": this._supplierService.myform.get("Email").value || "%",
-            //       "modeofPayment": this._supplierService.myform.get("ModeOfPayment").value || "0",
-            //       "termofPayment": this._supplierService.myform.get("TermOfPayment").value || "0",
-            //       "currencyId": this._supplierService.myform.get("CurrencyId").value || "0",
+            //       "supplierName": this.supplierForm.get("SupplierName").value,
+            //       "contactPerson": this.supplierForm.get("Mobile").value || "%",
+            //       "address": this.supplierForm.get("Address").value || "%",
+            //       "cityId": this.supplierForm.get("CityId").value.value,
+            //       "stateId": this.supplierForm.get("StateId").value.value,
+            //       "countryId": this.supplierForm.get("CountryId").value.value,
+            //       "creditPeriod": this.supplierForm.get("CreditPeriod").value || "0",
+            //       "mobile": this.supplierForm.get("Mobile").value || "0",
+            //       "phone": this.supplierForm.get("Phone").value || "0",
+            //       "fax": this.supplierForm.get("Fax").value || "0",
+            //       "email": this.supplierForm.get("Email").value || "%",
+            //       "modeofPayment": this.supplierForm.get("ModeOfPayment").value || "0",
+            //       "termofPayment": this.supplierForm.get("TermOfPayment").value || "0",
+            //       "currencyId": this.supplierForm.get("CurrencyId").value || "0",
             //       "octroi": 0,
-            //       "freight": this._supplierService.myform.get("Freight").value ||"0",
-            //       "gstNo": this._supplierService.myform.get("GSTNo").value || 0,
-            //       "panNo": this._supplierService.myform.get("PanNo").value || 0,
-            //       "supplierTime": this._supplierService.myform.get("SupplierType").value || 0,
+            //       "freight": this.supplierForm.get("Freight").value ||"0",
+            //       "gstNo": this.supplierForm.get("GSTNo").value || 0,
+            //       "panNo": this.supplierForm.get("PanNo").value || 0,
+            //       "supplierTime": this.supplierForm.get("SupplierType").value || 0,
             //       "mAssignSupplierToStores":data3
             //     }
 
@@ -820,6 +832,7 @@ var m = {
             //             }
             //         });
             // }
+            }
             this.onClose();
         // }
     }
@@ -831,7 +844,7 @@ var m = {
             this.StatecmbList = data;
             this.selectedState = this.StatecmbList[0].StateName;
             // const stateListObj = this.stateList.find(s => s.StateId == this.selectedStateID);
-            this._supplierService.myform.get('StateId').setValue(this.StatecmbList[0]);
+            this.supplierForm.get('StateId').setValue(this.StatecmbList[0]);
             this.selectedStateID = this.StatecmbList[0].StateId;
             this.onChangeCountryList(this.selectedStateID);
           });
@@ -844,10 +857,10 @@ var m = {
             this._supplierService.getCountryList(StateId).subscribe((data) => {
                 this.CountrycmbList = data;
                 this.selectedCountry = this.CountrycmbList[0].CountryName;
-                this._supplierService.myform
+                this.supplierForm
                     .get("CountryId")
                     .setValue(this.CountrycmbList[0]);
-                this._supplierService.myform.updateValueAndValidity();
+                this.supplierForm.updateValueAndValidity();
             });
         }
     }
@@ -938,8 +951,6 @@ var m = {
        this.city.nativeElement.focus();
     }
   }
-
-  
   
   public onEnterCity(event): void {
     if (event.which === 13) {
@@ -1083,10 +1094,10 @@ public onEnterStore(event): void {
 
     
     onClear() {
-        this._supplierService.myform.reset();
+        this.supplierForm.reset();
     }
     onClose() {
-        this._supplierService.myform.reset();
+        this.supplierForm.reset();
         this.dialogRef.close();
     }
 
@@ -1100,20 +1111,22 @@ public onEnterStore(event): void {
   termOfPaymentId=0;
   bankId=0;
   storeId=0;
+  supplierId=0;
 
-  selectChangecity(obj:any){
-    console.log(obj)
-    this.cityId=obj.value;
-    this.cityName=obj.text;
-  }
-  selectChangestate(obj: any){
+  selectChangecity(obj: any){
     console.log(obj);
-    this.stateId=obj.value;
+    this.cityId=obj.value
+    this.cityName=obj.text
   }
-  selectChangecountry(obj: any){
+  selectChangestate(obj: any) {
     console.log(obj);
-    this.countryId=obj.value;
-  }
+    this.stateId = obj
+}
+
+selectChangecountry(obj: any) {
+    console.log(obj);
+    this.countryId = obj
+}
   selectChangemodeofpayment(obj:any){
     this.modeOfPaymentId=obj.value;
   }
@@ -1126,4 +1139,64 @@ public onEnterStore(event): void {
   selectChangestoreName(obj:any){
     this.storeId=obj.value;
   }
+  selectChangeSupplierType(obj:any){
+    this.supplierId=obj.value;
+  }
+
+  getValidationCityMessages(){
+    return{
+      CityId: [
+        { name: "required", Message: "City Name is required" }
+      ]
+    }
+  }
+  getValidationStateMessages() {
+    return {
+        StateId: [
+            { name: "required", Message: "State Name is required" }
+        ]
+    };
+}
+getValidationCountryMessages() {
+  return {
+      CountryId: [
+          { name: "required", Message: "Country Name is required" }
+      ]
+  };
+}
+getValidationSupplierTypeMessages(){
+    return {
+      SupplierType: [
+          { name: "required", Message: "SupplierType is required" }
+      ]
+  };
+}
+getValidationBankMessages(){
+  return {
+    BankName: [
+        { name: "required", Message: "BankName is required" }
+    ]
+};
+}
+getValidationStoreMessages(){
+  return {
+    StoreId: [
+        { name: "required", Message: "StoreName is required" }
+    ]
+};
+}
+getValidationModeOfPaymentMessages(){
+  return {
+    ModeOfPayment: [
+        { name: "required", Message: "ModeOfPayment is required" }
+    ]
+};
+}
+getValidationTermOfPaymentMessages(){
+  return {
+    TermOfPayment: [
+        { name: "required", Message: "TermOfPayment is required" }
+    ]
+};
+}
 }
