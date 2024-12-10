@@ -58,15 +58,16 @@ export class NewItemcategoryComponent implements OnInit {
         });
    }
 }
-itemId=0;
+    
+    itemId=0;
 
-selectChangeItem(obj: any){
-    console.log(obj);
-    this.itemId=obj
-  }
+    selectChangeItem(obj: any){
+        console.log(obj);
+        this.itemId=obj
+    }
 
-  onClear(val: boolean) {
-      this.categoryForm.reset();
-      this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.categoryForm.reset();
+        this.dialogRef.close(val);
+    }
 }

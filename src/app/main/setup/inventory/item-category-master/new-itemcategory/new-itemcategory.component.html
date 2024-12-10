@@ -20,7 +20,8 @@
             <form [formGroup]="categoryForm">
                 <input type="hidden" name="itemCategoryId" formControlName="itemCategoryId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Category name" formControlName="itemCategoryName" [value]=""
+                    <airmid-textbox label="Category name" formControlName="itemCategoryName" 
+                        [value]=""
                         [formGroup]="categoryForm"
                         [validations]="_CategorymasterService.getValidationMessages().itemCategoryName"
                         [maxLength]="300">

@@ -22,7 +22,6 @@ import { StockAdjustmentService } from "app/main/inventory/stock-adjustment/stoc
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-
 export class ItemMasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -33,40 +32,29 @@ export class ItemMasterComponent implements OnInit {
     gridConfig: gridModel = {
     apiUrl: "ItemMaster/ItemMasterList",
     columnsList: [
-        { heading: "ItemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ItemShortName", key: "itemShortName", sort: true, align: 'left', emptySign: 'NA',width :90 },
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ItemTypeId", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "ItemCategaryId", key: "itemCategaryId", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "ItemGenericNameId", key: "itemGenericNameId", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "ItemClassId", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA',width :90 },
-        { heading: "PurchaseUomid", key: "purchaseUomid", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "StockUomid", key: "stockUomid", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "CurrencyId", key: "currencyId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "TaxPer", key: "taxPer", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "MinQty", key: "minQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "MaxQty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "Hsncode", key: "hsncode", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "Cgst", key: "cgst", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "Sgst", key: "sgst", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "Igst", key: "igst", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ManufId", key: "manufId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsNarcotic", key: "isNarcotic", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsH1drug", key: "isH1drug", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsScheduleH", key: "isScheduleH", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "IsHighRisk", key: "isHighRisk", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsScheduleX", key: "isScheduleX", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsLasa", key: "isLasa", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsEmgerency", key: "isEmgerency", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "DrugType", key: "drugType", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "DrugTypeName", key: "drugTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },        
-        { heading: "ProdLocation", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ItemCompnayId", key: "itemCompnayId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ItemTime", key: "itemTime", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "StoreId", key: "storeId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "Code", key: "ItemID", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemName", key: "ItemName", sort: true, align: 'left', emptySign: 'NA',width :90 },
+        { heading: "ItemTypeName", key: "ItemTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemCategoryName", key: "ItemCategoryName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "ItemGenericName", key: "ItemGenericName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "ItemClassName", key: "ItemClassName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "UnitofMeasurementName", key: "UnitofMeasurementName", sort: true, align: 'left', emptySign: 'NA',width :90 },
+        { heading: "StockUOMId", key: "StockUOMId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ConversionFactor", key: "ConversionFactor", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "CurrencyName", key: "CurrencyName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "TaxPer", key: "TaxPer", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "MinQty", key: "MinQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "MaxQty", key: "MaxQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ReOrder", key: "ReOrder", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "HSNcode", key: "HSNcode", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "CGST", key: "CGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "SGST", key: "SGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IGST", key: "IGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ManufName", key: "ManufName", sort: true, align: 'left', emptySign: 'NA',width :80 },
+        { heading: "ProdLocation", key: "ProdLocation", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "AddedByName", key: "AddedByName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsNursingFlag", key: "IsNursingFlag", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsNursingFlag", key: "IsNursingFlag", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -97,7 +85,7 @@ export class ItemMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "itemId",
+        sortField: "ItemID",
         sortOrder: 0,
         filters: [
             { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
@@ -129,19 +117,19 @@ export class ItemMasterComponent implements OnInit {
         this.storeId=obj.value;
       }
 
-    // isLoading = true;
-    // msg: any;
-    // step = 0;
+    isLoading = true;
+    msg: any;
+    step = 0;
 
-    // setStep(index: number) {
-    //     this.step = index;
-    // }
-    // SearchName: string;
-    // sIsLoading: string = ''; 
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    setStep(index: number) {
+        this.step = index;
+    }
+    SearchName: string;
+    sIsLoading: string = ''; 
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
 
-    // DSItemMasterList = new MatTableDataSource<ItemMaster>();
+    DSItemMasterList = new MatTableDataSource<ItemMaster>();
 
     constructor(
         public _itemService: ItemMasterService,
@@ -188,55 +176,55 @@ export class ItemMasterComponent implements OnInit {
     //     );
     // }
 
-    // onEdit(row) {
-    //     var m_data = {
-    //         ItemID: row.ItemID,
-    //         //  ItemShortName: row.ItemShortName.trim(),
-    //         ItemName: row.ItemName,
-    //         ItemTypeID: row.ItemTypeID,
-    //         ItemCategoryId: row.ItemCategoryId,
-    //         ItemGenericNameId: row.ItemGenericNameId,
-    //         ItemClassId: row.ItemClassId,
-    //         PurchaseUOMId: row.PurchaseUOMId,
-    //         StockUOMId: row.StockUOMId,
-    //         ConversionFactor: row.ConversionFactor,
-    //         CurrencyId: row.CurrencyId,
-    //         TaxPer: row.TaxPer,
-    //         IsDeleted: JSON.stringify(row.Isdeleted),
-    //         UpdatedBy: row.UpdatedBy,
-    //         IsBatchRequired: JSON.stringify(row.IsBatchRequired),
-    //         MinQty: row.MinQty,
-    //         MaxQty: row.MaxQty,
-    //         ReOrder: row.ReOrder,
-    //         IsNursingFlag: JSON.stringify(row.IsNursingFlag),
-    //         HSNcode: row.HSNcode,
-    //         CGST: row.CGST,
-    //         SGST: row.SGST,
-    //         IGST: row.IGST,
-    //         IsNarcotic: JSON.stringify(row.IsNarcotic),
-    //         ManufId: row.ManufId,
-    //         ProdLocation: row.ProdLocation,
-    //         IsH1Drug: JSON.stringify(row.IsH1Drug),
-    //         IsScheduleH: JSON.stringify(row.IsScheduleH),
-    //         IsHighRisk: JSON.stringify(row.IsHighRisk),
-    //         IsScheduleX: JSON.stringify(row.IsScheduleX),
-    //         IsLASA: JSON.stringify(row.IsLASA),
-    //         IsEmgerency: JSON.stringify(row.IsEmgerency),
-    //         //StoreId: row.StoreId,
+    onEdit(row) {
+        var m_data = {
+            ItemID: row.ItemID,
+            //  ItemShortName: row.ItemShortName.trim(),
+            ItemName: row.ItemName,
+            ItemTypeID: row.ItemTypeID,
+            ItemCategoryId: row.ItemCategoryId,
+            ItemGenericNameId: row.ItemGenericNameId,
+            ItemClassId: row.ItemClassId,
+            PurchaseUOMId: row.PurchaseUOMId,
+            StockUOMId: row.StockUOMId,
+            ConversionFactor: row.ConversionFactor,
+            CurrencyId: row.CurrencyId,
+            TaxPer: row.TaxPer,
+            IsDeleted: JSON.stringify(row.Isdeleted),
+            UpdatedBy: row.UpdatedBy,
+            IsBatchRequired: JSON.stringify(row.IsBatchRequired),
+            MinQty: row.MinQty,
+            MaxQty: row.MaxQty,
+            ReOrder: row.ReOrder,
+            IsNursingFlag: JSON.stringify(row.IsNursingFlag),
+            HSNcode: row.HSNcode,
+            CGST: row.CGST,
+            SGST: row.SGST,
+            IGST: row.IGST,
+            IsNarcotic: JSON.stringify(row.IsNarcotic),
+            ManufId: row.ManufId,
+            ProdLocation: row.ProdLocation,
+            IsH1Drug: JSON.stringify(row.IsH1Drug),
+            IsScheduleH: JSON.stringify(row.IsScheduleH),
+            IsHighRisk: JSON.stringify(row.IsHighRisk),
+            IsScheduleX: JSON.stringify(row.IsScheduleX),
+            IsLASA: JSON.stringify(row.IsLASA),
+            IsEmgerency: JSON.stringify(row.IsEmgerency),
+            //StoreId: row.StoreId,
             
-    //     };
+        };
 
-        // this._itemService.populateForm(m_data);
+        this._itemService.populateForm(m_data);
 
-        // const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-        //     maxWidth: "95vw",
-        //     maxHeight: "80vh",
-        //     width: "100%",
-        //     height: "100%",
-        //     data : {
-        //         registerObj : row,
-        //       }
-        // });
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+            maxWidth: "95vw",
+            maxHeight: "80vh",
+            width: "100%",
+            height: "100%",
+            data : {
+                registerObj : row,
+              }
+        });
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
@@ -326,55 +314,55 @@ export class ItemMaster {
     ItemCompnayId:any;
     position:any;
     
-//     /**
-//      * Constructor
-//      *
-//      * @param ItemMaster
-//      */
-//     constructor(ItemMaster) {
-//         {
-//             this.ItemID = ItemMaster.ItemID || "";
-//             //    this.ItemShortName = ItemMaster.ItemShortName || "";
-//             this.ItemName = ItemMaster.ItemName || "";
-//             this.ItemTypeID = ItemMaster.ItemTypeID || "";
-//             this.ItemCategoryId = ItemMaster.ItemCategoryId || "";
-//             this.ItemGenericNameId = ItemMaster.ItemGenericNameId || "";
-//             this.ItemClassId = ItemMaster.ItemClassId || "";
-//             this.PurchaseUOMId = ItemMaster.PurchaseUOMId || "";
-//             this.ConversionFactor = ItemMaster.ConversionFactor || "";
-//             this.CurrencyId = ItemMaster.CurrencyId || "";
-//             this.TaxPer = ItemMaster.TaxPer || "";
-//             this.Isdeleted = ItemMaster.Isdeleted || "true";
-//             this.Addedby = ItemMaster.Addedby || "";
-//             this.UpdatedBy = ItemMaster.UpdatedBy || "";
-//             this.IsBatchRequired = ItemMaster.IsBatchRequired || "false";
-//             this.MinQty = ItemMaster.MinQty || "";
-//             this.MaxQty = ItemMaster.MaxQty || "";
-//             this.ReOrder = ItemMaster.ReOrder || "";
-//             this.IsNursingFlag = ItemMaster.IsNursingFlag || "false";
-//             this.HSNcode = ItemMaster.HSNcode || "";
-//             this.CGST = ItemMaster.CGST || "";
-//             this.SGST = ItemMaster.SGST || "";
-//             this.IGST = ItemMaster.IGST || "";
-//             this.IsNarcotic = ItemMaster.IsNarcotic || "false";
-//             this.ProdLocation = ItemMaster.ProdLocation || "";
-//             this.IsH1Drug = ItemMaster.IsH1Drug || "false";
-//             this.IsScheduleH = ItemMaster.IsScheduleH || "false";
-//             this.IsHighRisk = ItemMaster.IsHighRisk || "false";
-//             this.IsScheduleX = ItemMaster.IsScheduleX || "false";
-//             this.IsLASA = ItemMaster.IsLASA || "false";
-//             this.IsEmgerency = ItemMaster.IsEmgerency || "false";
-//             this.AddedByName = ItemMaster.AddedByName || "";
-//             this.IsDeletedSearch = ItemMaster.IsDeletedSearch || "";
-//             this.MaxDisc=ItemMaster.MaxDisc || 0
-//             this.Storagelocation=ItemMaster.Storagelocation ||""
-//             this.CompanyId=ItemMaster.CompanyId ||""
-//             this.DrugType=ItemMaster.DrugType ||""
-//             this.DrugTypeName=ItemMaster.DrugTypeName ||""
-//             this.ItemCompnayId=ItemMaster.ItemCompnayId || 0
-//         }
-//     }
-// }
+    /**
+     * Constructor
+     *
+     * @param ItemMaster
+     */
+    constructor(ItemMaster) {
+        {
+            this.ItemID = ItemMaster.ItemID || "";
+            //    this.ItemShortName = ItemMaster.ItemShortName || "";
+            this.ItemName = ItemMaster.ItemName || "";
+            this.ItemTypeID = ItemMaster.ItemTypeID || "";
+            this.ItemCategoryId = ItemMaster.ItemCategoryId || "";
+            this.ItemGenericNameId = ItemMaster.ItemGenericNameId || "";
+            this.ItemClassId = ItemMaster.ItemClassId || "";
+            this.PurchaseUOMId = ItemMaster.PurchaseUOMId || "";
+            this.ConversionFactor = ItemMaster.ConversionFactor || "";
+            this.CurrencyId = ItemMaster.CurrencyId || "";
+            this.TaxPer = ItemMaster.TaxPer || "";
+            this.Isdeleted = ItemMaster.Isdeleted || "true";
+            this.Addedby = ItemMaster.Addedby || "";
+            this.UpdatedBy = ItemMaster.UpdatedBy || "";
+            this.IsBatchRequired = ItemMaster.IsBatchRequired || "false";
+            this.MinQty = ItemMaster.MinQty || "";
+            this.MaxQty = ItemMaster.MaxQty || "";
+            this.ReOrder = ItemMaster.ReOrder || "";
+            this.IsNursingFlag = ItemMaster.IsNursingFlag || "false";
+            this.HSNcode = ItemMaster.HSNcode || "";
+            this.CGST = ItemMaster.CGST || "";
+            this.SGST = ItemMaster.SGST || "";
+            this.IGST = ItemMaster.IGST || "";
+            this.IsNarcotic = ItemMaster.IsNarcotic || "false";
+            this.ProdLocation = ItemMaster.ProdLocation || "";
+            this.IsH1Drug = ItemMaster.IsH1Drug || "false";
+            this.IsScheduleH = ItemMaster.IsScheduleH || "false";
+            this.IsHighRisk = ItemMaster.IsHighRisk || "false";
+            this.IsScheduleX = ItemMaster.IsScheduleX || "false";
+            this.IsLASA = ItemMaster.IsLASA || "false";
+            this.IsEmgerency = ItemMaster.IsEmgerency || "false";
+            this.AddedByName = ItemMaster.AddedByName || "";
+            this.IsDeletedSearch = ItemMaster.IsDeletedSearch || "";
+            this.MaxDisc=ItemMaster.MaxDisc || 0
+            this.Storagelocation=ItemMaster.Storagelocation ||""
+            this.CompanyId=ItemMaster.CompanyId ||""
+            this.DrugType=ItemMaster.DrugType ||""
+            this.DrugTypeName=ItemMaster.DrugTypeName ||""
+            this.ItemCompnayId=ItemMaster.ItemCompnayId || 0
+        }
+    }
+}
 //Store master
 // export class StoreMaster {
 //     ItemID: number;

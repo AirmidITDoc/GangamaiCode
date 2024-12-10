@@ -4,7 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { Observable, ReplaySubject, Subject } from "rxjs";
 import { ItemMasterService } from "../item-master.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ItemMasterComponent} from "../item-master.component";
+import { ItemMaster, ItemMasterComponent} from "../item-master.component";
 import { map, startWith, takeUntil } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
@@ -113,12 +113,14 @@ export class ItemFormMasterComponent implements OnInit {
     msg: any;
 
     constructor(
-      public _ItemMasterService: ItemMasterService,
-      public dialogRef: MatDialogRef<ItemFormMasterComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
+        public _itemService: ItemMasterService,
+        public toastr: ToastrService,
+        private _loggedService: AuthenticationService,
+        public _matDialog: MatDialog,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<ItemMasterComponent>
     ) { }
-
+    
     ngOnInit(): void {
         this.itemForm=this._itemService.createItemmasterForm();
 
@@ -161,14 +163,14 @@ export class ItemFormMasterComponent implements OnInit {
         ); 
     }
   
-//     // getAssigneToStoreList() {
-//     //     var vadat = {
-//     //         'ItemID': this.registerObj.ItemID
-//     //     }
-//     //     console.log(vadat);
-//     //     this._itemService.getAssigneToStoreList(vadat).subscribe(data => {
-//     //         this.filteredStore = data;
-//     //         console.log(this.filteredStore)
+    // getAssigneToStoreList() {
+    //     var vadat = {
+    //         'ItemID': this.registerObj.ItemID
+    //     }
+    //     console.log(vadat);
+    //     this._itemService.getAssigneToStoreList(vadat).subscribe(data => {
+    //         this.filteredStore = data;
+    //         console.log(this.filteredStore)
 
     //         const AssignStore = this.StorecmbList.filter(c => c.Storeid == this.filteredStore.StoreId);
     //         console.log(AssignStore)
@@ -293,7 +295,7 @@ export class ItemFormMasterComponent implements OnInit {
             }
         });
 
-//     }
+    }
 
 
     getCompanyList() {
@@ -304,7 +306,7 @@ export class ItemFormMasterComponent implements OnInit {
                 map((ele: any | null) => ele ? this._filterCompany(ele) : this.CompanyList.slice()));
           
     
-//             if (this.data) {
+            if (this.data) {
           
                 const ddValue = this.CompanyList.filter(c => c.CompanyId == this.data.registerObj.ItemCompnayId);
                 this.itemForm.get('CompanyId').setValue(ddValue[0]);
@@ -318,11 +320,11 @@ export class ItemFormMasterComponent implements OnInit {
         if (value) {
             const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
 
-//             return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-//         }
+            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+        }
 
-//     }
-//     getitemunitofmeasureMasterCombo() {
+    }
+    getitemunitofmeasureMasterCombo() {
 
         this._itemService.getunitofMeasurementMasterCombo().subscribe(data => {
             this.ItemUomcmbList = data;
@@ -340,9 +342,9 @@ export class ItemFormMasterComponent implements OnInit {
             }
         });
 
-//     }
+    }
 
-//     getStockUOMIDdMasterombo() {
+    getStockUOMIDdMasterombo() {
 
         this._itemService.getStockUMOMasterCombo().subscribe(data => {
             this.StockUomcmbList = data;
@@ -360,9 +362,9 @@ export class ItemFormMasterComponent implements OnInit {
             }
         });
 
-//     }
+    }
 
-//     getCurrencyNameMasterCombo() {
+    getCurrencyNameMasterCombo() {
 
         this._itemService.getCurrencyMasterCombo().subscribe(data => {
             this.CurrencycmbList = data;
@@ -381,79 +383,79 @@ export class ItemFormMasterComponent implements OnInit {
             }
         });
 
-//     }
+    }
 
 
-//     private _filterSCurrency(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.CurrencyName ? value.CurrencyName.toLowerCase() : value.toLowerCase();
+    private _filterSCurrency(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CurrencyName ? value.CurrencyName.toLowerCase() : value.toLowerCase();
 
-//             return this.CurrencycmbList.filter(option => option.CurrencyName.toLowerCase().includes(filterValue));
-//         }
+            return this.CurrencycmbList.filter(option => option.CurrencyName.toLowerCase().includes(filterValue));
+        }
 
-//     }
+    }
 
-//     private _filterManu(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.ManufName ? value.ManufName.toLowerCase() : value.toLowerCase();
+    private _filterManu(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ManufName ? value.ManufName.toLowerCase() : value.toLowerCase();
 
-//             return this.ManufacurecmbList.filter(option => option.ManufName.toLowerCase().includes(filterValue));
-//         }
+            return this.ManufacurecmbList.filter(option => option.ManufName.toLowerCase().includes(filterValue));
+        }
 
-//     }
+    }
 
-//     private _filterStore(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-//             //   this.isDoctorSelected = false;
-//             return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-//         }
+    private _filterStore(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+        }
 
-//     } 
-//     private _filterClass(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
-//             //   this.isDoctorSelected = false;
-//             return this.ItemClasscmbList.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
-//         } 
-//     } 
+    } 
+    private _filterClass(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.ItemClasscmbList.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
+        } 
+    } 
 
-//     private _filterGenericname(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.ItemGenericName ? value.ItemGenericName.toLowerCase() : value.toLowerCase();
-//             //   this.isDoctorSelected = false;
-//             return this.ItemGenericcmbList.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
-//         } 
-//     } 
+    private _filterGenericname(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ItemGenericName ? value.ItemGenericName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.ItemGenericcmbList.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
+        } 
+    } 
 
-//     private _filterUnitofmeasurement(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
-//             //   this.isDoctorSelected = false;
-//             return this.ItemUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
-//         } 
-//     }
-//     private _filterStockUMO(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
-//             //   this.isDoctorSelected = false;
-//             return this.StockUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
-//         } 
-//     }
-
-
-//     private _filterDrugType(value: any): string[] {
-//         if (value) {
-//             const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
-//             //   this.isDoctorSelected = false;
-//             return this.optionsDrugType.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
-//         }
-
-//     }
+    private _filterUnitofmeasurement(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.ItemUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
+        } 
+    }
+    private _filterStockUMO(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.StockUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
+        } 
+    }
 
 
+    private _filterDrugType(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
+            //   this.isDoctorSelected = false;
+            return this.optionsDrugType.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
+        }
 
-//     getDrugTypeList() {
+    }
+
+
+
+    getDrugTypeList() {
 
         this._itemService.getDrugTypeCombo().subscribe(data => {
             this.DrugList = data;
@@ -470,18 +472,18 @@ export class ItemFormMasterComponent implements OnInit {
                 return;
             }
            
-//         });
+        });
 
-//     }
+    }
 
     
-//     getStoreNameMasterCombo() {
+    getStoreNameMasterCombo() {
         
-//         this._itemService.getStoreMasterCombo().subscribe(data => {
-//             this.StorecmbList = data;
-//             console.log(this.StorecmbList)
+        this._itemService.getStoreMasterCombo().subscribe(data => {
+            this.StorecmbList = data;
+            console.log(this.StorecmbList)
            
-//             // if (this.data) {
+            // if (this.data) {
                
             //     this.data.registerObj.StoreId =this._loggedService.currentUserValue.storeId;
             //     const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
@@ -491,8 +493,8 @@ export class ItemFormMasterComponent implements OnInit {
             //     return;
             // }
 
-//         });
-//     }
+        });
+    }
    
 
     getManufactureNameMasterCombo() {
@@ -516,231 +518,231 @@ export class ItemFormMasterComponent implements OnInit {
 
  
 
-//     //casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
+    //casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
  
 
-//     getOptionTextManu(option) {
-//         return option && option.ManufName ? option.ManufName : '';
+    getOptionTextManu(option) {
+        return option && option.ManufName ? option.ManufName : '';
 
-//     }
+    }
 
-//     getOptionTextStore(option) {
+    getOptionTextStore(option) {
 
-//         return option && option.StoreName ? option.StoreName : '';
+        return option && option.StoreName ? option.StoreName : '';
 
-//     }
+    }
 
-//     getOptionTextItemtype(option) {
-//         return option && option.ItemTypeName ? option.ItemTypeName : '';
+    getOptionTextItemtype(option) {
+        return option && option.ItemTypeName ? option.ItemTypeName : '';
 
-//     }
+    }
 
-//     getOptionTextItemcategory(option) {
+    getOptionTextItemcategory(option) {
 
-//         return option && option.ItemCategoryName ? option.ItemCategoryName : '';
+        return option && option.ItemCategoryName ? option.ItemCategoryName : '';
 
-//     }
+    }
 
-//     getOptionTextGenericname(option) {
-//         return option && option.ItemGenericName ? option.ItemGenericName : '';
+    getOptionTextGenericname(option) {
+        return option && option.ItemGenericName ? option.ItemGenericName : '';
 
-//     }
+    }
 
-//     getOptionTextClass(option) {
+    getOptionTextClass(option) {
 
-//         return option && option.ItemClassName ? option.ItemClassName : '';
+        return option && option.ItemClassName ? option.ItemClassName : '';
 
-//     }
-//     getOptionTextPurchaseUMO(option) {
-//         return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
+    }
+    getOptionTextPurchaseUMO(option) {
+        return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
 
-//     }
+    }
 
-//     getOptionTextStockUOMId(option) {
-//         return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
+    getOptionTextStockUOMId(option) {
+        return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
 
-//     }
+    }
 
-//     getOptionTextDrugtype(option) {
+    getOptionTextDrugtype(option) {
 
-//         return option && option.DrugTypeName ? option.DrugTypeName : '';
+        return option && option.DrugTypeName ? option.DrugTypeName : '';
 
-//     }
+    }
 
-//     getOptionTextCompany(option) {
+    getOptionTextCompany(option) {
 
-//         return option && option.CompanyName ? option.CompanyName : '';
+        return option && option.CompanyName ? option.CompanyName : '';
 
-//     }
+    }
 
-//     getOptionTextCurrency(option) {
+    getOptionTextCurrency(option) {
 
-//         return option && option.CurrencyName ? option.CurrencyName : '';
+        return option && option.CurrencyName ? option.CurrencyName : '';
 
-//     }
+    }
 
 
-//     @ViewChild('HSN') HSN: ElementRef;
-//     @ViewChild('Itemname') Itemname: ElementRef;
-//     @ViewChild('ItemType') ItemType: ElementRef;
-//     @ViewChild('ItemCatageory') ItemCatageory: ElementRef;
-//     @ViewChild('ItemGeneric') ItemGeneric: ElementRef;
+    @ViewChild('HSN') HSN: ElementRef;
+    @ViewChild('Itemname') Itemname: ElementRef;
+    @ViewChild('ItemType') ItemType: ElementRef;
+    @ViewChild('ItemCatageory') ItemCatageory: ElementRef;
+    @ViewChild('ItemGeneric') ItemGeneric: ElementRef;
 
-//     @ViewChild('ItemClass') ItemClass: ElementRef;
-//     @ViewChild('PurchaseUOMId') PurchaseUOMId: ElementRef;
-//     @ViewChild('StockUOMId') StockUOMId: ElementRef;
+    @ViewChild('ItemClass') ItemClass: ElementRef;
+    @ViewChild('PurchaseUOMId') PurchaseUOMId: ElementRef;
+    @ViewChild('StockUOMId') StockUOMId: ElementRef;
 
-//     @ViewChild('CurrencyId') CurrencyId: ElementRef;
-//     @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
+    @ViewChild('CurrencyId') CurrencyId: ElementRef;
+    @ViewChild('ConversionFactor') ConversionFactor: ElementRef;
 
-//     @ViewChild('CGST') CGST: ElementRef;
-//     @ViewChild('SGST') SGST: ElementRef;
-//     @ViewChild('IGST') IGST: ElementRef;
-//     @ViewChild('MinQty') MinQty: ElementRef;
-//     @ViewChild('MaxQty') MaxQty: ElementRef;
+    @ViewChild('CGST') CGST: ElementRef;
+    @ViewChild('SGST') SGST: ElementRef;
+    @ViewChild('IGST') IGST: ElementRef;
+    @ViewChild('MinQty') MinQty: ElementRef;
+    @ViewChild('MaxQty') MaxQty: ElementRef;
 
-//     @ViewChild('ReOrder') ReOrder: ElementRef;
-//     @ViewChild('DrugType') DrugType: ElementRef;
-//     @ViewChild('ManufId') ManufId: ElementRef;
-//     @ViewChild('Company') Company: ElementRef;
-//     @ViewChild('Storagee') Storagee: ElementRef;
-//     @ViewChild('Maxdisc') Maxdisc: ElementRef;
-//     @ViewChild('storename') storename: ElementRef;
-//     //   @ViewChild('Store') Store: MatSelect;
-//     @ViewChild('addbutton') addbutton: ElementRef;
+    @ViewChild('ReOrder') ReOrder: ElementRef;
+    @ViewChild('DrugType') DrugType: ElementRef;
+    @ViewChild('ManufId') ManufId: ElementRef;
+    @ViewChild('Company') Company: ElementRef;
+    @ViewChild('Storagee') Storagee: ElementRef;
+    @ViewChild('Maxdisc') Maxdisc: ElementRef;
+    @ViewChild('storename') storename: ElementRef;
+    //   @ViewChild('Store') Store: MatSelect;
+    @ViewChild('addbutton') addbutton: ElementRef;
 
-//     public onEnterHsn(event): void {
-//         if (event.which === 13) {
-//             this.Itemname.nativeElement.focus();
+    public onEnterHsn(event): void {
+        if (event.which === 13) {
+            this.Itemname.nativeElement.focus();
 
-//         }
-//     }
-//     public onEnterItemName(event): void {
+        }
+    }
+    public onEnterItemName(event): void {
 
-//         if (event.which === 13) {
-//             this.ItemType.nativeElement.focus();
-//         }
-//     }
+        if (event.which === 13) {
+            this.ItemType.nativeElement.focus();
+        }
+    }
 
-//     public onEnterItemType(event): void {
-//         if (event.which === 13) {
-//             this.ItemCatageory.nativeElement.focus();
-//         }
-//     }
-//     public onEnterItemCategory(event): void {
-//         if (event.which === 13) {
-//             this.ItemGeneric.nativeElement.focus();
-//         }
-//     }
+    public onEnterItemType(event): void {
+        if (event.which === 13) {
+            this.ItemCatageory.nativeElement.focus();
+        }
+    }
+    public onEnterItemCategory(event): void {
+        if (event.which === 13) {
+            this.ItemGeneric.nativeElement.focus();
+        }
+    }
 
-//     public onEnterItemGeneric(event): void {
-//         if (event.which === 13) {
-//             this.ItemClass.nativeElement.focus();
-//         }
-//     }
-//     public onEnterItemClass(event): void {
-//         if (event.which === 13) {
+    public onEnterItemGeneric(event): void {
+        if (event.which === 13) {
+            this.ItemClass.nativeElement.focus();
+        }
+    }
+    public onEnterItemClass(event): void {
+        if (event.which === 13) {
            
-//             this.CurrencyId.nativeElement.focus();
-//         }
-//     }
+            this.CurrencyId.nativeElement.focus();
+        }
+    }
 
 
-//     public onEnterPurchaseUOMId(event): void {
-//         if (event.which === 13) {
-//             this.StockUOMId.nativeElement.focus();
-//         }
-//     }
-//     public onEnterStockUOMId(event): void {
-//         if (event.which === 13) {
-//             this.ConversionFactor.nativeElement.focus();
+    public onEnterPurchaseUOMId(event): void {
+        if (event.which === 13) {
+            this.StockUOMId.nativeElement.focus();
+        }
+    }
+    public onEnterStockUOMId(event): void {
+        if (event.which === 13) {
+            this.ConversionFactor.nativeElement.focus();
 
-//         }
-//     }
+        }
+    }
 
-//     public onEnterCurrencyId(event): void {
-//         if (event.which === 13) {
-//             this.PurchaseUOMId.nativeElement.focus();
+    public onEnterCurrencyId(event): void {
+        if (event.which === 13) {
+            this.PurchaseUOMId.nativeElement.focus();
            
-//         }
-//     }
-//     public onEnterConversionFactor(event): void {
-//         if (event.which === 13) {
-//             this.ReOrder.nativeElement.focus(); 
-//         }
-//     }
+        }
+    }
+    public onEnterConversionFactor(event): void {
+        if (event.which === 13) {
+            this.ReOrder.nativeElement.focus(); 
+        }
+    }
 
-//     public onEnterCGST(event): void {
-//         if (event.which === 13) {
-//             this.gstPerChecking()
-//             this.SGST.nativeElement.focus();
-//         }
-//     }
+    public onEnterCGST(event): void {
+        if (event.which === 13) {
+            this.gstPerChecking()
+            this.SGST.nativeElement.focus();
+        }
+    }
 
-//     public onEnterSGST(event): void {
-//         if (event.which === 13) {
-//             this.gstPerChecking()
-//             this.IGST.nativeElement.focus();
-//         }
-//     }
-//     public onEnterIGST(event): void {
-//         if (event.which === 13) {
-//             this.gstPerChecking()
-//             this.MinQty.nativeElement.focus();
-//         }
-//     }
+    public onEnterSGST(event): void {
+        if (event.which === 13) {
+            this.gstPerChecking()
+            this.IGST.nativeElement.focus();
+        }
+    }
+    public onEnterIGST(event): void {
+        if (event.which === 13) {
+            this.gstPerChecking()
+            this.MinQty.nativeElement.focus();
+        }
+    }
 
-//     public onEnterMinQty(event): void {
-//         if (event.which === 13) {
-//             this.MaxQty.nativeElement.focus();
-//         }
-//     }
+    public onEnterMinQty(event): void {
+        if (event.which === 13) {
+            this.MaxQty.nativeElement.focus();
+        }
+    }
 
-//     public onEnterMaxQty(event): void {
-//         if (event.which === 13) {
-//             this.Storagee.nativeElement.focus();
-//         }
-//     }
-//     public onEnterReOrder(event): void {
-//         if (event.which === 13) {
-//             this.Maxdisc.nativeElement.focus();
-//         }
-//     }
+    public onEnterMaxQty(event): void {
+        if (event.which === 13) {
+            this.Storagee.nativeElement.focus();
+        }
+    }
+    public onEnterReOrder(event): void {
+        if (event.which === 13) {
+            this.Maxdisc.nativeElement.focus();
+        }
+    }
 
-//     public onEnterDrugType(event): void {
-//         if (event.which === 13) {
-//             this.ManufId.nativeElement.focus();
-//         }
-//     }
+    public onEnterDrugType(event): void {
+        if (event.which === 13) {
+            this.ManufId.nativeElement.focus();
+        }
+    }
 
-//     public onEnterManufId(event): void {
-//         if (event.which === 13) {
-//             this.Company.nativeElement.focus();
-//         }
-//     }
-//     public onEnterCompany(event): void {
-//         if (event.which === 13) {
-//             this.storename.nativeElement.focus();
-//         }
-//     }
+    public onEnterManufId(event): void {
+        if (event.which === 13) {
+            this.Company.nativeElement.focus();
+        }
+    }
+    public onEnterCompany(event): void {
+        if (event.which === 13) {
+            this.storename.nativeElement.focus();
+        }
+    }
 
 
 
-//     public onEnterStorage(event): void {
-//         if (event.which === 13) {
-//             this.DrugType.nativeElement.focus();
-//         }
-//     }
-//     public onEnterMaxdisc(event): void {
-//         if (event.which === 13) {
-//             this.CGST.nativeElement.focus();
-//         }
-//     }
+    public onEnterStorage(event): void {
+        if (event.which === 13) {
+            this.DrugType.nativeElement.focus();
+        }
+    }
+    public onEnterMaxdisc(event): void {
+        if (event.which === 13) {
+            this.CGST.nativeElement.focus();
+        }
+    }
 
-//     public onEnterstorename(event): void {
-//         if (event.which === 13) {
-//             this.save = true;
-//             this.addbutton.nativeElement.focus();
+    public onEnterstorename(event): void {
+        if (event.which === 13) {
+            this.save = true;
+            this.addbutton.nativeElement.focus();
 
         }
     }
@@ -836,10 +838,10 @@ export class ItemFormMasterComponent implements OnInit {
     // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
 
 
-//     onEnterStorename(event): void {
+    onEnterStorename(event): void {
 
-//         if (event.which === 13) {
-//             // this.save=true;
+        if (event.which === 13) {
+            // this.save=true;
 
         }
     } 
@@ -926,7 +928,7 @@ export class ItemFormMasterComponent implements OnInit {
         //     return;
         // }
 
-//         this.selectedStore = this.vStoreName;
+        this.selectedStore = this.vStoreName;
       
 ``       //console.log(this.selectedStore);
         let ItemCategaryId = 0;
@@ -1122,8 +1124,8 @@ export class ItemFormMasterComponent implements OnInit {
                 });
               
  
-//                 // }
-//                 console.log(data3);
+                // }
+                console.log(data3);
                
                 var m_dataUpdate = {
                     updateItemMaster: {
@@ -1195,50 +1197,50 @@ export class ItemFormMasterComponent implements OnInit {
             this.onClose();
        
 
-//     }
+    }
 
-//     onEdit(row) {
-//         var m_data = {
-//             ItemID: row.ItemID,
-//             ItemShortName: row.ItemShortName.trim(),
-//             ItemName: row.ItemName.trim(),
-//             ItemTypeID: row.ItemTypeID,
-//             ItemCategoryId: row.ItemCategoryId,
-//             ItemGenericNameId: row.ItemGenericNameId,
-//             ItemClassId: row.ItemClassId,
-//             PurchaseUOMId: row.PurchaseUOMId,
-//             StockUOMId: row.StockUOMId,
-//             ConversionFactor: row.ConversionFactor.trim(),
-//             CurrencyId: row.CurrencyId,
-//             TaxPer: row.TaxPer,
-//             IsDeleted: JSON.stringify(row.Isdeleted),
-//             UpdatedBy: row.UpdatedBy,
-//             IsBatchRequired: JSON.stringify(row.IsBatchRequired),
-//             MinQty: row.MinQty,
-//             MaxQty: row.MaxQty,
-//             ReOrder: row.ReOrder,
-//             IsNursingFlag: JSON.stringify(row.IsNursingFlag),
-//             HSNcode: row.HSNcode.trim(),
-//             CGST: row.CGST,
-//             SGST: row.SGST,
-//             IGST: row.IGST,
-//             IsNarcotic: JSON.stringify(row.IsNarcotic),
-//             ManufId: row.ManufId,
-//             ProdLocation: row.ProdLocation.trim(),
-//             IsH1Drug: JSON.stringify(row.IsH1Drug),
-//             IsScheduleH: JSON.stringify(row.IsScheduleH),
-//             IsHighRisk: JSON.stringify(row.IsHighRisk),
-//             IsScheduleX: JSON.stringify(row.IsScheduleX),
-//             IsLASA: JSON.stringify(row.IsLASA),
-//             IsEmgerency: JSON.stringify(row.IsEmgerency),
-//         };
+    onEdit(row) {
+        var m_data = {
+            ItemID: row.ItemID,
+            ItemShortName: row.ItemShortName.trim(),
+            ItemName: row.ItemName.trim(),
+            ItemTypeID: row.ItemTypeID,
+            ItemCategoryId: row.ItemCategoryId,
+            ItemGenericNameId: row.ItemGenericNameId,
+            ItemClassId: row.ItemClassId,
+            PurchaseUOMId: row.PurchaseUOMId,
+            StockUOMId: row.StockUOMId,
+            ConversionFactor: row.ConversionFactor.trim(),
+            CurrencyId: row.CurrencyId,
+            TaxPer: row.TaxPer,
+            IsDeleted: JSON.stringify(row.Isdeleted),
+            UpdatedBy: row.UpdatedBy,
+            IsBatchRequired: JSON.stringify(row.IsBatchRequired),
+            MinQty: row.MinQty,
+            MaxQty: row.MaxQty,
+            ReOrder: row.ReOrder,
+            IsNursingFlag: JSON.stringify(row.IsNursingFlag),
+            HSNcode: row.HSNcode.trim(),
+            CGST: row.CGST,
+            SGST: row.SGST,
+            IGST: row.IGST,
+            IsNarcotic: JSON.stringify(row.IsNarcotic),
+            ManufId: row.ManufId,
+            ProdLocation: row.ProdLocation.trim(),
+            IsH1Drug: JSON.stringify(row.IsH1Drug),
+            IsScheduleH: JSON.stringify(row.IsScheduleH),
+            IsHighRisk: JSON.stringify(row.IsHighRisk),
+            IsScheduleX: JSON.stringify(row.IsScheduleX),
+            IsLASA: JSON.stringify(row.IsLASA),
+            IsEmgerency: JSON.stringify(row.IsEmgerency),
+        };
 
-//         this._itemService.populateForm(m_data);
-//     }
+        this._itemService.populateForm(m_data);
+    }
 
-    // onChangeMode(event) {
+    onChangeMode(event) {
 
-    // }
+    }
 
     onClear() {
         this.itemForm.reset();
@@ -1256,39 +1258,39 @@ export class ItemFormMasterComponent implements OnInit {
     ]
     gstPerChecking(){
       
-//         if(parseFloat(this.vCGST) > 0){
-//             if(!this.gstPerArray.some(item => item.gstPer ==  parseFloat(this.vCGST ))) {
-//                 this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-//                     toastClass: 'tostr-tost custom-toast-warning',
-//                 });
-//                 return
-//                 // this.vCGST  = '';
-//             } 
-//         }
-//         else if(parseFloat(this.vSGST) > 0){
-//             if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vSGST))) {
-//                 this.toastr.warning('Please enter SGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-//                     toastClass: 'tostr-tost custom-toast-warning',
-//                 });
-//                 return
-//                 // this.vSGST = '';
-//             } 
-//         }else{ 
-//             if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vIGST))) {
-//                 this.toastr.warning('Please enter IGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-//                     toastClass: 'tostr-tost custom-toast-warning',
-//                 });
-//                 return
-//                 // this.vIGST = '';
-//             }  
-//         }
+        if(parseFloat(this.vCGST) > 0){
+            if(!this.gstPerArray.some(item => item.gstPer ==  parseFloat(this.vCGST ))) {
+                this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+                // this.vCGST  = '';
+            } 
+        }
+        else if(parseFloat(this.vSGST) > 0){
+            if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vSGST))) {
+                this.toastr.warning('Please enter SGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+                // this.vSGST = '';
+            } 
+        }else{ 
+            if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vIGST))) {
+                this.toastr.warning('Please enter IGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+                // this.vIGST = '';
+            }  
+        }
            
-//     }
+    }
 
 
-// }
+}
 
-// export class StoreClass {
-//     StoreId: any;
-//     StoreName: any;
-//   }
+export class StoreClass {
+    StoreId: any;
+    StoreName: any;
+  }
