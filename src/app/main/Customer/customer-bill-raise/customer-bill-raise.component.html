@@ -11,12 +11,14 @@
                 Customer BIll Raise List
             </span>
         </div>
-        <!-- <button mat-raised-button (click)="NewCustomerBill()" fxLayoutAlign="center center" class="py-8">
-        <mat-icon>add</mat-icon>New Bill Raise
-    </button> -->
-        <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;color: white;">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">   
+            <button mat-raised-button style="background-color: white;color: brown;" (click)="NewCustomerBill()">
+                <mat-icon>add</mat-icon> New Bill
+            </button> 
+        </div>  
+        <!-- <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 1010px;color: white;">
             <mat-icon>close</mat-icon>
-        </button>
+        </button> -->
     </mat-toolbar>
 
     <div class="contact">

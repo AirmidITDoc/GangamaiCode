@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { AMCDetailsComponent } from './amc-details/amc-details.component';
 
 @Component({
   selector: 'app-customer-information',
@@ -77,8 +78,8 @@ export class CustomerInformationComponent implements OnInit {
   NewCustomer(){
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
-        maxWidth: "85vw",
-        height: '85%',
+        maxWidth: "75vw",
+        height: '75%',
         width: '100%',
         
       });
@@ -90,8 +91,8 @@ export class CustomerInformationComponent implements OnInit {
     console.log(contact)
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
-        maxWidth: "85vw",
-        height: '85%',
+        maxWidth: "75vw",
+        height: '75%',
         width: '100%',
         data: {
           Obj: contact
@@ -102,6 +103,23 @@ export class CustomerInformationComponent implements OnInit {
       this.getCustomerList();
     });
   }
+  ChkAMCDet(contact){
+    console.log(contact)
+    const dialogRef = this._matDialog.open(AMCDetailsComponent,
+      {
+        maxWidth: "50vw",
+        height: '55%',
+        width: '100%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCustomerList();
+    });
+  }
+  
 }
 export class CustomerInfoList {
   CustomerName: any;

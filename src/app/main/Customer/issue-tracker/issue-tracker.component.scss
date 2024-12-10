@@ -1,0 +1,22 @@
+.mat-column-IssueDescription {
+    width:300px;
+    max-width: 300px;
+    min-width: 300px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }
+  .mat-column-IssueName {
+    width:180px;
+    max-width: 180px;
+    min-width: 180px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }

@@ -74,8 +74,8 @@ export class CustomerBillRaiseComponent implements OnInit {
   NewCustomerBill(){
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
-        maxWidth: "85vw",
-        height: '85%',
+        maxWidth: "75vw",
+        height: '75%',
         width: '100%',
         
       });
@@ -87,8 +87,8 @@ export class CustomerBillRaiseComponent implements OnInit {
     console.log(contact)
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
-        maxWidth: "85vw",
-        height: '85%',
+        maxWidth: "75vw",
+        height: '55%',
         width: '100%',
         data: {
           Obj: contact
