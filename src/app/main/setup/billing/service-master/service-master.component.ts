@@ -36,7 +36,7 @@ export class ServiceMasterComponent implements OnInit {
 
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
-            { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
             { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
@@ -44,7 +44,7 @@ export class ServiceMasterComponent implements OnInit {
 
             { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "CreditedtoDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
@@ -52,9 +52,9 @@ export class ServiceMasterComponent implements OnInit {
 
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            // { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
             { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
@@ -93,8 +93,8 @@ export class ServiceMasterComponent implements OnInit {
         sortField: "ServiceId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "TariffId", fieldValue: "10006", opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }

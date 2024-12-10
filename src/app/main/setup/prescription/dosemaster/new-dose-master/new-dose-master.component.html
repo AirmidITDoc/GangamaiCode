@@ -25,19 +25,19 @@
                     <airmid-textbox label="Dose Name" formControlName="DoseName" [value]=""
                         [formGroup]="doseForm"
                         [validations]="_doseMasterService.getValidationMessages().DoseName"
-                         [maxLength]="300">
+                         [maxLength]="50">
                     </airmid-textbox>
                 
                     <airmid-textbox label="DoseNameInEnglish" formControlName="DoseNameInEnglish" [value]=""
                         [formGroup]="doseForm"
                         [validations]="_doseMasterService.getValidationMessages().DoseNameInEnglish"
-                         [maxLength]="300">
+                         [maxLength]="50">
                     </airmid-textbox>
 
                     <airmid-textbox label="DoseQtyPerDay" formControlName="DoseQtyPerDay" [value]=""
                         [formGroup]="doseForm"
                         [validations]="_doseMasterService.getValidationMessages().DoseQtyPerDay"
-                         [maxLength]="300">
+                         [maxLength]="50">
                     </airmid-textbox>
                 </div>
 
@@ -54,7 +54,7 @@
 
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

@@ -34,7 +34,7 @@ import { error } from "console";
       apiUrl: "ClassMaster/List",
   columnsList: [
       { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:160 },
-      { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:700 },
+      { heading: "Billing Class Name", key: "class Name", sort: true, align: 'left', emptySign: 'NA', width:700 },
      
      { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
            {

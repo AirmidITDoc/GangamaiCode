@@ -23,7 +23,7 @@ export class PrescriptionclassmasterService {
             ClassName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             isActive: ["true"]

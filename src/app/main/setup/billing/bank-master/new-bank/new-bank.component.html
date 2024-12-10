@@ -21,10 +21,10 @@
                 <input type="hidden" name="bankId" formControlName="bankId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Bank name" formControlName="bankName" [value]="" 
+                    <airmid-textbox label="Bank Name" formControlName="bankName" [value]="" 
                         [formGroup]="bankForm"
                         [validations]="_BankMasterService.getValidationMessages().bankName" 
-                        [maxLength]="300">
+                        [maxLength]="50">
                     </airmid-textbox>     
                                   
                 </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

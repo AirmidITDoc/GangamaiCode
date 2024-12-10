@@ -19,7 +19,7 @@ export class GenericmasterService {
     createGenericForm(): FormGroup {
         return this._formBuilder.group({
             GenericId: [""],
-            GenericName: ["", [Validators.required,Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+            GenericName: ["", [Validators.required,Validators.pattern("^[A-Za-z0-9]+$")]],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],

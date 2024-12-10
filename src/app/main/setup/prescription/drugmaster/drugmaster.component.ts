@@ -34,7 +34,7 @@ export class DrugmasterComponent implements OnInit {
             { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA', width:500 },
             { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:150  },
-            { heading: "Class Id", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            // { heading: "Class Id", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:150,align: "center" },
            
             {
