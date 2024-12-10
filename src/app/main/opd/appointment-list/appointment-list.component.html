@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                   Appointment List
+                    Appointment List
                 </span>
             </div>
         </div>
@@ -14,33 +14,28 @@
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
         </div>
-      
-        
+
+
     </div>
     <div class="info-badge-top pb-2 border-bottom" style="padding-left: 400px;">
         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
-                class="gap-4">
+            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                 <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
             </div>
-            <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
-                class="gap-4">
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill green-600 s-16">circle</mat-icon>
                 <span class="green-600-fg"> New Patient : {{VNewcount}}</span>
             </div>
-            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center"
-                class="gap-4">
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                 <span class="orange-600-fg">FollowUp : {{VFollowupcount}}</span>
             </div>
-            <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
-                class="gap-4">
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill red-600 s-16">circle</mat-icon>
                 <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
             </div>
-            <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
-                class="gap-4">
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill red-600 s-16">circle</mat-icon>
                 <span class="blue-600-fg">Cross Consultant Count :
                     {{VCrossConscount}}</span>
@@ -70,7 +65,7 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                
+
 
                 <!-- <mat-form-field appearance="outline">
                     <mat-label>Enter a date range</mat-label>
@@ -102,9 +97,14 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
+                <!-- <airmid-autocomplete label="DoctorID" [(ngModel)]="gridConfig.filters[3].fieldValue"
+                    [validations]="getValidationdeptDocMessages().DoctorID" [mode]="autocompleteModedeptdoc"
+                    (selectDdlObject)="selectChangedeptdoc($event)">
+                </airmid-autocomplete> -->
+
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
-                    <input matInput placeholder="Search From Date" autocomplete="off"  
+                    <input matInput placeholder="Search From Date" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[4].fieldValue=''">
@@ -120,7 +120,7 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                              
+
             </ng-container>
         </airmid-table>
     </div>

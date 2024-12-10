@@ -238,49 +238,26 @@ export class ItemMasterComponent implements OnInit {
         //       }
         // });
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            // this.getItemMasterList();
-        });
-    }
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log("The dialog was closed - Insert Action", result);
+        //     // this.getItemMasterList();
+        // });
+    // }
     // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    onDeactive(ItemID) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
-                    "Update M_ItemMaster set Isdeleted=0 where ItemID=" +
-                    ItemID;
-                console.log(Query);
-                this._itemService
-                    .deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                // this.getItemMasterList();
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    onAdd() {
-        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "95vw",
-            maxHeight: "80vh",
-            width: "100%",
-            height: "100%",
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            // this.getItemMasterList();
-        });
-    }
+   
+    // onAdd() {
+    //     const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+    //         maxWidth: "95vw",
+    //         maxHeight: "80vh",
+    //         width: "100%",
+    //         height: "100%",
+    //     });
+    //     dialogRef.afterClosed().subscribe((result) => {
+    //         console.log("The dialog was closed - Insert Action", result);
+    //         // this.getItemMasterList();
+    //     });
+    // }
 }
 export class ItemMaster {
     ItemID: number;
@@ -385,4 +362,4 @@ export class ItemMaster {
 //             this.ItemID = StoreMaster.ItemID || "";
 //         }
 //     }
-// }
+}

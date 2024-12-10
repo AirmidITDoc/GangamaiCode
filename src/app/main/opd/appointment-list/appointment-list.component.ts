@@ -43,6 +43,9 @@ export class AppointmentListComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   fromDate= this.datePipe.transform(new Date(), "dd/MM/yyyy")
   toDate=this.datePipe.transform(new Date(), "dd/MM/yyyy")
+  autocompleteModedeptdoc: string = "ConDoctor";
+
+
   gridConfig: gridModel = {
       apiUrl: "VisitDetail/AppVisitList",
       columnsList: [
@@ -471,8 +474,18 @@ console.log(data)
       // this.chkprint = false;
 
   }
-
-
+  doctorID=0;
+  selectChangedeptdoc(obj: any) {
+        console.log(obj);
+        this.doctorID = obj
+    }
+    getValidationdeptDocMessages() {
+        return {
+            DoctorID: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
   objICard = {};
   QrCode = "";
   printIcard(row) {
