@@ -229,12 +229,12 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
   this.serviceForm.get('EmgAmt').updateValueAndValidity();
   this.serviceForm.get('EmgPer').updateValueAndValidity();
   
-  // if (this.serviceForm.invalid) {
-  //     this.toastr.warning('please check from is invalid', 'Warning !', {
-  //       toastClass:'tostr-tost custom-toast-warning',
-  //   })
-  //   return;
-  // }else{
+  if (this.serviceForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+  }else{
 
   let subGroupId  = 0;
   if(this.serviceForm.get("SubGroupId").value)
@@ -299,7 +299,7 @@ if(!this.serviceForm.get("ServiceId").value){
     else{
       //update
     }
-  // }
+  }
   
     
 this.dialogRef.close();

@@ -78,7 +78,9 @@ export class SupplierMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals}
+            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals},
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
         ],
         row:25
     }
