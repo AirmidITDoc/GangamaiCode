@@ -104,8 +104,8 @@ export class AirmidAutocompleteComponent implements OnInit {
                 .subscribe((data: any) => {
                     this.ddls = data as [];
                     this.filteredDdls.next(this.ddls.slice());
+                    debugger
                     if (this.value) {
-                        debugger
                         this.formGroup.get(this.formControlName).setValue(this.value.toString());
                         this.control.setValue(this.value.toString());
                         this.stateChanges.next();
@@ -156,8 +156,11 @@ export class AirmidAutocompleteComponent implements OnInit {
         this.selectDdlObject.emit($event.value);
     }
     SetSelection(value) {
-        debugger
-        this.formGroup.controls[this.formControlName].setValue(value);
+        debugger 
+        this.formGroup.get(this.formControlName).setValue(this.value.toString());
+        this.control.setValue(this.value.toString());
+        this.stateChanges.next();
+        this.changeDetectorRefs.detectChanges();
         this.selectDdlObject.emit(value);
     }
 }
