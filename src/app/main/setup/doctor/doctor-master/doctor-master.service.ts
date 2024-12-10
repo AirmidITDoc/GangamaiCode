@@ -141,6 +141,9 @@ export class DoctorMasterService {
     public getDoctorMasterList(Param) {
         return this._httpClient.PostData("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
     }
+    public getDoctorById(Id) {
+        return this._httpClient.GetData("Doctor/" + Id);
+    }
 
     public getSignature(Param) {
         return this._httpClient.GetData("DoctorMaster/get-file?FileName=" + Param);

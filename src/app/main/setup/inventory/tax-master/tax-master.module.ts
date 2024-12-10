@@ -21,6 +21,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TaxMasterService } from "./tax-master.service";
 import { SharedModule } from "../../../shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
+import { NewTaxComponent } from './new-tax/new-tax.component';
 
 const routes: Routes = [
     {
@@ -30,28 +32,26 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [TaxMasterComponent],
+    declarations: [TaxMasterComponent, NewTaxComponent],
     imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    SharedModule
+        RouterModule.forChild(routes),
+        SharedModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule,
 ],
     providers: [TaxMasterService, DatePipe],
     entryComponents: [TaxMasterComponent],

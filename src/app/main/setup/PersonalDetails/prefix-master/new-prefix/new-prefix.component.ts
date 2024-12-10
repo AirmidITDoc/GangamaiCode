@@ -17,6 +17,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
+    autocompleteModegender:string="Gender";
     constructor(
         public _PrefixMasterService: PrefixMasterService,
         public dialogRef: MatDialogRef<NewPrefixComponent>,
@@ -31,6 +32,7 @@ export class NewPrefixComponent implements OnInit {
         var m_data = {
             prefixId: this.data?.prefixId,
             prefixName: this.data?.prefixName.trim(),
+            GenderId:this.data?.GenderId,
             isActive: JSON.stringify(this.data?.isActive),
         };
         this.prefixForm.patchValue(m_data);
@@ -52,8 +54,16 @@ export class NewPrefixComponent implements OnInit {
           })
           return;
         }else{
-        if (this.prefixForm.valid) {
-            this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
+            if(!this.prefixForm.get("prefixId").value){
+                debugger
+                var mdata=
+                {
+                  "prefixId": 0,
+                  "prefixName": this.prefixForm.get("prefixName").value || "",
+                  "sexId":parseInt(this.prefixForm.get("GenderId").value)
+                }
+                console.log("prefix json:", mdata);
+            this._PrefixMasterService.prefixMasterSave(mdata).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
@@ -61,6 +71,19 @@ export class NewPrefixComponent implements OnInit {
             });
         }
       }
+    }
+    genderId=0;
+
+    selectChangegender(obj:any){
+        console.log(obj)
+        this.genderId=obj.value;
+    }
+    getValidationGenderMessages(){
+        return {
+            GenderId: [
+                { name: "required", Message: "Gender is required" }
+            ]
+        };
     }
 
     onClear(val: boolean) {

@@ -27,6 +27,13 @@
                         [validations]="_PrefixMasterService.getValidationMessages().prefixName"
                         [maxLength]="300">
                     </airmid-textbox> 
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="Gender" formControlName="GenderId" [formGroup]="prefixForm"
+                            [validations]="getValidationGenderMessages().GenderId" [mode]="autocompleteModegender">
+                        </airmid-autocomplete>
+                    </div>
+                    
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive"  value="1">

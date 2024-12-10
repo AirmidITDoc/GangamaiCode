@@ -19,16 +19,16 @@ export class NewCurrencyComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-
   ngOnInit(): void {
       this.currencyForm = this._CurrencymasterService.createCurrencyForm();
       var m_data = {
         currencyId: this.data?.currencyId,
         currencyName: this.data?.currencyName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
+        isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.currencyForm.patchValue(m_data);
   }
+
   onSubmit() {
     if (this.currencyForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {

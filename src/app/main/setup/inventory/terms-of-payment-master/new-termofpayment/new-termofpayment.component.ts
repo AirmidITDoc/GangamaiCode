@@ -24,25 +24,26 @@ export class NewTermofpaymentComponent implements OnInit {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
       var m_data = {
         Id: this.data?.Id,
-        currencyName: this.data?.currencyName.trim(),
+        TermsOfPayment: this.data?.TermsOfPayment.trim(),
         isDeleted: JSON.stringify(this.data?.isActive),
       };
-      this.termsofpaymentForm.patchValue(m_data);
+        this.termsofpaymentForm.patchValue(m_data);
     }
     
     onSubmit() {
         if (this.termsofpaymentForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
+        this.toastr.warning('please check form is invalid', 'Warning !', 
+        {
             toastClass:'tostr-tost custom-toast-warning',
         })
         return;
         }else{
         debugger
         var m_data =
-        {
-            "Id": 0,
-            "TermsOfPayment": this.termsofpaymentForm.get("TermsOfPayment").value,
-        }
+            {
+                "id": 0,
+                "TermsOfPayment": this.termsofpaymentForm.get("TermsOfPayment").value,
+            }
 
         console.log("TermsOfPaymentMaster Insert:",m_data)
         

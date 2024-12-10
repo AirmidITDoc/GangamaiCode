@@ -27,13 +27,13 @@ export class ItemGenericMasterComponent implements OnInit {
         public toastr : ToastrService,) {}
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "CurrencyMaster/List",
+            apiUrl: "GenericMaster/List",
             columnsList: [
-                { heading: "Code", key: "itemGenericNameId", sort: true, width:150, align: 'left', emptySign: 'NA' },
-                { heading: "Generic Name", key: "itemGenericName", sort: true, width:800, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:100, align: "center" },
+                { heading: "Code", key: "genericId", sort: true, width:150, align: 'left', emptySign: 'NA' },
+                { heading: "Generic Name", key: "genericName", sort: true, width:750, align: 'left', emptySign: 'NA' },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:150, align: "center" },
                 {
-                    heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                    heading: "Action", key: "action", align: "right", width:150, type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
@@ -61,10 +61,10 @@ export class ItemGenericMasterComponent implements OnInit {
                         }]
                 } //Action 1-view, 2-Edit,3-delete
             ],
-            sortField: "itemGenericNameId",
+            sortField: "genericId",
             sortOrder: 0,
             filters: [
-                { fieldName: "itemGenericName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "GenericName", fieldValue: "", opType: OperatorComparer.Contains },
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25

@@ -28,7 +28,7 @@ import { StoreFormMasterComponent } from './store-form-master/store-form-master.
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { SharedModule } from "app/main/shared/shared.module";
-
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -66,7 +66,8 @@ const routes: Routes = [
         MatSlideToggleModule,
         MatTabsModule,
         MatAutocompleteModule,
-        SharedModule
+        SharedModule,
+        MatDialogModule
         // MatLabel,
     ],
     providers: [StoreMasterService,DatePipe],

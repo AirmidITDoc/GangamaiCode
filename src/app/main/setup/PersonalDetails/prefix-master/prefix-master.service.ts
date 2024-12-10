@@ -35,7 +35,7 @@ export class PrefixMasterService {
                 ]
             ],
             // SexID: [" "],
-            // GenderName: [""],
+            GenderId: ["", Validators.required],
             isActive: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

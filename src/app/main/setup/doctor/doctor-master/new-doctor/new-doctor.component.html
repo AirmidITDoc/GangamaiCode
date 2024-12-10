@@ -31,9 +31,10 @@
                         <!-- <airmid-autocomplete [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
 
                         <airmid-autocomplete label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
-                            [validations]="getValidationMessages().PrefixID" [mode]="autocompleteModeprefix">
+                            [value]="PrefixId" [validations]="getValidationMessages().PrefixID"
+                            (dataBoundFinished)="PrefixId=registerObj.prefixId"
+                            [mode]="autocompleteModeprefix">
                         </airmid-autocomplete>
-
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -478,7 +479,7 @@
 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-autocomplete label="DepartmentName" formControlName="Departmentid"
-                                    [formGroup]="myForm" [IsMultiPle]="true"  [value]="selectedItems"
+                                    [formGroup]="myForm" [IsMultiPle]="true" [value]="selectedItems"
                                     [validations]="getValidationDepartmentMessages().Departmentid"
                                     [mode]="autocompleteModedepartment">
                                 </airmid-autocomplete>
