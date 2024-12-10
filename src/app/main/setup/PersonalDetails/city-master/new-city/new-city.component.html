@@ -24,7 +24,7 @@
                     formControlName="cityName" 
                     [value]="" [formGroup]="cityForm"
                     [validations]="_CityMasterService.getValidationMessages().cityName" 
-                    [maxLength]="300">
+                    >
                 </airmid-textbox>
                 
                 <!-- <airmid-autocomplete [mode]="autocompleteModestatus" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete> -->
@@ -33,7 +33,7 @@
                     [validations]="getValidationStateMessages().stateId"
                     (selectDdlObject)="selectChangestate($event)"
                     [mode]="autocompleteModestatus"
-                    [maxLength]="300">
+                    >
                 </airmid-autocomplete>
                 
                 </div>

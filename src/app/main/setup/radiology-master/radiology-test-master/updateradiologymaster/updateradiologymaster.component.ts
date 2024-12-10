@@ -347,7 +347,7 @@ getOptionTextService(option) {
       }
     }
   }
-
+  
   @ViewChild('Tname') Tname: ElementRef;
   @ViewChild('printName') printName: ElementRef;
 

@@ -27,6 +27,8 @@ import { FormGroup } from '@angular/forms';
 export class RadiologyTemplateFormComponent implements OnInit {
   templateForm: FormGroup;
   vTemplateDesc:any;
+  vTemplateName:any;
+  TemplateId=0
   editorConfig: AngularEditorConfig = {
     // color:true,
     editable: true,

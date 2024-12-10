@@ -1,0 +1,42 @@
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>{{label}}</mat-label>
+    <input matInput [matAutocomplete]="auto" [formControl]="control" value="value" placeholder="Search..." matAutocompletePosition="below"/>
+    <span matSuffix style="display: flex;">
+        <mat-icon class="mat-icon-close"
+            (click)="formGroup.controls[formControlName].setValue('');  isSelected = false;">close</mat-icon>
+        <mat-icon class="mat-icon-close"
+            (click)="formGroup.controls[formControlName].setValue('');  isSelected = false;">search</mat-icon>
+    </span>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+      <mat-option *ngFor="let option of filteredDdls1 | async" [value]="option" >
+        {{ option.text }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+
+  <!-- <mat-form-field appearance="outline">
+    <mat-label>City</mat-label>
+    <input matAutocompletePosition="below" type="text"
+        placeholder="Select City" matInput #city
+        (keydown)="onEntercity($event,vCityId.CityId)"
+        formControlName="CityId" [matAutocomplete]="autoCity"
+        required [(ngModel)]="vCityId">
+    <span matSuffix style="display: flex;">
+        <mat-icon class="mat-icon-close"
+            (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+        <mat-icon class="mat-icon-close"
+            (click)="personalFormGroup.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+    </span>
+    <mat-autocomplete #autoCity="matAutocomplete"
+        [displayWith]="getOptionTextCity">
+        <mat-option
+            *ngFor="let option of filteredOptionsCity | async"
+            [value]="option"
+            (onSelectionChange)="onChangeCityList(option)">
+            {{option.CityName}}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field> -->
+

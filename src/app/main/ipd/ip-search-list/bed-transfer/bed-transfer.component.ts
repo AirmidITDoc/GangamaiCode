@@ -196,7 +196,32 @@ export class BedTransferComponent implements OnInit {
 
   // new Api
 
+ClassId=0;
+BedId=0;
+RoomId=0;
+  getValidationroomMessages() {
+    return {
+      RoomId: [
+            { name: "required", Message: "Room Name is required" }
+        ]
+    };
+  }
+  
+  getValidationbedMessages() {
+  return {
+    BedId: [
+          { name: "required", Message: "Bed Name is required" }
+      ]
+  };
+}
 
+getValidationclassMessages() {
+  return {
+    ClassId: [
+          { name: "required", Message: "Class Name is required" }
+      ]
+  };
+}
   selectChangeward(obj: any){
   console.log(obj);
   this.vWardId=obj.value
