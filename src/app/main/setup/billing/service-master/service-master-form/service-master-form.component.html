@@ -39,7 +39,7 @@
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
             <mat-form-field appearance="outline" fxFlex>
-                <mat-label>ServiceName</mat-label>
+                <mat-label>Service Name</mat-label>
                     <input name="ServiceName" formControlName="ServiceName" placeholder="ServiceName"
                             matInput (keydown)="onEnterServiceName($event)" #serviceName
                             [(ngModel)]="vServiceName">
@@ -73,7 +73,7 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>ServiceShortDesc</mat-label>
-                    <input name="ServiceShortDesc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
+                    <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
                             matInput (keydown)="onEnterServiceShortDesc($event)" #serviceShortDesc
                             [(ngModel)]="vServiceShortDesc">
                     <mat-error

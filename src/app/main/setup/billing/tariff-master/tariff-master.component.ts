@@ -29,7 +29,7 @@ export class TariffMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width:160 },
 
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:700 },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:700 },
            
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
             

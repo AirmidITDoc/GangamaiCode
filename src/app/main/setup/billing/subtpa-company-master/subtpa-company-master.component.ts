@@ -34,8 +34,8 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         apiUrl: "SubTpaCompany/List",
         columnsList: [
             { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "TypeName", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:250 },
             { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "PinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width:100 },

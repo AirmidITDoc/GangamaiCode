@@ -55,7 +55,7 @@ export class AdmissionComponent implements OnInit {
   currentDate = new Date();
   // reportPrintObj: Admission;
   searchFormGroup: FormGroup;
- 
+
   screenFromString = 'admission-form';
   selectedAdvanceObj: AdmissionPersonlModel;
   newRegSelected: any = 'registration';
@@ -66,7 +66,7 @@ export class AdmissionComponent implements OnInit {
   disabled = false;
   isAlive = false;
   isOpen = false;
-  
+
   filteredOptions: any;
   showtable: boolean = false;
   noOptionFound: boolean = false;
@@ -79,34 +79,34 @@ export class AdmissionComponent implements OnInit {
   capturedImage: any;
   registration: any;
 
- 
- Vtotalcount = 0;
- VNewcount = 0;
- VFollowupcount = 0;
- VBillcount = 0;
- VOPtoIPcount = 0;
- vIsDischarg = 0;
- VAdmissioncount = 0;
- PatientName:any;
- RegId:any;
- RegNo:any="0";
- DoctorId: any = 0;
- AdmittedPatientList: any;
- msg: any;
- sIsLoading: string = '';
- savedValue: number = null;
- loadID = 0;
- Todate: any;
- ConfigCityId = 2;
 
- 
-  
+  Vtotalcount = 0;
+  VNewcount = 0;
+  VFollowupcount = 0;
+  VBillcount = 0;
+  VOPtoIPcount = 0;
+  vIsDischarg = 0;
+  VAdmissioncount = 0;
+  PatientName: any;
+  RegId: any;
+  RegNo: any = "0";
+  DoctorId: any = 0;
+  AdmittedPatientList: any;
+  msg: any;
+  sIsLoading: string = '';
+  savedValue: number = null;
+  loadID = 0;
+  Todate: any;
+  ConfigCityId = 2;
+
+
+
   options = [];
   V_SearchRegList: any = [];
- 
+
 
   registerObj = new AdmissionPersonlModel({});
-  MlcObj=new MlcDetail({})
+  MlcObj = new MlcDetail({})
   bedObj = new Bed({});
 
 
@@ -134,12 +134,12 @@ export class AdmissionComponent implements OnInit {
   displayedColumns = [
     // "useraction",
     // "IsMLC",
-  
 
-"regNo",
-"patientName",
-'admissionTime',
-    
+
+    "regNo",
+    "patientName",
+    'admissionTime',
+
     'doctorname',
     'refDocName',
     'ipdno',
@@ -149,8 +149,6 @@ export class AdmissionComponent implements OnInit {
     'className',
     'companyName',
     'relativeName',
-
-
     'buttons'
   ];
 
@@ -209,7 +207,7 @@ export class AdmissionComponent implements OnInit {
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) {
-    
+
     // this.getRegSearchList();
   }
 
@@ -225,56 +223,36 @@ export class AdmissionComponent implements OnInit {
 
     this.isAlive = true;
 
-   
+
     this.searchFormGroup = this.createSearchForm();
 
-    
-    // this.getPrefixList();
-    // this.getHospitalList();
-    // this.getPrefixList();
-    // this.getAreaList();
-    // this.getMaritalStatusList();
-    // this.getReligionList();
-    // this.getDepartmentList();
-    // this.getRelationshipList();
-    // this.getcityList1();
     this.getDoctorList();
-    // this.getDoctor1List();
-    // this.getDoctor2List();
-    // this.getWardList();
-    // this.getCompanyList();
-    // this.getSubTPACompList();
-    // this.getRefDoctorList();
-    //   this.getPtypeCombo()
-    //   this.getTariffCombo()
 
-
-   
   }
 
- 
-  
+
+
   Admissiondetail(data) {
     this.Vtotalcount = 0;
     this.VNewcount = 0;
     this.VFollowupcount = 0;
     this.VBillcount = 0;
     this.vIsDischarg = 0;
-    this.VOPtoIPcount= 0;
+    this.VOPtoIPcount = 0;
     console.log(data)
     this.Vtotalcount;
-    
+
     for (var i = 0; i < data.length; i++) {
-    
-       if (data[i].IsOpToIPconv ==true) {
+
+      if (data[i].IsOpToIPconv == true) {
         this.VOPtoIPcount = this.VOPtoIPcount + 1;
-        console.log( this.VOPtoIPcount )
+        console.log(this.VOPtoIPcount)
       } else if (data[i].IsDischarged == 1) {
         this.vIsDischarg = this.vIsDischarg + 1;
       }
       this.Vtotalcount = this.Vtotalcount + 1;
     }
-   
+
   }
 
   getOptionTextsearchDoctor(option) {
@@ -300,16 +278,16 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  selectChangedeptdoc(obj: any){
+  selectChangedeptdoc(obj: any) {
     console.log(obj);
-    
+
   }
 
   getValidationdoctorMessages() {
     return {
       searchDoctorId: [
-            { name: "required", Message: "Doctor Name is required" }
-        ]
+        { name: "required", Message: "Doctor Name is required" }
+      ]
     };
   }
 
@@ -343,7 +321,7 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
-  
+
   }
 
 
@@ -353,25 +331,25 @@ export class AdmissionComponent implements OnInit {
   getSelectedObj(obj) {
 
     this.registerObj = new AdmissionPersonlModel({});
-  
+
     obj.AgeDay = obj.AgeDay.trim();
     obj.AgeMonth = obj.AgeMonth.trim();
     obj.AgeYear = obj.AgeYear.trim();
     this.registerObj = obj;
-    console.log(this.registerObj );
+    console.log(this.registerObj);
 
     this.PatientName = obj.PatientName;
     this.RegId = obj.RegId;
     this.RegNo = obj.RegNo;
-  
+
 
   }
 
   AdmittedRegId: any = 0;
   chekAdmittedpatient(obj) {
-    
+
     this.AdmittedRegId = obj.RegId;
- 
+
     let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
     console.log(Query)
     this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
@@ -380,8 +358,8 @@ export class AdmissionComponent implements OnInit {
       if (this.registerObj != undefined) {
         this.AdmittedRegId = 0;
         Swal.fire("selected patient is already admitted!!..")
-       
-              } else {
+
+      } else {
         this.getSelectedObj(obj);
       }
     });
@@ -491,15 +469,15 @@ export class AdmissionComponent implements OnInit {
     event.stopPropagation();
   }
 
- 
- 
+
+
 
   onClose() {
 
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
 
-    
+
   }
   onEdit(row) {
 
@@ -507,7 +485,7 @@ export class AdmissionComponent implements OnInit {
     this.getSelectedObj(row);
   }
 
-  
+
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -519,16 +497,16 @@ export class AdmissionComponent implements OnInit {
     this._onDestroy.complete();
   }
 
-  
+
   resultsLength = 0;
-  fname="%"
-  lname="%"
-  mname="%"
-  fromdate="11/11/2022"
-  todate="11/11/2024"
-  IPNo="0"
-  Doctor=0
-  searchDoctorId="0";
+  fname = "%"
+  lname = "%"
+  mname = "%"
+  fromdate = "11/11/2022"
+  todate = "11/11/2024"
+  IPNo = "0"
+  Doctor = 0
+  searchDoctorId = "0";
   getAdmittedPatientList_1() {
     // this.fname=this._AdmissionService.myFilterform.get("FirstName").value
     // this.lname=this._AdmissionService.myFilterform.get("LastName").value
@@ -540,25 +518,25 @@ export class AdmissionComponent implements OnInit {
     // this.IPNo=this._AdmissionService.myFilterform.get("IPDNo").value
 
 
-   var Param ={
-    sortField: "AdmissionId",
-    sortOrder: 0,
-    filters: [
-      { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Contains },
-      { fieldName: "L_Name", fieldValue:  this.lname, opType: OperatorComparer.Contains },
-      { fieldName: "Reg_No", fieldValue:this.RegNo, opType: OperatorComparer.Equals },
-      { fieldName: "Doctor_Id", fieldValue: this.searchDoctorId, opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt", fieldValue:  this.fromdate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue:   this.todate, opType: OperatorComparer.Equals },
-      { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "M_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
-      { fieldName: "IPNo", fieldValue: this.IPNo, opType: OperatorComparer.Equals },
-      { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-     
-    ],
-     "exportType": "JSON"
-  }
+    var Param = {
+      sortField: "AdmissionId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: this.searchDoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
+        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "M_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
+        { fieldName: "IPNo", fieldValue: this.IPNo, opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+
+      ],
+      "exportType": "JSON"
+    }
     console.log(Param);
     this._AdmissionService.getAdmittedPatientListNew(Param).subscribe(data => {
       this.dataSource.data = data.data as Admission[];
@@ -611,7 +589,7 @@ export class AdmissionComponent implements OnInit {
 
   }
 
- 
+
 
   getAdmittedPatientCasepaperview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
@@ -653,8 +631,8 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  
-  
+
+
   getAdmittedPatientCasepaperTempview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
     debugger
@@ -710,10 +688,10 @@ export class AdmissionComponent implements OnInit {
 
 
   NewMLc(contact) {
-    
+
     this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
     this._AdmissionService.populateForm(contact);
-       const dialogRef = this._matDialog.open(MLCInformationComponent,
+    const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
         height: '600px', width: '100%',
@@ -730,9 +708,9 @@ export class AdmissionComponent implements OnInit {
 
   getMLCdetailview(Id) {
     // this.sIsLoading = 'loading-data';
-  
+
     setTimeout(() => {
-  
+
       this._AdmissionService.getMLCDetailView(Id
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -745,19 +723,19 @@ export class AdmissionComponent implements OnInit {
               title: "MLC Detail Viewer"
             }
           });
-  
+
         matDialog.afterClosed().subscribe(result => {
           // this.AdList = false;
           // this.sIsLoading = ' ';
         });
       });
-  
+
     }, 100);
-  
+
   }
 
-  
-  
+
+
   getRecord(contact, m): void {
 
     if (m == "Edit Admission") {
@@ -784,7 +762,7 @@ export class AdmissionComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
       });
     }
- 
+
     else if (m == "Update TPA Company Information") {
 
 
@@ -817,7 +795,7 @@ export class AdmissionComponent implements OnInit {
           width: "70%",
           data: {
             registerObj: m_data2,
-            FormName:"Admission"
+            FormName: "Admission"
           },
         }
       );
@@ -825,7 +803,7 @@ export class AdmissionComponent implements OnInit {
 
       });
     } else if (m == "Update Referred Doctor") {
-      
+
       var m_data3 = {
         RegId: contact.RegID,
         PatientName: contact.PatientName,
@@ -842,7 +820,7 @@ export class AdmissionComponent implements OnInit {
         width: "70%",
         data: {
           registerObj: m_data3,
-          FormName:"Admission"
+          FormName: "Admission"
         },
       });
       dialogRef.afterClosed().subscribe((result) => {
@@ -852,41 +830,42 @@ export class AdmissionComponent implements OnInit {
 
   }
 
- 
+
 
   EditRegistration(row) {
-    
+
     this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-    this.registerObj["RegId"]=row.RegID;
-    this.registerObj["RegID"]=row.RegID;
-    this.registerObj["PrefixID"]=row.PrefixId;
-    
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
+    this.registerObj["PrefixID"] = row.PrefixId;
+debugger
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "90vw",
         height: '450px',
         width: '100%',
-        data: {
-          registerObj: row,
-          Submitflag: true
-        }
+        data:row
+        //  {
+        //   data: row,
+        //   Submitflag: true
+        // }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.getAdmittedPatientList_1();
-       
-      });
-     
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      // this.getAdmittedPatientList_1();
+
+    });
+
   }
   getEditAdmission(row) {
-    
+
     this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-    this.registerObj["RegId"]=row.RegID;
-    this.registerObj["RegID"]=row.RegID;
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
     const dialogRef = this._matDialog.open(EditAdmissionComponent,
       {
         maxWidth: "90vw",
@@ -894,24 +873,24 @@ export class AdmissionComponent implements OnInit {
         width: '100%',
         data: {
           registerObj: row,
-         }
+        }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this. getAdmittedPatientList_1();
-       
-      });
-     
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getAdmittedPatientList_1();
+
+    });
+
   }
 
   getEditCompany(row) {
-    
+
     this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-    this.registerObj["RegId"]=row.RegID;
-    this.registerObj["RegID"]=row.RegID;
-    
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
+
     const dialogRef = this._matDialog.open(CompanyInformationComponent,
       {
         maxWidth: "70vw",
@@ -922,36 +901,36 @@ export class AdmissionComponent implements OnInit {
           Submitflag: true
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this. getAdmittedPatientList_1();
-       
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getAdmittedPatientList_1();
+
+    });
   }
   dateStyle?: string = 'Date';
   OnChangeDobType(e) {
-      this.dateStyle = e.value;
+    this.dateStyle = e.value;
   }
- 
-  
-  feedback(contact){
-    
-        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
-        this._AdmissionService.populateForm(contact);
-        const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
-          {
-           maxWidth: "95vw",
-          maxHeight: "115vh", width: '100%', height: "100%",
-            data: {
-              Obj: contact
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed - Insert Action', result);
-          
-        });
-      
-       
+
+
+  feedback(contact) {
+
+    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+    this._AdmissionService.populateForm(contact);
+    const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: "115vh", width: '100%', height: "100%",
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+
+    });
+
+
   }
 }
 
@@ -1215,7 +1194,7 @@ export class Bed {
 export class AdmissionPersonlModel {
   AadharCardNo: any;
   Address: any;
-  opD_IPD_Type:any;
+  opD_IPD_Type: any;
   Age: Number;
   AgeDay: any;
   AgeMonth: any;
@@ -1271,8 +1250,8 @@ export class AdmissionPersonlModel {
   RefDoctorName: string;
   AdmittedDoctor2: any;
   AdmittedDoctor1: any;
-  RefDocName:any;
-  BedId:any;
+  RefDocName: any;
+  BedId: any;
   BedName: any;
   IPDNo: any;
   TariffName: any;
@@ -1287,76 +1266,76 @@ export class AdmissionPersonlModel {
   Aadharcardno: any;
   Pancardno: any;
   RelativePhoneNo: any;
-  DepartmentId:any;
-  IsOpToIPconv:any;
-  ClassName:any;
-  IsBillGenerated:any;
-  RoomId:any;
-  RoomName:any;
-  Doctorname:any;
-  AdmDateTime:any;
-  TariffId:any;
-  RefDocNameId:any;
-  RefDocNameID:any;
-  DocNameID:any;
-RelativeAddress:any;
-IsSeniorCitizen:any;
-RegID:any;
-ClassId:any;
-WardId:any;
-PolicyNo: any;
-MemberNo: any;
-// WardName:any;
-AprovAmount
-CompDOD
-IsPharClearance
-IPNumber
-EstimatedAmount
-ApprovedAmount
-HosApreAmt
-PathApreAmt
-PharApreAmt
-RadiApreAmt
-PharDisc
+  DepartmentId: any;
+  IsOpToIPconv: any;
+  ClassName: any;
+  IsBillGenerated: any;
+  RoomId: any;
+  RoomName: any;
+  Doctorname: any;
+  AdmDateTime: any;
+  TariffId: any;
+  RefDocNameId: any;
+  RefDocNameID: any;
+  DocNameID: any;
+  RelativeAddress: any;
+  IsSeniorCitizen: any;
+  RegID: any;
+  ClassId: any;
+  WardId: any;
+  PolicyNo: any;
+  MemberNo: any;
+  // WardName:any;
+  AprovAmount
+  CompDOD
+  IsPharClearance
+  IPNumber
+  EstimatedAmount
+  ApprovedAmount
+  HosApreAmt
+  PathApreAmt
+  PharApreAmt
+  RadiApreAmt
+  PharDisc
 
-ClaimNo: any;
-CompBillNo: any;
-CompBillDate: any;
-CompDiscount: any;
-CompDisDate: any;
-C_BillNo: any;
-C_FinalBillAmt: any;
-C_DisallowedAmt: any;
-HDiscAmt: any;
-C_OutsideInvestAmt: any;
-RecoveredByPatient: any;
-H_ChargeAmt: any;
-H_AdvAmt: any;
-H_BillId: any;
-H_BillDate: any;
-H_BillNo: any;
-H_TotalAmt: any;
-H_DiscAmt: any;
-H_NetAmt: any;
-H_PaidAmt: any;
-H_BalAmt: any;
-DoctorName:any;
-vOPDNo:any;
-TarrifName:any
-OPDNo:any;
-WardName:any;
-Remark:any;
-DetailGiven:any;
-OP_IP_No:any;
-OPD_IPD_ID:any;
-OPD_IPD_Type:any;
-PathReportID:any;
-AdmDocId:any;
-PathResultDr1:any;
-ServiceId:any;
-PathTestID:any;
-Adm_Visit_docId:any;
-TemplateResultInHTML:any;
+  ClaimNo: any;
+  CompBillNo: any;
+  CompBillDate: any;
+  CompDiscount: any;
+  CompDisDate: any;
+  C_BillNo: any;
+  C_FinalBillAmt: any;
+  C_DisallowedAmt: any;
+  HDiscAmt: any;
+  C_OutsideInvestAmt: any;
+  RecoveredByPatient: any;
+  H_ChargeAmt: any;
+  H_AdvAmt: any;
+  H_BillId: any;
+  H_BillDate: any;
+  H_BillNo: any;
+  H_TotalAmt: any;
+  H_DiscAmt: any;
+  H_NetAmt: any;
+  H_PaidAmt: any;
+  H_BalAmt: any;
+  DoctorName: any;
+  vOPDNo: any;
+  TarrifName: any
+  OPDNo: any;
+  WardName: any;
+  Remark: any;
+  DetailGiven: any;
+  OP_IP_No: any;
+  OPD_IPD_ID: any;
+  OPD_IPD_Type: any;
+  PathReportID: any;
+  AdmDocId: any;
+  PathResultDr1: any;
+  ServiceId: any;
+  PathTestID: any;
+  Adm_Visit_docId: any;
+  TemplateResultInHTML: any;
   /**
 * Constructor
 *
@@ -1366,7 +1345,7 @@ TemplateResultInHTML:any;
     {
       this.Departmentid = AdmissionPersonl.Departmentid || 0;
       this.AadharCardNo = AdmissionPersonl.AadharCardNo || '';
-      this.opD_IPD_Type=AdmissionPersonl.opD_IPD_Type || 0
+      this.opD_IPD_Type = AdmissionPersonl.opD_IPD_Type || 0
       this.Address = AdmissionPersonl.Address || '';
       this.Age = AdmissionPersonl.Age || '';
       this.AgeDay = AdmissionPersonl.AgeDay || '';
@@ -1407,7 +1386,7 @@ TemplateResultInHTML:any;
       this.VillageName = AdmissionPersonl.VillageName || '';
       this.AdmittedDoctor1ID = AdmissionPersonl.AdmittedDoctor1ID || 0;
       this.AdmittedDoctor2ID = AdmissionPersonl.AdmittedDoctor2ID || 0;
-      this.RefDocName=AdmissionPersonl.RefDocName || '';
+      this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelationshipId = AdmissionPersonl.RelationshipId || 0;
       this.AdmissionID = AdmissionPersonl.AdmissionID || 0;
       this.AdmissionDate = AdmissionPersonl.AdmissionDate || '';
@@ -1436,26 +1415,26 @@ TemplateResultInHTML:any;
       this.Pancardno = AdmissionPersonl.Pancardno || '';
       this.RefDocName = AdmissionPersonl.RefDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
-      this.DepartmentId=AdmissionPersonl.DepartmentId || 0;
-      this.IsOpToIPconv=AdmissionPersonl.IsOpToIPconv || 0;
-      this.RelativeName=AdmissionPersonl.RelativeName || '';
-      this.RelativeAddress=AdmissionPersonl.RelativeAddress || ''
-      this.ClassName=AdmissionPersonl.ClassName || ''
-      this.IsBillGenerated=AdmissionPersonl.IsBillGenerated || 0
-      this.RoomName=AdmissionPersonl.RoomName || ''
-      this.Doctorname=AdmissionPersonl.Doctorname || ''
-      this.DoctorName=AdmissionPersonl.DoctorName || ''
-      this.AdmDateTime=AdmissionPersonl.AdmDateTime || ''
-      this.TariffId=AdmissionPersonl.TariffId || 0;
-      this.RefDocNameId=AdmissionPersonl.RefDocNameId || 0
-      this.RefDocNameID=AdmissionPersonl.RefDocNameID || 0
-      this.DocNameID=AdmissionPersonl.DocNameID || 0
-      this.IsSeniorCitizen=AdmissionPersonl.IsSeniorCitizen || 0
-      this.BedId=AdmissionPersonl.BedId || 0;
-      this.RegID=AdmissionPersonl.RegID || 0;
-      this.ClassId=AdmissionPersonl.ClassId || 0
-      this.RoomId=AdmissionPersonl.RoomId || 0;
-      this.WardId =AdmissionPersonl.WardId ||0;
+      this.DepartmentId = AdmissionPersonl.DepartmentId || 0;
+      this.IsOpToIPconv = AdmissionPersonl.IsOpToIPconv || 0;
+      this.RelativeName = AdmissionPersonl.RelativeName || '';
+      this.RelativeAddress = AdmissionPersonl.RelativeAddress || ''
+      this.ClassName = AdmissionPersonl.ClassName || ''
+      this.IsBillGenerated = AdmissionPersonl.IsBillGenerated || 0
+      this.RoomName = AdmissionPersonl.RoomName || ''
+      this.Doctorname = AdmissionPersonl.Doctorname || ''
+      this.DoctorName = AdmissionPersonl.DoctorName || ''
+      this.AdmDateTime = AdmissionPersonl.AdmDateTime || ''
+      this.TariffId = AdmissionPersonl.TariffId || 0;
+      this.RefDocNameId = AdmissionPersonl.RefDocNameId || 0
+      this.RefDocNameID = AdmissionPersonl.RefDocNameID || 0
+      this.DocNameID = AdmissionPersonl.DocNameID || 0
+      this.IsSeniorCitizen = AdmissionPersonl.IsSeniorCitizen || 0
+      this.BedId = AdmissionPersonl.BedId || 0;
+      this.RegID = AdmissionPersonl.RegID || 0;
+      this.ClassId = AdmissionPersonl.ClassId || 0
+      this.RoomId = AdmissionPersonl.RoomId || 0;
+      this.WardId = AdmissionPersonl.WardId || 0;
       this.PolicyNo = AdmissionPersonl.PolicyNo || '';
       this.MemberNo = AdmissionPersonl.MemberNo || '';
 
@@ -1486,28 +1465,28 @@ TemplateResultInHTML:any;
       this.H_AdvAmt = AdmissionPersonl.H_AdvAmt || '';
       this.H_BillId = AdmissionPersonl.H_BillId || '';
       this.H_BillDate = AdmissionPersonl.H_BillDate || '';
-      this.H_BillNo = AdmissionPersonl. H_BillNo || '';
-      this.H_TotalAmt = AdmissionPersonl. H_TotalAmt || '';
+      this.H_BillNo = AdmissionPersonl.H_BillNo || '';
+      this.H_TotalAmt = AdmissionPersonl.H_TotalAmt || '';
       this.H_DiscAmt = AdmissionPersonl.H_DiscAmt || '';
       this.H_NetAmt = AdmissionPersonl.H_NetAmt || '';
       this.H_PaidAmt = AdmissionPersonl.H_PaidAmt || '';
       this.H_BalAmt = AdmissionPersonl.H_BalAmt || '';
-      this.vOPDNo=AdmissionPersonl.vOPDNo || ''
-      this.TarrifName=AdmissionPersonl.TarrifName || ''
-      this.WardName =AdmissionPersonl.WardName || ''
-      this.OPDNo=AdmissionPersonl.OPDNo || ''
-      this.Remark =AdmissionPersonl.Remark || ''
-      this.DetailGiven=AdmissionPersonl.DetailGiven || ''
-      this.OP_IP_No=AdmissionPersonl.OP_IP_No ||''
-       this.OPD_IPD_ID=AdmissionPersonl.OPD_IPD_ID || ''
-      this.OPD_IPD_Type=AdmissionPersonl.OPD_IPD_Type ||''
-      this.PathReportID=AdmissionPersonl.PathReportID || 0
-      this.AdmDocId=AdmissionPersonl.AdmDocId || 0
-      this.PathResultDr1=AdmissionPersonl.PathResultDr1 || 0
-      this.ServiceId=AdmissionPersonl.ServiceId || 0;
-      this.PathTestID=AdmissionPersonl.PathTestID || 0
-      this.Adm_Visit_docId=AdmissionPersonl.Adm_Visit_docId || 0;
-      this.TemplateResultInHTML=AdmissionPersonl.TemplateResultInHTML || ''
+      this.vOPDNo = AdmissionPersonl.vOPDNo || ''
+      this.TarrifName = AdmissionPersonl.TarrifName || ''
+      this.WardName = AdmissionPersonl.WardName || ''
+      this.OPDNo = AdmissionPersonl.OPDNo || ''
+      this.Remark = AdmissionPersonl.Remark || ''
+      this.DetailGiven = AdmissionPersonl.DetailGiven || ''
+      this.OP_IP_No = AdmissionPersonl.OP_IP_No || ''
+      this.OPD_IPD_ID = AdmissionPersonl.OPD_IPD_ID || ''
+      this.OPD_IPD_Type = AdmissionPersonl.OPD_IPD_Type || ''
+      this.PathReportID = AdmissionPersonl.PathReportID || 0
+      this.AdmDocId = AdmissionPersonl.AdmDocId || 0
+      this.PathResultDr1 = AdmissionPersonl.PathResultDr1 || 0
+      this.ServiceId = AdmissionPersonl.ServiceId || 0;
+      this.PathTestID = AdmissionPersonl.PathTestID || 0
+      this.Adm_Visit_docId = AdmissionPersonl.Adm_Visit_docId || 0;
+      this.TemplateResultInHTML = AdmissionPersonl.TemplateResultInHTML || ''
     }
   }
 }

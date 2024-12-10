@@ -25,7 +25,7 @@ export class TariffMasterService {
             tariffName: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             isActive: ["true"],
@@ -46,7 +46,7 @@ export class TariffMasterService {
         return{
             tariffName: [
                 { name: "required", Message: "Tariff Name is required" },
-                { name: "maxlength", Message: "Tariff name should not be greater than 50 char." },
+                { name: "maxlength", Message: "Tariff Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         }

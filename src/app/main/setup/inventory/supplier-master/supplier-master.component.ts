@@ -32,18 +32,18 @@ export class SupplierMasterComponent implements OnInit {
     gridConfig: gridModel={
         apiUrl:"Supplier/SupplierList",
         columnsList:[
-            {heading: "Supplier", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "ContactPerson", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:250 },
-            {heading: "CityName", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "StateName", key: "stateName", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "CreditPeriod", key: "creditPeriod", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:100 },
-            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:100 },
+            {heading: "Supplier", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:200 },
+            {heading: "ContactPerson", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:300 },
+            {heading: "CityName", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "StateName", key: "stateName", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "CreditPeriod", key: "creditPeriod", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "GSTNo", key: "gstNo", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "PanNo", key: "panNo", sort:true, align:'left',emptySign: 'NA', width:100 },
+            {heading: "PanNo", key: "panNo", sort:true, align:'left',emptySign: 'NA', width:150 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:50 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:150, actions: [
@@ -78,7 +78,9 @@ export class SupplierMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals}
+            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals},
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
         ],
         row:25
     }

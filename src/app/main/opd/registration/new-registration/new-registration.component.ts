@@ -101,25 +101,26 @@ export class NewRegistrationComponent implements OnInit {
                 PrefixId: this.data.prefixId
             });
             console.log(this.data)
+            debugger
             this.registerObj = this.data;
             this.RegID = this.data.regId
 
-            this.cityId = this.data.cityId;
+            this.cityId = this.registerObj.cityId;
             this.isDisabled = true
             this.Submitflag = this.data.Submitflag;
             // this.registerObj.ReligionId=this.registerObj.ReligionId1;
 
-            if (this.registerObj.AgeYear)
-                this.registerObj.Age = this.registerObj.ageYear.trim();
-            if (this.registerObj.AgeMonth)
-                this.registerObj.AgeMonth = this.registerObj.ageMonth.trim();
-            if (this.registerObj.AgeDay)
-                this.registerObj.AgeDay = this.registerObj.ageDay.trim();
+            if (this.registerObj.ageYear)
+                this.registerObj.age = this.registerObj.ageYear.trim();
+            if (this.registerObj.ageMonth)
+                this.registerObj.ageMonth = this.registerObj.ageMonth.trim();
+            if (this.registerObj.ageDay)
+                this.registerObj.ageDay = this.registerObj.ageDay.trim();
 
-            if (this.registerObj.AadharCardNo)
-                this.registerObj.AadharCardNo = this.registerObj.aadharCardNo.trim();
+            if (this.registerObj.aadharCardNo)
+                this.registerObj.aadharCardNo = this.registerObj.aadharCardNo.trim();
 
-            this.setDropdownObjs();
+            // this.setDropdownObjs();
 
         }
 

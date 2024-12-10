@@ -114,12 +114,12 @@ export class ItemMasterService {
         );
     }
 
-    public deactivateTheStatus(param) {
-        return this._httpClient.PostData(
-            "Generic/ExecByQueryStatement?query=" + param,
-            {}
-        );
-    }
+    // public deactivateTheStatus(param) {
+    //     return this._httpClient.PostData(
+    //         "Generic/ExecByQueryStatement?query=" + param,
+    //         {}
+    //     );
+    // }
 
     public getitemtypeMasterCombo() {
         return this._httpClient.PostData(

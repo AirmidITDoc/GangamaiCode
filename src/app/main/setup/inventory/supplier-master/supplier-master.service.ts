@@ -88,7 +88,7 @@ export class SupplierMasterService {
             PanNo: ["",
                 [
                     Validators.required,
-                    // Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+                    Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
                 ]
             ],
             StoreId: [""],
@@ -126,7 +126,7 @@ export class SupplierMasterService {
             IFSCcode:["",
                 [
                     Validators.required,
-                    // Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")
+                    Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")
                 ]
             ],
             VenderTypeId:[""],

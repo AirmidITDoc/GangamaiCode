@@ -134,7 +134,42 @@
             </form>
         </div>
     </div>
+<div>
 
+    <!-- New dd? with old and new APi/new Component -->
+    <form [formGroup]="crossconForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Doctor using Old Code</mat-label>
+            <input matAutocompletePosition="below" type="text"
+                placeholder="Select Doctor" matInput #city 
+                formControlName="DoctorID" [matAutocomplete]="auto"
+                required >
+            <span matSuffix style="display: flex;">
+                <mat-icon class="mat-icon-close"
+                    (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">close</mat-icon>
+                <mat-icon class="mat-icon-close"
+                    (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">search</mat-icon>
+            </span>
+            <mat-autocomplete #auto="matAutocomplete"
+                [displayWith]="getOptionTextDoc">
+                <mat-option
+                    *ngFor="let option of filteredOptionsdoc | async"
+                    [value]="option">
+                    {{option.doctorId}} || {{option.firstName}} {{option.lastName}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <app-airmid-dropdown label="DoctorID" formControlName="DoctorID1"  [value]="DoctorID1" 
+        [formGroup]="crossconForm" [mode]="autocompleteModedeptdoc" >
+       </app-airmid-dropdown>
+
+       <app-airmid-dropdown label="Departmentid" formControlName="Departmentid"  [value]="Departmentid" 
+       [formGroup]="crossconForm" [mode]="autocompleteModedepartment" value="Departmentid">
+      </app-airmid-dropdown>
+       
+    </form>
+</div>
     <!-- Modal footer -->
     <div class="modal-footer">
         <div class="footer-navigation-container">

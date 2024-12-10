@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { OperatorComparer } from 'app/core/models/gridRequest';
 
 @Component({
   selector: 'app-cross-consultation',
@@ -21,8 +22,12 @@ export class CrossConsultationComponent implements OnInit {
   screenFromString = 'admission-form';
   Departmentid=0;
   DoctorID=0;
+  DoctorID1=0
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
+
+// DD from old code ?
+filteredOptionsDoc: any;
 
 
   constructor( public _AppointmentlistService: AppointmentlistService, private formBuilder: FormBuilder,
@@ -36,7 +41,13 @@ export class CrossConsultationComponent implements OnInit {
   ngOnInit(): void {
    
     this.crossconForm = this.createCrossConForm();
-   
+    this.getdoctorList1();
+
+    this.filteredOptionsDoc = this.crossconForm.get('DoctorID1').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterDoctor(value)),
+
+    );
   }
 
 
@@ -46,6 +57,9 @@ export class CrossConsultationComponent implements OnInit {
         Validators.required,
       ]],
       DoctorID:  ['', [
+        Validators.required,
+      ]],
+      DoctorID1:  ['', [
         Validators.required,
       ]],
       VisitDate:  [(new Date()).toISOString()],
@@ -80,7 +94,10 @@ export class CrossConsultationComponent implements OnInit {
 
   onSubmit() {
     debugger
-    if (this.crossconForm.valid) {
+    console.log(this.crossconForm.get('DoctorID1').value)
+    console.log(this.crossconForm.get('DoctorID1').value.value)
+    console.log(this.crossconForm.get('DoctorID1').value.text)
+    // if (this.crossconForm.valid) {
     var m_data = {
       "visitId": 0,
             "regId": 0,
@@ -88,7 +105,7 @@ export class CrossConsultationComponent implements OnInit {
             "visitTime":"2024-09-18T11:24:02.656Z",// this.datePipe.transform(this.crossconForm.get("VisitDate").value, 'yyyy-MM-dd HH:mm:ss'),
             "unitId": 0,
             "patientTypeId": 0,
-            "consultantDocId":this.crossconForm.get('DoctorID').value,
+            "consultantDocId":this.crossconForm.get('DoctorID1').value,
             "refDocId": 0,
             "tariffId": 0,
             "companyId": 0,
@@ -98,7 +115,7 @@ export class CrossConsultationComponent implements OnInit {
             "isCancelled": true,
             "isCancelledDate":"2024-09-18T11:24:02.656Z",
             "classId": 0,
-            "departmentId":this.crossconForm.get('Departmentid').value,
+            "departmentId": this.crossconForm.get('Departmentid').value,
             "patientOldNew": 0,
             "firstFollowupVisit": 0,
             "appPurposeId": 0,
@@ -113,7 +130,7 @@ export class CrossConsultationComponent implements OnInit {
     }, (error) => {
       this.toastr.error(error.message);
     });
-  }
+  // }
   }
 
   onClear(val: boolean) {
@@ -135,4 +152,58 @@ export class CrossConsultationComponent implements OnInit {
     console.log(obj);
     this.deptdocId=obj
   }
+
+  //
+  docList: any = [];
+  optionsDoctor: any[] = [];
+  filteredOptionsdoc: Observable<string[]>;
+  isdocSelected: boolean = false;
+  getOptionTextDoc(option) {
+    return option && option.firstName ? option.firstName : '';
+  }
+
+  getdoctorList1() {
+var d={
+"first": 0,
+        "rows": 25,
+        sortField: "doctorId",
+        sortOrder: 0,
+        filters: [
+          { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+      ],
+        "exportType": "JSON"
+  
+      }
+  
+
+    this._AppointmentlistService.getdoctorList(d).subscribe(data => {
+        this.docList = data.data;
+        console.log(data.data)
+        this.optionsDoctor = this.docList.slice();
+        this.filteredOptionsdoc = this.crossconForm.get('DoctorID').valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filterDoctor(value) : this.docList.slice()),
+        );
+
+    });
+
+}
+  
+private _filterDoctor(value: any): string[] {
+  if (value) {
+      const filterValue = value && value.firstName ? value.firstName.toLowerCase() : value.toLowerCase();
+      return this.optionsDoctor.filter(option => option.firstName.toLowerCase().includes(filterValue));
+  }
+
+} 
+
+
+getValidationdeptDocMessages() {
+  return {
+    DoctorID1: [
+          { name: "required", Message: "Doctor Name is required" }
+      ]
+  };
+}
 }

@@ -22,17 +22,17 @@ export class DosemasterService {
             DoseName: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             DoseNameInEnglish: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
 
-            DoseQtyPerDay: ["",[ Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$")]],
+            DoseQtyPerDay: ["",[ Validators.required, Validators.pattern("^[A-Za-z0-9]+$")]],
 
             isActive: ["true"],
             AddedBy: ["0"],

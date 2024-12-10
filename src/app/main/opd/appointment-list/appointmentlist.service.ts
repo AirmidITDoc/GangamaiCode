@@ -218,6 +218,12 @@ public Appointmentcancle(employee, loader = true) {
   // }
   return this._httpClient1.PostData("VisitDetail/Cancel", employee);
 }
+
+public getdoctorList(employee) {
+  return this._httpClient1.PostData("DoctoreMaster/List",employee)
+}  
+
+
 }
 
 

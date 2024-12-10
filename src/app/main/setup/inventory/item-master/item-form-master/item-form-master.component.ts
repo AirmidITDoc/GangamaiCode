@@ -674,20 +674,20 @@ export class ItemFormMasterComponent implements OnInit {
 
     public onEnterCGST(event): void {
         if (event.which === 13) {
-            this.gstPerChecking()
+            // this.gstPerChecking()
             this.SGST.nativeElement.focus();
         }
     }
 
     public onEnterSGST(event): void {
         if (event.which === 13) {
-            this.gstPerChecking()
+            // this.gstPerChecking()
             this.IGST.nativeElement.focus();
         }
     }
     public onEnterIGST(event): void {
         if (event.which === 13) {
-            this.gstPerChecking()
+            // this.gstPerChecking()
             this.MinQty.nativeElement.focus();
         }
     }

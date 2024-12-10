@@ -29,13 +29,13 @@ export class ServiceMasterService {
             ServiceShortDesc: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             ServiceName: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
