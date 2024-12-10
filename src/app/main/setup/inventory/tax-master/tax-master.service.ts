@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -11,7 +11,7 @@ export class TaxMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,public _httpClient1: ApiCaller,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createTaxMasterForm();
@@ -21,42 +21,47 @@ export class TaxMasterService {
     createTaxMasterForm(): FormGroup {
         return this._formBuilder.group({
             Id: [""],
-            TaxNature: [""],
+            TaxNature: ["",
+                [
+                    // Validators.required,
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             IsDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TaxNatureSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createTaxMasterForm();
     }
 
-    public gettaxMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_TaxNature_by_Name",
-            param
-        );
+    getValidationMessages() {
+        return {
+            taxNature: [
+                { name: "required", Message: "TaxNature Name is required" },
+                { name: "maxlength", Message: "TaxNature name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public insertTaxMaster(param) {
-        return this._httpClient.post("Inventory/TaxSave", param);
+    public taxMasterSave(Param: any, showLoader = true) {
+        if (Param.Id) {
+            return this._httpClient.PutData("TaxMaster/" + Param.Id, Param, showLoader);
+        } else return this._httpClient.PostData("TaxMaster", Param, showLoader);
     }
-
-    public updateTaxMaster(param) {
-        return this._httpClient.post("Inventory/TaxUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
-
+    
     public deactivateTheStatus(m_data) {
-        return this._httpClient1.PostData("BedMaster", m_data);
-      }
+        return this._httpClient.DeleteData("TaxMaster?Id=" + m_data.toString());
+    }
+    
 }

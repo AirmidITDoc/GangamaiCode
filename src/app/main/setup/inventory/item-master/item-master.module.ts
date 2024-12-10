@@ -30,6 +30,7 @@ import { FormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
 import { SharedModule } from "../../../shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -41,6 +42,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [ItemMasterComponent, ItemFormMasterComponent],
     imports: [
+
     RouterModule.forChild(routes),
     FormsModule,
     MatButtonModule,
@@ -71,8 +73,10 @@ const routes: Routes = [
     MatAutocompleteModule,
     MatSelectModule,
     MatChipsModule,
-    SharedModule
-],
+    SharedModule,
+    MatDialogModule,
+
+    ],
     providers: [ItemMasterComponent,DatePipe],
     entryComponents: [ItemMasterComponent],
 })

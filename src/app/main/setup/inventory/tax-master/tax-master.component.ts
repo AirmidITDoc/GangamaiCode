@@ -11,6 +11,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { NewTaxComponent } from "./new-tax/new-tax.component";
 
 @Component({
     selector: "app-tax-master",
@@ -21,19 +22,27 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 })
 export class TaxMasterComponent implements OnInit {
 
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    hasSelectedContacts: boolean;
+    confirmDialogRef: any;
+    // MatDialogRef<FuseConfirmDialogComponent>
+
+    constructor(
+        public _TaxMasterService: TaxMasterService,
+        public toastr: ToastrService, 
+        public _matDialog: MatDialog
+    ) { }
    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
     apiUrl: "TaxMaster/List",
     columnsList: [
-        { heading: "TaxId", key: "Id", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        { heading: "TaxNature", key: "TaxNature", sort: true, align: 'left', emptySign: 'NA',width :400 },
-        { heading: "AddedBy", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA',width :400 },
-        { heading: "IsDeleted", key: "isActive",width :100, type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action",width :100, align: "right", type: gridColumnTypes.action, actions: [
+        { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA',width :300 },
+        { heading: "AddedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA',width :100 },
+        { heading: "ModifiedBy", key: "modifiedBy", sort: true, align: 'left', emptySign: 'NA',width :100 },
+        { heading: "CreatedDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "ModifiedDate", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "isActive", key: "isActive",width :100, type: gridColumnTypes.status, align: "center" },
+        { heading: "Action", key: "action",width :100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -61,321 +70,34 @@ export class TaxMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "Id",
+        sortField: "id",
         sortOrder: 0,
         filters: [
-            { fieldName: "ToStoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            { fieldName: "taxNature", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
-    msg: Object;
-    sort: any;
-    paginator: any;
-   
-    constructor(
-        public _TaxMasterService: TaxMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
-    ) { }
 
-    ngOnInit(): void { 
-        this.gettaxMasterList();
-    }
-
-    onSearch() {
-        this.gettaxMasterList();
-    }
+    ngOnInit(): void { }
 
     onSave(row: any = null) {
         let that = this;
-        if (this._TaxMasterService.myform.valid) {
-                    if (!this._TaxMasterService.myform.get("Id").value) {
-                        var m_data = {
-                            insertTaxMaster: {
-                                taxNature: this._TaxMasterService.myform
-                                    .get("TaxNature")
-                                    .value.trim(),
-                                isDeleted: Boolean(
-                                    JSON.parse(
-                                        this._TaxMasterService.myform.get("IsDeleted")
-                                            .value
-                                    )
-                                ),
-                                addedBy: 1,
-                            },
-                        };
-        
-                        this._TaxMasterService
-                            .insertTaxMaster(m_data)
-                            .subscribe((data) => {
-                                this.msg = data;
-                                if (data) {
-                                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                        toastClass: 'tostr-tost custom-toast-success',
-                                      });
-                                      this.gettaxMasterList();
-                                    // Swal.fire(
-                                    //     "Saved !",
-                                    //     "Record saved Successfully !",
-                                    //     "success"
-                                    // ).then((result) => {
-                                    //     if (result.isConfirmed) {
-                                    //         this.gettaxMasterList();
-                                    //     }
-                                    // });
-                                } else {
-                                    this.toastr.error('Tax Master Data not saved !, Please check API error..', 'Error !', {
-                                        toastClass: 'tostr-tost custom-toast-error',
-                                      });
-                                }
-                                this.gettaxMasterList();
-                            },error => {
-                                this.toastr.error('Tax not saved !, Please check API error..', 'Error !', {
-                                 toastClass: 'tostr-tost custom-toast-error',
-                               });
-                             });
-                    } else {
-                        var m_dataUpdate = {
-                            updateTaxMaster: {
-                                id: this._TaxMasterService.myform.get("Id").value,
-                                taxNature: this._TaxMasterService.myform
-                                    .get("TaxNature")
-                                    .value.trim(),
-                                isDeleted: Boolean(
-                                    JSON.parse(
-                                        this._TaxMasterService.myform.get("IsDeleted")
-                                            .value
-                                    )
-                                ),
-                                updatedBy: 1,
-                            },
-                        };
-                        this._TaxMasterService
-                            .updateTaxMaster(m_dataUpdate)
-                            .subscribe((data) => {
-                                this.msg = data;
-                                if (data) {
-                                    this.toastr.success('Record updated Successfully.', 'updated !', {
-                                        toastClass: 'tostr-tost custom-toast-success',
-                                      });
-                                    this.gettaxMasterList();
-                                    // Swal.fire(
-                                    //     "Updated !",
-                                    //     "Record updated Successfully !",
-                                    //     "success"
-                                    // ).then((result) => {
-                                    //     if (result.isConfirmed) {
-                                    //         this.gettaxMasterList();
-                                    //     }
-                                    // });
-                                } else {
-                                    this.toastr.error('Tax Master Master Data not updated !, Please check API error..', 'Error !', {
-                                        toastClass: 'tostr-tost custom-toast-error',
-                                      });
-                                }
-                                this.gettaxMasterList();
-                            },error => {
-                                this.toastr.error('Tax not updated !, Please check API error..', 'Error !', {
-                                 toastClass: 'tostr-tost custom-toast-error',
-                               });
-                             });
-                    }
-                    this.onClear();
-                }
-    }
-
-    gettaxMasterList() {
-            var param = {
-                TaxNature: this._TaxMasterService.myformSearch.get("TaxNatureSearch")
-                        .value.trim() + "%" || "%",
-            };
-            this._TaxMasterService.gettaxMasterList(param).subscribe((Menu) => {
-                this.DSTaxMasterList.data = Menu as TaxMaster[];
-                this.DSTaxMasterList.sort = this.sort;
-                this.DSTaxMasterList.paginator = this.paginator;
-                console.log(this.DSTaxMasterList);
+        const dialogRef = this._matDialog.open(NewTaxComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
             });
-        }
-
-    // msg: any;
-
-    // displayedColumns: string[] = [
-    //     "Id",
-    //     "TaxNature",
-    //     "AddedBy",
-    //     "IsDeleted",
-    //     "action",
-    // ];
-
-    DSTaxMasterList = new MatTableDataSource<TaxMaster>();
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    // constructor(public _taxmasterService: TaxMasterService,
-    //     public toastr : ToastrService,) {}
-
-    // ngOnInit(): void {
-    //     this.gettaxMasterList();
-    // }
-    // onSearch() {
-    //     this.gettaxMasterList();
-    // }
-
-    // onSearchClear() {
-    //     this._taxmasterService.myformSearch.reset({
-    //         TaxNatureSearch: "",
-    //         IsDeletedSearch: "2",
-    //     });
-    //     this.gettaxMasterList();
-    // }
-    // gettaxMasterList() {
-    //     var param = {
-    //         TaxNature: this._taxmasterService.myformSearch.get("TaxNatureSearch")
-    //                 .value.trim() + "%" || "%",
-    //     };
-    //     this._taxmasterService.gettaxMasterList(param).subscribe((Menu) => {
-    //         this.DSTaxMasterList.data = Menu as TaxMaster[];
-    //         this.DSTaxMasterList.sort = this.sort;
-    //         this.DSTaxMasterList.paginator = this.paginator;
-    //         console.log(this.DSTaxMasterList);
-    //     });
-    // }
-
-    onClear() {
-        this._TaxMasterService.myform.reset({ IsDeleted: "false" });
-        this._TaxMasterService.initializeFormGroup();
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
 
-    // onSubmit() {
-    //     if (this._taxmasterService.myform.valid) {
-    //         if (!this._taxmasterService.myform.get("Id").value) {
-    //             var m_data = {
-    //                 insertTaxMaster: {
-    //                     taxNature: this._taxmasterService.myform
-    //                         .get("TaxNature")
-    //                         .value.trim(),
-    //                     isDeleted: Boolean(
-    //                         JSON.parse(
-    //                             this._taxmasterService.myform.get("IsDeleted")
-    //                                 .value
-    //                         )
-    //                     ),
-    //                     addedBy: 1,
-    //                 },
-    //             };
-
-    //             this._taxmasterService
-    //                 .insertTaxMaster(m_data)
-    //                 .subscribe((data) => {
-    //                     this.msg = data;
-    //                     if (data) {
-    //                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                           this.gettaxMasterList();
-    //                         // Swal.fire(
-    //                         //     "Saved !",
-    //                         //     "Record saved Successfully !",
-    //                         //     "success"
-    //                         // ).then((result) => {
-    //                         //     if (result.isConfirmed) {
-    //                         //         this.gettaxMasterList();
-    //                         //     }
-    //                         // });
-    //                     } else {
-    //                         this.toastr.error('Tax Master Data not saved !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.gettaxMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Tax not saved !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //         } else {
-    //             var m_dataUpdate = {
-    //                 updateTaxMaster: {
-    //                     id: this._taxmasterService.myform.get("Id").value,
-    //                     taxNature: this._taxmasterService.myform
-    //                         .get("TaxNature")
-    //                         .value.trim(),
-    //                     isDeleted: Boolean(
-    //                         JSON.parse(
-    //                             this._taxmasterService.myform.get("IsDeleted")
-    //                                 .value
-    //                         )
-    //                     ),
-    //                     updatedBy: 1,
-    //                 },
-    //             };
-
-    //             this._taxmasterService
-    //                 .updateTaxMaster(m_dataUpdate)
-    //                 .subscribe((data) => {
-    //                     this.msg = data;
-    //                     if (data) {
-    //                         this.toastr.success('Record updated Successfully.', 'updated !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                         this.gettaxMasterList();
-    //                         // Swal.fire(
-    //                         //     "Updated !",
-    //                         //     "Record updated Successfully !",
-    //                         //     "success"
-    //                         // ).then((result) => {
-    //                         //     if (result.isConfirmed) {
-    //                         //         this.gettaxMasterList();
-    //                         //     }
-    //                         // });
-    //                     } else {
-    //                         this.toastr.error('Tax Master Master Data not updated !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.gettaxMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Tax not updated !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //         }
-    //         this.onClear();
-    //     }
-    // }
-
-    // onEdit(row) {
-    //     var m_data = {
-    //         Id: row.Id,
-    //         TaxNature: row.TaxNature.trim(),
-    //         IsDeleted: JSON.stringify(row.IsDeleted),
-    //         // UpdatedBy: row.UpdatedBy,
-    //     };
-    //     this._taxmasterService.populateForm(m_data);
-    // }
 }
-export class TaxMaster {
-    Id: number;
-    TaxNature: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
 
-    /**
-     * Constructor
-     *
-     * @param TaxMaster
-     */
-    constructor(TaxMaster) {
-        {
-            this.Id = TaxMaster.Id || "";
-            this.TaxNature = TaxMaster.TaxNature || "";
-            this.IsDeleted = TaxMaster.IsDeleted || "false";
-            this.AddedBy = TaxMaster.AddedBy || "";
-            this.UpdatedBy = TaxMaster.UpdatedBy || "";
-        }
-    }
-}

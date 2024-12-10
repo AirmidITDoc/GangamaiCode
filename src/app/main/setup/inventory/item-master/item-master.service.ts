@@ -1,20 +1,35 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class ItemMasterService {
+    currencyMasterSave(value: any) {
+        throw new Error("Method not implemented.");
+    }
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
         this.myform = this.createItemmasterForm();
         this.myformSearch = this.createSearchForm();
+    }
+
+    initializeFormGroup() {
+        this.createItemmasterForm();
+    }
+
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            ItemNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
     }
 
     createItemmasterForm(): FormGroup {
@@ -73,127 +88,139 @@ export class ItemMasterService {
         });
     }
 
-    initializeFormGroup() {
-        this.createItemmasterForm();
+    public itemMasterSave(Param: any, showLoader = true) {
+        if (Param.ItemID) {
+            return this._httpClient.PutData("CurrencyMaster/" + Param.ItemID, Param, showLoader);
+        } else return this._httpClient.PostData("CurrencyMaster", Param, showLoader);
     }
 
-    createSearchForm(): FormGroup {
-        return this._formBuilder.group({
-            ItemNameSearch: [""],
-            IsDeletedSearch: ["2"],
-        });
+    getValidationMessages() {
+        return {
+            itemName: [
+                { name: "required", Message: "Item Name is required" },
+                { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
-    public getItemMasterList(param) {
-        return this._httpClient.post( 
-            "Generic/GetByProc?procName=m_Rtrv_ItemMaster_by_Name",
-            param
-        );
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("itemMaster?Id=" + m_data.toString());
     }
+    
 
-    public deactivateTheStatus(param) {
-        return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + param,
-            {}
-        );
-    }
+//     public getItemMasterList(param) {
+//         return this._httpClient.post( 
+//             "Generic/GetByProc?procName=m_Rtrv_ItemMaster_by_Name",
+//             param
+//         );
+//     }
 
-    public getitemtypeMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_ItemTypeMasterForCombo",
-            {}
-        );
-    }
+//     public deactivateTheStatus(param) {
+//         return this._httpClient.post(
+//             "Generic/ExecByQueryStatement?query=" + param,
+//             {}
+//         );
+//     }
 
-    public getitemclassMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_ItemClassForCombo",
-            {}
-        );
-    }
+//     public getitemtypeMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_ItemTypeMasterForCombo",
+//             {}
+//         );
+//     }
 
-    public getitemcategoryMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_ItemCategoryMasterForCombo",
-            {}
-        );
-    }
+//     public getitemclassMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_ItemClassForCombo",
+//             {}
+//         );
+//     }
 
-    public getitemgenericMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_ItemGenericNameMasterForCombo",
-            {}
-        );
-    }
+//     public getitemcategoryMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_ItemCategoryMasterForCombo",
+//             {}
+//         );
+//     }
 
-    public getunitofMeasurementMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_PurchaseUOMForCombo",
-            {}
-        );
-    }
+//     public getitemgenericMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_ItemGenericNameMasterForCombo",
+//             {}
+//         );
+//     }
 
-    public getStockUMOMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_StockUOMForCombo",
-            {}
-        );
-    }
+//     public getunitofMeasurementMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_PurchaseUOMForCombo",
+//             {}
+//         );
+//     }
+
+//     public getStockUMOMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_StockUOMForCombo",
+//             {}
+//         );
+//     }
 
 
-    public getManufactureMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_ItemManufactureMasterForCombo",
-            {}
-        );
-    }
+//     public getManufactureMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_ItemManufactureMasterForCombo",
+//             {}
+//         );
+//     }
 
-    public getStoreMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveStoerMasterForCombo",
-            {}
-        );
-    }
+//     public getStoreMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=RetrieveStoerMasterForCombo",
+//             {}
+//         );
+//     }
 
-    public getCurrencyMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_CurrencyForCombo",
-            {}
-        );
-    }
+//     public getCurrencyMasterCombo() {
+//         return this._httpClient.post(
+//             "Generic/GetByProc?procName=Retrieve_CurrencyForCombo",
+//             {}
+//         );
+//     }
 
-    //insert update of item master
-    public insertItemMaster(param) {
-        return this._httpClient.post("Inventory/ItemMasterSave", param);
-    }
+//     //insert update of item master
+//     public insertItemMaster(param) {
+//         return this._httpClient.post("Inventory/ItemMasterSave", param);
+//     }
 
-    public updateItemMaster(param) {
-        return this._httpClient.post("Inventory/ItemMasterUpdate", param);
-    }
+//     public updateItemMaster(param) {
+//         return this._httpClient.post("Inventory/ItemMasterUpdate", param);
+//     }
 
-    public InsertAssignItemToStore(param) {
-        return this._httpClient.post("Inventory/ItemMasterSave", param);
-    }
+//     public InsertAssignItemToStore(param) {
+//         return this._httpClient.post("Inventory/ItemMasterSave", param);
+//     }
 
-    public DeleteAssignItemToStore(param) {
-        return this._httpClient.post("Inventory/ItemMasterUpdate", param);
-    }
+//     public DeleteAssignItemToStore(param) {
+//         return this._httpClient.post("Inventory/ItemMasterUpdate", param);
+//     }
 
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
-      //company Combobox List
-  public getCompanyCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemCompanyMasterForCombo", {})
-  }
-  public getDrugTypeCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDrugTypeList", {})
-  }
+//     populateForm(param) {
+//         this.myform.patchValue(param);
+//     }
+//       //company Combobox List
+//   public getCompanyCombo() {
+//     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemCompanyMasterForCombo", {})
+//   }
+//   public getDrugTypeCombo() {
+//     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemDrugTypeList", {})
+//   }
 
-  public getHistoryList() {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{});
-  }
-  public getAssigneToStoreList(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemMaster_by_Store",param);
-  }
+//   public getHistoryList() {
+//     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{});
+//   }
+//   public getAssigneToStoreList(param) {
+//     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemMaster_by_Store",param);
+//   }
+
+
 }

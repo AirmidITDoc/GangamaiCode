@@ -32,12 +32,14 @@ export class CurrencymasterService {
             // AddedByName: [""],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CurrencyNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+    
     initializeFormGroup() {
         this.createCurrencyForm();
     }

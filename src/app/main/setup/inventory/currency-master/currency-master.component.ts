@@ -73,21 +73,21 @@ export class CurrencyMasterComponent implements OnInit {
         }
     
      
-        ngOnInit(): void { }
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewCurrencyComponent,
-                {
-                    maxWidth: "45vw",
-                    height: '35%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCurrencyComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
             });
-        }
-    
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
+    
+}

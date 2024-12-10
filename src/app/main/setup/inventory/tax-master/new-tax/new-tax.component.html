@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> City Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Tax Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -16,25 +16,17 @@
     </div>
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="cityForm">
-                <input type="hidden" name="cityId" formControlName="cityId">
+            <form [formGroup]="taxForm">
+                <input type="hidden" name="Id" formControlName="Id">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                <airmid-textbox 
-                    label="City name" 
-                    formControlName="cityName" 
-                    [value]="" [formGroup]="cityForm"
-                    [validations]="_CityMasterService.getValidationMessages().cityName" 
-                    [maxLength]="300">
-                </airmid-textbox>
-                
-                <!-- <airmid-autocomplete [mode]="autocompleteModestatus" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete> -->
-                <airmid-autocomplete label="stateName" formControlName="stateId"
-                    [formGroup]="cityForm"
-                    [validations]="getValidationStateMessages().stateId"
-                    (selectDdlObject)="selectChangestate($event)"
-                    [mode]="autocompleteModestatus">
-                </airmid-autocomplete>
-                
+                    <airmid-textbox 
+                        label="TaxNature name"
+                        formControlName="taxNature"
+                        [value]=""
+                        [formGroup]="taxForm"
+                        [validations]="_TaxMasterService.getValidationMessages().taxNature"
+                        [maxLength]="300">
+                    </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>
@@ -47,7 +39,8 @@
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-           <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

@@ -22,15 +22,17 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 })
 export class TermsOfPaymentMasterComponent implements OnInit {
     confirmDialogRef: any;
-    constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,public _matDialog: MatDialog,
-    public toastr : ToastrService,) {}
+    constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
+                public _matDialog: MatDialog,
+                public toastr : ToastrService,) {}
+                
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
             apiUrl: "TermsOfPayment/List",
             columnsList: [
-                { heading: "Code", key: "Id", sort: true, align: 'left', emptySign: 'NA', width:100 },
-                { heading: "TermsOfPayment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width:350 },
-                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width:350 },
+                { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width:150 },
+                { heading: "TermsOfPayment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width:400 },
+                { heading: "addedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width:400 },
                 { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
                 { heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                         {
@@ -60,10 +62,10 @@ export class TermsOfPaymentMasterComponent implements OnInit {
                         }]
                 } //Action 1-view, 2-Edit,3-delete
             ],
-            sortField: "itemTypeId",
+            sortField: "id",
             sortOrder: 0,
             filters: [
-                { fieldName: "itemTypeName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "termsOfPayment", fieldValue: "", opType: OperatorComparer.Contains },
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25
@@ -71,6 +73,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
     
      
         ngOnInit(): void { }
+
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(NewTermofpaymentComponent,
@@ -87,4 +90,4 @@ export class TermsOfPaymentMasterComponent implements OnInit {
             });
         }
     
-    }
+}
