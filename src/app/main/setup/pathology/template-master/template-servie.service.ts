@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -35,16 +35,6 @@ createTemplateForm(): FormGroup {
       // TemplateDesc:[""],
       // IsDeleted:['true']
   });
-}
-
-getValidationMessages() {
-  return {
-      templateName: [
-          { name: "required", Message: "Template Name is required" },
-          { name: "maxlength", Message: "Template name should not be greater than 50 char." },
-          { name: "pattern", Message: "Special char not allowed." }
-      ]
-  };
 }
 
 public templateMasterSave(Param: any, showLoader = true) {

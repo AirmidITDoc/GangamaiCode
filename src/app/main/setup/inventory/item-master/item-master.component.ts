@@ -26,8 +26,9 @@ import { StockAdjustmentService } from "app/main/inventory/stock-adjustment/stoc
 export class ItemMasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    // hasSelectedContacts: boolean;
-
+    hasSelectedContacts: boolean;
+    autocompleteModestoreName: string="StoreName";
+   
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
     apiUrl: "ItemMaster/ItemMasterList",
@@ -101,27 +102,32 @@ export class ItemMasterComponent implements OnInit {
         filters: [
             { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
    
     onSave(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(ItemFormMasterComponent,
-            {
-                maxWidth: "95vw",
-                height: '65%',
-                width: '80%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
+        // const dialogRef = this._matDialog.open(,
+        //     {
+        //         maxWidth: "95vw",
+        //         height: '95%',
+        //         width: '70%',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        // });
     }
+
+    storeId=0;
+    selectChangestoreName(obj:any){
+        this.storeId=obj.value;
+      }
 
     // isLoading = true;
     // msg: any;
@@ -164,12 +170,7 @@ export class ItemMasterComponent implements OnInit {
     onSearch() {
         // this.getItemMasterList();
     }
-
-
-}
-
-    // chargeslist:any=[];
-
+    chargeslist:any=[];
     // getItemMasterList() {
     //     this.sIsLoading = '';
     //     var m_data = {
@@ -237,93 +238,93 @@ export class ItemMasterComponent implements OnInit {
         //       }
         // });
 
-    //     dialogRef.afterClosed().subscribe((result) => {
-    //         console.log("The dialog was closed - Insert Action", result);
-    //         this.getItemMasterList();
-    //     });
-    // }
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            // this.getItemMasterList();
+        });
+    }
     // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    // onDeactive(ItemID) {
-    //     this.confirmDialogRef = this._matDialog.open(
-    //         FuseConfirmDialogComponent,
-    //         {
-    //             disableClose: false,
-    //         }
-    //     );
-    //     this.confirmDialogRef.componentInstance.confirmMessage =
-    //         "Are you sure you want to deactive?";
-    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
-    //         if (result) {
-    //             let Query =
-    //                 "Update M_ItemMaster set Isdeleted=0 where ItemID=" +
-    //                 ItemID;
-    //             console.log(Query);
-    //             this._itemService
-    //                 .deactivateTheStatus(Query)
-    //                 .subscribe((data) => (this.msg = data));
-    //             this.getItemMasterList();
-    //         }
-    //         this.confirmDialogRef = null;
-    //     });
-    // }
+    onDeactive(ItemID) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                    "Update M_ItemMaster set Isdeleted=0 where ItemID=" +
+                    ItemID;
+                console.log(Query);
+                this._itemService
+                    .deactivateTheStatus(Query)
+                    .subscribe((data) => (this.msg = data));
+                // this.getItemMasterList();
+            }
+            this.confirmDialogRef = null;
+        });
+    }
 
-    // onAdd() {
-    //     const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-    //         maxWidth: "95vw",
-    //         maxHeight: "80vh",
-    //         width: "100%",
-    //         height: "100%",
-    //     });
-    //     dialogRef.afterClosed().subscribe((result) => {
-    //         console.log("The dialog was closed - Insert Action", result);
-    //         this.getItemMasterList();
-    //     });
-    // }
-
-// export class ItemMaster {
-//     ItemID: number;
-//     //  ItemShortName: string;
-//     ItemName: string;
-//     ItemTypeID: number;
-//     ItemCategoryId: number;
-//     ItemGenericNameId: number;
-//     ItemClassId: number;
-//     PurchaseUOMId: number;
-//     StockUOMId: number;
-//     ConversionFactor: string;
-//     CurrencyId: number;
-//     TaxPer: number;
-//     Isdeleted: boolean;
-//     Addedby: number;
-//     UpdatedBy: number;
-//     IsBatchRequired: boolean;
-//     MinQty: number;
-//     MaxQty: number;
-//     ReOrder: number;
-//     IsNursingFlag: boolean;
-//     HSNcode: string;
-//     CGST: number;
-//     SGST: number;
-//     IGST: number;
-//     IsNarcotic: boolean;
-//     ManufId: number;
-//     ProdLocation: string;
-//     IsH1Drug: boolean;
-//     IsScheduleH: boolean;
-//     IsHighRisk: boolean;
-//     IsScheduleX: boolean;
-//     IsLASA: boolean;
-//     IsEmgerency: boolean;
-//     AddedByName: string;
-//     IsDeletedSearch: number;
-//     MaxDisc:any;
-//     Storagelocation:any;
-//     CompanyId:any;
-//     DrugType :any;
-//     DrugTypeName :any;
-//     ItemCompnayId:any;
-//     position:any;
+    onAdd() {
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+            maxWidth: "95vw",
+            maxHeight: "80vh",
+            width: "100%",
+            height: "100%",
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            // this.getItemMasterList();
+        });
+    }
+}
+export class ItemMaster {
+    ItemID: number;
+    //  ItemShortName: string;
+    ItemName: string;
+    ItemTypeID: number;
+    ItemCategoryId: number;
+    ItemGenericNameId: number;
+    ItemClassId: number;
+    PurchaseUOMId: number;
+    StockUOMId: number;
+    ConversionFactor: string;
+    CurrencyId: number;
+    TaxPer: number;
+    Isdeleted: boolean;
+    Addedby: number;
+    UpdatedBy: number;
+    IsBatchRequired: boolean;
+    MinQty: number;
+    MaxQty: number;
+    ReOrder: number;
+    IsNursingFlag: boolean;
+    HSNcode: string;
+    CGST: number;
+    SGST: number;
+    IGST: number;
+    IsNarcotic: boolean;
+    ManufId: number;
+    ProdLocation: string;
+    IsH1Drug: boolean;
+    IsScheduleH: boolean;
+    IsHighRisk: boolean;
+    IsScheduleX: boolean;
+    IsLASA: boolean;
+    IsEmgerency: boolean;
+    AddedByName: string;
+    IsDeletedSearch: number;
+    MaxDisc:any;
+    Storagelocation:any;
+    CompanyId:any;
+    DrugType :any;
+    DrugTypeName :any;
+    ItemCompnayId:any;
+    position:any;
     
 //     /**
 //      * Constructor

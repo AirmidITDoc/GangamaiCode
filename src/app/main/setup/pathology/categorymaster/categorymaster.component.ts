@@ -70,7 +70,7 @@ export class CategorymasterComponent implements OnInit {
         sortField: "categoryId",
         sortOrder: 0,
         filters: [
-            { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25

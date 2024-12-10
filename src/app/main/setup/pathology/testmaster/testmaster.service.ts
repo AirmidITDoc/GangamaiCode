@@ -120,17 +120,17 @@ export class TestmasterService {
                 { name: "required", Message: "MachineName is required" },
                 { name: "maxlength", Message: "MachineName should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
-            ],
-            SuggestionNote:[
-                { name: "required", Message: "Suggestion is required" },
-                { name: "maxlength", Message: "Suggestion should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ],
-            FootNote:[
-                { name: "required", Message: "FootNote is required" },
-                { name: "maxlength", Message: "FootNote should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
             ]
+            // SuggestionNote:[
+            //     { name: "required", Message: "Suggestion is required" },
+            //     { name: "maxlength", Message: "Suggestion should not be greater than 50 char." },
+            //     // { name: "pattern", Message: "Special char not allowed." }
+            // ],
+            // FootNote:[
+            //     { name: "required", Message: "FootNote is required" },
+            //     { name: "maxlength", Message: "FootNote should not be greater than 50 char." },
+            //     // { name: "pattern", Message: "Special char not allowed." }
+            // ]
         };
     }
 

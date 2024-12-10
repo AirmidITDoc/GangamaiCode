@@ -62,18 +62,13 @@ export class PrescriptionclassmasterService {
         return this._httpClient.PostData("GenericMaster/List", param, showLoader);
     }
 
-    public genericMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.PostData("Generic", Param, showLoader);
-    }
-
     public genericMasterUpdate(id: number , Param: any, showLoader = true) {
         //return this._httpClient.put("generic/" + id , Param, showLoader);
         return this._httpClient.PostData("Generic", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("generic?Id=" + m_data, {});
-        return this._httpClient.PostData("generic", m_data);
+        return this._httpClient.DeleteData("Priscriptionclass?Id=" + m_data.toString());
     }
     populateForm(param) {
         this.prescriptionForm.patchValue(param);

@@ -41,7 +41,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             { heading: "PinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "FaxNo", key: "faxNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "FaxNo", key: "faxNo", sort: true, align: 'left', emptySign: 'NA', width:150 },
             // {heading: "UserName", key:"", sort: true, align: 'left', emptySign: 'NA', width:100}
            
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },

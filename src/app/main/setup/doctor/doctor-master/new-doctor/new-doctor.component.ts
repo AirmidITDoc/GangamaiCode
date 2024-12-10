@@ -14,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 import { SignatureViewComponent } from "../signature-view/signature-view.component";
 import { DatePipe } from "@angular/common";
 import { ConcessionReasonMasterModule } from "app/main/setup/billing/concession-reason-master/concession-reason-master.module";
+import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
 
 @Component({
     selector: "app-new-doctor",
@@ -29,31 +30,16 @@ export class NewDoctorComponent implements OnInit {
     isLoading: any;
     submitted = false;
     data1: [];
-    PrefixcmbList: any = [];
-    GendercmbList: any = [];
-    DoctortypecmbList: any = [];
-    DepartmentcmbList: any = [];
-    cityList:any=[];
+
     selectedGenderID: any;
     registerObj = new DoctorMaster({});
     docobject: DoctorDepartmentDet;
     msg: any;
     screenFromString = 'admission-form';
 
-    filteredOptionsPrefix: Observable<string[]>;
-    filteredDoctortype: Observable<string[]>;
-    filteredOptionsDep: Observable<string[]>;
-    filteredOptionsCity: Observable<string[]>;
     signature: any;
 
-    isCitySelected: boolean = false;
-    isDepartmentSelected: boolean = false;
-    isdoctypeSelected: boolean = false;
-    isPrefixSelected: boolean = false;
-    optionsPrefix: any[] = [];
-    optionsDep: any[] = [];
-    optionsCity: any[] = [];
-  
+
     CurrentDate = new Date();
     vDepartmentid: any;
     vCityId: any;
@@ -70,21 +56,17 @@ export class NewDoctorComponent implements OnInit {
         'action'
     ];
 
-    public departmentFilterCtrl: FormControl = new FormControl();
-    public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
 
 
     // new Api
-    autocompleteModeprefix:string="Prefix";
-    autocompleteModegender:string="Gender";
-    autocompleteModecity:string="City";
+    autocompleteModeprefix: string = "Prefix";
+    autocompleteModegender: string = "Gender";
+    autocompleteModecity: string = "City";
     autocompleteModedepartment: string = "Department";
     autocompleteModedoctorty: string = "DoctorType";
 
     DeptSource = new MatTableDataSource<DepartmenttList>();
+
     isAllSelected = false;
     sanitizeImagePreview: any;
     constructor(
@@ -116,33 +98,29 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myForm = this._doctorService.createdDoctormasterForm();
-        this.getPrefixList();
-        this.getcityList();
-       //this.getDoctortypeNameCombobox();
-       
-       if (this.data) {
-            debugger
-            if (this.data.registerObj.DateofBirth) {
-                const todayDate = new Date();
-                const dob = new Date(this.data.registerObj.DateofBirth);
-                const timeDiff = Math.abs(Date.now() - dob.getTime());
-                this.data.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-                this.data.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-                this.data.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-                this.registerObj = this.data.registerObj;
-                 this.b_AgeYear = this.data.registerObj.AgeYear;
-                  this.b_AgeDay = this.data.registerObj.AgeDay;
-                  this.b_AgeMonth = this.data.registerObj.AgeMonth;
-                  console.log(this.registerObj)
-                 this.getDocDeptList();
-                  this.getCitylist();
-                 this.getprefixList();
-            }
-            this.registerObj = this.data.registerObj;
-            console.log(this.registerObj )
-            this._doctorService.getSignature(this.registerObj.Signature).subscribe(data => {
-                this.sanitizeImagePreview = data["data"] as string;
-                this.registerObj.Signature = data["data"] as string;
+
+        if (this.data.doctorId > 0) {
+            this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
+                this.registerObj = response;
+                if (this.registerObj.dateofBirth) {
+                    const todayDate = new Date();
+                    const dob = new Date(this.registerObj.dateofBirth);
+                    const timeDiff = Math.abs(Date.now() - dob.getTime());
+                    this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+                    this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+                    this.registerObj.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
+                    this.b_AgeYear = this.registerObj.ageYear;
+                    this.b_AgeDay = this.registerObj.ageDay;
+                    this.b_AgeMonth = this.registerObj.ageMonth;
+                    this.PrefixId = this.registerObj.prefixId;
+
+                }
+                this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
+                    this.sanitizeImagePreview = data["data"] as string;
+                    this.registerObj.signature = data["data"] as string;
+                });
+            }, (error) => {
+                this.toastr.error(error.message);
             });
         }
         else {
@@ -150,45 +128,10 @@ export class NewDoctorComponent implements OnInit {
             this.myForm.get('isActive').setValue(1);
             this.myForm.get('IsConsultant').setValue(1);
         }
-        this.getDepartmentList();
+        // this.getDepartmentList();
 
-        this.filteredOptionsPrefix = this.myForm.get('PrefixID').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterPrex(value)),
 
-        );
 
-        this.filteredDoctortype = this.myForm.get('DoctorTypeId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterDcotype(value)),
-
-        );
-
-        this.filteredOptionsDep = this.myForm.get('Departmentid').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterDep(value)),
-
-        );
-
-        this.filteredOptionsPrefix = this.myForm.get('PrefixID').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterPrex(value)),
-      
-          );
-      
-          this.filteredDoctortype = this.myForm.get('DoctorTypeId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterDcotype(value)),
-      
-          );
-          
-            
-          this.filteredOptionsCity = this.myForm.get('CityId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filtercity(value)),
-      
-          );
-      
     }
 
 
@@ -214,7 +157,7 @@ export class NewDoctorComponent implements OnInit {
     public onEnterprefix(event, value): void {
 
         if (event.which === 13) {
-    
+
             console.log(value)
             if (value == undefined) {
                 this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
@@ -225,8 +168,8 @@ export class NewDoctorComponent implements OnInit {
                 this.fname.nativeElement.focus();
             }
         }
-    
-    
+
+
     }
     public onEnterfname(event): void {
         if (event.which === 13) {
@@ -247,16 +190,16 @@ export class NewDoctorComponent implements OnInit {
 
     public onEntercity(event): void {
         if (event.which === 13) {
-          this.agem.nativeElement.focus();
-          // this.addbutton.focus();
+            this.agem.nativeElement.focus();
+            // this.addbutton.focus();
         }
-      }
+    }
 
 
-      public onEnteragey(event, value): void {
+    public onEnteragey(event, value): void {
         if (event.which === 13) {
             this.agem.nativeElement.focus();
-    
+
             this.ageyearcheck(value);
         }
     }
@@ -285,9 +228,9 @@ export class NewDoctorComponent implements OnInit {
 
     public onEnterAadharCardNo(event): void {
         if (event.which === 13) {
-          this.address.nativeElement.focus();
+            this.address.nativeElement.focus();
         }
-      }
+    }
     public onEnterphone(event): void {
         if (event.which === 13) {
             this.address.nativeElement.focus();
@@ -295,29 +238,29 @@ export class NewDoctorComponent implements OnInit {
     }
     public onEnterpan(event): void {
         if (event.which === 13) {
-          this.address.nativeElement.focus();
+            this.address.nativeElement.focus();
         }
-      }
-    
-
-public onEnteraddress(event): void {
-    if (event.which === 13) {
-      this.address.nativeElement.focus();
     }
-  }
 
-  ageyearcheck(event) {
 
-    if (parseInt(event) > 100) {
-      this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-
-      this.agey.nativeElement.focus();
+    public onEnteraddress(event): void {
+        if (event.which === 13) {
+            this.address.nativeElement.focus();
+        }
     }
-    return;
 
-  }
+    ageyearcheck(event) {
+
+        if (parseInt(event) > 100) {
+            this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+
+            this.agey.nativeElement.focus();
+        }
+        return;
+
+    }
     public onEnterdept(event, value): void {
         if (event.which === 13) {
             if (value == undefined) {
@@ -337,25 +280,11 @@ public onEnteraddress(event): void {
     }
 
 
-    getDocDeptList() {
-        var m_data = {
-           // "DoctorId": this.registerObj.DoctorId
-        }
-        this._doctorService.getDocDeptwiseList(m_data).subscribe(data => {
-            this.selectedItems = data as any[];
-            debugger
-            this.selectedItems.forEach((item: any) => {
-                var itm = this.DepartmentcmbList.find(x => x.DepartmentId == item.DepartmentId);
-                if (itm)
-                    itm.selected = true;
-            });
-        });
-    }
 
     setDropdownObjs1() {
 
-        const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.prefixId);
-        this.myForm.get('PrefixID').setValue(toSelect);
+        // const toSelect = this.PrefixcmbList.find(c => c.PrefixID == this.registerObj.prefixId);
+        // this.myForm.get('PrefixID').setValue(toSelect);
 
         // const toSelect1 = this.DepartmentcmbList.find(c => c.Departmentid == this.docobject.DepartmentId);
         // this.myForm.get('Departmentid').setValue(toSelect1);
@@ -371,83 +300,6 @@ public onEnteraddress(event): void {
 
 
 
-    private _filterPrex(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
-            return this.PrefixcmbList.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
-        }
-    }
- 
-   
-    // getGendorMasterList() {
-    //     this._doctorService.getGenderCombo().subscribe(data => {
-    //         this.GendercmbList = data;
-    //         const ddValue = this.GendercmbList.find(c => c.GenderId == this.data.registerObj.GenderId);
-    //         this.myForm.get('GenderId').setValue(ddValue);
-    //     })
-    // }
-
-
-
-    // getDoctortypeNameCombobox() {
-
-    //     this._doctorService.getDoctortypeMasterCombo().subscribe(data => {
-    //         this.DoctortypecmbList = data;
-    //         if (this.data) {
-    //             const ddValue = this.DoctortypecmbList.filter(c => c.Id == this.registerObj.DoctorTypeId);
-    //             this.myForm.get('DoctorTypeId').setValue(ddValue[0]);
-    //             this.myForm.updateValueAndValidity();
-    //             return;
-    //         }
-    //     });
-
-    // }
-
-
-    private _filterDcotype(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.DoctorType ? value.DoctorType.toLowerCase() : value.toLowerCase();
-            return this.DoctortypecmbList.filter(option => option.DoctorType.toLowerCase().includes(filterValue));
-        }
-    }
-
-    getOptionTextPrefix(option) {
-        return option && option.PrefixName ? option.PrefixName : '';
-    }
-
-    getOptionTextdoctype(option) {
-        return option && option.DoctorType ? option.DoctorType : '';
-
-    }
-    // getDepartmentNameCombobox() {
-
-    //     this._doctorService.getDepartmentCombobox().subscribe((data) => {
-    //         this.DepartmentcmbList = data;
-    //         console.log( this.DepartmentcmbList );
-    //         this.filteredDepartment.next(this.DepartmentcmbList.slice());
-    //         this.myForm
-    //             .get("Departmentid")
-    //             .setValue(this.DepartmentcmbList[0]);
-    //     });
-    // }
-
-
-
-    getDepartmentList() {
-        let that = this;
-        this._doctorService.getDepartmentCombobox().subscribe(data => {
-            // data.forEach((obj, i) => obj.selected = false)
-            this.DepartmentcmbList = data;
-            if (that.data)
-                this.getDocDeptList();
-            this.optionsDep = this.DepartmentcmbList.slice();
-            this.filteredOptionsDep = this.myForm.get('Departmentid').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterDep(value) : this.DepartmentcmbList.slice()),
-            );
-
-        });
-    }
     selectedItems = [];
     toggleSelection(item: any) {
         item.selected = !item.selected;
@@ -462,24 +314,14 @@ public onEnteraddress(event): void {
     remove(e) {
         this.toggleSelection(e);
     }
-    removeDepartment(item){
-        let removedIndex=this.myForm.value.Departmentid.findIndex(x=>x.value==item.value);
-        this.myForm.value.Departmentid.splice(removedIndex,1);
+    removeDepartment(item) {
+        let removedIndex = this.myForm.value.Departmentid.findIndex(x => x.value == item.value);
+        this.myForm.value.Departmentid.splice(removedIndex, 1);
         this.myForm.controls['Departmentid'].setValue(this.myForm.value.Departmentid);
     }
 
-    private _filterDep(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-            return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
-        }
 
-    }
-    getOptionTextDep(option) {
-        return option && option.departmentName ? option.departmentName : '';
-    }
-
-    Savebtn:boolean=false;
+    Savebtn: boolean = false;
     onSubmit() {
         // debugger
 
@@ -571,130 +413,132 @@ public onEnteraddress(event): void {
         //     }
         // }
 
-        if(this.myForm.invalid) {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-              toastClass:'tostr-tost custom-toast-warning',
-          })
-          return;
-        }else{
-            if (!this.myForm.get("DoctorId").value) {
-                          
-                var data2 = [];
-                for(let i=0;i<this.myForm.value.Departmentid.length;i++)
-                    data2.push({"doctorId":0,"departmentId":this.myForm.value.Departmentid[i].value});
-                var mdata =
-                {              
-                    "doctorId": 0,
-                    "prefixId":this.myForm.get("PrefixID").value || "",
-                    "firstName": this.myForm.get("FirstName").value.trim() || "",
-                    "middleName": this.myForm.get("MiddleName").value.trim() || "",
-                    "lastName": this.myForm.get("LastName").value.trim() || "",
-                    "dateofBirth": "2021-03-31T12:27:24.771Z",
-                    "address": this.myForm.get("Address").value.trim() || "",
-                    "city":this.myForm.get("CityId").value || "",
-                    "pin": "0", 
-                    "phone": "0",
-                    "mobile": this.myForm.get("MobileNo").value || "",
-                    "genderId": this.myForm.get("GenderId").value || "",
-                    "education": this.myForm.get("Education").value.trim() || "",
-                    "isConsultant": true,
-                    "isRefDoc": true,
-                    "isActive": true,
-                    "doctorTypeId":this.myForm.get("DoctorTypeId").value || "0",// this.doctorId,
-                    "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
-                    "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
-                    "ageDay": this.myForm.get("AgeDay").value.toString() || "",
-                    "passportNo": "0",
-                    "esino": this.myForm.get("ESINO").value || "0",
-                    "regNo": this.myForm.get("RegNo").value || "0",                
-                    "regDate": this.myForm.get("RegDate").value || "1999-08-06",
-                    // "regDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
-                    "mahRegNo": this.myForm.get("MahRegNo").value || "0",
-                    "mahRegDate": this.myForm.get("MahRegDate").value || "1999-08-06",
-                    "refDocHospitalName": this.myForm.get("RefDocHospitalName").value || "0",
-                    "isInHouseDoctor": true,
-                    "isOnCallDoctor": true,
-                    "panCardNo": this.myForm.get("Pancardno").value || "0",
-                    "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
-                    "mDoctorDepartmentDets": data2
-                }
-                this._doctorService.doctortMasterInsert(mdata).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                  this.toastr.error(error.message);
-                });
-                
-            } else {
-              
-                var data3 = [];
-                this.selectedItems.forEach((element) => {
-                    let DocInsertObj = {};
-                    DocInsertObj["docDeptId"]=1
-                    DocInsertObj['departmentId'] = this.departmentId;
-                    DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                    data2.push(DocInsertObj);
-                });
-    
-                console.log("update data3:",data3);
-    
-                var mdataUpdate={
-                  
-                   "doctorId": 0,
-                    // "prefixId": this.myForm.get("PrefixID").value.PrefixID,
-                    "prefixId":this.PrefixId,
-                    "firstName": this.myForm.get("FirstName").value.trim() || "",
-                    "middleName": this.myForm.get("MiddleName").value.trim() || "",
-                    "lastName": this.myForm.get("LastName").value.trim() || "",
-                    "dateofBirth": "2021-03-31T12:27:24.771Z",
-                    "address": this.myForm.get("Address").value.trim() || "",
-                    "city": this.cityId,
-                    "pin": "0",
-                    "phone": this.myForm.get("Phone").value || "0",
-                    "mobile": this.myForm.get("MobileNo").value || "",
-                    "genderId": this.genderId,
-                    "education": this.myForm.get("Education").value.trim() || "",
-                    "isConsultant": true,
-                    "isRefDoc": true,
-                    "doctorTypeId": this.doctorId,
-                    "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
-                    "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
-                    "ageDay": this.myForm.get("AgeDay").value.toString() || "",
-                    "passportNo": 0,
-                    "esino": this.myForm.get("ESINO").value || "0",
-                    "regNo": this.myForm.get("RegNo").value || "0",
-                    "regDate": this.myForm.get("RegDate").value || "1999-08-06",
-                    // "regDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
-                    "mahRegNo": this.myForm.get("MahRegNo").value || "0",
-                    "mahRegDate": this.myForm.get("MahRegDate").value || "0",
-                    "refDocHospitalName": this.myForm.get("RefDocHospitalName").value || "0",
-                    "isInHouseDoctor": true,
-                    "isOnCallDoctor": true,
-                    "panCardNo": this.myForm.get("Pancardno").value || "0",
-                    "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
-                    "mDoctorDepartmentDets": data3
-                }
-    
-                console.log(mdataUpdate);
-                this._doctorService.doctortMasterUpdate(mdataUpdate).subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });  
-                               this.Savebtn=false;
-                        } else {
-                            this.toastr.error('Doctor-from Master Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                    });
+        // if(this.myForm.invalid) {
+        //     this.toastr.warning('please check from is invalid', 'Warning !', {
+        //       toastClass:'tostr-tost custom-toast-warning',
+        //   })
+        //   return;
+        // }
+        // else{
+
+        if (!this.myForm.get("DoctorId").value) {
+
+            var data2 = [];
+            for (let i = 0; i < this.myForm.value.Departmentid.length; i++)
+                data2.push({ "doctorId": 0, "departmentId": this.myForm.value.Departmentid[i].value, "docDeptId": 0 });
+            var mdata =
+            {
+                "doctorId": 0,
+                "prefixId": this.myForm.get("PrefixID").value || "",
+                "firstName": this.myForm.get("FirstName").value.trim() || "",
+                "middleName": this.myForm.get("MiddleName").value.trim() || "",
+                "lastName": this.myForm.get("LastName").value.trim() || "",
+                "dateofBirth": "2021-03-31T12:27:24.771Z",
+                "address": this.myForm.get("Address").value.trim() || "",
+                "city": this.myForm.get("CityId").value || "",
+                "pin": "0",
+                "phone": "0",
+                "mobile": this.myForm.get("MobileNo").value || "",
+                "genderId": "1",// this.myForm.get("GenderId").value || "",
+                "education": this.myForm.get("Education").value.trim() || "",
+                "isConsultant": true,
+                "isRefDoc": true,
+                "isActive": true,
+                "doctorTypeId": 1,//this.myForm.get("DoctorTypeId").value || "0",// this.doctorId,
+                "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
+                "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
+                "ageDay": this.myForm.get("AgeDay").value.toString() || "",
+                "passportNo": "0",
+                "esino": this.myForm.get("ESINO").value || "0",
+                "regNo": this.myForm.get("RegNo").value || "0",
+                "regDate": this.myForm.get("RegDate").value || "1999-08-06",
+                "mahRegNo": this.myForm.get("MahRegNo").value || "0",
+                "mahRegDate": this.myForm.get("MahRegDate").value || "1999-08-06",
+                "refDocHospitalName": this.myForm.get("RefDocHospitalName").value || "0",
+                "isInHouseDoctor": true,
+                "isOnCallDoctor": true,
+                "panCardNo": this.myForm.get("Pancardno").value || "0",
+                "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
+                "mDoctorDepartmentDets": data2
             }
+            console.log(mdata)
+            this._doctorService.doctortMasterInsert(mdata).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+
+        } else {
+
+            var data3 = [];
+            this.selectedItems.forEach((element) => {
+                let DocInsertObj = {};
+                DocInsertObj["docDeptId"] = 1
+                DocInsertObj['departmentId'] = this.departmentId;
+                DocInsertObj['doctorId'] = !this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+                data2.push(DocInsertObj);
+            });
+
+            console.log("update data3:", data3);
+
+            var mdataUpdate = {
+
+                "doctorId": 0,
+                // "prefixId": this.myForm.get("PrefixID").value.PrefixID,
+                "prefixId": this.PrefixId,
+                "firstName": this.myForm.get("FirstName").value.trim() || "",
+                "middleName": this.myForm.get("MiddleName").value.trim() || "",
+                "lastName": this.myForm.get("LastName").value.trim() || "",
+                "dateofBirth": "2021-03-31T12:27:24.771Z",
+                "address": this.myForm.get("Address").value.trim() || "",
+                "city": this.cityId,
+                "pin": "0",
+                "phone": this.myForm.get("Phone").value || "0",
+                "mobile": this.myForm.get("MobileNo").value || "",
+                "genderId": this.genderId,
+                "education": this.myForm.get("Education").value.trim() || "",
+                "isConsultant": true,
+                "isRefDoc": true,
+                "doctorTypeId": this.doctorId,
+                "ageYear": this.myForm.get("AgeYear").value.toString() || "0",
+                "ageMonth": this.myForm.get("AgeMonth").value.toString() || "",
+                "ageDay": this.myForm.get("AgeDay").value.toString() || "",
+                "passportNo": 0,
+                "esino": this.myForm.get("ESINO").value || "0",
+                "regNo": this.myForm.get("RegNo").value || "0",
+                "regDate": this.myForm.get("RegDate").value || "1999-08-06",
+                // "regDate":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
+                "mahRegNo": this.myForm.get("MahRegNo").value || "0",
+                "mahRegDate": this.myForm.get("MahRegDate").value || "0",
+                "refDocHospitalName": this.myForm.get("RefDocHospitalName").value || "0",
+                "isInHouseDoctor": true,
+                "isOnCallDoctor": true,
+                "panCardNo": this.myForm.get("Pancardno").value || "0",
+                "aadharCardNo": this.myForm.get("AadharCardNo").value || "0",
+                "mDoctorDepartmentDets": data3
+            }
+
+            console.log(mdataUpdate);
+            this._doctorService.doctortMasterUpdate(mdataUpdate).subscribe((data) => {
+                this.msg = data;
+                if (data) {
+                    this.toastr.success('Record updated Successfully.', 'updated !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                    this.Savebtn = false;
+                } else {
+                    this.toastr.error('Doctor-from Master Master Data not updated !, Please check API error..', 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+            });
         }
-        this.onClose();
+        // }
+        // this.onClose();
     }
 
-    onClear(val:boolean) {
+    onClear(val: boolean) {
         this.myForm.reset();
     }
     onClose() {
@@ -735,219 +579,119 @@ public onEnteraddress(event): void {
         // }
     }
 
-    onChangeGenderList(prefixObj) {
-        if (prefixObj) {
-            this._doctorService
-                .getGenderCombo(prefixObj.PrefixID)
-                .subscribe((data) => {
-                    this.GendercmbList = data;
-                    this.myForm.get("GenderId").setValue(this.GendercmbList[0]);
-                    // this.selectedGender = this.GenderList[0];
-                    this.selectedGenderID = this.GendercmbList[0].GenderId;
-                });
-        }
-    }
+
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
 
- 
+
     public onEnterbday(event): void {
         if (event.which === 13) {
-          this.address.nativeElement.focus();
+            this.address.nativeElement.focus();
         }
-      }
+    }
     dateStyle?: string = 'Date';
-  OnChangeDobType(e) {
-    this.dateStyle = e.value;
-  }
-  CalcDOB(mode, e) {
-    let d = new Date();
-    if (mode == "Day") {
-      d.setDate(d.getDate() - Number(e.target.value));
-      //this.registerObj.DateofBirth = d;
-      //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+    OnChangeDobType(e) {
+        this.dateStyle = e.value;
     }
-    else if (mode == "Month") {
-      d.setMonth(d.getMonth() - Number(e.target.value));
-     // this.registerObj.DateofBirth = d;
-    }
-    else if (mode == "Year") {
-      d.setFullYear(d.getFullYear() - Number(e.target.value));
-      //this.registerObj.DateofBirth = d;
-    }
-    let todayDate = new Date();
-    //const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-    // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-    // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
-  }
-  
-
-  
-  private _filterprex(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+    CalcDOB(mode, e) {
+        let d = new Date();
+        if (mode == "Day") {
+            d.setDate(d.getDate() - Number(e.target.value));
+            //this.registerObj.DateofBirth = d;
+            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+        }
+        else if (mode == "Month") {
+            d.setMonth(d.getMonth() - Number(e.target.value));
+            // this.registerObj.DateofBirth = d;
+        }
+        else if (mode == "Year") {
+            d.setFullYear(d.getFullYear() - Number(e.target.value));
+            //this.registerObj.DateofBirth = d;
+        }
+        let todayDate = new Date();
+        //const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
     }
 
-  }
 
 
 
-  getprefixList() {
-    debugger
-    this._doctorService.getPrefixMasterCombo().subscribe(data => {
-      this.PrefixcmbList = data;
-      if (this.data) {
-        //const ddValue = this.PrefixcmbList.filter(c => c.PrefixID == this.registerObj.PrefixID);
-        // this.myForm.get('PrefixID').setValue(ddValue[0]);
-        this.myForm.updateValueAndValidity();
-        return;
-      }
-    });
-    this.onChangeGenderList(this.registerObj);
-  }
 
+    //   new Api?
+    PrefixId = 0;
+    genderId = 0;
+    cityId = 0;
+    cityName = '';
+    doctorId = 0;
+    doctorName = '';
+    departmentId = 0;
+    departmentName = '';
 
-  getPrefixList() {
-    this._doctorService.getPrefixMasterCombo().subscribe(data => {
-        this.PrefixcmbList = data;
-        this.optionsPrefix = this.PrefixcmbList.slice();
-        this.filteredOptionsPrefix = this.myForm.get('PrefixID').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterPrex(value) : this.PrefixcmbList.slice()),
-        );
-
-    });
-}
-
-  getcityList() {
-
-    this._doctorService.getCityList().subscribe(data => {
-      this.cityList = data;
-      this.optionsCity = this.cityList.slice();
-      this.filteredOptionsCity = this.myForm.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCity(value) : this.cityList.slice()),
-      );
-
-    });
-
-  }
-
-  getCitylist() {
-    
-    this._doctorService.getCityList().subscribe(data => {
-      this.cityList = data;
-      if (this.data) {
-        // const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
-        // this.myForm.get('CityId').setValue(ddValue[0]);
-        this.myForm.updateValueAndValidity();
-        return;
-      }
-    });
-    
-  }
-
-
-  getOptionTextCity(option) {
-    return option && option.CityName ? option.CityName : '';
-
-  }
-
-
-  private _filterCity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    selectChangeprefix(obj: any) {
+        debugger
+        this.PrefixId = obj.value;
     }
 
-  }
-
-  private _filtercity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
+    selectChangegender(obj: any) {
+        console.log(obj)
+        this.genderId = obj.value;
     }
-  }
 
+    selectChangecity(obj: any) {
+        console.log(obj)
+        this.cityId = obj.value;
+        this.cityName = obj.text;
+    }
 
+    selectChangedoctorTy(obj: any) {
+        this.doctorId = obj.value;
+        this.doctorName = obj.text;
+    }
 
-//   new Api?
-PrefixId=0;
-genderId=0;
-cityId=0;
-cityName='';
-doctorId=0;
-doctorName='';
-departmentId=0;
-departmentName='';
+    selectChangedep(obj: any) {
+        this.departmentId = obj.value;
+        this.departmentName = obj.value;
+    }
 
-selectChangeprefix(obj:any){
-    console.log(obj)
-    this.PrefixId=obj.value;
-}
-
-selectChangegender(obj:any){
-    console.log(obj)
-    this.genderId=obj.value;
-}
-
-selectChangecity(obj:any){
-    console.log(obj)
-    this.cityId=obj.value;
-    this.cityName=obj.text;
-}
-
-selectChangedoctorTy(obj:any){
-    this.doctorId=obj.value;
-    this.doctorName=obj.text;
-}
-
-selectChangedep(obj:any){
-    this.departmentId=obj.value;
-    this.departmentName=obj.value;
-}
-
-getValidationMessages() {
-    return {
-        PrefixID: [
-            { name: "required", Message: "Prefix Name is required" }
-        ]
-    };
-}
-getValidationCityMessages() {
-    return {
-        CityId: [
-            { name: "required", Message: "City Name is required" }
-        ]
-    };
-}
-getValidationDoctorTypeMessages(){
-    return {
-        DoctorTypeId: [
-            { name: "required", Message: "Doctor Type is required" }
-        ]
-    };
-}
-getValidationDepartmentMessages(){
-    return {
-        Departmentid: [
-            { name: "required", Message: "Department Name is required" }
-        ]
-    };
-}
-getValidationGenderMessages(){
-    return {
-        GenderId: [
-            { name: "required", Message: "Gender is required" }
-        ]
-    };
-}
+    getValidationMessages() {
+        return {
+            PrefixID: [
+                { name: "required", Message: "Prefix Name is required" }
+            ]
+        };
+    }
+    getValidationCityMessages() {
+        return {
+            CityId: [
+                { name: "required", Message: "City Name is required" }
+            ]
+        };
+    }
+    getValidationDoctorTypeMessages() {
+        return {
+            DoctorTypeId: [
+                { name: "required", Message: "Doctor Type is required" }
+            ]
+        };
+    }
+    getValidationDepartmentMessages() {
+        return {
+            Departmentid: [
+                { name: "required", Message: "Department Name is required" }
+            ]
+        };
+    }
+    getValidationGenderMessages() {
+        return {
+            GenderId: [
+                { name: "required", Message: "Gender is required" }
+            ]
+        };
+    }
 
 }
 

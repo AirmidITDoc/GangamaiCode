@@ -120,9 +120,10 @@ import { error } from "console";
     
     
     displayedColumns: string[] = [
-      'ClassId',
-      'ClassName',
+      'classId',
+      'className',
       'ClassRate',
+      'action'
     ];
     
   ngOnInit(): void {
@@ -217,125 +218,34 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
 
   onSubmit() {
     debugger;
-  //   if (this.showEmg) {
-  //     this.serviceForm.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
-  //     this.serviceForm.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
+    if (this.showEmg) {
+      this.serviceForm.get('EmgAmt').setValidators([Validators.required,Validators.min(0)]);
+      this.serviceForm.get('EmgPer').setValidators([Validators.required,Validators.min(0)]);
       
-  // } else {
-  //     this.serviceForm.get('EmgAmt').clearValidators();
-  //     this.serviceForm.get('EmgPer').clearValidators();
-  // }            
-  // this.serviceForm.get('EmgAmt').updateValueAndValidity();
-  // this.serviceForm.get('EmgPer').updateValueAndValidity();
-  //   if (this.serviceForm.valid ) {
+  } else {
+      this.serviceForm.get('EmgAmt').clearValidators();
+      this.serviceForm.get('EmgPer').clearValidators();
+  }            
+  this.serviceForm.get('EmgAmt').updateValueAndValidity();
+  this.serviceForm.get('EmgPer').updateValueAndValidity();
+  
+  // if (this.serviceForm.invalid) {
+  //     this.toastr.warning('please check from is invalid', 'Warning !', {
+  //       toastClass:'tostr-tost custom-toast-warning',
+  //   })
+  //   return;
+  // }else{
 
-  //     var clas_d = [];
-  //     var class_det ={      
-  //       "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),
-  //       "tariffId":this.serviceForm.get("TariffId").value || 0,
-  //       "classId": 0,
-  //       "classRate":0,
-  //       "effectiveDate":this.serviceForm.get("EffectiveDate").value || "01/01/1900",
-  //    }
-  //     this.DSServicedetailList.data.forEach(element => {
-  //       debugger
-  //       let c =  JSON.parse(JSON.stringify(class_det));
-  //       c['classId'] = element.ClassId;
-  //       c['classRate'] = element.ClassRate || 0;        
-  //       clas_d.push(c)
-  //     });
+  let subGroupId  = 0;
+  if(this.serviceForm.get("SubGroupId").value)
+    subGroupId =  this.serviceForm.get("SubGroupId").value.SubGroupId
 
+  
+  let doctorId  = 0;
+  if(this.serviceForm.get("DoctorId").value)
+    doctorId = this.serviceForm.get("DoctorId").value.DoctorID
 
-  //     let serviceMasterdata = {
-  //       "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
-  //       "serviceName": (this.serviceForm.get("ServiceName").value).trim(),
-  //       "price": parseInt(this.serviceForm.get("Price").value || "0"),
-  //       "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
-  //       "isEditable": String(this.serviceForm.get("IsEditable").value) == 'false' ?  false : true ,
-  //       "creditedtoDoctor":  String (this.serviceForm.get("CreditedtoDoctor").value) == 'false' ? false : true ,
-  //       "isPathology": String(this.serviceForm.get("IsPathology").value) == 'false' ? 0:1,
-  //       "isRadiology": String(this.serviceForm.get("IsRadiology").value) == 'false' ? 0:1,
-  //       "isActive": String(this.serviceForm.get("IsActive").value) == 'false' ?  false : true ,
-  //       "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0:1 ,
-  //       "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,  
-
-  //       "isEmergency": String(this.serviceForm.get("IsEmergency").value) == 'false' ? false : true ,
-  //       "emgAmt": parseInt(this.serviceForm.get("EmgAmt").value ||"0"),
-  //       "emgPer": parseInt(this.serviceForm.get("EmgPer").value ||"0"),
-        
-  //       "groupId": parseInt(this.serviceForm.get("GroupId").value || 0),
-  //       "subgroupId": parseInt(this.serviceForm.get("SubGroupId").value || 0),
-  //       "doctorId": this.serviceForm.get("DoctorId").value ||0,        
-     
-  //       "serviceId":parseInt(this.serviceForm.get("ServiceId").value || 0),                 
-  //     }
-
-
-  //     if (!this.serviceForm.get("ServiceId").value) {
-
-       
-  //       let m_data = {
-  //         "serviceMasterInsert": serviceMasterdata,
-  //         "serviceDetailInsert" :clas_d 
-  //       }
-  //       console.log(m_data);
-
-  //       this._serviceMasterService.serviceMasterInsert(m_data).subscribe(data => {
-  //         this.msg = data;
-  //         if (data) {
-  //           this.toastr.success('Record Saved Successfully.', 'Saved !', {
-  //               toastClass: 'tostr-tost custom-toast-success',
-  //             });
-            
-  //       } else {
-  //           this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
-  //               toastClass: 'tostr-tost custom-toast-error',
-  //             });  
-  //       }      
-  //   },error => {
-  //       this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
-  //        toastClass: 'tostr-tost custom-toast-error',
-  //      });
-  //    });
-       
-  //     }
-  //     else {
-  //       debugger;
-  //       var m_dataUpdate = {        
-  //           "serviceMasterUpdate": serviceMasterdata,
-  //           "serviceDetailInsert" :clas_d, 
-  //           "serviceDetDelete": {
-  //             "serviceId": this.serviceForm.get("ServiceId").value,
-  //             "tariffId":this.serviceForm.get("TariffId").value,
-  //           },
-  //       }
-
-  //       this._serviceMasterService.serviceMasterUpdate(m_dataUpdate).subscribe(data => {
-  //         this.msg = data; 
-  //          if (data) {
-  //           this.toastr.success('Record updated Successfully.', 'updated !', {
-  //               toastClass: 'tostr-tost custom-toast-success',
-  //             });                      
-  //       } else {
-  //           this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
-  //               toastClass: 'tostr-tost custom-toast-error',
-  //             });
-  //       }      
-  //   },error => {
-  //       this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
-  //        toastClass: 'tostr-tost custom-toast-error',
-  //      });
-  //    });       
-  //     }
-     
-  //   }
-  if (this.serviceForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-  }else{
-    if(!this.serviceForm.get("ServiceId").value){
+if(!this.serviceForm.get("ServiceId").value){
 
       var data1=[];
       var clas_d = [];
@@ -362,19 +272,19 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
         "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
         "serviceName": this.serviceForm.get("ServiceName").value,
         "price":  parseInt(this.serviceForm.get("Price").value),
-        "isEditable": true,
-        "creditedtoDoctor": true,
-        "isPathology":  0,
-        "isRadiology": 0,
+        "isEditable":String(this.serviceForm.get("IsEditable").value) == 'false' ? false : true,
+        "creditedtoDoctor": this.serviceForm.get("CreditedtoDoctor").value,
+        "isPathology":  String(this.serviceForm.get("IsPathology").value) == 'false' ? 0 : 1, 
+        "isRadiology": String(this.serviceForm.get("IsRadiology").value) == 'false' ? 0 : 1, 
         "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
-        "isPackage": 0,
+        "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1, 
         "subGroupId": this.subGroupId || 0,
         "doctorId": 0,
-        "isEmergency": true,
-        "emgAmt": 0,
-        "emgPer": 0,
-        "isDocEditable": true,
-        "serviceDetails": data1
+        "isEmergency":this.serviceForm.get("IsEmergency").value,
+        "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
+        "emgPer": this.serviceForm.get("EmgPer").value || 0,
+        "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,
+        "serviceDetails": clas_d
       }
       console.log("insert mdata:", mdata);
       this._serviceMasterService.serviceMasterInsert(mdata).subscribe((response)=>{
@@ -384,21 +294,14 @@ this.serviceForm=this._serviceMasterService.createServicemasterForm();
         this.toastr.error(error.message);
       })
       
-    }else{
+    }
+    
+    else{
       //update
     }
-  }
-  
-  // this.vServiceName = this.serviceForm.get('ServiceName').value
-  // if ((this.vServiceName == '' || this.vServiceName == null || this.vServiceName == undefined)) {
-  //     this.toastr.warning('Please select valid Service ', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
   // }
-
-
   
+    
 this.dialogRef.close();
     
   }

@@ -66,8 +66,7 @@ const routes: Routes = [
         MatSlideToggleModule,
         MatTabsModule,
         MatAutocompleteModule,
-        SharedModule,
-        MatDialogModule,
+        SharedModule
     ],
     providers: [TermsOfPaymentMasterService,DatePipe],
     entryComponents: [TermsOfPaymentMasterComponent],

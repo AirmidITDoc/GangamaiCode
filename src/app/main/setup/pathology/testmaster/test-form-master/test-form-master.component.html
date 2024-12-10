@@ -69,8 +69,23 @@
                     </mat-radio-group>
                 </div>
 
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field fxFlex>
+                            <input matInput placeholder="Search" autocomplete="off" />
+                            <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-checkbox formControlName="IsSubTest" >IsSub Test </mat-checkbox>
+                    </div>
+                </div>
+
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <mat-checkbox formControlName="IsSubTest" >IsSub Test </mat-checkbox>
+                    
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <!-- <ng-container filters>
                             <mat-form-field appearance="outline" fxFlex>
@@ -106,19 +121,27 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex="71.5%">
+                        <mat-form-field appearance="outline" fxFlex="98%">
                             <mat-label>Foot Note</mat-label>
                             <textarea matInput display="block" rows="2" formControlName="FootNote"
                                 name="FootNote">
                             </textarea>
+                            <mat-error class="error"
+                                *ngIf="testForm.get('FootNote').invalid && testForm.get('FootNote').touched">
+                                FootNote is required Enter
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex="71.5%">
+                        <mat-form-field appearance="outline" fxFlex="98%">
                             <mat-label>Suggestion Note</mat-label>
                             <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
                                 name="SuggestionNote"></textarea>
+                                <mat-error class="error"
+                                    *ngIf="testForm.get('SuggestionNote').invalid && testForm.get('SuggestionNote').touched">
+                                    SuggestionNote is required
+                                </mat-error>
                         </mat-form-field>
                     </div>
                 </div>

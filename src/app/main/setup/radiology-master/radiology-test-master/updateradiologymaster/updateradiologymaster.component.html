@@ -13,13 +13,20 @@
                 {{_radiologytestService.myform.controls.TestId.value?"Modify Radiology Test Master":
                 "New Radiology Test Master"}}
             </span>
-            <div class="modal-header-left" >
+            <!-- <div class="modal-header-left" >
                 <div  class="close-icon">
                     <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                      matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div> 
+            </div> -->
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
             <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
             style="margin-left:900px;">
@@ -35,7 +42,7 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row" style=" background-color: white;
                                  padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="_radiologytestService.myform">
+                            <form [formGroup]="testForm">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
                                         <div fxLayout="row">
@@ -44,12 +51,14 @@
 
                                             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <mat-label>Test Name</mat-label>
-                                                <input name="TestName" formControlName="TestName"
-                                                    placeholder="Select Test Name" matInput required>
-                                                <mat-error>Please enter TestName </mat-error>
+                                                    <input name="TestName" formControlName="TestName" placeholder="TestName"
+                                                     matInput #Tname (keydown)="onEnterTname($event)" required [(ngModel)]="vTestName">
+                                                     <mat-error class="error"
+                                                     *ngIf="testForm.get('TestName').invalid && testForm.get('TestName').touched">
+                                                     TetsName is required Enter only Alphabets</mat-error>
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
                                             <mat-label>CategoryName</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select CategoryName" [(ngModel)]="vCategoryId" required
@@ -68,18 +77,28 @@
                                                     {{option.CategoryName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-autocomplete label="CategoryName" formControlName="CategoryId"
+                                                [formGroup]="testForm"
+                                                [validations]="_radiologytestService.getValidationMessages().CategoryId"
+                                                [mode]="autocompleteModeCategory">
+                                            </airmid-autocomplete>
+                                        </div>
+
                                         </div>
                                         <div fxLayout="row">
                                             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                                                 <mat-label>PrintTestName</mat-label>
-                                                <input name="PrintTestName" formControlName="PrintTestName"
-                                                    placeholder="Select PrintTestName" matInput required>
-                                                <mat-error>Please enter PrintTestName </mat-error>
+                                                <input name="PrintTestName" formControlName="PrintTestName" placeholder="PrintTestName"
+                                                     matInput #printName (keydown)="onEnterprintName($event)" required [(ngModel)]="vPrintName">
+                                                     <mat-error class="error"
+                                                     *ngIf="testForm.get('PrintTestName').invalid && testForm.get('PrintTestName').touched">
+                                                     PrintTestName is required Enter only Alphabets</mat-error>
                                             </mat-form-field>
 
                                          
-                                            <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" style="padding-right: 10px;" fxFlex>
                                                 <mat-label>ServiceName</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Service Type" [(ngModel)]="ServiceId" required
@@ -98,16 +117,23 @@
                                                         {{option.ServiceName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-autocomplete label="ServiceName" formControlName="ServiceId"
+                                                    [formGroup]="testForm"
+                                                    [validations]="_radiologytestService.getValidationMessages().ServiceId"
+                                                    [mode]="autocompleteModeService">
+                                                </airmid-autocomplete>
+                                            </div>
 
                                         </div>
                                         <mat-divider inset style="margin: 0px;padding: 5px;"></mat-divider>
                                         <div fxLayout="column">
-                                            <form [formGroup]="_radiologytestService.AddParameterFrom">
+                                            <form [formGroup]="testForm">
                                                 <div fxLayout="row">
                                                     <input type="hidden" name="TestId" formControlName="TestId">
 
-                                                    <mat-form-field appearance="outline" flex>
+                                                    <!-- <mat-form-field appearance="outline" flex>
                                                         <mat-label>Template Name</mat-label>
                                                         <input matAutocompletePosition="below"
                                                             type="text" [(ngModel)]="vTemplateName"
@@ -116,9 +142,9 @@
                                                             [matAutocomplete]="autotemp">
                                                         <span matSuffix style="display: flex;">
                                                             <mat-icon class="mat-icon-close"
-                                                                (click)="_radiologytestService.AddParameterFrom.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
+                                                                (click)="testForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
                                                             <mat-icon class="mat-icon-close"
-                                                                (click)="_radiologytestService.AddParameterFrom.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
+                                                                (click)="testForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
                                                         </span>
                                                         <mat-autocomplete #autotemp="matAutocomplete"
                                                             [displayWith]="getOptionTextTemplate">
@@ -128,14 +154,19 @@
                                                                 {{option.TemplateName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>
-
-
-                                                              
+                                                    </mat-form-field> -->
+                                                    
+                                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-autocomplete label="TemplateName" formControlName="TemplateName"
+                                                            [formGroup]="testForm"
+                                                            [validations]="_radiologytestService.getValidationMessages().TemplateName"
+                                                            [mode]="autocompleteModeTemplate">
+                                                        </airmid-autocomplete>
+                                                    </div>
 
                                                     <div matTooltip="Select All Value to enable this button!!">
                                                        
-                                                        <button (click)="OnAdd($event)"  [disabled]="_radiologytestService.AddParameterFrom.invalid"
+                                                        <button (click)="OnAdd($event)"  [disabled]="testForm.invalid"
                                                         class="btn btn-primary btn-with-icon py-8"
                                                         style="margin-left: 10px;">
                                                         <span class="btn-icon">
@@ -205,9 +236,10 @@
                                     <!-- <mat-radio-button value='true' name="IsDeleted" [checked]="true"
                                                     formControlName="IsDeleted">IsActive</mat-radio-button> -->
 
-                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_radiologytestService.myform.invalid">Save</button>
+                                        <button class="btn btn-danger-outline" (click)="onClear(false)">Clear</button>
+                                        <!-- <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="_radiologytestService.myform.invalid">Save</button> -->
+                                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                     </div>
                                 </div>
                             </form>

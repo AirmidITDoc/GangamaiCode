@@ -51,13 +51,7 @@ export class AppointmentListComponent implements OnInit {
           { heading: "RegId", key: "regId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:200},
-
-          
-        //   { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-        //   { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-        //   { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' ,width:80 },
-        //   { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' ,width:100,type:6},
-          { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:200,type:10},
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' ,width:200,type:10},
           { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
         //   { heading: "PatientTypeId", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' ,width:30},
           { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:50 },

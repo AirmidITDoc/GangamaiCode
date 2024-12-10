@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { RadiologyTestMasterService } from '../radiology-test-master.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
@@ -17,6 +17,15 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
   animations: fuseAnimations
 })
 export class UpdateradiologymasterComponent implements OnInit {
+  testForm:FormGroup;
+
+  autocompleteModeService:string="ServiceName";
+  autocompleteModeCategory:string="CategoryName";
+  autocompleteModeTemplate:string="TemplateName";
+
+  vTestName: any;
+  vPrintName: any;
+
   displayedColumns1: string[] = [
     "ParameterName"
   ];
@@ -59,6 +68,7 @@ export class UpdateradiologymasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.testForm=this._radiologytestService.createRadiologytestForm();
     if (this.data) {
       
       this.registerObj=this.data.Obj;
@@ -199,10 +209,11 @@ getOptionTextService(option) {
     //   this.ChargeList = data as TestList[];
     // })
   }
-  onClear() {
-    this._radiologytestService.myform.reset({ IsDeleted: 'false' });
+  onClear(val: boolean) {
+    this.testForm.reset({ IsDeleted: 'false' });
     this._radiologytestService.initializeFormGroup();
     this.DSTestList.data = [];
+    this.dialogRef.close(val)
   }
   onClose(){
     this._matDialog.closeAll();
@@ -299,8 +310,61 @@ getOptionTextService(option) {
     //   this._radiologytestService.myform.reset();
     //   }
      
+    if (this.testForm.invalid) {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }else{
+      if(!this.testForm.get("TestId").value){
+          var data1=[];
+              let mRadiologyTemplateDetails = {};
+              mRadiologyTemplateDetails["ptemplateId"]=0,
+              mRadiologyTemplateDetails['testId'] = 0, 
+              mRadiologyTemplateDetails['templateId'] = 0
+              data1.push(mRadiologyTemplateDetails);
+
+          console.log("Insert data1:",data1);
+
+          var mdata={
+            "testId": 0,
+            "testName": this.testForm.get("TestName").value,
+            "printTestName": this.testForm.get("PrintTestName").value,
+            "categoryId": this.testForm.get("CategoryId").value || 0,
+            "serviceId": this.testForm.get("ServiceId").value || 0,
+            "mRadiologyTemplateDetails": data1
+          }
+
+            console.log("json of Test:", mdata)
+              this._radiologytestService.testMasterSave(mdata).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
+              this.toastr.error(error.message);
+          });
+      } else{
+          
+      }
+    }
   }
+
+  @ViewChild('Tname') Tname: ElementRef;
+  @ViewChild('printName') printName: ElementRef;
+
+  public onEnterTname(event): void {
+    if (event.which === 13) {
+        this.printName.nativeElement.focus();
+    }
 }
+public onEnterprintName(event): void {
+    if (event.which === 13) {
+        this.printName.nativeElement.focus();
+    }
+}
+
+  
+}
+
 export class TestList {
   TemplateName: any;
   TemplateId:any;

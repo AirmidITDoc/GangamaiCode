@@ -19,14 +19,14 @@ export class StateMasterService {
     createStateForm(): FormGroup {
         return this._formBuilder.group({
             stateId: [""],
-            stateName: [""],
-            countryId: [""],
-            countryName: ["",
+            stateName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
+            countryId: ["", Validators.required],
+            countryName: [""],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],

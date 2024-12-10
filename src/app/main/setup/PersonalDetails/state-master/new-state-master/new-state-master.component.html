@@ -28,14 +28,13 @@
             [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
             </airmid-textbox>
 
-            <!-- <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete> -->
-
-            <airmid-autocomplete label="countryId" formControlName="countryId"
-            [value]="data?.countryId" [formGroup]="stateForm"
-            [validations]="getValidationCountryMessages().countryId"
-            [mode]="autocompleteModecountry"
-            (selectDdlObject)="selectChangecountry($event)">
-            </airmid-autocomplete>
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-autocomplete label="countryId" formControlName="countryId"
+                    [formGroup]="stateForm"
+                    [validations]="getValidationCountryMessages().countryId"
+                    [mode]="autocompleteModecountry">
+                </airmid-autocomplete>
+            </div>
 
             </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">

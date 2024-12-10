@@ -141,6 +141,9 @@ export class DoctorMasterService {
     public getDoctorMasterList(Param) {
         return this._httpClient.PostData("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
     }
+    public getDoctorById(Id) {
+        return this._httpClient.GetData("Doctor/" + Id);
+    }
 
     public getSignature(Param) {
         return this._httpClient.GetData("DoctorMaster/get-file?FileName=" + Param);
@@ -187,8 +190,8 @@ export class DoctorMasterService {
 
     public doctortMasterInsert(Param: any, showLoader = true) {
         if (Param.doctorId) {
-            return this._httpClient.PutData("DoctoreMaster/" + Param.doctorId, Param, showLoader);
-        } else return this._httpClient.PostData("DoctoreMaster", Param, showLoader);
+            return this._httpClient.PutData("Doctor/Edit/" + Param.doctorId, Param, showLoader);
+        } else return this._httpClient.PostData("Doctor/InsertEDMX", Param, showLoader);
     }
 
     public doctortMasterUpdate(param) {
@@ -202,7 +205,7 @@ export class DoctorMasterService {
 //   }
 
     public assignDoctorDepartmentDet(param) {
-        return this._httpClient.PostData("DoctorMaster/DoctorSave", param);
+        return this._httpClient.PostData("Doctor/InsertEDMX", param);
     }
 
     public deleteAssignSupplierToStore(param) {

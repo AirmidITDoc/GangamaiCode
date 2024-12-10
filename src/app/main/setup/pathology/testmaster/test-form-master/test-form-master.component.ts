@@ -37,13 +37,17 @@ export class TestFormMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathParameterMaster/List",
     columnsList: [
-        { heading: "#", key: "parameterId", sort: true, align: 'left', emptySign: 'NA', width:160 },
+        { heading: "#", key: "parameterId", sort: true, align: 'left', emptySign: 'NA', width:100 },
 
-        { heading: "Parameter", key: "parameterName", sort: true, align: 'left', emptySign: 'NA', width:300 },
+        { heading: "Parameter", key: "parameterName", sort: true, align: 'left', emptySign: 'NA', width:100 },
         
         { heading: "PrintParameterName", key: "printParameterName", sort: true, align: 'left', emptySign: 'NA', width:100 },
 
-        { heading: "Method", key: "className", sort: true, align: 'left', emptySign: 'NA', width:100 },
+        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA', width:100 },
+        { heading: "Unit", key: "unitId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+        { heading: "Range", key: "range", sort: true, align: 'left', emptySign: 'NA', width:100 },
+        { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width:100 },
+        { heading: "IsNumeric", key: "isNumeric", sort: true, align: 'left', emptySign: 'NA', width:100 },
              {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
                     {
@@ -106,58 +110,66 @@ export class TestFormMasterComponent implements OnInit {
         this.testForm.patchValue(m_data);
     }
     onSubmit() {
-        if(!this.testForm.get("TestId").value){
-            var data1=[];
-            // this.selectedItems.forEach((element) => {
-                let MPathTemplateDetailsObj = {};
-                MPathTemplateDetailsObj["PtemplateId"]=0,
-                MPathTemplateDetailsObj['TestId'] = 11, //this.departmentId;
-                MPathTemplateDetailsObj['TemplateId'] = 12 //this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                data1.push(MPathTemplateDetailsObj);
-            // });
-
-            console.log("Insert data1:",data1);
-
-            var data2=[];
-            // this.selectedItems.forEach((element) => {
-                let MPathTestDetailMastersObj = {};
-                MPathTestDetailMastersObj["TestDetId"]=0,
-                MPathTestDetailMastersObj['TestId'] = 16, //this.departmentId;
-                MPathTestDetailMastersObj['SubTestId'] = 17,
-                MPathTestDetailMastersObj['ParameterId']=19 //this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
-                data2.push(MPathTestDetailMastersObj);
-            // });
-            console.log("Insert data2:",data2);
-
-            var mdata={
-                "TestId": 0,
-                "TestName": this.testForm.get("TestName").value,
-                "PrintTestName": this.testForm.get("PrintTestName").value,
-                "CategoryId": 12,
-                "IsSubTest": true,
-                "TechniqueName": this.testForm.get("TechniqueName").value,
-                "MachineName": this.testForm.get("MachineName").value,
-                "SuggestionNote": this.testForm.get("SuggestionNote").value,
-                "FootNote": this.testForm.get("FootNote").value,
-                "IsDeleted": true,
-                "ServiceId": 15,
-                "IsTemplateTest": true,
-                "TestTime": "2022-09-10",
-                "TestDate": "2022-07-11",
-                "MPathTemplateDetails": data1,
-                "MPathTestDetailMasters": data2
-              }
-
-              console.log("json of Test:", mdata)
-                this._TestmasterService.unitMasterSave(mdata).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        } else{
-            
-        }
+        if (this.testForm.invalid) {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+              toastClass:'tostr-tost custom-toast-warning',
+          })
+          return;
+          }else{
+            if(!this.testForm.get("TestId").value){
+                var data1=[];
+                // this.selectedItems.forEach((element) => {
+                    let MPathTemplateDetailsObj = {};
+                    MPathTemplateDetailsObj["PtemplateId"]=0,
+                    MPathTemplateDetailsObj['TestId'] = 11, //this.departmentId;
+                    MPathTemplateDetailsObj['TemplateId'] = 12 //this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+                    data1.push(MPathTemplateDetailsObj);
+                // });
+    
+                console.log("Insert data1:",data1);
+    
+                var data2=[];
+                // this.selectedItems.forEach((element) => {
+                    let MPathTestDetailMastersObj = {};
+                    MPathTestDetailMastersObj["TestDetId"]=0,
+                    MPathTestDetailMastersObj['TestId'] = 16, //this.departmentId;
+                    MPathTestDetailMastersObj['SubTestId'] = 17,
+                    MPathTestDetailMastersObj['ParameterId']=19 //this.myForm.get("DoctorId").value ? "0" : this.myForm.get("DoctorId").value || "0";
+                    data2.push(MPathTestDetailMastersObj);
+                // });
+                console.log("Insert data2:",data2);
+    
+                var mdata={
+                    "TestId": 0,
+                    "TestName": this.testForm.get("TestName").value,
+                    "PrintTestName": this.testForm.get("PrintTestName").value,
+                    "CategoryId": 12,
+                    "IsSubTest": true,
+                    "TechniqueName": this.testForm.get("TechniqueName").value,
+                    "MachineName": this.testForm.get("MachineName").value,
+                    "SuggestionNote": this.testForm.get("SuggestionNote").value,
+                    "FootNote": this.testForm.get("FootNote").value,
+                    "IsDeleted": true,
+                    "ServiceId": 15,
+                    "IsTemplateTest": true,
+                    "TestTime": "2022-09-10",
+                    "TestDate": "2022-07-11",
+                    "MPathTemplateDetails": data1,
+                    "MPathTestDetailMasters": data2
+                  }
+    
+                  console.log("json of Test:", mdata)
+                    this._TestmasterService.unitMasterSave(mdata).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+            } else{
+                
+            }
+          }
+        
     }
 
     CategoryId=0;
