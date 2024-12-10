@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Bed Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Bed Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,20 +19,28 @@
             <form [formGroup]="bedForm">
                 <input type="hidden" name="bedId" formControlName="bedId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                    label="Bed name" 
-                    formControlName="bedName" 
-                    [value]="" [formGroup]="bedForm"
-                    [validations]="_BedMasterService.getValidationMessages().bedName" [maxLength]="300">
+                        label="Bed Name" 
+                        formControlName="bedName" 
+                        [value]="" 
+                        [formGroup]="bedForm"
+                        [validations]="_BedMasterService.getValidationMessages().bedName" 
+                        [maxLength]="300">
                     </airmid-textbox>
+                </div>
                     <!-- <airmid-autocomplete [mode]="autocompleteModeroomId" (selectDdlObject)="selectChangeroomId($event)"></airmid-autocomplete> -->
-               
-                    <airmid-autocomplete label="roomId" formControlName="roomId"
-                    [value]="data?.roomId" [formGroup]="bedForm"
-                    [validations]="getValidationroomeMessages().roomId"
-                    [mode]="autocompleteModeroomId"
-                    (selectDdlObject)="selectChangeroomId($event)">
-                </airmid-autocomplete>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-autocomplete 
+                        label="RoomId" 
+                        formControlName="roomId"
+                        [value]="data?.roomId" 
+                        [formGroup]="bedForm"
+                        [validations]="getValidationroomeMessages().roomId"
+                        [mode]="autocompleteModeroomId"
+                        (selectDdlObject)="selectChangeroomId($event)">
+                    </airmid-autocomplete>
+                    </div>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isAvailable" formControlName="isAvailible" value='true'>
@@ -41,7 +49,7 @@
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>NotAvailable
                         </mat-radio-button>
                     </mat-radio-group>
-<!-- 
+                    <!-- 
                     <mat-radio-group name="isDeleted" formControlName="isDeleted" value='true'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
@@ -53,7 +61,7 @@
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

@@ -31,7 +31,7 @@ export class ItemGenericMasterComponent implements OnInit {
             columnsList: [
                 { heading: "Code", key: "genericId", sort: true, width:150, align: 'left', emptySign: 'NA' },
                 { heading: "Generic Name", key: "genericName", sort: true, width:750, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:150, align: "center" },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:150, align: "center" },
                 {
                     heading: "Action", key: "action", align: "right", width:150, type: gridColumnTypes.action, actions: [
                         {

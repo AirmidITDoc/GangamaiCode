@@ -34,10 +34,9 @@ export class RelationshipMasterComponent implements OnInit {
             apiUrl: "RelationshipMaster/List",
             columnsList: [
                 { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-                { heading: "Relation Name", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:105 },
-                {
-                    heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                { heading: "Relationship Name", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA', width:800 },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:105 },
+                { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
@@ -72,28 +71,28 @@ export class RelationshipMasterComponent implements OnInit {
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25
-        }
+    }
     
-        constructor(public _relationshipService: RelationshipMasterService,public _matDialog: MatDialog,
-            public toastr : ToastrService,) {}
+    constructor(public _relationshipService: RelationshipMasterService,public _matDialog: MatDialog,
+        public toastr : ToastrService,) {}
     
     
-        ngOnInit(): void { }
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewRelationshipComponent,
-                {
-                    maxWidth: "45vw",
-                    height: '35%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewRelationshipComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
             });
-        }
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
     
 
-     }
+}

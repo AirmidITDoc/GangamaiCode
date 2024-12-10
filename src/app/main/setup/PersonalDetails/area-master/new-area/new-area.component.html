@@ -19,22 +19,25 @@
             <form [formGroup]="areaForm">
                 <input type="hidden" name="areaId" formControlName="areaId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                        label="Area name"
+                        label="Area Name"
                         formControlName="areaName"
                         [value]=""
                         [formGroup]="areaForm"
                         [validations]="_AreaMasterService.getValidationMessages().areaName"
                         [maxLength]="300">
                     </airmid-textbox> 
+                </div>
                     <!-- <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)"></airmid-autocomplete> -->
-             
-                    <airmid-autocomplete label="CityId" formControlName="cityId"
-                    [value]="data?.cityId" [formGroup]="areaForm"
-                    [validations]="getValidationCityMessages().cityId"
-                    [mode]="autocompleteModecity"
-                    (selectDdlObject)="selectChangecity($event)">
-                </airmid-autocomplete>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="CityId" formControlName="cityId"
+                            [value]="data?.cityId" [formGroup]="areaForm"
+                            [validations]="getValidationCityMessages().cityId"
+                            [mode]="autocompleteModecity"
+                            (selectDdlObject)="selectChangecity($event)">
+                        </airmid-autocomplete>
+                    </div>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>
@@ -48,7 +51,7 @@
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

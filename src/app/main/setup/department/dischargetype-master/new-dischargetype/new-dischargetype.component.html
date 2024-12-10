@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Discharge Type Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Discharge Type Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,14 +19,16 @@
             <form [formGroup]="dischargetypeForm">
                 <input type="hidden" name="dischargeTypeId" formControlName="dischargeTypeId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                        label="DischargeTypeName "
+                        label="Discharge Type Name "
                         formControlName="dischargeTypeName"
                         [value]=""
                         [formGroup]="dischargetypeForm"
                         [validations]="_DischargetypeMasterService.getValidationMessages().dischargeTypeName"
                         [maxLength]="300">
                     </airmid-textbox> 
+                </div>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="IsActive" formControlName="IsActive" value='false'>
@@ -40,7 +42,7 @@
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

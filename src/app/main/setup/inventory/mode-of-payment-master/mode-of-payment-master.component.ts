@@ -30,9 +30,8 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             columnsList: [
                 { heading: "Code", key: "id", width:150, sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Mode Of Payment Name", width:800, key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
-                {
-                    heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
+                { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
+                { heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);

@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Mode Of Payment Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Mode Of Payment Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,17 +19,19 @@
             <form [formGroup]="modeofpayForm">
                 <input type="hidden" name="id" formControlName="id">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox 
-                        label=" Mode Of Payment"
-                        formControlName="modeOfPayment"
-                        [value]=""
-                        [formGroup]="modeofpayForm"
-                        [validations]="_ModeOfPaymentMasterService.getValidationMessages().modeOfPayment"
-                        [maxLength]="300">
-                    </airmid-textbox> 
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Mode Of Payment"
+                            formControlName="modeOfPayment"
+                            [value]=""
+                            [formGroup]="modeofpayForm"
+                            [validations]="_ModeOfPaymentMasterService.getValidationMessages().modeOfPayment"
+                            [maxLength]="300">
+                        </airmid-textbox> 
+                    </div>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
+                    <mat-radio-group name="isActive" formControlName="isActive" value='false'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
@@ -40,7 +42,7 @@
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

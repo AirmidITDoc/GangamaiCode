@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Item Type Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Item Type Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,14 +19,16 @@
             <form [formGroup]="itemtypeForm">
                 <input type="hidden" name="itemTypeId" formControlName="itemTypeId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox 
-                        label="Item Type name"
-                        formControlName="itemTypeName"
-                        [value]=""
-                        [formGroup]="itemtypeForm"
-                        [validations]="_ItemTypeMasterService.getValidationMessages().itemTypeName"
-                        [maxLength]="300">
-                    </airmid-textbox> 
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Item Type Name"
+                            formControlName="itemTypeName"
+                            [value]=""
+                            [formGroup]="itemtypeForm"
+                            [validations]="_ItemTypeMasterService.getValidationMessages().itemTypeName"
+                            [maxLength]="300">
+                        </airmid-textbox> 
+                    </div>
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isDeleted" formControlName="isDeleted" value='false'>
@@ -40,7 +42,7 @@
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

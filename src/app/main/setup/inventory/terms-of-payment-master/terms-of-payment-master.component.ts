@@ -31,9 +31,9 @@ export class TermsOfPaymentMasterComponent implements OnInit {
             apiUrl: "TermsOfPayment/List",
             columnsList: [
                 { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width:150 },
-                { heading: "TermsOfPayment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width:400 },
-                { heading: "addedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width:400 },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                { heading: "TermsOfPayment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width:800 },
+                // { heading: "addedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width:400 },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
                 { heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {

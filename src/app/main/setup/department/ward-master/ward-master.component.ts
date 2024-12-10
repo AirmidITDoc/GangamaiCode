@@ -35,7 +35,7 @@ export class WardMasterComponent implements OnInit {
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
            { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
@@ -82,8 +82,8 @@ export class WardMasterComponent implements OnInit {
             const dialogRef = this._matDialog.open(NewWardComponent,
                 {
                     maxWidth: "55vw",
-                    height: '45%',
-                    width: '80%',
+                    height: '55%',
+                    width: '70%',
                     data: row
                 });
             dialogRef.afterClosed().subscribe(result => {

@@ -33,7 +33,7 @@ export class PatienttypeMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "PatientType Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             {
                 heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {

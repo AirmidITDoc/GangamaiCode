@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New  Mode Of Payment
+            <button mat-raised-button (click)="onSave()">+ New Mode Of Payment
             </button>
         </div>
     </div>
@@ -20,7 +20,7 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label> Mode Of Payment Name</mat-label>
-                    <input matInput placeholder="Search  Mode Of Payment Name" autocomplete="off"
+                    <input matInput placeholder="Search Mode Of Payment Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

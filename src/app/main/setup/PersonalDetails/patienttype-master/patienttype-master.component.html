@@ -6,12 +6,12 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    PatientType Master
+                    Patient Type Master
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New PatientType
+            <button mat-raised-button (click)="onSave()">+ New PatientType
             </button>
         </div>
     </div>
@@ -19,8 +19,8 @@
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>PatientType Name</mat-label>
-                    <input matInput placeholder="Search PatientType Name" pattern="[a-zA-Z\s]*" autocomplete="off"
+                    <mat-label>Patient Type Name</mat-label>
+                    <input matInput placeholder="Search Patient Type Name" pattern="[a-zA-Z\s]*" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

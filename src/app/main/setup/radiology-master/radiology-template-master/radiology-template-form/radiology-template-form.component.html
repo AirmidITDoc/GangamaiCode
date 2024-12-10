@@ -9,7 +9,7 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-               Template 
+               Radiology Template 
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
@@ -45,9 +45,9 @@
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <mat-label>Template Details</mat-label>
                                             <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                            style="height:300px;" [(ngModel)]="vTemplateDesc" required
-                                            formControlName="templateDesc">
-                                        </angular-editor>
+                                                style="height:300px;" [(ngModel)]="vTemplateDesc" required
+                                                formControlName="templateDesc">
+                                            </angular-editor>
                                         </div>
                                             <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                 style="height:200px;" [(ngModel)]="vTemplateDesc" required

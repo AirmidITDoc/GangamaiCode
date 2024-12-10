@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Category Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Category Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -20,12 +20,13 @@
             <form [formGroup]="categoryForm">
                 <input type="hidden" name="categoryId" formControlName="categoryId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Category name" formControlName="categoryName" [value]=""
+                    <airmid-textbox 
+                        label="Category Name" 
+                        formControlName="categoryName" [value]=""
                         [formGroup]="categoryForm"
                         [validations]="_CategorymasterService.getValidationMessages().categoryName"
                         [maxLength]="300">
                     </airmid-textbox>
-                 
                 </div>
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -42,7 +43,7 @@
         </div>
 
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

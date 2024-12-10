@@ -36,7 +36,7 @@ export class TemplateMasterComponent implements OnInit {
         { heading: "Code", key: "templateId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Template Name", key: "templateName",width: 400, sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Template Desc", key: "templateDesc",width: 400, sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
+        { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {

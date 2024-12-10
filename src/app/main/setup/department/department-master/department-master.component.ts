@@ -32,7 +32,7 @@ export class DepartmentMasterComponent implements OnInit {
             columnsList: [
                 { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width:100 },
                 { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width:850 },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
                 {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {

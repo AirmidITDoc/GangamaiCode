@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Room Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Ward Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,38 +19,58 @@
             <form [formGroup]="roomForm">
                 <input type="hidden" name="roomId" formControlName="roomId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                     label="Room Name " 
                     formControlName="roomName" 
                     [value]="" [formGroup]="roomForm"
-                    [validations]="_WardMasterService.getValidationMessages().roomName" [maxLength]="300">
+                    [validations]="_WardMasterService.getValidationMessages().roomName" [maxLength]="500">
                     </airmid-textbox>
+                    <!-- [maxLength]="300" -->
                 </div>
+                </div>
+                
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <!-- <airmid-autocomplete [mode]="autocompleteModelocation" (selectDdlObject)="selectChangelocation($event)"></airmid-autocomplete>
                     <airmid-autocomplete [mode]="autocompleteModeclass" (selectDdlObject)="selectChangeclass($event)"></airmid-autocomplete>
                     <airmid-autocomplete [mode]="autocompleteModeroomType" (selectDdlObject)="selectChangeroomType($event)"></airmid-autocomplete> -->
               
-                    <airmid-autocomplete label="locationId" formControlName="locationId"
-                    [value]="data?.locationId" [formGroup]="roomForm"
+                <airmid-autocomplete 
+                    label="LocationId" 
+                    formControlName="locationId"
+                    [value]="data?.locationId" 
+                    [formGroup]="roomForm"
                     [validations]="getValidationlocationMessages().locationId"
                     [mode]="autocompleteModelocation"
                     (selectDdlObject)="selectChangelocation($event)">
                 </airmid-autocomplete>
+            <!-- </div>
 
-                <airmid-autocomplete label="classId" formControlName="classId"
-                [value]="data?.classId" [formGroup]="roomForm"
-                [validations]="getValidationclassMessages().classId"
-                [mode]="autocompleteModeclass"
-                (selectDdlObject)="selectChangeclass($event)">
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
+                <airmid-autocomplete 
+                    label="ClassId" 
+                    formControlName="classId"
+                    [value]="data?.classId" 
+                    [formGroup]="roomForm"
+                    [validations]="getValidationclassMessages().classId"
+                    [mode]="autocompleteModeclass"
+                    (selectDdlObject)="selectChangeclass($event)">
                 </airmid-autocomplete>
+            <!-- </div>
 
-                <airmid-autocomplete label="roomId" formControlName="roomId"
-                [value]="data?.roomId" [formGroup]="roomForm"
-                [validations]="getValidationroomMessages().roomId"
-                [mode]="autocompleteModeroomId"
-                (selectDdlObject)="selectChangeroomType($event)">
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
+                <airmid-autocomplete 
+                    label="RoomId" 
+                    formControlName="roomId"
+                    [value]="data?.roomId" 
+                    [formGroup]="roomForm"
+                    [validations]="getValidationroomMessages().roomId"
+                    [mode]="autocompleteModeroomId"
+                    (selectDdlObject)="selectChangeroomType($event)">
                 </airmid-autocomplete>
+            </div>
+           
               
                 </div>
 
@@ -73,7 +93,7 @@
 
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

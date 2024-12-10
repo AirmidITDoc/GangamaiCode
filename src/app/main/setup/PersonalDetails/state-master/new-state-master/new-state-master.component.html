@@ -19,17 +19,20 @@
             <form [formGroup]="stateForm">
                 <input type="hidden" name="stateId" formControlName="stateId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="State Name" 
+                            formControlName="stateName" 
+                            [value]="" 
+                            [formGroup]="stateForm"
+                            [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
+                        </airmid-textbox>
+                    </div>
 
-            <airmid-textbox 
-            label="State name" 
-            formControlName="stateName" 
-            [value]="" 
-            [formGroup]="stateForm"
-            [validations]="_StateMasterService.getValidationMessages().stateName" [maxLength]="300">
-            </airmid-textbox>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-autocomplete label="countryId" formControlName="countryId"
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-autocomplete 
+                    label="CountryId" 
+                    formControlName="countryId"
                     [formGroup]="stateForm"
                     [validations]="getValidationCountryMessages().countryId"
                     [mode]="autocompleteModecountry">
@@ -48,7 +51,7 @@
             </form>
         </div>
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-           <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+           <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
             <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                 <span>Save</span>
             </button>

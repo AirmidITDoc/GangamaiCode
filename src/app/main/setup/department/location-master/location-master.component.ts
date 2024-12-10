@@ -32,7 +32,7 @@ export class LocationMasterComponent implements OnInit {
                 columnsList: [
                     { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA',width:150 },
                     { heading: "Location Name", key: "locationName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-                    { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
                     {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {

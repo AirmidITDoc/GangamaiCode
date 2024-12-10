@@ -33,7 +33,7 @@ export class CurrencyMasterComponent implements OnInit {
             columnsList: [
                 { heading: "Code", key: "currencyId", sort: true, width:150, align: 'left', emptySign: 'NA' },
                 { heading: "Currency Name", key: "currencyName", sort: true, width:800, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:100, align: "center" },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:100, align: "center" },
                 {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {

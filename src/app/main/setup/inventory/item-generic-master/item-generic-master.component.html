@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New  Item Generic
+            <button mat-raised-button (click)="onSave()">+ New Item Generic
             </button>
         </div>
     </div>
@@ -20,7 +20,7 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label> Item Generic Name</mat-label>
-                    <input matInput placeholder="Search  Item Generic Name" autocomplete="off"
+                    <input matInput placeholder="Search Item Generic Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button mat-button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

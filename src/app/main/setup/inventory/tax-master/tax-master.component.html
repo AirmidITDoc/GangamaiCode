@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">Add Tax
+            <button mat-raised-button (click)="onSave()">+ Add Tax
             </button>
         </div>
     </div>
@@ -22,8 +22,8 @@
                 <ng-container filters>
                     
             <mat-form-field appearance="outline" fxFlex>
-                <mat-label>TaxNature Name</mat-label>
-                <input matInput placeholder="Search TaxNature" autocomplete="off"
+                <mat-label>Tax Nature Name</mat-label>
+                <input matInput placeholder="Search Tax Nature" autocomplete="off"
                     [(ngModel)]="gridConfig.filters[0].fieldValue" />
                 <button mat-button matSuffix mat-icon-button aria-label="Clear"
                     (click)="gridConfig.filters[0].fieldValue=''">
