@@ -24,6 +24,7 @@ export class CustomerInformationComponent implements OnInit {
     'CustomerId',
     'CustomerName',
     'InstallationDate',
+    'AMCDueDate',
     'Address',
     'MobileNo',
     'ContactPersonName',
@@ -64,7 +65,11 @@ export class CustomerInformationComponent implements OnInit {
   }
   getCustomerList(){
     this.sIsLoading = 'loading-data';
-    this._CustomerInfo.getCustomerList().subscribe(data =>{
+    var vdata={
+      "CustomerName":this._CustomerInfo.SearchForm.get('CustomerName').value + '%' || '%',
+    }
+    console.log(vdata)
+    this._CustomerInfo.getCustomerList(vdata).subscribe(data =>{
       this.dsCustomerInfo.data = data as CustomerInfoList[];
       console.log(this.dsCustomerInfo.data)
       this.dsCustomerInfo.sort = this.sort;
@@ -74,6 +79,9 @@ export class CustomerInformationComponent implements OnInit {
     error => {
       this.sIsLoading = '';
     });
+  }
+  onClear(){
+    this._CustomerInfo.SearchForm.reset();
   }
   NewCustomer(){
     const dialogRef = this._matDialog.open(NewCustomerComponent,
@@ -107,7 +115,7 @@ export class CustomerInformationComponent implements OnInit {
     console.log(contact)
     const dialogRef = this._matDialog.open(AMCDetailsComponent,
       {
-        maxWidth: "50vw",
+        maxWidth: "60vw",
         height: '55%',
         width: '100%',
         data: {

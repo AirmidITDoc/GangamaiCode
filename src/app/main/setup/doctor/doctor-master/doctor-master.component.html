@@ -277,6 +277,8 @@
                                                 Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
+                                                <button mat-icon-button (click)="OnDocMerge(element)"  matTooltip="Doctor Merge">
+                                                    <mat-icon   title="Doctor Merge">device_hub</mat-icon></button>
                                                 <button mat-icon-button (click)="onEdit(element)"  *ngIf="element.IsActive"><mat-icon
                                                         title="Edit Menu">launch</mat-icon></button>
                                                 <button mat-icon-button (click)="onDeactive(element)"
@@ -311,13 +313,9 @@
                                     <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
                                     showFirstLastButtons (page)="getDoctorMasterList()">
                                 </mat-paginator>
-                                </div>
-
+                                </div> 
                             </div>
-                        </div>
-
-
-
+                        </div> 
                     </div>
                 </div>
             </div>

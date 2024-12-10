@@ -1,0 +1,153 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Doctor Merge
+            </span>
+        </div>
+        <div fxLayoutAlign="end">
+            <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" >
+            <div class="content-card">
+
+                <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
+                    <form [formGroup]="MyDocMergeForm">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Doctor Name</mat-label>
+                            <input name="DoctorName" formControlName="DoctorName" placeholder="Doctor Name" matInput
+                                #DoctorName [(ngModel)]="vDoctorName" readonly>
+                        </mat-form-field>
+                    </form>
+
+                    <div fxLayout="row" fxFlex="100%" fxLayoutGap="10px">
+
+                        <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+                            <mat-card style="padding: 5px;"> 
+                                <mat-table #table matSort [dataSource]="dsDocNameList" [@animateStagger]="{value:'50'}"
+                                    style="overflow: auto;">
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Doctor Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.DoctorName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef style="color: white;">
+                                            Action</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <button mat-icon-button (click)="onMergeDoc(contact)" color="warn">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dsDocNameList !=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDocNameList!=null && dsDocNameList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>  
+                            </mat-card> 
+                        </div>
+
+                        <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+                            <mat-card style="padding: 5px;"> 
+
+                                <mat-table #table matSort [dataSource]="dsDocMergeList" [@animateStagger]="{value:'50'}"
+                                    style="overflow: auto;">
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Doctor Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.DoctorName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="buttons">
+                                        <mat-header-cell *matHeaderCellDef> Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedSelected; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedSelected;"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dsDocMergeList !=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDocMergeList!=null && dsDocMergeList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </mat-card>
+
+                        </div>
+                    </div>
+
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

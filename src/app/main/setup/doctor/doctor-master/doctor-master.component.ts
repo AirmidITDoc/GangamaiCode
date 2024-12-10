@@ -12,6 +12,7 @@ import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import Swal from "sweetalert2";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { DatePipe } from "@angular/common";
+import { DoctorMergeComponent } from "./doctor-merge/doctor-merge.component";
 
 @Component({
     selector: "app-doctor-master",
@@ -211,6 +212,21 @@ export class DoctorMasterComponent implements OnInit {
                         Swal.fire('Error!', 'Failed to deactivate DoctorId.', 'error');
                     });
             }
+        });
+    }
+    OnDocMerge(element) {
+        const dialogRef = this._matDialog.open(DoctorMergeComponent, {
+            maxWidth: "80vw",
+            maxHeight: "75vh",
+            width: "100%",
+            height: "100%",
+            data: {
+                Obj: element
+            }
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+            this.getDoctorMasterList();
         });
     }
 }

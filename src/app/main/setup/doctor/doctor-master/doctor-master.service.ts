@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class DoctorMasterService {
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _loaderService:LoaderService
     ) {
         this.myform = this.createdDoctormasterForm();
         this.myformSearch = this.createSearchForm();
@@ -201,6 +203,12 @@ export class DoctorMasterService {
     public getCityList() {
 
         return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+    }
+    public SaveDotorcMerge(param, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
+        return this._httpClient.post("Nursing/SaveUptDocMerge", param);
     }
     populateForm(param) {
         this.myform.patchValue(param);

@@ -35,6 +35,7 @@ import { SignatureViewComponent } from "./signature-view/signature-view.componen
 import { NgxSignaturePadModule } from "@o.krucheniuk/ngx-signature-pad";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { DoctorMergeComponent } from './doctor-merge/doctor-merge.component';
 
 const routes: Routes = [
     {
@@ -44,7 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent],
+    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent, DoctorMergeComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,
