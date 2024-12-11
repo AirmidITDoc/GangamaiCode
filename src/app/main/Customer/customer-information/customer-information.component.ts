@@ -115,8 +115,8 @@ export class CustomerInformationComponent implements OnInit {
     console.log(contact)
     const dialogRef = this._matDialog.open(AMCDetailsComponent,
       {
-        maxWidth: "60vw",
-        height: '55%',
+        maxWidth: "80vw",
+        height: '90%',
         width: '100%',
         data: {
           Obj: contact

@@ -523,14 +523,26 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="Days">
+                                                        <!-- <ng-container matColumnDef="Days">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>
                                                                 Days</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 <span> {{element.Days}}</span>
                                                             </mat-cell>
-                                                        </ng-container>  
+                                                        </ng-container>  -->
+                                                        
+                                                        <ng-container matColumnDef="Days">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm>Days
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                <mat-form-field appearance="legacy">
+                                                                    <input matInput [(ngModel)]="element.Days"
+                                                                        type="text">
+                                                                </mat-form-field>
+                                                            </mat-cell>
+                                                        </ng-container>
 
                                                         <ng-container matColumnDef="Remark">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header

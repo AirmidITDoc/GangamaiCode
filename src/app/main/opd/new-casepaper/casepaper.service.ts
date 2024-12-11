@@ -147,4 +147,10 @@ public getServiceList(param,loader = true){
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvTemplate_PrescriptionList",param)
   } 
+  public getRtrvTestService(visistId,loader = true) {
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPRequestList",visistId);
+  }
 }
