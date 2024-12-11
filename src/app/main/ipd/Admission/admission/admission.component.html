@@ -1240,25 +1240,27 @@
                                         required</mat-error>
                                 </mat-form-field>
 
+                             
                                 <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-label>Relationship Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Relationship" 
-                                        matInput #relation formControlName="RelationshipId"  (keydown)="onEnterrelation($event)"
-                                        [(ngModel)]="vRelationshipId" [matAutocomplete]="autoRelation">
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select Relationship"
+                                        matInput (keydown)="onEnterrelation($event)"
+                                        formControlName="RelationshipId" [(ngModel)]="vRelationshipId" [matAutocomplete]="autoRelation"
+                                        required>
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="otherFormGroup.get('RelationshipId').setValue(''); isRelationshipSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
                                             (click)="otherFormGroup.get('RelationshipId').setValue(''); isRelationshipSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoRelation="matAutocomplete"
-                                        [displayWith]="getOptionTextRelationship">
-                                        <mat-option *ngFor="let option of filteredOptionsRelation | async"
-                                            [value]="option" (onSelectionChange)="setSaveflag()">
+                                    <mat-autocomplete #autoRelation="matAutocomplete" [displayWith]="getOptionTextRelationship">
+                                        <mat-option *ngFor="let option of filteredOptionsRelation | async" [value]="option"
+                                            (onSelectionChange)="setSaveflag()">
                                             {{option.RelationshipName}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
+
                             </div>
                         </mat-card>
                         <br>

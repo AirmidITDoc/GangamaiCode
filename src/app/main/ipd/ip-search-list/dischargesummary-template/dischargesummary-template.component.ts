@@ -462,8 +462,10 @@ export class DischargesummaryTemplateComponent implements OnInit {
   @ViewChild('dosename') dosename: ElementRef;
   @ViewChild('Day') Day: ElementRef;
   @ViewChild('Instruction') Instruction: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  add: boolean = false;
+  // @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  @ViewChild('addbutton') addbutton: ElementRef;
+  
+  add: boolean = true;
   onEnterItem(event): void {
     if (event.which === 13) {
       this.dosename.nativeElement.focus();
@@ -476,13 +478,15 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
   public onEnterqty(event): void {
     if (event.which === 13) {
-      this.Instruction.nativeElement.focus();
+      this.addbutton.nativeElement.focus();
+      this.add = false;
+      // this.Instruction.nativeElement.focus();
     }
   }
   public onEnterremark(event): void {
     if (event.which === 13) {
-      this.addbutton.focus;
-      this.add = true;
+      // this.addbutton.focus;
+      // this.add = true;
     }
   }
 

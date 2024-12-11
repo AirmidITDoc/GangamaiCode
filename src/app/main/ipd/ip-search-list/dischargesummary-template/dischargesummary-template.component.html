@@ -318,7 +318,7 @@
                                 <div class="input-add-button">
                                     <div matTooltip="Select Itemname to enable this button!!"
                                         [matTooltipPosition]="'above'">
-                                        <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                        <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()" [disabled]="MedicineItemForm.invalid">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
                                             </span>

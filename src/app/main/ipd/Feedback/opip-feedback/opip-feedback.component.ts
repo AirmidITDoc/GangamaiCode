@@ -29,11 +29,7 @@ export class OPIPFeedbackComponent implements OnInit {
 
   Feedbackpatientform: FormGroup;
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
-  fourthFormGroup: FormGroup;
-  fiveFormGroup: FormGroup;
-  sixFormGroup: FormGroup;
+ 
   Feedbackform: FormGroup;
 
 
@@ -355,12 +351,6 @@ getfeedbackquestionList(){
     // this.dialogRef.close();
   }
 
-
-  selectedPainLevel: number; 
-  onSliderChange(event: MatSliderChange) {
-    this.selectedPainLevel = event.value;
-    console.log(this.selectedPainLevel)
-  }
   getEmoji(painLevel: number): string {
   // Map pain levels to corresponding emojis
   const emojiMap = {
@@ -440,10 +430,7 @@ export class PatientList {
   PatientName: string; 
   DepartmentName: string; 
   RegNo:any;
-  // FeedbackCategory:any;
-  // FeedbackRating:any;
-  // Feedbackdetails:any;
-
+ 
   constructor(PatientList) {
     {
 
@@ -451,9 +438,6 @@ export class PatientList {
       this.PatientName = PatientList.PatientName || "";
       this.DepartmentName = PatientList.DepartmentName || "";
       this.AgeYear = PatientList.AgeYear || 0; 
-      // this.FeedbackCategory = PatientList.FeedbackCategory || 0;
-      // this.FeedbackRating = PatientList.FeedbackRating || "";
-      // this.Feedbackdetails = PatientList.Feedbackdetails || ''; 
     }
   }
 }

@@ -323,17 +323,13 @@ export class AdmissionComponent implements OnInit {
     this.isAlive = true;
 
     this.personalFormGroup = this.createPesonalForm();
-    // this.personalFormGroup.markAllAsTouched();
-
+    
     this.hospitalFormGroup = this.createHospitalForm();
-    // this.hospitalFormGroup.markAllAsTouched();
-
+    
     this.wardFormGroup = this.wardForm();
-    // this.wardFormGroup.markAllAsTouched();
-
+    
     this.otherFormGroup = this.otherForm();
-    // this.otherFormGroup.markAllAsTouched()
-
+    
     this.searchFormGroup = this.createSearchForm();
 
     this.getAdmittedDoctorCombo();
@@ -362,8 +358,8 @@ export class AdmissionComponent implements OnInit {
     this.getCompanyList();
     this.getSubTPACompList();
     this.getRefDoctorList();
-      this.getPtypeCombo()
-      this.getTariffCombo()
+    this.getPtypeCombo()
+    this.getTariffCombo()
 
 
     
@@ -376,6 +372,12 @@ export class AdmissionComponent implements OnInit {
     this.filteredOptionsTarrif = this.hospitalFormGroup.get('TariffId').valueChanges.pipe(
       startWith(''),
       map(value => this._filterTariffId(value)),
+
+    );
+
+    this.filteredOptionsRelation = this.otherFormGroup.get('RelationshipId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterRelationship(value)),
 
     );
   }
@@ -1016,6 +1018,7 @@ export class AdmissionComponent implements OnInit {
       );
     });
   }
+
 
   getPrefixList() {
     this._AdmissionService.getPrefixCombo().subscribe(data => {
@@ -2349,8 +2352,9 @@ this.getAdmittedPatientList_1()
 
   add: boolean = false;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  @ViewChild('savebutton', { static: true }) savebutton: HTMLButtonElement;
-  
+  // @ViewChild('savebutton', { static: true }) savebutton: HTMLButtonElement;
+  @ViewChild('savebutton') savebutton: ElementRef;
+
   // isNaN(value
   public onEnterprefix(event, value): void {
     
@@ -2620,7 +2624,9 @@ this.getAdmittedPatientList_1()
      this.saveflag=true;
     }
     
-    if(this.savebutton) this.savebutton.focus();
+    // if(this.savebutton) this.savebutton.focus();
+
+    if(this.savebutton) this.savebutton.nativeElement.focus();
   }
   setSaveflag(){
     
