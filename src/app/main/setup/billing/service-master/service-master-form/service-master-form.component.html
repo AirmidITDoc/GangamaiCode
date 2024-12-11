@@ -14,7 +14,7 @@
     <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
         <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-8" style="padding-top: 10px;">
 
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -33,6 +33,14 @@
             </airmid-autocomplete>
             </div>
 
+            <mat-form-field appearance="outline" fxFlex>
+                <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
+                    formControlName="EffectiveDate">
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+
+            </mat-form-field>
+
         </div>
 
 
@@ -48,6 +56,22 @@
                         service Name is required Enter only Alphabets
                         </mat-error>
             </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>ServiceShortDesc</mat-label>
+                    <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
+                            matInput (keydown)="onEnterServiceShortDesc($event)" #serviceShortDesc
+                            [(ngModel)]="vServiceShortDesc">
+                    <mat-error
+                    *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
+                    ServiceShortDesc is required Enter only Alphabets
+                    </mat-error>
+            </mat-form-field>
+
+        </div>                   
+
+
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Price</mat-label>
@@ -71,22 +95,7 @@
                     </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
-            <mat-form-field appearance="outline" fxFlex>
-                <mat-label>ServiceShortDesc</mat-label>
-                    <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
-                            matInput (keydown)="onEnterServiceShortDesc($event)" #serviceShortDesc
-                            [(ngModel)]="vServiceShortDesc">
-                    <mat-error
-                    *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
-                    ServiceShortDesc is required Enter only Alphabets
-                    </mat-error>
-            </mat-form-field>
-
-
-        </div>
-
-
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+        
             <!-- [value]="TariffId" -->
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-autocomplete label="TariffId" formControlName="TariffId"
@@ -96,13 +105,7 @@
                 </airmid-autocomplete>            
             </div> 
 
-            <mat-form-field appearance="outline" fxFlex>
-                <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate"
-                    formControlName="EffectiveDate">
-                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                <mat-datepicker #picker3></mat-datepicker>
-
-            </mat-form-field>
+            
 
             <!-- <mat-form-field appearance="outline" fxFlex>
             <mat-label>Doctor Name</mat-label>
@@ -244,11 +247,11 @@
                                     IsPathology</mat-checkbox>
                                     <!-- [(ngModel)]="registerObj.IsPathology" -->
                             </section>
-                            <section class="example-section" style="margin-right: 30px;">
+                            <!-- <section class="example-section" style="margin-right: 30px;">
                                 <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg"
                                     value="true" formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''">
                                     IsEmergency</mat-checkbox>
-                            </section>
+                            </section> -->
                         </div>
                     </div>
                 </div>
@@ -260,6 +263,7 @@
                             <!-- -->
 
                             <section class="example-section" style="margin-left: 40px;">
+
                                 <mat-checkbox class="example-margin" name="CreditedtoDoctor"
                                     formControlName="CreditedtoDoctor" value='false' [(ngModel)]="showDoctor"
                                     style="padding: 25px 0px">
@@ -267,7 +271,7 @@
 
 
                                 <!-- <divclass="emg-amt-input" style="margin-left: 30px;"> -->
-                                <mat-form-field appearance="outline" fxFlex
+                                <!-- <mat-form-field appearance="outline" fxFlex
                                     style="width: 24vw !important;margin-left: 20px;" *ngIf="showDoctor">
                                     <mat-label>Doctor Name</mat-label>
                                     <mat-select placeholder="Select Doctor Name" name="DoctorId"
@@ -278,14 +282,24 @@
                                         </mat-option>
                                     </mat-select>
                                     <mat-error>Please Select Doctor Name </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-autocomplete label="Doctor Name" style="width: 24vw !important;margin-left: 20px;" 
+                                        *ngIf="showDoctor" formControlName="DoctorId"
+                                        [formGroup]="serviceForm"
+                                        [validations]="getValidationdoctorMessages().DoctorId"
+                                        [mode]="autocompleteModedoctor" (selectDdlObject)="selectChangedoctor($event)">
+                                    </airmid-autocomplete>
+                                </div>
 
 
                                 <!-- </div> -->
 
                             </section>
+                            
                         </div>
-                    </div>
+                     </div>
                 </div>
             </div>
             <div class="content-card">
@@ -294,10 +308,19 @@
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xsf="column" class="checklist">
                             <!-- -->
 
-                            <section class="example-section">
+                            <section class="example-section" style="margin-left: 40px;">
+
+                                <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg"
+                                    value="true" formControlName="IsEmergency" (change)="emg_amt=''; emg_per=''">
+                                    IsEmergency
+                                </mat-checkbox>
+                            <!-- </section>
+                            <section class="example-section"> -->
 
 
-                                <div *ngIf="showEmg" class="emg-amt-input" style="margin-left: 40px;">
+                                <!-- <div *ngIf="showEmg" class="emg-amt-input" style="margin-left: 40px;"> -->
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" 
+                                        style="margin-left: 40px;" *ngIf="showEmg" class="emg-amt-input">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt"
                                             formControlName="EmgAmt" matInput>

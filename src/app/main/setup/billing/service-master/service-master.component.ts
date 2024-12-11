@@ -42,17 +42,18 @@ export class ServiceMasterComponent implements OnInit {
 
             { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
-            { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            // { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            { heading: "IsEditable", key: "isEditable", sort: true,type: gridColumnTypes.status, align: 'left',width:100 },
 
-            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            // { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            
+            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true,type: gridColumnTypes.status, align: 'left',width:100 },
 
             { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
-            // { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
@@ -94,7 +95,7 @@ export class ServiceMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "TariffId", fieldValue: "10006", opType: OperatorComparer.Equals },
+            { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }

@@ -32,11 +32,11 @@ export class InstructionmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "InstructionMastere/List",
         columnsList: [
-            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width:100  },
+            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width:160  },
             { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA', width:600 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200  },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:250, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

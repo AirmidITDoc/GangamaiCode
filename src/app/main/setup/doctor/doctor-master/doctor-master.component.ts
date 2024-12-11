@@ -33,7 +33,7 @@ export class DoctorMasterComponent implements OnInit {
         apiUrl: "DoctoreMaster/List",
         columnsList: [
             { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Prefix Id", key: "prefixId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "Prefix Id", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 60 },
             { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -46,7 +46,7 @@ export class DoctorMasterComponent implements OnInit {
             { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorTypeId", key: "doctorTypeId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "DoctorTypeId", key: "doctorTypeName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "AgeDay Name", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 50 },

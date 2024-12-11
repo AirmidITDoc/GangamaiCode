@@ -66,6 +66,7 @@ export class NewDoctorComponent implements OnInit {
     autocompleteModedoctorty: string = "DoctorType";
 
     DeptSource = new MatTableDataSource<DepartmenttList>();
+    @ViewChild('ddlPrefix') ddlPrefix: AirmidAutocompleteComponent;
 
     isAllSelected = false;
     sanitizeImagePreview: any;
@@ -102,6 +103,8 @@ export class NewDoctorComponent implements OnInit {
         if (this.data.doctorId > 0) {
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
+                this.PrefixId = this.registerObj.prefixId;
+                this.ddlPrefix.SetSelection(this.PrefixId);
                 if (this.registerObj.dateofBirth) {
                     const todayDate = new Date();
                     const dob = new Date(this.registerObj.dateofBirth);
@@ -112,7 +115,6 @@ export class NewDoctorComponent implements OnInit {
                     this.b_AgeYear = this.registerObj.ageYear;
                     this.b_AgeDay = this.registerObj.ageDay;
                     this.b_AgeMonth = this.registerObj.ageMonth;
-                    this.PrefixId = this.registerObj.prefixId;
 
                 }
                 this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {

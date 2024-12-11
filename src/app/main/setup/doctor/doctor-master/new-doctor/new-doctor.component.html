@@ -33,7 +33,7 @@
                         <airmid-autocomplete label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
                             [value]="PrefixId" [validations]="getValidationMessages().PrefixID"
                             (dataBoundFinished)="PrefixId=registerObj.prefixId"
-                            [mode]="autocompleteModeprefix">
+                            [mode]="autocompleteModeprefix" #ddlPrefix>
                         </airmid-autocomplete>
                     </div>
 
