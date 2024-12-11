@@ -24,12 +24,12 @@ export class TaxMasterService {
             TaxNature: ["",
                 [
                     // Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
 

@@ -98,18 +98,18 @@ export class ItemMasterComponent implements OnInit {
    
     onSave(row: any = null) {
         let that = this;
-        // const dialogRef = this._matDialog.open(,
-        //     {
-        //         maxWidth: "95vw",
-        //         height: '95%',
-        //         width: '70%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent,
+            {
+                maxWidth: "95%",
+                height: '95%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
 
     storeId=0;
