@@ -115,8 +115,8 @@ export class CompanyMasterListComponent implements OnInit {
     onChangeMsm(event){}
     onChangeMode(event){}
     selectChangetypeName(obj:any){
-        this.typeId=obj;
-    }
+      this.typeId=obj.value;
+  }
 
     selectChangetariff(obj: any){
         console.log(obj);
@@ -144,6 +144,13 @@ export class CompanyMasterListComponent implements OnInit {
               { name: "required", Message: "Tariff Name is required" }
           ]
       };
+  }
+  getValidationCompanyMessages(){
+    return{
+      CompTypeId: [
+        { name: "required", Message: "Company Name is required" }
+      ]
+    }
   }
 
       onClose(){

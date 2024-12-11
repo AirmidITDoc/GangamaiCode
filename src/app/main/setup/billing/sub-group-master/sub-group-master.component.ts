@@ -91,7 +91,7 @@ export class SubGroupMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewSubgroupComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '45%',
                 width: '70%',
                 data: row
             });

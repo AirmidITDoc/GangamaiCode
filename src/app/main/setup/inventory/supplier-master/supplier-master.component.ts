@@ -32,12 +32,12 @@ export class SupplierMasterComponent implements OnInit {
     gridConfig: gridModel={
         apiUrl:"Supplier/SupplierList",
         columnsList:[
-            {heading: "Supplier", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:200 },
-            {heading: "ContactPerson", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Supplier Name", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:200 },
+            {heading: "Contact Person", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:300 },
-            {heading: "CityName", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "StateName", key: "stateName", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "CreditPeriod", key: "creditPeriod", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "City Name", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "State Name", key: "stateName", sort:true, align:'left',emptySign: 'NA', width:150 },
+            {heading: "Credit Period", key: "creditPeriod", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:150 },
             {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:150 },
