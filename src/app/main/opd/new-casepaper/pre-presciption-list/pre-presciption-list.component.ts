@@ -93,5 +93,9 @@ export class PrePresciptionListComponent implements OnInit {
   //     this.groupedData[date].push(element);
   //   });
   // }
+
+  onClose(){
+    this._matDialog.closeAll()
+  }
  
 }

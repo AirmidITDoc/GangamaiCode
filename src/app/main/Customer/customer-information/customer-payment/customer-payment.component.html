@@ -1,0 +1,54 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Payment Details
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+            <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56">
+            <div class="content-card">
+                <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
+                    <form [formGroup]="PaymentForm">
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Customer Name</mat-label>
+                                <input name="CustomerName" formControlName="CustomerName" matInput type="text" readonly
+                                [(ngModel)]="vCustomerName"  >
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>AMC Amount</mat-label>
+                                <input name="AMCamt" formControlName="AMCamt" matInput type="text"
+                                [(ngModel)]="vAmount"      (keypress)="keyPressCharater($event)"    >
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Description</mat-label>
+                                <textarea rows="6" name="Description" formControlName="Description" matInput
+                                    type="text">
+                                    </textarea>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                    <div class="modal-footer-buttons gap-8 p-12" fxLayout="row"  fxLayoutAlign="end">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary " (click)="onSubmit()" >Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

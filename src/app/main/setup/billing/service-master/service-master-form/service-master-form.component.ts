@@ -78,6 +78,7 @@ export class ServiceMasterFormComponent implements OnInit {
       this.vServiceName = this.registerObj.ServiceName
       this.vPrintOrder = this.registerObj.PrintOrder
       this.vServiceShortDesc = this.registerObj.ServiceShortDesc
+      this.onEditService(this.registerObj);
       //this.emg_amt = this.registerObj.EmgAmt
 
       if (this.registerObj.CreditedtoDoctor == true) {
@@ -100,7 +101,17 @@ export class ServiceMasterFormComponent implements OnInit {
     //  this.getServicewiseClassMasterList(); 
     this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
   }
-
+  onEditService(row) {
+    console.log(row)
+    var m_data = {  
+      IsDocEditable:row.IsDocEditable,
+      IsEditable: row.IsEditable,
+      IsPackage: row.IsPackage,
+      IsRadiology: row.IsRadiology,
+      IsPathology: row.IsPathology, 
+    };
+    this._serviceMasterService.populateForm(m_data);
+  }
   getGroupNameCombobox() {
     this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
       this.GroupcmbList = data;
@@ -260,12 +271,12 @@ export class ServiceMasterFormComponent implements OnInit {
       });
       return;
     }
-    if ((this.vPrintOrder == '' || this.vPrintOrder == undefined || this.vPrintOrder == '0')) {
-      this.toastr.warning('Please enter Print Order.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if ((this.vPrintOrder == '' || this.vPrintOrder == undefined || this.vPrintOrder == '0')) {
+    //   this.toastr.warning('Please enter Print Order.', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
 
     if ((this.vTariffId == '' || this.vTariffId == undefined || this.vTariffId == null)) {
       this.toastr.warning('Please select Tariff Name.', 'Warning !', {
@@ -296,8 +307,7 @@ export class ServiceMasterFormComponent implements OnInit {
           return;
         }
       }
-    }
-
+    } 
     if (this.showEmg) {
       if ((this.vemg_amt == '' || this.vemg_amt == undefined || this.vemg_amt == '0')) {
         this.toastr.warning('Please enter emergency amount.', 'Warning !', {
@@ -311,8 +321,7 @@ export class ServiceMasterFormComponent implements OnInit {
         });
         return;
       }
-    }
-
+    } 
     let subGroupId  = 0;
     if(this._serviceMasterService.myform.get("SubGroupId").value)
       subGroupId =  this._serviceMasterService.myform.get("SubGroupId").value.SubGroupId
@@ -321,6 +330,19 @@ export class ServiceMasterFormComponent implements OnInit {
     let doctorId  = 0;
     if(this._serviceMasterService.myform.get("DoctorId").value)
       doctorId = this._serviceMasterService.myform.get("DoctorId").value.DoctorID
+
+    let IsPathology = 0;
+    if(this._serviceMasterService.myform.get("IsPathology").value == true){
+      IsPathology = 1
+    }
+    let IsRadiology = 0;
+    if(this._serviceMasterService.myform.get("IsRadiology").value == true){
+      IsRadiology = 1
+    }
+    let IsPackage = 0;
+    if(this._serviceMasterService.myform.get("IsPackage").value == true){
+      IsPackage = 1
+    }
 
     if (this._serviceMasterService.myform.valid) {
 
@@ -331,11 +353,11 @@ export class ServiceMasterFormComponent implements OnInit {
         "price": this._serviceMasterService.myform.get("Price").value || 0,
         "isEditable": this._serviceMasterService.myform.get("IsEditable").value,
         "creditedtoDoctor": this._serviceMasterService.myform.get("CreditedtoDoctor").value,
-        "isPathology": String(this._serviceMasterService.myform.get("IsPathology").value) == 'false' ? 0 : 1, 
-        "isRadiology": String(this._serviceMasterService.myform.get("IsRadiology").value) == 'false' ? 0 : 1, 
+        "isPathology": IsPathology, 
+        "isRadiology": IsRadiology, 
         "isActive": this._serviceMasterService.myform.get("IsActive").value,
         "printOrder": this._serviceMasterService.myform.get("PrintOrder").value || 0,
-        "isPackage":String(this._serviceMasterService.myform.get("IsPackage").value) == 'false' ? 0 : 1, 
+        "isPackage":IsPackage, 
         "subgroupId": subGroupId,
         "doctorId": doctorId,
         "isEmergency": this._serviceMasterService.myform.get("IsEmergency").value,

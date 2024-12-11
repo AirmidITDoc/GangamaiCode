@@ -39,6 +39,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewCustomerComponent } from './new-customer/new-customer.component';
 import { CustomerInformationComponent } from './customer-information.component';
 import { AMCDetailsComponent } from './amc-details/amc-details.component';
+import { NewBillRaiseComponent } from './new-bill-raise/new-bill-raise.component'; 
+import { CustomerPaymentComponent } from './customer-payment/customer-payment.component';
 
 const routes: Routes = [
   { 
@@ -51,7 +53,9 @@ const routes: Routes = [
   declarations: [
     CustomerInformationComponent,
     NewCustomerComponent,
-    AMCDetailsComponent
+    AMCDetailsComponent,
+    NewBillRaiseComponent,
+    CustomerPaymentComponent
   ],
 
   imports: [

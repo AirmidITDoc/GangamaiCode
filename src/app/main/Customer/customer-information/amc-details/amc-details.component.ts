@@ -9,7 +9,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerInfoList } from '../customer-information.component';
-
+import { NewBillRaiseComponent } from '../new-bill-raise/new-bill-raise.component';
+import Swal from 'sweetalert2';
+import { CustomerPaymentComponent } from '../customer-payment/customer-payment.component';
 @Component({
   selector: 'app-amc-details',
   templateUrl: './amc-details.component.html',
@@ -18,31 +20,42 @@ import { CustomerInfoList } from '../customer-information.component';
   animations: fuseAnimations,
 })
 export class AMCDetailsComponent implements OnInit {
-  displayedColumns:string[] =[
+  displayedColumns: string[] = [
     'CustomerName',
     'AMCStartDate',
     'AMCDuration',
     'AMCEndDate',
     'AMCAmount',
     'AMCPaidDate',
-    'PaymentId' 
+    'PaymentId'
   ]
+  displayedColumnsBillRise: string[] = [
+    'InvoiceDate', 
+    'CustomerName',
+    'Amount',
+    'InvoiceRaisedId',
+    'CreatedBy',
+    'Action'
+  ];
 
-  
-  registerObj:any; 
+
+  registerObj: any;
   isLoading: String = '';
   sIsLoading: string = "";
-  chargeslist:any=[];
-  vDoctorName:any;
+  chargeslist: any = [];
+  vDoctorName: any;
+  selectedAdvanceObj: any;
+  chargelist:any=[];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   dsAMCDetList = new MatTableDataSource<CustomerInfoList>();
+  dsBillRiseList = new MatTableDataSource<BillRaiseList>();
 
   constructor(
     public _CustomerInfo: CustomerInformationService,
-    public _matDialog: MatDialog, 
+    public _matDialog: MatDialog,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
@@ -52,30 +65,111 @@ export class AMCDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.data){
+    if (this.data) {
+      this.selectedAdvanceObj = this.data.Obj
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      this.getAmcDetList(this.registerObj);
+      this.getAmcDetList();
+      this.getCustomerBlilList()
     }
 
   }
 
-getAmcDetList(Obj){
-  this.isLoading = 'loading-data'
-  var vdata={
-    "CustomerId":Obj.CustomerId
+  getAmcDetList() {
+    this.isLoading = 'loading-data'
+    var vdata = {
+      "CustomerId": this.registerObj.CustomerId
+    }
+    console.log(vdata)
+    this._CustomerInfo.getAmcDetList(vdata).subscribe(data => {
+      this.dsAMCDetList.data = data as CustomerInfoList[];
+      this.dsAMCDetList.sort = this.sort;
+      this.dsAMCDetList.paginator = this.paginator
+      console.log(this.dsAMCDetList)
+    })
   }
-  console.log(vdata)
-  this._CustomerInfo.getAmcDetList(vdata).subscribe(data=>{
-    this.dsAMCDetList.data = data as CustomerInfoList[];
-    this.dsAMCDetList.sort = this.sort;
-    this.dsAMCDetList.paginator = this.paginator
-    console.log(this.dsAMCDetList)
-  })
-}
-
-  onClose(){
+  getCustomerBlilList() {
+    this.sIsLoading = 'loading-data';
+    this._CustomerInfo.getCustomerBillList().subscribe(data => {
+      this.dsBillRiseList.data = data as BillRaiseList[];
+      this.chargelist =  data as BillRaiseList[];
+      console.log(this.dsBillRiseList.data)
+      this.dsBillRiseList.sort = this.sort;
+      this.dsBillRiseList.paginator = this.paginator
+      this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
+  }
+  deleteTableRow(element) {
+    let index = this.chargelist.indexOf(element);
+    if (index >= 0) {
+      this.chargelist.splice(index, 1);
+      this.dsBillRiseList.data = [];
+      this.dsBillRiseList.data = this.chargelist;
+    }
+    Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success'); 
+  }
+  onClose() {
     this._matDialog.closeAll();
   }
+
+  PayAMtamt(contact) {
+    const dialogRef = this._matDialog.open(CustomerPaymentComponent,
+      {
+        maxWidth: "50vw",
+        height: '55%',
+        width: '100%',
+        data:{
+          Obj:contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCustomerBlilList();
+      this.getAmcDetList();
+    }); 
+  }
+  OnEdit() {
+    const dialogRef = this._matDialog.open(NewBillRaiseComponent,
+      {
+        maxWidth: "60vw",
+        height: '55%',
+        width: '100%'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCustomerBlilList();
+    });
+  }
+  newBillRise() {
+    const dialogRef = this._matDialog.open(NewBillRaiseComponent,
+      {
+        maxWidth: "60vw",
+        height: '55%',
+        width: '100%'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getCustomerBlilList();
+    });
+  }
+  
 }
- 
+export class BillRaiseList {
+  InvoiceNo: any;
+  InvoiceDate: any;
+  CustomerId: string;
+  Amount: string;
+  InvoiceRaisedId: any;
+  constructor(BillRaiseList) {
+    {
+      this.InvoiceNo = BillRaiseList.InvoiceNo || 0;
+      this.InvoiceDate = BillRaiseList.InvoiceDate || 0;
+      this.CustomerId = BillRaiseList.CustomerId || '';
+      this.Amount = BillRaiseList.Amount || '';
+      this.InvoiceRaisedId = BillRaiseList.InvoiceRaisedId || 0;
+    }
+  }
+}

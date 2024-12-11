@@ -155,7 +155,7 @@ export class NewCasepaperComponent implements OnInit {
   vServiceId: any;
   isServiceIdSelected: boolean = false;
   vFollowUpDays: any = 0;
-
+  PatientReferDocId:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -342,6 +342,8 @@ export class NewCasepaperComponent implements OnInit {
     this.getnewVisistList(obj);
     this.getServiceList();
     this.getVisistList();
+    this.getRtrvTestService();
+    this.getAdmittedDoctorCombo();
   }
   getOptionText1(option) {
     if (!option)
@@ -356,9 +358,10 @@ export class NewCasepaperComponent implements OnInit {
     }
     this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];
-         this.Chargelist = Visit as MedicineItemList[];
-      // console.log(this.dsItemList.data)
+      this.Chargelist = Visit as MedicineItemList[];
+      console.log(this.dsItemList.data)
       if (this.dsItemList.data.length > 0) {
+     
         this.vHeight = this.dsItemList.data[0].PHeight;
         this.vWeight = this.dsItemList.data[0].PWeight;
         this.vBMI = this.dsItemList.data[0].BMI;
@@ -374,6 +377,7 @@ export class NewCasepaperComponent implements OnInit {
         this.specificDate = new Date(this.PrefollowUpDate)
         this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].Advice)
         this.RefDocName = this.dsItemList.data[0].Doctorname
+        this.PatientReferDocId = this.dsItemList.data[0].PatientReferDocId
         this.getAdmittedDoctorCombo();
       }
     });
@@ -447,9 +451,15 @@ export class NewCasepaperComponent implements OnInit {
 
   //Doctor list 
   getAdmittedDoctorCombo() {
-
+    let DoctorName = '%';
+    if(this.MedicineItemForm.get('DoctorID').value){
+      DoctorName = this.MedicineItemForm.get('DoctorID').value
+    }
+    // else if(this.RefDocName){
+    //   DoctorName = this.RefDocName
+    // }
     var vdata = {
-      "Keywords": this.MedicineItemForm.get('DoctorID').value + "%" || "%"
+      "Keywords": DoctorName + "%" || "%"
     }
     console.log(vdata)
     this._CasepaperService.getAdmittedDoctorCombo(vdata).subscribe(data => {
@@ -459,6 +469,12 @@ export class NewCasepaperComponent implements OnInit {
         this.noOptionFound = true;
       } else {
         this.noOptionFound = false;
+      }
+      debugger
+      if(this.PatientReferDocId > 0){
+        const dvalue = this.filteredOptionsDoc.filter(item=> item.DoctorId == this.PatientReferDocId)
+        console.log(dvalue)
+        this.MedicineItemForm.get('DoctorID').setValue(dvalue[0])
       }
     });
   }
@@ -491,18 +507,48 @@ export class NewCasepaperComponent implements OnInit {
       }
     });
   }
+  RtrvTestServiceList: any = [];
+  getRtrvTestService() {
+    var vdata = {
+      "VisitId": this.VisitId || 0
+    }
+    this._CasepaperService.getRtrvTestService(vdata).subscribe(data => {
+      this.RtrvTestServiceList = data
+      console.log(this.RtrvTestServiceList)
+      if (this.RtrvTestServiceList) {
+        this.RtrvTestServiceList.forEach(element => {
+          this.selectedItems.push(
+            {
+              ServiceId: element.ServiceId || 0,
+              ServiceName: element.ServiceName || ''
+            });
+        })
+        console.log(this.selectedItems)
+      }
+    })
+  }
   selectedItems = [];
   toggleSelection(item: any) {
     item.selected = !item.selected;
     if (item.selected) {
+      if(this.selectedItems.find(data=> data.ServiceId == item.ServiceId)){
+        this.toastr.warning(' Selected Test already added', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
       this.selectedItems.push(item);
+      console.log(this.selectedItems)
     } else {
       const i = this.selectedItems.findIndex(value => value.ServiceId === item.ServiceId);
       this.selectedItems.splice(i, 1);
     }
   }
-  remove(e) {
-    this.toggleSelection(e);
+  remove(item: string): void {
+    const index = this.selectedItems.indexOf(item);
+    if (index >= 0) {
+      this.selectedItems.splice(index, 1);
+    }
   }
   getOptionTextService(option) {
     return option && option.departmentName ? option.departmentName : '';
@@ -1079,8 +1125,7 @@ onTemplDetAdd(){
   }
   //datewise visit info date
   getPatientsForDate(VisitId: string) {
-    const patientsForDate = this.patients.filter(patient => patient.VisitId === VisitId);
-    console.log(patientsForDate.length > 0 ? [patientsForDate[0]] : [])
+    const patientsForDate = this.patients.filter(patient => patient.VisitId === VisitId); 
     return patientsForDate.length > 0 ? [patientsForDate[0]] : []; // 
   }
 
@@ -2110,6 +2155,7 @@ export class MedicineItemList {
   FollowupDate: any;
   QtyPerDay:any;
   Presid:any;
+  PatientReferDocId:any;
   /**
   * Constructor
   *

@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
+import { DoctorMaster } from '../doctor-master.component';
 
 @Component({
   selector: 'app-doctor-merge',
@@ -58,6 +59,7 @@ export class DoctorMergeComponent implements OnInit {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
       this.vDoctorName = this.registerObj.DoctorName
+      this.getDoctorMasterList();
     }
   }
   createDocMergeForm(){
@@ -65,10 +67,28 @@ export class DoctorMergeComponent implements OnInit {
       DoctorName:['']
     });
   } 
-
+  resultsLength = 0;
+  getDoctorMasterList() { 
+    var vdata = {
+        "F_Name":  "%",
+        "L_Name":  "%",
+        "FlagActive": 1,
+        "ConsultantDoc_All": 0,
+        "ReferDoc_All": 0,
+        Start:(this.paginator?.pageIndex??1),
+        Length:(this.paginator?.pageSize??30),
+    }
+    console.log(vdata)
+    this._doctorService.getDoctorMasterList(vdata).subscribe((data) => {
+        this.dsDocNameList.data = data["Table1"]??[] as DoctorMaster[];  
+         this.resultsLength= data["Table"][0]["total_row"];
+         this.sIsLoading = '';
+    })
+}
   onMergeDoc(row) { 
+    console.log(row)
     if (this.chargeslist.length > 0) {
-      let duplicateItem = this.chargeslist.filter((ele) => ele.ServiceId === row.ServiceId);
+      let duplicateItem = this.chargeslist.filter((ele) => ele.DoctorId === row.DoctorId);
       if (duplicateItem && duplicateItem.length != 0) {
         this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -78,10 +98,8 @@ export class DoctorMergeComponent implements OnInit {
     }
     this.chargeslist.push(
       {
-        ServiceId: row.ServiceId,
-        ServiceName: row.ServiceName,
-        ServicePrice: row.Price || 0,
-        ServiceQty:1
+        DoctorId: row.DoctorId,
+        DoctorName: row.DoctorName, 
 
       });
     this.isLoading = '';

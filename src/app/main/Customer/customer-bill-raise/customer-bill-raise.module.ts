@@ -36,8 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomerBillRaiseComponent } from './customer-bill-raise.component';
-import { NewBillRaiseComponent } from './new-bill-raise/new-bill-raise.component';
+import { CustomerBillRaiseComponent } from './customer-bill-raise.component'; 
 
 const routes: Routes = [
   { 
@@ -49,7 +48,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CustomerBillRaiseComponent,
-    NewBillRaiseComponent
+    // NewBillRaiseComponent
   ],
 
   imports: [
