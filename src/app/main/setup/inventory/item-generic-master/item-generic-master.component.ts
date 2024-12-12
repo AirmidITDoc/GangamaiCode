@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -9,9 +9,10 @@ import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewGenericComponent } from "./new-generic/new-generic.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-item-generic-master",
@@ -22,9 +23,14 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 })
 export class ItemGenericMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    genericForm: FormGroup;
  
-    constructor(public _ItemGenericMasterService: ItemGenericMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _ItemGenericMasterService: ItemGenericMasterService,
+        public _matDialog: MatDialog,
+        public toastr : ToastrService, 
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) {}
+
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
             apiUrl: "GenericMaster/List",
@@ -72,15 +78,22 @@ export class ItemGenericMasterComponent implements OnInit {
     
      
         ngOnInit(): void { }
+       
+        onClear(val: boolean) {
+            this.genericForm.reset();
+            this.dialogRef.close(val);
+        }
+
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(NewGenericComponent,
                 {
-                    maxWidth: "45vw",
+                    maxWidth: "35vw",
                     height: '35%',
-                    width: '70%',
+                    width: '90%',
                     data: row
                 });
+
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
                     that.grid.bindGridData();

@@ -22,12 +22,13 @@ export class NewGenericComponent implements OnInit {
   ngOnInit(): void {
       this.genericForm = this._ItemGenericMasterService.createItemgenericForm();
       var m_data = {
-        itemGenericNameId: this.data?.itemGenericNameId,
-        itemGenericName: this.data?.itemGenericName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
+        genericId: this.data?.genericId,
+        genericName: this.data?.genericName.trim(),
+        isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.genericForm.patchValue(m_data);
   }
+
   onSubmit() {
     if (this.genericForm.invalid) {
         this.toastr.warning('please check form is invalid', 'Warning !', {
@@ -36,6 +37,7 @@ export class NewGenericComponent implements OnInit {
       return;
     }else{
       if (this.genericForm.valid) {
+        console.log(this.genericForm.value);
           this._ItemGenericMasterService.genericMasterSave(this.genericForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);

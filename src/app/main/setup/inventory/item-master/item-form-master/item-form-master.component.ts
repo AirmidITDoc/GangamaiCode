@@ -15,6 +15,7 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { DatePipe } from "@angular/common";
 import { element } from "protractor";
+import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -111,6 +112,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     private _onDestroy = new Subject<void>();
     msg: any;
+    grid: any;
 
     constructor(
         public _itemService: ItemMasterService,
@@ -153,6 +155,22 @@ export class ItemFormMasterComponent implements OnInit {
         this.getCompanyList();
         this.getDrugTypeList();
         this.setDropdownObjs1();
+    }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
+            {
+                maxWidth: "85%",
+                height: '85%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
  
 

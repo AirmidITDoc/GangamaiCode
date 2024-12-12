@@ -13,9 +13,15 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave()">+ New Item Generic
             </button>
-        </div>
+
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+     </div>
+
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
@@ -33,7 +39,10 @@
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                     <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                 </mat-radio-group>
+
             </ng-container>
+            
+           
         </airmid-table>
-    </div>
+        
 </div>

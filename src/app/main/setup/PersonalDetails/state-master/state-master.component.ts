@@ -73,26 +73,26 @@ export class StateMasterComponent implements OnInit {
             row: 25
         }
     
-        constructor(
-            public _StateMasterService: StateMasterService,
-            public toastr: ToastrService, public _matDialog: MatDialog
-        ) { }
+    constructor(
+        public _StateMasterService: StateMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog
+    ) { }
     
-        ngOnInit(): void { }
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewStateMasterComponent,
-                {
-                    maxWidth: "45vw",
-                    height: '35%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
+    ngOnInit(): void { }
+    
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewStateMasterComponent,
+            {
+                maxWidth: "45vw",
+                height: '30%',
+                width: '70%',
+                data: row
             });
-        }
-    
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    } 
 }

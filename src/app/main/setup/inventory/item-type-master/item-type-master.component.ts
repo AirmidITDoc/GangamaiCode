@@ -30,7 +30,7 @@ export class ItemTypeMasterComponent implements OnInit {
             apiUrl: "ItemType/List",
             columnsList: [
                 { heading: "Code", key: "itemTypeId", sort: true, width:150, align: 'left', emptySign: 'NA' },
-                { heading: "ItemType Name", key: "itemTypeName", sort: true, width:800, align: 'left', emptySign: 'NA' },
+                { heading: "Item Type Name", key: "itemTypeName", sort: true, width:800, align: 'left', emptySign: 'NA' },
                 { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:100, align: "center" },
                 {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
@@ -72,12 +72,13 @@ export class ItemTypeMasterComponent implements OnInit {
     
      
         ngOnInit(): void { }
+
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(NewItemtypeComponent,
                 {
                     maxWidth: "45vw",
-                    height: '35%',
+                    height: '30%',
                     width: '70%',
                     data: row
                 });
@@ -86,6 +87,5 @@ export class ItemTypeMasterComponent implements OnInit {
                     that.grid.bindGridData();
                 }
             });
-        }
-    
-    }
+        }    
+}
