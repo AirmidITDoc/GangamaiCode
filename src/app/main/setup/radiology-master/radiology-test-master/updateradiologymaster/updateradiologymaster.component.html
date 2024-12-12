@@ -13,26 +13,13 @@
                 {{_radiologytestService.myform.controls.TestId.value?"Modify Radiology Test Master":
                 "New Radiology Test Master"}}
             </span>
-            <!-- <div class="modal-header-left" >
-                <div  class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                     matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div> 
-            </div> -->
-            <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-            style="margin-left:900px;">
-            <mat-icon>close</mat-icon>
-            </button> -->
         </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        
     </mat-toolbar>
 
     <div class="content">
@@ -230,17 +217,36 @@
                                 </div>
 
                              
-                                <div class="footer-navigation-container">
+                                <!-- <div class="footer-navigation-container">
                                    
                                   <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
-                                    <!-- <mat-radio-button value='true' name="IsDeleted" [checked]="true"
-                                                    formControlName="IsDeleted">IsActive</mat-radio-button> -->
+                                    <mat-radio-button value='true' name="IsDeleted" [checked]="true"
+                                                    formControlName="IsDeleted">IsActive</mat-radio-button>
 
                                         <button class="btn btn-danger-outline" (click)="onClear(false)">Clear</button>
-                                        <!-- <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_radiologytestService.myform.invalid">Save</button> -->
+                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="_radiologytestService.myform.invalid">Save</button>
                                             <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                     </div>
+                                </div> -->
+                                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <div>
+                                        <mat-radio-group name="isActive" formControlName="isActive">
+                                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                                            </mat-radio-button>
+                                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                    
+                                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                            <span>Save</span>
+                                        </button>
+                                    </div>
+                    
                                 </div>
                             </form>
                         </div>

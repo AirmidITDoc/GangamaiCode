@@ -35,7 +35,7 @@ export class TestmasterComponent implements OnInit {
     
     
     gridConfig: gridModel = {
-        apiUrl: "PathTestMaster/List",
+        apiUrl: "PathTestMaster/TestMasterList",
         columnsList: [
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width :100 },
             { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width :850 },
@@ -109,3 +109,87 @@ export class TestmasterComponent implements OnInit {
     }
 
 }
+
+export class TestMaster {
+    TestId: number;
+    TestName: string;
+    PrintTestName: String;
+    CategoryId: number;
+    IsSubTest: boolean;
+    TechniqueName: string;
+    MachineName: string;
+    SuggestionNote: string;
+    FootNote: string;
+    ServiceID: number;
+    ServiceName:any;
+    IsTemplateTest: number;
+    IsCategoryPrint: boolean;
+    IsPrintTestName: boolean;
+    Isdeleted: boolean;
+    UpdatedBy: number;
+    AddedBy: number;
+    IsDeletedSearch: number;
+    /**
+     * Constructor
+     *
+     * @param TestMaster
+     */
+    constructor(TestMaster) {
+        {
+            this.TestId = TestMaster.TestId || 0;
+            this.TestName = TestMaster.TestName || "";
+            this.PrintTestName = TestMaster.PrintTestName || "";
+            this.CategoryId = TestMaster.CategoryId || 0;
+            this.IsSubTest = TestMaster.IsSubTest || "";
+            this.TechniqueName = TestMaster.TechniqueName || "";
+            this.MachineName = TestMaster.MachineName || "";
+            this.SuggestionNote = TestMaster.SuggestionNote || "";
+            this.FootNote = TestMaster.FootNote || "";
+            this.Isdeleted = TestMaster.Isdeleted || "false";
+            this.ServiceID = TestMaster.ServiceID || 0;
+            this.ServiceName= TestMaster.ServiceName || "";
+            this.IsTemplateTest = TestMaster.IsTemplateTest || "";
+            this.IsCategoryPrint = TestMaster.IsCategoryPrint || "false";
+            this.IsPrintTestName = TestMaster.IsPrintTestName || "false";
+            this.UpdatedBy = TestMaster.UpdatedBy || 0;
+            this.AddedBy = TestMaster.AddedBy || 0;
+            this.IsDeletedSearch = TestMaster.IsDeletedSearch || "true";
+        }
+    }
+}
+export class TestList {
+    TestId: number;
+    TestName: any;
+    ParameterName: any;
+    ParameterID: number;
+    Isdeleted: any;
+    IsDeleted: any;
+    ParameterId:any;
+    /**
+     * Constructor
+     *
+     * @param TestList
+     */
+    constructor(TestList) {
+        {
+            this.ParameterName = TestList.ParameterName || "";
+            this.TestId = TestList.TestId || "";
+            this.TestName = TestList.TestName || "";
+            this.Isdeleted = TestList.Isdeleted || "";
+            this.IsDeleted = TestList.IsDeleted || "true";
+        }
+    }
+}
+
+
+export class TemplatedetailList {
+    TemplateId: number;
+    TemplateName: any;
+    constructor(TemplateList) {
+        {
+            this.TemplateId = TemplateList.TemplateId || 0;
+            this.TemplateName = TemplateList.TemplateName || "";
+
+        }
+    }
+} 

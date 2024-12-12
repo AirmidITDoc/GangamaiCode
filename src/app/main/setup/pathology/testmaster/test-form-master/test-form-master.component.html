@@ -1,182 +1,516 @@
-<div class="modal-wrapper grid-container">
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Test Master</span>
-            </div>
-            <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-            </div>
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{testForm.controls.TestId.value?"Modify Test Master":"New
+                Test Master"}}
+            </span>
         </div>
-    </div>
-  
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            <form [formGroup]="testForm">
-                <input type="hidden" name="TestId" formControlName="TestId">
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Test name" formControlName="TestName" [value]=""
-                            [formGroup]="testForm"
-                            [validations]="_TestmasterService.getValidationMessages().TestName"
-                            [maxLength]="300">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="PrintTestName" formControlName="PrintTestName" [value]=""
-                            [formGroup]="testForm"
-                            [validations]="_TestmasterService.getValidationMessages().PrintTestName"
-                            [maxLength]="300">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="CategoryName" formControlName="CategoryId"
-                            [formGroup]="testForm"
-                            [validations]="getValidationCategoryMessages().CategoryId"
-                            [mode]="autocompleteModeCategoryId" 
-                            (selectDdlObject)="selectChangeCategoryId($event)">
-                        </airmid-autocomplete>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="ServiceName" formControlName="ServiceID"
-                            [formGroup]="testForm"
-                            [validations]="getValidationServiceMessages().ServiceID"
-                            [mode]="autocompleteModeServiceID" 
-                            (selectDdlObject)="selectChangeServiceID($event)">
-                        </airmid-autocomplete>
-                    </div>
-                 
-                </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="TestId" formControlName="TestId" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>Test
-                        </mat-radio-button>
-
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsSubTest
-                        </mat-radio-button>
-
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>Template Formate
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </div>
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field fxFlex>
-                            <input matInput placeholder="Search" autocomplete="off" />
-                            <button mat-button matSuffix mat-icon-button aria-label="Clear">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-checkbox formControlName="IsSubTest" >IsSub Test </mat-checkbox>
-                    </div>
-                </div>
-
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <!-- <ng-container filters>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <input matInput placeholder="Search" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                        </ng-container> -->
-                    </airmid-table>
-                    
-                </div>
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="TechniqueName" formControlName="TechniqueName" [value]=""
-                            [formGroup]="testForm"
-                            [validations]="_TestmasterService.getValidationMessages().TechniqueName"
-                            [maxLength]="300">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="MachineName" formControlName="MachineName" [value]=""
-                            [formGroup]="testForm"
-                            [validations]="_TestmasterService.getValidationMessages().MachineName"
-                            [maxLength]="300">
-                        </airmid-textbox>
-                    </div>
-                </div>
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex="98%">
-                            <mat-label>Foot Note</mat-label>
-                            <textarea matInput display="block" rows="2" formControlName="FootNote"
-                                name="FootNote">
-                            </textarea>
-                            <mat-error class="error"
-                                *ngIf="testForm.get('FootNote').invalid && testForm.get('FootNote').touched">
-                                FootNote is required Enter
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex="98%">
-                            <mat-label>Suggestion Note</mat-label>
-                            <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
-                                name="SuggestionNote"></textarea>
-                                <mat-error class="error"
-                                    *ngIf="testForm.get('SuggestionNote').invalid && testForm.get('SuggestionNote').touched">
-                                    SuggestionNote is required
-                                </mat-error>
-                        </mat-form-field>
-                    </div>
-                </div>
-                
-                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Template Desc" formControlName="templateDesc" [value]=""
-                    [formGroup]="templateForm"
-                    [maxLength]="300">
-                </airmid-textbox>
-            
-                </div> -->
-                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Template HTML" formControlName="templateDescInHtml" [value]=""
-                    [formGroup]="templateForm"
-                    [maxLength]="300">
-                </airmid-textbox>
-            
-                </div> -->
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                        </mat-radio-button>
-                    </mat-radio-group>
-
-                </div>
-            </form>
-        </div>
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                <span>Save</span>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose(false)" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
             </button>
         </div>
+    </mat-toolbar>
+
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row" style=" background-color: white;
+                             padding: 5px 10px 5px 10px;">
+                            <form [formGroup]="testForm">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+
+                                        <!-- 4 testfields -->
+                                        <div fxLayout="row" fxLayoutGap="5px">
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Test name" formControlName="TestName" [value]=""
+                                                    [formGroup]="testForm"
+                                                    [validations]="_TestmasterService.getValidationMessages().TestName"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="PrintTestName" formControlName="PrintTestName" [value]=""
+                                                    [formGroup]="testForm"
+                                                    [validations]="_TestmasterService.getValidationMessages().PrintTestName"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-autocomplete label="CategoryName" formControlName="CategoryId"
+                                                    [formGroup]="testForm"
+                                                    [validations]="getValidationCategoryMessages().CategoryId"
+                                                    [mode]="autocompleteModeCategoryId" 
+                                                    (selectDdlObject)="selectChangeCategoryId($event)">
+                                                </airmid-autocomplete>
+
+                                            </div>
+                        
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-autocomplete label="ServiceName" formControlName="ServiceID"
+                                                    [formGroup]="testForm"
+                                                    [validations]="getValidationServiceMessages().ServiceID"
+                                                    [mode]="autocompleteModeServiceID" 
+                                                    (selectDdlObject)="selectChangeServiceID($event)"
+                                                    *ngIf="serviceflag">
+                                                    
+                                                </airmid-autocomplete>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- radiobuttons -->
+                                        <div fxLayout="row" fxLayoutGap="5px">
+                                            <section class="example-section" style="margin-left: 30%;">
+                                                <mat-radio-group name="Status" formControlName="Status" fxLayout="row">
+                                                    <mat-radio-button (click)="toggle(1)" value="1"
+                                                        [checked]='_TestmasterService.is_Test' class="mr-sm-12">Test
+                                                    </mat-radio-button>
+                                                    <mat-radio-button (click)="toggle(2)" value="2"
+                                                        [checked]='_TestmasterService.is_subtest' class="mr-sm-12">IsSubTest
+                                                    </mat-radio-button>
+                                                    <mat-radio-button (click)="toggle(3)" value="3"
+                                                        [checked]='_TestmasterService.is_templatetest'
+                                                        class="mr-sm-12">Template Formate
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                            </section>
+                                        </div>
+
+                                        <!-- search and check box -->
+                                        <div fxLayout="row" style="padding-top:10px;">
+
+                                            <div *ngIf="!_TestmasterService.is_templatetest">
+
+                                                <mat-form-field style="width: 22rem">
+                                                    <input matInput placeholder="Search" autocomplete="off"
+                                                        name="ParameterNameSearch" (keyup)="onSearch()" [(ngModel)]="ParameterName" 
+                                                        formControlName="ParameterNameSearch" />
+                                                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                                        (click)="onSearchClear()" (keyup)="onSearch()">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-form-field>
+
+                                                <mat-checkbox formControlName="IsSubTest" [(ngModel)]="isChecked"
+                                                    (change)="onSearch()" value="true" name="IsSubTest">IsSubTest
+                                                </mat-checkbox>
+                                            </div>
+
+                                            <!-- [checked]='_TestmasterService.is_subtest' -->
+
+                                        </div>
+
+                                        <!-- parameter value column -->
+                                        <ng-template [ngIf]="_TestmasterService.is_subtest || _TestmasterService.is_Test">
+                                            <!-- *ngIf="!isChecked" -->
+                                            <div fxLayout="row" fxFlex="100%" fxLayoutAlign="6px">
+                                                <div fxLayout="column" fxFlex="30%">
+                                                    <mat-card style="height:267px;width: 100%;overflow: auto;">
+
+
+                                                        <mat-table matSort [dataSource]="paramterList"
+                                                            [@animateStagger]="{value:'50'}"
+                                                            style="overflow:auto; width: 100%;">
+
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter Values
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    (click)="onAdd(element)">
+
+                                                                    <mat-icon (click)="onAdd(element)"
+                                                                        style="cursor:pointer;margin-right: 10px;"> add
+                                                                    </mat-icon>
+
+                                                                    {{element.ParameterName}}
+                                                                </mat-cell>
+
+
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                            <mat-row
+                                                                *matRowDef="let element; columns: displayedColumns;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                        </mat-table>
+
+                                                        <mat-table #table class="table1" matSort *ngIf="isTemplate"
+                                                            [dataSource]="TemplateList.data"
+                                                            [@animateStagger]="{value:'50'}"
+                                                            style="overflow:auto; width: 100%;">
+
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter Values
+
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    (click)="onAdd(element)">
+                                                                    {{element.TestName}}
+                                                                </mat-cell>
+
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="Add">
+                                                                <mat-header-cell *matHeaderCellDef>
+                                                                    Add
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm
+                                                                    style="padding-left:2rem;">
+
+                                                                    <mat-icon (click)="onAdd(element)"
+                                                                        style="cursor:pointer"> add </mat-icon>
+                                                                </mat-cell>
+
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                                class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        </mat-table>
+
+                                                    </mat-card>
+
+                                                </div>
+                                                
+                                                <mat-divider vertical style="margin: 0px;padding: 5px;"></mat-divider>
+
+                                                <div fxLayout="column" fxFlex="70%">
+                                                    <mat-card style="height:267px;width: 100%;overflow: auto;">
+                                                        <mat-table #table class="table1" matSort
+                                                            [dataSource]="DSTestList" cdkDropList
+                                                            (cdkDropListDropped)="drop($event)">
+
+
+                                                            <ng-container matColumnDef="Reorder">
+                                                                <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    <mat-icon
+                                                                        style="cursor: pointer;">reorder</mat-icon>
+
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="ParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Parameter
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.ParameterName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="PrintParameterName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    PrintParameterName
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.PrintParameterName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="MethodName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    MethodName
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    {{element.MethodName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="UnitName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Unit
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    {{element.UnitName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="ParaMultipleRange">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Range
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    {{element.ParaMultipleRange}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="Formula">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    Formula
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    {{element.Formula}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="IsNumeric">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                    IsNumeric
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    {{element.IsNumeric}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                                <mat-header-cell
+                                                                    *matHeaderCellDef>Action</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    <button mat-icon-button color="warn"
+                                                                        (click)="onDeleteRow(element)">
+                                                                        <mat-icon>delete</mat-icon>
+                                                                    </button>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="noData">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    Select Parameters...
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+
+                                                            <mat-header-row class="accent" class="accent min-width-1500"
+                                                                *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns2;"
+                                                                class="element" class="element min-width-1500"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"
+                                                                cdkDrag></mat-row>
+                                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                                [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
+                                                            <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                                                [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row> -->
+                                                        </mat-table>
+
+                                                    </mat-card>
+                                                </div>
+
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template [ngIf]="_TestmasterService.is_templatetest">
+                                            <div class="content">
+                                                <div class="center p-24 pb-56">
+                                                    <div class="content-card">
+                                                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                                            <div fxFlex.gt-sm="100%" fxFlex>
+                                                                <div fxlayout="row"
+                                                                    style=" background-color: white;padding: 5px 10px 5px 10px;">
+                                                                    <form [formGroup]="_TestmasterService.mytemplateform">
+                                                                        <input type="hidden" name="TemplateId"
+                                                                            formControlName="TemplateId">
+
+                                                                        <div class="dialog-content-wrapper">
+                                                                            <div fxFlexFill fxLayout="row"
+                                                                                fxLayout.gt-xs="column">
+                                                                                <div fxLayout="row" fxLayoutGap="5px">
+
+                                                                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                                                        <airmid-autocomplete label="TemplateName" 
+                                                                                            formControlName="TemplateName"
+                                                                                            [formGroup]="testForm"
+                                                                                            [mode]="autocompleteModeTemplate"
+                                                                                            (selectDdlObject)="selectChangeTemplateName($event)">
+                                                                                        </airmid-autocomplete>
+                                                                                    </div>
+
+                                                                                    <button (click)="onAddTemplate()"
+                                                                                        class="btn btn-primary btn-with-icon py-8"
+                                                                                        style="margin-left: 10px;">
+                                                                                        <span class="btn-icon">
+                                                                                            <mat-icon> add </mat-icon>
+                                                                                        </span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <hr>
+                                                                                <div fxFlexFill fxLayout="row">
+                                                                                    <mat-table matSort
+                                                                                        [dataSource]="Templatetdatasource"
+                                                                                        [@animateStagger]="{value:'50'}"
+                                                                                        style="overflow:auto; width: 100%;height:380px;">
+
+                                                                                        <ng-container
+                                                                                            matColumnDef="TemplateName">
+                                                                                            <mat-header-cell
+                                                                                                *matHeaderCellDef
+                                                                                                mat-sort-header>
+                                                                                                TemplateName
+
+                                                                                            </mat-header-cell>
+                                                                                            <mat-cell
+                                                                                                *matCellDef="let element"
+                                                                                                fxShow.gt-sm>
+                                                                                                {{element.TemplateName}}
+                                                                                            </mat-cell>
+
+                                                                                        </ng-container>
+
+                                                                                        <ng-container
+                                                                                            matColumnDef="Action">
+                                                                                            <mat-header-cell
+                                                                                                *matHeaderCellDef>Action</mat-header-cell>
+                                                                                            <mat-cell
+                                                                                                *matCellDef="let element">
+                                                                                                <button mat-icon-button
+                                                                                                    color="warn"
+                                                                                                    (click)="onDeleteTemplateRow(element)">
+                                                                                                    <mat-icon>delete</mat-icon>
+                                                                                                </button>
+                                                                                            </mat-cell>
+                                                                                        </ng-container>
+
+                                                                                        <ng-container
+                                                                                            matColumnDef="loading">
+                                                                                            <mat-footer-cell
+                                                                                                *matFooterCellDef
+                                                                                                colspan="6">
+
+                                                                                            </mat-footer-cell>
+                                                                                        </ng-container>
+
+
+                                                                                        <mat-header-row class="accent"
+                                                                                            *matHeaderRowDef="displayedColumns5; sticky: true"></mat-header-row>
+                                                                                        <mat-row
+                                                                                            *matRowDef="let row; columns: displayedColumns5;"
+                                                                                            class="element"
+                                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                                                                                    </mat-table>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+
+                                        <hr>
+
+                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestmasterService.is_templatetest">
+
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="TechniqueName" formControlName="TechniqueName" [value]=""
+                                                    [formGroup]="testForm"
+                                                    [validations]="_TestmasterService.getValidationMessages().TechniqueName"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+                        
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="MachineName" formControlName="MachineName" [value]=""
+                                                    [formGroup]="testForm"
+                                                    [validations]="_TestmasterService.getValidationMessages().MachineName"
+                                                    [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+
+                                        </div>
+
+                                        <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestmasterService.is_templatetest">
+
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex="98%">
+                                                    <mat-label>Foot Note</mat-label>
+                                                    <textarea matInput display="block" rows="2" formControlName="FootNote"
+                                                        name="FootNote">
+                                                    </textarea>
+                                                    <mat-error class="error"
+                                                        *ngIf="testForm.get('FootNote').invalid && testForm.get('FootNote').touched">
+                                                        FootNote is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex="98%">
+                                                    <mat-label>Suggestion Note</mat-label>
+                                                    <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
+                                                        name="SuggestionNote">
+                                                    </textarea>
+                                                    <mat-error class="error"
+                                                        *ngIf="testForm.get('SuggestionNote').invalid && testForm.get('SuggestionNote').touched">
+                                                        SuggestionNote is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+
+
+                                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <div>
+                                        <mat-radio-group name="isActive" formControlName="isActive">
+                                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                                            </mat-radio-button>
+                                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                    
+                                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                                        <button class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
+                                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                            <span>Save</span>
+                                        </button>
+                                    </div>
+                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
