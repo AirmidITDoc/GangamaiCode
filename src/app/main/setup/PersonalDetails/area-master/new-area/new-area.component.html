@@ -20,41 +20,48 @@
                 <input type="hidden" name="areaId" formControlName="areaId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="Area Name"
-                        formControlName="areaName"
-                        [value]=""
-                        [formGroup]="areaForm"
-                        [validations]="_AreaMasterService.getValidationMessages().areaName"
-                        [maxLength]="300">
-                    </airmid-textbox> 
-                </div>
+                        <airmid-textbox 
+                            label="Area Name"
+                            formControlName="areaName"
+                            [value]=""
+                            [formGroup]="areaForm"
+                            [validations]="_AreaMasterService.getValidationMessages().areaName"
+                            [maxLength]="300">
+                        </airmid-textbox> 
+                    </div>
                     <!-- <airmid-autocomplete [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)"></airmid-autocomplete> -->
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-autocomplete label="CityId" formControlName="cityId"
                             [value]="data?.cityId" [formGroup]="areaForm"
                             [validations]="getValidationCityMessages().cityId"
                             [mode]="autocompleteModecity"
                             (selectDdlObject)="selectChangecity($event)">
                         </airmid-autocomplete>
+                    </div> -->
+                </div>
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                    <div>
+                        <mat-radio-group name="isActive" formControlName="isActive">
+                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                            </mat-radio-button>
+                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                            </mat-radio-button>
+                        </mat-radio-group>
                     </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+         
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='false'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </div>
+
             </form>
         </div>
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                <span>Save</span>
-            </button>
-        </div>
+        
     </div>
 </div>

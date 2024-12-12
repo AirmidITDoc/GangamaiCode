@@ -31,7 +31,7 @@ export class ItemClassMasterComponent implements OnInit {
             columnsList: [
                 { heading: "Code", key: "itemClassId", width:150, sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Item Class Name", key: "itemClassName", width:800, sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "IsDeleted", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
+                { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
                 {
                     heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                         {
@@ -77,7 +77,7 @@ export class ItemClassMasterComponent implements OnInit {
             const dialogRef = this._matDialog.open(NewItemClassComponent,
                 {
                     maxWidth: "45vw",
-                    height: '35%',
+                    height: '30%',
                     width: '70%',
                     data: row
                 });
@@ -88,4 +88,4 @@ export class ItemClassMasterComponent implements OnInit {
             });
         }
     
-    }
+}

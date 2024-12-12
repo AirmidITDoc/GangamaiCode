@@ -37,10 +37,7 @@ export class TaxMasterComponent implements OnInit {
     columnsList: [
         { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA',width :150 },
         { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA',width :400 },
-        // { heading: "AddedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        // { heading: "ModifiedBy", key: "modifiedBy", sort: true, align: 'left', emptySign: 'NA',width :100 },
         { heading: "CreatedDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',width :400 },
-        // { heading: "ModifiedDate", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
         { heading: "IsActive", key: "isActive",width :100, type: gridColumnTypes.status, align: "center" },
         { heading: "Action", key: "action",width :100, align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -74,7 +71,7 @@ export class TaxMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "taxNature", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
             // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
@@ -88,7 +85,7 @@ export class TaxMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewTaxComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '25%',
                 width: '70%',
                 data: row
             });

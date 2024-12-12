@@ -82,7 +82,7 @@ export class WardMasterComponent implements OnInit {
             const dialogRef = this._matDialog.open(NewWardComponent,
                 {
                     maxWidth: "55vw",
-                    height: '55%',
+                    height: '50%',
                     width: '70%',
                     data: row
                 });

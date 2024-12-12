@@ -30,10 +30,10 @@ export class UomMasterComponent implements OnInit {
         apiUrl: "UnitOfMeasurement/List",
         columnsList: [
             { heading: "Code", key: "unitofMeasurementId", width:150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Unit Name", key: "unitofMeasurementName", width:700, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", width:150, type: gridColumnTypes.status, align: "center" },
+            { heading: "Unit Name", key: "unitofMeasurementName", width:800, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", width:150, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -78,7 +78,7 @@ export class UomMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewUMOComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });
