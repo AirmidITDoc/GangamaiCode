@@ -476,6 +476,7 @@ bp:any=1000;
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
       this.RetrDischargeSumryList = data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
+      if(this.RetrDischargeSumryList.length != 0){
       this.DischargeSummaryId = this.RetrDischargeSumryList[0].DischargeSummaryId
       this.vDiagnosis = this.RetrDischargeSumryList[0].Diagnosis 
       this.vhistory = this.RetrDischargeSumryList[0].History 
@@ -498,6 +499,7 @@ bp:any=1000;
       this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
       this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
       this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
+      }
        this.getRetevDropdownvalue(); 
        debugger
        if(this.IsNormalDeath == 1){

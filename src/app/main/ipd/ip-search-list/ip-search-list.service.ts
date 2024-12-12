@@ -863,9 +863,18 @@ public updateIPDDischargSummaryTemplate(employee)
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
 
-  public getDischargeId(data){
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-  }
+  // public getDischargeId(data){
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  // }
+
+  
+public getDischargeId(data,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+}
+
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
@@ -905,9 +914,18 @@ public updateIPDDischargSummaryTemplate(employee)
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
   }
   
-  public getDischargeSummary(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_DischargeSummary",employee)
+  // public getDischargeSummary(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_DischargeSummary",employee)
+  // }
+
+  public getDischargeSummary(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
   }
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_DischargeSummary",employee)
+  }
+
+
   public getPrescriptionList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescription_Discharge",employee)
   }
