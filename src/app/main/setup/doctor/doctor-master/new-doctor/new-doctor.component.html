@@ -28,85 +28,35 @@
                 <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <!-- <airmid-autocomplete [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
-
                         <airmid-autocomplete label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
-                            [value]="PrefixId" [validations]="getValidationMessages().PrefixID"
-                            (dataBoundFinished)="PrefixId=registerObj.prefixId"
+                            [(value)]="registerObj.prefixId" [validations]="getValidationMessages().PrefixID"
                             [mode]="autocompleteModeprefix" #ddlPrefix>
                         </airmid-autocomplete>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>First Name</mat-label>
-                            <input name="FirstName" formControlName="FirstName" placeholder="First Name"
-                                [ngClass]="{ 'is-invalid': submitted && myForm.get('FirstName').errors }" matInput
-                                #fname (keydown)="onEnterfname($event)" required [(ngModel)]="registerObj.firstName">
-
-                            <mat-error class="error"
-                                *ngIf="myForm.get('FirstName').invalid && myForm.get('FirstName').touched">
-                                First
-                                Name is required Enter
-                                only
-                                Alphabets</mat-error>
-                        </mat-form-field>
+                        <airmid-textbox label="First Name" formControlName="FirstName" [value]="registerObj.firstName"
+                            [formGroup]="myForm" [validations]="getValidationMessages().FirstName" [maxLength]="50">
+                        </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Middle Name</mat-label>
-                            <input name="MiddleName" formControlName="MiddleName" placeholder="Middle Name"
-                                [ngClass]="{ 'is-invalid': submitted && myForm.get('MiddleName').errors }" matInput
-                                #mname (keydown)="onEntermname($event)" [(ngModel)]="registerObj.middleName" onkeypress=" (event.charCode > 64 && 
-                                          event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
-                            <mat-error class="error"
-                                *ngIf="myForm.get('MiddleName').invalid && myForm.get('MiddleName').touched">
-                                Middle Name is required
-                                Enter
-                                only Alphabets</mat-error>
-                        </mat-form-field>
+                        <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                            [value]="registerObj.middleName" [formGroup]="myForm"
+                            [validations]="getValidationMessages().MiddleName" [maxLength]="50">
+                        </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Last Name</mat-label>
-                            <input name="LastName" formControlName="LastName" placeholder="Last Name"
-                                [ngClass]="{ 'is-invalid': submitted && myForm.get('LastName').errors }" matInput #lname
-                                (keydown)="onEnterlname($event)" required [(ngModel)]="registerObj.lastName" onkeypress=" (event.charCode > 64 && 
-                                          event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
-                            <mat-error class="error"
-                                *ngIf="myForm.get('LastName').invalid && myForm.get('LastName').touched">Last
-                                Name is required Enter
-                                only
-                                Alphabets</mat-error>
-                        </mat-form-field>
+                        <airmid-textbox label="Last Name" formControlName="LastName" [value]="registerObj.lastName"
+                            [formGroup]="myForm" [validations]="getValidationMessages().LastName" [maxLength]="50">
+                        </airmid-textbox>
                     </div>
-
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Gender</mat-label>
-                            <mat-select formControlName="GenderId" required>
-                                <mat-option></mat-option>
-                                <mat-option *ngFor="let m of GendercmbList" [value]="m">
-                                    {{m.GenderName}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error
-                                *ngIf="myForm.get('GenderId').invalid && myForm.get('GenderId').touched">
-                                <span *ngIf="myForm.get('GenderId').hasError('required')">
-                                    Gender is required</span>
-                            </mat-error>
-                        </mat-form-field>
-                    </div> -->
-
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <!-- <airmid-autocomplete [mode]="autocompleteModegender" (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete> -->
-
                         <airmid-autocomplete label="Gender" formControlName="GenderId" [formGroup]="myForm"
-                            [validations]="getValidationGenderMessages().GenderId" [mode]="autocompleteModegender">
+                            [(value)]="registerObj.genderId" [validations]="getValidationMessages().GenderId"
+                            [mode]="autocompleteModegender">
                         </airmid-autocomplete>
-
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -204,94 +154,29 @@
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Pan Card No</mat-label>
-                            <input name="Pancardno" formControlName="Pancardno" placeholder="PanCardNo Number" matInput
-                                [(ngModel)]="registerObj.panCardNo" #pan maxlength="10" (keydown)="onEnterpan($event)">
-                            <mat-error class="error"
-                                *ngIf="myForm.get('Pancardno').invalid && myForm.get('Pancardno').touched">10
-                                digits Pan Card No is required</mat-error>
-                        </mat-form-field>
+                        <airmid-textbox label="Pan Card No" formControlName="Pancardno" [value]="registerObj.panCardNo"
+                            [formGroup]="myForm" [validations]="getValidationMessages().Pancardno" [maxLength]="10">
+                        </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>AadharCard Number</mat-label>
-                            <input name="AadharCardNo" formControlName="AadharCardNo" placeholder="AadharCard Number"
-                                matInput [(ngModel)]="registerObj.aadharCardNo" #AadharCardNo
-                                (keydown)="onEnterAadharCardNo($event)"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
-                            <mat-error class="error"
-                                *ngIf="myForm.get('AadharCardNo').invalid && myForm.get('AadharCardNo').touched">Aadhar
-                                number is required
-                            </mat-error>
-                        </mat-form-field>
+                        <airmid-textbox label="Aadhar Card No" formControlName="AadharCardNo"
+                            [value]="registerObj.aadharCardNo" [formGroup]="myForm"
+                            [validations]="getValidationMessages().AadharCardNo" [maxLength]="12">
+                        </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Mobile Number</mat-label>
-                            <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number" matInput
-                                required #mobile (keydown)="onEntermobile($event)" [(ngModel)]="registerObj.mobile"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                required="required" value="9876658688">
-                            <mat-error class="error"
-                                *ngIf="myForm.get('MobileNo').invalid && myForm.get('MobileNo').touched">10
-                                digits Mobile number is
-                                required</mat-error>
-                        </mat-form-field>
+                        <airmid-textbox label="Mobile No" formControlName="MobileNo" [value]="registerObj.mobile"
+                            [formGroup]="myForm" [validations]="getValidationMessages().MobileNo" [maxLength]="12">
+                        </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Address</mat-label>
-                            <input name="Address" formControlName="Address" placeholder="Address" matInput #address
-                                (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.address">
-                            <mat-error *ngIf="myForm.get('Address').invalid && myForm.get('Address').touched">Please
-                                enter Address </mat-error>
-                        </mat-form-field>
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="50%">
-                            <mat-label>City</mat-label>
-                            <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
-                                (keydown)="onEntercity($event)" formControlName="CityId" [(ngModel)]="vCityId"
-                                [matAutocomplete]="autoCity" required>
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close"
-                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close"
-                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
-                                <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option">
-                                    {{option.CityName}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> -->
-
-
+                        <airmid-textbox label="Address" formControlName="Address" [value]="registerObj.address"
+                            [formGroup]="myForm" [validations]="getValidationMessages().Address">
+                        </airmid-textbox>
                     </div>
-
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>City</mat-label>
-                            <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
-                                (keydown)="onEntercity($event)" formControlName="CityId" [(ngModel)]="vCityId"
-                                [matAutocomplete]="autoCity" required>
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close"
-                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close"
-                                    (click)="myForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
-                                <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option">
-                                    {{option.CityName}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div> -->
-
                 </div>
 
                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
@@ -329,26 +214,20 @@
             <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete label="City" formControlName="CityId" [formGroup]="myForm"
-                        [validations]="getValidationCityMessages().CityId" [mode]="autocompleteModecity">
+                        [validations]="getValidationMessages().CityId" [mode]="autocompleteModecity">
                     </airmid-autocomplete>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>ESINO</mat-label>
-                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10"
-                            required [(ngModel)]="registerObj.ESINO">
-                        <mat-error>Please enter ESINO </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox label="ESINO" formControlName="ESINO" [value]="registerObj.ESINO"
+                        [formGroup]="myForm" [validations]="getValidationMessages().ESINO" [maxLength]="10">
+                    </airmid-textbox>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>RegNo</mat-label>
-                        <input name="RegNo" formControlName="RegNo" matInput placeholder="Enter RegNo" maxlength="10"
-                            [(ngModel)]="registerObj.regNo">
-                        <mat-error>Please enter RegNo </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox label="RegNo" formControlName="RegNo" [value]="registerObj.regNo"
+                        [formGroup]="myForm" [validations]="getValidationMessages().RegNo" [maxLength]="10">
+                    </airmid-textbox>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -362,24 +241,15 @@
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Education</mat-label>
-                        <input name="Education" formControlName="Education" matInput
-                            [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education"
-                            required [(ngModel)]="registerObj.Education">
-                        <span class="error" *ngIf="f.Education.invalid && f.Education.touched">Education required Enter
-                            only
-                            Alphabets</span>
-                    </mat-form-field>
+                    <airmid-textbox label="Education" formControlName="Education" [value]="registerObj.education"
+                        [formGroup]="myForm" [validations]="getValidationMessages().Education" [maxLength]="10">
+                    </airmid-textbox>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>MAHRegNo</mat-label>
-                        <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo"
-                            maxlength="10" [(ngModel)]="registerObj.MAHREGNO">
-                        <mat-error>Please enter MahRegNo </mat-error>
-                    </mat-form-field>
+                    <airmid-textbox label="MahRegNo" formControlName="MahRegNo" [value]="registerObj.mahRegNo"
+                        [formGroup]="myForm" [validations]="getValidationMessages().mahRegNo" [maxLength]="10">
+                    </airmid-textbox>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -393,42 +263,14 @@
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Hospital Name</mat-label>
-                        <input name="RefDocHospitalName" formControlName="RefDocHospitalName" matInput
-                            [(ngModel)]="registerObj.firstName"
-                            [ngClass]="{ 'is-invalid': submitted && f.RefDocHospitalName.errors }"
-                            placeholder="Enter RefDocHospitalName">
-                        <span class="error"
-                            *ngIf="f.RefDocHospitalName.invalid && f.RefDocHospitalName.touched">RefDocHospital Name
-                            is
-                            required Enter only Alphabets</span>
-                    </mat-form-field>
+                    <airmid-textbox label="Hospital Name" formControlName="RefDocHospitalName" [value]="registerObj.refDocHospitalName"
+                        [formGroup]="myForm" [validations]="getValidationMessages().RefDocHospitalName" [maxLength]="10">
+                    </airmid-textbox>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>DoctorType</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select DoctorTypeId" matInput
-                            (keydown)="onEnterdoctype($event)" formControlName="DoctorTypeId" [(ngModel)]="vDoctypeId"
-                            [matAutocomplete]="autoDoctorTypeId" required>
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="myForm.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="myForm.get('DoctorTypeId').setValue(''); isdoctypeSelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoDoctorTypeId="matAutocomplete" [displayWith]="getOptionTextdoctype">
-                            <mat-option *ngFor="let option of filteredDoctortype | async" [value]="option">
-                                {{option.DoctorType}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field> -->
-
-                    <!-- <airmid-autocomplete [mode]="autocompleteModedoctorty" (selectDdlObject)="selectChangedoctorTy($event)" ></airmid-autocomplete> -->
-
                     <airmid-autocomplete label="DoctorType" formControlName="DoctorTypeId" [formGroup]="myForm"
-                        [validations]="getValidationDoctorTypeMessages().DoctorTypeId"
+                        [validations]="getValidationMessages().DoctorTypeId"
                         [mode]="autocompleteModedoctorty">
                     </airmid-autocomplete>
 
@@ -480,7 +322,7 @@
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-autocomplete label="DepartmentName" formControlName="Departmentid"
                                     [formGroup]="myForm" [IsMultiPle]="true" [value]="selectedItems"
-                                    [validations]="getValidationDepartmentMessages().Departmentid"
+                                    [validations]="getValidationMessages().Departmentid"
                                     [mode]="autocompleteModedepartment">
                                 </airmid-autocomplete>
                             </div>

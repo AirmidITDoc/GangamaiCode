@@ -99,12 +99,10 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myForm = this._doctorService.createdDoctormasterForm();
-
         if (this.data.doctorId > 0) {
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
                 this.PrefixId = this.registerObj.prefixId;
-                this.ddlPrefix.SetSelection(this.PrefixId);
                 if (this.registerObj.dateofBirth) {
                     const todayDate = new Date();
                     const dob = new Date(this.registerObj.dateofBirth);
@@ -663,38 +661,81 @@ export class NewDoctorComponent implements OnInit {
         return {
             PrefixID: [
                 { name: "required", Message: "Prefix Name is required" }
-            ]
-        };
-    }
-    getValidationCityMessages() {
-        return {
-            CityId: [
-                { name: "required", Message: "City Name is required" }
-            ]
-        };
-    }
-    getValidationDoctorTypeMessages() {
-        return {
-            DoctorTypeId: [
-                { name: "required", Message: "Doctor Type is required" }
-            ]
-        };
-    }
-    getValidationDepartmentMessages() {
-        return {
-            Departmentid: [
-                { name: "required", Message: "Department Name is required" }
-            ]
-        };
-    }
-    getValidationGenderMessages() {
-        return {
-            GenderId: [
+            ],
+            FirstName: [
+                { name: "required", Message: "First Name is required" },
+                {name:"maxLength",Message:"Enter only upto 50 chars"},
+                {name:"pattern",Message:"only char allowed."}
+            ],
+            MiddleName:[
+                { name: "required", Message: "Middle Name is required" },
+                {name:"maxLength",Message:"Enter only upto 50 chars"},
+                {name:"pattern",Message:"only char allowed."}
+            ],
+            LastName:[
+                { name: "required", Message: "Last Name is required" },
+                {name:"maxLength",Message:"Enter only upto 50 chars"},
+                {name:"pattern",Message:"only char allowed."}
+            ],
+            Address:[
+                { name: "required", Message: "Address is required" }
+            ],
+            Phone:[
+                { name: "pattern", Message: "Enter valid numbers" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 15 digits not allowed." }
+            ],
+            MobileNo:[
+                { name: "required", Message: "Mobile no is required" },
+                { name: "pattern", Message: "Enter valid numbers" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 15 digits not allowed." }
+            ],
+            GenderId:[
                 { name: "required", Message: "Gender is required" }
+            ],
+            Education:[
+                { name: "required", Message: "Education is required" },
+                {name:"pattern",Message:"only char allowed."}
+            ],
+            ESINO:[
+                { name: "required", Message: "ESINO is required" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 15 digits not allowed." }
+            ],
+            RegNo:[
+                { name: "required", Message: "RegNo is required" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 15 digits not allowed." }
+            ],
+            mahRegNo:[
+                { name: "required", Message: "mahRegNo is required" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 15 digits not allowed." }
+            ],
+            RefDocHospitalName:[
+                { name: "required", Message: "RefDoc Hospital Name is required" }
+            ],
+            Pancardno:[
+                { name: "required", Message: "Pancard No is required" }
+            ],
+            AadharCardNo:[
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "AadharCard No is required" },
+                { name: "minLength", Message: "12 digit required." },
+                { name: "maxLength", Message: "More than 12 digits not allowed." }
+            ],
+            CityId:[
+                { name: "required", Message: "City is required" }
+            ],
+            DoctorTypeId:[
+                { name: "required", Message: "Doctor Type is required" }
+            ],
+            Departmentid:[
+                { name: "required", Message: "Department is required" }
             ]
         };
     }
-
 }
 
 
