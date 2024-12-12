@@ -32,7 +32,7 @@ export class PatienttypeMasterComponent implements OnInit {
         apiUrl: "PatientType/List",
         columnsList: [
             { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "PatientType Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:800 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             {
                 heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
@@ -83,7 +83,7 @@ export class PatienttypeMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewPatientTypeComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

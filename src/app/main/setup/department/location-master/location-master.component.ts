@@ -70,15 +70,15 @@ export class LocationMasterComponent implements OnInit {
             ],
             row: 25
         }
-        ngOnInit(): void {   
-        }
+
+        ngOnInit(): void {  }
     
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(NewLocationComponent,
                 {
                     maxWidth: "45vw",
-                    height: '35%',
+                    height: '30%',
                     width: '70%',
                     data: row
                 });

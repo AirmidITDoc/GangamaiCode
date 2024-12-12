@@ -98,18 +98,18 @@ export class ItemMasterComponent implements OnInit {
    
     onSave(row: any = null) {
         let that = this;
-        // const dialogRef = this._matDialog.open(,
-        //     {
-        //         maxWidth: "95vw",
-        //         height: '95%',
-        //         width: '70%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent,
+            {
+                maxWidth: "95%",
+                height: '75%',
+                width: '80%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
 
     storeId=0;
@@ -217,10 +217,10 @@ export class ItemMasterComponent implements OnInit {
         this._itemService.populateForm(m_data);
 
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "95vw",
+            maxWidth: "75vw",
             maxHeight: "80vh",
-            width: "100%",
-            height: "100%",
+            width: "90%",
+            height: "90%",
             data : {
                 registerObj : row,
               }
@@ -261,8 +261,8 @@ export class ItemMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "95vw",
             maxHeight: "80vh",
-            width: "100%",
-            height: "100%",
+            width: "90%",
+            height: "80%",
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);

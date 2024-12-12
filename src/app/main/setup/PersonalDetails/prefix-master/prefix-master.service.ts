@@ -27,34 +27,30 @@ export class PrefixMasterService {
 
     createPrefixForm(): FormGroup {
         return this._formBuilder.group({
-            prefixId: [""],
+           
+            prefixId: 0,
             prefixName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // SexID: [" "],
-            GenderId: ["", Validators.required],
-            isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
+            sexId: 0,
         });
     }
     initializeFormGroup() {
         this.createPrefixForm();
     }
-  
 
     public getPrefixMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("Prefix/List", param, showLoader);
+        return this._httpClient.PostData("PrefixMaster/List", param, showLoader);
     }
 
 
     public prefixMasterSave(Param: any, showLoader = true) {
         if (Param.prefixId) {
-            return this._httpClient.PutData("Prefix/" + Param.prefixId, Param, showLoader);
-        } else return this._httpClient.PostData("Prefix", Param, showLoader);
+            return this._httpClient.PutData("PrefixMaster/" + Param.prefixId, Param, showLoader);
+        } else return this._httpClient.PostData("PrefixMaster", Param, showLoader);
     }
 
     getValidationMessages() {

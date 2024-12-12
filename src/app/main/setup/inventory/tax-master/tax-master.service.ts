@@ -20,16 +20,14 @@ export class TaxMasterService {
 
     createTaxMasterForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [""],
-            TaxNature: ["",
+            id: [""],
+            taxNature: ["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
         });
     }
 
@@ -55,8 +53,8 @@ export class TaxMasterService {
     }
 
     public taxMasterSave(Param: any, showLoader = true) {
-        if (Param.Id) {
-            return this._httpClient.PutData("TaxMaster/" + Param.Id, Param, showLoader);
+        if (Param.id) {
+            return this._httpClient.PutData("TaxMaster/" + Param.id, Param, showLoader);
         } else return this._httpClient.PostData("TaxMaster", Param, showLoader);
     }
     

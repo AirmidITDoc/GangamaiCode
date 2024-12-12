@@ -20,16 +20,17 @@ export class ItemGenericMasterService {
 
     createItemgenericForm(): FormGroup {
         return this._formBuilder.group({
-            itemGenericNameId: [""],
-            itemGenericName: ["",
+          
+                genericId: [""],
+                genericName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
@@ -52,9 +53,9 @@ export class ItemGenericMasterService {
     }
 
     public genericMasterSave(Param: any, showLoader = true) {
-        if (Param.itemGenericNameId) {
-            return this._httpClient.PutData("ItemGenericName/" + Param.itemGenericNameId, Param, showLoader);
-        } else return this._httpClient.PostData("ItemGenericName", Param, showLoader);
+        if (Param.genericId) {
+            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param, showLoader);
+        } else return this._httpClient.PostData("GenericMaster", Param, showLoader);
     }
 
     // public deactivateTheStatus(m_data) {

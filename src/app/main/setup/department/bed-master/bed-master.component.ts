@@ -85,9 +85,9 @@ export class BedMasterComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(NewBedComponent,
                 {
-                    maxWidth: "35vw",
-                    height: '35%',
-                    width: '50%',
+                    maxWidth: "45vw",
+                    height: '30%',
+                    width: '70%',
                     data: row
                 });
             dialogRef.afterClosed().subscribe(result => {
