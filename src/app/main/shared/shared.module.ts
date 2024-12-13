@@ -37,10 +37,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AirmidDropdownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
+import { AirmidTable1Component } from './componets/airmid-table1/airmid-table1.component';
+import { AirmidTextbox1Component } from './componets/airmid-textbox1/airmid-textbox1.component';
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent, AirmidTextboxComponent,AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective, AirmidAutocompleteComponent, AirmidDropdownComponent],
+  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent, AirmidTextboxComponent,AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective,
+     AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -64,8 +67,8 @@ import { AirmidDropdownComponent } from './componets/airmid-dropdown/airmid-drop
     FuseSidebarModule,
     MatAutocompleteModule,
     MatSelectModule,
-    NgxMatSelectSearchModule,
-    
+    NgxMatSelectSearchModule
+  
 
 ],
   providers: [
@@ -83,7 +86,10 @@ import { AirmidDropdownComponent } from './componets/airmid-dropdown/airmid-drop
     AirmidTableComponent,
     AirmidTextboxComponent,
     AirmidAutocompleteComponent,
-    AirmidDropdownComponent
+    AirmidDropdownComponent,
+    AirmidTable1Component,
+    AirmidTextbox1Component
+
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   entryComponents: []

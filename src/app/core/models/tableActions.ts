@@ -16,7 +16,19 @@ export enum gridColumnTypes{
     time=7,
     dateWithTime=8,
     dateByTime=9,
-    wordBreak=10
+    wordBreak=10,
+    Statusptype=11,
+    StatusMlc=12,
+    StatusPhoneApp=13,
+    StatusCrosscons=14,
+    StatusBillgenerate=15,
+    StatusBillcancle=16,
+    Statusoldnew=17,
+    StatusOPTOIPConvert=18,
+    StatusIsPathology=19,
+    StatusIsRadiology=20,
+    StatusCreditdr=21,
+    StatusPatientType=22
 }
 export const DATE_TYPES = {
     SHORT_TIME: 'h:mm a',
