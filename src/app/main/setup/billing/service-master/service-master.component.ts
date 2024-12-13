@@ -31,38 +31,20 @@ export class ServiceMasterComponent implements OnInit {
         apiUrl: "BillingService/BillingList",
         columnsList: [
             { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
             { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-
             { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA',width:200 },
-
             { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-
             { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
             // { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "IsEditable", key: "isEditable", sort: true,type: gridColumnTypes.status, align: 'left',width:100 },
-
-            // { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            
             { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true,align: 'left',width:100,type:21 },
-
             { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100,type:19 },
-
             { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:100,type:20 },
-
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
-            // { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-
             { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
             { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA',width:100 },
-
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
                 heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
