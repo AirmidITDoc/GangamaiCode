@@ -87,7 +87,7 @@ export class CustomerInformationComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
         maxWidth: "75vw",
-        height: '75%',
+        height: '70%',
         width: '100%',
         
       });

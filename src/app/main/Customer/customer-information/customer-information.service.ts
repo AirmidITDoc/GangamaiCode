@@ -10,6 +10,7 @@ export class CustomerInformationService {
   myform:FormGroup;
   SearchForm:FormGroup;
   Billmyform:FormGroup;
+  PaymentForm:FormGroup;
 
   constructor(
     public _formbuilder:FormBuilder,
@@ -20,6 +21,7 @@ export class CustomerInformationService {
     this.myform = this.Createmyform();
     this.SearchForm = this.CreateSearchForm();
     this.Billmyform = this.CreateBillmyform();
+    this.PaymentForm = this.CreatePayForm();
    }
    CreateSearchForm(){
     return this._formbuilder.group({
@@ -39,15 +41,19 @@ export class CustomerInformationService {
     })
    }
    CreateBillmyform(){
-    return this._formbuilder.group({
-      InvoiceNo:[''],
+    return this._formbuilder.group({ 
       Description:[''],
       Amount:[''],
-      CustomerId:[''],
-      InvoiceDate:[new Date()],
-
+      CustomerId:[''], 
     })
    }
+   CreatePayForm(){
+    return this._formbuilder.group({
+      CustomerName:[''],
+      AMCamt:[''],
+      Description:[''],
+    })
+  }
    public getCustomerList(param, loader = true) {
     if(loader){
       this._loaderService.show()
@@ -87,16 +93,21 @@ export class CustomerInformationService {
   public getCustomerSearchCombo(param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CustomerNameCombo", param);
   }
-  public getCustomerBillList(loader = true) {
+  public getCustomerBillList(vdata,loader = true) {
     if(loader){
       this._loaderService.show()
     }
-    return this._httpClient.post("Generic/GetByProc?procName=Rtev_CustomerInvoiceRaise_List",{});
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerInvoiceRaise_List",vdata);
   }
   public SaveCustomerPayment(Param,loader = true) {
     if(loader){
       this._loaderService.show()
     }
     return this._httpClient.post("CustomerInformation/CustomerPaymentSave",Param);
+  }
+
+
+  PopulateFormbillRise(Param){ 
+    this.Billmyform.patchValue(Param);
   }
 }

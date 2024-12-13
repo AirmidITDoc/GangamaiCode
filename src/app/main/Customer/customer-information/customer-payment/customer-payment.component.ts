@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CustomerPaymentComponent implements OnInit {
 
-  PaymentForm:FormGroup;
+
   vAmount:any;
   registerObj:any;
   PaymentId:any;
@@ -36,7 +36,7 @@ export class CustomerPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.PaymentForm = this.CreatePayForm();
+   
     if(this.data){
       this.registerObj= this.data.Obj;
       console.log(this.registerObj)
@@ -46,13 +46,7 @@ export class CustomerPaymentComponent implements OnInit {
     }
   }
 
-  CreatePayForm(){
-    return this._formbuilder.group({
-      CustomerName:[''],
-      AMCamt:[''],
-      Description:[''],
-    })
-  }
+
 
 
   onSubmit() {
@@ -74,8 +68,8 @@ export class CustomerPaymentComponent implements OnInit {
         "paymentDate":formattedDate,
         "paymentTime": formattedTime,
         "customerId":  this.vCustomerId || 0,
-        "amount": this._CustomerInfo.Billmyform.get('Amount').value || 0,
-        "comments":this._CustomerInfo.Billmyform.get('Description').value || 0,
+        "amount": this._CustomerInfo.PaymentForm.get('Amount').value || 0,
+        "comments":this._CustomerInfo.PaymentForm.get('Description').value || 0,
         "createdBy":this._loggedService.currentUserValue.user.id || 0,
         "createdByDateTime": formattedTime
       }
@@ -107,8 +101,8 @@ export class CustomerPaymentComponent implements OnInit {
         "paymentDate":formattedDate,
         "paymentTime": formattedTime,
         "customerId": this.vCustomerId || 0,
-        "amount": this._CustomerInfo.Billmyform.get('Amount').value || 0,
-        "comments":this._CustomerInfo.Billmyform.get('Description').value || 0,
+        "amount": this._CustomerInfo.PaymentForm.get('Amount').value || 0,
+        "comments":this._CustomerInfo.PaymentForm.get('Description').value || 0,
         "createdBy":this._loggedService.currentUserValue.user.id || 0 
       }
       

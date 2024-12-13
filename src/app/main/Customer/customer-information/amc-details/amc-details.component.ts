@@ -32,8 +32,7 @@ export class AMCDetailsComponent implements OnInit {
   displayedColumnsBillRise: string[] = [
     'InvoiceDate', 
     'CustomerName',
-    'Amount',
-    'InvoiceRaisedId',
+    'Amount', 
     'CreatedBy',
     'Action'
   ];
@@ -90,7 +89,10 @@ export class AMCDetailsComponent implements OnInit {
   }
   getCustomerBlilList() {
     this.sIsLoading = 'loading-data';
-    this._CustomerInfo.getCustomerBillList().subscribe(data => {
+    var vdata = {
+      "CustomerId": this.registerObj.CustomerId
+    }
+    this._CustomerInfo.getCustomerBillList(vdata).subscribe(data => {
       this.dsBillRiseList.data = data as BillRaiseList[];
       this.chargelist =  data as BillRaiseList[];
       console.log(this.dsBillRiseList.data)
@@ -119,7 +121,7 @@ export class AMCDetailsComponent implements OnInit {
     const dialogRef = this._matDialog.open(CustomerPaymentComponent,
       {
         maxWidth: "50vw",
-        height: '55%',
+        height: '53%',
         width: '100%',
         data:{
           Obj:contact
@@ -131,12 +133,15 @@ export class AMCDetailsComponent implements OnInit {
       this.getAmcDetList();
     }); 
   }
-  OnEdit() {
+  OnEditBillRise(contact) {
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
         maxWidth: "60vw",
-        height: '55%',
-        width: '100%'
+        height: '53%',
+        width: '100%',
+        data:{
+          Obj:contact
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -147,7 +152,7 @@ export class AMCDetailsComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
         maxWidth: "60vw",
-        height: '55%',
+        height: '53%',
         width: '100%'
       });
     dialogRef.afterClosed().subscribe(result => {

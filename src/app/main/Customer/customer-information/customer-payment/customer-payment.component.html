@@ -21,7 +21,7 @@
         <div class="center p-12 pb-56">
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
-                    <form [formGroup]="PaymentForm">
+                    <form [formGroup]="_CustomerInfo.PaymentForm">
                         <div fxLayout="column" fxLayoutGap="10px">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Customer Name</mat-label>
@@ -37,13 +37,13 @@
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Description</mat-label>
-                                <textarea rows="6" name="Description" formControlName="Description" matInput
+                                <textarea rows="5" name="Description" formControlName="Description" matInput
                                     type="text">
                                     </textarea>
                             </mat-form-field>
                         </div>
                     </form>
-                    <div class="modal-footer-buttons gap-8 p-12" fxLayout="row"  fxLayoutAlign="end">
+                    <div class="modal-footer-buttons gap-8" fxLayout="row"  fxLayoutAlign="end">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                         <button class="btn btn-primary " (click)="onSubmit()" >Save</button>
                     </div>

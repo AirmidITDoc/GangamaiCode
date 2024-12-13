@@ -97,7 +97,7 @@
                     </mat-card>
 
                     <mat-card style="padding: 6px;">
-                        <div fxLayout="column" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%">
+                        <div fxLayout="column" fxFlex="100%" fxFlex.sm="50%" fxFlex.gt-sm="100%">
                             <div class="investigation-title">
                                 <span style="font-weight: 700;">
                                     AMC Details
@@ -162,17 +162,17 @@
 
                                 <ng-container matColumnDef="PaymentId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Payment Status
+                                        PayStatus
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <button mat-icon-button>
-                                            <mat-icon matTooltip="Paid" *ngIf="contact.PaymentId == 1"
+                                            <mat-icon matTooltip="Paid" *ngIf="contact.PayStatus == Paid"
                                                 class="active-icon green-500 s-16">check_circle</mat-icon>
-                                            <mat-icon matTooltip="Pending" *ngIf="contact.PaymentId == 0"
+                                            <mat-icon matTooltip="Pending" *ngIf="contact.PayStatus == 'Pending'"
                                                 class="active-icon red-500 s-16">hourglass_empty</mat-icon>
                                         </button>
                                         <button mat-icon-button matTooltip="Payment" (click)="PayAMtamt(contact)"
-                                        *ngIf="contact.PaymentId == 0">
+                                        *ngIf="contact.PayStatus == 'Pending'">
                                             <mat-icon>payment</mat-icon>
                                         </button>
 
@@ -201,7 +201,7 @@
                                     [ngClass]="{'hide':!(dsAMCDetList!=null && dsAMCDetList.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
-                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="5"
                                 showFirstLastButtons>
                             </mat-paginator>
                         </div>
@@ -235,33 +235,25 @@
                             </ng-container>
 
                             <ng-container matColumnDef="CustomerName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     CustomerName</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.CustomerName}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="Amount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Amount</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.Amount}}
                                 </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="InvoiceRaisedId">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    InvoiceRaisedId </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.InvoiceRaiseId}}
-                                </mat-cell>
-                            </ng-container>
+                            </ng-container> 
 
                             <ng-container matColumnDef="CreatedBy">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     CreatedBy</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.CreatedBy}}
                                 </mat-cell>
                             </ng-container> 
@@ -270,7 +262,7 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button matTooltip="Edit" (click)=" OnEdit(contact)">
+                                    <button mat-icon-button matTooltip="Edit" (click)="OnEditBillRise(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
@@ -301,7 +293,7 @@
                                 [ngClass]="{'hide':!(dsBillRiseList!=null && dsBillRiseList.data.length==0)}">
                             </mat-footer-row>
                             </mat-table>  
-                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="5"
                             showFirstLastButtons>
                             </mat-paginator>
  

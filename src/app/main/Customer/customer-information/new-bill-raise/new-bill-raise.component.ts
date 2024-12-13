@@ -1,12 +1,12 @@
-import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from '@angular/core'; 
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators'; 
+import { map, startWith } from 'rxjs/operators';
 import { CustomerInformationService } from '../customer-information.service';
 
 
@@ -19,21 +19,20 @@ import { CustomerInformationService } from '../customer-information.service';
 })
 export class NewBillRaiseComponent implements OnInit {
 
-  dateTimeObj:any;
+  dateTimeObj: any;
   sIsLoading: string = '';
   isLoading = true;
-  vInvoiceNo:any;
-  vCustomerId:any;
-  vAmount:any;
-  vDescription:any;
-  isCustomerIdSelected:boolean=false;
-  registerObj:any;
+  vCustomerId: any;
+  vAmount: any;
+  vDescription: any;
+  isCustomerIdSelected: boolean = false;
+  registerObj: any;
   filteredOptions: Observable<string[]>;
-  CustomerList:any=[];
-  RtrvCustomerId:any
-  
-  
-  constructor( 
+  CustomerList: any = [];
+  RtrvCustomerId: any
+
+
+  constructor(
     public _CustomerInfo: CustomerInformationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -46,22 +45,16 @@ export class NewBillRaiseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
-    this.filteredOptions = this._CustomerInfo.Billmyform.get('CustomerId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value)),
-    );
-   this.getCustomerSearch() ;
 
-
-    if(this.data.Obj){
+    this.getCustomerSearch();
+    if (this.data) {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
-      this.RtrvCustomerId  = this.registerObj.CustomerId
-      this.vAmount = this.registerObj.Amount;
-      this.vInvoiceNo = this.registerObj.InvNumber;
-    } 
-  } 
+      this.RtrvCustomerId = this.registerObj.CustomerId
+      this.OnEdit(this.registerObj)
+      // this.vAmount = this.registerObj.Amount; 
+    }
+  }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -74,10 +67,10 @@ export class NewBillRaiseComponent implements OnInit {
       nextElement.focus();
     }
   }
-  filteredOptionsCutomer:any;
-  noOptionFound:any;
-  vSupplierId:any;
-  vCustomerName:any;
+  filteredOptionsCutomer: any;
+  noOptionFound: any;
+  vSupplierId: any;
+  vCustomerName: any;
   // getCustomerSearchCombo() { 
   //   var m_data = {
   //     'CustomerName': `${this._CustomerInfo.Billmyform.get('CustomerId').value}%`
@@ -101,27 +94,32 @@ export class NewBillRaiseComponent implements OnInit {
   getOptionText(option) {
     return option && option.CustomerName ? option.CustomerName : '';
   }
-  getCustomerSearch() { 
-      var m_data = {
-        'CustomerName': this._CustomerInfo.Billmyform.get('CustomerId').value || "%"
-      }
-      console.log(m_data)
-      this._CustomerInfo.getCustomerSearchCombo(m_data).subscribe(data => {
-        this.CustomerList = data;
-        console.log(this.CustomerList)
-        if(this.registerObj.CustomerId >= 0){
-          const Customerselected = this.CustomerList.find(c => c.CustomerId == this.registerObj.CustomerId);
-          this._CustomerInfo.Billmyform.get('CustomerId').setValue(Customerselected);
-          console.log(Customerselected)
-        }
-      });
+  getCustomerSearch() {
+    var m_data = {
+      'CustomerName': this._CustomerInfo.Billmyform.get('CustomerId').value || "%"
     }
+    console.log(m_data)
+    this._CustomerInfo.getCustomerSearchCombo(m_data).subscribe(data => {
+      this.CustomerList = data;
+      console.log(this.CustomerList)
+      this.filteredOptions = this._CustomerInfo.Billmyform.get('CustomerId').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value)),
+      );
+
+      if (this.data) {
+        const Customerselected = this.CustomerList.find(c => c.CustomerId == this.registerObj.CustomerId);
+        this._CustomerInfo.Billmyform.get('CustomerId').setValue(Customerselected);
+        console.log(Customerselected)
+      }
+    });
+  }
   private _filter(value: any): string[] {
     if (value) {
-        const filterValue = value && value.CustomerName ? value.CustomerName.toLowerCase() : value.toLowerCase();
-        return this.CustomerList.filter(option => option.CustomerName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.CustomerName ? value.CustomerName.toLowerCase() : value.toLowerCase();
+      return this.CustomerList.filter(option => option.CustomerName.toLowerCase().includes(filterValue));
     }
-} 
+  }
   onSubmit() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -206,11 +204,19 @@ export class NewBillRaiseComponent implements OnInit {
       });
     }
   }
-  onReset(){
+  onReset() {
     this._CustomerInfo.Billmyform.reset();
-    this.onClose(); 
+    this.onClose();
   }
-  onClose(){
+  onClose() {
     this.dialogRef.close();
+  }
+  OnEdit(row) {
+    var mdata = {
+      CustomerId: row.CustomerId,
+      //Description: row.Amount,
+      Amount: row.Amount
+    }
+    this._CustomerInfo.PopulateFormbillRise(mdata);
   }
 }
