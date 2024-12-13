@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -8,12 +8,16 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { OPListService } from './oplist.service';
 import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 import { NewOPRefundofbillComponent } from '../op-search-list/new-oprefundofbill/new-oprefundofbill.component';
+import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-new-oplist',
   templateUrl: './new-oplist.component.html',
-  styleUrls: ['./new-oplist.component.scss']
+  styleUrls: ['./new-oplist.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
+
 })
 export class NewOPListComponent implements OnInit {
 
@@ -26,6 +30,8 @@ export class NewOPListComponent implements OnInit {
       apiUrl: "VisitDetail/OPBillList",
       columnsList: [
           { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "Code", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
+          { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:200,type:22},
           { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:200},
           { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:8},
           { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:80 },
@@ -34,6 +40,7 @@ export class NewOPListComponent implements OnInit {
           { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
           { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+          { heading: "Bill Cancel", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
           
           {
               heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
@@ -80,8 +87,8 @@ export class NewOPListComponent implements OnInit {
       filters: [
           { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
           { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-         { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+         { fieldName: "From_Dt", fieldValue: "01/01/2021", opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
           { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
           { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
           { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },

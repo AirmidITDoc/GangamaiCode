@@ -45,7 +45,8 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content">
+
+        <app-airmid-table1 [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>First Name</mat-label>
@@ -88,7 +89,7 @@
                     </button>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxFlex>
+                <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Doctor Id</mat-label>
                     <input matInput placeholder="Search Doctor" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[3].fieldValue" />
@@ -96,13 +97,27 @@
                         (click)="gridConfig.filters[3].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
-                </mat-form-field>
-                <!-- <airmid-autocomplete label="DoctorID" [(ngModel)]="gridConfig.filters[3].fieldValue"
-                    [validations]="getValidationdeptDocMessages().DoctorID" [mode]="autocompleteModedeptdoc"
-                    (selectDdlObject)="selectChangedeptdoc($event)">
-                </airmid-autocomplete> -->
+                </mat-form-field> -->
+                <form [formGroup]="_AppointmentlistService.myformSearch">
 
-                <mat-form-field appearance="outline" fxFlex>
+                    <airmid-autocomplete label="Doctor Name" style="width: 200px;" formControlName="DoctorId"
+                        [formGroup]="_AppointmentlistService.myformSearch"
+                        [(ngModel)]="gridConfig.filters[3].fieldValue"
+                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
+                        (selectDdlObject)="selectChangedeptdoc($event)">
+                    </airmid-autocomplete>
+
+
+                    <!-- (dateChange)="onChangeDate($event.value)"  -->
+
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
+                            [(ngModel)]="gridConfig.filters[4].fieldValue" placeholder="mm/dd/yyyy">
+                        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #validFromPicker></mat-datepicker>
+                    </mat-form-field>
+                </form>
+                <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
                     <input matInput placeholder="Search From Date" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[4].fieldValue" />
@@ -110,8 +125,10 @@
                         (click)="gridConfig.filters[4].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex>
+                </mat-form-field> -->
+
+
+                <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>To Date</mat-label>
                     <input matInput placeholder="Search To Date" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[5].fieldValue" />
@@ -119,10 +136,19 @@
                         (click)="gridConfig.filters[5].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
+                </mat-form-field> -->
+                <!-- (dateChange)="onChangeDate1($event.value)" -->
+
+                <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
+                        [(ngModel)]="gridConfig.filters[5].fieldValue" placeholder="mm/dd/yyyy">
+                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
+                    <mat-datepicker #validFromPicker1></mat-datepicker>
                 </mat-form-field>
 
             </ng-container>
-        </airmid-table>
+        </app-airmid-table1>
+
     </div>
     <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
     class="gap-4">

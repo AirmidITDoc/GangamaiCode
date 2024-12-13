@@ -22,11 +22,19 @@
 
                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                    <airmid-textbox label="Bank Name" formControlName="bankName" [value]="" 
-                        [formGroup]="bankForm"
-                        [validations]="_BankMasterService.getValidationMessages().bankName" 
-                        [maxLength]="50">
-                    </airmid-textbox>     
+                    <!-- <app-airmid-textbox1 label="Bank Name" formControlName="bankName" 
+                        [formGroup]="bankForm"   oninput=format
+                        [validations]="_BankMasterService.getValidationMessages().bankName" value="9876658688"
+                        [maxlength]=maxLength [minlength]="minLength">
+                    </app-airmid-textbox1>     -->
+                    
+                    
+                    <app-airmid-textbox1 label="Bank Name" formControlName="bankName" 
+                        [formGroup]="bankForm"   oninput=format1
+                        [validations]="_BankMasterService.getValidationMessages().bankName" value="987665868811"
+                        [maxlength]=maxLength [minlength]="minLength">
+                    </app-airmid-textbox1>   
+
                                   
                 </div>
             </form>

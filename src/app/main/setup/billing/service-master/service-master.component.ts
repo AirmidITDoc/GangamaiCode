@@ -47,11 +47,11 @@ export class ServiceMasterComponent implements OnInit {
 
             // { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', emptySign: 'NA',width:100 },
             
-            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true,type: gridColumnTypes.status, align: 'left',width:100 },
+            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true,align: 'left',width:100,type:21 },
 
-            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100,type:19 },
 
-            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:100,type:20 },
 
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
 

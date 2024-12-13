@@ -53,7 +53,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
   
   gridConfig: gridModel = {
-      apiUrl: "Admission/IPBillList",
+      apiUrl: "Billing/IPBillList",
       columnsList: [ 
           { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
           { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250  },
@@ -113,7 +113,7 @@ export class IPBillBrowseListComponent implements OnInit {
   }
 
   gridConfig1: gridModel = {
-    apiUrl: "Admission/IPPaymentList",
+    apiUrl: "Billing/IPPaymentList",
     columnsList: [
         { heading: "Code", key: "paymentId", sort: true, align: 'left', emptySign: 'NA', width:50 },
         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width:100  },
@@ -175,7 +175,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
 
 gridConfig2: gridModel = {
-    apiUrl: "Admission/IPRefundBillList",
+    apiUrl: "Billing/IPRefundBillList",
     columnsList: [
         { heading: "Code", key: "refundId", sort: true, align: 'left', emptySign: 'NA' , width:50 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' , width:250 },

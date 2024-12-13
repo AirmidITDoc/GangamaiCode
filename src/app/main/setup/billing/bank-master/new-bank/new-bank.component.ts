@@ -1,17 +1,26 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BankMasterService } from '../bank-master.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-bank',
   templateUrl: './new-bank.component.html',
-  styleUrls: ['./new-bank.component.scss']
+  styleUrls: ['./new-bank.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewBankComponent implements OnInit {
 
   bankForm: FormGroup;
+  format="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);";
+  format1="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);";
+  maxLength1="10"
+  minLength1="10"
+   maxLength="12"
+  minLength="12"
 
   constructor(
     public _BankMasterService: BankMasterService,
@@ -26,7 +35,7 @@ export class NewBankComponent implements OnInit {
     var m_data = {
       bankId: this.data?.bankId,
      bankName: this.data?.bankName.trim(),
-     isDeleted: JSON.stringify(this.data?.isActive),
+     isActive: JSON.stringify(this.data?.isActive),
     };
     this.bankForm.patchValue(m_data);
     console.log("mdata:", m_data)
@@ -66,83 +75,5 @@ export class NewBankComponent implements OnInit {
     this.dialogRef.close(val);
 }
 
-  // onSubmit() {
-    // if (this._bankService.myform.valid) {
-    //     if (!this._bankService.myform.get("BankId").value) {
-    //         var m_data = {
-    //             bankMasterInsert: {
-    //                 bankName: this._bankService.myform
-    //                     .get("BankName")
-    //                     .value.trim(),
-    //                 isDeleted: JSON.parse(
-    //                     this._bankService.myform.get("IsDeleted").value
-    //                 ),
-    //                 addedBy: 1,
-    //             },
-    //         };
-
-    //         console.log(m_data);
-    //         this._bankService.bankMasterInsert(m_data).subscribe((data) => {
-    //             this.msg = data;
-    //             if (data) {
-    //                 this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                     toastClass: 'tostr-tost custom-toast-success',
-    //                   });
-    //                   this.getBankMasterList();
-    //                 // Swal.fire(
-    //                 //     "Saved !",
-    //                 //     "Record saved Successfully !",
-    //                 //     "success"
-    //                 // ).then((result) => {
-    //                 //     if (result.isConfirmed) {
-    //                 //         this.getBankMasterList();
-    //                 //     }
-    //                 // });
-    //             } else {
-    //                 this.toastr.error('Bank Master Data not saved !, Please check API error..', 'Error !', {
-    //                     toastClass: 'tostr-tost custom-toast-error',
-    //                   });
-    //             }
-    //             this.getBankMasterList();
-    //         },error => {
-    //             this.toastr.error('Bank Master Data not saved !, Please check API error..', 'Error !', {
-    //              toastClass: 'tostr-tost custom-toast-error',
-    //            });
-    //          });
-    //     } else {
-    //         var m_dataUpdate = {
-    //             bankMasterUpdate: {
-    //                 bankID: this._bankService.myform.get("BankId").value,
-    //                 bankName:
-    //                     this._bankService.myform.get("BankName").value,
-    //                 isDeleted: JSON.parse(
-    //                     this._bankService.myform.get("IsDeleted").value
-    //                 ),
-    //                 updatedBy: 1,
-    //             },
-    //         };
-    //         console.log(m_dataUpdate);
-    //         this._bankService
-    //             .bankMasterUpdate(m_dataUpdate)
-    //             .subscribe((data) => {
-    //                 this.msg = data;
-    //                 if (data) {
-    //                     this.toastr.success('Record updated Successfully.', 'updated !', {
-    //                         toastClass: 'tostr-tost custom-toast-success',
-    //                       });
-    //                     this.getBankMasterList();
-                       
-    //                 } else {
-    //                     Swal.fire(
-    //                         "Error !",
-    //                         "Appoinment not updated",
-    //                         "error"
-    //                     );
-    //                 }
-    //                 this.getBankMasterList();
-    //             });
-    //     }
-    //     this.onClear();
-    // }
-// }
+ 
 }
