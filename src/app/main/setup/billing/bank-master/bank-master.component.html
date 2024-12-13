@@ -1,41 +1,61 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Bank Master
-                </span>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Bank Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Bank
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="bankForm">
+
+                <input type="hidden" name="bankId" formControlName="bankId">
+
+                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                    <!-- <app-airmid-textbox1 label="Bank Name" formControlName="bankName" 
+                        [formGroup]="bankForm"   oninput=format
+                        [validations]="_BankMasterService.getValidationMessages().bankName" value="9876658688"
+                        [maxlength]=maxLength [minlength]="minLength">
+                    </app-airmid-textbox1>     -->
+                    
+                    
+                    <app-airmid-textbox1 label="Bank Name" formControlName="bankName" 
+                        [formGroup]="bankForm"   oninput=format1
+                        [validations]="_BankMasterService.getValidationMessages().bankName" value="987665868811"
+                        [maxlength]=maxLength [minlength]="minLength">
+                    </app-airmid-textbox1>   
+
+                                  
+                </div>
+            </form>
+        </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
+                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            <!-- </form> -->
+        </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
+
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
             </button>
         </div>
     </div>
-
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" class="content">
-            <ng-container filters>
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Bank Name</mat-label>
-                    <input matInput placeholder="Search Bank Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
-            </ng-container>
-        </airmid-table>
-    </div>
-    
 </div>
