@@ -1,7 +1,7 @@
-<mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+<mat-form-field [appearance]="appearance" class="mr-sm-12" fxFlex style="width:{{width}} !important">
     <mat-label>{{ label }}</mat-label>
     <input matInput [formControl]="control" [maxlength]="maxLength" (blur)="onTouched()" ngDefaultControl [type]="type"
-        [value]="value" [placeholder]="placeholder" />
+        [value]="value" [placeholder]="placeholder" (keyup)="keyup" [readonly]="readonly"/>
     <div *ngIf="formGroup.controls[formControlName]?.invalid && control?.touched && validations.length>0">
         <div *ngFor="let item of validations">
             <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">

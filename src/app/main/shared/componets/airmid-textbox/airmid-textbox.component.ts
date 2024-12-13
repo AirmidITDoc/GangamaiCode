@@ -55,6 +55,10 @@ export class AirmidTextboxComponent implements
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() type:string="text";
+    @Input() keyup:Event;
+    @Input() appearance:string="outline";
+    @Input() readonly:boolean=false;
+    @Input() width:string="100%";
     @Input()
     get disabled(): boolean {
         return this._disabled;

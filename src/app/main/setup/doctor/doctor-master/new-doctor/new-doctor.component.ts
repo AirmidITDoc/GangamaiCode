@@ -594,21 +594,27 @@ export class NewDoctorComponent implements OnInit {
     dateStyle?: string = 'Date';
     OnChangeDobType(e) {
         this.dateStyle = e.value;
+        this.registerObj.ageYear=0;
+        this.registerObj.ageMonth=0;
+        this.registerObj.ageDay=0;
     }
     CalcDOB(mode, e) {
+        debugger
         let d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
-            //this.registerObj.DateofBirth = d;
-            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+            this.registerObj.dateofBirth = d;
+            this.registerObj.ageDay=Number(e.target.value);
         }
         else if (mode == "Month") {
             d.setMonth(d.getMonth() - Number(e.target.value));
-            // this.registerObj.DateofBirth = d;
+             this.registerObj.dateofBirth = d;
+             this.registerObj.ageMonth=Number(e.target.value);
         }
         else if (mode == "Year") {
             d.setFullYear(d.getFullYear() - Number(e.target.value));
-            //this.registerObj.DateofBirth = d;
+            this.registerObj.dateofBirth = d;
+            this.registerObj.ageYear=Number(e.target.value);
         }
         let todayDate = new Date();
         //const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
