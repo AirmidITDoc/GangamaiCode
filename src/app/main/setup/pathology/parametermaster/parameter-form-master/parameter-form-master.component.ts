@@ -26,7 +26,7 @@ export class ParameterFormMasterComponent implements OnInit {
     parameterForm:FormGroup;
 
     isPrintDisSummaryChecked: boolean = false;
-    autocompleteModeUnitId:string="Unit";
+    autocompleteModeUnitId:string = "Unit";
 
     ageType: string[] = ["Days", "Months", "Years"];
 
@@ -116,64 +116,221 @@ export class ParameterFormMasterComponent implements OnInit {
         );
 
         // new code
-       
+       /**
+            * {
+  "parameterId": 0,
+  "parameterShortName": "string",
+  "parameterName": "string",
+  "printParameterName": "string",
+  "unitId": 0,
+  "isNumeric": 0,
+  "isPrintDisSummary": true
+}
+            */
         var mdata={
-                ParameterID:this.data?.ParameterID,
-                ParameterShortName:this.data?.ParameterShortName,
-                ParameterName:this.data?.ParameterName,
-                PrintParameterName:this.data?.PrintParameterName,
+                parameterId:this.data?.parameterId,
+                parameterShortName:this.data?.parameterShortName,
+                parameterName:this.data?.parameterName,
+                printParameterName:this.data?.printParameterName,
                 MethodName:this.data?.MethodName,
                 Formula:this.data?.Formula,
-                UnitId:this.data?.UnitId,
-                IsNumeric:this.data?.IsNumeric,
+                unitId:this.data?.unitId,
+                isNumeric:this.data?.isNumeric,
                 isActive: JSON.stringify(this.data?.isActive),
             };
             this.parameterForm.patchValue(mdata);
-       
     }
 
-    onSubmit(){
-        debugger
-        // if(this.parameterForm.valid){
-            if (this.parameterForm.invalid) {
-                this.toastr.warning('please check from is invalid', 'Warning !', {
-                    toastClass:'tostr-tost custom-toast-warning',
-                })
-                return;
-            }
-            else if(this.dsParameterAgeList.data.length ==0){
-                this.toastr.warning('please check from is invalid', 'Warning !', {
-                    toastClass:'tostr-tost custom-toast-warning',
-                })
-                return;
+    // onSubmit(){
+    //     debugger
+    //     // if(this.parameterForm.valid){
+    //         if (this.parameterForm.invalid) {
+    //             this.toastr.warning('please check form is invalid', 'Warning !', {
+    //                 toastClass:'tostr-tost custom-toast-warning',
+    //             })
+    //             return;
+    //         }
+    //         else if(this.dsParameterAgeList.data.length ==0){
+    //             this.toastr.warning('please check form is invalid', 'Warning !', {
+    //                 toastClass:'tostr-tost custom-toast-warning',
+    //             })
+    //             return;
                 
-            }else{
-                if(!this.parameterForm.get("ParameterID").value){
-                    debugger
-                    var m_data={
-                        "parameterId": 0,
-                        "parameterShortName": this.parameterForm.get("ParameterShortName").value || "",
-                        "parameterName": this.parameterForm.get("ParameterName").value || "",
-                        "printParameterName": this.parameterForm.get("PrintParameterName").value || "",
-                        "unitId": 1,// parseInt(this.parameterForm.get("UnitId").value),
-                        "isNumeric": 0,
-                        "isPrintDisSummary": true
-                      }
-                      console.log("parameter Insert:",m_data)
+    //         }else{
+    //             if(!this.parameterForm.get("ParameterID").value){
+    //                 debugger
+    //                 var m_data={
+    //                     "parameterId": 0,
+    //                     "parameterShortName": this.parameterForm.get("ParameterShortName").value || "",
+    //                     "parameterName": this.parameterForm.get("ParameterName").value || "",
+    //                     "printParameterName": this.parameterForm.get("PrintParameterName").value || "",
+    //                     "unitId": 1,// parseInt(this.parameterForm.get("UnitId").value),
+    //                     "isNumeric": 0,
+    //                     "isPrintDisSummary": true
+    //                   }
+    //                   console.log("parameter Insert:",m_data)
         
-                      this._ParameterService.insertParameterMaster(m_data).subscribe((response) => {
-                      this.toastr.success(response.message);
-                    //  this.onClear(true);
-                    }, (error) => {
-                      this.toastr.error(error.message);
-                    });
-                  } else{
-                      // update
-                  }
+    //                   this._ParameterService.insertParameterMaster(m_data).subscribe((response) => {
+    //                   this.toastr.success(response.message);
+    //                 //  this.onClear(true);
+    //                 }, (error) => {
+    //                   this.toastr.error(error.message);
+    //                 });
+    //               } else{
+    //                   // update
+    //               }
+    //     }
+        
+    //     this.dialogRef.close();
+    // }
+
+    onSubmit() {
+        debugger
+        const invalid = [];
+        const controls = this.parameterForm.controls;
+        for (const name in controls) {
+            if (controls[name].invalid) {
+                invalid.push(name);
+            }
         }
-        
-        this.dialogRef.close();
+        console.log(invalid);
+       
+        if(this._ParameterService.myform.get("IsBold").value)
+            var BoldValue="B"
+        else
+         var BoldValue=""
+ 
+         if(this._ParameterService.is_numeric)
+            var is_numeric="1"
+        else
+         var is_numeric="0"
+ 
+        var numeric_info = [];
+        var data2 = [];
+        if (!this._ParameterService.is_numeric) {
+ 
+            for (var val of this.selectedItems) {
+                var data = {
+                    parameterId: +this.parameterForm.get("parameterId").value || "",
+                    parameterValues: val,
+                    isDefaultValue: this._ParameterService.descform.get("DefaultValue").value ? true : false,
+                    addedby: 1,
+                    defaultValue: this._ParameterService.descform.get("DefaultValue").value ? this._ParameterService.descform.get("DefaultValue").value.trim() : "%",
+                };
+                data2.push(data);
+            }
+        }
+        else {
+            var info: any = {
+                paraId: 0 || +this._ParameterService.myform.get("parameterId").value ||1,
+                sexId: 0,
+                minValue: "%",
+                MaxValue: "%",
+                // addedby: this.accountService.currentUserValue.user.id || 1,
+                ageType: "%",
+                minAge: 0,
+                IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
+                maxAge: 0
+            };
+            this.dsParameterAgeList.data.forEach(element => {
+                let c = JSON.parse(JSON.stringify(info));
+                c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
+                c['minValue'] = element.MinValue;
+                c['minAge'] = +element.MinAge;
+                c['maxAge'] = +element.MaxAge;
+                c['MaxValue'] = element.MaxValue;
+                c['ageType'] = element.AgeType;
+                c['IsDeleted'] = element.IsDeleted;
+              numeric_info.push(c)
+            });
+        }
+ 
+ 
+        var PathParameterMasterInsert = {
+            parameterShortName: this.parameterForm.get("ParameterShortName").value || "",
+            parameterName: this.parameterForm.get("ParameterName").value || "",
+            printParameterName: this.parameterForm.get("PrintParameterName").value || "",
+            // methodName: this._ParameterService.myform.get("MethodName").value || "",
+            IsBoldFlag: BoldValue, //this._ParameterService.myform.get("IsBold").value || 'B',
+            // formula: this._ParameterService.myform.get("Formula").value || "",
+            unitId: 0,
+            isNumeric: 0,
+            // isDeleted:Boolean(JSON.parse(this._ParameterService.myform.get("IsDeleted").value)),
+            parameterId: 0,
+            isPrintDisSummary: true,
+           /**
+            * {
+  "parameterId": 0,
+  "parameterShortName": "string",
+  "parameterName": "string",
+  "printParameterName": "string",
+  "unitId": 0,
+  "isNumeric": 0,
+  "isPrintDisSummary": true
+}
+            */
+        }
+        console.log("data",PathParameterMasterInsert);
+ 
+        var m_data = {}
+ 
+        if (this._ParameterService.is_numeric) {
+            m_data['parameterRangeWithAgeMasterInsert'] = numeric_info;
+            m_data['parameterRangeWithAgeMasterDelete'] = { parameterId: this._ParameterService.myform.get("parameterId").value || 0, };
+        } else {
+            m_data['parameterDescriptiveMasterInsert'] = data2;
+            m_data['descriptiveParameterMasterDelete'] = { parameterId: this._ParameterService.myform.get("parameterId").value || 0, }
+        }
+ 
+        if (!this._ParameterService.myform.get("parameterId").value) {
+            // PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.user.id || 1;
+            m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
+
+            console.log(m_data);
+ 
+            this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
+               
+                if (data) {
+                    this._ParameterService.myform.reset();
+                    // this._ParameterService.myform.get("IsDeleted").setValue(false);
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
+ 
+                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                }
+            });
+        } else {
+            PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
+            m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
+ 
+            console.log(m_data)
+            this._ParameterService.updateParameterMaster(m_data).subscribe((data) => {this.msg = data;if (data) {
+                        this._ParameterService.myform.reset();
+                       this.toastr.success('Record updated Successfully.', 'Updated !', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                    } else {
+                        this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                });
+ 
+        }
+ 
+        // this.onClear();
+        // }
+ 
+        this.onClose()
     }
+
+
+
+
+
+
 
     @ViewChild('parameterShortName') parameterShortName: ElementRef;
     @ViewChild('parameterName') parameterName: ElementRef;
@@ -293,7 +450,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
     checkFields(event) {
-debugger
+        debugger
         const formValues = this.parameterForm.value
         const fieldsTobeChecked = formValues.SexID
             && formValues.MinAge

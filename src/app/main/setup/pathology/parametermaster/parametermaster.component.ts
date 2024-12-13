@@ -48,7 +48,7 @@ export class ParametermasterComponent implements OnInit {
 
             { heading: "IsPrintDisSummary", key: "isPrintDisSummary",width: 100, sort: true, align: 'left', emptySign: 'NA' },
             
-            { heading: "AddedBy", key: "addedBy",width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "AddedBy", key: "addedBy",width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
             { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
             {
@@ -203,7 +203,7 @@ export class ParametermasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
         {
             maxWidth: "100vw",
-            height: '100%',
+            height: '98%',
             width: '70%',
             data: row
         });

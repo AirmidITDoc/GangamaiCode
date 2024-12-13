@@ -31,7 +31,7 @@ export class ParametermasterService {
 
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
-            ParameterID: [""],
+            parameterId: [""],
             ParameterName: [
                 "",
                 [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
@@ -92,7 +92,7 @@ export class ParametermasterService {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             Formula: [""],
-            ParameterID:[""],
+            parameterId:[""],
             Formulapara:[""],
             OPrator:[""],
             parameterName:[""],
@@ -136,8 +136,8 @@ export class ParametermasterService {
     }
 
     public insertParameterMaster(Param: any, showLoader = true) {
-        if (Param.ParameterID) {
-            return this._httpClient.PutData("PathParameterMaster/" + Param.ParameterID, Param, showLoader);
+        if (Param.parameterId) {
+            return this._httpClient.PutData("PathParameterMaster/" + Param.parameterId, Param, showLoader);
         } else 
         
         return this._httpClient.PostData("PathParameterMaster", Param, showLoader);
@@ -180,13 +180,13 @@ export class ParametermasterService {
         if(this.is_numeric) {
             return this._httpClient.PostData(
                 "Generic/GetByProc?procName=m_Rtrv_PathParameterRangeWithAge",
-                { ParameterID: param }
+                { parameterId: param }
             ); 
         }
         else{
         return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_PathDescriptiveValues_1",
-            { ParameterID: param }
+            { parameterId: param }
         ); 
     }
     }
