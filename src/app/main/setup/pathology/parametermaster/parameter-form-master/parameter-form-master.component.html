@@ -9,7 +9,7 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                {{parameterForm.controls.ParameterID.value?"Modify Parameter Master":"New
+                {{parameterForm.controls.parameterId.value?"Modify Parameter Master":"New
                 Parameter Master"}}
             </span>
         </div>
@@ -46,7 +46,7 @@
                             <form [formGroup]="parameterForm">
 
                                 <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
-                                    <input type="hidden" name="ParameterID" formControlName="ParameterID">
+                                    <input type="hidden" name="ParameterID" formControlName="parameterId">
 
                                     <div>
                                         <!-- <mat-form-field appearance="outline" fxFlex="65%">
@@ -159,11 +159,15 @@
                                                 [(ngModel)]="vUnitId">
                                                 
                                         </mat-form-field> -->
+
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-autocomplete label="UnitId" formControlName="UnitId"
+                                            <airmid-autocomplete 
+                                                label="UnitId" 
+                                                formControlName="UnitName"
                                                 [formGroup]="parameterForm"
                                                 [validations]="getValidationUnitMessages().UnitId"
-                                                [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
+                                                [mode]= "autocompleteModeUnitId"
+                                                (selectDdlObject)="selectChangeUnitId($event)">
                                             </airmid-autocomplete>
                                         </div>
 
