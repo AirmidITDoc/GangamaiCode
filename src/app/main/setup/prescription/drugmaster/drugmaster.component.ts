@@ -31,11 +31,11 @@ export class DrugmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DrugMaster/List",
         columnsList: [
-            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:200 },
+            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA', width:500 },
-            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:200  },
+            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:150  },
             // { heading: "Class Id", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:200,align: "center" },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:150,align: "center" },
            
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -121,7 +121,7 @@ export class DrugmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewDrugMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '50%',
+                height: '40%',
                 width: '70%',
             });
         dialogRef.afterClosed().subscribe(result => {

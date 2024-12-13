@@ -29,13 +29,18 @@ export class RegistrationComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+    nowdate = new Date();
+    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
+    toDate = this.datePipe.transform(Date.now(), 'dd/MM/yyyy');
+    fromDate = this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
 
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
             { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PrefixId", key: "prefixId", sort: true, align: 'left', emptySign: 'NA', width:30 },
-            { heading: "GenderId", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "Prefix Id", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "GenderId", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 100},
             { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -45,13 +50,13 @@ export class RegistrationComponent implements OnInit {
             { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:6 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AreaId", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 30  },
-            { heading: "CityId", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            // { heading: "AreaId", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 30  },
+            // { heading: "CityId", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "StateId", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "CountryId", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "ReligionId", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            // { heading: "StateId", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            // { heading: "CountryId", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            // { heading: "ReligionId", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            // { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
@@ -101,8 +106,10 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "11/09/2024", opType: OperatorComparer.Equals },
+            // { fieldName: "From_Dt", fieldValue: "01/12/2024", opType: OperatorComparer.Equals },
+            // { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -112,7 +119,7 @@ export class RegistrationComponent implements OnInit {
     }
 
     constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,public datePipe: DatePipe) { }
 
     ngOnInit(): void {
 

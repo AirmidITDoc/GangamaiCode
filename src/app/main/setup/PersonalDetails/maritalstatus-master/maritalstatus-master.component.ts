@@ -81,7 +81,7 @@ export class MaritalstatusMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewMaritalstatusComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

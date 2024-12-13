@@ -42,8 +42,7 @@ export class SupplierMasterService {
             CountryName: [""],
             CreditPeriod: ["",
                 [
-                    Validators.required,
-                    // Validators.pattern("^\d{1,3}[D|M|Y]$") // eg- 2 Months
+                    Validators.required
                 ]
             ],
             Mobile:['', 
@@ -83,10 +82,9 @@ export class SupplierMasterService {
             GSTNo: ["", 
                 [
                     Validators.required,
-                    Validators.maxLength(15),
-                    // Validators.pattern("/^([0-2][0-9]|3[0-7])[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/"), //eg-22ABCDE1234F1Z5
+                    Validators.maxLength(15)
                 ]
-            ], 
+            ], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
             PanNo: ["",
                 [
                     Validators.required,

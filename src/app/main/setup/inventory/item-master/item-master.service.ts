@@ -6,10 +6,13 @@ import { ApiCaller } from "app/core/services/apiCaller";
 @Injectable({
     providedIn: "root",
 })
+
 export class ItemMasterService {
+
     currencyMasterSave(value: any) {
         throw new Error("Method not implemented.");
     }
+
     myform: FormGroup;
     myformSearch: FormGroup;
 
@@ -34,56 +37,102 @@ export class ItemMasterService {
 
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
-            ItemID: [""], 
-            ItemName:['', [
-                Validators.required,
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-              ]],
-            ItemTypeID: [""],
-            ItemTypeName: [""],
-            ItemCategoryId: ["",],
-            ItemCategoryName: [""],
-            ItemGenericNameId: [""],
-            ItemGenericName: [""],
-            ItemClassId: [""],
-            ItemClassName: [""],
-            PurchaseUOMId: [""],
-            UnitofMeasurementName: [""],
-            StockUOMId: [""],
-            ConversionFactor: ["", Validators.pattern("[0-9]+")],
-            CurrencyId: [""],
-            CurrencyName: [""],
-           // TaxPer: ["", [Validators.required, Validators.pattern("[0-9]+")]],
-            IsBatchRequired: ["true"],
-            MinQty: ["", Validators.pattern("[0-9]+")],
-            MaxQty: ["", Validators.pattern("[0-9]+")],
-            ReOrder: ["", Validators.pattern("[0-9]+")],
-            IsNursingFlag: ["true"],
-            HSNcode: ["", Validators.required],
-            CGST: [""],
-            SGST: [""],
-            IGST: [""],
-            IsNarcotic: ["true"],
-            ManufId: [""],
-            ManufName: [""],
-            ProdLocation: [""],
-            IsH1Drug: ["true"],
-            IsScheduleH: ["true"],
-            IsHighRisk: ["true"],
-            IsScheduleX: ["true"],
-            IsLASA: ["true"],
-            IsEmgerency: ["true"],
-            AddedByName: [""],
-            IsDeleted: ["false"],
-            action: [""],
-            StoreId: [""],
-            Storagelocation:[""],
-            CompanyId:["", Validators.required],
-            DrugType:[""],
-            ItemColorcode:[""],
-            MaxDisc:["",Validators.pattern("[0-9]+")],
-            CreateApproval:["true"],
-            // Verify:[""]
+             
+            // as per payload list (insert)
+                itemId: 0,
+                itemShortName: [""],
+                itemName: [""],
+                itemTypeId: [""],
+                itemCategaryId: [""],
+                itemGenericNameId: [""],
+                itemClassId: [""],
+                purchaseUomid: [""],
+                stockUomid: [""],
+                conversionFactor: [""],
+                currencyId: [""],
+                taxPer: [""],
+                isBatchRequired: true,
+                minQty: [""],
+                maxQty: [""],
+                reOrder: [""],
+                hsncode: [""],
+                cgst: [""],
+                sgst: [""],
+                igst: [""],
+                manufId: [""],
+                isNarcotic : true,
+                isH1drug: true,
+                isScheduleH: true,
+                isHighRisk: true,
+                isScheduleX: true,
+                isLasa: true,
+                isEmgerency: true,
+                drugType: [""],
+                drugTypeName: [""],
+                prodLocation: [""],
+                itemCompnayId: [""],
+                itemTime: [""],
+                mAssignItemToStores: [
+                    {
+                        assignId: [""],
+                        storeId: [""],
+                        itemId: [""]
+                    }
+                ]
+
+             
+        //     ItemID: [""], 
+        //     ItemName:['', [
+        //         Validators.required,
+        //         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+        //       ]],
+        //     ItemTypeID: [""],
+        //     ItemTypeName: [""],
+        //     ItemCategoryId: ["",],
+        //     ItemCategoryName: [""],
+        //     ItemGenericNameId: [""],
+        //     ItemGenericName: [""],
+        //     ItemClassId: [""],
+        //     ItemClassName: [""],
+        //     PurchaseUOMId: [""],
+        //     UnitofMeasurementName: [""],
+        //     StockUOMId: [""],
+        //     ConversionFactor: ["", Validators.pattern("[0-9]+")],
+        //     CurrencyId: [""],
+        //     CurrencyName: [""],
+        //    // TaxPer: ["", [Validators.required, Validators.pattern("[0-9]+")]],
+        //     IsBatchRequired: ["true"],
+        //     MinQty: ["", Validators.pattern("[0-9]+")],
+        //     MaxQty: ["", Validators.pattern("[0-9]+")],
+        //     ReOrder: ["", Validators.pattern("[0-9]+")],
+        //     IsNursingFlag: ["true"],
+        //     HSNcode: ["", Validators.required],
+        //     CGST: [""],
+        //     SGST: [""],
+        //     IGST: [""],
+        //     IsNarcotic: ["true"],
+        //     ManufId: [""],
+        //     ManufName: [""],
+        //     ProdLocation: [""],
+        //     IsH1Drug: ["true"],
+        //     IsScheduleH: ["true"],
+        //     IsHighRisk: ["true"],
+        //     IsScheduleX: ["true"],
+        //     IsLASA: ["true"],
+        //     IsEmgerency: ["true"],
+        //     AddedByName: [""],
+        //     IsDeleted: ["false"],
+        //     action: [""],
+        //     StoreId: [""],
+        //     Storagelocation:[""],
+        //     CompanyId:["", Validators.required],
+        //     DrugType:[""],
+        //     ItemColorcode:[""],
+        //     MaxDisc:["",Validators.pattern("[0-9]+")],
+        //     CreateApproval:["true"],
+        //     // Verify:[""]
+
+
         });
     }
 

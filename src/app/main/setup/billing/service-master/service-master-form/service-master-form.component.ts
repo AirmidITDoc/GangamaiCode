@@ -102,8 +102,6 @@ import { error } from "console";
   autocompleteModegroupName:string="GroupName";
   autocompleteModesubGroupName:string="SubGroupName";
   autocompleteModetariff: string = "Tariff";
-  autocompleteModedoctor: string = "ConDoctor";
-
   confirmDialogRef: any;
   grid: any;
 
@@ -125,6 +123,7 @@ import { error } from "console";
       'classId',
       'className',
       'ClassRate',
+      'action'
     ];
     
   ngOnInit(): void {
@@ -399,7 +398,6 @@ keyPressCharater(event){
   groupId=0;
   subGroupId=0;
   tariffId=0;
-  doctorId=0;
 
   selectChangegroupName(obj:any){
     this.groupId=obj.value;
@@ -410,10 +408,6 @@ keyPressCharater(event){
   selectChangetariff(obj: any){
     console.log(obj);
     this.tariffId=obj.value
-  }
-  selectChangedoctor(obj: any){
-    console.log(obj);
-    this.doctorId=obj.value
   }
 
   getValidationGroupMessages(){
@@ -434,13 +428,6 @@ keyPressCharater(event){
     return{
       TariffId: [
         { name: "required", Message: "Tariff Name is required" }
-      ]
-    }
-  }
-  getValidationdoctorMessages(){
-    return{
-      DoctorId: [
-        { name: "required", Message: "Doctor Name is required" }
       ]
     }
   }

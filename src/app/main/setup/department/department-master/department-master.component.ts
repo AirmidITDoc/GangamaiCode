@@ -73,12 +73,13 @@ export class DepartmentMasterComponent implements OnInit {
     
      
         ngOnInit(): void { }
+        
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(NewDepartmentComponent,
                 {
                     maxWidth: "45vw",
-                    height: '35%',
+                    height: '30%',
                     width: '70%',
                     data: row
                 });

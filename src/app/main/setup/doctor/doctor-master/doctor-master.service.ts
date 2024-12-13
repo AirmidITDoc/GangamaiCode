@@ -67,7 +67,7 @@ export class DoctorMasterService {
             IsConsultant: ["1"],
             IsRefDoc: ["0"],
             isActive: ['1'],
-            DoctorTypeId: [""],
+            DoctorTypeId: ["",Validators.required],
             DoctorType: [""],
             PassportNo: [""],
             ESINO: [

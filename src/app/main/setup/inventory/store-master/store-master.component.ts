@@ -25,52 +25,37 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 })
 export class StoreMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
+ 
     constructor(public _StoreMasterService: StoreMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-        apiUrl: "StoreMaster/List",
-        columnsList: [
-                { heading: "storeId", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "storeShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "storeName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "indentPrefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "indentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "purchasePrefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "purchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "grnPrefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "grnNo", key: "grnNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "grnreturnNoPrefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "grnreturnNo", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "issueToDeptPrefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "issueToDeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "returnFromDeptNoPrefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "returnFromDeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "workOrderPrefix", key: "workOrderPrefix", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "workOrderNo", key: "workOrderNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharSalCountId", key: "pharSalCountId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharSalRecCountId", key: "pharSalRecCountId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharSalReturnCountId", key: "pharSalReturnCountId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharAdvId", key: "pharAdvId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharAdvReptId", key: "pharAdvReptId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharAdvRefId", key: "pharAdvRefId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "pharAdvRefReptId", key: "pharAdvRefReptId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "printStoreName", key: "printStoreName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "dlNo", key: "dlNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "gstin", key: "gstin", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "storeAddress", key: "storeAddress", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "hospitalMobileNo", key: "hospitalMobileNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "hospitalEmailId", key: "hospitalEmailId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "printStoreUnitName", key: "printStoreUnitName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "isPharStore", key: "isPharStore", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "isWhatsAppMsg", key: "isWhatsAppMsg", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "whatsAppTemplateId", key: "whatsAppTemplateId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "isSmsmsg", key: "isSmsmsg", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "smstemplateId", key: "smstemplateId", sort: true, align: 'left', emptySign: 'NA' },
-           
+            apiUrl: "StoreMaster/List",
+            columnsList: [
+                { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Short Name", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: " Indent Prefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Pur Prefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Purchase No", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Grn Prefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "GRN No", key: "grnNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "GRN Return Pre", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Grn Ret No", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Issue To dept", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "No", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Ret Fr Dept", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Ret Fr DeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Issue to DeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
+
                 { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-                { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
@@ -108,13 +93,12 @@ export class StoreMasterComponent implements OnInit {
         }
      
         ngOnInit(): void { }
-        
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(StoreFormMasterComponent,
                 {
                     maxWidth: "90vw",
-                    height: '90%',
+                    height: '98%',
                     width: '90%',
                     data: row
                 });

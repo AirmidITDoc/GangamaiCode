@@ -28,10 +28,10 @@
         </div>
        
         <mat-card>
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
+            <div fxFlex="100" fxLayout="row wrap">
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="Supplier Type" formControlName="SupplierType"
+                    <airmid-autocomplete label="SupplierType" formControlName="SupplierType"
                         [formGroup]="supplierForm"
                         [validations]="getValidationSupplierTypeMessages().SupplierType"
                         [mode]="autocompleteModeSupplierType"
@@ -80,9 +80,6 @@
                             required</mat-error>
                     </mat-form-field>
                 </div>
-            </div>
-
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -117,18 +114,15 @@
                 </div>
                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="State Name" formControlName="StateId"
+                    <airmid-autocomplete label="State" formControlName="StateId"
                         [formGroup]="supplierForm"
                         [validations]="getValidationStateMessages().StateId"
                         [mode]="autocompleteModestate">
                     </airmid-autocomplete>
                 </div>
-            </div>
-
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="Country Name" formControlName="CountryId"
+                    <airmid-autocomplete label="Country" formControlName="CountryId"
                         [formGroup]="supplierForm"
                         [validations]="getValidationCountryMessages().CountryId"
                         [mode]="autocompleteModecountry"
@@ -163,7 +157,7 @@
         </div>
         <mat-card>
             <!-- oninput="this.value = this.value.replace(/['^[a-zA-Z0-9]*$']/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" -->
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
+            <div fxFlex="100" fxLayout="row wrap">
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -211,10 +205,9 @@
                             required</mat-error>
                     </mat-form-field> -->
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Credit Period</mat-label>
+                        <mat-label>CreditPeriod</mat-label>
                         <input name="CreditPeriod" placeholder="Enter CreditPeriod" formControlName="CreditPeriod" matInput
                             (keydown)="onEnterCreditPeriod($event)" #creditp [(ngModel)]="vCreditPeriod">
                             <mat-error
@@ -223,9 +216,6 @@
                             </mat-error>
                     </mat-form-field>
                 </div>
-            </div>
-
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
@@ -236,7 +226,6 @@
                         (selectDdlObject)="selectChangemodeofpayment($event)">
                     </airmid-autocomplete>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                     <airmid-autocomplete label="TermOfPayment" formControlName="TermOfPayment"
@@ -246,7 +235,6 @@
                         (selectDdlObject)="selectChangetermofpayment($event)">
                     </airmid-autocomplete>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>TaxNature</mat-label>
@@ -258,7 +246,6 @@
                             </mat-error>
                     </mat-form-field>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>GSTNo</mat-label>
@@ -270,11 +257,6 @@
                             </mat-error>
                     </mat-form-field>
                 </div>
-                
-            </div>
-
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>LicNo</mat-label>
@@ -286,7 +268,6 @@
                             </mat-error>
                     </mat-form-field>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Exp date</mat-label>
@@ -297,7 +278,6 @@
 
                     </mat-form-field>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>DlNo</mat-label>
@@ -309,7 +289,8 @@
                             </mat-error>
                     </mat-form-field>
                 </div>
-                
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                </div>
             </div>
         </mat-card>
     </form>
@@ -323,9 +304,7 @@
         </div>
 
         <mat-card>
-
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
-
+            <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
                     <airmid-autocomplete label="BankName" formControlName="BankName"
                         [formGroup]="supplierForm"
@@ -334,7 +313,6 @@
                         (selectDdlObject)="selectChangebankName($event)">
                     </airmid-autocomplete>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Bank Branch</mat-label>
@@ -345,8 +323,8 @@
                             BankBranch is required,Enter only Alphabets
                             </mat-error>
                     </mat-form-field>
-                </div>
 
+                </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -360,7 +338,6 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>IFSCcode</mat-label>
@@ -388,8 +365,7 @@
 
         <mat-card>
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
-                
+            <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -405,7 +381,6 @@
                     </mat-form-field>
 
                 </div>
-
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                 
                     <airmid-autocomplete label="StoreName" formControlName="StoreId"

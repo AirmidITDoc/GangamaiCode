@@ -55,6 +55,8 @@ export class ServiceMasterComponent implements OnInit {
 
             { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
 
+            // { heading: "TariffId", key: "tariffId", sort: true, align: 'left', emptySign: 'NA',width:100 },
+
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
 
             { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:100 },
@@ -95,12 +97,12 @@ export class ServiceMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "TariffId", fieldValue: "10006", opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row:125
     }
 
     constructor(

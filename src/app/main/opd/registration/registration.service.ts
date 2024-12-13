@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -45,55 +45,199 @@ export class RegistrationService {
   }
   createPesonalForm() {
     return this._formBuilder.group({
-      RegNo:'',
-      RegId: '',
-      PrefixId: '',
-      PrefixID: '',
-      FirstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      MiddleName: ['', [
-      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      LastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      GenderId: '',
-      Address: '',
-      DateOfBirth:[{ value: this.registerObj.DateofBirth }],// [{ value: this.registerObj.DateofBirth }, Validators.required],
-      AgeYear: '',
-      AgeMonth: '',
-      AgeDay: '',
-      PhoneNo: ['', [
-      
-        Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(15),
-      ]],
-      MobileNo: ['', [
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]],
-      AadharCardNo: ['', [
-        // Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),
-      ]],
-      PanCardNo: '',
-      MaritalStatusId: '',
-      ReligionId: '',
-      AreaId: '',
-      CityId: '',
-      StateId: '',
-      CountryId: '',
-      IsCharity:'',
+        RegId: '',
+        RegNo: '',
+        PrefixId: ['', [Validators.required]],
+        FirstName: ['', [
+            Validators.required,
+            Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+        ]],
+        MiddleName: ['', [
+            Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+        ]],
+        LastName: ['', [
+            Validators.required,
+            Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+        ]],
+        GenderId: new FormControl('', [Validators.required]),
+        Address: '',
+        DateOfBirth: [{ value: this.registerObj.DateofBirth }],
+        AgeYear: ['', [
+            Validators.required,
+            Validators.maxLength(3),
+            Validators.pattern("^[0-9]*$")]],
+        AgeMonth: ['', [
+            Validators.pattern("^[0-9]*$")]],
+        AgeDay: ['', [
+            Validators.pattern("^[0-9]*$")]],
+        PhoneNo: ['', [Validators.minLength(10),
+            Validators.maxLength(15),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
+        MobileNo: ['', [Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
+        AadharCardNo: ['', Validators.compose([Validators.minLength(12),
+            Validators.maxLength(12)
+        ])],
+        PanCardNo: '',
+        MaritalStatusId: '',
+        ReligionId: '',
+        AreaId: '',
+        CityId: '',
+        StateId: '',
+        CountryId: '',
+        IsCharity: '',
     });
+    // return this._formBuilder.group({
+    //   RegNo:'',
+    //   RegId: '',
+    //   PrefixId: '',
+    //   PrefixID: '',
+    //   FirstName: ['', [
+    //     Validators.required,
+    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //   ]],
+    //   MiddleName: ['', [
+    //   Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //   ]],
+    //   LastName: ['', [
+    //     Validators.required,
+    //     Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+    //   ]],
+    //   GenderId: '',
+    //   Address: '',
+    //   DateOfBirth:[{ value: this.registerObj.DateofBirth }],// [{ value: this.registerObj.DateofBirth }, Validators.required],
+    //   AgeYear: '',
+    //   AgeMonth: '',
+    //   AgeDay: '',
+    //   PhoneNo: ['', [
+      
+    //     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+    //     Validators.minLength(10),
+    //     Validators.maxLength(15),
+    //   ]],
+    //   MobileNo: ['', [
+    //     Validators.required,
+    //     Validators.pattern("^[0-9]*$"),
+    //     Validators.minLength(10),
+    //     Validators.maxLength(10),
+    //   ]],
+    //   AadharCardNo: ['', [
+    //     // Validators.required,
+    //     Validators.pattern("^[0-9]*$"),
+    //     Validators.minLength(12),
+    //     Validators.maxLength(12),
+    //   ]],
+    //   PanCardNo: '',
+    //   MaritalStatusId: '',
+    //   ReligionId: '',
+    //   AreaId: '',
+    //   CityId: '',
+    //   StateId: '',
+    //   CountryId: '',
+    //   IsCharity:'',
+    // });
   }
+   getValidationFirstNameMessages() {
+        return {
+            FirstName: [
+                { name: "required", Message: "First Name is required" },
+                { name: "maxlength", Message: "First name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+    getValidationMiddleNameMessages() {
+        return {
+            MiddleName: [
+                { name: "required", Message: "Middle Name is required" },
+                { name: "maxlength", Message: "Middle name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    } 
+    getValidationLastNameMessages() {
+        return {
+            LastName: [
+                { name: "required", Message: "Last Name is required" },
+                { name: "maxlength", Message: "Last name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }   
+    getValidationPrefixMessages() {
+        return {
+            PrefixId: [
+                { name: "required", Message: "Prefix Name is required" }
+            ]
+        };
+    }
+    getValidationGenderMessages() {
+        return {
+            GenderId: [
+                { name: "required", Message: "Gender is required" }
+            ]
+        };
+    }
+    getValidationAddressMessages() {
+        return {
+            Address: [
+                { name: "required", Message: "Address is required" }
+            ]
+        };
+    }
+    getValidationAreaMessages() {
+        return {
+            AreaId: [
+                { name: "required", Message: "Area Name is required" }
+            ]
+        };
+    }
+    getValidationCityMessages() {
+        return {
+            CityId: [
+                { name: "required", Message: "City Name is required" }
+            ]
+        };
+    }
+    getValidationStateMessages() {
+        return {
+            StateId: [
+                { name: "required", Message: "State Name is required" }
+            ]
+        };
+    }
+    // getValidationMessages() {
+    //   return {
+    //       PrefixId: [
+    //           { name: "required", Message: "cashCounter Name is required" }
+    //       ]
+    //   };
+    // }
+    getValidationReligionMessages() {
+        return {
+            ReligionId: [
+                { name: "required", Message: "Religion Name is required" }
+            ]
+        };
+    }
+    getValidationCountryMessages() {
+        return {
+            CountryId: [
+                { name: "required", Message: "Country Name is required" }
+            ]
+        };
+    }
+    getValidationMstatusMessages() {
+        return {
+            MaritalStatusId: [
+                { name: "required", Message: "Mstatus Name is required" }
+            ]
+        };
+    }
 
   public getRegistrationList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList",employee)
@@ -203,6 +347,11 @@ public getPatientTypeCombo() {
     //         ]
     //     };
     }
+    public RegstrationtSaveData(Param: any, showLoader = true) {
+        if (Param.regID) {
+            return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
+        } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
+    }
     
     public RegstrationtSave(Param: any, showLoader = true) {
         if (Param.regID) {
@@ -226,7 +375,7 @@ public getPatientTypeCombo() {
 
   
   public getcityMaster(Id,version) {
-    debugger
+
     return this._httpClient1.GetData("CityMaster?Id="+Id+"&version="+version);
 }
 public getNewRegistrationList(employee) {

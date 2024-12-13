@@ -1,301 +1,59 @@
-<div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar">
-    <mat-toolbar style="width: 100%;justify-content: space-between;height:40px;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">menu
-            </mat-icon>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Store Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Store Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
-        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-            matTooltip="Close">
-                <mat-icon>close</mat-icon>
-        </button>
-    </mat-toolbar>
-    <!-- #tabGroup (selectedTabChange)="tabChanged($event)" -->
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card"> 
-                <mat-tab-group class="mat-tab-header-small">
-                    <mat-tab label="Store Detail">
-                        <div class="modal-wrapper grid-container">
-
-        <div class="modal-body" fusePerfectScrollbar>
-            <div class="modal-body-container">
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
             <form [formGroup]="storeForm">
                 <input type="hidden" name="storeId" formControlName="storeId">
-               
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                    class="top-header accent heading-container h-40 border-radius-4">
-                    <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Details</span>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <airmid-textbox 
+                        label="Store Shortname"
+                        formControlName="storeShortName"
+                        [value]=""
+                        [formGroup]="storeForm"
+                        [validations]="_StoreMasterService.getValidationMessages().storeShortName"
+                        [maxLength]="300">
+                    </airmid-textbox> 
+                <!-- </div>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
+                    <airmid-textbox 
+                        label="Store name"
+                        formControlName="storeName"
+                        [value]=""
+                        [formGroup]="storeForm"
+                        [validations]="_StoreMasterService.getValidationMessages().storeName"
+                        [maxLength]="300">
+                    </airmid-textbox> 
                 </div>
-
-                <mat-card>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="Store Short Name"
-                            formControlName="storeShortName"
-                            [value]=""
-                            [formGroup]="storeForm"
-                            [validations]="_StoreMasterService.getValidationMessages().storeShortName"
-                            [maxLength]="50">
-                        </airmid-textbox> 
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="Store Name"
-                            formControlName="storeName"
-                            [value]=""
-                            [formGroup]="storeForm"
-                            [validations]="_StoreMasterService.getValidationMessages().storeName"
-                            [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-                </mat-card>
-
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                    class="top-header accent heading-container h-40 border-radius-4">
-                    <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Number Details</span>
-                </div>
-                
-                <mat-card>
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Indent Prefix"
-                                formControlName="indentPrefix"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().indentPrefix"
-                                [maxLength]="50">
-                            </airmid-textbox> 
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Indent No"
-                                formControlName="indentNo"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().indentNo"
-                                [maxLength]="50">
-                            </airmid-textbox> 
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="GRN Return No Prefix"
-                                formControlName="grnreturnNoPrefix"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().grnreturnNoPrefix"
-                                [maxLength]="50">
-                            </airmid-textbox> 
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="GRN Return No"
-                                formControlName="grnreturnNo"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().grnreturnNo"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                    </div>
-
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Purchase Prefix"
-                                formControlName="purchasePrefix"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().purchasePrefix"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Purchase No"
-                                formControlName="purchaseNo"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().purchaseNo"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Issue To Dept Prefix"
-                                formControlName="issueToDeptPrefix"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().issueToDeptPrefix"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Issue To Dept No"
-                                formControlName="issueToDeptNo"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().issueToDeptNo"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                    </div>
-
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="GRN Prefix"
-                                formControlName="grnPrefix"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().grnPrefix"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="GRN No"
-                                formControlName="grnNo"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().grnNo"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Return From Dept No Prefix"
-                                formControlName="returnFromDeptNoPrefix"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().returnFromDeptNoPrefix"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Return From Dept No"
-                                formControlName="returnFromDeptNo"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().returnFromDeptNo"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                    </div>
-                </mat-card>
-
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                    class="top-header accent heading-container h-40 border-radius-4">
-                    <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Cash Counter Details</span>
-                </div>
-
-                <mat-card>
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Phar Sales Cash Counter"
-                                formControlName="pharSalCountId"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().pharSalCountId"
-                                [maxLength]="50">
-                                <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button> -->
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Phar Sales Rec Cash Counter"
-                                formControlName="pharSalRecCountId"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().pharSalRecCountId"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Phar Sales Return Cash Counter"
-                                formControlName="pharSalReturnCountId"
-                                [value]=""
-                                [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().pharSalReturnCountId"
-                                [maxLength]="50">
-                            </airmid-textbox>
-                        </div>
-                    </div>
-                </mat-card>
-
-
-                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>
                         <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
                     </mat-radio-group>
-                </div> -->
-                </form>
-            </div>
-                <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                            <span>Save</span>
-                        </button>
-                    </div> -->
                 </div>
-                </div>
-                    </mat-tab>
+            </form>
+        </div>
+        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
-
-
-                    <mat-tab label="Store Template Detail">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                            <form [formGroup]="_StoreMasterService.myform">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                        <div fxFlex.gt-sm="100%" fxFlex>
-
-                                            <mat-label style="font-size: medium;font-weight: bold;">Store
-                                                Details</mat-label>
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                style="height:200px;" [(ngModel)]="Header" required
-                                                formControlName="Header"></angular-editor>
-
-                                        </div>
-                                    </div>
-                                 </form>
-                            </div>
-                        </div>
-                    </mat-tab>
-                   
-                </mat-tab-group>
-
-                <div fxLayoutAlign="end">
-                    <div class="sales-footer-buttons gap-8">
-                        <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
-                            style="font-weight: bold;margin-right: 20px;">IsActive
-                        </mat-checkbox>
-                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>&nbsp;
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    </div>
-                </div>
-               
-                
-            </div>
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Reset</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <span>Save</span>
+            </button>
         </div>
     </div>
-    
-
-
+</div>

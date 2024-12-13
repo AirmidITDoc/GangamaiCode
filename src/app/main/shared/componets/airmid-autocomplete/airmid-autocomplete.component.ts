@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef, Optional, Self } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef, Optional, Self, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -10,6 +10,7 @@ import { take, takeUntil } from 'rxjs/operators';
     selector: "airmid-autocomplete",
     templateUrl: "./airmid-autocomplete.component.html",
     styleUrls: ["./airmid-autocomplete.component.scss"],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AirmidAutocompleteComponent implements OnInit {
     //@Input() label: string;
@@ -104,7 +105,6 @@ export class AirmidAutocompleteComponent implements OnInit {
                 .subscribe((data: any) => {
                     this.ddls = data as [];
                     this.filteredDdls.next(this.ddls.slice());
-                    debugger
                     if (this.value) {
                         this.formGroup.get(this.formControlName).setValue(this.value.toString());
                         this.control.setValue(this.value.toString());
@@ -152,15 +152,21 @@ export class AirmidAutocompleteComponent implements OnInit {
 
     }
     public onDdlChange($event) {
+        debugger
         this.formGroup.controls[this.formControlName].setValue($event.value);
         this.selectDdlObject.emit($event.value);
     }
     SetSelection(value) {
-        debugger 
         this.formGroup.get(this.formControlName).setValue(this.value.toString());
         this.control.setValue(this.value.toString());
         this.stateChanges.next();
         this.changeDetectorRefs.detectChanges();
         this.selectDdlObject.emit(value);
     }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes.value?.firstChange && changes.value?.currentValue) {
+            this.SetSelection(changes.value.currentValue);
+        }
+    }
+
 }

@@ -33,19 +33,20 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <!-- <airmid-autocomplete [label]="'Prefix'"  [ddlCtrl]="f.PrefixId"  [selectedValue]="data?.prefixId"
-                                         [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="Prefix" formControlName="PrefixId"
                                              [formGroup]="personalFormGroup" [value]="data?.prefixId"
-                                            [validations]="getValidationMessages().PrefixId"
-                                            [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)">
+                                            [validations]="_registerService.getValidationPrefixMessages().PrefixId"
+                                            [mode]="autocompleteModeprefix">
                                         </airmid-autocomplete>
-                                    <!-- test=>    {{personalFormGroup.controls["PrefixId"].value}} -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <airmid-textbox label="First Name" formControlName="FirstName" [value]="" [formGroup]="personalFormGroup"
+                                            [validations]="_registerService.getValidationFirstNameMessages().FirstName" [maxLength]="50">
+                                        </airmid-textbox>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>First Name</mat-label>
+
                                             <input name="FirstName" formControlName="FirstName" placeholder="First Name"
                                                 matInput required type="text" [(ngModel)]="registerObj.firstName" #fname
                                                 (keydown)="onEnterfname($event)">
@@ -53,12 +54,16 @@
                                                 *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
                                                 First Name is required Enter only
                                                 Alphabets</mat-error>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Middle Name</mat-label>
+                                        <airmid-textbox label="Middle Name" formControlName="MiddleName" [value]="" [formGroup]="personalFormGroup"
+                                            [validations]="_registerService.getValidationMiddleNameMessages().MiddleName" [maxLength]="50">
+                                        </airmid-textbox>
+                                                                                
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Middle Name</mat-label>                                           
                                             <input name="MiddleName" formControlName="MiddleName"
                                                 placeholder="Middle Name"
                                                 [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('MiddleName').errors }"
@@ -69,11 +74,15 @@
                                                 Middle Name is required
                                                 Enter
                                                 only Alphabets</mat-error>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <airmid-textbox label="Last Name" formControlName="LastName" [value]="" [formGroup]="personalFormGroup"
+                                            [validations]="_registerService.getValidationLastNameMessages().LastName" [maxLength]="50">
+                                        </airmid-textbox>
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Last Name</mat-label>
                                             <input name="LastName" formControlName="LastName" placeholder="Last Name"
                                                 [ngClass]="{ 'is-invalid': submitted && personalFormGroup.get('LastName').errors }"
@@ -84,15 +93,15 @@
                                                 Name is required Enter
                                                 only
                                                 Alphabets</mat-error>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModegender" (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete> -->
-                                        <!-- <airmid-autocomplete [label]="'Gender'"  [ddlCtrl]="f.GenderId"  [selectedValue]="data?.genderId"
-                                         [mode]="autocompleteModegender" (selectDdlObject)="selectChangeprefix($event)"></airmid-autocomplete> -->
-
+                                         <airmid-autocomplete label="Gender" formControlName="GenderId"
+                                            [formGroup]="personalFormGroup" [value]="data?.genderId"
+                                            [validations]="_registerService.getValidationGenderMessages().GenderId"
+                                            [mode]="autocompleteModegender">
+                                        </airmid-autocomplete>
 
                                     </div>
 
@@ -100,7 +109,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <input matInput [matDatepicker]="validFromPicker"
-                                                formControllName="DateOfBirth" #bday [value]="registerObj.dateofBirth"
+                                                formControlName="DateOfBirth" #bday
                                                 (keydown)="onEnterbday($event)"
                                                 (dateChange)="onChangeDateofBirth($event.value)"
                                                 placeholder="mm/dd/yyyy">
@@ -115,7 +124,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (Y)</mat-label>
                                                 <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)"
-                                                    matInput [ngModel]="registerObj.ageYear"
+                                                    matInput
                                                     (ngModelChange)="registerObj.ageYear = $event" required
                                                     type="number" maxlength="4" #agey (keydown)="onEnteragey($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
@@ -127,7 +136,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (M)</mat-label>
                                                 <input name="AgeMonth" formControlName="AgeMonth" placeholder="Age (M)"
-                                                    matInput [ngModel]="registerObj.ageMonth"
+                                                    matInput
                                                     (ngModelChange)="registerObj.AgeMonth = $event" type="number"
                                                     maxlength="2" #agem (keydown)="onEnteragem($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
@@ -138,7 +147,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Age (D)</mat-label>
                                                 <input name="AgeDay" formControlName="AgeDay" placeholder="Age (D)"
-                                                    matInput [ngModel]="registerObj.ageDay"
+                                                    matInput
                                                     (ngModelChange)="registerObj.AgeDay = $event" type="number"
                                                     maxlength="2" #aged (keydown)="onEnteraged($event)"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
@@ -154,7 +163,7 @@
                                             <mat-label>AadharCard Number</mat-label>
                                             <input name="AadharCardNo" formControlName="AadharCardNo" #AadharCardNo
                                                 placeholder="AadharCardNo" matInput required
-                                                [(ngModel)]="registerObj.aadharCardNo" max="999999999999"
+                                                max="999999999999"
                                                 min="100000000011" autocomplete="off" maxlength="12"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                                 required="required" value="987665868811"
@@ -168,15 +177,17 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <airmid-textbox label="Address" formControlName="Address" [value]="" [formGroup]="personalFormGroup"
+                                            [validations]="_registerService.getValidationAddressMessages().Address">
+                                        </airmid-textbox>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Address</mat-label>
                                             <input name="Address" formControlName="Address" placeholder="Address"
-                                                matInput #address (keydown)="onEnteraddress($event)"
-                                                [(ngModel)]="registerObj.address">
+                                                matInput #address (keydown)="onEnteraddress($event)">
                                             <mat-error
                                                 *ngIf="personalFormGroup.get('Address').invalid && personalFormGroup.get('Address').touched">Please
                                                 enter Address </mat-error>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -184,8 +195,8 @@
                                      
                                         <airmid-autocomplete label="Area" formControlName="AreaId"
                                             [value]="data?.areaId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationAreaMessages().AreaId"
-                                            [mode]="autocompleteModearea" (selectDdlObject)="selectChangearea($event)">
+                                            [validations]="_registerService.getValidationAreaMessages().AreaId"
+                                            [mode]="autocompleteModearea">
                                         </airmid-autocomplete>
 
                                     </div>
@@ -195,41 +206,32 @@
                                      
                                         <airmid-autocomplete label="City" formControlName="CityId"
                                             [value]="data?.cityId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationCityMessages().CityId"
-                                            [mode]="autocompleteModecity" (selectDdlObject)="selectChangecity($event)">
+                                            [validations]="_registerService.getValidationCityMessages().CityId"
+                                            [mode]="autocompleteModecity">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModestate" (selectDdlObject)="selectChangestate($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="State" formControlName="StateId"
-                                            [value]="data?.state" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationStateMessages().StateId"
-                                            [mode]="autocompleteModestate"
-                                            (selectDdlObject)="selectChangestate($event)">
+                                            [value]="data?.stateId" [formGroup]="personalFormGroup"
+                                            [validations]="_registerService.getValidationStateMessages().StateId"
+                                            [mode]="autocompleteModestate">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="Country" formControlName="CountryId"
                                             [value]="data?.countryId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationCountryMessages().CountryId"
-                                            [mode]="autocompleteModecountry"
-                                            (selectDdlObject)="selectChangecountry($event)">
+                                            [validations]="_registerService.getValidationCountryMessages().CountryId"
+                                            [mode]="autocompleteModecountry">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModemstatus" (selectDdlObject)="selectChangemstatus($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="MaritalStatusId" formControlName="MaritalStatusId"
                                             [value]="data?.maritalStatusId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMstatusMessages().MaritalStatusId"
-                                            [mode]="autocompleteModemstatus"
-                                            (selectDdlObject)="selectChangemstatus($event)">
+                                            [validations]="_registerService.getValidationMstatusMessages().MaritalStatusId"
+                                            [mode]="autocompleteModemstatus">
                                         </airmid-autocomplete>
                                     </div>
                                     <!-- Phone number -->
@@ -240,7 +242,7 @@
                                                 <mat-label>Mobile Number</mat-label>
                                                 <input name="MobileNo" formControlName="MobileNo" #mobile
                                                     placeholder="Mobile Number" matInput required
-                                                    [(ngModel)]="registerObj.mobileNo" max="9999999999" min="1000000000"
+                                                    max="9999999999" min="1000000000"
                                                     autocomplete="off" maxlength="10"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                     required="required" value="9876658688"
@@ -256,27 +258,21 @@
                                                 <mat-label>Phone Number</mat-label>
                                                 <input name="PhoneNo" formControlName="PhoneNo"
                                                     placeholder="Phone Number" matInput
-                                                    [(ngModel)]="registerObj.phoneNo" max="9999999999" min="1000000000"
+                                                    max="9999999999" min="1000000000"
                                                     autocomplete="off" maxlength="10" #phone
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                                                     value="9876658688" (keydown.enter)="onEnterphone($event)"
                                                     (blur)="onEntermobile($event)">
-                                                <!-- <mat-error class="error" *ngIf="personalFormGroup.get('PhoneNo').invalid && personalFormGroup.get('PhoneNo').touched">10
-                                                    digits Mobile number is
-                                                    required</mat-error> -->
                                             </mat-form-field>
 
                                         </div>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModereligion" (selectDdlObject)="selectChangereligion($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="ReligionId" formControlName="ReligionId"
                                             [value]="data?.religionId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationReligionMessages().ReligionId"
-                                            [mode]="autocompleteModereligion"
-                                            (selectDdlObject)="selectChangereligion($event)">
+                                            [validations]="_registerService.getValidationReligionMessages().ReligionId"
+                                            [mode]="autocompleteModereligion">
                                         </airmid-autocomplete>
                                     </div>
                                     <!-- </div> -->

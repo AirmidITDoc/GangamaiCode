@@ -134,7 +134,7 @@ export class DosemasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewDoseMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '50%',
+                height: '40%',
                 width: '70%',
             });
         dialogRef.afterClosed().subscribe(result => {
