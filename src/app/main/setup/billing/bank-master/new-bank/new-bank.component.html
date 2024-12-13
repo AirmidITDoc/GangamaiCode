@@ -14,9 +14,11 @@
             </div>
         </div>
     </div>
+
     <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            <form [formGroup]="bankForm">
+        <form [formGroup]="bankForm">
+            <div class="modal-body-container">
+
 
                 <input type="hidden" name="bankId" formControlName="bankId">
 
@@ -27,29 +29,28 @@
                         [validations]="_BankMasterService.getValidationMessages().bankName" value="9876658688"
                         [maxlength]=maxLength [minlength]="minLength">
                     </app-airmid-textbox1>     -->
-                    
-                    
-                    <app-airmid-textbox1 label="Bank Name" formControlName="bankName" 
-                        [formGroup]="bankForm"   oninput=format1
-                        [validations]="_BankMasterService.getValidationMessages().bankName" value="987665868811"
-                        [maxlength]=maxLength [minlength]="minLength">
-                    </app-airmid-textbox1>   
 
-                                  
-                </div>
-            </form>
-        </div>
 
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                        </mat-radio-button>
-                    </mat-radio-group>
+                    <app-airmid-textbox1 label="Bank Name" formControlName="bankName" [formGroup]="bankForm"
+                        oninput=format1 [validations]="_BankMasterService.getValidationMessages().bankName"
+                        value="987665868811" [maxlength]=maxLength [minlength]="minLength">
+                    </app-airmid-textbox1>
+
+
                 </div>
-            </form>
-        </div>
+
+            </div>
+
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <mat-radio-group name="isActive" formControlName="isActive" value='true'>
+                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    </mat-radio-button>
+                    <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </form>
+
         <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
             <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>

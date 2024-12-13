@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewBankComponent implements OnInit {
 
+  
   bankForm: FormGroup;
   format="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);";
   format1="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);";
