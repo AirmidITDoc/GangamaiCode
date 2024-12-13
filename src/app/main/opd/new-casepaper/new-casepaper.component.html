@@ -779,10 +779,10 @@
                                     <div fxLayout="row" fxLayoutAlign="space-between">
                                         <form [formGroup]="caseFormGroup" fxLayoutAlign="space-between">
                                             <mat-radio-group aria-label="Select an option"
-                                                formControlName="LetteHeadRadio" (change)="LetterheadFilter($event)"
+                                                formControlName="LetteHeadRadio"  
                                                 fxLayout="row">
                                                 <mat-radio-button value="LetterHead"> Letter Head</mat-radio-button>
-                                                <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
+                                                <mat-radio-button value="NormalHead">Without LetterHead</mat-radio-button>
                                             </mat-radio-group>
 
                                             <mat-radio-group aria-label="Select an option"
@@ -832,8 +832,11 @@
                                                             Visit Information
                                                         </span>
                                                         <div class="gap-8">
-                                                            <button mat-raised-button>
-                                                                <mat-icon (click)="viewgetOpprescriptionReportwithheaderPdf(visitId)" matTooltip="Print">print</mat-icon>
+                                                            <button mat-raised-button (click)="viewgetOpprescriptionReportwithheaderPdf(visitId)" matTooltip="Print">
+                                                                <mat-icon >print</mat-icon>LetterHead
+                                                            </button>
+                                                            <button mat-raised-button  (click)="viewgetOpprescriptionReportwithoutheaderPdf(visitId)" matTooltip="Print">
+                                                                  <mat-icon >print</mat-icon>Without LetterHead
                                                             </button>
                                                             <button mat-raised-button>
                                                                 <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"

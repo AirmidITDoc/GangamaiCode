@@ -153,4 +153,7 @@ public getServiceList(param,loader = true){
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPRequestList",visistId);
   }
-}
+  public getvitalInfo(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query,{})
+  }
+} 

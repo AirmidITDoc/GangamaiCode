@@ -338,12 +338,14 @@ export class NewCasepaperComponent implements OnInit {
     this.PatientType = obj.PatientType;
     this.vMobileNo = obj.MobileNo;
     this.ConsultantDocId = obj.ConsultantDocId;
+    this.getVitalInfo(obj); 
     this.getpreviousVisitData(obj);
     this.getnewVisistList(obj);
     this.getServiceList();
     this.getVisistList();
     this.getRtrvTestService();
     this.getAdmittedDoctorCombo();
+   
   }
   getOptionText1(option) {
     if (!option)
@@ -359,17 +361,27 @@ export class NewCasepaperComponent implements OnInit {
     this._CasepaperService.RtrvPreviousprescriptionDetails(mdata).subscribe(Visit => {
       this.dsItemList.data = Visit as MedicineItemList[];
       this.Chargelist = Visit as MedicineItemList[];
-      console.log(this.dsItemList.data)
+      console.log(this.dsItemList.data)  
       if (this.dsItemList.data.length > 0) {
-     
-        this.vHeight = this.dsItemList.data[0].PHeight;
-        this.vWeight = this.dsItemList.data[0].PWeight;
-        this.vBMI = this.dsItemList.data[0].BMI;
-        this.vSpO2 = this.dsItemList.data[0].SpO2;
-        this.vTemp = this.dsItemList.data[0].Temp;
-        this.vPulse = this.dsItemList.data[0].Pulse;
-        this.vBSL = this.dsItemList.data[0].BSL;
-        this.vBP = this.dsItemList.data[0].BP;
+        if(this.vitalInfo[0].Height > 0){
+          this.vHeight = this.vitalInfo[0].Height;
+          this.vWeight = this.vitalInfo[0].PWeight;
+          this.vBMI = this.vitalInfo[0].BMI;
+          this.vSpO2 = this.vitalInfo[0].SpO2;
+          this.vTemp = this.vitalInfo[0].Temp;
+          this.vPulse = this.vitalInfo[0].Pulse;
+          this.vBSL = this.vitalInfo[0].BSL;
+          this.vBP = this.vitalInfo[0].BP;
+        }else{
+          this.vHeight = this.dsItemList.data[0].PHeight;
+          this.vWeight = this.dsItemList.data[0].PWeight;
+          this.vBMI = this.dsItemList.data[0].BMI;
+          this.vSpO2 = this.dsItemList.data[0].SpO2;
+          this.vTemp = this.dsItemList.data[0].Temp;
+          this.vPulse = this.dsItemList.data[0].Pulse;
+          this.vBSL = this.dsItemList.data[0].BSL;
+          this.vBP = this.dsItemList.data[0].BP;
+        } 
         this.vChiefComplaint = this.dsItemList.data[0].ChiefComplaint;
         this.vDiagnosis = this.dsItemList.data[0].Diagnosis;
         this.vExamination = this.dsItemList.data[0].Examination;
@@ -382,7 +394,16 @@ export class NewCasepaperComponent implements OnInit {
       }
     });
   }
-
+  vitalInfo:any;
+getVitalInfo(obj){
+  let query
+  query ="select * from visitdetails where visitid=" + obj.VisitId
+  //console.log(query)
+  this._CasepaperService.getvitalInfo(query).subscribe(data=>{
+    this.vitalInfo = data
+    //console.log(this.vitalInfo) 
+  })               
+}
 
   getBMIcalculation() {
     if (this.vHeight > 0 && this.vWeight > 0) {
@@ -612,7 +633,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
-      debugger
+      //debugger
       let Qty = this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0
       this.Chargelist.push(
         { 
@@ -822,10 +843,12 @@ onTemplDetAdd(){
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
             debugger
-            if(this.caseFormGroup.get("LetteHeadRadio").value=='LetterHead')
-            this.viewgetOpprescriptionReportwithheaderPdf(response);
-          else
-          this.viewgetOpprescriptionReportwithoutheaderPdf();
+            console.log(this.caseFormGroup.get("LetteHeadRadio").value )
+            if(this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead'){
+              this.viewgetOpprescriptionReportwithheaderPdf(this.VisitId);
+            }else{
+              this.viewgetOpprescriptionReportwithoutheaderPdf(this.VisitId);
+            } 
             this.getWhatsappshareSales()
             this.onClear();
           }
@@ -903,13 +926,13 @@ onTemplDetAdd(){
     }, 100);
   }
 
-  viewgetOpprescriptionReportwithoutheaderPdf() {
+  viewgetOpprescriptionReportwithoutheaderPdf(VisitId) {
     debugger
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
       this._CasepaperService.getOpPrescriptionwithoutheaderview(
-        this.VisitId
+        VisitId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -935,7 +958,7 @@ onTemplDetAdd(){
   }
 
   getWhatsappshareSales() {
-    debugger
+   // debugger
     if (this.vMobileNo != '' &&    this.vMobileNo != '0') {
       var m_data = {
         "insertWhatsappsmsInfo": {
@@ -1088,9 +1111,7 @@ onTemplDetAdd(){
   onChangeLangaugeRadio(event) {
 
   }
-  LetterheadFilter(event) {
-
-  }
+ 
 
   //datewise visit info and table data
   patients: any[] = []; // Using 'any' type for simplicity

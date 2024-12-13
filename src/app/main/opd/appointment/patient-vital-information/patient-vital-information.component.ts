@@ -153,7 +153,7 @@ export class PatientVitalInformationComponent implements OnInit {
     // }  
     
     let VitalInfoSave = {};
-    VitalInfoSave['visitId'] = 0 ;
+    VitalInfoSave['visitId'] = this.advanceObj.VisitId || 0 ;
     VitalInfoSave['height'] =  this.vHeight||  '' ;
     VitalInfoSave['pWeight'] = this.vWeight ||  '' ;
     VitalInfoSave['bmi'] = this.vBMI ||  '' ;
