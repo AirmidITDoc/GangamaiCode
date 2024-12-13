@@ -650,14 +650,17 @@ export class DischargeSummaryComponent implements OnInit {
             this._IpSearchListService.insertIPDDischargSummary(SubmitData).subscribe(response => {
               //console.log(response);
               if (response) {
-                Swal.fire('Congratulations !', 'Discharge Summary Saved Successfully !', 'success').then((result) => {
-                  if (result.isConfirmed) {
-                    this._matDialog.closeAll();
-                    this.viewgetDischargesummaryPdf(this.vAdmissionId,);
-                  }
-                });
+                this.viewgetDischargesummaryPdf(this.vAdmissionId);
+                this._matDialog.closeAll();
+                this.toastr.success('Discharge Summary save Successfully !', 'Congratulations !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });  
+
+
               } else {
-                Swal.fire('Error !', 'Discharge Summary not Saved', 'error');
+                this.toastr.success('Discharge Summary  not saved', 'error', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                }); 
               }
               this.isLoading = '';
             });
@@ -734,19 +737,15 @@ export class DischargeSummaryComponent implements OnInit {
             this._IpSearchListService.updateIPDDischargSummary(SubmitData).subscribe(response => {
               // console.log(response);
               if (response) {
-                Swal.fire('Congratulations !', 'Discharge Summary Updated Successfully !', 'success').then((result) => {
-                  if (result.isConfirmed) {
-                    this._matDialog.closeAll();
-                    debugger
-                    // this.viewgetDischargesummaryPdf(this.vAdmissionId,);
-                    if (!this.Istemplate)
-                      this.viewgetDischargesummaryPdf(this.vAdmissionId);
-                    else
-                      this.viewgetDischargesummaryTempPdf(this.vAdmissionId);
-                  }
-                });
+                this.viewgetDischargesummaryPdf(this.vAdmissionId);
+                this._matDialog.closeAll();
+                this.toastr.success('Discharge Summary Updated Successfully !', 'Congratulations !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });  
               } else {
-                Swal.fire('Error !', 'Discharge Summary not Updated', 'error');
+                this.toastr.success('Discharge Summary  not Updated', 'error', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                }); 
               }
               this.isLoading = '';
             });
