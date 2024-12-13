@@ -640,13 +640,13 @@
                                         <mat-radio-button value="false">Death Summary</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <div fxLayout="row" class="gap-8">
                                         <mat-checkbox formControlName="template" (change)="chkTemplate($event)"
                                         style="padding: 15px;"> Is Template Print
                                     </mat-checkbox>&nbsp;
                                     </div>
-                                </div>
+                                </div> -->
                             </mat-card>
                         </div>
                     </div>
@@ -658,7 +658,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="OnSave()" > Save </button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()" [disabled]="saveflag"> Save </button>
             </div>
         </div>
     </div>
