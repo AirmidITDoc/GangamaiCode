@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -9,10 +9,9 @@ import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { NewBankComponent } from "./new-bank/new-bank.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FormGroup } from "@angular/forms";
 
 
 @Component({
@@ -23,66 +22,122 @@ import { FormGroup } from "@angular/forms";
     animations: fuseAnimations,
 })
 export class BankMasterComponent implements OnInit {
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
-  bankForm: FormGroup;
-  format="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);";
-  format1="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);";
-  maxLength1="10"
-  minLength1="10"
-   maxLength="12"
-  minLength="12"
-
-  constructor(
-    public _BankMasterService: BankMasterService,
-    public dialogRef: MatDialogRef<NewBankComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
-
-  ngOnInit(): void {
-    this.bankForm=this._BankMasterService.createBankForm();
-    
-    var m_data = {
-      bankId: this.data?.bankId,
-     bankName: this.data?.bankName.trim(),
-     isActive: JSON.stringify(this.data?.isActive),
-    };
-    this.bankForm.patchValue(m_data);
-    console.log("mdata:", m_data)
-  }
-
-  onSubmit(){
-    if (this.bankForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
-      if(!this.bankForm.get("bankId").value){
-        debugger
-        var mdata=
-        {
-          "bankId": 0,
-          "bankName": this.bankForm.get("bankName").value || ""
-        }
-        console.log("bank json:", mdata);
-
-        this._BankMasterService.bankMasterSave(mdata).subscribe((response)=>{
-          this.toastr.success(response.message);
-          this.onClear(true);
-        }, (error)=>{
-          this.toastr.error(error.message);
-        });
-      } else{
-        //update
-      }
+    gridConfig: gridModel = {
+        apiUrl: "BankMaster/List",
+        columnsList: [
+            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:600 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200},
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:180, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this.confirmDialogRef = this._matDialog.open(
+                                FuseConfirmDialogComponent,
+                                {
+                                    disableClose: false,
+                                }
+                            );
+                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                if (result) {
+                                    let that = this;
+                                    this._bankService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
+                                            this.toastr.success(response.Message);
+                                            that.grid.bindGridData;
+                                    });
+                                }
+                                this.confirmDialogRef = null;
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "bankId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row:25
     }
-    
-  }
 
-  onClear(val: boolean) {
-    this.bankForm.reset();
-    this.dialogRef.close(val);
+    constructor(public _bankService: BankMasterService,public _matDialog: MatDialog,
+        public toastr : ToastrService,) {}
+
+    ngOnInit(): void {
+      
+        this._bankService.myform.get("IsDeleted").setValue(true);
+    }
+    onSearch() {
+      
+    }
+
+    onSearchClear() {
+        this._bankService.myformSearch.reset({
+            BankNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+      
+    }
+   
+  
+
+    onSave(row:any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewBankComponent,
+        {
+            maxWidth: "45vw",
+            height: '35%',
+            width: '70%',
+            data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                that.grid.bindGridData();
+            }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
+
+
+    onEdit(row) {
+        var m_data = {
+            BankId: row.bankId,
+            BankName: row.BankName.trim(),
+            IsDeleted: JSON.stringify(row.IsDeleted),
+            UpdatedBy: row.UpdatedBy,
+        };
+        this._bankService.populateForm(m_data);
+    }
 }
+
+export class BankMaster {
+    bankId: number;
+    bankName: string;
+    isActive: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+
+    /**
+     * Constructor
+     *
+     * @param BankMaster
+     */
+    constructor(BankMaster) {
+        {
+            this.bankId = BankMaster.bankId || "";
+            this.bankName = BankMaster.bankName || "";
+            this.isActive = BankMaster.isActive || "true";
+            this.AddedBy = BankMaster.AddedBy || "";
+            this.UpdatedBy = BankMaster.UpdatedBy || "";
+        }
+    }
 }
- 
