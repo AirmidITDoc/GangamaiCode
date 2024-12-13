@@ -58,8 +58,10 @@
                             [mode]="autocompleteModegender">
                         </airmid-autocomplete>
                     </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
+                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                    </div>
+                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-button-toggle-group [(ngModel)]="dateStyle" (change)="OnChangeDobType($event)"
                             aria-label="Font Style">
                             <mat-button-toggle value="Date">Date</mat-button-toggle>
@@ -103,7 +105,7 @@
                                 [formGroup]="myForm" [readonly]="true">
                             </airmid-textbox>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Pan Card No" formControlName="Pancardno" [value]="registerObj.panCardNo"

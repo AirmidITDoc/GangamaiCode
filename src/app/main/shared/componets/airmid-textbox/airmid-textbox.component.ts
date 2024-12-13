@@ -58,7 +58,7 @@ export class AirmidTextboxComponent implements
     @Input() keyup:Event;
     @Input() appearance:string="outline";
     @Input() readonly:boolean=false;
-    @Input() width:string="100%";
+    @Input() width:number=100;
     @Input()
     get disabled(): boolean {
         return this._disabled;

@@ -19,7 +19,6 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() options: any[] = [];
     @Input() mode: string;
     @Output() selectDdlObject = new EventEmitter<any>();
-    @Output() dataBoundFinished = new EventEmitter<any>();
     apiUrl: string = "Dropdown/GetBindDropDown?mode=";
 
     control = new FormControl();
@@ -98,7 +97,6 @@ export class AirmidAutocompleteComponent implements OnInit {
         if (this.options?.length > 0) {
             this.ddls = this.options as [];
             this.filteredDdls.next(this.ddls.slice());
-            this.dataBoundFinished.emit({ controlName: this.formControlName, value: true });
         } else {
             this._httpClient
                 .GetData(this.apiUrl + this.mode)
@@ -111,7 +109,6 @@ export class AirmidAutocompleteComponent implements OnInit {
                         this.stateChanges.next();
                         this.changeDetectorRefs.detectChanges();
                     }
-                    this.dataBoundFinished.emit({ controlName: this.formControlName, value: true });
                 });
         }
 

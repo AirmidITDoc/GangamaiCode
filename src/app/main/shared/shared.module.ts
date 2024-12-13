@@ -22,7 +22,7 @@ import { OnlinePaymentService } from './services/online-payment.service';
 import { ImageCropComponent } from './componets/image-crop/image-crop.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MatSliderModule } from '@angular/material/slider';
-import { EmailSendComponent } from './componets/email-send/email-send.component';  
+import { EmailSendComponent } from './componets/email-send/email-send.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicTableHeight.directive';
@@ -39,59 +39,60 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AirmidDropdownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTable1Component } from './componets/airmid-table1/airmid-table1.component';
 import { AirmidTextbox1Component } from './componets/airmid-textbox1/airmid-textbox1.component';
+import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmid-dateofbirth.component';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,AirmidTableComponent, AirmidTextboxComponent,AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective,
-     AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component],
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatTimepickerModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTabsModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    ImageCropperModule,
-    MatSliderModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    FuseSidebarModule,
-    MatAutocompleteModule,
-    MatSelectModule,
-    NgxMatSelectSearchModule
-  
-
-],
-  providers: [
-    ExcelDownloadService,
-    SnackBarService,
-    ToasterService,
-    OnlinePaymentService
-  ],
-  exports: [
-    TrimPipe,
-    CommonDateComponent,
-    HeaderComponent,
-    PaymentModeComponent,
-    DyanmicTableHeightDirective,
-    AirmidTableComponent,
-    AirmidTextboxComponent,
-    AirmidAutocompleteComponent,
-    AirmidDropdownComponent,
-    AirmidTable1Component,
-    AirmidTextbox1Component
-
-  ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  entryComponents: []
+    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent],
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatTimepickerModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTabsModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        ImageCropperModule,
+        MatSliderModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        FuseSidebarModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        NgxMatSelectSearchModule,
+        MatButtonToggleModule
+    ],
+    providers: [
+        ExcelDownloadService,
+        SnackBarService,
+        ToasterService,
+        OnlinePaymentService
+    ],
+    exports: [
+        TrimPipe,
+        CommonDateComponent,
+        HeaderComponent,
+        PaymentModeComponent,
+        DyanmicTableHeightDirective,
+        AirmidTableComponent,
+        AirmidTextboxComponent,
+        AirmidAutocompleteComponent,
+        AirmidDropdownComponent,
+        AirmidTable1Component,
+        AirmidTextbox1Component,
+        AirmidDateofbirthComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    entryComponents: []
 })
 export class SharedModule { }

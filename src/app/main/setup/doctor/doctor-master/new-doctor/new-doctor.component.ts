@@ -545,23 +545,6 @@ export class NewDoctorComponent implements OnInit {
         this.myForm.reset();
         this.dialogRef.close();
     }
-
-
-
-
-    onChangeDateofBirth(DateOfBirth) {
-        if (DateOfBirth) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-            // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-            // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-            // this.registerObj.DateofBirth = DateOfBirth;
-            this.myForm.get('DateOfBirth').setValue(DateOfBirth);
-        }
-
-    }
     onChangeRegDate(RegDate) {
         // if (RegDate) {
         //     this.registerObj.RegDate = new Date(RegDate);
@@ -584,49 +567,6 @@ export class NewDoctorComponent implements OnInit {
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
-
-
-    public onEnterbday(event): void {
-        if (event.which === 13) {
-            this.address.nativeElement.focus();
-        }
-    }
-    dateStyle?: string = 'Date';
-    OnChangeDobType(e) {
-        this.dateStyle = e.value;
-        this.registerObj.ageYear=0;
-        this.registerObj.ageMonth=0;
-        this.registerObj.ageDay=0;
-    }
-    CalcDOB(mode, e) {
-        debugger
-        let d = new Date();
-        if (mode == "Day") {
-            d.setDate(d.getDate() - Number(e.target.value));
-            this.registerObj.dateofBirth = d;
-            this.registerObj.ageDay=Number(e.target.value);
-        }
-        else if (mode == "Month") {
-            d.setMonth(d.getMonth() - Number(e.target.value));
-             this.registerObj.dateofBirth = d;
-             this.registerObj.ageMonth=Number(e.target.value);
-        }
-        else if (mode == "Year") {
-            d.setFullYear(d.getFullYear() - Number(e.target.value));
-            this.registerObj.dateofBirth = d;
-            this.registerObj.ageYear=Number(e.target.value);
-        }
-        let todayDate = new Date();
-        //const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
-    }
-
-
-
-
-
     //   new Api?
     PrefixId = 0;
     genderId = 0;

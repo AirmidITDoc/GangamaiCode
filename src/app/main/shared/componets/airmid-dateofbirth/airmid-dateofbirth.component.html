@@ -1,0 +1,43 @@
+<div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+    <mat-button-toggle-group [(ngModel)]="dateStyle" (change)="OnChangeDobType($event)" aria-label="Font Style">
+        <mat-button-toggle value="Date">Date</mat-button-toggle>
+        <mat-button-toggle value="Day">Day</mat-button-toggle>
+        <mat-button-toggle value="Month">Month</mat-button-toggle>
+        <mat-button-toggle value="Year">Year</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+
+<div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+    <div fxLayout="row" class="gap-8">
+        <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Year'" [(value)]="ageYear"
+            [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Year',$event)">
+        </airmid-textbox>
+        <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Month'" [value]="ageMonth"
+            [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Month',$event)">
+        </airmid-textbox>
+        <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Day'" [value]="ageDay"
+            [formGroup]="formGroup" [maxLength]="2" (keyup)="CalcDOB('Day',$event)">
+        </airmid-textbox>
+        <mat-form-field appearance="outline" fxFlex="60%">
+            <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday [value]="value"
+                [disabled]="dateStyle!='Date'" (dateChange)="onChangeDateofBirth($event.value)"
+                placeholder="mm/dd/yyyy">
+            <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #validFromPicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>
+
+<div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+    <div fxLayout="row" class="gap-8">
+        <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" [(value)]="ageYear" [formGroup]="formGroup"
+            [readonly]="true" style="display: block !important;">
+        </airmid-textbox>
+        <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" [(value)]="ageMonth" [formGroup]="formGroup"
+            [readonly]="true">
+        </airmid-textbox>
+        <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" [(value)]="ageDay" [formGroup]="formGroup"
+            [readonly]="true">
+        </airmid-textbox>
+    </div>
+</div>
