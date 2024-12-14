@@ -51,6 +51,7 @@ export class NewBillRaiseComponent implements OnInit {
       this.registerObj = this.data.Obj;
       console.log(this.registerObj)
       this.RtrvCustomerId = this.registerObj.CustomerId
+      this.vAmount= this.registerObj.Amount
       this.OnEdit(this.registerObj)
       // this.vAmount = this.registerObj.Amount; 
     }
@@ -214,8 +215,9 @@ export class NewBillRaiseComponent implements OnInit {
   OnEdit(row) {
     var mdata = {
       CustomerId: row.CustomerId,
-      //Description: row.Amount,
       Amount: row.Amount
+      //Description: row.Amount,
+  
     }
     this._CustomerInfo.PopulateFormbillRise(mdata);
   }

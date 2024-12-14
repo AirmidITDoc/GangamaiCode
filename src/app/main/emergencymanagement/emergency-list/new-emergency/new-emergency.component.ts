@@ -395,8 +395,7 @@ export class NewEmergencyComponent implements OnInit {
     if (value) {
       const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
       return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
-    }
-
+    } 
   }
   getOptionTextPrefix(option) {
     return option && option.PrefixName ? option.PrefixName : '';

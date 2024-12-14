@@ -265,25 +265,27 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
           this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - d.getMonth());
           this.registerObj.AgeDay = Math.abs(todayDate.getDate() - d.getDate());
            
-          this.setDropdownObjs();
+         
           this.VisitFlagDisp = true; 
+
+          this.getDoctorNameCombobox(); 
+          this.getPrefixList();
+          this.getPatientTypeList();
+          this.getTariffCombo();
+          this.getAreaList();
+          this.getMaritalStatusList();
+          this.getReligionList();
+          this.getcityList1();
+          this.getCompanyList();
+          this.getSubTPACompList();
+          this.getDepartmentList(); 
+          this.getDoctor1List();
+          this.getDoctor2List();
+          this.getPurposeList(); 
+          this.setDropdownObjs();
         }  
         // this.getVisitList();
-        this.getDoctorNameCombobox(); 
- 
-        this.getPrefixList();
-        this.getPatientTypeList();
-        this.getTariffCombo();
-        this.getAreaList();
-        this.getMaritalStatusList();
-        this.getReligionList();
-        this.getcityList1();
-        this.getCompanyList();
-        this.getSubTPACompList();
-        this.getDepartmentList(); 
-        this.getDoctor1List();
-        this.getDoctor2List();
-        this.getPurposeList(); 
+      
     
  
         this.FirstName.markAsTouched();
@@ -347,8 +349,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             this.filteredOptionsRefDoc = this.VisitFormGroup.get('RefDocId').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
-            );
-
+            ); 
         });
     }  
 
@@ -567,9 +568,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             RegId: [''],
             PhoneRegId: ['']
         });
-    }
- 
-
+    }  
     getPrefixList() {
         this._registerService.getPrefixCombo().subscribe(data => {
             this.PrefixList = data;
@@ -579,9 +578,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
             ); 
         });
-    }
-
-
+    }  
     getcityList1() { 
         this._opappointmentService.getCityList().subscribe(data => {
             this.cityList = data;
@@ -591,8 +588,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 map(value => value ? this._filterCity(value) : this.cityList.slice()),
             ); 
         }); 
-    }
-
+    } 
     getPurposeList() {
         this._opappointmentService.getPurposeList().subscribe(data => {
             this.PurposeList = data;
@@ -602,15 +598,13 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 map(value => value ? this._filterPurpose(value) : this.PurposeList.slice()),
             );
         });
-    } 
-
+    }  
     private _filterPtype(value: any): string[] {
         if (value) {
             const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
             return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
         }
-    }
-
+    } 
     getPatientTypeList() {
         this._opappointmentService.getPatientTypeCombo().subscribe(data => {
             this.PatientTypeList = data;

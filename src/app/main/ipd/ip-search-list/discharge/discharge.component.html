@@ -138,7 +138,7 @@
     <!-- CONTENT -->
     <div class="content-card">
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="1px">
-            <div fxFlex.gt-sm="100%" fxFlex fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px;">
+            <div fxFlex.gt-sm="100%" fxFlex fxlayout="row" style="  padding: 5px 10px 5px 10px;background-color: white;">
                 <form [formGroup]="_IpSearchListService.mySaveForm">
                     <div class="dialog-content-wrapper">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
@@ -241,10 +241,19 @@
                       
                     </div>
                 </form>
-                <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary " (click)="onDischarge()"> Save</button>
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                        <button mat-raised-button (click)="DischargeInitiate()" >
+                           Initiate Discharge
+                        </button>
+                    </div>
+                   
+                    <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary " (click)="onDischarge()"> Save</button>
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>
