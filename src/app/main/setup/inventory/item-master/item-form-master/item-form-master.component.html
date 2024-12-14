@@ -57,7 +57,7 @@
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                   <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                    <mat-label>ItemName</mat-label>
+                                    <mat-label>Item Name</mat-label>
                                     <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
                                       placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required>
                                   </mat-form-field>
@@ -82,7 +82,7 @@
                                         </mat-option>
                                       </mat-autocomplete>
                                     </mat-form-field> -->
-                                    <airmid-autocomplete label="ItemType Name" formControlName="ItemTypeID"
+                                    <airmid-autocomplete label="Item Type Name" formControlName="ItemTypeID"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemTypeID"
                                         [mode]="autocompleteModeItemType"
@@ -108,7 +108,7 @@
                                         </mat-option>
                                       </mat-autocomplete>
                                     </mat-form-field> -->
-                                    <airmid-autocomplete label="ItemCategory Name" formControlName="ItemCategoryId"
+                                    <airmid-autocomplete label="Item Category Name" formControlName="ItemCategoryId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemCategoryId"
                                         [mode]="autocompleteModeItemCategory"
@@ -139,7 +139,7 @@
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field> -->
-                                  <airmid-autocomplete label="ItemGeneric Name" formControlName="ItemGenericNameId"
+                                  <airmid-autocomplete label="Item Generic Name" formControlName="ItemGenericNameId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemGenericNameId"
                                         [mode]="autocompleteModeItemGenericName"
@@ -165,7 +165,7 @@
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field> -->
-                                  <airmid-autocomplete label="ItemClass Name" formControlName="ItemClassId"
+                                  <airmid-autocomplete label="Item Class Name" formControlName="ItemClassId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemClassId"
                                         [mode]="autocompleteModeItemClass"
@@ -191,7 +191,7 @@
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field> -->
-                                  <airmid-autocomplete label="CurrencyId" formControlName="CurrencyId"
+                                  <airmid-autocomplete label="Currency Id" formControlName="CurrencyId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().CurrencyId"
                                         [mode]="autocompleteModeCurrency"
@@ -217,7 +217,7 @@
                                         </mat-option>
                                       </mat-autocomplete>
                                     </mat-form-field> -->
-                                    <airmid-autocomplete label="UnitofMeasurement" formControlName="PurchaseUOMId"
+                                    <airmid-autocomplete label="Unit Of Measurement" formControlName="PurchaseUOMId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().PurchaseUOMId"
                                         [mode]="autocompleteModePurchaseUOM"
@@ -247,7 +247,7 @@
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field> -->
-                                  <airmid-autocomplete label="StockUOMId" formControlName="StockUOMId"
+                                  <airmid-autocomplete label="Stock UOM Id" formControlName="StockUOMId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().StockUOMId"
                                         [mode]="autocompleteModeStockUOM"
@@ -257,8 +257,8 @@
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                   <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                    <mat-label>ConversionFactor</mat-label>
-                                    <input name="ConversionFactor" placeholder="Enter ConversionFactor" required
+                                    <mat-label>Conversion Factor</mat-label>
+                                    <input name="Conversion Factor" placeholder="Enter ConversionFactor" required
                                       (keydown)="onEnterConversionFactor($event)" #ConversionFactor formControlName="ConversionFactor"
                                       matInput type="number" OnlyNumber  [(ngModel)]="vConversionFactor">
                                     <mat-error>Please enter ConversionFactor </mat-error>
@@ -339,7 +339,7 @@
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                   <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                    <mat-label>Storagelocation</mat-label>
+                                    <mat-label>Storage Location</mat-label>
                                     <input name="Storagelocation" placeholder="Enter Storagelocation" (keydown)="onEnterStorage($event)"
                                       #Storagee formControlName="Storagelocation" [(ngModel)]="vStoragelocation" matInput type="text">
                                     <mat-error>Please enter ProdLocation </mat-error>
@@ -364,7 +364,7 @@
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field> -->
-                                  <airmid-autocomplete label="DrugType" formControlName="DrugType"
+                                  <airmid-autocomplete label="Drug Type" formControlName="DrugType"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().DrugType"
                                         [mode]="autocompleteModeDrugType"

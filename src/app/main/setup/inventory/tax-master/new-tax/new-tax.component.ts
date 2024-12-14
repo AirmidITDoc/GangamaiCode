@@ -24,53 +24,51 @@ export class NewTaxComponent implements OnInit {
   ngOnInit(): void {
       this.taxForm = this._TaxMasterService.createTaxMasterForm();
       var m_data = {
-        Id: this.data?.Id,
-        taxNature: this.data?.taxNature.trim(),
+        id: this.data?.id,
+        taxNature: this.data?.taxNature,
         isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.taxForm.patchValue(m_data);
   }
 
-  onSubmit() {
-    if (this.taxForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if (this.taxForm.valid) {
-          this._TaxMasterService.taxMasterSave(this.taxForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+  /**
+   * 
+   {
+    "id": 0,
+    "taxNature": "string",
+    "isActive": 0
     }
-    // if (this.taxForm.invalid) {
-    //     this.toastr.warning('please check form is invalid', 'Warning !', 
-    //     {
-    //         toastClass:'tostr-tost custom-toast-warning',
-    //     })
-    //     return;
-    //     }else{
-    //         debugger
-    //         var mdata =
-    //         {
-    //             "id": 0,
-    //             "taxNature": this.taxForm.get("taxNature").value || "",
-    //             "isActive": 0
-    //         }
+   */
 
-    //             console.log("TaxMaster Insert:",mdata);
-                
-    //             this._TaxMasterService.taxMasterSave(mdata).subscribe((response) => {
-    //             this.toastr.success(response.message);
-    //             this.onClear(true);
-    //             }, (error) => {
-    //             this.toastr.error(error.message);
-    //             });
-    //   }
+    saveflag : boolean = false;
+  onSubmit() 
+  {
+    this.saveflag = true
+    if (this.taxForm.invalid) {
+    this.toastr.warning('please check form is invalid', 'Warning !', 
+    {
+        toastClass:'tostr-tost custom-toast-warning',
+    })
+    return;
+    }
+    else{
+    debugger
+    var mdata =
+    {
+        "id": 0,
+        "taxNature": this.taxForm.get("taxNature").value,
+        "isActive": 0
+    }
+
+        console.log("TaxMaster Insert:",mdata);
+
+        this._TaxMasterService.taxMasterSave(mdata).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+        }, (error) => {
+        this.toastr.error(error.message);
+        });
+    }
   }
 
   onClear(val: boolean) {

@@ -26,7 +26,10 @@ export class NewMaritalstatusComponent implements OnInit {
     this.maritalForm.patchValue(m_data);
   }
 
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.maritalForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

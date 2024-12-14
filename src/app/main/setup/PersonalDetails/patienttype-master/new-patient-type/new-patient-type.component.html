@@ -45,7 +45,7 @@
          
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
                             <span>Save</span>
                         </button>
                     </div>
@@ -54,11 +54,5 @@
                
             </form>
         </div>
-        <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                <span>Save</span>
-            </button>
-        </div> -->
     </div>
 </div>

@@ -29,7 +29,10 @@ export class NewItemClassComponent implements OnInit {
       };
       this.classForm.patchValue(m_data);
   }
+
+  Saveflag: boolean= false;
   onSubmit() {
+    this.Saveflag=true
     if (this.classForm.invalid) {
         this.toastr.warning('please check form is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

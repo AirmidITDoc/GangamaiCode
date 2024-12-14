@@ -30,7 +30,10 @@ export class NewTermofpaymentComponent implements OnInit {
         this.termsofpaymentForm.patchValue(m_data);
     }
     
+    saveflag : boolean = false;
     onSubmit() {
+        this.saveflag = true;
+        
         if (this.termsofpaymentForm.invalid) {
         this.toastr.warning('please check form is invalid', 'Warning !', 
         {

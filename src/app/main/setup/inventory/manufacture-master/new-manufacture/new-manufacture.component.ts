@@ -29,7 +29,10 @@ export class NewManufactureComponent implements OnInit {
       };
       this.manufForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true
     if (this.manufForm.invalid) {
         this.toastr.warning('please check form is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

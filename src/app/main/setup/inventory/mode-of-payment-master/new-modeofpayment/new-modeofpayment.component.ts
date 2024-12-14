@@ -30,7 +30,10 @@ export class NewModeofpaymentComponent implements OnInit {
       };
       this.modeofpayForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
     if (this.modeofpayForm.invalid) {
         this.toastr.warning('please check form is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

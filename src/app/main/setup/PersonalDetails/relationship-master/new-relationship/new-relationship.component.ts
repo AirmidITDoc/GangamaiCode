@@ -30,7 +30,11 @@ export class NewRelationshipComponent implements OnInit {
       };
       this.relationshipForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     debugger
     if (this.relationshipForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {

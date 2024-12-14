@@ -72,7 +72,6 @@ export class CurrencyMasterComponent implements OnInit {
             row: 25
         }
     
-     
     ngOnInit(): void { }
     onSave(row: any = null) {
         let that = this;

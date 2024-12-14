@@ -34,7 +34,7 @@ export class BedMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "Room Name", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width:200 },
+            { heading: "Room Id", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width:200 },
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width:100 },
               //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
                 {

@@ -29,7 +29,11 @@ export class NewDepartmentComponent implements OnInit {
       };
       this.departmentForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.departmentForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

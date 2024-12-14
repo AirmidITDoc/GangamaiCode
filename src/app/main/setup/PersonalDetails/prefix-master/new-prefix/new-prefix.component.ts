@@ -47,7 +47,11 @@ export class NewPrefixComponent implements OnInit {
     }
   
     }
+
+    saveflag : boolean = false;
     onSubmit() {
+        this.saveflag = true; 
+        
         if (this.prefixForm.invalid) {
             this.toastr.warning('please check from is invalid', 'Warning !', {
               toastClass:'tostr-tost custom-toast-warning',

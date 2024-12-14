@@ -29,7 +29,11 @@ export class NewPatientTypeComponent implements OnInit {
       };
       this.patienttypeForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.patienttypeForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

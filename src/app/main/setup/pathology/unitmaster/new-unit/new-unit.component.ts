@@ -30,7 +30,11 @@ export class NewUnitComponent implements OnInit {
       };
       this.unitForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.unitForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

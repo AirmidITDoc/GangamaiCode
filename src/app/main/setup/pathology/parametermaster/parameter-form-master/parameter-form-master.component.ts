@@ -184,7 +184,10 @@ export class ParameterFormMasterComponent implements OnInit {
     //     this.dialogRef.close();
     // }
 
+    saveflag : boolean = false;
     onSubmit() {
+        this.saveflag = true;
+        
         debugger
         const invalid = [];
         const controls = this.parameterForm.controls;

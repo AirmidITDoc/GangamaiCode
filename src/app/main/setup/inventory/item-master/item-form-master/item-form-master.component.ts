@@ -1260,8 +1260,9 @@ export class ItemFormMasterComponent implements OnInit {
 
     }
 
-    onClear() {
+    onClear(val : boolean) {
         this.itemForm.reset();
+        this.dialogRef.close(val);
     }
     onClose() {
         this.itemForm.reset();

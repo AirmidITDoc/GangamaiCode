@@ -44,7 +44,11 @@ export class NewCityComponent implements OnInit {
             isActive: JSON.stringify(this.data?.isActive)}
             this.cityForm.patchValue(mdata);
     }
+
+    saveflag : boolean = false;
     onSubmit() {
+        this.saveflag = true;
+        
         debugger
         if (this.cityForm.valid) {
             var mdata={

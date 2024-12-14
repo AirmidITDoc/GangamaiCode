@@ -547,7 +547,7 @@
                     <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end center">
                         <div class="modal-footer-buttons" fxLayoutGap="6px">
                             <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+                            <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="saveflag">Save</button>
                         </div>
                     </div>
                 </div>

@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewCurrencyComponent implements OnInit {
 
+    Saveflag: boolean= false;
   currencyForm: FormGroup;
   constructor(
       public _CurrencymasterService: CurrencymasterService,
@@ -30,6 +31,7 @@ export class NewCurrencyComponent implements OnInit {
   }
 
   onSubmit() {
+    this.Saveflag=true
     if (this.currencyForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

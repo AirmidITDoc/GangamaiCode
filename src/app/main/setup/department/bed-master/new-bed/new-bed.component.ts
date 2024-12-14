@@ -44,7 +44,10 @@ export class NewBedComponent implements OnInit {
     };
   }
 
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.bedForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

@@ -31,7 +31,11 @@ export class NewCategoryComponent implements OnInit {
       };
       this.categoryForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.categoryForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

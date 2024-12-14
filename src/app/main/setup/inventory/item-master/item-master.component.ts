@@ -27,34 +27,111 @@ export class ItemMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string="StoreName";
+    /**
+     * {
+  "statusCode": 200,
+  "data": {
+    "data": [
+      {
+        "itemID": 1,
+        "itemShortName": "masrat",
+        "itemName": "masrat",
+        "itemTypeName": "",
+        "itemTypeID": 0,
+        "itemCategaryId": 0,
+        "itemCategoryName": "",
+        "itemClassId": 0,
+        "itemClassName": "",
+        "itemGenericNameId": 0,
+        "itemGenericName": "",
+        "purchaseUOMId": 0,
+        "puchaseUOM": "",
+        "stockUOMId": 0,
+        "stockUOM": "",
+        "conversionFactor": "",
+        "currencyId": 0,
+        "currencyName": "",
+        "taxPer": 0,
+        "isdeleted": false,
+        "addedby": 1,
+        "isBatchRequired": false,
+        "minQty": 0,
+        "maxQty": 0,
+        "reOrder": 0,
+        "storeName": "IMPLANT STORE",
+        "storeId": 10002,
+        "hsNcode": "",
+        "cgst": 0,
+        "sgst": 0,
+        "igst": 0,
+        "manufId": 0,
+        "isNarcotic": false,
+        "prodLocation": "",
+        "isH1Drug": false,
+        "isScheduleH": false,
+        "isHighRisk": false,
+        "isScheduleX": false,
+        "isLASA": false,
+        "isEmgerency": false,
+        "drugType": 0,
+        "drugTypeName": "",
+        "itemCompnayId": 0
+      }
+    ],
+    "recordsFiltered": 5,
+    "recordsTotal": 5,
+    "pageIndex": 0
+  }
+}
+     */
    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
     apiUrl: "ItemMaster/ItemMasterList",
     columnsList: [
-        { heading: "Code", key: "ItemID", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ItemName", key: "ItemName", sort: true, align: 'left', emptySign: 'NA',width :90 },
-        { heading: "ItemTypeName", key: "ItemTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ItemCategoryName", key: "ItemCategoryName", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "ItemGenericName", key: "ItemGenericName", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "ItemClassName", key: "ItemClassName", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "UnitofMeasurementName", key: "UnitofMeasurementName", sort: true, align: 'left', emptySign: 'NA',width :90 },
-        { heading: "StockUOMId", key: "StockUOMId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ConversionFactor", key: "ConversionFactor", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "CurrencyName", key: "CurrencyName", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "TaxPer", key: "TaxPer", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "MinQty", key: "MinQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "MaxQty", key: "MaxQty", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ReOrder", key: "ReOrder", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "HSNcode", key: "HSNcode", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "CGST", key: "CGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "SGST", key: "SGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IGST", key: "IGST", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "ManufName", key: "ManufName", sort: true, align: 'left', emptySign: 'NA',width :80 },
-        { heading: "ProdLocation", key: "ProdLocation", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "AddedByName", key: "AddedByName", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsNursingFlag", key: "IsNursingFlag", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsNursingFlag", key: "IsNursingFlag", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width :200 },
+        { heading: "ItemTypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemShortName", key: "itemShortName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemTypeID", key: "itemTypeID", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ItemCategaryId", key: "itemCategaryId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemClassId", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemClassName", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemGenericNameId", key: "itemGenericNameId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemGenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "PurchaseUOMId", key: "purchaseUOMId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "PuchaseUOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "StockUOMId", key: "stockUOMId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "StockUOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "CurrencyId", key: "currencyId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "CurrencyName", key: "currencyName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "TaxPer", key: "taxPer", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        // { heading: "Isdeleted", key: "isdeleted", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "Addedby", key: "addedby", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "MinQty", key: "minQty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MaxQty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA',width :200 },
+        { heading: "StoreId", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "HsNcode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Cgst", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Sgst", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Igst", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ManufId", key: "manufId", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsNarcotic", key: "isNarcotic", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ProdLocation", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsH1Drug", key: "isH1Drug", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsScheduleH", key: "isScheduleH", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsHighRisk", key: "isHighRisk", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsScheduleX", key: "isScheduleX", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsLASA", key: "isLASA", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsEmgerency", key: "isEmgerency", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "DrugType", key: "drugType", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DrugTypeName", key: "drugTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "ItemCompnayId", key: "itemCompnayId", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -88,10 +165,10 @@ export class ItemMasterComponent implements OnInit {
         sortField: "ItemID",
         sortOrder: 0,
         filters: [
-            { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Equals },
-            { fieldName: "ItemId", fieldValue: "14645", opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
@@ -101,7 +178,7 @@ export class ItemMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
                 maxWidth: "95%",
-                height: '75%',
+                height: '85%',
                 width: '80%',
                 data: row
             });

@@ -26,7 +26,10 @@ export class NewLocationComponent implements OnInit {
     this.locationForm.patchValue(m_data);
   }
 
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.locationForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

@@ -36,7 +36,11 @@ export class NewStateMasterComponent implements OnInit {
       };
       this.stateForm.patchValue(m_data);
   }
+
+  saveflag : boolean = false;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.stateForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewItemtypeComponent implements OnInit {
 
+    
   itemtypeForm: FormGroup;
   constructor(
       public _ItemTypeMasterService: ItemTypeMasterService,
@@ -29,7 +30,10 @@ export class NewItemtypeComponent implements OnInit {
       };
       this.itemtypeForm.patchValue(m_data);
   }
+
+  Saveflag: boolean= false;
   onSubmit() {
+    this.Saveflag=true
     if (this.itemtypeForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',

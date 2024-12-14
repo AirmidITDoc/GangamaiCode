@@ -27,7 +27,10 @@ export class NewReligionMasterComponent implements OnInit {
     this.religionForm.patchValue(m_data);
   }
 
+  saveflag : boolean = false ;
   onSubmit() {
+    this.saveflag = true;
+    
     if (this.religionForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
           toastClass:'tostr-tost custom-toast-warning',
