@@ -1,0 +1,145 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                New Vendor
+            </span>
+
+        </div>
+        <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="15px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="_VendorInfo.myform">
+
+                            <div fxLayoutGap="4px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Vendor Name</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input name="VendorName" 
+                                        formControlName="VendorName" matInput required
+                                        (keyup.enter)="focusNext('Date')" 
+                                        [(ngModel)]="vVendorName"
+                                        oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error
+                                            *ngIf="_VendorInfo.myform.get('VendorName').invalid && _VendorInfo.myform.get('VendorName').touched">
+                                            Vendor Name is required Enter only Alphabets
+                                        </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="15%">
+                                    <mat-label>Date</mat-label>
+                                    <input name="Date" matInput [matDatepicker]="picker"
+                                         formControlName="Date" id=Date 
+                                         (keyup.enter)="focusNext('address')">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Address</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">home</mat-icon>
+                                    <input name="Address" formControlName="Address" matInput required
+                                    (keyup.enter)="focusNext('MobileNo')" id="address" [(ngModel)]="vaddress">
+                                    <mat-error *ngIf="_VendorInfo.myform.get('Address').hasError('required')">
+                                        Address is required.
+                                      </mat-error> 
+                                </mat-form-field>
+                            </div>
+
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>MobileNo</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                                    <input name="MobileNo" formControlName="MobileNo" 
+                                        type="Number" ONlyNUmber matInput required   
+                                        (keyup.enter)="focusNext('PinCode')" 
+                                        placeholder="enter a valid 10-digit mobile number."
+                                        id="MobileNo" [(ngModel)]="vMobileNo"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                                        required="required" value="9876658688">
+                                        <mat-error *ngIf="_VendorInfo.myform.get('MobileNo').hasError('required')">
+                                            Please enter a valid 10-digit mobile number.
+                                        </mat-error> 
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>PinCode</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">place</mat-icon>
+                                    <input name="PinCode" formControlName="PinCode" maxlength="6"
+                                        matInput required  type="number" OnlyNumber 
+                                        (keyup.enter)="focusNext('personName')" id="PinCode" 
+                                        [(ngModel)]="vPinCode"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+                                        required="required" value="413001">
+                                        <mat-error *ngIf="_VendorInfo.myform.get('PinCode').hasError('required')">
+                                            Please enter a valid 6-digit pincode.
+                                          </mat-error> 
+                                </mat-form-field>
+                            </div>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Vendor PersonName</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                    <input name="PersonName" formControlName="PersonName" 
+                                        matInput required type="text" id="personName" 
+                                        (keyup.enter)="focusNext('PersonMobileNo')" 
+                                        [(ngModel)]="vVendorpersonName"
+                                        oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error
+                                            *ngIf="_VendorInfo.myform.get('PersonName').invalid && _VendorInfo.myform.get('PersonName').touched">
+                                            Person Name is required Enter only Alphabets
+                                        </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Vendor PersonMobileNo</mat-label>
+                                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                                    <input name="PersonMobileNo" formControlName="PersonMobileNo" 
+                                        matInput required type="number" id="PersonMobileNo" 
+                                        [(ngModel)]="vVendorPersonMobileNo" 
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                                        required="required" value="9876658688"
+                                        placeholder="enter a valid 10-digit mobile number.">
+                                    <mat-error *ngIf="_VendorInfo.myform.get('PersonMobileNo').hasError('required')">
+                                        Please enter a valid 10-digit mobile number.
+                                      </mat-error> 
+                                </mat-form-field>
+
+                            </div>
+                         
+                        </form>
+                        
+                        <div class="sales-footer-buttons gap-8" fxLayout="row"  fxLayoutAlign="end">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>

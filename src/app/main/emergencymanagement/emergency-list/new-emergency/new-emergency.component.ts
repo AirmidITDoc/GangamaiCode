@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@an
 import { EmergencyListService } from '../emergency-list.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith } from 'rxjs/operators';
@@ -65,6 +65,7 @@ export class NewEmergencyComponent implements OnInit {
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    public dialogRef:MatDialogRef<NewEmergencyComponent>
   ) { }
 
   ngOnInit(): void {
@@ -190,6 +191,132 @@ export class NewEmergencyComponent implements OnInit {
 
   Savebtn: boolean = false;
   onSubmit() {
+debugger
+    if (this._EmergencyListService.MyForm.get('PrefixID').value == '' || this._EmergencyListService.MyForm.get('PrefixID').value== null) {
+      this.toastr.warning('Please Select Prefix Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('PrefixID').value) {
+      if(!this.PrefixcmbList.find(item => item.PrefixID == this._EmergencyListService.MyForm.get('PrefixID').value.PrefixID)){
+        this.toastr.warning('Please select Valid Prefix Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    } 
+    if (this._EmergencyListService.MyForm.get('FirstName').value == '' || this._EmergencyListService.MyForm.get('FirstName').value== null) {
+      this.toastr.warning('Please enter First Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('LastName').value == '' || this._EmergencyListService.MyForm.get('LastName').value== null) {
+      this.toastr.warning('Please enter Last Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('AgeYear').value == '' || this._EmergencyListService.MyForm.get('AgeYear').value== null) {
+      this.toastr.warning('Please enter AgeYear  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }    
+    if (this._EmergencyListService.MyForm.get('AgeMonth').value == '' || this._EmergencyListService.MyForm.get('AgeMonth').value== null) {
+      this.toastr.warning('Please enter AgeMonth  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('AgeDay').value == '' || this._EmergencyListService.MyForm.get('AgeDay').value== null) {
+      this.toastr.warning('Please enter AgeDay  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('Address').value == '' || this._EmergencyListService.MyForm.get('Address').value== null) {
+      this.toastr.warning('Please eneter Address  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('PinNo').value == '' || this._EmergencyListService.MyForm.get('PinNo').value== null) {
+      this.toastr.warning('Please enter PinNo  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('CityId').value == '' || this._EmergencyListService.MyForm.get('CityId').value== null) {
+      this.toastr.warning('Please Select City Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('CityId').value) {
+      if(!this.cityList.find(item => item.CityId == this._EmergencyListService.MyForm.get('CityId').value.CityId))
+      {
+        this.toastr.warning('Please select Valid Prefix Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    } 
+    // if (this._EmergencyListService.MyForm.get('StateId').value == '' || this._EmergencyListService.MyForm.get('StateId').value== null) {
+    //   this.toastr.warning('Please Select State Name  ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // } 
+    // if (this._EmergencyListService.MyForm.get('CountryId').value == '' || this._EmergencyListService.MyForm.get('CountryId').value== null) {
+    //   this.toastr.warning('Please Select Country Name  ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // } 
+    if (this._EmergencyListService.MyForm.get('MobileNo').value == '' || this._EmergencyListService.MyForm.get('MobileNo').value== null) {
+      this.toastr.warning('Please enter MobileNo  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('PhoneNo').value == '' || this._EmergencyListService.MyForm.get('PhoneNo').value== null) {
+      this.toastr.warning('Please enter PhoneNo  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('Departmentid').value == '' || this._EmergencyListService.MyForm.get('Departmentid').value== null) {
+      this.toastr.warning('Please select Department  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('Departmentid').value) {
+      if(!this.DepartmentList.find(item => item.DepartmentName == this._EmergencyListService.MyForm.get('Departmentid').value.DepartmentName))
+     {
+      this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+     }
+    } 
+    if (this._EmergencyListService.MyForm.get('DoctorId').value == '' || this._EmergencyListService.MyForm.get('DoctorId').value== null) {
+      this.toastr.warning('Please select Doctor  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this._EmergencyListService.MyForm.get('DoctorId').value) {
+      if(!this.DoctorList.find(item => item.Doctorname == this._EmergencyListService.MyForm.get('DoctorId').value.Doctorname))
+      {
+        this.toastr.warning('Please select Valid Doctor Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    } 
    
     if (!this.registerObj.RegId) {
       var m_data = {
@@ -219,7 +346,7 @@ export class NewEmergencyComponent implements OnInit {
           "CountryId": this._EmergencyListService.MyForm.get('CountryId').value.CountryId,
           "StateId": this._EmergencyListService.MyForm.get('StateId').value.StateId,
           "CityId": this._EmergencyListService.MyForm.get('CityId').value.CityId,
-          "departmentId": this._EmergencyListService.MyForm.get('Departmentid').value.Departmentid || 0,
+          "departmentId": this._EmergencyListService.MyForm.get('Departmentid').value.DepartmentId,
           "doctorId": this._EmergencyListService.MyForm.get('DoctorId').value.DoctorId || 0,
         
         
@@ -395,7 +522,8 @@ export class NewEmergencyComponent implements OnInit {
     if (value) {
       const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
       return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
-    } 
+    }
+
   }
   getOptionTextPrefix(option) {
     return option && option.PrefixName ? option.PrefixName : '';
@@ -410,24 +538,28 @@ export class NewEmergencyComponent implements OnInit {
   }
 
   getOptionTextDep(option) {
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
 
   OnChangeDoctorList(departmentObj) {
-    
-    
+    console.log(departmentObj)
     this._EmergencyListService.MyForm.get('DoctorId').reset();
+    var vdata={
+      "Id":departmentObj.DepartmentId
+    } 
 
     this.isDepartmentSelected = true;
-    this._EmergencyListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+    this._EmergencyListService.getDoctorMasterCombo(vdata).subscribe(
       data => {
         this.DoctorList = data;
+        console.log(this.DoctorList)
         this.optionsDoc = this.DoctorList.slice();
         this.filteredOptionsDoc = this._EmergencyListService.MyForm.get('DoctorId').valueChanges.pipe(
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
+        console.log("doctor ndfkdf:",this._EmergencyListService.MyForm.get('DoctorId').value)
       })
   }
 
@@ -463,5 +595,6 @@ export class NewEmergencyComponent implements OnInit {
   }
   OnReset() {
     this._EmergencyListService.MyForm.reset();
+    this.dialogRef.close();
   }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { VendorListComponent } from './vendor-list/vendor-list.component';
 
 
 const appRoutes: Routes = [
@@ -15,6 +16,10 @@ const appRoutes: Routes = [
   {
     path: "issuetracker",
     loadChildren: () => import("./issue-tracker/issue-tracker.module").then((m) => m.IssueTrackerModule),
+  },
+  {
+    path: "vendorlist",
+    loadChildren: () => import("./vendor-list/vendor-list.module").then((m) => m.VendorListModule),
   }
 ]; 
 @NgModule({
