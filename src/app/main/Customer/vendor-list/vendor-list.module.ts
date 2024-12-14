@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { NewVendorListComponent } from './new-vendor-list/new-vendor-list.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
@@ -15,7 +17,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { CommonModule, DatePipe } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -33,25 +34,27 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
-import { MatChipsModule } from '@angular/material/chips'; ;
+import { MatChipsModule } from '@angular/material/chips';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
-import { EmergencyListComponent } from './emergency-list.component';
-import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
- 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VendorListComponent } from './vendor-list.component';
 
-const routes: Routes = [
-  { 
-      path: '**', 
-      component: EmergencyListComponent 
-  },
-];
+const routes:Routes=[
+  {
+    path:'**',
+    component:VendorListComponent
+  }
+]
 
 @NgModule({
-  declarations: [EmergencyListComponent, NewEmergencyComponent],
+  declarations: [
+    VendorListComponent,
+    NewVendorListComponent
+  ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes), 
+    RouterModule.forChild(routes),
+    CommonModule,
     MatExpansionModule,
     MatSlideToggleModule ,
     MatListModule,
@@ -87,15 +90,13 @@ const routes: Routes = [
     MatSelectModule,
     MatSelectModule,
     MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
-    
-],
-providers: [
-    DatePipe,
-],
-entryComponents: [
-  EmergencyListComponent,
-]
+  ],
+  providers: [
+      DatePipe,
+  ],
+  entryComponents: [
+    VendorListComponent,
+  ]
 })
-export class EmergencyListModule { }
+export class VendorListModule { }

@@ -1,19 +1,20 @@
 <div class="modal-wrapper grid-container">
-  <!-- Modal header -->
-  <div class="modal-header accent">
-      <div class="modal-header-content">
-          <div class="modal-header-title">
-              <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Schduled Phone Appointment</span>
-          </div>
-          <div class="modal-header-right">
-              <div class="close-icon">
-                  <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                      <mat-icon>close</mat-icon>
-                  </button>
-              </div>
-          </div>
-      </div>
-  </div>
+
+  <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+          Schduled Phone Appointment
+        </span>
+    </div>
+    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+        style="margin-left: 500px;" >
+    </app-common-date>
+    <div class="close-icon">
+        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
 
   <!-- Modal body -->
   <div class="modal-body" fusePerfectScrollbar>
@@ -26,20 +27,13 @@
               
               <div flex class="container" style="border-radius:4px;  width:98%;border: rgba(0,0,0,0.12) 1px solid; padding: 7px;  border-radius: 5px;
                position: relative;">
-                <div class="header-container" style="padding: 5px;" fxLayout="column" fxLayout.gt-xs="row"
-                  fxLayoutGap="4px" fxLayoutAlign="space-between">
-                  <span style="font-size: 22px; font-weight: 500; color: #10c7c7;">Personal Details</span>
-                  
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                  </app-common-date>
-                 
+                
+                  <div class="sales-patient-info-title">
+                    <span style="font-weight: 750;">
+                        Patient Information
+                    </span>
                 </div>
-              
-                  <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxFlexEnd>
-  
-                  </div> -->
-                  <br/>
+                <hr>
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
   
                     <!-- <mat-form-field appearance="outline" fxFlex="28%">
@@ -49,7 +43,7 @@
                       <mat-datepicker #picker></mat-datepicker>
                    </mat-form-field>   -->
   
-                   <mat-form-field appearance="outline" fxFlex>
+                   <mat-form-field appearance="outline" fxFlex="15%">
                     <input matInput [matDatepicker]="picker" [min]="minDate"  placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="AppointmentDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
@@ -62,9 +56,11 @@
                       <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">First Name is required Enter only Alphabets</span>
                     </mat-form-field> -->
   
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>First Name</mat-label>
-                      <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required type="text"  #fname (keydown)="onEnterfname($event)">
+                      <input name="FirstName" formControlName="FirstName" placeholder="First Name" 
+                        matInput required type="text"  #fname (keydown)="onEnterfname($event)"
+                        oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                       <mat-error *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
                           First Name is required Enter only
                           Alphabets</mat-error>
@@ -73,13 +69,16 @@
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Middle Name</mat-label>
                       <input name="MiddleName" formControlName="MiddleName" matInput type="text"  [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }"
-                      #mname (keydown)="onEntermname($event)">
+                      #mname (keydown)="onEntermname($event)"
+                      oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                       <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span>
                     </mat-form-field>
   
                     <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }">
                       <mat-label>Last Name</mat-label>
-                      <input name="LastName" formControlName="LastName" matInput type="text"   #lname (keydown)="onEnterlname($event)">
+                      <input name="LastName" formControlName="LastName" 
+                      matInput type="text"   #lname (keydown)="onEnterlname($event)"
+                      oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                       <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName Name is required Enter only Alphabets</span>
                     </mat-form-field>
   
@@ -93,7 +92,9 @@
                       <mat-label>Address</mat-label>
                       <input name="Address" formControlName="Address" placeholder="Address" matInput
                       #Address (keydown)="onEnterAddress($event)">
-                      <!-- <mat-error>Please enter Address </mat-error> -->
+                      <mat-error *ngIf="personalFormGroup.get('Address').hasError('required')">
+                        Address is required.
+                    </mat-error>
                     </mat-form-field>
   
                     <!-- <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }">
@@ -106,7 +107,7 @@
                     </mat-form-field> -->
   
                     
-                  <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                  <mat-form-field appearance="outline" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"
                   style="margin-right:10px;">
                   <mat-label>Mobile Number</mat-label>
                   <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput required
@@ -122,13 +123,14 @@
   
                   </div>
   
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
   
   
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Department</mat-label>
                       <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                        formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" [(ngModel)]="vDepartmentid">
+                        formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" 
+                        [(ngModel)]="vDepartmentid">
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                           (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>

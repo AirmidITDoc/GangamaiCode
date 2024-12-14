@@ -13,6 +13,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { PhoneAppointmentlist } from '../phoneappointment.component';
 
 @Component({
   selector: 'app-new-phone-appointment',
@@ -57,7 +58,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   capturedImage: any;
   personalFormGroup: FormGroup;
   hospitalFormGroup: FormGroup;
-  // registerObj = new AdmissionPersonlModel({});
+  registerObj = new PhoneAppointmentlist({});
   options = [];
   filteredOptions: any;
   noOptionFound: boolean = false;
@@ -158,16 +159,15 @@ export class NewPhoneAppointmentComponent implements OnInit {
       FirstName:  ['', [
         Validators.required,
         Validators.maxLength(50),
-        // Validators.pattern("^[a-zA-Z._ -]*$"),
-        Validators.pattern('^[a-zA-Z () ]*$')
+        Validators.pattern('^[a-zA-Z ]*$')
       ]],
       MiddleName: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.pattern('^[a-zA-Z ]*$')
       ]],
       LastName: ['', [
         Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z ]*$')
       ]],
       Address: ['', Validators.required],
       PhAppDate: '',
@@ -176,9 +176,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
       Departmentid: '',
     
 
-      MobileNo:['', [Validators.required, Validators.pattern("^[0-9]*$"),
-      Validators.minLength(10),
-      Validators.maxLength(10),]],
+      MobileNo:['', 
+        [ 
+          Validators.required,
+          Validators.pattern("^[0-9]{10}$"),
+        ]
+      ],
       DoctorId: '',
       DoctorID: '',
       AddedBy: '',
@@ -193,7 +196,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   getOptionTextDep(option) {
     
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   getOptionTextDoc(option) {
@@ -219,7 +222,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }
     // filter
     this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
+      this.DepartmentList.filter(bank => bank.DepartmentName.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -261,9 +264,14 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
-  
+    console.log(departmentObj)
+    this.personalFormGroup.get('DoctorId').reset();
+    var vdata={
+      "Id":departmentObj.DepartmentId
+    } 
+
     this.isDepartmentSelected = true;
-    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
+    this._phoneAppointListService.getDoctorMasterCombo(vdata).subscribe(
       data => {
         this.DoctorList = data;
        
@@ -280,9 +288,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
    private _filterDep(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
       // this.isDepartmentSelected = false;
-      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      return this.optionsDep.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
 
   }
@@ -303,9 +311,63 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   OnSubmit() {
 debugger
-    if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
+    if (this.personalFormGroup.get('FirstName').value == '' || this.personalFormGroup.get('FirstName').value== null) {
+      this.toastr.warning('Please enter First Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.personalFormGroup.get('LastName').value == '' || this.personalFormGroup.get('LastName').value== null) {
+      this.toastr.warning('Please enter Last Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.personalFormGroup.get('Address').value == '' || this.personalFormGroup.get('Address').value== null) {
+      this.toastr.warning('Please enter First Name  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.personalFormGroup.get('MobileNo').value == '' || this.personalFormGroup.get('MobileNo').value== null) {
+      this.toastr.warning('Please enter MobileNo  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.personalFormGroup.get('Departmentid').value == '' || this.personalFormGroup.get('Departmentid').value== null) {
+      this.toastr.warning('Please select Department  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.personalFormGroup.get('Departmentid').value) {
+      if(!this.DepartmentList.find(item => item.DepartmentName == this.personalFormGroup.get('Departmentid').value.DepartmentName))
+     {
+      this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+     }
+    } 
+    if (this.personalFormGroup.get('DoctorId').value == '' || this.personalFormGroup.get('DoctorId').value== null) {
+      this.toastr.warning('Please select Doctor  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.personalFormGroup.get('DoctorId').value) {
+      if(!this.DoctorList.find(item => item.Doctorname == this.personalFormGroup.get('DoctorId').value.Doctorname))
+      {
+        this.toastr.warning('Please select Valid Doctor Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    } 
+    // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
 
-    
+    if(!this.registerObj.PhoneAppId){
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
     var m_data = {
       "phoneAppointmentInsert": {
@@ -320,7 +382,7 @@ debugger
         "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
         "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
         "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "departmentId": this.personalFormGroup.get('Departmentid').value.Departmentid || 0,
+        "departmentId": this.personalFormGroup.get('Departmentid').value.DepartmentId || 0,
         "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
         "addedBy": this.accountService.currentUserValue.user.id,
         "UpdatedBy": this.accountService.currentUserValue.user.id,
@@ -339,17 +401,18 @@ debugger
       }
       // this.isLoading = '';
     });
-  }else{
-    this.toastr.warning('Please Enter Valid Department & Doctor', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
   }
+  // else{
+  //   this.toastr.warning('Please Enter Valid Department & Doctor', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
 }
 
   onClose() {
-    // this.personalFormGroup.reset();
-    // this.dialogRef.close();
+    this.personalFormGroup.reset();
+    this.dialogRef.close();
   }
 
 
