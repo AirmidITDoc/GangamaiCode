@@ -104,7 +104,10 @@ export class AirmidAutocompleteComponent implements OnInit {
                 .GetData(this.apiUrl + this.mode)
                 .subscribe((data: any) => {
                     this.ddls = data as [];
-                    this.filteredDdls.next(this.ddls.slice());
+                    this.filteredDdls.next(this.ddls.slice()); 
+                    if(this.IsMultiPle){
+                        debugger
+                    }
                     if (this.value) {
                         this.formGroup.get(this.formControlName).setValue(this.value.toString());
                         this.control.setValue(this.value.toString());

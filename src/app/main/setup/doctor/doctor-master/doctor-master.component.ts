@@ -283,6 +283,7 @@ export class DoctorMaster {
     ESINO: any;
     signature: string;
     isOnCallDoctor: any;
+    mDoctorDepartmentDets:any[];
     /**
      * Constructor
      *
@@ -333,6 +334,7 @@ export class DoctorMaster {
             this.ESINO = DoctorMaster.ESINO || "";
             this.signature = DoctorMaster.Signature || "";
             this.isOnCallDoctor = DoctorMaster.isOnCallDoctor || 0;
+            this.mDoctorDepartmentDets=DoctorMaster.mDoctorDepartmentDets||[];
         }
     }
 }

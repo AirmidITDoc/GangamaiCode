@@ -122,8 +122,8 @@
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Mobile No" formControlName="MobileNo" [value]="registerObj.mobile"
-                            [formGroup]="myForm" [validations]="getValidationMessages().MobileNo" [maxLength]="12">
+                        <airmid-textbox label="Phone" formControlName="Phone" [value]="registerObj.mobile"
+                            [formGroup]="myForm" [validations]="getValidationMessages().Phone" [maxLength]="12">
                         </airmid-textbox>
                     </div>
 
@@ -168,14 +168,15 @@
 
             <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="City" formControlName="CityId" [formGroup]="myForm"
-                        [validations]="getValidationMessages().CityId" [mode]="autocompleteModecity">
+                    <airmid-autocomplete label="City" formControlName="City" [formGroup]="myForm"
+                        [(value)]="registerObj.city" [validations]="getValidationMessages().City"
+                        [mode]="autocompleteModecity">
                     </airmid-autocomplete>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox label="ESINO" formControlName="ESINO" [value]="registerObj.ESINO"
-                        [formGroup]="myForm" [validations]="getValidationMessages().ESINO" [maxLength]="10">
+                    <airmid-textbox label="ESINO" formControlName="esino" [value]="registerObj.esino"
+                        [formGroup]="myForm" [validations]="getValidationMessages().esino" [maxLength]="10">
                     </airmid-textbox>
                 </div>
 
@@ -189,7 +190,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Reg date</mat-label>
                         <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
-                            [(ngModel)]="registerObj.regDate">
+                            [value]="registerObj.regDate">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
@@ -211,7 +212,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>MahReg date</mat-label>
                         <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
-                            [(ngModel)]="registerObj.mahRegDate">
+                            [value]="registerObj.mahRegDate">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
                     </mat-form-field>
@@ -226,7 +227,8 @@
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete label="DoctorType" formControlName="DoctorTypeId" [formGroup]="myForm"
-                        [validations]="getValidationMessages().DoctorTypeId" [mode]="autocompleteModedoctorty">
+                        [(value)]="registerObj.doctorTypeId" [validations]="getValidationMessages().DoctorTypeId"
+                        [mode]="autocompleteModedoctorty">
                     </airmid-autocomplete>
 
                 </div>
@@ -275,14 +277,14 @@
                             <!-- <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedep($event)" ></airmid-autocomplete> -->
 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-autocomplete label="DepartmentName" formControlName="MDoctorDepartmentDets"
-                                    [formGroup]="myForm" [IsMultiPle]="true" [value]="selectedItems"
+                                <airmid-autocomplete label="Department" formControlName="MDoctorDepartmentDets"
+                                    [formGroup]="myForm" [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                     [validations]="getValidationMessages().Departmentid"
                                     [mode]="autocompleteModedepartment" OutValue="DepartmentId">
                                 </airmid-autocomplete>
                             </div>
                             <mat-chip-list #chipList>
-                                <mat-chip *ngFor="let item of myForm.value.Departmentid">
+                                <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
                                     {{ item.text }} <mat-icon (click)="removeDepartment(item)">close</mat-icon>
                                 </mat-chip>
                             </mat-chip-list>

@@ -41,19 +41,10 @@ export class DoctorMasterService {
             Phone: [
                 "",
                 [
-                    // Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(15),
-                ],
-            ],
-            MobileNo: [
-                "",
-                [
                     Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
-                    Validators.maxLength(10),
+                    Validators.maxLength(15),
                 ],
             ],
             GenderId: ["", Validators.required],
@@ -70,7 +61,7 @@ export class DoctorMasterService {
             DoctorTypeId: ["", Validators.required],
             DoctorType: [""],
             PassportNo: [""],
-            ESINO: [
+            esino: [
                 "",
                 [
                     Validators.required,
@@ -119,7 +110,7 @@ export class DoctorMasterService {
                     Validators.maxLength(12),
                 ]
             ],
-            CityId: ["", Validators.required]
+            City: ["", Validators.required]
         });
     }
 

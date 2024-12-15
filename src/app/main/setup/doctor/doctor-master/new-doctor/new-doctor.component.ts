@@ -101,14 +101,14 @@ export class NewDoctorComponent implements OnInit {
         if (this.data.doctorId > 0) {
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
-                if (this.registerObj.dateofBirth) {
-                    const todayDate = new Date();
-                    const dob = new Date(this.registerObj.dateofBirth);
-                    const timeDiff = Math.abs(Date.now() - dob.getTime());
-                    this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-                    this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-                    this.registerObj.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
-                }
+                // if (this.registerObj.dateofBirth) {
+                //     const todayDate = new Date();
+                //     const dob = new Date(this.registerObj.dateofBirth);
+                //     const timeDiff = Math.abs(Date.now() - dob.getTime());
+                //     this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+                //     this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+                //     this.registerObj.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
+                // }
                 this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
                     this.sanitizeImagePreview = data["data"] as string;
                     this.registerObj.signature = data["data"] as string;
@@ -291,24 +291,11 @@ export class NewDoctorComponent implements OnInit {
 
 
 
-    selectedItems = [];
-    toggleSelection(item: any) {
-        item.selected = !item.selected;
-        if (item.selected) {
-            this.selectedItems.push(item);
-        } else {
-            const i = this.selectedItems.findIndex(value => value.DepartmentId === item.DepartmentId);
-            this.selectedItems.splice(i, 1);
-        }
-
-    }
-    remove(e) {
-        this.toggleSelection(e);
-    }
+    //selectedItems = [];
     removeDepartment(item) {
-        let removedIndex = this.myForm.value.Departmentid.findIndex(x => x.value == item.value);
-        this.myForm.value.Departmentid.splice(removedIndex, 1);
-        this.myForm.controls['Departmentid'].setValue(this.myForm.value.Departmentid);
+        let removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.DepartmentId == item.DepartmentId);
+        this.myForm.value.MDoctorDepartmentDets.splice(removedIndex, 1);
+        this.myForm.controls['MDoctorDepartmentDets'].setValue(this.myForm.value.MDoctorDepartmentDets);
     }
 
 
@@ -415,7 +402,6 @@ export class NewDoctorComponent implements OnInit {
 
             console.log(mdataUpdate);
             this._doctorService.doctortMasterUpdate(mdataUpdate).subscribe((data) => {
-                this.msg = data;
                 if (data) {
                     this.toastr.success(data.message, 'updated !', {
                         toastClass: 'tostr-tost custom-toast-success',
@@ -504,12 +490,7 @@ export class NewDoctorComponent implements OnInit {
                 { name: "required", Message: "Address is required" }
             ],
             Phone: [
-                { name: "pattern", Message: "Enter valid numbers" },
-                { name: "minLength", Message: "10 digit required." },
-                { name: "maxLength", Message: "More than 15 digits not allowed." }
-            ],
-            MobileNo: [
-                { name: "required", Message: "Mobile no is required" },
+                { name: "required", Message: "Phone no is required" },
                 { name: "pattern", Message: "Enter valid numbers" },
                 { name: "minLength", Message: "10 digit required." },
                 { name: "maxLength", Message: "More than 15 digits not allowed." }
@@ -521,7 +502,7 @@ export class NewDoctorComponent implements OnInit {
                 { name: "required", Message: "Education is required" },
                 { name: "pattern", Message: "only char allowed." }
             ],
-            ESINO: [
+            esino: [
                 { name: "required", Message: "ESINO is required" },
                 { name: "minLength", Message: "10 digit required." },
                 { name: "maxLength", Message: "More than 15 digits not allowed." }
@@ -548,7 +529,7 @@ export class NewDoctorComponent implements OnInit {
                 { name: "minLength", Message: "12 digit required." },
                 { name: "maxLength", Message: "More than 12 digits not allowed." }
             ],
-            CityId: [
+            City: [
                 { name: "required", Message: "City is required" }
             ],
             DoctorTypeId: [
