@@ -56,7 +56,6 @@ export class AirmidDateofbirthComponent implements OnInit {
     ngOnInit(): void {
     }
     ngOnChanges(changes: SimpleChanges): void {
-        debugger
         if (!changes.value?.firstChange && changes.value?.currentValue) {
             this.onChangeDateofBirth(changes.value.currentValue);
         }

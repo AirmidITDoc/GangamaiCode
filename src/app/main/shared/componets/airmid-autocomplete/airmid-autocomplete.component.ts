@@ -27,6 +27,8 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() IsMultiPle: boolean;
+    @Input() OutText: string = "text";
+    @Input() OutValue: string = "value";
 
     private _disabled: boolean = false;
     private _focused: boolean = false;
@@ -149,8 +151,12 @@ export class AirmidAutocompleteComponent implements OnInit {
 
     }
     public onDdlChange($event) {
-        debugger
-        this.formGroup.controls[this.formControlName].setValue($event.value);
+        if (this.IsMultiPle) {
+            this.formGroup.controls[this.formControlName].setValue($event.value.map(prod => { return { [this.OutText]: prod.text, [this.OutValue]: prod.value }; }));
+        }
+        else {
+            this.formGroup.controls[this.formControlName].setValue($event.value);
+        }
         this.selectDdlObject.emit($event.value);
     }
     SetSelection(value) {

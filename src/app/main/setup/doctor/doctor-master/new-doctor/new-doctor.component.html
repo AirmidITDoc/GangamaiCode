@@ -59,7 +59,8 @@
                         </airmid-autocomplete>
                     </div>
                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
+                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                     </div>
                     <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-button-toggle-group [(ngModel)]="dateStyle" (change)="OnChangeDobType($event)"
@@ -188,7 +189,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Reg date</mat-label>
                         <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
-                            [value]="registerObj.regDate">
+                            [(ngModel)]="registerObj.regDate">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
@@ -210,7 +211,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>MahReg date</mat-label>
                         <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
-                            [value]="registerObj.mahRegDate">
+                            [(ngModel)]="registerObj.mahRegDate">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
                     </mat-form-field>
@@ -219,7 +220,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox label="Hospital Name" formControlName="RefDocHospitalName"
                         [value]="registerObj.refDocHospitalName" [formGroup]="myForm"
-                        [validations]="getValidationMessages().RefDocHospitalName" [maxLength]="10">
+                        [validations]="getValidationMessages().RefDocHospitalName" [maxLength]="100">
                     </airmid-textbox>
                 </div>
 
@@ -274,10 +275,10 @@
                             <!-- <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedep($event)" ></airmid-autocomplete> -->
 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-autocomplete label="DepartmentName" formControlName="Departmentid"
+                                <airmid-autocomplete label="DepartmentName" formControlName="MDoctorDepartmentDets"
                                     [formGroup]="myForm" [IsMultiPle]="true" [value]="selectedItems"
                                     [validations]="getValidationMessages().Departmentid"
-                                    [mode]="autocompleteModedepartment">
+                                    [mode]="autocompleteModedepartment" OutValue="DepartmentId">
                                 </airmid-autocomplete>
                             </div>
                             <mat-chip-list #chipList>
