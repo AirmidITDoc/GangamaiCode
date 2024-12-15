@@ -53,6 +53,7 @@ const routes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         MatDialogModule,
+        MatSlideToggleModule
     ],
     providers: [BankMasterService,DatePipe],
     entryComponents: [BankMasterComponent],

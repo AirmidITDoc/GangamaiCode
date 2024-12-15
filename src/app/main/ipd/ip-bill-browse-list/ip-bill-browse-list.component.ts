@@ -50,7 +50,20 @@ export class IPBillBrowseListComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   hasSelectedContacts: boolean;
-
+  fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+  toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+  allfilters=  [
+          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+       
+      ]
   
   gridConfig: gridModel = {
       apiUrl: "Billing/IPBillList",
@@ -97,18 +110,20 @@ export class IPBillBrowseListComponent implements OnInit {
       ],
       sortField: "RegNo",
       sortOrder: 0,
-      filters: [
-          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-          { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-         { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
-          { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
+      filters:this.allfilters,
+      
+    //   [
+    //       { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //      { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
+    //       { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+    //       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    //       { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
+    //       { fieldName: "IsIntrimOrFinal", fieldValue: "0", opType: OperatorComparer.Equals },
+    //       { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+    //       { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+    //      // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    //   ],
       row: 25
   }
 
@@ -234,11 +249,49 @@ gridConfig2: gridModel = {
 }
 
   constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog,
-      public toastr : ToastrService,) {}
+      public toastr : ToastrService, public datePipe: DatePipe) {}
   ngOnInit(): void {
   }
 
   onSave(row: any = null) {
   }
+
+
+  onChangeDate(selectDate) {
+    if (selectDate) {
+        debugger
+        this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
+        console.log(this.fromDate);
+        this.gridConfig.filters[2].fieldValue = this.fromDate
+
+        this.gridConfig.filters = [  { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+           ]
+    }
+
+}
+onChangeDate1(selectDate) {
+    if (selectDate) {
+debugger
+        this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
+        console.log(this.toDate);
+        this.gridConfig.filters[3].fieldValue = this.toDate
+        
+        this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+    }
+}
 
 }

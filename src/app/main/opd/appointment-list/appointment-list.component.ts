@@ -151,48 +151,45 @@ export class AppointmentListComponent implements OnInit {
     onChangeDate(selectDate) {
         if (selectDate) {
             debugger
-            this.fromDate = this.datePipe.transform(this.gridConfig.filters[4].fieldValue, "MM/dd/yyyy")
+            this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.fromDate);
             this.gridConfig.filters[4].fieldValue = this.fromDate
 
-            this.gridConfig.filters = this.allfilters
-            // [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            //     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            //     { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
-            //     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            //     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            //     { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-            //     { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            //     { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+            this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
         }
 
     }
     onChangeDate1(selectDate) {
         if (selectDate) {
-
-            this.toDate = this.datePipe.transform(this.gridConfig.filters[5].fieldValue, "MM/dd/yyyy")
+debugger
+            this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.toDate);
             this.gridConfig.filters[5].fieldValue = this.toDate
-            this.gridConfig.filters = this.allfilters
             
-            // [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            //     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            //     { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
-            //     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            //     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            //     { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-            //     { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            //     { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+            this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
         }
     }
 
     ngOnInit(): void {
         
         this.getVisitList();
-        console.log(this.gridConfig.filters)
-        // this.doctorId=this.gridConfig.filters[3].fieldValue
+      
     }
     onSave(row: any = null) {
 
@@ -511,17 +508,15 @@ export class AppointmentListComponent implements OnInit {
         console.log(obj);
         this.DoctorId = String(obj)
         console.log(this.gridConfig.filters)
-        this.gridConfig.filters =this.allfilters
-        
-        // [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        // { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        // { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        // { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
-        // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        // { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-        // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
     }
     getValidationdoctorMessages() {
         return {

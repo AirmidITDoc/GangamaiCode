@@ -1259,10 +1259,10 @@ export class ItemFormMasterComponent implements OnInit {
     onChangeMode(event) {
 
     }
-
-    onClear(val : boolean) {
+  
+    onClear() {
         this.itemForm.reset();
-        this.dialogRef.close(val);
+        // this.dialogRef.close(val);
     }
     onClose() {
         this.itemForm.reset();

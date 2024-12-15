@@ -1,0 +1,13 @@
+app-airmid-slider{
+.mat-slide-toggle .mat-slide-toggle-thumb {
+    width: 13px!important;
+    height: 13px!important;
+    background-color: #24c368 !important;
+    box-shadow: none !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-65%, -57%);
+    border-radius: 3px
+    }
+}
