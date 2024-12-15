@@ -44,7 +44,7 @@ export class TestFormMasterComponent implements OnInit {
     @ViewChild(MatSort) sort:MatSort;
     @ViewChild(MatPaginator) paginator:MatPaginator;
 
-    displayedColumns: string[] = ['ParameterName'];
+    displayedColumns: string[] = ['parameterName'];
     displayedColumns2: string[] = ['Reorder', 'ParameterName', 'PrintParameterName', 'MethodName', 'UnitName', 'ParaMultipleRange', 'Formula', 'IsNumeric', 'Action'];
     displayedColumns3: string[] = ['Template Name', 'Add'];
     displayedColumns4: string[] = ['ParameterName'];
@@ -302,7 +302,7 @@ export class TestFormMasterComponent implements OnInit {
           sortField: "ParameterShortName",
           sortOrder: 0,
           filters: [
-              { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains },
+              { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains }
             //   { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
           
           ],
@@ -313,7 +313,7 @@ export class TestFormMasterComponent implements OnInit {
           this.DSTestList.data = data.data as TestList[];;
           this.DSTestList.sort = this.sort;
           this.DSTestList.paginator = this.paginator;      
-          console.log("jkhjhdjkahf :",this.DSTestList.data)
+          console.log("Test List :",this.DSTestList.data)
         });
       }
 

@@ -41,11 +41,13 @@ import { AirmidTable1Component } from './componets/airmid-table1/airmid-table1.c
 import { AirmidTextbox1Component } from './componets/airmid-textbox1/airmid-textbox1.component';
 import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmid-dateofbirth.component';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { AirmidSliderComponent } from './componets/airmid-slider/airmid-slider.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent],
+        AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -70,7 +72,8 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
         MatAutocompleteModule,
         MatSelectModule,
         NgxMatSelectSearchModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatSlideToggleModule
     ],
     providers: [
         ExcelDownloadService,
@@ -90,7 +93,8 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
         AirmidDropdownComponent,
         AirmidTable1Component,
         AirmidTextbox1Component,
-        AirmidDateofbirthComponent
+        AirmidDateofbirthComponent,
+        AirmidSliderComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     entryComponents: []

@@ -124,11 +124,11 @@
                                                     <mat-card style="height:267px;width: 100%;overflow: auto;">
 
 
-                                                        <mat-table matSort [dataSource]="paramterList"
+                                                        <mat-table matSort [dataSource]="DSTestList"
                                                             [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">
 
-                                                            <ng-container matColumnDef="ParameterName">
+                                                            <ng-container matColumnDef="parameterName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                                     Parameter Values
                                                                 </mat-header-cell>
@@ -139,7 +139,7 @@
                                                                         style="cursor:pointer;margin-right: 10px;"> add
                                                                     </mat-icon>
 
-                                                                    {{element.ParameterName}}
+                                                                    {{element.parameterName}}
                                                                 </mat-cell>
 
 

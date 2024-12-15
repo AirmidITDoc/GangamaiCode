@@ -9,6 +9,7 @@ import { OPListService } from './oplist.service';
 import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 import { NewOPRefundofbillComponent } from '../op-search-list/new-oprefundofbill/new-oprefundofbill.component';
 import { fuseAnimations } from '@fuse/animations';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -24,24 +25,37 @@ export class NewOPListComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   hasSelectedContacts: boolean;
+//   fromDate=new Date().toISOString();
 
-  
+  fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+  toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+  allfilters=  [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+    { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+   
+]
   gridConfig: gridModel = {
+    
       apiUrl: "VisitDetail/OPBillList",
       columnsList: [
           { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Code", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
-          { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:200,type:22},
+        //   { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
+          { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' ,width:80,type:22},
           { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:200},
-          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:8},
+          { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:6},
           { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:80 },
           { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:6},
           { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
           { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
           { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "Bill Cancel", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
-          
+         
           {
               heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
                   {
@@ -84,17 +98,18 @@ export class NewOPListComponent implements OnInit {
       ],
       sortField: "PbillNo",
       sortOrder: 0,
-      filters: [
-          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-          { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-         { fieldName: "From_Dt", fieldValue: "01/01/2021", opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
-          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
+      filters: this.allfilters,
+    //   [
+    //       { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    //       { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+    //       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    //       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    //       { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+    //       { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+    //       { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+         
+    //   ],
       row: 25
   }
 
@@ -157,14 +172,14 @@ export class NewOPListComponent implements OnInit {
     filters: [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+     
     ],
     row: 25
 }
@@ -229,8 +244,8 @@ gridConfig2: gridModel = {
     filters: [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -240,7 +255,7 @@ gridConfig2: gridModel = {
 }
 
   constructor(public _OPListService: OPListService, public _matDialog: MatDialog,
-      public toastr : ToastrService,) {}
+      public toastr : ToastrService, public datePipe: DatePipe) {}
   ngOnInit(): void {
   }
 
@@ -288,5 +303,43 @@ EditOPBill(){
             that.grid.bindGridData();
         }
     });
+}
+
+
+onChangeDate(selectDate) {
+    if (selectDate) {
+        debugger
+        this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
+        console.log(this.fromDate);
+        this.gridConfig.filters[2].fieldValue = this.fromDate
+
+        this.gridConfig.filters = [  { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+           ]
+    }
+
+}
+onChangeDate1(selectDate) {
+    if (selectDate) {
+debugger
+        this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
+        console.log(this.toDate);
+        this.gridConfig.filters[3].fieldValue = this.toDate
+        
+        this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+    }
 }
 }

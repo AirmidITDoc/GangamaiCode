@@ -69,6 +69,8 @@ export class ServiceMasterService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
+            TariffId:[""],
+            GroupId:[""],
             ServiceNameSearch: [""],
             IsDeletedSearch: ["2"],
         });

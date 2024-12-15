@@ -41,7 +41,7 @@
 
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
+                    <app-airmid-table1 [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
 
                             <mat-form-field appearance="outline" fxFlex>
@@ -63,7 +63,7 @@
                                 </button>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>From Date</mat-label>
                                 <input matInput placeholder="Search From Date" autocomplete="off"
                                     [(ngModel)]="gridConfig.filters[2].fieldValue" />
@@ -81,19 +81,27 @@
                                     (click)="gridConfig.filters[3].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field>
-
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                        placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field> -->
+                            <form [formGroup]="_OPListService.myFilterbillform">
+
+                                         
+                                <mat-form-field appearance="outline" fxFlex="50%">
+                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
+                                        (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[2].fieldValue"
+                                        placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline"fxFlex="50%" style="margin-left: 10px;">
+                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
+                                        (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
+                                        placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker1></mat-datepicker>
+                                </mat-form-field>
+                            </form>
+
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>PBillNo</mat-label>
@@ -122,7 +130,7 @@
                                 <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                             </mat-radio-group>
                         </ng-container>
-                    </airmid-table>
+                    </app-airmid-table1>
                 </div>
             </div>
 
@@ -168,7 +176,7 @@
                                 </button>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>From Date</mat-label>
                                 <input matInput placeholder="Search From Date" autocomplete="off"
                                     [(ngModel)]="gridConfig.filters[2].fieldValue" />
@@ -186,20 +194,27 @@
                                     (click)="gridConfig.filters[3].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field>
-
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                        placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field> -->
 
+                            <form [formGroup]="_OPListService.myFilterpayform">
+
+                                         
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
+                                        (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[2].fieldValue"
+                                        placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline"fxFlex>
+                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
+                                        (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
+                                        placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker1></mat-datepicker>
+                                </mat-form-field>
+                            </form>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>RegNo</mat-label>
@@ -291,7 +306,7 @@
                                 </button>
                             </mat-form-field> -->
 
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>From Date</mat-label>
                                 <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" 
                                        placeholder="mm/dd/yyyy"   [(ngModel)]="gridConfig.filters[2].fieldValue" />
@@ -312,20 +327,28 @@
                                     (click)="gridConfig.filters[3].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field>
-
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                        placeholder="Start date">
-                                    <input matEndDate formControlName="end" placeholder="End date"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field> -->
 
+                          
+                            <form [formGroup]="_OPListService.myFilterrefundform">
+
+                                         
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
+                                        (dateChange)="onChangeDate($event.value)" [(ngModel)]="fromDate"
+                                        placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline"fxFlex>
+                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
+                                        (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
+                                        placeholder="mm/dd/yyyy">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker1></mat-datepicker>
+                                </mat-form-field>
+                            </form>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>RegNo</mat-label>
@@ -337,12 +360,12 @@
                                 </button>
                             </mat-form-field>
 
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[7].fieldValue"
+                            <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[7].fieldValue"
                                 fxLayoutAlign="center center">
                                 <mat-radio-button value="">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                            </mat-radio-group>
+                            </mat-radio-group> -->
                         </ng-container>
                     </airmid-table>
                 </div>

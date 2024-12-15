@@ -7,30 +7,64 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class OPListService {
   myFilterbillform:FormGroup
+  myFilterpayform:FormGroup
+  myFilterrefundform:FormGroup
   constructor(public _httpClient: ApiCaller,private _formBuilder: FormBuilder) {
-    // this.myFilterbillform=this.myFilterbillbrowseform();
-    // this.myFilterpayform=this.myFilterpaymentbrowseform();
-    // this.myFilterrefundform=this.myFilterrefundbrowseform();
+    this.myFilterbillform=this.myFilterbillbrowseform();
+    this.myFilterpayform=this.myFilterpaymentbrowseform();
+    this.myFilterrefundform=this.myFilterrefundbrowseform();
    }
 
 
   
-  // myFilterbillbrowseform(): FormGroup {
-  //   return this._formBuilder.group({
+  myFilterbillbrowseform(): FormGroup {
+    return this._formBuilder.group({
      
-  //     FirstName: ['', [
-  //        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-  //     ]],
-  //     LastName:['', [
-  //       Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-  //    ]],
-  //     start: [(new Date()).toISOString()],
-  //     end: [(new Date()).toISOString()],
-  //     PBillNo: '', 
-  //     RegNo: '',
-  //    ReceiptNo: '',
-  //   });
-  // }
+    //   FirstName: ['', [
+    //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //   ]],
+    //   LastName:['', [
+    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //  ]],
+     fromDate: [(new Date()).toISOString()],
+     enddate: [(new Date()).toISOString()],
+      PBillNo: '', 
+      RegNo: '',
+     ReceiptNo: '',
+    });
+  }
+  myFilterpaymentbrowseform(): FormGroup {
+    return this._formBuilder.group({
+     
+    //   FirstName: ['', [
+    //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //   ]],
+    //   LastName:['', [
+    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //  ]],
+     fromDate: [(new Date()).toISOString()],
+     enddate: [(new Date()).toISOString()],
+      PBillNo: '', 
+      RegNo: '',
+     ReceiptNo: '',
+    });
+  }
+  myFilterrefundbrowseform(): FormGroup {
+    return this._formBuilder.group({
+     
+    //   FirstName: ['', [
+    //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //   ]],
+    //   LastName:['', [
+    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+    //  ]],
+     fromDate: [(new Date()).toISOString()],
+     enddate: [(new Date()).toISOString()],
+      PBillNo: '', 
+      RegNo: '',
+     ReceiptNo: '',
+    });
+  }
 
   
 public deactivateTheStatus(m_data) {
