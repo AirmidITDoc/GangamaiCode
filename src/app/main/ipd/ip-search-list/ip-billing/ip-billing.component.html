@@ -472,21 +472,95 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Price">
+                            <!-- <ng-container matColumnDef="Price">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.Price}}</span>
+                                    <mat-form-field appearance="legacy">
+                                        <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber (keyup)="gettablecalculation(contact)"
+                                            (keypress)="keyPressCharater($event)">
+                                    </mat-form-field>
+                                    <buttom mat-raised-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                        <mat-icon class="active-icon green-500 s-16">check</mat-icon>
+                                    </buttom>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
-                            <ng-container matColumnDef="Qty">
+                            <ng-container matColumnDef="Price">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
+                                    Price </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+                                    {{contact.Price}} 
+                                </mat-cell>
+                            </ng-container>  
+
+                            <ng-container matColumnDef="EdiPrice">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                 </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"> 
+                                    <ng-container *ngIf="!contact.PriceEditable; else showInput">
+                                        <button mat-icon-button (click)="PriceenableEditing(contact)" class="clear-button">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput> 
+                                      <mat-form-field appearance="legacy" class="w-60">
+                                        <input matInput  type="text" OnlyNumber (keyup)="getPricetable(contact,contact.Price)"
+                                            (keypress)="keyPressAlphanumeric($event)" autocomplete="off" [(ngModel)]="contact.Price">
+                                    </mat-form-field>
+                                        <mat-icon matTooltip="Close" (click)="PricedisableEditing(contact)">cancel</mat-icon>
+                                    
+                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                        </buttom>
+                                    
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>  
+
+                            <!-- <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.Qty}}</span>
+                                    <mat-form-field appearance="legacy">
+                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber (keyup)="gettablecalculation(contact)"
+                                            (keypress)="keyPressAlphanumeric($event)">
+                                    </mat-form-field>
+                                    <buttom mat-raised-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                        <mat-icon class="active-icon green-500 s-16">check</mat-icon>
+                                    </buttom>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
+
+                            
+                            <ng-container matColumnDef="Qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
+                                  Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
+                                    {{contact.Qty}} 
+                                </mat-cell>
+                            </ng-container>  
+
+                            <ng-container matColumnDef="EditQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                  </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100"> 
+                                    <ng-container *ngIf="!contact.QtyEditable; else showInput">
+                                        <button mat-icon-button (click)="QtyenableEditing(contact)" class="clear-button">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput> 
+                                      <mat-form-field appearance="legacy" class="w-50">
+                                        <input matInput  type="text" OnlyNumber (keyup)="getQtytable(contact,contact.Qty)"
+                                            (keypress)="keyPressAlphanumeric($event)" autocomplete="off" [(ngModel)]="contact.Qty">
+                                    </mat-form-field>
+                                        <mat-icon matTooltip="Close" (click)="QtydisableEditing(contact)">cancel</mat-icon> 
+                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                        </buttom> 
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>  
+
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
                                 </mat-header-cell>

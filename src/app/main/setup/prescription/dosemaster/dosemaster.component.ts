@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { DosemasterService } from "./dosemaster.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
@@ -6,6 +6,8 @@ import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-dosemaster",
@@ -34,8 +36,13 @@ export class DosemasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _DoseService: DosemasterService,
-        public toastr : ToastrService,) {}
+    constructor(
+        public _DoseService: DosemasterService,
+        public toastr: ToastrService,
+        public _matDialog: MatDialog, 
+        private _loggedService: AuthenticationService,
+
+    ) {}
 
     ngOnInit(): void {
         this.getDoseMasterList();
@@ -189,6 +196,10 @@ export class DosemasterComponent implements OnInit {
         };
 
         this._DoseService.populateForm(m_data1);
+    }
+    onClose(){
+        this._matDialog.closeAll();
+        //this._matDialog.closeAll(); 
     }
 }
 

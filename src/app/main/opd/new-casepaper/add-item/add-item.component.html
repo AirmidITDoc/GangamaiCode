@@ -1,0 +1,122 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar style="width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                New Item
+            </span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="modal-card-container">
+                <div fxLayout="column" fxLayoutGap="10px">
+                    <form [formGroup]="myform">
+                        <mat-card style="padding: 5px;width: 100%;">
+                            <div fxLayout="column" fxLayoutGap="6px" fxFlex="100%">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>ItemName</mat-label>
+                                    <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
+                                        placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)"
+                                        required>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>ItemGeneric Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select ItemGenericNameId" matInput
+                                        formControlName="ItemGenericNameId" [matAutocomplete]="autoItemGenericNameId"
+                                        #ItemGeneric (keydown)="onEnterItemGeneric($event)" [(ngModel)]="vItemGeneric"
+                                        required>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoItemGenericNameId="matAutocomplete"
+                                        [displayWith]="getOptionTextGenericname">
+                                        <mat-option *ngFor="let option of filteredItemgeneric | async" [value]="option">
+                                            {{option.ItemGenericName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>UnitofMeasurement Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text"
+                                        placeholder="Select PurchaseUOMId" matInput formControlName="PurchaseUOMId"
+                                        [matAutocomplete]="autoPurchaseUOMId" (keydown)="onEnterPurchaseUOMId($event)"
+                                        #PurchaseUOMId required [(ngModel)]="vPurchaseUOMId">
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoPurchaseUOMId="matAutocomplete"
+                                        [displayWith]="getOptionTextPurchaseUMO">
+                                        <mat-option *ngFor="let option of filteredUnitofmeasurement | async"
+                                            [value]="option">
+                                            {{option.UnitOfMeasurementName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Store Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text" placeholder="Select StoreId"
+                                        matInput formControlName="StoreId" [matAutocomplete]="autoStoreId" required
+                                        #storename (keydown)="onEnterstorename($event)" [(ngModel)]="vStoreName"
+                                        #Storname>
+                                    <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
+                                        <mat-option *ngFor="let option of filteredOptionsStore | async"
+                                            [value]="option">
+                                            <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
+                                                (click)="$event.stopPropagation()">
+                                                {{option.StoreName}}</mat-checkbox>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+                                <div fxLayout="column" fxFlex>
+                                    <mat-chip-list #chipList>
+                                        <mat-chip *ngFor="let item of selectedItems">
+                                            {{ item.StoreName }} <mat-icon (click)="remove(item)">close</mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </div>
+                        </mat-card>
+
+                    </form>
+                    <div style="padding: 8px;" fxLayoutAlign="end">
+                        <div class="sales-footer-buttons gap-6" fxLayout="row">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-primary " (click)="onSave()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

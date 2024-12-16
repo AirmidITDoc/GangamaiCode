@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -6,7 +6,8 @@ import { ItemGenericMasterService } from "./item-generic-master.service";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-item-generic-master",
@@ -31,9 +32,11 @@ export class ItemGenericMasterComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _itemgenericService: ItemGenericMasterService,
-        public toastr : ToastrService,
+        public toastr: ToastrService,
         public _matDialog: MatDialog,
-        public dialogRef: MatDialogRef<ItemGenericMasterComponent>) {}
+        // public dialogRef: MatDialogRef<ItemGenericMasterComponent>, 
+        private _loggedService: AuthenticationService,
+    ) {}
 
     ngOnInit(): void {
         this.getitemgenericMasterList();
@@ -68,9 +71,13 @@ export class ItemGenericMasterComponent implements OnInit {
     onClear() {
         this._itemgenericService.myform.reset({ IsDeleted: "false" });
         this._itemgenericService.initializeFormGroup();
-        this.dialogRef.close(); 
+       // this._matDialog.closeAll(); 
+      // this.dialogRef.close();
     }
-   
+    onClose(){
+       // this.dialogRef.close(); 
+        this._matDialog.closeAll();  
+    }
 
     onSubmit() {
         if (this._itemgenericService.myform.valid) {
@@ -184,6 +191,18 @@ export class ItemGenericMasterComponent implements OnInit {
         };
         this._itemgenericService.populateForm(m_data);
     }
+      getEdit() { 
+        const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
+          {
+            maxWidth: "50vw",
+            maxHeight: "40vh",
+            width: '100%',
+            height: "100%" 
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+        });
+      }
 }
 export class ItemGenericMaster {
     ItemGenericNameId: number;

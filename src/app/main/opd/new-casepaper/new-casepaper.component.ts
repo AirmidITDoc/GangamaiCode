@@ -29,6 +29,8 @@ import { element } from 'protractor';
 import { timeStamp } from 'console';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dosemaster.component';
+import { AddItemComponent } from './add-item/add-item.component';
 
 interface Patient {
   PHeight: string;
@@ -1407,6 +1409,31 @@ onTemplDetAdd(){
       this.addExaminlist.push(value.trim());
     }
   } 
+
+  getItemMaster() { 
+    const dialogRef = this._matDialog.open(AddItemComponent,
+      {
+        maxWidth: "60vw",
+        maxHeight: "60vh",
+        width: '100%',
+        height: "100%" 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  } 
+  getDosemaster() { 
+    const dialogRef = this._matDialog.open(DosemasterComponent,
+      {
+        maxWidth: "80vw",
+        maxHeight: "80vh",
+        width: '100%',
+        height: "100%" 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
   //   subscriptions: Subscription[] = [];
   //   reportPrintObj: CasepaperVisitDetails;
   //   printTemplate: any;

@@ -848,7 +848,7 @@ public updateIPDDischargSummaryTemplate(employee)
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMaster" , {});  
   }
   public UpdateCompayService(data) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {});
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {});
   }
   public getAdvanceId(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
@@ -957,6 +957,11 @@ return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
   public getAdvcanceDetails(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
+  public UpdateipbillService(query) {
+   //return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query,{});
+
   }
   public getPreRefundofBill(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
