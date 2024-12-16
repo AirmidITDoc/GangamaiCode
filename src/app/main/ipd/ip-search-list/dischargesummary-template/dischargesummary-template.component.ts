@@ -373,7 +373,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
 
 
   getPrescriptionList(el) {
-    // 
+    
     var m_data2 = {
       "AdmissionId": el.AdmissionID
     }
@@ -745,6 +745,10 @@ export class DischargesummaryTemplateComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-  onClear() { }
-  onClose() { }
+  onClear() { 
+    this.discSummary.reset();
+  }
+  onClose() {
+    this._matDialog.closeAll();
+   }
 }

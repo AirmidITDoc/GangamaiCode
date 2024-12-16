@@ -13,7 +13,7 @@
             </span>
         </div>
         <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -129,27 +129,7 @@
                             <form [formGroup]="discSummary" style="border: blue;">
                                 <div fxFlexFill fxLayout="row">
 
-                                    <!-- <mat-form-field appearance="outline">
-                                        <mat-label>Template</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Template"
-                                            matInput formControlName="TemplateId" [matAutocomplete]="autotemplate"
-                                            [(ngModel)]="vTemplateId" required>
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="discSummary.get('TemplateId').setValue(''); istemplateSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="discSummary.get('TemplateId').setValue(''); istemplateSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autotemplate="matAutocomplete"
-                                            [displayWith]="getOptionTexttemplate">
-                                            <mat-option *ngFor="let option of filteredOptionstemplate | async"
-                                                [value]="option" style="color: blueviolet;">
-                                                {{TemplateName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field> -->
-                                    <!-- [readonly]="!discSummary.invalid" -->
-
+                               
                                     <mat-form-field appearance="outline">
                                         <mat-label>Template Name</mat-label>
                                         <input matAutocompletePosition="below" type="text"  [(ngModel)]="vTemplateId"
@@ -246,13 +226,7 @@
                 <div class="form-title mb-2 pb-2 border-bottom">
                     <span class="h2 font-weight-600">MEDICINE AT THE TIME OF DISCHARGE</span>
                 </div>
-                <!-- <div class="form-input">
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>OTHER CON DR.OPINION</mat-label>
-                    <textarea matInput name="PainManagementTechnique" formControlName="PainManagementTechnique"
-                        [(ngModel)]="DischargeSList.PainManagementTechnique" cols="300" rows="8"></textarea>
-                </mat-form-field>
-            </div> -->
+              
                 <div fxLayout="column" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <form [formGroup]="MedicineItemForm">
@@ -308,12 +282,7 @@
                                         (keypress)="keyPressAlphanumeric($event)">
                                 </mat-form-field>
 
-                                <!-- (keydown)="onEnterremark($event)" -->
-                                <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                <mat-label>Instruction</mat-label>
-                                <input type="text" name="Instruction" [(ngModel)]="vInstruction" formControlName="Instruction"
-                                    matInput #Instruction (keydown)="onEnterremark($event)">
-                            </mat-form-field> -->
+                          
 
                                 <div class="input-add-button">
                                     <div matTooltip="Select Itemname to enable this button!!"
@@ -363,14 +332,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="Remark">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Instruction</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.Instruction}}</span>
-                                    </mat-cell>
-                                </ng-container> -->
-
+                                   
                                     <ng-container matColumnDef="Action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef class="table-actions">Action
                                         </mat-header-cell>
@@ -408,7 +370,7 @@
         </form>
 
         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
-            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+            <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
             <button class="btn btn-primary" (click)="onSubmit()">Save</button>
         </div>
     </div>

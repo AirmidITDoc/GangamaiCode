@@ -13,11 +13,11 @@
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-            </app-common-date>
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date> -->
+            <!-- <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
-            </button>
+            </button> -->
         </div>
     </mat-toolbar>
 
@@ -258,7 +258,7 @@
                                             <input name="FeedbackComments" placeholder="Enter FeedbackComments" formControlName="FeedbackComments">
                                         </mat-form-field> -->
                                         <mat-form-field appearance="outline" fxFlex="60%" style="padding-left: 20px;">
-                                            <mat-label>Feed Back Comment</mat-label>
+                                            <mat-label>Comment</mat-label>
                                             <textarea matInput name="FeedbackComments"
                                                 formControlName="FeedbackComments" cols="200" rows="1"></textarea>
                                         </mat-form-field>
