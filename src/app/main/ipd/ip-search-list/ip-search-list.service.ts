@@ -221,7 +221,7 @@ constructor(public _httpClient:HttpClient,
 	    LifeStyle :'',
 	    WarningSymptoms	:'',
 	    Radiology :'',
-	    IsNormalOrDeath :'',
+	    IsNormalOrDeath :'true',
       DoctorName1: '',
     
       DoctorIdOne: '',
