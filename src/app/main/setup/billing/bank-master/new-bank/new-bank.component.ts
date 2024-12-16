@@ -22,7 +22,7 @@ export class NewBankComponent implements OnInit {
   minLength1="10"
    maxLength="12"
   minLength="12"
-
+  value="true"
   constructor(
     public _BankMasterService: BankMasterService,
     public dialogRef: MatDialogRef<NewBankComponent>,
@@ -43,6 +43,7 @@ export class NewBankComponent implements OnInit {
   }
 
   onSubmit(){
+    console.log(this.bankForm.get("isActive").value)
     if (this.bankForm.invalid) {
       this.toastr.warning('please check from is invalid', 'Warning !', {
         toastClass:'tostr-tost custom-toast-warning',

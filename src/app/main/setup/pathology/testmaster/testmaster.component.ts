@@ -98,7 +98,7 @@ export class TestmasterComponent implements OnInit {
             {
                 maxWidth: "100vw",
                 height: '100%',
-                width: '70%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

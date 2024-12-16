@@ -30,8 +30,8 @@ export class IPBrowseBillService {
     LastName: [''],
     IsInterimOrFinal:['2'],
     CompanyId:[''],
-    start: [(new Date()).toISOString()],
-    end: [(new Date()).toISOString()],
+    fromDate: [(new Date()).toISOString()],
+    enddate: [(new Date()).toISOString()],
     ReceiptNo:'',
    
   });
@@ -46,8 +46,8 @@ filterForm_IpdpaymentBrowse(): FormGroup {
     LastName: [''],
     IsInterimOrFinal:['2'],
     CompanyId:[''],
-    start: [(new Date()).toISOString()],
-    end: [(new Date()).toISOString()],
+    fromDate: [(new Date()).toISOString()],
+     enddate: [(new Date()).toISOString()],
     ReceiptNo:'',
    
   });
@@ -61,8 +61,8 @@ filterForm_IpdrefundBrowse(): FormGroup {
     LastName: [''],
     IsInterimOrFinal:['2'],
     CompanyId:[''],
-    start: [(new Date()).toISOString()],
-    end: [(new Date()).toISOString()],
+    fromDate: [(new Date()).toISOString()],
+    enddate: [(new Date()).toISOString()],
     ReceiptNo:'',
    
   });
@@ -165,4 +165,6 @@ public deactivateTheStatus(m_data) {
 public deactivateTheStatuspayment(m_data) {
   return this._httpClient1.PostData("VisitDetail", m_data);
 }
+
+// newApi
 }

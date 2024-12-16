@@ -18,7 +18,7 @@ export class DoctorMasterService {
 
     createdDoctormasterForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorId: [""],
+            DoctorId: [0],
             PrefixID: ["", Validators.required],
             PrefixName: [""],
             FirstName: ['', [
@@ -31,7 +31,7 @@ export class DoctorMasterService {
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]],
-            LastName:['', [
+            LastName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
@@ -41,36 +41,27 @@ export class DoctorMasterService {
             Phone: [
                 "",
                 [
-                    // Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(15),
-                ],
-            ],
-            MobileNo: [
-                "",
-                [
                     Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
-                    Validators.maxLength(10),
+                    Validators.maxLength(15),
                 ],
             ],
             GenderId: ["", Validators.required],
             GenderName: [""],
             Education: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                 ]
+                ]
             ],
-            IsConsultant: ["1"],
-            IsRefDoc: ["0"],
-            isActive: ['1'],
-            DoctorTypeId: ["",Validators.required],
+            IsConsultant: [true],
+            IsRefDoc: [false],
+            isActive: [true],
+            DoctorTypeId: ["", Validators.required],
             DoctorType: [""],
             PassportNo: [""],
-            ESINO: [
+            esino: [
                 "",
                 [
                     Validators.required,
@@ -83,46 +74,43 @@ export class DoctorMasterService {
                 "",
                 [
                     Validators.required,
-                //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
             ],
-            RegDate: [{ value: new Date() }],
+            RegDate: [new Date()],
             MahRegNo: [
                 "",
                 [
                     Validators.required,
-                //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
+                    //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
                 ],
             ],
-            MahRegDate: [{ value: new Date() }],
+            MahRegDate: [new Date()],
             RefDocHospitalName: [
                 "",
                 [
                     Validators.required
                 ]
             ],
-            Departmentid: ["", Validators.required],
+            MDoctorDepartmentDets: ["", Validators.required],
             DepartmentName: [""],
             AddedBy: [""],
             UpdatedBy: [""],
             AddedByName: [""],
             Pancardno: ["", Validators.required],
-            AadharCardNo: ["", 
+            AadharCardNo: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[0-9]*$"),
                     Validators.minLength(12),
                     Validators.maxLength(12),
-                  ]
+                ]
             ],
-            AgeYear:["",Validators.required],
-            AgeMonth:["",Validators.required],
-            AgeDay:["",Validators.required],
-            CityId:["", Validators.required]
+            City: ["", Validators.required]
         });
     }
 
@@ -198,11 +186,11 @@ export class DoctorMasterService {
         return this._httpClient.PostData("DoctorMaster/DoctorUpdate", param);
     }
 
-//     public doctortMasterUpdate(Param: any, showLoader = true) {
-//       if (Param.regId) {
-//           return this._httpClient.PutData("DoctorMaster/DoctorUpdate" + Param.regId, Param, showLoader);
-//       } else return this._httpClient.PostData("DoctorMaster/DoctorUpdate", Param, showLoader);
-//   }
+    //     public doctortMasterUpdate(Param: any, showLoader = true) {
+    //       if (Param.regId) {
+    //           return this._httpClient.PutData("DoctorMaster/DoctorUpdate" + Param.regId, Param, showLoader);
+    //       } else return this._httpClient.PostData("DoctorMaster/DoctorUpdate", Param, showLoader);
+    //   }
 
     public assignDoctorDepartmentDet(param) {
         return this._httpClient.PostData("Doctor/InsertEDMX", param);

@@ -24,7 +24,9 @@ export class ServiceMasterComponent implements OnInit {
     
     autocompleteModetariff: string = "Tariff";
     autocompleteModegroupName:string="GroupName";
-    
+    tariffId="0";
+    groupId="0";
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -79,8 +81,8 @@ export class ServiceMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "TariffId", fieldValue: "10006", opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
@@ -101,6 +103,22 @@ export class ServiceMasterComponent implements OnInit {
       
     }
 
+    getValidationtariffMessages() {
+        return {
+            TariffId: [
+                { name: "required", Message: "Tariff Name is required" }
+            ]
+        };
+    }
+    
+    getValidationgroupMessages() {
+        return {
+            GroupId: [
+                { name: "required", Message: "Group Name is required" }
+            ]
+        };
+    }
+
     onSearchClear() {
         this._serviceMasterService.myformSearch.reset({
             ServiceNameSearch: "",
@@ -117,15 +135,25 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.initializeFormGroup();
     }
 
-    tariffId=0;
-    groupId=0;
-
-    selectChangegroupName(obj:any){
-      this.groupId=obj.value;
+ 
+    selectChangegroup(obj:any){
+      this.groupId=String(obj);
+      this.gridConfig.filters = [   { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
     }
+
+    
     selectChangetariff(obj: any){
         console.log(obj);
-        this.tariffId=obj
+        this.tariffId=String(obj)
+        this.gridConfig.filters = [   { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
     }
    
     onSave(row:any = null) {

@@ -18,7 +18,7 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <app-airmid-table1 [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-             <mat-form-field appearance="outline" fxFlex>
+                <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Service Name</mat-label>
                     <input matInput placeholder="Search Service Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
@@ -27,21 +27,36 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-               
-                <airmid-autocomplete label="Tariff" formControlName="TariffId"
+
+                <!-- <airmid-autocomplete label="Tariff" formControlName="TariffId"
                     [formGroup]="_serviceMasterService.myform"
                     [mode]="autocompleteModetariff"
                     [(ngModel)]="gridConfig.filters[1].fieldValue"
                     (selectDdlObject)="selectChangetariff($event)">
-                </airmid-autocomplete> 
+                </airmid-autocomplete>  -->
 
-                <airmid-autocomplete label="Group Name" formControlName="GroupId"
+                <!-- [validations]="getValidationtariffMessages.TariffId" -->
+                <form [formGroup]="_serviceMasterService.myformSearch">
+                    <airmid-autocomplete label="Tariff Name" formControlName="TariffId"
+                        [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                        [mode]="autocompleteModetariff"
+                        (selectDdlObject)="selectChangetariff($event)"  >
+                    </airmid-autocomplete>
+                    <!-- [validations]="getValidationgroupMessages.GroupId" -->
+                    <airmid-autocomplete label="Group Name" formControlName="GroupId"
+                        [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[2].fieldValue"
+                       [mode]="autocompleteModegroupName"
+                        (selectDdlObject)="selectChangegroup($event)">
+                    </airmid-autocomplete>
+                </form>
+
+                <!-- <airmid-autocomplete label="Group Name" formControlName="GroupId"
                     [formGroup]="_serviceMasterService.myform"
                     [(ngModel)]="gridConfig.filters[2].fieldValue"
                     [mode]="autocompleteModegroupName">
-                </airmid-autocomplete>
-                
-                
+                </airmid-autocomplete> -->
+
+
             </ng-container>
         </app-airmid-table1>
     </div>
