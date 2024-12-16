@@ -27,8 +27,8 @@ export class IPReportService {
         CompanyId:'',
         DischargeTypeId:'',
         GroupId:'',
-        OPIPType:["1"]
-
+        OPIPType:["1"],
+        RegId:[""]
         // Radio:['1']
 
       })
@@ -368,11 +368,11 @@ public getOPIPBillSummary(FromDate,ToDate,loader = true){
 }
 
 
-public getCreditReceipt(FromDate,ToDate,loader = true){
+public getCreditReceipt(FromDate,ToDate,RegId,loader = true){
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate);
+  return this._httpClient.get("IPReport/view-IPCreditReport?FromDate=" + FromDate + "&ToDate="+ToDate+ "&RegId="+RegId);
 }
 
 public getViewAdvanceReport(FromDate,ToDate,loader = true){
@@ -395,6 +395,16 @@ public getIPBillSummary(FromDate,ToDate,loader = true){
 }
   return this._httpClient.get("IPReport/view-BillSummaryReport?FromDate=" + FromDate + "&ToDate="+ToDate);
 }
+
+public getBrowseIPDBillsummaryList(data,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
+
+  return this._httpClient.post("Generic/GetByProc?procName=rptIPDBillDateWise",data)
+
+}
+
 
 public getRefundofbillview(FromDate,ToDate,loader = true){
   if (loader) {
@@ -466,5 +476,9 @@ public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_
     this._loaderService.show();
 }
   return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  }
+
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
 }

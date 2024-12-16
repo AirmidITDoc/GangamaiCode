@@ -259,6 +259,21 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
     return this._httpClient.get("CommanReport/view-ConcessionReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&OP_IP_Type="+OP_IP_Type+"&DoctorID="+DoctorID);
   }
   
+
+  public getOpPatientledgerView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("CommanReport/view-OPPatientLedger?FromDate=" + FromDate+"&ToDate="+ToDate);
+  }
+
+  public getIpPatientledgerView(FromDate,ToDate,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("CommanReport/view-IPPatientLedger?FromDate=" + FromDate+"&ToDate="+ToDate);
+  }
+  
   public getCommonDailycollectionView(FromDate,ToDate,AddedById,DoctorId,loader = true){
     if (loader) {
       this._loaderService.show();

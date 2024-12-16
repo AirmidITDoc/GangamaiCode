@@ -96,7 +96,7 @@ export class DischargeSummaryComponent implements OnInit {
   vDoctorAssistantName: any;
   vClaimNumber: any;
   vPreOthNumber: any;
-  IsNormalDeath: any;
+  IsNormalDeath: any=1;
   vOperativeNotes: any;
   vhistory: any;
   vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
@@ -496,7 +496,7 @@ export class DischargeSummaryComponent implements OnInit {
         this.DocName1 = this.RetrDischargeSumryList[0].DischargeDoctor1
         this.DocName2 = this.RetrDischargeSumryList[0].DischargeDoctor2
         this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
-        this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
+        this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath 
       }
       this.getRetevDropdownvalue();
       debugger

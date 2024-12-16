@@ -464,7 +464,7 @@ public onEnteraddress(event): void {
 
 
     onSubmit() {
-        debugger
+        
 
         if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
             this.toastr.warning('Please select valid City ', 'Warning !', {
@@ -577,6 +577,7 @@ public onEnteraddress(event): void {
     }
     onChangeRegDate(RegDate) {
         if (RegDate) {
+            debugger
             this.registerObj.RegDate = new Date(RegDate);
         }
         else {
@@ -585,6 +586,7 @@ public onEnteraddress(event): void {
     }
     onChangeMahRegDate(MahRegDate) {
         if (MahRegDate) {
+            debugger
             this.registerObj.MahRegDate = new Date(MahRegDate);
         }
         else {

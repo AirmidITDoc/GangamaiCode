@@ -216,7 +216,7 @@ export class DoctorMasterComponent implements OnInit {
     }
     OnDocMerge(element) {
         const dialogRef = this._matDialog.open(DoctorMergeComponent, {
-            maxWidth: "80vw",
+            maxWidth: "90vw",
             maxHeight: "75vh",
             width: "100%",
             height: "100%",

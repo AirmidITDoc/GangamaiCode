@@ -157,7 +157,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
-                                  
+
                                     <div>
                                         <!-- <mat-form-field appearance="outline"  fxFlex="40%" *ngIf="FlagServiceIdSelected"   style="margin-left:2%;">
                                             <input type="text" name="ServiceId" formControlName="ServiceId" 
@@ -181,19 +181,19 @@
                                             </mat-error>
                                         </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagServiceIdSelected" fxFlex="40%" style="margin-left:2%;">
+                                        <mat-form-field appearance="outline" *ngIf="FlagServiceIdSelected" fxFlex="40%"
+                                            style="margin-left:2%;">
                                             <mat-label>Service Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select  Service Name" matInput
-                                                formControlName="ServiceId" [matAutocomplete]="auto1">
+                                                placeholder="Select  Service Name" matInput formControlName="ServiceId"
+                                                [matAutocomplete]="auto1">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('ServiceId').setValue(''); isServiceSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('ServiceId').setValue(''); isServiceSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #auto1="matAutocomplete"
-                                                [displayWith]="getOptionText">
+                                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText">
                                                 <mat-option *ngFor="let option of filteredOptions | async"
                                                     [value]="option">
                                                     {{option.ServiceName}}
@@ -203,11 +203,12 @@
                                     </div>
 
                                     <div>
-                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDepartmentSelected"   style="margin-left:2%;"> 
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDepartmentSelected"
+                                            style="margin-left:2%;">
                                             <mat-label>Department</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select Department"
-                                                [(ngModel)]="vDepartmentid" matInput #dept
-                                                (keydown)="onEnterdept($event,vDepartmentid.DepartmentId)"
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Department" [(ngModel)]="vDepartmentid" matInput
+                                                #dept (keydown)="onEnterdept($event,vDepartmentid.DepartmentId)"
                                                 formControlName="DepartmentId" [matAutocomplete]="autoDep">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
@@ -215,8 +216,10 @@
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('DepartmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
+                                            <mat-autocomplete #autoDep="matAutocomplete"
+                                                [displayWith]="getOptionTextDep">
+                                                <mat-option *ngFor="let option of filteredOptionsDep | async"
+                                                    [value]="option">
                                                     {{option.departmentName}}
                                                 </mat-option>
                                             </mat-autocomplete>
@@ -224,11 +227,13 @@
                                     </div>
 
                                     <div>
-                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlaCashcounterSelected"   style="margin-left:2%;"> 
+                                        <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlaCashcounterSelected"
+                                            style="margin-left:2%;">
                                             <mat-label>Cash Counter</mat-label>
-                                            <input matAutocompletePosition="below" type="text" placeholder="Select Cash Counter"
-                                                 matInput formControlName="CashCounterID"
-                                                [matAutocomplete]="autoSearchCashCounter" #CashCounterName >
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Cash Counter" matInput
+                                                formControlName="CashCounterID"
+                                                [matAutocomplete]="autoSearchCashCounter" #CashCounterName>
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_OPReportsService.userForm.get('CashCounterID').setValue(''); isCashCounterSelected = false;">close</mat-icon>
@@ -252,42 +257,42 @@
     
                                         </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected"
-                                        fxFlex="40%" >
-                                        <mat-label>Group Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text"
-                                            placeholder="Select GroupId" matInput
-                                            formControlName="GroupId" [matAutocomplete]="autogroup">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_OPReportsService.userForm.get('GroupId').setValue(''); isgroupSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="_OPReportsService.userForm.get('GroupId').setValue(''); isgroupSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autogroup="matAutocomplete"
-                                            [displayWith]="getOptionTextgroup">
-                                            <mat-option *ngFor="let option of filteredOptionsGroup | async"
-                                                [value]="option">
-                                                {{option.GroupName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected" fxFlex="40%">
+                                            <mat-label>Group Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select GroupId" matInput formControlName="GroupId"
+                                                [matAutocomplete]="autogroup">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('GroupId').setValue(''); isgroupSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="_OPReportsService.userForm.get('GroupId').setValue(''); isgroupSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autogroup="matAutocomplete"
+                                                [displayWith]="getOptionTextgroup">
+                                                <mat-option *ngFor="let option of filteredOptionsGroup | async"
+                                                    [value]="option">
+                                                    {{option.GroupName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
 
-                                      
-                                        </div>
-                                        <div>
-                                            <span *ngIf="FlaOPIPTypeSelected" style="font-weight: bold;margin-left: 2%;">Patient Type</span>
-                                            <mat-radio-group aria-label="Select an option" formControlName="OPIPType" *ngIf="FlaOPIPTypeSelected"  style="margin-left:2%;"
-                                            name="OPIPType">
-                                            
+
+                                    </div>
+                                    <div>
+                                        <span *ngIf="FlaOPIPTypeSelected"
+                                            style="font-weight: bold;margin-left: 2%;">Patient Type</span>
+                                        <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
+                                            *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
+
                                             <mat-radio-button value="2">All
                                             </mat-radio-button>
                                             <mat-radio-button value="0">OP
-                                                </mat-radio-button>
+                                            </mat-radio-button>
                                             <mat-radio-button value="1">IP</mat-radio-button>
                                         </mat-radio-group>
-    
-                                        </div>
+
+                                    </div>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
