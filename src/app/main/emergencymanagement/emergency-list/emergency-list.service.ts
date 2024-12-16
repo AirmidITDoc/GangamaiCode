@@ -47,25 +47,10 @@ export class EmergencyListService {
       Validators.pattern('^[a-zA-Z ]*$')
     ]],
       Address:['', Validators.required],
-      PhoneNo: ['', 
-        [ 
-          Validators.required,
-          Validators.pattern("^[0-9]{10}$"),
-        ]
-      ],
-      MobileNo: ['',
-        [ 
-          Validators.required,
-          Validators.pattern("^[0-9]{10}$"),
-        ]
-      ],
+      PhoneNo: [''],
+      MobileNo: [''],
 
-      PinNo:['',
-        [ 
-          Validators.required,
-          Validators.pattern("^[0-9]{6}$")
-        ]
-      ],
+      PinNo:[''],
       DepartmentName:[''],
       DoctorName:[''],
       CityId:['', Validators.required],
@@ -83,17 +68,9 @@ export class EmergencyListService {
           Validators.required
         ]
       ],
-      AgeMonth:['',
-        [
-          Validators.required
-        ]
-      ],
-      AgeDay:['',
-        [
-          Validators.required
-        ]
-      ],
-      DateofBirth:['']
+      AgeMonth:[''],
+      AgeDay:[''],
+      DateofBirth:[(new Date()).toISOString()],
     })
    }
 

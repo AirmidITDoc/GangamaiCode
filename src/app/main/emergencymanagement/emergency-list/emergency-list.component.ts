@@ -79,7 +79,7 @@ export class EmergencyListComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewEmergencyComponent,
       {
         maxWidth: "100%",
-        height: '85%',
+        height: '65%',
         width: '75%', 
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -93,7 +93,7 @@ export class EmergencyListComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewEmergencyComponent,
       {
         maxWidth: "100%",
-        height: '85%',
+        height: '65%',
         width: '75%', 
         data: {
           Obj: contact

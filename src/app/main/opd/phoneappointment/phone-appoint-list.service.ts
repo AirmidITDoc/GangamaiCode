@@ -95,5 +95,9 @@ export class PhoneAppointListService {
   public getHospitalCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
   }
+
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
   
 }

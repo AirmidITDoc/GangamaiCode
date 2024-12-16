@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
@@ -73,13 +73,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
   sIsLoading: string = '';
   minDate: Date;
   vMobile:any;
+  vAddress:any;
   isDepartmentSelected:boolean=false;
   isDoctorSelected:boolean=false;
-
+  searchFormGroup: FormGroup;
+  PatientListfilteredOptions: any;
   vDepartmentid:any='';
   vDoctorId:any='';
-
-
+  vDepartmentName:any='';
+  vDoctorName:any='';
+  PatientName: any = "";
+  vFirstName: any = "";
+  vLastName: any = "";
+  vMiddleName:any='';
+  isRegIdSelected: boolean = false;
+  currentDate = new Date();
+  RegId: any;
+  RegDate: any;
   optionsDep: any[] = [];
   optionsDoc: any[] = [];
 
@@ -106,6 +116,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
     public datePipe: DatePipe) {
   }
@@ -124,6 +135,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.personalFormGroup = this.createPesonalForm();
+    this.searchFormGroup = this.createSearchForm();
     this.getDepartmentList();
     this.minDate = new Date();
 
@@ -140,7 +152,46 @@ export class NewPhoneAppointmentComponent implements OnInit {
       });
     this.getPhoneschduleList();
   }
+  createSearchForm() {
+    return this.formBuilder.group({
+      RegId: [''],
+    });
+  } 
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    this._phoneAppointListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    }); 
+  } 
 
+  //patient infomation
+  getSelectedObj1(obj) {
+    console.log(obj)
+    this.dataSource.data = [];
+    this.registerObj = obj;
+    this.vMiddleName= obj.MiddleName;
+    this.vFirstName= obj.FirstName;
+    this.vLastName=obj.LastName;
+    this.RegId = obj.RegId;
+    this.vAddress = obj.Address;
+    this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    this.vMobile = obj.MobileNo;
+    this.vDepartmentName = obj.DepartmentName;
+    this.vDoctorName = obj.Doctorname;
+  } 
+  getOptionText1(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
+ 
+  }
 
   get f() { return this.personalFormGroup.controls; }
 
@@ -305,11 +356,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
+      if (this.data) {
+        
+        const DValue = this.DepartmentList.filter(item => item.DepartmentId == this.registerObj.DepartmentName);
+        console.log("Departmentid:",DValue)
+        this.personalFormGroup.get('DepartmentId').setValue(DValue[0]);
+        this.personalFormGroup.updateValueAndValidity();
+        this.OnChangeDoctorList(DValue[0]);
+      }
       // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
 
   OnSubmit() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 debugger
     if (this.personalFormGroup.get('FirstName').value == '' || this.personalFormGroup.get('FirstName').value== null) {
       this.toastr.warning('Please enter First Name  ', 'Warning !', {
@@ -373,8 +436,8 @@ debugger
       "phoneAppointmentInsert": {
         "phoneAppId": 0,
         "RegNo":'',
-        "appDate": this.dateTimeObj.date,
-        "appTime": this.dateTimeObj.time,
+        "appDate":formattedDate, //this.dateTimeObj.date || '16/12/2023',
+        "appTime": formattedTime,// this.datePipe.transform(this.currentDate, 'hh:mm:ss'), //this.dateTimeObj.time,
         "firstName": this.personalFormGroup.get('FirstName').value || '',
         "middleName": this.personalFormGroup.get('MiddleName').value || '',
         "lastName": this.personalFormGroup.get('LastName').value || '',

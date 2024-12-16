@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { EmergencyListService } from '../emergency-list.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith } from 'rxjs/operators';
@@ -22,12 +22,17 @@ export class NewEmergencyComponent implements OnInit {
 
   dateTimeObj: any;
   screenFromString = 'emergency-form';
+  vPrefixID: any;
   vFirstName: any;
   vMiddleName: any;
   vLastName: any;
   vAddress: any;
   vMobileNo: any;
   vPinNo: any;
+  vAgeYear:any;
+  vAgeMonth:any;
+  vAgeDay:any;
+  vPhoneNo:any;
   optionsPrefix: any[] = [];
   optionsCity: any[] = [];
   optionsDep: any[] = [];
@@ -42,6 +47,8 @@ export class NewEmergencyComponent implements OnInit {
   vDoctorId: any = 0;
   vDepartmentid: any = 0;
   vCityId: any = 0;
+  GenderList: any = [];
+  selectedGenderID: any;
   filteredOptionsPrefix: Observable<string[]>;
   isPrefixSelected: boolean = false;
   filteredOptionsCity: Observable<string[]>;
@@ -65,14 +72,67 @@ export class NewEmergencyComponent implements OnInit {
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef:MatDialogRef<NewEmergencyComponent>
   ) { }
+
+  dateStyle?: string = 'Date';
+    OnChangeDobType(e) {
+        this.dateStyle = e.value;
+    }
+    CalcDOB(mode, e) {
+      let d = new Date();
+      if (mode == "Day") {
+          d.setDate(d.getDate() - Number(e.target.value));
+          this.registerObj.DateofBirth = d;
+          //this._EmergencyListService.MyForm.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+      }
+      else if (mode == "Month") {
+          d.setMonth(d.getMonth() - Number(e.target.value));
+          this.registerObj.DateofBirth = d;
+      }
+      else if (mode == "Year") {
+          d.setFullYear(d.getFullYear() - Number(e.target.value));
+          this.registerObj.DateofBirth = d;
+      }
+      let todayDate = new Date();
+      const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+      this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+      this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+      this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+  }
 
   ngOnInit(): void {
     this.getDepartmentList();
     this.getcityList1();
     this.getPrefixList();
 
+    if(this.data){
+      this.registerObj = this.data.Obj;
+      console.log(this.registerObj)
+      this.vFirstName = this.registerObj.FirstName
+      this.vLastName = this.registerObj.LastName
+      this.vMiddleName = this.registerObj.MiddleName
+      this.vAddress = this.registerObj.Address
+      this.vPinNo = this.registerObj.PinNo
+      this.vAgeDay=this.registerObj.AgeDay
+      this.vAgeMonth=this.registerObj.AgeMonth
+      this.vAgeYear=this.registerObj.AgeYear
+      this.vMobileNo=this.registerObj.MobileNo
+      this.vPhoneNo=this.registerObj.PhoneNo
+
+      this.onChangeCityList(this.registerObj.CityId);
+    }
+    console.log("vFirstName:", this.vFirstName)
+    console.log("vLastName:", this.vLastName)
+    console.log("vMiddleName:", this.vMiddleName)
+    console.log("vAddress:", this.vAddress)
+    console.log("vPinNo:", this.vPinNo)
+    console.log("vAgeDay:", this.vAgeDay)
+    console.log("vAgeMonth:", this.vAgeMonth)
+    console.log("vAgeYear:", this.vAgeYear)
+    console.log("vMobileNo:", this.vMobileNo)
+    console.log("vPhoneNo:", this.vPhoneNo)
   }
 
 
@@ -136,7 +196,18 @@ export class NewEmergencyComponent implements OnInit {
     }
 
   }
-  public onEnteragem(event,value): void {
+  public onEnterbday(event): void {
+    if (event.which === 13) {
+        this.agey.nativeElement.focus();
+
+    }
+}
+  public onEnteragey(event):void{
+    if (event.which === 13) {
+      this.agem.nativeElement.focus();
+    }
+  }
+  public onEnteragem(event): void {
     if (event.which === 13) {
       this.aged.nativeElement.focus();
     }
@@ -152,9 +223,7 @@ export class NewEmergencyComponent implements OnInit {
   onEnterphone($event){
 
   }
-  onEnteragey($event,value){
-
-  }
+  
   ageyearcheck(event) {
     
     if (parseInt(event) > 100) {
@@ -224,26 +293,9 @@ debugger
       });
       return;
     }    
-    if (this._EmergencyListService.MyForm.get('AgeMonth').value == '' || this._EmergencyListService.MyForm.get('AgeMonth').value== null) {
-      this.toastr.warning('Please enter AgeMonth  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this._EmergencyListService.MyForm.get('AgeDay').value == '' || this._EmergencyListService.MyForm.get('AgeDay').value== null) {
-      this.toastr.warning('Please enter AgeDay  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
+  
     if (this._EmergencyListService.MyForm.get('Address').value == '' || this._EmergencyListService.MyForm.get('Address').value== null) {
       this.toastr.warning('Please eneter Address  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this._EmergencyListService.MyForm.get('PinNo').value == '' || this._EmergencyListService.MyForm.get('PinNo').value== null) {
-      this.toastr.warning('Please enter PinNo  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -262,31 +314,7 @@ debugger
         });
         return;
       }
-    } 
-    // if (this._EmergencyListService.MyForm.get('StateId').value == '' || this._EmergencyListService.MyForm.get('StateId').value== null) {
-    //   this.toastr.warning('Please Select State Name  ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // } 
-    // if (this._EmergencyListService.MyForm.get('CountryId').value == '' || this._EmergencyListService.MyForm.get('CountryId').value== null) {
-    //   this.toastr.warning('Please Select Country Name  ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // } 
-    if (this._EmergencyListService.MyForm.get('MobileNo').value == '' || this._EmergencyListService.MyForm.get('MobileNo').value== null) {
-      this.toastr.warning('Please enter MobileNo  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this._EmergencyListService.MyForm.get('PhoneNo').value == '' || this._EmergencyListService.MyForm.get('PhoneNo').value== null) {
-      this.toastr.warning('Please enter PhoneNo  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
+    }  
     if (this._EmergencyListService.MyForm.get('Departmentid').value == '' || this._EmergencyListService.MyForm.get('Departmentid').value== null) {
       this.toastr.warning('Please select Department  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -331,7 +359,7 @@ debugger
           "MiddleName": this._EmergencyListService.MyForm.get('MiddleName').value || "",
           "LastName":this._EmergencyListService.MyForm.get('LastName').value || "",
           "Address": this._EmergencyListService.MyForm.get('Address').value || "",
-         // "City": this._EmergencyListService.MyForm.get('CityId').value.CityName || '',
+         "City": this._EmergencyListService.MyForm.get('CityId').value.CityName || '',
           "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
          // "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
           "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
@@ -445,6 +473,7 @@ debugger
         this.selectedStateID = this.stateList[0].StateId;
         this.onChangeCountryList(this.selectedStateID);
       });
+      
     }
     else {
       this.selectedState = null;
@@ -465,7 +494,22 @@ debugger
     }
   }
 
+  onChangeDateofBirth(DateOfBirth) {
+    // console.log(DateOfBirth)
+    if (DateOfBirth) {     
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+      this._EmergencyListService.MyForm.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
+      this._EmergencyListService.MyForm.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
+      this._EmergencyListService.MyForm.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
+      this._EmergencyListService.MyForm.get('DateOfBirth').setValue(DateOfBirth);
+  }
+
+}
+
   getcityList1() {
+    debugger
     this._EmergencyListService.getCityList().subscribe(data => {
       this.cityList = data;
       this.optionsCity = this.cityList.slice();
@@ -473,6 +517,16 @@ debugger
         startWith(''),
         map(value => value ? this._filterCity(value) : this.cityList.slice()),
       );
+
+      if (this.data) {
+        debugger
+        const CValue = this.cityList.filter(item => item.CityId == this.registerObj.CityId);
+        console.log("CityId:",CValue)
+        this._EmergencyListService.MyForm.get('CityId').setValue(CValue[0]);
+        this._EmergencyListService.MyForm.updateValueAndValidity();
+        this.onChangeCityList(CValue[0]);
+        
+      }
     });
 
   }
@@ -485,8 +539,6 @@ debugger
 
   }
 
-
-
   private _filterPrex(value: any): string[] {
     if (value) {
       const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
@@ -495,6 +547,7 @@ debugger
   }
 
   getPrefixList() {
+    
     this._EmergencyListService.getPrefixMasterCombo().subscribe(data => {
       this.PrefixcmbList = data;
       this.optionsPrefix = this.PrefixcmbList.slice();
@@ -503,10 +556,20 @@ debugger
         map(value => value ? this._filterPrex(value) : this.PrefixcmbList.slice()),
 
       );
+      if (this.data) {
+        const PValue = this.PrefixcmbList.filter(item => item.PrefixID == this.data.Obj.PrefixId);
+        console.log("Prefix:",PValue)
+        this._EmergencyListService.MyForm.get('PrefixID').setValue(PValue[0]);
+        this._EmergencyListService.MyForm.updateValueAndValidity();
+        this.onChangeGenderList(PValue[0]);
+        return;
+      }
     });
+   
   }
 
   getDepartmentList() {
+    
     this._EmergencyListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
@@ -514,7 +577,14 @@ debugger
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
-
+      if (this.data) {
+        
+        const DValue = this.DepartmentList.filter(item => item.DepartmentId == this.registerObj.DepartmentId);
+        console.log("Departmentid:",DValue)
+        this._EmergencyListService.MyForm.get('DepartmentId').setValue(DValue[0]);
+        this._EmergencyListService.MyForm.updateValueAndValidity();
+        this.OnChangeDoctorList(DValue[0]);
+      }
     });
   }
 
@@ -580,7 +650,7 @@ debugger
         .subscribe((data) => {
           this.GendercmbList = data;
           this._EmergencyListService.MyForm.get("GenderId").setValue(this.GendercmbList[0]);
-
+          this.selectedGenderID = this.GenderList[0].GenderId;
         });
     }
   }
