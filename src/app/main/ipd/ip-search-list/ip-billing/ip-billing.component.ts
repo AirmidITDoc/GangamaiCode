@@ -51,7 +51,9 @@ export class IPBillingComponent implements OnInit {
     'ChargesDate',
     'ServiceName',
     'Price',
+    'EdiPrice',
     'Qty',
+    'EditQty',
     'TotalAmt',
     'DiscPer',
     'DiscAmt',
@@ -662,21 +664,86 @@ ServiceList:any=[];
       Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
   
     }
-    //Package Table Cal
-    gettablecalculation(element, Price) {
+    //add charge Table Cal
+   
+    getQtytable(element,Qty) {
+      console.log(Qty)
       console.log(element)
-      debugger 
-      if(element.Price > 0 && element.Qty > 0){ 
-      element.TotalAmt = element.Qty * element.Price
-     // element.ConcessionAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
-      element.NetAmount =  element.TotalAmt - element.ConcessionAmt
+      let discAmt = 0; 
+      let discPer = 0;
+      discPer = element.ConcessionPercentage 
+      if(element.Price > 0 && Qty > 0){ 
+      element.TotalAmt = Qty * element.Price
+      element.ConcessionAmount = (discPer * element.TotalAmt) / 100 ;
+      discAmt = element.ConcessionAmount;
+      element.NetAmount =  element.TotalAmt - discAmt
       }  
-      else if(element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0){
+      else if(element.Price == 0 || element.Price == '' || Qty == '' || Qty == 0){
         element.TotalAmt = 0;  
-        element.DiscAmt =  0 ;
+        element.ConcessionAmount =  0 ;
         element.NetAmount =  0 ;
       } 
     }
+    getPricetable(element,Price) {
+      console.log(Price)
+      console.log(element)
+      let discAmt = 0; 
+      let discPer = 0;
+      element.Price = Price
+      discPer = element.ConcessionPercentage 
+      if(Price > 0 && element.Qty > 0){ 
+      element.TotalAmt = element.Qty *Price
+      element.ConcessionAmount = (discPer * element.TotalAmt) / 100 ;
+      discAmt = element.ConcessionAmount;
+      element.NetAmount =  element.TotalAmt - discAmt
+      }  
+      else if(Price == 0 || Price == '' || element.Qty == '' || element.Qty == 0){
+        element.TotalAmt = 0;  
+        element.ConcessionAmount =  0 ;
+        element.NetAmount =  0 ;
+      } 
+    }
+    QtyEditable:boolean=false;
+    PriceEditable:boolean=false;
+      QtyenableEditing(row:Bill) {
+        console.log(row)
+        row.QtyEditable = true; 
+        
+      }
+     QtydisableEditing(row:Bill) {
+        row.QtyEditable = false; 
+        this.getChargesList();
+      } 
+      PriceenableEditing(row:Bill) {
+        row.PriceEditable = true;  
+        
+      }
+     PricedisableEditing(row:Bill) {
+        row.PriceEditable = false; 
+        this.getChargesList();
+      }
+  OnSaveEditedValue(element) { 
+    console.log(element)
+    let Query; 
+    Query = "update addcharges set Qty=" +element.Qty+",Price=" +element.Price+ 
+    ",TotalAmt="+element.TotalAmt+",ConcessionAmount="+element.ConcessionAmount+ 
+     ",NetAmount="+element.NetAmount+"where ChargesId="+element.ChargesId;
+     
+    console.log(Query)
+    this._IpSearchListService.UpdateipbillService(Query).subscribe(data => {
+      if (data) { 
+        this.toastr.success('Record Successfuly Updated','Updated !',{
+          toastClass: 'tostr-tost custom-toast-success',
+        })
+        this.getChargesList();
+      } else { 
+        this.toastr.error('Record data not  Updated','Updated !',{
+          toastClass: 'tostr-tost custom-toast-error',
+        })
+      }
+    });
+
+  }
   //Previouse bill list
   getPrevBillList() {
     var D_data = {
@@ -756,7 +823,7 @@ ServiceList:any=[];
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
-    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
+    let Query = "Select * , '' as QtyEditable,'' as PriceEditable from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
     // console.log(Query);
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
@@ -2017,6 +2084,10 @@ export class Bill {
   CardPayAmount: any;
   AdvanceUsedAmount: any;
   PatientName: any;
+  PriceEditable:any;
+  QtyEditable:any;
+  Qty:any;
+  Price:any;
 
   constructor(InsertBillUpdateBillNoObj) {
     this.AdmissionID = InsertBillUpdateBillNoObj.AdmissionID || 0;
