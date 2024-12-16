@@ -61,6 +61,8 @@ import { CompanyBillComponent } from './company-bill/company-bill.component';
 import { UpdateCompanyDetailsComponent } from './company-bill/update-company-details/update-company-details.component';
 import { DischargesummaryTemplateComponent } from './dischargesummary-template/dischargesummary-template.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { InitiateDischargeComponent } from './discharge/initiate-discharge/initiate-discharge.component';
+import { InitiateProcessComponent } from './discharge/initiate-discharge/initiate-process/initiate-process.component';
 
 
 
@@ -92,7 +94,9 @@ const routes: Routes = [
       // OPIPFeedbackComponent,
       CompanyBillComponent,
       UpdateCompanyDetailsComponent,
-      DischargesummaryTemplateComponent
+      DischargesummaryTemplateComponent,
+      InitiateDischargeComponent,
+      InitiateProcessComponent
     ],
     imports: [
         RouterModule.forChild(routes),

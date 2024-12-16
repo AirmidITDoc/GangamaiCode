@@ -87,13 +87,17 @@ export class PhoneAppointListService {
     return this._httpClient.post("OutPatient/PhoneAppointmentCancle", employee);
   }
     //Doctor Master Combobox List
-  public getDoctorMasterCombo(Id) {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
+  public getDoctorMasterCombo(param) {
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", param)
   }
   
   //Hospital Combobox List
   public getHospitalCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
+  }
+
+  public getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
   
 }

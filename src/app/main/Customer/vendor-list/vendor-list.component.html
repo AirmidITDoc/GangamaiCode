@@ -1,0 +1,179 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+    <mat-toolbar class="accent" style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Vendor List
+            </span>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+            <button mat-raised-button (click)="NewVendor()" style="background-color: white;color: brown;">
+                <mat-icon>person_add</mat-icon>New Vendor
+            </button>
+        </div>
+    </mat-toolbar> 
+
+    <div class="content">
+        <!-- search panel -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm">
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
+                <span class="search-title">Search Facility</span>
+            </div>
+            <div class="nav material2">
+                <form [formGroup]="_VendorList.SearchForm">
+                    <div fxLayout="column" fxLayoutAlign="start none">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Vendor Name</mat-label>
+                            <input name="VendorName" formControlName="VendorName" matInput type="text">
+                        </mat-form-field>
+
+                        <div class="action-buttons">
+                            <button mat-raised-button (click)="onClear()" class="clearbutton">
+                                <mat-icon class="cleariconbutton">close</mat-icon></button>
+                                &nbsp;
+                            <button mat-raised-button class="searchButton" (click)="getVendorList()">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </fuse-sidebar> 
+
+        <!-- left table -->
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex> 
+
+                        <mat-table  matSort [dataSource]="dsVendorInfo" [@animateStagger]="{value:'50'}"
+                            style="overflow: auto;">
+
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-90">
+                                    <!-- <button mat-icon-button matTooltip="AMC Checking" (click)="ChkAMCDet(contact)">
+                                        <mat-icon>developer_board</mat-icon>
+                                    </button> -->
+
+                                    <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="VendorId" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    VendorId
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.VendorId}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="DateTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                    CreatedDatetime</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                    {{contact.CreatedDatetime | date: 'dd/MM/yyyy'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="VendorName" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
+                                    VendorName</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                matTooltip="{{contact.VendorName}}"
+                                matTooltipClass="example-tooltip-uppercase"
+                                aria-label="Button that shows a red tooltip">
+                                    {{contact.VendorName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="MobileNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                    VendorMobileNo</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                    {{contact.VendorMobileNo}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Address">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
+                                    VendorAddress</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm 
+                                matTooltip="{{contact.VendorAddress}}"
+                                matTooltipClass="example-tooltip-uppercase"
+                                aria-label="Button that shows a red tooltip">
+                                    {{contact.VendorAddress}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PinCode">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    VendorPinCode </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.VendorPinCode}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="VendorPersonName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    VendorPersonName </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.VendorPersonName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="VendorPersonMobileNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    VendorPersonMobileNo</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.VendorPersonMobileNo}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent min-width-1500" *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1500"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsVendorInfo!=null && dsVendorInfo.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+
+                        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="15"
+                            showFirstLastButtons>
+                        </mat-paginator> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    </div>

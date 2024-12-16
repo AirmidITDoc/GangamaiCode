@@ -1,76 +1,62 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
-
-        <!-- APP TITLE -->
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar
+dynamicTableHeight>  
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Dose Master
-                </span>
-            </div>
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Dose Master 
+            </span>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
 
-    </div>
-    <!-- / HEADER -->
-
-    <!-- CONTENT -->
-    <div class="content">
-
-        <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
-
-        <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar> 
+    
+    <div class="content"> 
+        <div class="center p-24 pb-56" fusePerfectScrollbar> 
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="65%" fxFlex>
                         <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
+                        background-color: white; padding: 5px 10px 5px 10px; ">
                             <form [formGroup]="_DoseService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Dose Name" autocomplete="off"
-                                            name="DoseNameSearch" formControlName="DoseNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
+                                        <input matInput placeholder="Search --> Dose Name" autocomplete="off" name="DoseNameSearch"
+                                            formControlName="DoseNameSearch" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
 
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    fxLayoutAlign="center center">
+                                    <mat-radio-button value="2">All</mat-radio-button>
+                                    <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                    <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
-
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button>
+                
+                                <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                    <mat-icon>search</mat-icon>
+                                    Search
+                                </button>
                                 </div>
                             </form>
                         </div>
 
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                class="backgroundBlur">
-                                <div class="spinner-border text-danger"></div>
-
-                                </div>
                                 <mat-table #table matSort [dataSource]="DSDoseMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                    
                                     <ng-container matColumnDef="DoseId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
@@ -151,7 +137,7 @@
                     </div>
                     <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
                         <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0">
+                            <div mat-dialog-content class="p-16 pb-0 m-0">
                                 <form [formGroup]="_DoseService.myForm">
                                     <h3>{{_DoseService.myForm.controls.DoseId.value?"Modify Dose Master":"New Dose
                                         Master"}}</h3>
@@ -204,10 +190,7 @@
                     </div>
 
                 </div>
-            </div>
-            <!-- / CONTENT -->
-        </div>
-        <!-- / CENTER -->
-    </div>
-    <!-- / CONTENT-->
+            </div> 
+        </div> 
+    </div> 
 </div>

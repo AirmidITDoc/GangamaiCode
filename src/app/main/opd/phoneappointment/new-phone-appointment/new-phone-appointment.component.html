@@ -1,19 +1,18 @@
 <div class="modal-wrapper grid-container">
-  <!-- Modal header -->
-  <div class="modal-header accent">
-      <div class="modal-header-content">
-          <div class="modal-header-title">
-              <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Schduled Phone Appointment</span>
-          </div>
-          <div class="modal-header-right">
-              <div class="close-icon">
-                  <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                      <mat-icon>close</mat-icon>
-                  </button>
-              </div>
-          </div>
-      </div>
-  </div>
+
+  <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+          Schduled Phone Appointment
+        </span>
+    </div>
+
+    <div class="close-icon">
+        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
 
   <!-- Modal body -->
   <div class="modal-body" fusePerfectScrollbar>
@@ -26,45 +25,55 @@
               
               <div flex class="container" style="border-radius:4px;  width:98%;border: rgba(0,0,0,0.12) 1px solid; padding: 7px;  border-radius: 5px;
                position: relative;">
-                <div class="header-container" style="padding: 5px;" fxLayout="column" fxLayout.gt-xs="row"
-                  fxLayoutGap="4px" fxLayoutAlign="space-between">
-                  <span style="font-size: 22px; font-weight: 500; color: #10c7c7;">Personal Details</span>
-                  
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                  </app-common-date>
-                 
+                
+                  <div class="sales-patient-info-title">
+                    <span style="font-weight: 750;">
+                        Patient Information
+                    </span>
                 </div>
-              
-                  <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxFlexEnd>
-  
-                  </div> -->
-                  <br/>
+                <hr>
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                    
+                <form [formGroup]="searchFormGroup">
+                    <mat-form-field class=searchRegId appearance="outline"
+                        style="width:635px">
+                        <input type="text" name="RegId" formControlName="RegId"
+                            placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
+                            [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                        <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
+                            (optionSelected)='getSelectedObj1($event.option.value)'>
+                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                              {{option.RegNo}} |{{option.FirstName}} | {{option.MiddleName}} |
+                              {{option.LastName}} | {{option.Address}} |
+                              {{option.MobileNo}} | {{option.Doctorname}} | {{option.DepartmentName}}
+                            </mat-option>
+                        </mat-autocomplete> 
+                    </mat-form-field>
+                    </form>
   
-                    <!-- <mat-form-field appearance="outline" fxFlex="28%">
-                      <mat-label>Appointment date</mat-label>
-                      <input name="AppointmentDate" matInput  [min]="minDate"  [matDatepicker]="picker" formControllName="AppointmentDate">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                   </mat-form-field>   -->
-  
-                   <mat-form-field appearance="outline" fxFlex>
-                    <input matInput [matDatepicker]="picker" [min]="minDate"  placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="AppointmentDate">
+                   <mat-form-field appearance="outline" fxFlex="25%">
+                    <input matInput [matDatepicker]="picker" [min]="minDate"
+                    name="AppointmentDate" formControlName="AppointmentDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
+
+                  </div>
   
-                    <!-- <mat-form-field appearance="outline" fxFlex="23%" >
-                      <mat-label> First Name</mat-label>
-                      <input name="FirstName" formControlName="FirstName" matInput [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }"
-                      #fname (keydown)="onEnterfname($event)">
-                      <span class="error" *ngIf="f.FirstName.invalid && f.FirstName.touched">First Name is required Enter only Alphabets</span>
-                    </mat-form-field> -->
-  
-                    <mat-form-field appearance="outline">
+                    
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>First Name</mat-label>
-                      <input name="FirstName" formControlName="FirstName" placeholder="First Name" matInput required type="text"  #fname (keydown)="onEnterfname($event)">
+                      <input name="FirstName" formControlName="FirstName" placeholder="First Name" 
+                        matInput required type="text"  #fname (keydown)="onEnterfname($event)"
+                        oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                        [(ngModel)]="vFirstName ">
                       <mat-error *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
                           First Name is required Enter only
                           Alphabets</mat-error>
@@ -73,54 +82,52 @@
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Middle Name</mat-label>
                       <input name="MiddleName" formControlName="MiddleName" matInput type="text"  [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }"
-                      #mname (keydown)="onEntermname($event)">
+                      #mname (keydown)="onEntermname($event)"
+                      oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                       <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span>
                     </mat-form-field>
   
                     <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }">
                       <mat-label>Last Name</mat-label>
-                      <input name="LastName" formControlName="LastName" matInput type="text"   #lname (keydown)="onEnterlname($event)">
-                      <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">LastName Name is required Enter only Alphabets</span>
+                      <input name="LastName" formControlName="LastName" [(ngModel)]="vLastName"
+                      matInput type="text"   #lname (keydown)="onEnterlname($event)"
+                      oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                      <span class="error" *ngIf="f.LastName.invalid && f.LastName.touched">
+                        LastName Name is required Enter only Alphabets</span>
                     </mat-form-field>
   
   
                   </div>
   
   
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
   
-                    <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.Address.errors }">
-                      <mat-label>Address</mat-label>
-                      <input name="Address" formControlName="Address" placeholder="Address" matInput
-                      #Address (keydown)="onEnterAddress($event)">
-                      <!-- <mat-error>Please enter Address </mat-error> -->
-                    </mat-form-field>
-  
-                    <!-- <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }">
-                      <mat-label>MobileNo</mat-label>
-                      <input name="MobileNo" formControlName="MobileNo" matInput type="number">
-                      <mat-error class="error"
-                      *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                      digits Mobile number is
-                      required</mat-error>
-                    </mat-form-field> -->
-  
-                    
-                  <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                  style="margin-right:10px;">
-                  <mat-label>Mobile Number</mat-label>
-                  <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput required
-                      [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)" 
-                      oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                      type="number" value="Mobile.length">
-                  <mat-error class="error"
-                      *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                      digits Mobile number is
-                      required</mat-error>
-              </mat-form-field>
-  
-  
+                      <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.Address.errors }">
+                        <mat-label>Address</mat-label>
+                        <input name="Address" formControlName="Address" placeholder="Address" matInput
+                        #Address (keydown)="onEnterAddress($event)" [(ngModel)]="vAddress">
+                        <mat-error *ngIf="personalFormGroup.get('Address').hasError('required')">
+                          Address is required.
+                      </mat-error>
+                      </mat-form-field>
+
                   </div>
+  
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Mobile Number</mat-label>
+                        <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                            [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)" 
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                            type="number" value="Mobile.length">
+                        <mat-error class="error"
+                            *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
+                            digits Mobile number is
+                            required</mat-error>
+                      </mat-form-field>
+    
+                    </div>
   
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
   
@@ -128,7 +135,8 @@
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Department</mat-label>
                       <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                        formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" [(ngModel)]="vDepartmentid">
+                        formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" 
+                        >
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                           (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -143,45 +151,32 @@
                         </mat-option>
                       </mat-autocomplete>
                     </mat-form-field>
+
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">  
   
-  
-  
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Doctor Name</mat-label>
-                      <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect >
-                        <mat-option>
-                          <ngx-mat-select-search [formControl]="doctorFilterCtrl"  [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                        </mat-option>
-                        <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                          {{element.Doctorname}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field> -->
-  
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Doctor Name</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput [(ngModel)]="vDoctorId" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
-                        formControlName="DoctorId" [matAutocomplete]="autoDoctor" required #docname>
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                      </span>
-  
-                      <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
-                        <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
-                          (onSelectionChange)="isDoctorSelected = true;">
-                          {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId
-                          }}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                            
-                
-                </div>
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>Doctor Name</mat-label>
+                          <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput [(ngModel)]="vDoctorName" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
+                            formControlName="DoctorId" [matAutocomplete]="autoDoctor" required #docname>
+                          <span matSuffix style="display: flex;">
+                            <mat-icon class="mat-icon-close"
+                              (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                            <mat-icon class="mat-icon-close"
+                              (click)="personalFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                          </span>
+      
+                          <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoc">
+                            <mat-option *ngFor="let option of filteredOptionsDoc | async" [value]="option"
+                              (onSelectionChange)="isDoctorSelected = true;">
+                              {{option.Doctorname }} <b>|</b> {{option.DepartmentName }} <b>|</b> {{option.DoctorId
+                              }}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>         
+                    
+                    </div>
                 <br/><br/>
               </div>
   

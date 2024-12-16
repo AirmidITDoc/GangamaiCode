@@ -388,10 +388,18 @@
                                                         Prescription List
                                                     </span>
                                                     <div fxLayout="row" fxLayoutGap="6px">
+                                                        <button mat-raised-button (click)="getItemMaster()">
+                                                            <mat-icon>add</mat-icon>
+                                                           Drug</button>
+                                                    
+                                                        <button mat-raised-button (click)="getDosemaster()">
+                                                            <mat-icon>add</mat-icon>
+                                                            Dose</button>
+                                                    
                                                         <button mat-raised-button (click)="getPreviousPrescriptionlist()">
                                                             <mat-icon>first_page</mat-icon>
                                                             Load Previous</button>
-                                            
+                                                    
                                                         <button mat-raised-button (click)="SaveTemplate()">
                                                             <mat-icon>save</mat-icon>
                                                             Save Template</button>

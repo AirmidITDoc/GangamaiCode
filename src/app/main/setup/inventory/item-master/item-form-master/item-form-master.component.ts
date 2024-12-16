@@ -1118,15 +1118,13 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     onaddItemGeneric() {
-        const dialogRef = this._matDialog.open(ItemGenericMasterComponent, {
+       this._matDialog.open(ItemGenericMasterComponent, {
             maxWidth: "85vw",
             maxHeight: "85vh",
             width: "100%",
             height: "100%",
         });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result); 
-        });
+       
     }
 }
 

@@ -41,10 +41,10 @@ export class CustomerInformationService {
     })
    }
    CreateBillmyform(){
-    return this._formbuilder.group({ 
-      Description:[''],
-      Amount:[''],
+    return this._formbuilder.group({  
       CustomerId:[''], 
+      Amount:[''],
+      Description:[''],
     })
    }
    CreatePayForm(){
