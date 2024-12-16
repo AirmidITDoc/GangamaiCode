@@ -484,6 +484,30 @@ public onEnteraddress(event): void {
             });
             return;
         }
+        if (this._doctorService.myform.get("Education").value == '') {
+            this.toastr.warning('Please Enter valid Doctor Education', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this._doctorService.myform.get("Education").value == '') {
+            this.toastr.warning('Please Enter valid Doctor Education', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this._doctorService.myform.get("RegDate").value == '') {
+            this.toastr.warning('Please Enter valid Reg Date', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this._doctorService.myform.get("MahRegDate").value == '') {
+            this.toastr.warning('Please Enter valid MahReg Date', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
         
 
         // if (this._doctorService.myform.valid) {
@@ -514,11 +538,11 @@ public onEnteraddress(event): void {
                 passportNo: this._doctorService.myform.get("PassportNo").value || "0",
                 esino: this._doctorService.myform.get("ESINO").value || "0",
                 regNo: this._doctorService.myform.get("RegNo").value || "0",
-                regDate:this.registerObj.RegDate,// this._doctorService.myform.get("RegDate").value || '01/01/1900',//this.datePipe.transform(this.registerObj.RegDate, 'MM/dd/yyyy') || '01/01/1900',
+                regDate:this.datePipe.transform(this.registerObj.RegDate, "MM-dd-yyyy") || '01/01/1900',
                 mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
                 PanCardNo: this._doctorService.myform.get("Pancardno").value || "0",
                 AadharCardNo:  this._doctorService.myform.get("AadharCardNo").value || "0",
-                mahRegDate:this.registerObj.MahRegDate,// this.datePipe.transform(this.registerObj.MahRegDate, 'MM/dd/yyyy') || '01/01/1900',
+                mahRegDate:this.datePipe.transform(this.registerObj.MahRegDate, "MM-dd-yyyy") || '01/01/1900',
                 isInHouseDoctor: true,
                 isOnCallDoctor: true,
                 Addedby: this.accountService.currentUserValue.user.id,
@@ -538,6 +562,7 @@ public onEnteraddress(event): void {
                     this.onClose();
                 });
             } else {
+               
                 this._doctorService.doctortMasterUpdate(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
