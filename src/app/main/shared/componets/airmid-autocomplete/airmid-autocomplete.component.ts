@@ -117,6 +117,11 @@ export class AirmidAutocompleteComponent implements OnInit {
                         this.ddls = data as [];
                         this.filteredDdls.next(this.ddls.slice());
                         if (this.value) {
+                            if (this.IsMultiPle) {
+                                if (Object.prototype.toString.call(this.value) === '[object Array]') {
+                                    this.value = this.value.map(x => x[this.ValueField]??x);
+                                }
+                            }
                             this.SetSelection(this.value);
                         }
                     });
@@ -134,7 +139,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     public comparer(o1: any, o2: any): boolean {
         // if possible compare by object's name, and not by reference.
         return o1 && o2 && o1[this["ariaLabel"]] === o2;
-      }
+    }
     protected setInitialValue() {
         // debugger
         // this.filteredDdls
@@ -168,11 +173,8 @@ export class AirmidAutocompleteComponent implements OnInit {
     }
     SetSelection(value) {
         if (this.IsMultiPle) {
-            if(Object.prototype.toString.call(this.value) === '[object Array]'){
-                value=value.map(x=>x[this.ValueField]);
-            }
             this.control.setValue(value);
-            this.formGroup.get(this.formControlName).setValue(this.ddls.filter(x=>value.indexOf(x[this.ValueField])>=0));
+            this.formGroup.get(this.formControlName).setValue(this.ddls.filter(x => value.indexOf(x[this.ValueField]) >= 0));
         }
         else {
             this.control.setValue(value.toString());
