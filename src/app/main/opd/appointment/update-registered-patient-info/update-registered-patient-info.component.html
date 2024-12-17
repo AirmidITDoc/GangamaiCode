@@ -29,7 +29,17 @@
                             <div fxLayout="row" style="width: 100%;">
                                 <div fxFlex fxFlex.gt-sm fxLayout="column"   
                                     class="newappointment-body">  
-                                    
+                                    <form [formGroup]="VisitFormGroup" style="margin-left: 20px;">
+                                        <mat-form-field appearance="outline" fxFlex="25%">
+                                            <mat-label>Hospital Name </mat-label>
+                                            <mat-select formControlName="HospitalId" required #hname
+                                                (keydown)="onEnterhname($event)">
+                                                <mat-option *ngFor="let Doc of HospitalList1" [value]="Doc">
+                                                    {{Doc.HospitalName}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </form>
                                     <div class="personal-panel">
                                         <mat-accordion multi>
                                             <mat-expansion-panel expanded>
@@ -736,13 +746,11 @@
                                                     </div> 
                                                 </form>
                                             </mat-expansion-panel>
-                                        </mat-accordion>
+                                          </mat-accordion>
             
-                                        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-                                         
+                                        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center"> 
                                             <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
-                                            <button class="btn btn-primary " color="accent" (click)="onNewSave()"
-                                                [disabled]="personalFormGroup.invalid || VisitFormGroup.invalid">
+                                            <button class="btn btn-primary " color="accent" (click)="onNewSave()">
                                                 <span>Save</span>
                                             </button>
                                         </div>

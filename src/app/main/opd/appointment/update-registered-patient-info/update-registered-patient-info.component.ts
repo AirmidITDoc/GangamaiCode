@@ -242,7 +242,23 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         public matDialog: MatDialog,
         public toastr: ToastrService,   
         public _WhatsAppEmailService: WhatsAppEmailService, 
-    ) { }
+    ) { 
+        this.getPrefixList(); 
+        this.getDoctorNameCombobox();  
+        this.getPatientTypeList();
+        this.getTariffCombo();
+        this.getAreaList();
+        this.getMaritalStatusList();
+        this.getReligionList();
+        this.getcityList1();
+        this.getCompanyList();
+        this.getSubTPACompList();
+        this.getDepartmentList(); 
+        this.getDoctor1List();
+        this.getDoctor2List();
+        this.getPurposeList(); 
+        this.getHospitalList1();
+    }
 
 
     ngOnInit(): void { 
@@ -258,221 +274,40 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
           this.PatientName =  this.data.obj.PatientName;
           this.RegId =  this.registerObj.RegId;
 
+          this.VisitFlagDisp = true;   
+          
           let todayDate = new Date();
           const d = new Date(this.registerObj.DateofBirth);
           const timeDiff = Math.abs(Date.now() - d.getTime());
           this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
           this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - d.getMonth());
-          this.registerObj.AgeDay = Math.abs(todayDate.getDate() - d.getDate());
-           
-         
-          this.VisitFlagDisp = true; 
-
-          this.getDoctorNameCombobox(); 
-          this.getPrefixList();
-          this.getPatientTypeList();
-          this.getTariffCombo();
-          this.getAreaList();
-          this.getMaritalStatusList();
-          this.getReligionList();
-          this.getcityList1();
-          this.getCompanyList();
-          this.getSubTPACompList();
-          this.getDepartmentList(); 
-          this.getDoctor1List();
-          this.getDoctor2List();
-          this.getPurposeList(); 
-          this.setDropdownObjs();
+          this.registerObj.AgeDay = Math.abs(todayDate.getDate() - d.getDate()); 
         }  
-        // this.getVisitList();
-      
-    
- 
+        this.getPrefixList(); 
+        this.getDoctorNameCombobox();  
+        this.getPatientTypeList();
+        this.getTariffCombo();
+        this.getAreaList();
+        this.getMaritalStatusList();
+        this.getReligionList();
+        this.getcityList1();
+        this.getCompanyList();
+        this.getSubTPACompList();
+        this.getDepartmentList(); 
+        this.getDoctor1List();
+        this.getDoctor2List();
+        this.getPurposeList();  
+
+        // this.getVisitList(); 
         this.FirstName.markAsTouched();
-        this.AreaId.markAsTouched();
-
-        this.filteredOptionsDep = this.VisitFormGroup.get('Departmentid').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-        ); 
-
-        this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-        ); 
-
-        this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterPtype(value)),
-
-        );
-        this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterTariffId(value)),
-
-        );
+        this.AreaId.markAsTouched();  
         this.CalcDOB('', null);
         this.RegOrPhoneflag = 'Entry from Registration'
-    } 
- 
-    dateStyle?: string = 'Date';
-    OnChangeDobType(e) {
-        this.dateStyle = e.value;
-    }
-    CalcDOB(mode, e) {
-        let d = new Date();
-        if (mode == "Day") {
-            d.setDate(d.getDate() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
-        }
-        else if (mode == "Month") {
-            d.setMonth(d.getMonth() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        else if (mode == "Year") {
-            d.setFullYear(d.getFullYear() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        let todayDate = new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
-    }
-
-
-    getDoctor1List() {
-        this._opappointmentService.getDoctorMaster1Combo().subscribe(data => {
-            this.Doctor1List = data;
-            this.optionsRefDoc = this.Doctor1List.slice();
-            this.filteredOptionsRefDoc = this.VisitFormGroup.get('RefDocId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
-            ); 
-        });
     }  
-
-    getDoctor2List() {
-        this._opappointmentService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
-    } 
-    getOptionTextPrefix(option) {
-        return option && option.PrefixName ? option.PrefixName : '';
-    } 
-    getOptionTextpatienttype(option) {
-        return option && option.PatientType ? option.PatientType : '';
-    } 
-    getOptionTextTariff(option) {
-        return option && option.TariffName ? option.TariffName : '';
-    } 
-    getOptionTextDep(option) { 
-        return option && option.DepartmentName ? option.DepartmentName : '';
-    } 
-    getOptionTextCity(option) {
-        return option && option.CityName ? option.CityName : ''; 
-    } 
-    getOptionTextDoc(option) { 
-        return option && option.Doctorname ? option.Doctorname : ''; 
-    } 
-    getOptionTextRefDoc(option) { 
-        return option && option.DoctorName ? option.DoctorName : ''; 
-    } 
-    getOptionTextRelation(option) { 
-        return option && option.DoctorName ? option.DoctorName : ''; 
-    }
-    getOptionTextPurpose(option) { 
-        return option && option.PurposeName ? option.PurposeName : '';
-    }
-
-
-    private _filterPrex(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
-            return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterDep(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
-            return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
-        } 
-    } 
-    private _filterSubCompany(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-
-    private _filterCity(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterDoc(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-            this.isDoctorSelected = false;
-            return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterRefdoc(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsRefDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterPurpose(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.PurposeName ? value.PurposeName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsPurpose.filter(option => option.PurposeName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterPatientType(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase(); 
-            return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterTariff(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();  
-            return this.optionsTariff.filter(option => option.TariffName.toLowerCase().includes(filterValue));
-        } 
-    }
-    private _filterArea(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsArea.filter(option => option.AreaName.toLowerCase().includes(filterValue));
-        }
-    } 
-    private _filterReligion(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ReligionName ? value.ReligionName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsReligion.filter(option => option.ReligionName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    private _filterMstatus(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.MaritalStatusName ? value.MaritalStatusName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsMstatus.filter(option => option.MaritalStatusName.toLowerCase().includes(filterValue));
-        }
-    }
-
     createPesonalForm() {
 
         return this.formBuilder.group({
-            RegId: '',
-
+            RegId: '', 
             PrefixId: '',
             PrefixID: '',
             FirstName: ['', [
@@ -517,8 +352,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             HealthcardDate: [new Date().toISOString()],
             HealthCardNo: '', 
         }); 
-    }
-
+    } 
     createVisitdetailForm() {
         return this.formBuilder.group({
             HospitalID: '',
@@ -538,24 +372,13 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             Departmentid: ['', [
                 Validators.required]],
             DoctorIdOne: '',
-            DoctorIdTwo: '',
-            VisitId: '',
-            // PrefixId: '',
-            // RegNoWithPrefix: '',
-            // PatientName: '',
-            VisitDate: '',
+            DoctorIdTwo: '', 
             VisitTime: '',
             HospitalId: '',
             HospitalName: '',
             OPDNo: '',
-            // TariffName: '',
-            // ConsultantDocId: '',
-            RefDocId: '',
-            // Doctorname: '',
-            // RefDocName: '',
-            // ClassId: '',
-            PurposeId: '',
-            template:''
+            RefDocId: '', 
+            PurposeId: '', 
 
         });
     }
@@ -569,7 +392,9 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             PhoneRegId: ['']
         });
     }  
+
     getPrefixList() {
+        // debugger
         this._registerService.getPrefixCombo().subscribe(data => {
             this.PrefixList = data;
             this.optionsPrefix = this.PrefixList.slice();
@@ -577,8 +402,37 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterPrex(value) : this.PrefixList.slice()),
             ); 
+            if(this.data){
+              //  debugger
+                const toSelect = this.PrefixList.filter(c => c.PrefixID == this.registerObj.PrefixID);
+                this.personalFormGroup.get('PrefixID').setValue(toSelect[0]);
+                this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
+            } 
         });
-    }  
+    } 
+    onChangeGenderList(prefixObj) {
+        if (prefixObj) {
+            this._opappointmentService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
+                this.GenderList = data;
+                this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
+                this.selectedGenderID = this.GenderList[0].GenderId;
+            });
+        }
+    }
+    getAreaList() {
+        this._opappointmentService.getAreaCombo().subscribe(data => {
+            this.AreaList = data;
+            this.optionsArea = this.AreaList.slice();
+            this.filteredOptionsArea = this.personalFormGroup.get('AreaId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterArea(value) : this.AreaList.slice()),
+            );
+            if(this.data){
+                const toSelectArea = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
+               this.personalFormGroup.get('AreaId').setValue(toSelectArea[0]);
+            } 
+        });
+    } 
     getcityList1() { 
         this._opappointmentService.getCityList().subscribe(data => {
             this.cityList = data;
@@ -587,70 +441,30 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterCity(value) : this.cityList.slice()),
             ); 
+            if(this.data){
+                const toSelectCity = this.cityList.filter(c => c.CityId == this.registerObj.CityId);
+                this.personalFormGroup.get('CityId').setValue(toSelectCity[0]);
+                this.onChangeCityList(this.personalFormGroup.get('CityId').value);
+                this.personalFormGroup.updateValueAndValidity();
+            }  
+        }); 
+    }
+    onChangeStateList(CityId) { 
+        this._opappointmentService.getStateList(CityId).subscribe(data => {
+            this.stateList = data;
+            this.selectedState = this.stateList[0].StateName;
+
         }); 
     } 
-    getPurposeList() {
-        this._opappointmentService.getPurposeList().subscribe(data => {
-            this.PurposeList = data;
-            this.optionsPurpose = this.PurposeList.slice();
-            this.filteredOptionsPurpose = this.VisitFormGroup.get('PurposeId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterPurpose(value) : this.PurposeList.slice()),
-            );
-        });
-    }  
-    private _filterPtype(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
-            return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+    onChangeCountryList(StateId) {
+        if (StateId > 0) { 
+            this._opappointmentService.getCountryList(StateId).subscribe(data => {
+                this.countryList = data;
+                this.selectedCountry = this.countryList[0].CountryName;
+                this.personalFormGroup.get('CountryId').setValue(this.countryList[0]);
+                this.personalFormGroup.updateValueAndValidity();
+            });
         }
-    } 
-    getPatientTypeList() {
-        this._opappointmentService.getPatientTypeCombo().subscribe(data => {
-            this.PatientTypeList = data;
-            this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
-        });
-    } 
-
-    private _filterTariffId(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
-            return this.TariffList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
-        }
-    } 
-    getTariffCombo() {
-        this._opappointmentService.getTariffCombo().subscribe(data => {
-            this.TariffList = data;
-            this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
-        });
-    } 
-
-    onChangePatient(value) { 
-        if (value.PatientTypeId == 2) {
-            this._opappointmentService.getCompanyCombo();
-            this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
-            this.isCompanySelected = true;
-            this.patienttype = 2;
-        } else if (value.PatientTypeId !== 2) {
-            this.isCompanySelected = false;
-            this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
-            this.VisitFormGroup.get('CompanyId').clearValidators();
-            this.VisitFormGroup.get('SubCompanyId').clearValidators();
-            this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
-            this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-            this.patienttype = 1;
-        }  
-    } 
-    
-    getAreaList() {
-        this._opappointmentService.getAreaCombo().subscribe(data => {
-            this.AreaList = data;
-            this.optionsArea = this.AreaList.slice();
-            this.filteredOptionsArea = this.personalFormGroup.get('AreaId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterArea(value) : this.AreaList.slice()),
-            ); 
-        });
     } 
     getMaritalStatusList() {
         this._opappointmentService.getMaritalStatusCombo().subscribe(data => {
@@ -660,6 +474,10 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterMstatus(value) : this.MaritalStatusList.slice()),
             ); 
+            if(this.data){ 
+                const toSelectMarital = this.MaritalStatusList.filter(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
+                this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital[0]);
+            }
         });
     } 
     getReligionList() {
@@ -669,37 +487,34 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             this.filteredOptionsReligion = this.personalFormGroup.get('ReligionId').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterReligion(value) : this.ReligionList.slice()),
-            ); 
+            );
+            if(this.data){
+                const toSelectReligion = this.ReligionList.filter(c => c.ReligionId == this.registerObj.ReligionId);
+                this.personalFormGroup.get('ReligionId').setValue(toSelectReligion[0]);
+            }    
         });
     } 
-    getCompanyList() {
-        this._opappointmentService.getCompanyCombo().subscribe(data => {
-            this.CompanyList = data;
-            this.optionsCompany = this.CompanyList.slice();
-            this.filteredOptionsCompany = this.VisitFormGroup.get('CompanyId').valueChanges.pipe(
+    getPatientTypeList() {
+        this._opappointmentService.getPatientTypeCombo().subscribe(data => {
+            this.PatientTypeList = data;
+            this.VisitFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
+            this.filteredOptionsPatientType = this.VisitFormGroup.get('PatientTypeID').valueChanges.pipe(
                 startWith(''),
-                map(value => value ? this.filterCompany(value) : this.CompanyList.slice()),
-            ); 
+                map(value => this._filterPtype(value)), 
+            );
         });
     } 
-
-    private filterCompany(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase(); 
-            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    getSubTPACompList() {
-        this._opappointmentService.getSubTPACompCombo().subscribe(data => {
-            this.SubTPACompList = data;
-            this.optionsSubCompany = this.SubTPACompList.slice();
-            this.filteredOptionsSubCompany = this.VisitFormGroup.get('SubCompanyId').valueChanges.pipe(
+    getTariffCombo() {
+        this._opappointmentService.getTariffCombo().subscribe(data => {
+            this.TariffList = data;
+            this.VisitFormGroup.get('TariffId').setValue(this.TariffList[0]);
+            this.filteredOptionsTarrif = this.VisitFormGroup.get('TariffId').valueChanges.pipe(
                 startWith(''),
-                map(value => value ? this._filterSubCompany(value) : this.SubTPACompList.slice()),
-            ); 
+                map(value => this._filterTariffId(value)),
+    
+            );
         });
-    } 
+    }  
     getDepartmentList() { 
         this._opappointmentService.getDepartmentCombo().subscribe(data => {
             this.DepartmentList = data;
@@ -718,24 +533,216 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             }
         }); 
     }  
-    onChangeStateList(CityId) { 
-        this._opappointmentService.getStateList(CityId).subscribe(data => {
-            this.stateList = data;
-            this.selectedState = this.stateList[0].StateName;
-
-        }); 
+    getDoctor1List() {
+        this._opappointmentService.getDoctorMaster1Combo().subscribe(data => {
+            this.Doctor1List = data;
+            this.optionsRefDoc = this.Doctor1List.slice();
+            this.filteredOptionsRefDoc = this.VisitFormGroup.get('RefDocId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterRefdoc(value) : this.Doctor1List.slice()),
+            ); 
+        });
+    }   
+    getDoctor2List() {
+        this._opappointmentService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
+    }  
+    getCompanyList() {
+        this._opappointmentService.getCompanyCombo().subscribe(data => {
+            this.CompanyList = data;
+            this.optionsCompany = this.CompanyList.slice();
+            this.filteredOptionsCompany = this.VisitFormGroup.get('CompanyId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this.filterCompany(value) : this.CompanyList.slice()),
+            ); 
+        });
+    }  
+    getSubTPACompList() {
+        this._opappointmentService.getSubTPACompCombo().subscribe(data => {
+            this.SubTPACompList = data;
+            this.optionsSubCompany = this.SubTPACompList.slice();
+            this.filteredOptionsSubCompany = this.VisitFormGroup.get('SubCompanyId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterSubCompany(value) : this.SubTPACompList.slice()),
+            ); 
+        });
     } 
-    onChangeCountryList(StateId) {
-        if (StateId > 0) { 
-            this._opappointmentService.getCountryList(StateId).subscribe(data => {
-                this.countryList = data;
-                this.selectedCountry = this.countryList[0].CountryName;
-                this.personalFormGroup.get('CountryId').setValue(this.countryList[0]);
-                this.personalFormGroup.updateValueAndValidity();
-            });
+    getPurposeList() {
+        this._opappointmentService.getPurposeList().subscribe(data => {
+            this.PurposeList = data;
+            this.optionsPurpose = this.PurposeList.slice();
+            this.filteredOptionsPurpose = this.VisitFormGroup.get('PurposeId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterPurpose(value) : this.PurposeList.slice()),
+            );
+        });
+    }  
+    getHospitalList1() {
+        this._opappointmentService.getHospitalCombo().subscribe(data => {
+            this.HospitalList1 = data;
+            this.VisitFormGroup.get('HospitalId').setValue(this.HospitalList1[0]);
+        })
+    }
+  
+    private _filterPtype(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+            return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+        }
+    } 
+    private _filterTariffId(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+            return this.TariffList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+        }
+    } 
+    private _filterTariff(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();  
+            return this.optionsTariff.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+        } 
+    }
+    private _filterArea(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.AreaName ? value.AreaName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsArea.filter(option => option.AreaName.toLowerCase().includes(filterValue));
+        }
+    } 
+    private _filterReligion(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.ReligionName ? value.ReligionName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsReligion.filter(option => option.ReligionName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterMstatus(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.MaritalStatusName ? value.MaritalStatusName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsMstatus.filter(option => option.MaritalStatusName.toLowerCase().includes(filterValue));
         }
     }
+    private _filterDoc(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+            this.isDoctorSelected = false;
+            return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterRefdoc(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsRefDoc.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterPurpose(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.PurposeName ? value.PurposeName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsPurpose.filter(option => option.PurposeName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterPatientType(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase(); 
+            return this.optionsPatientType.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+        } 
+    }
+    private _filterPrex(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
+            return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterDep(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+            return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterSubCompany(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+        } 
+    } 
+    private _filterCity(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+        } 
+    }
+    private filterCompany(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase(); 
+            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
+        } 
+    }
+    private _filterDoctor(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+            return this.optionsDoctor.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+        } 
+    }
+    getOptionTextPrefix(option) {
+        return option && option.PrefixName ? option.PrefixName : '';
+    } 
+    getOptionTextpatienttype(option) {
+        return option && option.PatientType ? option.PatientType : '';
+    } 
+    getOptionTextTariff(option) {
+        return option && option.TariffName ? option.TariffName : '';
+    } 
+    getOptionTextDep(option) { 
+        return option && option.DepartmentName ? option.DepartmentName : '';
+    } 
+    getOptionTextCity(option) {
+        return option && option.CityName ? option.CityName : ''; 
+    } 
+    getOptionTextDoc(option) { 
+        return option && option.Doctorname ? option.Doctorname : ''; 
+    } 
+    getOptionTextRefDoc(option) { 
+        return option && option.DoctorName ? option.DoctorName : ''; 
+    } 
+    getOptionTextRelation(option) { 
+        return option && option.DoctorName ? option.DoctorName : ''; 
+    }
+    getOptionTextPurpose(option) { 
+        return option && option.PurposeName ? option.PurposeName : '';
+    } 
+    getOptionTextDoctor(option) {
+        return option && option.Doctorname ? option.Doctorname : '';
+    }  
+    getOptionTextCompany(option) {
+        return option && option.CompanyName ? option.CompanyName : '';
+    } 
+    getOptionTextSubCompany(option) { 
+        return option && option.CompanyName ? option.CompanyName : '';
+    } 
+    getOptionTextArea(option) { 
+        return option && option.AreaName ? option.AreaName : '';
+    } 
+    getOptionTextReligion(option) { 
+        return option && option.ReligionName ? option.ReligionName : '';
+    } 
+    getOptionTextMstatus(option) { 
+        return option && option.MaritalStatusName ? option.MaritalStatusName : '';
+    }  
+  
 
+    onChangePatient(value) { 
+        if (value.PatientTypeId == 2) {
+            this._opappointmentService.getCompanyCombo();
+            this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
+            this.isCompanySelected = true;
+            this.patienttype = 2;
+        } else if (value.PatientTypeId !== 2) {
+            this.isCompanySelected = false;
+            this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+            this.VisitFormGroup.get('CompanyId').clearValidators();
+            this.VisitFormGroup.get('SubCompanyId').clearValidators();
+            this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
+            this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
+            this.patienttype = 1;
+        }  
+    }  
     onChangeDateofBirth(DateOfBirth) { 
         if (DateOfBirth) {
             const todayDate = new Date();
@@ -749,15 +756,10 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         } 
     }   
 
-    private _filterDoctor(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-            return this.optionsDoctor.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-        } 
-    }
+ 
 
 
-    //hospital filter
+    
     public hospitalFilterCtrl: FormControl = new FormControl();
     public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);  
     private _onDestroy = new Subject<void>();
@@ -809,25 +811,6 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
     }
 
 
-    getOptionTextDoctor(option) {
-        return option && option.Doctorname ? option.Doctorname : '';
-    }  
-    getOptionTextCompany(option) {
-        return option && option.CompanyName ? option.CompanyName : '';
-    } 
-    getOptionTextSubCompany(option) { 
-        return option && option.CompanyName ? option.CompanyName : '';
-    } 
-    getOptionTextArea(option) { 
-        return option && option.AreaName ? option.AreaName : '';
-    } 
-    getOptionTextReligion(option) { 
-        return option && option.ReligionName ? option.ReligionName : '';
-    }
-
-    getOptionTextMstatus(option) { 
-        return option && option.MaritalStatusName ? option.MaritalStatusName : '';
-    }  
     WhatsAppAppointmentSend(el, vmono) {
         var m_data = {
             "insertWhatsappsmsInfo": {
@@ -862,40 +845,12 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
   
  
 
-    setDropdownObjs() {
-
-        const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
-        this.personalFormGroup.get('PrefixID').setValue(toSelect);
-
-        const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-        this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-        const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-        this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-        const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-        this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-        const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-        this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-        this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-        this.onChangeCityList(this.personalFormGroup.get('CityId').value);
-        this.personalFormGroup.updateValueAndValidity();
-    }
-
-    onChangeGenderList(prefixObj) {
-        if (prefixObj) {
-            this._opappointmentService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
-                this.GenderList = data;
-                this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-                this.selectedGenderID = this.GenderList[0].GenderId;
-            });
-        }
-    }
+   
+ 
    
 
-    onNewSave() {
+    onNewSave() { 
+
         if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
             this.toastr.warning('Please select valid Prefix ', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1024,7 +979,11 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
     } 
  
     onSaveRegistered() {
-
+        debugger
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
         let Areaid = 0;
         if (this.personalFormGroup.get('AreaId').value)
             Areaid = this.personalFormGroup.get('AreaId').value.AreaId;
@@ -1060,8 +1019,8 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
 
         let tokenNumberWithDoctorWiseUpdate = {};
         registrationUpdate['regID'] = this.registerObj.RegId;
-        registrationUpdate['regDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-            registrationUpdate['regTime'] = this.dateTimeObj.time,
+        registrationUpdate['regDate'] = formattedDate,
+            registrationUpdate['regTime'] = formattedTime,
             registrationUpdate['prefixId'] = this.personalFormGroup.get('PrefixID').value.PrefixID;
         registrationUpdate['firstName'] = this.registerObj.FirstName;
         registrationUpdate['middleName'] = this.registerObj.MiddleName || '';
@@ -1095,9 +1054,9 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         // visit detail
         visitUpdate['VisitId'] = 0;
         visitUpdate['RegID'] = this.registerObj.RegId;
-        visitUpdate['VisitDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-            visitUpdate['VisitTime'] = this.dateTimeObj.time,
-            visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
+        visitUpdate['VisitDate'] = formattedDate,
+        visitUpdate['VisitTime'] = formattedTime,
+        visitUpdate['UnitId'] = this.VisitFormGroup.get('HospitalId').value.HospitalId ? this.VisitFormGroup.get('HospitalId').value.HospitalId : 0;
         visitUpdate['PatientTypeId'] = this.VisitFormGroup.get('PatientTypeID').value.PatientTypeId || 0;//.PatientTypeID;//? this.VisitFormGroup.get('PatientTypeID').value.PatientTypeID : 0;
         visitUpdate['ConsultantDocId'] = this.VisitFormGroup.get('DoctorID').value.DoctorId || 0;//? this.VisitFormGroup.get('DoctorId').value.DoctorId : 0;
         visitUpdate['RefDocId'] = RefDocId; // this.VisitFormGroup.get('DoctorIdOne').value.DoctorId || 0;// ? this.VisitFormGroup.get('DoctorIdOne').value.DoctorIdOne : 0;
@@ -1105,17 +1064,17 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         visitUpdate['CompanyId'] = this.CompanyId || 0;
         visitUpdate['AddedBy'] = this.accountService.currentUserValue.user.id;
         visitUpdate['updatedBy'] = 0,//this.VisitFormGroup.get('RelationshipId').value.RelationshipId ? this.VisitFormGroup.get('RelationshipId').value.RelationshipId : 0;
-            visitUpdate['IsCancelled'] = 0;
+        visitUpdate['IsCancelled'] = 0;
         visitUpdate['IsCancelledBy'] = 0;
-        visitUpdate['IsCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-            visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
+        visitUpdate['IsCancelledDate'] = formattedDate,
+        visitUpdate['ClassId'] = 1; //this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
         visitUpdate['DepartmentId'] = this.VisitFormGroup.get('Departmentid').value.DepartmentId; //? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
         visitUpdate['PatientOldNew'] = this.Patientnewold;
         visitUpdate['FirstFollowupVisit'] = 0, // this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
-            visitUpdate['appPurposeId'] = PurposeId; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
-        visitUpdate['FollowupDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900', // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
-            visitUpdate['crossConsulFlag'] = 0,
-            visitUpdate['phoneAppId'] = this.vPhoneAppId || 0;
+        visitUpdate['appPurposeId'] = PurposeId; //this.VisitFormGroup.get('PurposeId').value.PurposeId || 0; // ? this.VisitFormGroup.get('RelativeAddress').value : '';
+        visitUpdate['FollowupDate'] =  formattedDate, // this.personalFormGroup.get('PhoneNo').value ? this.personalFormGroup.get('PhoneNo').value : '';
+        visitUpdate['crossConsulFlag'] = 0,
+        visitUpdate['phoneAppId'] = this.vPhoneAppId || 0;
 
         submissionObj['visitSave'] = visitUpdate;
 
@@ -1311,7 +1270,31 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
         this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
     }
- 
+    dateStyle?: string = 'Date';
+    OnChangeDobType(e) {
+        this.dateStyle = e.value;
+    }
+    CalcDOB(mode, e) {
+        let d = new Date();
+        if (mode == "Day") {
+            d.setDate(d.getDate() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+        }
+        else if (mode == "Month") {
+            d.setMonth(d.getMonth() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+        }
+        else if (mode == "Year") {
+            d.setFullYear(d.getFullYear() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+        }
+        let todayDate = new Date();
+        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
+    } 
 
     //   CameraComponent
 
@@ -1341,9 +1324,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
     //             }
     //         }
     //     });
-    }
-
- 
+    } 
     vhealthCardNo: any;
     Healthcardflag: boolean = false;
     vDays: any = 0;

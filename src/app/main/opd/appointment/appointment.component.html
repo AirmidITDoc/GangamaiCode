@@ -2,14 +2,14 @@
     dynamicTableHeight fusePerfectScrollbar>
     <mat-toolbar class="accent h-60"  style="width: 100%;height: 60px;justify-content: space-between;">
         <div fxLayout="row" faLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')">
+            <!-- <button mat-icon-button class="sidebar-toggle mr-12" fxHide.gt-sm (click)="toggleSidebar('app-main')">
                 <mat-icon>menu</mat-icon>
             </button>
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> 
+            </mat-icon>  -->
         </div>  
         <div fxLayout="row" fxLayoutGap="5px">
-            <!-- <form [formGroup]="searchFormGroup">
+            <form [formGroup]="searchFormGroup">
             <mat-form-field class=searchRegId appearance="outline" fxflex="30" style="color: white;">
                 <mat-label>Registered Patient</mat-label>
                 <input type="text" name="RegId" formControlName="RegId"
@@ -32,7 +32,7 @@
                 </mat-autocomplete>
                
             </mat-form-field>
-        </form> -->
+        </form>
             <app-common-date [screenFrom]="screenFromString" style="float:right;margin-top: 5px;" 
                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 

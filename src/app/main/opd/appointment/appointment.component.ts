@@ -3338,6 +3338,7 @@ export class AppointmentComponent implements OnInit {
             });
           dialogRef.afterClosed().subscribe(result => {
             this.getVisitList1(); 
+            this.searchFormGroup.get('RegId').setValue('');
           });
     }
 
