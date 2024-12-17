@@ -19,7 +19,6 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() options: any[] = [];
     @Input() mode: string;
     @Output() selectDdlObject = new EventEmitter<any>();
-    apiUrl: string = "Dropdown/GetBindDropDown?mode=";
 
     control = new FormControl();
     @Input() formGroup: FormGroup;
@@ -27,8 +26,9 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() IsMultiPle: boolean;
-    @Input() OutText: string = "text";
-    @Input() OutValue: string = "value";
+    @Input() TextField: string = "text";
+    @Input() ValueField: string = "value";
+    @Input() ApiUrl: string = "";
 
     private _disabled: boolean = false;
     private _focused: boolean = false;
@@ -100,21 +100,26 @@ export class AirmidAutocompleteComponent implements OnInit {
             this.ddls = this.options as [];
             this.filteredDdls.next(this.ddls.slice());
         } else {
-            this._httpClient
-                .GetData(this.apiUrl + this.mode)
-                .subscribe((data: any) => {
-                    this.ddls = data as [];
-                    this.filteredDdls.next(this.ddls.slice()); 
-                    if(this.IsMultiPle){
-                        debugger
-                    }
-                    if (this.value) {
-                        this.formGroup.get(this.formControlName).setValue(this.value.toString());
-                        this.control.setValue(this.value.toString());
-                        this.stateChanges.next();
-                        this.changeDetectorRefs.detectChanges();
-                    }
-                });
+            if (this.ApiUrl == "")
+                this._httpClient
+                    .GetData('Dropdown/GetBindDropDown?mode=' + this.mode)
+                    .subscribe((data: any) => {
+                        this.ddls = data as [];
+                        this.filteredDdls.next(this.ddls.slice());
+                        if (this.value) {
+                            this.SetSelection(this.value);
+                        }
+                    });
+            else
+                this._httpClient
+                    .GetData(this.ApiUrl)
+                    .subscribe((data: any) => {
+                        this.ddls = data as [];
+                        this.filteredDdls.next(this.ddls.slice());
+                        if (this.value) {
+                            this.SetSelection(this.value);
+                        }
+                    });
         }
 
     }
@@ -126,6 +131,10 @@ export class AirmidAutocompleteComponent implements OnInit {
         this._onDestroy.complete();
         this.stateChanges.complete();
     }
+    public comparer(o1: any, o2: any): boolean {
+        // if possible compare by object's name, and not by reference.
+        return o1 && o2 && o1[this["ariaLabel"]] === o2;
+      }
     protected setInitialValue() {
         // debugger
         // this.filteredDdls
@@ -154,20 +163,24 @@ export class AirmidAutocompleteComponent implements OnInit {
 
     }
     public onDdlChange($event) {
-        if (this.IsMultiPle) {
-            this.formGroup.controls[this.formControlName].setValue($event.value.map(prod => { return { [this.OutText]: prod.text, [this.OutValue]: prod.value }; }));
-        }
-        else {
-            this.formGroup.controls[this.formControlName].setValue($event.value);
-        }
+        this.formGroup.controls[this.formControlName].setValue($event.value);
         this.selectDdlObject.emit($event.value);
     }
     SetSelection(value) {
-        this.formGroup.get(this.formControlName).setValue(this.value.toString());
-        this.control.setValue(this.value.toString());
+        if (this.IsMultiPle) {
+            if(Object.prototype.toString.call(this.value) === '[object Array]'){
+                value=value.map(x=>x[this.ValueField]);
+            }
+            this.control.setValue(value);
+            this.formGroup.get(this.formControlName).setValue(this.ddls.filter(x=>value.indexOf(x[this.ValueField])>=0));
+        }
+        else {
+            this.control.setValue(value.toString());
+            this.formGroup.get(this.formControlName).setValue(value.toString());
+        }
         this.stateChanges.next();
         this.changeDetectorRefs.detectChanges();
-        this.selectDdlObject.emit(value);
+        // this.selectDdlObject.emit(value);
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.value?.firstChange && changes.value?.currentValue) {

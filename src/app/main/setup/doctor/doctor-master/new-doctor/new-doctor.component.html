@@ -279,13 +279,13 @@
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-autocomplete label="Department" formControlName="MDoctorDepartmentDets"
                                     [formGroup]="myForm" [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
-                                    [validations]="getValidationMessages().Departmentid"
-                                    [mode]="autocompleteModedepartment" OutValue="DepartmentId">
+                                    [validations]="getValidationMessages().Departmentid" #ddlDepartment
+                                    [mode]="autocompleteModedepartment" ValueField="departmentId" TextField="departmentName" ApiUrl="DepartmentMaster/get-departments">
                                 </airmid-autocomplete>
                             </div>
                             <mat-chip-list #chipList>
                                 <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
-                                    {{ item.text }} <mat-icon (click)="removeDepartment(item)">close</mat-icon>
+                                    {{ item.departmentName }} <mat-icon (click)="removeDepartment(item)">close</mat-icon>
                                 </mat-chip>
                             </mat-chip-list>
 

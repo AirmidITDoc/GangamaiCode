@@ -26,7 +26,7 @@ import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-au
 export class NewDoctorComponent implements OnInit {
 
     myForm: FormGroup
-
+    @ViewChild('ddlDepartment') ddlDepartment: AirmidAutocompleteComponent;
     //isLoading: any;
     //submitted = false;
     //data1: [];
@@ -113,6 +113,8 @@ export class NewDoctorComponent implements OnInit {
                     this.sanitizeImagePreview = data["data"] as string;
                     this.registerObj.signature = data["data"] as string;
                 });
+                // debugger
+                // this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
             }, (error) => {
                 this.toastr.error(error.message);
             });
@@ -293,9 +295,9 @@ export class NewDoctorComponent implements OnInit {
 
     //selectedItems = [];
     removeDepartment(item) {
-        let removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.DepartmentId == item.DepartmentId);
+        let removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
         this.myForm.value.MDoctorDepartmentDets.splice(removedIndex, 1);
-        this.myForm.controls['MDoctorDepartmentDets'].setValue(this.myForm.value.MDoctorDepartmentDets);
+        this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x=>x.departmentId));
     }
 
 
