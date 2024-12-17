@@ -34,6 +34,7 @@
                             label="Gender Id" 
                             formControlName="sexId" 
                             [formGroup]="prefixForm"
+                            [value]="data?.sexId"
                             [validations]="getValidationGenderMessages().GenderId" 
                             [mode]="autocompleteModegender">
                         </airmid-autocomplete>

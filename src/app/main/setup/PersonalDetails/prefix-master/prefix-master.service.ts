@@ -68,6 +68,6 @@ export class PrefixMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-      return this._httpClient.DeleteData("Prefix?Id=" + m_data.toString());
+      return this._httpClient.DeleteData("PrefixMaster?Id=" + m_data.toString());
     }
 }

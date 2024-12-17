@@ -50,7 +50,7 @@ export class PrefixMasterComponent implements OnInit {
                             this.confirmDialogRef.afterClosed().subscribe((result) => {
                                 if (result) {
                                     let that = this;
-                                    this._PrefixMasterService.deactivateTheStatus(data.PrefixID).subscribe((response: any) => {
+                                    this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
                                         this.toastr.success(response.message);
                                         that.grid.bindGridData();
                                     });
