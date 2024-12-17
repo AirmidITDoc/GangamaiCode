@@ -39,6 +39,9 @@ export class IpReportComponent implements OnInit {
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
   filteredOptionsGroup: Observable<string[]>;
+  PatientListfilteredOptions:any;
+
+  Creditflag: boolean = false;
   isgroupSelected: boolean = false;
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
@@ -85,6 +88,7 @@ export class IpReportComponent implements OnInit {
   CompanyList: any = [];
   vDescType = 0;
   OPIPType: any;
+  IPBILL=true
   displayedColumns = [
     'ReportName'
   ];
@@ -507,38 +511,53 @@ export class IpReportComponent implements OnInit {
 
 
     //IpBilling
-
+    
     if (this.ReportName == 'Advance Report') {
       this.FlagUserSelected = false;
-
+      this.Creditflag = false;
+      
 
     } else if (this.ReportName == 'IP Bill Report') {
       this.FlagUserSelected = false;
+      this.Creditflag = false;
+      
+      this.IPBILL=false
 
     } else if (this.ReportName == 'OP IP Bill Summary') {
+      this.Creditflag = false;
+      
       this.FlagUserSelected = false;
 
     } else if (this.ReportName == 'Bill Summary Report') {
       this.FlagUserSelected = true;
+      this.Creditflag = false;
+      
     }
     if (this.ReportName == 'Credit Report') {
       this.FlagUserSelected = false;
+      this.Creditflag = true;
+      
     } else if (this.ReportName == 'Refund of Advance Report') {
       this.FlagUserSelected = false;
-
+      this.Creditflag = false;
+      
     } else if (this.ReportName == 'Refund of Bill Report') {
       this.FlagUserSelected = false;
-
+      this.Creditflag = false;
+      
     }
     else if (this.ReportName == 'IP Daily Collection Report') {
       this.FlagUserSelected = true;
-
+      this.Creditflag = false;
+      
     } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
       this.FlagUserSelected = false;
-
+      this.Creditflag = false;
+      
     } else if (this.ReportName == 'IP Bill Generation Payment Due report') {
       this.FlagUserSelected = false;
-
+      this.Creditflag = false;
+      
     }
 
 
@@ -2301,7 +2320,7 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetCreditReportPdf() {
-
+debugger
     this._IPReportService.getCreditReceipt(
       this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', this.RegId
@@ -2342,19 +2361,7 @@ export class IpReportComponent implements OnInit {
 
 
   viewgetBillReportPdf() {
-    Swal.fire({
-      title: 'Do you want  Pdf/Excel Of IP Bill Summary',
-      text: "Ip Bill Summary!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes !"
-
-    }).then((result) => {
-
-      if (result.isConfirmed) {
-
+    
         let AddUserId = 0;
         if (this._IPReportService.userForm.get('UserId').value)
           AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
@@ -2375,11 +2382,12 @@ export class IpReportComponent implements OnInit {
               }
             });
         });
-      } else {
+     
+  }
+  exportIPBillReportExcel(){
         let fromdate = this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
         let todate = this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
 
-        // this.getBillSummaryListExcelview(fromdate, todate, this._loggedUser.currentUserValue.user.id);
         var data = {
           "FromDate": fromdate,
           "ToDate": todate,
@@ -2393,14 +2401,21 @@ export class IpReportComponent implements OnInit {
         }
         );
       
-      }
-    });
+        
+  }
+  IpbillsummaryExcel() {
+    console.log(this.dsIPBrowseList.data)
+    let exportHeaders = ['RegNo', 'IPDNo', 'PatientName', 'DoctorName', 'IsBillGenerated', 'BillNo', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'PaidAmount', 'BalanceAmt', 'BillDate', 'OPD_IPD_Type', 'BillAddedByName', 'CashCounterName'
+      , 'AdvanceAmount', 'AdvanceUsedAmount', 'AdvBalanceAmount', 'CashPay', 'ChequePay', 'CardPay', 'NeftPay', 'PayTMPay', 'AdvUsdPay', 'PatientType', 'CompanyName'];
+    this.reportDownloadService.getExportJsonData(this.dsIPBrowseList.data, exportHeaders, 'Ip Bill Summary List Datewise');
+    this.dsIPBrowseList.data = [];
   }
 
 
-
   dsIPBrowseList = new MatTableDataSource<IpBillBrowseList>()
-  getBillSummaryListExcelview(fromdate, todate, Id) {
+
+  
+  getOPIPBillSummaryListExcelview(fromdate, todate, Id) {
     var data = {
       "FromDate": fromdate,
       "ToDate": todate,
@@ -2417,13 +2432,6 @@ export class IpReportComponent implements OnInit {
   }
 
 
-  IpbillsummaryExcel() {
-    console.log(this.dsIPBrowseList.data)
-    let exportHeaders = ['RegNo', 'IPDNo', 'PatientName', 'DoctorName', 'IsBillGenerated', 'BillNo', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'PaidAmount', 'BalanceAmt', 'BillDate', 'OPD_IPD_Type', 'BillAddedByName', 'CashCounterName'
-      , 'AdvanceAmount', 'AdvanceUsedAmount', 'AdvBalanceAmount', 'CashPay', 'ChequePay', 'CardPay', 'NeftPay', 'PayTMPay', 'AdvUsdPay', 'PatientType', 'CompanyName'];
-    this.reportDownloadService.getExportJsonData(this.dsIPBrowseList.data, exportHeaders, 'Ip Bill Summary List Datewise');
-    this.dsIPBrowseList.data = [];
-  }
 
 
 
@@ -2829,29 +2837,32 @@ export class IpReportComponent implements OnInit {
   }
 
 
-  //op List 
-  PatientListfilteredOptions: any;
   noOptionFound: boolean = false;
   RegId = 0;
   // Patient Search;
-  getSearchList() {
+
+  getSearchListIP() { 
     var m_data = {
-      "Keyword": `${this._IPReportService.userForm.get('RegId').value}`
-    }
+      "Keyword": `${this._IPReportService.userForm.get('RegId').value}%`
+    } 
     this._IPReportService.getPatientVisitedListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
+      console.log(this.PatientListfilteredOptions )
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
       } else {
         this.noOptionFound = false;
       }
-    });
+    }); 
+  }
+  getOptionTextOPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
   }
   isRegIdSelected: boolean = false;
   //patient infomation
-  getSelectedObj1(obj) {
+  getSelectedObj(obj) {
     console.log(obj)
-    this.dataSource.data = [];
+    // this.dataSource.data = [];
     this.RegId = obj.RegId;
    
   }

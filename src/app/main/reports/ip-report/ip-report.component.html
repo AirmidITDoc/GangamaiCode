@@ -305,38 +305,45 @@
                                         </mat-form-field>
 
                                     </div>
-                                    <div style="margin-left: 2%;">
-
-                                        <mat-form-field class=searchRegId appearance="outline" style="width:200px;">
+                                    <div style="margin-left: 2%;" *ngIf="Creditflag">
+                                        <mat-form-field appearance="outline" style="width: 250px;">                                           
                                             <input type="text" name="RegId" formControlName="RegId"
-                                                placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
-                                                [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                                                placeholder="First Name / Last Name / Mobile No" matInput
+                                                [matAutocomplete]="auto1" (input)="getSearchListIP()">
                                             <span matSuffix style="display: flex;">
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IPReportService.userForm.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                                 <mat-icon class="mat-icon-close"
                                                     (click)="_IPReportService.userForm.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                             </span>
-                                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
-                                                (optionSelected)='getSelectedObj1($event.option.value)'>
+                                            <mat-autocomplete #auto1="matAutocomplete"
+                                                [displayWith]="getOptionTextOPObj"
+                                                (optionSelected)='getSelectedObj($event.option.value)'>
                                                 <mat-option *ngFor="let option of PatientListfilteredOptions"
                                                     [value]="option">
-                                                    {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
-                                                    {{option.LastName}} |
-                                                    {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                    {{option.MobileNo}}
                                                 </mat-option>
                                             </mat-autocomplete>
+
                                         </mat-form-field>
 
                                     </div>
 
                                 </div>
+                                <!-- [disabled]="dsIPBrowseList.data.length == 0" -->
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
                                         style="margin-left:2%;">
                                         <span>Print</span>
                                     </button>
+                                    <button type="button" mat-icon-button
+                                    (click)="exportIPBillReportExcel()" [disabled]="IPBILL">
+                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                </button>
 
+                               
                                 </div>
                             </form>
 
