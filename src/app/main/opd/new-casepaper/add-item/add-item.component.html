@@ -21,97 +21,119 @@
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="modal-card-container">
                 <div fxLayout="column" fxLayoutGap="10px">
-                    <form [formGroup]="myform">
-                        <mat-card style="padding: 5px;width: 100%;">
+                    <form [formGroup]="myform"> 
+
+                       
                             <div fxLayout="column" fxLayoutGap="6px" fxFlex="100%">
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>ItemName</mat-label>
-                                    <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
-                                        placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)"
-                                        required>
-                                </mat-form-field>
-
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>ItemGeneric Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text"
-                                        placeholder="Select ItemGenericNameId" matInput
-                                        formControlName="ItemGenericNameId" [matAutocomplete]="autoItemGenericNameId"
-                                        #ItemGeneric (keydown)="onEnterItemGeneric($event)" [(ngModel)]="vItemGeneric"
-                                        required>
+                                <mat-form-field appearance="outline" fxFlex="70%">
+                                    <mat-label>Item Search</mat-label>
+                                    <input matInput type="text" placeholder="Enter ItemName" [(ngModel)]="vSearchItemId" (input)="getItemList()" 
+                                        formControlName="SearchItemId" [matAutocomplete]="autoItem" name="SearchItemId">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
-                                            (click)="myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">close</mat-icon>
+                                            (click)="myform.get('SearchItemId').setValue(''); isItemIdSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
-                                            (click)="myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">search</mat-icon>
+                                            (click)="myform.get('SearchItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                     </span>
-                                    <mat-autocomplete #autoItemGenericNameId="matAutocomplete"
-                                        [displayWith]="getOptionTextGenericname">
-                                        <mat-option *ngFor="let option of filteredItemgeneric | async" [value]="option">
-                                            {{option.ItemGenericName}}
+                                    <mat-autocomplete #autoItem="matAutocomplete" [displayWith]="getItemOptionText"
+                                        (optionSelected)='getItemSelectedObj($event.option.value)'>
+                                        <mat-option *ngFor="let option of ItemListfilteredOptions" [value]="option">
+                                            {{option.ItemId}} | {{option.ItemName}} | {{option.BalanceQty}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
 
+                                <mat-card style="padding: 5px;">
+                                    <div class="item-title">
+                                        <span style="font-weight: 700;">
+                                           Item Details
+                                        </span>
+                                    </div>
+                                    <hr>
+                                    <div fxLayout="column" fxLayoutGap="6px">
+                                        <input name="ItemId" formControlName="ItemId" type="hidden" [(ngModel)]="vItemId">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>ItemName</mat-label>
+                                            <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
+                                                placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required
+                                                (ngModelChange)="vItemName = $event.toUpperCase()" >
+                                        </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>UnitofMeasurement Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text"
-                                        placeholder="Select PurchaseUOMId" matInput formControlName="PurchaseUOMId"
-                                        [matAutocomplete]="autoPurchaseUOMId" (keydown)="onEnterPurchaseUOMId($event)"
-                                        #PurchaseUOMId required [(ngModel)]="vPurchaseUOMId">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoPurchaseUOMId="matAutocomplete"
-                                        [displayWith]="getOptionTextPurchaseUMO">
-                                        <mat-option *ngFor="let option of filteredUnitofmeasurement | async"
-                                            [value]="option">
-                                            {{option.UnitOfMeasurementName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>ItemGeneric Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select ItemGenericNameId" matInput
+                                                formControlName="ItemGenericNameId" [matAutocomplete]="autoItemGenericNameId" #ItemGeneric
+                                                (keydown)="onEnterItemGeneric($event)" [(ngModel)]="vItemGeneric" required>
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="myform.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoItemGenericNameId="matAutocomplete" [displayWith]="getOptionTextGenericname">
+                                                <mat-option *ngFor="let option of filteredItemgeneric | async" [value]="option">
+                                                    {{option.ItemGenericName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Store Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select StoreId"
-                                        matInput formControlName="StoreId" [matAutocomplete]="autoStoreId" required
-                                        #storename (keydown)="onEnterstorename($event)" [(ngModel)]="vStoreName"
-                                        #Storname>
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
-                                        <mat-option *ngFor="let option of filteredOptionsStore | async"
-                                            [value]="option">
-                                            <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
-                                                (click)="$event.stopPropagation()">
-                                                {{option.StoreName}}</mat-checkbox>
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>UnitofMeasurement Name</mat-label>
+                                            <input matAutocompletePosition="below" type="text" placeholder="Select PurchaseUOMId" matInput
+                                                formControlName="PurchaseUOMId" [matAutocomplete]="autoPurchaseUOMId"
+                                                (keydown)="onEnterPurchaseUOMId($event)" #PurchaseUOMId required [(ngModel)]="vPurchaseUOMId">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="myform.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #autoPurchaseUOMId="matAutocomplete" [displayWith]="getOptionTextPurchaseUMO">
+                                                <mat-option *ngFor="let option of filteredUnitofmeasurement | async" [value]="option">
+                                                    {{option.UnitOfMeasurementName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
 
-                                <div fxLayout="column" fxFlex>
-                                    <mat-chip-list #chipList>
-                                        <mat-chip *ngFor="let item of selectedItems">
-                                            {{ item.StoreName }} <mat-icon (click)="remove(item)">close</mat-icon>
-                                        </mat-chip>
-                                    </mat-chip-list>
-                                </div>
+                                        <div fxLayout="row" fxLayoutGap="6px">
+                                            <mat-form-field appearance="outline" fxFlex="40%">
+                                                <mat-label>Store Name</mat-label>
+                                                <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
+                                                    formControlName="StoreId" [matAutocomplete]="autoStoreId" required #storename
+                                                    (keydown)="onEnterstorename($event)" [(ngModel)]="vStoreName" #Storname>
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="myform.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="myform.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
+                                                    <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option">
+                                                        <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
+                                                            (click)="$event.stopPropagation()">
+                                                            {{option.StoreName}}</mat-checkbox>
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                    
+                                            <div fxLayout="column" fxFlex>
+                                                <mat-chip-list #chipList>
+                                                    <mat-chip *ngFor="let item of selectedItems">
+                                                        {{ item.StoreName }} <mat-icon (click)="remove(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-list>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </mat-card>
                             </div>
-                        </mat-card>
+                 
 
                     </form>
                     <div style="padding: 8px;" fxLayoutAlign="end">
                         <div class="sales-footer-buttons gap-6" fxLayout="row">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-danger-outline" (click)="OnClear()">Clear</button>
                             <button class="btn btn-primary " (click)="onSave()">Save</button>
                         </div>
                     </div>

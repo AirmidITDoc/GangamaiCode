@@ -121,14 +121,20 @@ export class ItemMasterService {
         );
     }
 
-    public getitemgenericMasterCombo() {
+    public getitemgenericMasterCombo(loader = true){ 
+        if (loader) {
+          this._loaderService.show();
+      }
         return this._httpClient.post(
             "Generic/GetByProc?procName=Retrieve_ItemGenericNameMasterForCombo",
             {}
         );
     }
 
-    public getunitofMeasurementMasterCombo() {
+    public getunitofMeasurementMasterCombo(loader = true){ 
+        if (loader) {
+          this._loaderService.show();
+      }
         return this._httpClient.post(
             "Generic/GetByProc?procName=Retrieve_PurchaseUOMForCombo",
             {}
@@ -201,7 +207,10 @@ export class ItemMasterService {
   public getHistoryList() {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{});
   }
-  public getAssigneToStoreList(param) {
+  public getAssigneToStoreList(param,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemMaster_by_Store",param);
   }
 }
