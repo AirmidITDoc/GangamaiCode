@@ -22,21 +22,20 @@
           <div layout="row" layout-xs="column" fxLayout="column" fxFlex="100"
           style="margin-top: 7px; ">
             <div>
-              
-              <div flex class="container" style="border-radius:4px;  width:98%;border: rgba(0,0,0,0.12) 1px solid; padding: 7px;  border-radius: 5px;
-               position: relative;">
-                
-                  <div class="sales-patient-info-title">
-                    <span style="font-weight: 750;">
-                        Patient Information
+
+              <!-- <div fxLayout="column">
+                <div class="patient-col">
+                    <span class="patient-col-key">RegNo
                     </span>
+                    <span>:</span>
+                    <span class="patient-col-value">{{RegNo}}</span>
                 </div>
-                <hr>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                    
-                <form [formGroup]="searchFormGroup">
-                    <mat-form-field class=searchRegId appearance="outline"
-                        style="width:635px">
+                </div> -->
+
+              <form [formGroup]="searchFormGroup">
+                  <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                                    
+                    <mat-form-field class=searchRegId appearance="outline" fxFlex="50%">
                         <input type="text" name="RegId" formControlName="RegId"
                             placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
                             [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
@@ -51,21 +50,31 @@
                             <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
                               {{option.RegNo}} |{{option.FirstName}} | {{option.MiddleName}} |
                               {{option.LastName}} | {{option.Address}} |
-                              {{option.MobileNo}} | {{option.Doctorname}} | {{option.DepartmentName}}
+                              {{option.MobileNo}} | {{option.DoctorName}} | {{option.DepartmentName}}
                             </mat-option>
                         </mat-autocomplete> 
                     </mat-form-field>
-                    </form>
-  
-                   <mat-form-field appearance="outline" fxFlex="25%">
-                    <input matInput [matDatepicker]="picker" [min]="minDate"
-                    name="AppointmentDate" formControlName="AppointmentDate">
+                      
+                  <mat-form-field appearance="outline" fxFlex="15%">
+                    <mat-label>Date</mat-label>
+                    <input name="AppointmentDate" matInput [matDatepicker]="picker"
+                         formControlName="AppointmentDate" id=Date>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
+                </mat-form-field>
 
                   </div>
-  
+                </form>
+
+              <div flex class="container" style="border-radius:4px;  width:100%;border: rgba(0,0,0,0.12) 1px solid; padding: 7px;  border-radius: 5px;
+               position: relative;">
+                
+                  <div class="sales-patient-info-title">
+                    <span style="font-weight: 750;">
+                        Patient Information
+                    </span>
+                </div>
+                <hr>  
                     
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                     <mat-form-field appearance="outline" fxFlex>
@@ -82,7 +91,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Middle Name</mat-label>
                       <input name="MiddleName" formControlName="MiddleName" matInput type="text"  [ngClass]="{ 'is-invalid': submitted && f.MiddleName.errors }"
-                      #mname (keydown)="onEntermname($event)"
+                      #mname (keydown)="onEntermname($event)" [(ngModel)]="vMiddleName "
                       oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                       <span class="error" *ngIf="f.MiddleName.invalid && f.MiddleName.touched">Middle Name is required Enter only Alphabets</span>
                     </mat-form-field>
@@ -102,13 +111,11 @@
   
                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
   
-                      <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.Address.errors }">
+                      <mat-form-field appearance="outline" fxFlex >
                         <mat-label>Address</mat-label>
                         <input name="Address" formControlName="Address" placeholder="Address" matInput
                         #Address (keydown)="onEnterAddress($event)" [(ngModel)]="vAddress">
-                        <mat-error *ngIf="personalFormGroup.get('Address').hasError('required')">
-                          Address is required.
-                      </mat-error>
+                      <!-- [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" -->
                       </mat-form-field>
 
                   </div>
@@ -117,14 +124,10 @@
 
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Mobile Number</mat-label>
-                        <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput required
+                        <input name="Mobile" formControlName="MobileNo" placeholder="Mobile Number" matInput
                             [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)" 
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                             type="number" value="Mobile.length">
-                        <mat-error class="error"
-                            *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                            digits Mobile number is
-                            required</mat-error>
                       </mat-form-field>
     
                     </div>
@@ -136,7 +139,7 @@
                       <mat-label>Department</mat-label>
                       <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
                         formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" 
-                        >
+                        [(ngModel)]="vDepartmentid">
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
                           (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -158,7 +161,8 @@
   
                         <mat-form-field appearance="outline" fxFlex>
                           <mat-label>Doctor Name</mat-label>
-                          <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput [(ngModel)]="vDoctorName" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
+                          <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
+                           [(ngModel)]="vDoctorId" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
                             formControlName="DoctorId" [matAutocomplete]="autoDoctor" required #docname>
                           <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"

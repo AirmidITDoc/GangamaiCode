@@ -14,6 +14,7 @@ import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { phoneappointmentModule } from '../../../../../GangamaiCode/src/app/main/opd/phoneappointment/phoneappointment.module';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -42,6 +43,7 @@ export class PhoneappointmentComponent implements OnInit {
   displayedColumns = [
     // 'PhoneAppId',
     'IsCancelled',
+    'SeqNo',
     'AppDate',
     'PatientName',
     'Address',
@@ -90,7 +92,8 @@ export class PhoneappointmentComponent implements OnInit {
 
   private _filterDoctor(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      this.isDoctorSelected = false;
        return this.optionsDoctor.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
     }
 
@@ -110,7 +113,7 @@ export class PhoneappointmentComponent implements OnInit {
 
   
   getOptionTextDoctor(option){
-    return option && option.DoctorName ? option.DoctorName : '';
+    return option && option.Doctorname ? option.Doctorname : '';
   }
 
   // get phone appointment list on Button click
@@ -151,16 +154,19 @@ newPhoneAppointment(){
     });
   }
 
+
 CanclePhoneApp(contact){
   
     Swal.fire({
-      title: 'Do you want to Cancle Appointment',
-      // showDenyButton: true,
+      title: 'Do you want to cancel the Phone Appointment ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'OK',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!" 
 
     }).then((flag) => {
-
 
       if (flag.isConfirmed) {
         let appointmentcancle={};
@@ -173,7 +179,7 @@ CanclePhoneApp(contact){
         console.log(submitData);
         this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(response => {
           if (response) {
-            Swal.fire('Phone Appointment cancelled !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
+            Swal.fire('Congratulations !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
               
             });
           } else {
@@ -199,8 +205,13 @@ export class PhoneAppointmentlist {
   PhAppDate: Date;
   MobileNo: string;
   DepartmentName: string;
+  DepartmentId:any;
+  DoctorId:any;
   DoctorName: string;
   IsCancelled: boolean;
+  RegNo: Number;
+  SeqNo:any;
+  ConsultantDocId:any;
 
   /**
    * Constructor
@@ -216,8 +227,13 @@ export class PhoneAppointmentlist {
       this.PhAppDate = PhoneAppointmentlist.PhAppDate || '';
       this.MobileNo = PhoneAppointmentlist.MobileNo || '';
       this.DepartmentName = PhoneAppointmentlist.DepartmentName || '';
+      this.DepartmentId=PhoneAppointmentlist.DepartmentId || 0;
+      this.DoctorId=PhoneAppointmentlist.DoctorId || 0;
       this.DoctorName = PhoneAppointmentlist.DoctorName || '';
       this.IsCancelled = PhoneAppointmentlist.IsCancelled || '';
+      this.RegNo = PhoneAppointmentlist.RegNo || '';
+      this.SeqNo=PhoneAppointmentlist.SeqNo || '';
+      this.ConsultantDocId=PhoneAppointmentlist.ConsultantDocId || 0;
 
     }
   }

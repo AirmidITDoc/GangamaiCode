@@ -81,6 +81,10 @@ export class PhoneAppointListService {
   {
     return this._httpClient.post("OutPatient/PhoneAppointmentInsert", employee);
   }
+  public PhoneAppointUpdate(employee)
+  {
+    // return this._httpClient.post("OutPatient/PhoneAppointmentInsert", employee);
+  }
   
   public PhoneAppointCancle(employee)
   {

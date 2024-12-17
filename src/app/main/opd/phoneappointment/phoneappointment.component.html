@@ -85,8 +85,9 @@
                                         (click)="_phoneAppointService.mysearchform.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
                                 </span>
                                 <mat-autocomplete #autoDoctor="matAutocomplete" [displayWith]="getOptionTextDoctor">
-                                    <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
-                                        {{option.DoctorName}}
+                                    <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option"
+                                    (onSelectionChange)="getPhoneAppointList()">
+                                        {{option.Doctorname}}
                                     </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
@@ -130,20 +131,34 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="IsCancelled">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                            IsCancelled
+                                    <ng-container matColumnDef="IsCancelled" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
+                                            
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
                                             <div class="pill-icon">
                                                 <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='0'"
                                                     matTooltip="Appointment cancelled"
-                                                    class="red-600 s-16">circle</mat-icon>
+                                                    class="red-600 s-16">circle
+                                                </mat-icon>
+
+                                                <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='1'"
+                                                    matTooltip="Appointment Approve"
+                                                    class="green-600 s-16">circle
+                                                </mat-icon>
                                             </div>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AppDate">
+                                    <ng-container matColumnDef="SeqNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">SeqNo
+                                        </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
+                                                    {{contact.SeqNo}}
+                                            </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AppDate" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppointDate
                                         </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -151,7 +166,7 @@
                                             </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PatientName" fxLayoutAlign="start center">
+                                    <ng-container matColumnDef="PatientName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             PatientName</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
@@ -205,9 +220,9 @@
                                    
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-150">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
+                                        <mat-cell *matCellDef="let contact" class="w-150">
                                             
                                             <button mat-icon-button matTooltip="print" *ngIf="contact.IsCancelled=='0'">
                                                 <mat-icon>print</mat-icon>
@@ -217,16 +232,20 @@
                                                 <img width="100" height="20px"
                                                     src="assets/images/logos/WhatsApp.png">
                                             </button>
-
-                                          
+                                        
 
                                             <button mat-icon-button (click)="onEdit(contact)" matTooltip="Appointment Cancle" *ngIf="contact.IsCancelled=='0'">
                                                 <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==1"
                                                     [disabled]="contact.disabled" class="disabled-icon">
-                                                    edit</mat-icon>
+                                                    cancel</mat-icon>
                                                 <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==0" (click)="CanclePhoneApp(contact)">
-                                                    edit</mat-icon>
+                                                    cancel</mat-icon>
                                             </button>
+
+                                            <button mat-icon-button matTooltip="creditCard" *ngIf="contact.IsCancelled=='0'">
+                                                <mat-icon>credit_card</mat-icon>
+                                            </button>
+
                                         </mat-cell>
                                     </ng-container>
 
@@ -241,12 +260,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    <mat-header-row class="accent min-width-1500" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     -->
                                     <mat-row class="table1-row" #table1Row
-                                        *matRowDef="let contact; columns: displayedColumns;"
+                                        *matRowDef="let contact; columns: displayedColumns;" class="min-width-1500"
                                         [ngClass]="contact.IsCancelled == '1' ? 'self-row' : ''"
                                         [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
