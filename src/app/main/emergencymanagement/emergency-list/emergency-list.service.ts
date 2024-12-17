@@ -46,7 +46,7 @@ export class EmergencyListService {
       Validators.maxLength(50),
       Validators.pattern('^[a-zA-Z ]*$')
     ]],
-      Address:['', Validators.required],
+      Address:[''],
       PhoneNo: [''],
       MobileNo: [''],
 

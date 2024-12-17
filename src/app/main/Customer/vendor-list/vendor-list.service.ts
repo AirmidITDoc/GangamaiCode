@@ -39,12 +39,7 @@ export class VendorListService {
           Validators.required
         ]
       ],
-      MobileNo:['', 
-        [ 
-          Validators.required,
-          Validators.pattern("^[0-9]{10}$"),
-        ]
-      ],
+      MobileNo:[''],
       PersonName:['',
         [
           Validators.required,
@@ -58,12 +53,7 @@ export class VendorListService {
                           Validators.pattern("^[0-9]{10}$"),
                         ]
                     ],
-      PinCode:['', 
-                [ 
-                  Validators.required,
-                  Validators.pattern("^[0-9]{6}$")
-                ]
-              ],
+      PinCode:[''],
       Date:[new Date()],
 
     })

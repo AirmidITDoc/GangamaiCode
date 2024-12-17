@@ -72,29 +72,25 @@
                                     <mat-label>MobileNo</mat-label>
                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                     <input name="MobileNo" formControlName="MobileNo" 
-                                        type="Number" ONlyNUmber matInput required   
+                                        type="Number" ONlyNUmber matInput   
                                         (keyup.enter)="focusNext('PinCode')" 
                                         placeholder="enter a valid 10-digit mobile number."
                                         id="MobileNo" [(ngModel)]="vMobileNo"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
-                                        required="required" value="9876658688">
-                                        <mat-error *ngIf="_VendorInfo.myform.get('MobileNo').hasError('required')">
-                                            Please enter a valid 10-digit mobile number.
-                                        </mat-error> 
+                                         value="9876658688">
+                                        
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>PinCode</mat-label>
                                     <mat-icon matSuffix class="secondary-text">place</mat-icon>
                                     <input name="PinCode" formControlName="PinCode" maxlength="6"
-                                        matInput required  type="number" OnlyNumber 
+                                        matInput type="number" OnlyNumber 
                                         (keyup.enter)="focusNext('personName')" id="PinCode" 
                                         [(ngModel)]="vPinCode"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
-                                        required="required" value="413001">
-                                        <mat-error *ngIf="_VendorInfo.myform.get('PinCode').hasError('required')">
-                                            Please enter a valid 6-digit pincode.
-                                          </mat-error> 
+                                        value="413001">
+                                        
                                 </mat-form-field>
                             </div>
 

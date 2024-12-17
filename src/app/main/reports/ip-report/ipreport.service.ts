@@ -478,7 +478,11 @@ public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_
   return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
   }
 
-  public getPatientVisitedListSearch(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  public getAdmittedPatientList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+  }
+
+  getPatientVisitedListSearch(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
   }
 }

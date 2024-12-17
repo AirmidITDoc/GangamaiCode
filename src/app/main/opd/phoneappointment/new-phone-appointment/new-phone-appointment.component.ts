@@ -88,7 +88,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   vMiddleName:any='';
   isRegIdSelected: boolean = false;
   currentDate = new Date();
-  RegId: any;
+  RegNo: any = 0;
   RegDate: any;
   optionsDep: any[] = [];
   optionsDoc: any[] = [];
@@ -151,10 +151,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
         this.filterDepartment();
       });
     this.getPhoneschduleList();
+    // this.getSelectedObj1('');
   }
   createSearchForm() {
     return this.formBuilder.group({
       RegId: [''],
+      AppointmentDate: [(new Date()).toISOString()]
     });
   } 
   getSearchList() {
@@ -173,23 +175,25 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   //patient infomation
   getSelectedObj1(obj) {
-    console.log(obj)
+    console.log("djfhfka:",obj)
     this.dataSource.data = [];
     this.registerObj = obj;
-    this.vMiddleName= obj.MiddleName;
     this.vFirstName= obj.FirstName;
+    this.vMiddleName= obj.MiddleName;
     this.vLastName=obj.LastName;
-    this.RegId = obj.RegId;
+    this.RegNo = obj.RegNo;
     this.vAddress = obj.Address;
     this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
     this.vMobile = obj.MobileNo;
-    this.vDepartmentName = obj.DepartmentName;
-    this.vDoctorName = obj.Doctorname;
+    this.vDepartmentid = obj.DepartmentName;
+    this.vDoctorId = obj.DoctorName;
+
+    this.getDepartmentList();
   } 
   getOptionText1(option) {
     if (!option)
       return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName + "-" + option.RegNo ;
  
   }
 
@@ -220,16 +224,16 @@ export class NewPhoneAppointmentComponent implements OnInit {
         Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z ]*$')
       ]],
-      Address: ['', Validators.required],
+      Address: [''],
       PhAppDate: '',
       PhAppTime: '',
-      DepartmentId: '',
+      // DepartmentId: '',
       Departmentid: '',
     
 
       MobileNo:['', 
         [ 
-          Validators.required,
+          // Validators.required,
           Validators.pattern("^[0-9]{10}$"),
         ]
       ],
@@ -313,12 +317,14 @@ export class NewPhoneAppointmentComponent implements OnInit {
     // return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
   }
 
-
+  DepartmentId:any=0;
   OnChangeDoctorList(departmentObj) {
+    debugger
     console.log(departmentObj)
+    this.DepartmentId=departmentObj.DepartmentId;
     this.personalFormGroup.get('DoctorId').reset();
     var vdata={
-      "Id":departmentObj.DepartmentId
+      "Id":this.DepartmentId
     } 
 
     this.isDepartmentSelected = true;
@@ -332,6 +338,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
+        if(this.registerObj){
+          debugger
+          const dVaule=this.DoctorList.filter(item=>item.DoctorId == this.registerObj.ConsultantDocId)
+          this.personalFormGroup.get('DoctorId').setValue(dVaule[0])
+        }
+        console.log("doctor ndfkdf:",this.personalFormGroup.get('DoctorId').value)
       })
   }
 
@@ -348,7 +360,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
 
-  getDepartmentList() {
+  getDepartmentList(){
     this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
@@ -356,13 +368,14 @@ export class NewPhoneAppointmentComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
-      if (this.data) {
+      if(this.registerObj){
         
-        const DValue = this.DepartmentList.filter(item => item.DepartmentId == this.registerObj.DepartmentName);
+        const DValue = this.DepartmentList.filter(item => item.DepartmentName == this.registerObj.DepartmentName);
         console.log("Departmentid:",DValue)
-        this.personalFormGroup.get('DepartmentId').setValue(DValue[0]);
+        this.personalFormGroup.get('Departmentid').setValue(DValue[0]);
         this.personalFormGroup.updateValueAndValidity();
         this.OnChangeDoctorList(DValue[0]);
+        return;
       }
       // this.filteredDepartment.next(this.DepartmentList.slice());
     });
@@ -428,8 +441,7 @@ debugger
         return;
       }
     } 
-    // if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
-
+    
     if(!this.registerObj.PhoneAppId){
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
     var m_data = {
@@ -465,12 +477,42 @@ debugger
       // this.isLoading = '';
     });
   }
-  // else{
-  //   this.toastr.warning('Please Enter Valid Department & Doctor', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
+  else{
+    var m_Updatedata = {
+      "phoneAppointmentInsert": {
+        "phoneAppId": 0,
+        "RegNo":'',
+        "appDate":formattedDate, //this.dateTimeObj.date || '16/12/2023',
+        "appTime": formattedTime,// this.datePipe.transform(this.currentDate, 'hh:mm:ss'), //this.dateTimeObj.time,
+        "firstName": this.personalFormGroup.get('FirstName').value || '',
+        "middleName": this.personalFormGroup.get('MiddleName').value || '',
+        "lastName": this.personalFormGroup.get('LastName').value || '',
+        "address": this.personalFormGroup.get('Address').value || '',
+        "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
+        "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+        "departmentId": this.personalFormGroup.get('Departmentid').value.DepartmentId || 0,
+        "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
+        "addedBy": this.accountService.currentUserValue.user.id,
+        "UpdatedBy": this.accountService.currentUserValue.user.id,
+      }
+    }
+    console.log(m_Updatedata);
+    // this._phoneAppointListService.PhoneAppointUpdate(m_Updatedata).subscribe(response => {
+    //   if (response) {
+    //     Swal.fire('Phone Appointment Updated Successfully !', 'Updated !').then((result) => {
+    //       if (result.isConfirmed) {
+    //         this._matDialog.closeAll();
+    //       }
+    //     });
+    //   } else {
+    //     Swal.fire('Error !', 'Phone Appointment not Updated', 'error');
+    //   }
+    //   this.isLoading = '';
+    // });
+    
+  }
+  
 }
 
   onClose() {

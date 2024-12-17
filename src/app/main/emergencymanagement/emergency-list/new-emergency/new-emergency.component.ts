@@ -47,6 +47,7 @@ export class NewEmergencyComponent implements OnInit {
   vDoctorId: any = 0;
   vDepartmentid: any = 0;
   vCityId: any = 0;
+  DateofBirth: Date;
   GenderList: any = [];
   selectedGenderID: any;
   filteredOptionsPrefix: Observable<string[]>;
@@ -120,6 +121,8 @@ export class NewEmergencyComponent implements OnInit {
       this.vAgeYear=this.registerObj.AgeYear
       this.vMobileNo=this.registerObj.MobileNo
       this.vPhoneNo=this.registerObj.PhoneNo
+      this.vDepartmentid = this.registerObj.DepartmentName;
+      this.vDoctorId = this.registerObj.DoctorName;
 
       this.onChangeCityList(this.registerObj.CityId);
     }
@@ -496,15 +499,26 @@ debugger
 
   onChangeDateofBirth(DateOfBirth) {
     // console.log(DateOfBirth)
-    if (DateOfBirth) {     
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      this._EmergencyListService.MyForm.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
-      this._EmergencyListService.MyForm.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
-      this._EmergencyListService.MyForm.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
-      this._EmergencyListService.MyForm.get('DateOfBirth').setValue(DateOfBirth);
-  }
+  //   if (DateOfBirth) {     
+  //     const todayDate = new Date();
+  //     const dob = new Date(DateOfBirth);
+  //     const timeDiff = Math.abs(Date.now() - dob.getTime());
+  //     this._EmergencyListService.MyForm.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
+  //     this._EmergencyListService.MyForm.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
+  //     this._EmergencyListService.MyForm.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
+  //     this._EmergencyListService.MyForm.get('DateOfBirth').setValue(DateOfBirth);
+  // }
+
+  if (DateOfBirth) {
+    const todayDate = new Date();
+    const dob = new Date(DateOfBirth);
+    const timeDiff = Math.abs(Date.now() - dob.getTime());
+    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
+    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
+    this.registerObj.DateofBirth = DateOfBirth;
+    this._EmergencyListService.MyForm.get('DateOfBirth').setValue(DateOfBirth);
+}
 
 }
 
@@ -581,9 +595,10 @@ debugger
         
         const DValue = this.DepartmentList.filter(item => item.DepartmentId == this.registerObj.DepartmentId);
         console.log("Departmentid:",DValue)
-        this._EmergencyListService.MyForm.get('DepartmentId').setValue(DValue[0]);
+        this._EmergencyListService.MyForm.get('Departmentid').setValue(DValue[0]);
         this._EmergencyListService.MyForm.updateValueAndValidity();
         this.OnChangeDoctorList(DValue[0]);
+        return;
       }
     });
   }
@@ -613,6 +628,7 @@ debugger
 
 
   OnChangeDoctorList(departmentObj) {
+    debugger
     console.log(departmentObj)
     this._EmergencyListService.MyForm.get('DoctorId').reset();
     var vdata={
@@ -629,6 +645,11 @@ debugger
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
+        if(this.registerObj){
+          debugger
+          const dVaule=this.DoctorList.filter(item=>item.DoctorId == this.registerObj.DoctorId)
+          this._EmergencyListService.MyForm.get('DoctorId').setValue(dVaule[0])
+        }
         console.log("doctor ndfkdf:",this._EmergencyListService.MyForm.get('DoctorId').value)
       })
   }

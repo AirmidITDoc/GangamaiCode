@@ -64,7 +64,7 @@ export class DischargesummaryTemplateComponent implements OnInit {
   DocName1: any = 0;
   DocName2: any = 0;
   DocName3: any;
-  IsNormalDeath: any;
+  IsNormalDeath: any=1;
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
   displayedColumns: string[] = [
@@ -578,6 +578,18 @@ export class DischargesummaryTemplateComponent implements OnInit {
   }
 
   onSubmit() {
+ Swal.fire({
+      title: 'Do you want to Save the Discharge Summary Template ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save!"
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
 
 
     let DoctorName1 = 0;
@@ -634,14 +646,16 @@ export class DischargesummaryTemplateComponent implements OnInit {
           this._IpSearchListService.insertIPDDischargSummarytemplate(SubmitData).subscribe(response => {
             //console.log(response);
             if (response) {
-              Swal.fire('Congratulations !', 'Discharge Summary Saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                  this._matDialog.closeAll();
-                  this.viewgetDischargesummaryTempPdf(this.vAdmissionId);
-                }
-              });
+              this._matDialog.closeAll();
+              this.toastr.success('Discharge Summary Template save Successfully !', 'Congratulations !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });  
+
+          
             } else {
-              Swal.fire('Error !', 'Discharge Summary not Saved', 'error');
+              this.toastr.success('Discharge Summary  Template not saved', 'error', {
+                toastClass: 'tostr-tost custom-toast-success',
+              }); 
             }
             this.isLoading = '';
           });
@@ -696,15 +710,16 @@ export class DischargesummaryTemplateComponent implements OnInit {
         setTimeout(() => {
           this._IpSearchListService.updateIPDDischargSummaryTemplate(SubmitData).subscribe(response => {
             if (response) {
-              Swal.fire('Congratulations !', 'Discharge Summary Updated Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                  this._matDialog.closeAll();
-
-                  this.viewgetDischargesummaryTempPdf(this.vAdmissionId);
-                }
-              });
+              this._matDialog.closeAll();
+              this.toastr.success('Discharge Summary Template save Successfully !', 'Congratulations !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });  
+              this.viewgetDischargesummaryTempPdf(this.vAdmissionId);
+            
             } else {
-              Swal.fire('Error !', 'Discharge Summary not Updated', 'error');
+              this.toastr.success('Discharge Summary  Template not saved', 'error', {
+                toastClass: 'tostr-tost custom-toast-success',
+              }); 
             }
             this.isLoading = '';
           });
@@ -719,6 +734,9 @@ export class DischargesummaryTemplateComponent implements OnInit {
       return;
 
     }
+  }
+})
+  
   }
 
 
