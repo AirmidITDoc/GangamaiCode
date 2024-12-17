@@ -32,15 +32,15 @@ export class NewPrefixComponent implements OnInit {
         var m_data = {
             prefixId: this.data?.prefixId,
             prefixName: this.data?.prefixName,
-            // GenderId:this.data?.GenderId,
+            sexId:this.data?.sexId,
             isActive: JSON.stringify(this.data?.isActive),
         };
         this.prefixForm.patchValue(m_data);
     }else{
-        debugger
         var m_data1 = {
             prefixId:0,
             prefixName:"",
+            sexId: 0,
             isActive:1,
         };
         this.prefixForm.patchValue(m_data1);
@@ -58,23 +58,20 @@ export class NewPrefixComponent implements OnInit {
           })
           return;
         }else{
-            if(!this.prefixForm.get("prefixId").value){
-                debugger
                 var mdata=
                 {
-                  "prefixId": 0,
-                  "prefixName": this.prefixForm.get("prefixName").value,
-                  "sexId":parseInt(this.prefixForm.get("sexId").value)
+                  "prefixId": this.prefixForm.value?.prefixId || 0,
+                  "prefixName": this.prefixForm.value?.prefixName,
+                  "sexId":parseInt(this.prefixForm.value?.sexId)
                 }
                 console.log("prefix json:", mdata);
                 
                 this._PrefixMasterService.prefixMasterSave(mdata).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        }
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
       }
     }
     genderId=0;
