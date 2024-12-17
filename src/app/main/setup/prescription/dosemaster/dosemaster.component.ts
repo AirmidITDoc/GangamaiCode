@@ -62,8 +62,7 @@ export class DosemasterComponent implements OnInit {
     getDoseMasterList() {
         this.sIsLoading = 'loading-data';
         var param = {
-            DoseName:this._DoseService.myformSearch.get("DoseNameSearch")
-                    .value.trim() + "%" || "%",
+            DoseName:this._DoseService.myformSearch.get("DoseNameSearch").value || "%",
         };
         this._DoseService.getDoseMasterList(param).subscribe((Menu) => {
             this.DSDoseMasterList.data = Menu as DoseMaster[];
@@ -111,6 +110,7 @@ export class DosemasterComponent implements OnInit {
                             toastClass: 'tostr-tost custom-toast-success',
                           });
                         this.getDoseMasterList();
+                        this.onClose();
                         // Swal.fire(
                         //     "Saved !",
                         //     "Record saved Successfully !",
@@ -126,6 +126,7 @@ export class DosemasterComponent implements OnInit {
                           });
                     }
                     this.getDoseMasterList();
+                    this.onClose();
                 },error => {
                     this.toastr.error('Dose Class Data not saved !, Please check API error..', 'Error !', {
                      toastClass: 'tostr-tost custom-toast-error',
@@ -176,6 +177,7 @@ export class DosemasterComponent implements OnInit {
                               });
                         }
                         this.getDoseMasterList();
+                    
                     },error => {
                         this.toastr.error('Dose Class Data not updated !, Please check API error..', 'Error !', {
                          toastClass: 'tostr-tost custom-toast-error',

@@ -31,7 +31,7 @@ dynamicTableHeight>
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Dose Name" autocomplete="off" name="DoseNameSearch"
-                                            formControlName="DoseNameSearch" />
+                                            formControlName="DoseNameSearch" (keyup)="onSearch()"/>
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>

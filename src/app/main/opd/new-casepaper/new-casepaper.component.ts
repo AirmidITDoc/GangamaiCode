@@ -1414,7 +1414,7 @@ onTemplDetAdd(){
     const dialogRef = this._matDialog.open(AddItemComponent,
       {
         maxWidth: "60vw",
-        maxHeight: "60vh",
+        maxHeight: "65vh",
         width: '100%',
         height: "100%" 
       });
@@ -1431,8 +1431,10 @@ onTemplDetAdd(){
         height: "100%" 
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+      console.log('The dialog was closed - Insert Action', result); 
+      this.getDoseList()
     });
+
   }
   //   subscriptions: Subscription[] = [];
   //   reportPrintObj: CasepaperVisitDetails;

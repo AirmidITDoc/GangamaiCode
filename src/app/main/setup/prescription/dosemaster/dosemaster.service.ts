@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,8 @@ export class DosemasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private _loaderService:LoaderService
     ) {
         this.myForm = this.createDoseForm();
         this.myformSearch = this.createSearchForm();
@@ -42,18 +44,27 @@ export class DosemasterService {
         this.createDoseForm();
     }
 
-    public getDoseMasterList(param) {
+    public getDoseMasterList(param, loader = true) {
+        if(loader){
+            this._loaderService.show();
+        }
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_DoseMaster",
+            "Generic/GetByProc?procName=m_Rtrv_M_DoseMaster",
             param
         );
     }
 
-    public insertDoseMaster(param) {
+    public insertDoseMaster(param, loader = true) {
+        if(loader){
+            this._loaderService.show();
+        }
         return this._httpClient.post("Prescription/DoseSave", param);
     }
 
-    public updateDoseMaster(param) {
+    public updateDoseMaster(param, loader = true) {
+        if(loader){
+            this._loaderService.show();
+        }
         return this._httpClient.post("Prescription/DoseUpdate", param);
     }
 
