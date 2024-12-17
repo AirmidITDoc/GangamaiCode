@@ -35,7 +35,7 @@ export class StoreMasterComponent implements OnInit {
                 { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Short Name", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: " Indent Prefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Indent Prefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Pur Prefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Purchase No", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -48,11 +48,6 @@ export class StoreMasterComponent implements OnInit {
                 { heading: "Ret Fr Dept", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Ret Fr DeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Issue to DeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-                // { heading: "Currency Name", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-
                 { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
                 {
                     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -93,12 +88,13 @@ export class StoreMasterComponent implements OnInit {
         }
      
         ngOnInit(): void { }
+
         onSave(row: any = null) {
             let that = this;
             const dialogRef = this._matDialog.open(StoreFormMasterComponent,
                 {
                     maxWidth: "90vw",
-                    height: '98%',
+                    height: '90%',
                     width: '90%',
                     data: row
                 });

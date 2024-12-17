@@ -20,21 +20,20 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
+
 export class LocationMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     constructor(public _locationService: LocationMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
-
- 
-            gridConfig: gridModel = {
-                apiUrl:"LocationMaster/List",
-                columnsList: [
-                    { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA',width:150 },
-                    { heading: "Location Name", key: "locationName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-                    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
-                    {
-                    heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+        
+        gridConfig: gridModel = {
+            apiUrl:"LocationMaster/List",
+            columnsList: [
+                { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+                { heading: "Location Name", key: "locationName", sort: true, align: 'left', emptySign: 'NA', width:800 },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+                { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
