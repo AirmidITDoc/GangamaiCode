@@ -64,10 +64,10 @@ export class AirmidAutocompleteComponent implements OnInit {
     }
 
     @Input()
-    get value(): string {
+    get value(): (string|[]) {
         return this.control.value;
     }
-    set value(value: string) {
+    set value(value: (string|[])) {
         this.control.setValue(value);
         this.stateChanges.next();
     }
@@ -118,8 +118,8 @@ export class AirmidAutocompleteComponent implements OnInit {
                         this.filteredDdls.next(this.ddls.slice());
                         if (this.value) {
                             if (this.IsMultiPle) {
-                                if (Object.prototype.toString.call(this.value) === '[object Array]') {
-                                    this.value = this.value.map(x => x[this.ValueField]??x);
+                                if(this.value instanceof Array){
+                                    this.value = this.value.map(x => x[this.ValueField]??x) as [];
                                 }
                             }
                             this.SetSelection(this.value);
