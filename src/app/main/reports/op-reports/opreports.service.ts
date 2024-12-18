@@ -815,4 +815,25 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{})
   }
 
+
+  public getBrowseOPBillsummaryList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+  
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillDetails",data)
+  
+  }
+
+
+  public getBrowseOPcreditBillsummaryList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+  
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDCreditBills",data)
+  
+  }
+
+  
   }

@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { BrowseOPDBill } from 'app/main/opd/browse-opbill/browse-opbill.component';
 
 @Component({
   selector: 'app-op-reports',
@@ -61,7 +63,8 @@ export class OpReportsComponent implements OnInit {
 
 FlagDoctorSelected: boolean = false;
 FlagBillNoSelected: boolean = false;
-
+OPBILL=true;
+OPcreditBILL=true;
   displayedColumns = [
     'ReportName'
   ];
@@ -73,6 +76,7 @@ FlagBillNoSelected: boolean = false;
     public _matDialog: MatDialog,
     private _ActRoute: Router,
     public datePipe: DatePipe,
+     private reportDownloadService: ExcelDownloadService,
     private _loggedUser: AuthenticationService,
     private formBuilder: FormBuilder
   ) {
@@ -192,7 +196,7 @@ var data={
     }
     else if (this.ReportName == 'Bill Summary Report') {
       this.FlagUserSelected = false;
-    //  this.FlagPaymentSelected = false;
+     this.OPBILL = false;
     this.FlagBillNoSelected = false;
 
     } 
@@ -200,6 +204,7 @@ var data={
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
+      this.OPcreditBILL=false;
     } 
      
     else if (this.ReportName == 'Refund of Bill Reports') {
@@ -1501,6 +1506,63 @@ getDeptservicegroupwisecollsummaryview(){
   }
 
 
+
+
+  exportOPBillReportExcel(){
+         
+  
+          var data = {
+            "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+          }
+          this._OPReportsService.getBrowseOPBillsummaryList(data).subscribe(Visit => {
+            this.dsOpbillBrowseList.data = Visit as BrowseOPDBill[];
+            console.log(this.dsOpbillBrowseList.data)
+            if( this.dsOpbillBrowseList.data.length > 0)
+              this.OpbillsummaryExcel()
+          }
+          );
+        
+          
+    }
+    OpbillsummaryExcel() {
+      console.log(this.dsOpbillBrowseList.data)
+      let exportHeaders = ['BillNo', 'BillDate', 'RegNo', 'ServiceName', 'Price', 'Qty', 'BillAmt', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsOpbillBrowseList.data, exportHeaders, 'OP Bill Summary List Datewise');
+      this.dsOpbillBrowseList.data = [];
+    }
+  
+  
+    dsOpbillBrowseList = new MatTableDataSource<BrowseOPDBill>()
+    dsOpcreditbillBrowseList = new MatTableDataSource<BrowseOPDBill>()
+  
+    exportOPcreditBillReportExcel(){
+         
+  debugger
+      var data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getBrowseOPcreditBillsummaryList(data).subscribe(Visit => {
+        this.dsOpcreditbillBrowseList.data = Visit as BrowseOPDBill[];
+        console.log(this.dsOpcreditbillBrowseList.data)
+        if( this.dsOpcreditbillBrowseList.data.length > 0)
+          this.OpcreditbillsummaryExcel()
+      }
+      );
+    
+      
+}
+
+
+OpcreditbillsummaryExcel() {
+  console.log(this.dsOpcreditbillBrowseList.data)
+  let exportHeaders = ['BillNo', 'BillDate', 'RegId', 'VisitId', 'VisitDate', 'DoctorName', 'TotalAmt', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt'];
+  this.reportDownloadService.getExportJsonData(this.dsOpcreditbillBrowseList.data, exportHeaders, 'OP Credit Bill List Datewise');
+  this.dsOpcreditbillBrowseList.data = [];
+}
+
+    
   onClose() { }
 
 

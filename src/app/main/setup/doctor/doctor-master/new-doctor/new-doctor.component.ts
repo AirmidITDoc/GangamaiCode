@@ -30,7 +30,7 @@ export class NewDoctorComponent implements OnInit {
     GendercmbList: any = [];
     DoctortypecmbList: any = [];
     DepartmentcmbList: any = [];
-    cityList:any=[];
+    cityList: any = [];
     selectedGenderID: any;
     registerObj = new DoctorMaster({});
     docobject: DoctorDepartmentDet;
@@ -50,7 +50,7 @@ export class NewDoctorComponent implements OnInit {
     optionsPrefix: any[] = [];
     optionsDep: any[] = [];
     optionsCity: any[] = [];
-  
+
     CurrentDate = new Date();
     vDepartmentid: any;
     vCityId: any;
@@ -105,9 +105,9 @@ export class NewDoctorComponent implements OnInit {
     ngOnInit(): void {
         this.getPrefixList();
         this.getcityList();
-       this.getDoctortypeNameCombobox();
-       
-       if (this.data) {
+        this.getDoctortypeNameCombobox();
+
+        if (this.data) {
             debugger
             if (this.data.registerObj.DateofBirth) {
                 const todayDate = new Date();
@@ -117,16 +117,16 @@ export class NewDoctorComponent implements OnInit {
                 this.data.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
                 this.data.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
                 this.registerObj = this.data.registerObj;
-                 this.b_AgeYear = this.data.registerObj.AgeYear;
-                  this.b_AgeDay = this.data.registerObj.AgeDay;
-                  this.b_AgeMonth = this.data.registerObj.AgeMonth;
-                  console.log(this.registerObj)
-                 this.getDocDeptList();
-                  this.getCitylist();
-                 this.getprefixList();
+                this.b_AgeYear = this.data.registerObj.AgeYear;
+                this.b_AgeDay = this.data.registerObj.AgeDay;
+                this.b_AgeMonth = this.data.registerObj.AgeMonth;
+                console.log(this.registerObj)
+                this.getDocDeptList();
+                this.getCitylist();
+                this.getprefixList();
             }
             this.registerObj = this.data.registerObj;
-            console.log(this.registerObj )
+            console.log(this.registerObj)
             this._doctorService.getSignature(this.registerObj.Signature).subscribe(data => {
                 this.sanitizeImagePreview = data["data"] as string;
                 this.registerObj.Signature = data["data"] as string;
@@ -160,22 +160,22 @@ export class NewDoctorComponent implements OnInit {
         this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
             startWith(''),
             map(value => this._filterPrex(value)),
-      
-          );
-      
-          this.filteredDoctortype = this._doctorService.myform.get('DoctorTypeId').valueChanges.pipe(
+
+        );
+
+        this.filteredDoctortype = this._doctorService.myform.get('DoctorTypeId').valueChanges.pipe(
             startWith(''),
             map(value => this._filterDcotype(value)),
-      
-          );
-          
-            
-          this.filteredOptionsCity = this._doctorService.myform.get('CityId').valueChanges.pipe(
+
+        );
+
+
+        this.filteredOptionsCity = this._doctorService.myform.get('CityId').valueChanges.pipe(
             startWith(''),
             map(value => this._filtercity(value)),
-      
-          );
-      
+
+        );
+
     }
 
 
@@ -193,15 +193,32 @@ export class NewDoctorComponent implements OnInit {
     @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
 
     @ViewChild('bday') bday: ElementRef;
-    //   @ViewChild('gender') gender: MatSelect;
     @ViewChild('mstatus') mstatus: ElementRef;
     @ViewChild('religion') religion: ElementRef;
     @ViewChild('city') city: ElementRef;
 
+    @ViewChild('agey1') agey1: ElementRef;
+    @ViewChild('agem1') agem1: ElementRef;
+    @ViewChild('aged1') aged1: ElementRef;
+
+
+    @ViewChild('ESINO') ESINO: ElementRef;
+    @ViewChild('RegNo') RegNo: ElementRef;
+    @ViewChild('RegDate') RegDate: ElementRef;
+    @ViewChild('Edu') Edu: ElementRef;
+    @ViewChild('MahRegNo') MahRegNo: ElementRef;
+    @ViewChild('MahRegDate') MahRegDate: ElementRef;
+    @ViewChild('HospitalName') HospitalName: ElementRef;
+    @ViewChild('doctype') doctype: ElementRef;
+    @ViewChild('dept') dept: ElementRef;
+
+
+    
+
     public onEnterprefix(event, value): void {
 
         if (event.which === 13) {
-    
+
             console.log(value)
             if (value == undefined) {
                 this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
@@ -212,21 +229,21 @@ export class NewDoctorComponent implements OnInit {
                 this.fname.nativeElement.focus();
             }
         }
-    
-    
+
+
     }
     public onEnterfname(event): void {
-        if (event.which === 13) {
+        if (event.which === 13 && this._doctorService.myform.get("FirstName").valid ) {
             this.mname.nativeElement.focus();
         }
     }
     public onEntermname(event): void {
-        if (event.which === 13) {
+        if (event.which === 13 && this._doctorService.myform.get("MiddleName").valid ) {
             this.lname.nativeElement.focus();
         }
     }
     public onEnterlname(event): void {
-        if (event.which === 13) {
+        if (event.which === 13 && this._doctorService.myform.get("LastName").valid) {
             this.agey.nativeElement.focus();
             // if(this.mstatus) this.mstatus.focus();
         }
@@ -234,77 +251,115 @@ export class NewDoctorComponent implements OnInit {
 
     public onEntercity(event): void {
         if (event.which === 13) {
-          this.agem.nativeElement.focus();
-          // this.addbutton.focus();
+            this.ESINO.nativeElement.focus();
+
         }
-      }
+    }
 
 
-      public onEnteragey(event, value): void {
+    public onEnteragey(event, value): void {
         if (event.which === 13) {
-            this.agem.nativeElement.focus();
-    
+            this.pan.nativeElement.focus();
+
             this.ageyearcheck(value);
         }
     }
     public onEnteragem(event): void {
         if (event.which === 13) {
-            this.aged.nativeElement.focus();
+            this.pan.nativeElement.focus();
         }
     }
     public onEnteraged(event): void {
         if (event.which === 13) {
-            this.AadharCardNo.nativeElement.focus();
+            this.pan.nativeElement.focus();
         }
     }
 
     public onEnterdoctype(event): void {
         if (event.which === 13) {
-            this.AadharCardNo.nativeElement.focus();
+            this.dept.nativeElement.focus();
         }
     }
 
     public onEntermobile(event): void {
-        if (event.which === 13) {
+        if (event.which === 13 && this._doctorService.myform.get("MobileNo").valid) {
             this.address.nativeElement.focus();
         }
     }
 
     public onEnterAadharCardNo(event): void {
-        if (event.which === 13) {
-          this.address.nativeElement.focus();
-        }
-      }
-    public onEnterphone(event): void {
-        if (event.which === 13) {
-            this.address.nativeElement.focus();
+        if (event.which === 13 && this._doctorService.myform.get("AadharCardNo").valid) {
+            this.mobile.nativeElement.focus();
         }
     }
+
     public onEnterpan(event): void {
         if (event.which === 13) {
-          this.address.nativeElement.focus();
+            this.AadharCardNo.nativeElement.focus();
         }
-      }
+    }
+
+
+    public onEnteraddress(event): void {
+        if (event.which === 13) {
+            this.city.nativeElement.focus();
+        }
+    }
+
+
+    public onEnterESINO(event): void {
+                
+        console.log(this._doctorService.myform.get("ESINO").valid)
+        
+        if (event.which === 13 && this._doctorService.myform.get("ESINO").valid ) {
+            this.RegNo.nativeElement.focus();
+        }
+    }
+    public onEnterRegNo(event): void {
+        if (event.which === 13 && this._doctorService.myform.get("RegNo").valid) {
+            this.RegDate.nativeElement.focus();
+        }
+    }
+    public onEnterRegDate(event): void {
+        if (event.which === 13) {
+            this.Edu.nativeElement.focus();
+        }
+    }
+    public onEnterEdu(event): void {
+        if (event.which === 13) {
+            this.MahRegNo.nativeElement.focus();
+        }
+    }
+    public onEnterMahRegNo(event): void {
+        if (event.which === 13 && this._doctorService.myform.get("MahRegNo").valid) {
+            this.MahRegDate.nativeElement.focus();
+        }
+    }
+
+    public onEnterMahRegDate(event): void {
+        if (event.which === 13) {
+            this.HospitalName.nativeElement.focus();
+        }
+    }
+    public onEnterHospitalName(event): void {
+        if (event.which === 13) {
+            this.doctype.nativeElement.focus();
+        }
+    }
     
 
-public onEnteraddress(event): void {
-    if (event.which === 13) {
-      this.address.nativeElement.focus();
+    ageyearcheck(event) {
+
+        if (parseInt(event) > 100) {
+            this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+
+            this.agey.nativeElement.focus();
+        }
+        return;
+
     }
-  }
-
-  ageyearcheck(event) {
-
-    if (parseInt(event) > 100) {
-      this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-
-      this.agey.nativeElement.focus();
-    }
-    return;
-
-  }
     public onEnterdept(event, value): void {
         if (event.which === 13) {
             if (value == undefined) {
@@ -364,8 +419,8 @@ public onEnteraddress(event): void {
             return this.PrefixcmbList.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
         }
     }
- 
-   
+
+
     // getGendorMasterList() {
     //     this._doctorService.getGenderCombo().subscribe(data => {
     //         this.GendercmbList = data;
@@ -464,7 +519,7 @@ public onEnteraddress(event): void {
 
 
     onSubmit() {
-        
+
 
         if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
             this.toastr.warning('Please select valid City ', 'Warning !', {
@@ -478,7 +533,7 @@ public onEnteraddress(event): void {
             });
             return;
         }
-         if ((this.vDoctypeId == '' || this.vDoctypeId == null || this.vDoctypeId == undefined)) {
+        if ((this.vDoctypeId == '' || this.vDoctypeId == null || this.vDoctypeId == undefined)) {
             this.toastr.warning('Please select valid Doctor Type', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -490,8 +545,21 @@ public onEnteraddress(event): void {
             });
             return;
         }
-        if (this._doctorService.myform.get("Education").value == '') {
-            this.toastr.warning('Please Enter valid Doctor Education', 'Warning !', {
+        if (this._doctorService.myform.get("ESINO").value == '') {
+            this.toastr.warning('Please Enter valid Doctor ESINO', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this._doctorService.myform.get("RegNo").value == '') {
+            this.toastr.warning('Please Enter valid Doctor RegNo', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (this._doctorService.myform.get("MahRegNo").value == '') {
+            this.toastr.warning('Please Enter valid Doctor MahRegNo', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
@@ -508,7 +576,7 @@ public onEnteraddress(event): void {
             });
             return;
         }
-        
+
 
         // if (this._doctorService.myform.valid) {
             var data2 = [];
@@ -525,7 +593,7 @@ public onEnteraddress(event): void {
                 middleName: this._doctorService.myform.get("MiddleName").value.trim() || "",
                 lastName: this._doctorService.myform.get("LastName").value.trim() || "",
                 dateOfBirth: this.registerObj.DateofBirth,//this.datePipe.transform(this.registerObj.DateofBirth, 'MM/dd/yyyy') || '01/01/1900',
-                City: this._doctorService.myform.get("CityId").value.CityId|| 0,
+                City: this._doctorService.myform.get("CityId").value.CityId || 0,
                 address: this._doctorService.myform.get("Address").value || "",
                 phone: this._doctorService.myform.get("Phone").value || "0",
                 mobile: this._doctorService.myform.get("MobileNo").value || "",
@@ -538,11 +606,11 @@ public onEnteraddress(event): void {
                 passportNo: this._doctorService.myform.get("PassportNo").value || "0",
                 esino: this._doctorService.myform.get("ESINO").value || "0",
                 regNo: this._doctorService.myform.get("RegNo").value || "0",
-                regDate:this.datePipe.transform(this.registerObj.RegDate, "MM-dd-yyyy") || '01/01/1900',
+                regDate: this.datePipe.transform(this.registerObj.RegDate, "MM-dd-yyyy") || '01/01/1900',
                 mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
                 PanCardNo: this._doctorService.myform.get("Pancardno").value || "0",
-                AadharCardNo:  this._doctorService.myform.get("AadharCardNo").value || "0",
-                mahRegDate:this.datePipe.transform(this.registerObj.MahRegDate, "MM-dd-yyyy") || '01/01/1900',
+                AadharCardNo: this._doctorService.myform.get("AadharCardNo").value || "0",
+                mahRegDate: this.datePipe.transform(this.registerObj.MahRegDate, "MM-dd-yyyy") || '01/01/1900',
                 isInHouseDoctor: true,
                 isOnCallDoctor: true,
                 Addedby: this.accountService.currentUserValue.user.id,
@@ -562,7 +630,7 @@ public onEnteraddress(event): void {
                     this.onClose();
                 });
             } else {
-               
+
                 this._doctorService.doctortMasterUpdate(m_data).subscribe((data) => {
                     this.msg = data;
                     if (data) {
@@ -573,8 +641,14 @@ public onEnteraddress(event): void {
                     this.onClose();
                 });
             }
-        }
-    // }
+        // }
+        // else {
+        //     this.toastr.warning('Please Enter All Valid Data ..', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
+    }
 
     onClear() {
         this._doctorService.myform.reset();
@@ -636,128 +710,128 @@ public onEnteraddress(event): void {
         this.dateTimeObj = dateTimeObj;
     }
 
- 
+
     public onEnterbday(event): void {
         if (event.which === 13) {
-          this.address.nativeElement.focus();
+            this.address.nativeElement.focus();
         }
-      }
+    }
     dateStyle?: string = 'Date';
-  OnChangeDobType(e) {
-    this.dateStyle = e.value;
-  }
-  CalcDOB(mode, e) {
-    let d = new Date();
-    if (mode == "Day") {
-      d.setDate(d.getDate() - Number(e.target.value));
-      this.registerObj.DateofBirth = d;
-      //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+    OnChangeDobType(e) {
+        this.dateStyle = e.value;
     }
-    else if (mode == "Month") {
-      d.setMonth(d.getMonth() - Number(e.target.value));
-      this.registerObj.DateofBirth = d;
-    }
-    else if (mode == "Year") {
-      d.setFullYear(d.getFullYear() - Number(e.target.value));
-      this.registerObj.DateofBirth = d;
-    }
-    let todayDate = new Date();
-    const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
-    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
-  }
-  
-
-  
-  private _filterprex(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+    CalcDOB(mode, e) {
+        let d = new Date();
+        if (mode == "Day") {
+            d.setDate(d.getDate() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
+        }
+        else if (mode == "Month") {
+            d.setMonth(d.getMonth() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+        }
+        else if (mode == "Year") {
+            d.setFullYear(d.getFullYear() - Number(e.target.value));
+            this.registerObj.DateofBirth = d;
+        }
+        let todayDate = new Date();
+        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+        this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+        this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - this.registerObj.DateofBirth.getMonth());
+        this.registerObj.AgeDay = Math.abs(todayDate.getDate() - this.registerObj.DateofBirth.getDate());
     }
 
-  }
 
 
+    private _filterprex(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.PrefixName ? value.PrefixName.toLowerCase() : value.toLowerCase();
 
-  getprefixList() {
-    debugger
-    this._doctorService.getPrefixMasterCombo().subscribe(data => {
-      this.PrefixcmbList = data;
-      if (this.data) {
-        const ddValue = this.PrefixcmbList.filter(c => c.PrefixID == this.registerObj.PrefixID);
-        this._doctorService.myform.get('PrefixID').setValue(ddValue[0]);
-        this._doctorService.myform.updateValueAndValidity();
-        return;
-      }
-    });
-    this.onChangeGenderList(this.registerObj);
-  }
+            return this.optionsPrefix.filter(option => option.PrefixName.toLowerCase().includes(filterValue));
+        }
 
-
-  getPrefixList() {
-    this._doctorService.getPrefixMasterCombo().subscribe(data => {
-        this.PrefixcmbList = data;
-        this.optionsPrefix = this.PrefixcmbList.slice();
-        this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterPrex(value) : this.PrefixcmbList.slice()),
-        );
-
-    });
-}
-
-  getcityList() {
-
-    this._doctorService.getCityList().subscribe(data => {
-      this.cityList = data;
-      this.optionsCity = this.cityList.slice();
-      this.filteredOptionsCity = this._doctorService.myform.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCity(value) : this.cityList.slice()),
-      );
-
-    });
-
-  }
-
-  getCitylist() {
-    
-    this._doctorService.getCityList().subscribe(data => {
-      this.cityList = data;
-      if (this.data) {
-        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
-        this._doctorService.myform.get('CityId').setValue(ddValue[0]);
-        this._doctorService.myform.updateValueAndValidity();
-        return;
-      }
-    });
-    
-  }
-
-
-  getOptionTextCity(option) {
-    return option && option.CityName ? option.CityName : '';
-
-  }
-
-
-  private _filterCity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
     }
 
-  }
 
-  private _filtercity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
+
+    getprefixList() {
+        debugger
+        this._doctorService.getPrefixMasterCombo().subscribe(data => {
+            this.PrefixcmbList = data;
+            if (this.data) {
+                const ddValue = this.PrefixcmbList.filter(c => c.PrefixID == this.registerObj.PrefixID);
+                this._doctorService.myform.get('PrefixID').setValue(ddValue[0]);
+                this._doctorService.myform.updateValueAndValidity();
+                return;
+            }
+        });
+        this.onChangeGenderList(this.registerObj);
     }
-  }
+
+
+    getPrefixList() {
+        this._doctorService.getPrefixMasterCombo().subscribe(data => {
+            this.PrefixcmbList = data;
+            this.optionsPrefix = this.PrefixcmbList.slice();
+            this.filteredOptionsPrefix = this._doctorService.myform.get('PrefixID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterPrex(value) : this.PrefixcmbList.slice()),
+            );
+
+        });
+    }
+
+    getcityList() {
+
+        this._doctorService.getCityList().subscribe(data => {
+            this.cityList = data;
+            this.optionsCity = this.cityList.slice();
+            this.filteredOptionsCity = this._doctorService.myform.get('CityId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterCity(value) : this.cityList.slice()),
+            );
+
+        });
+
+    }
+
+    getCitylist() {
+
+        this._doctorService.getCityList().subscribe(data => {
+            this.cityList = data;
+            if (this.data) {
+                const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
+                this._doctorService.myform.get('CityId').setValue(ddValue[0]);
+                this._doctorService.myform.updateValueAndValidity();
+                return;
+            }
+        });
+
+    }
+
+
+    getOptionTextCity(option) {
+        return option && option.CityName ? option.CityName : '';
+
+    }
+
+
+    private _filterCity(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+
+            return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
+        }
+
+    }
+
+    private _filtercity(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
+            return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
+        }
+    }
 
 }
 

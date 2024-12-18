@@ -128,20 +128,20 @@
                         </mat-button-toggle-group>
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <div fxLayout="row" class="gap-8">
+                        <div fxLayout="row">
                             <mat-form-field appearance="outline" fxFlex="50%" *ngIf="dateStyle=='Year'">
                                 <mat-label>Age (Y)</mat-label>
-                                <input placeholder="Age (Y)" matInput (keyup)="CalcDOB('Year',$event)"
+                                <input placeholder="Age (Y)" matInput (keyup)="CalcDOB('Year',$event)"  (keyup)="ageyearcheck($event)" #agey1
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                             </mat-form-field>
                             <mat-form-field appearance="outline" fxFlex="50%" *ngIf="dateStyle=='Month'">
                                 <mat-label>Age (M)</mat-label>
-                                <input placeholder="Age (M)" matInput (keyup)="CalcDOB('Month',$event)"
+                                <input placeholder="Age (M)" matInput (keyup)="CalcDOB('Month',$event)"  (keyup)="ageyearcheck($event)" #agem1
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                             </mat-form-field>
                             <mat-form-field appearance="outline" fxFlex="50%" *ngIf="dateStyle=='Day'">
                                 <mat-label>Age (D)</mat-label>
-                                <input placeholder="Age (D)" matInput (keyup)="CalcDOB('Day',$event)"
+                                <input placeholder="Age (D)" matInput (keyup)="CalcDOB('Day',$event)"  (keyup)="ageyearcheck($event)" #aged1
                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
                             </mat-form-field>
                             <mat-form-field appearance="outline" fxFlex="50%">
@@ -154,7 +154,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <!-- age, month, dat -->
+                    
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <div fxLayout="row" class="gap-8">
                             <mat-form-field appearance="outline" fxFlex="30%">
@@ -236,9 +236,9 @@
                             <mat-label>Address</mat-label>
                             <input name="Address" formControlName="Address" placeholder="Address" matInput #address
                                 (keydown)="onEnteraddress($event)" [(ngModel)]="registerObj.Address">
-                            <mat-error
+                            <!-- <mat-error
                                 *ngIf="_doctorService.myform.get('Address').invalid && _doctorService.myform.get('Address').touched">Please
-                                enter Address </mat-error>
+                                enter Address </mat-error> -->
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="50%">
@@ -259,25 +259,7 @@
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>City</mat-label>
-                            <input matAutocompletePosition="below" type="text" placeholder="Select City" matInput #city
-                                (keydown)="onEntercity($event)" formControlName="CityId" [(ngModel)]="vCityId"
-                                [matAutocomplete]="autoCity" required>
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close"
-                                    (click)="_doctorService.myform.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close"
-                                    (click)="_doctorService.myform.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity">
-                                <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option">
-                                    {{option.CityName}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div> -->
+                 
                 </div>
                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
                     <mat-card style="padding: 6px;height: 200px;">
@@ -315,15 +297,15 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>ESINO</mat-label>
                         <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10" required
-                            [(ngModel)]="registerObj.ESINO">
+                            [(ngModel)]="registerObj.ESINO"   (keydown)="onEnterESINO($event)" #ESINO>
                         <mat-error>Please enter ESINO </mat-error>
                     </mat-form-field>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>RegNo</mat-label>
-                        <input name="RegNo" formControlName="RegNo" matInput placeholder="Enter RegNo" maxlength="10"
-                            [(ngModel)]="registerObj.REGNO">
+                        <input name="RegNo" formControlName="RegNo" matInput placeholder="Enter RegNo" maxlength="10" #RegNo
+                            [(ngModel)]="registerObj.REGNO"   (keydown)="onEnterRegNo($event)">
                         <mat-error>Please enter RegNo </mat-error>
                     </mat-form-field>
                 </div>
@@ -331,8 +313,8 @@
                     <mat-form-field appearance="outline" fxFlex>
 
                         <mat-label>Reg date</mat-label>
-                        <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"
-                            [value]="registerObj.RegDate"  (dateChange)="onChangeRegDate($event.value)">
+                        <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate"   (keydown)="onEnterRegDate($event)"
+                            [value]="registerObj.RegDate"  (dateChange)="onChangeRegDate($event.value)" #RegDate>
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
@@ -342,7 +324,7 @@
                         <mat-label>Education</mat-label>
                         <input name="Education" formControlName="Education" matInput
                             [ngClass]="{ 'is-invalid': submitted && f.Education.errors }" placeholder="Enter Education" required
-                            [(ngModel)]="registerObj.Education">
+                            [(ngModel)]="registerObj.Education"   (keydown)="onEnterEdu($event)" #Edu>
                         <span class="error" *ngIf="f.Education.invalid && f.Education.touched">Education required Enter
                             only
                             Alphabets</span>
@@ -351,16 +333,16 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>MAHRegNo</mat-label>
-                        <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo"
-                            maxlength="10" [(ngModel)]="registerObj.MAHREGNO">
+                        <input name="MahRegNo" formControlName="MahRegNo" matInput placeholder="Enter MahRegNo" #MahRegNo
+                            maxlength="10" [(ngModel)]="registerObj.MAHREGNO"   (keydown)="onEnterMahRegNo($event)">
                         <mat-error>Please enter MahRegNo </mat-error>
                     </mat-form-field>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>MahReg date</mat-label>
-                        <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"
-                            [value]="registerObj.MahRegDate"  (dateChange)="onChangeMahRegDate($event.value)">
+                        <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate"   (keydown)="onEnterMahRegDate($event)"
+                            [value]="registerObj.MahRegDate"  (dateChange)="onChangeMahRegDate($event.value)" #MahRegDate>
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
                     </mat-form-field>
@@ -370,7 +352,7 @@
                         <mat-label>Hospital Name</mat-label>
                         <input name="RefDocHospitalName" formControlName="RefDocHospitalName" matInput
                             [(ngModel)]="registerObj.HospitalName"
-                            [ngClass]="{ 'is-invalid': submitted && f.RefDocHospitalName.errors }"
+                            [ngClass]="{ 'is-invalid': submitted && f.RefDocHospitalName.errors }"   (keydown)="onEnterHospitalName($event)" #HospitalName
                             placeholder="Enter RefDocHospitalName">
                         <span class="error"
                             *ngIf="f.RefDocHospitalName.invalid && f.RefDocHospitalName.touched">RefDocHospital Name
@@ -382,7 +364,7 @@
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>DoctorType</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select DoctorTypeId" matInput
-                            (keydown)="onEnterdoctype($event)" formControlName="DoctorTypeId" [(ngModel)]="vDoctypeId"
+                            (keydown)="onEnterdoctype($event)" formControlName="DoctorTypeId" [(ngModel)]="vDoctypeId" #doctype
                             [matAutocomplete]="autoDoctorTypeId" required>
                         <span matSuffix style="display: flex;">
                             <mat-icon class="mat-icon-close"

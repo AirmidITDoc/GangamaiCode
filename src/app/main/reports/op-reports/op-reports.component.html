@@ -142,9 +142,9 @@
                                                     [matAutocomplete]="autosearchDoctor">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                        (click)="_OPReportsService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                                        (click)="_OPReportsService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
                                                 </span>
                                                 <mat-autocomplete #autosearchDoctor="matAutocomplete"
                                                     [displayWith]="getOptionTextsearchDoctor">
@@ -184,7 +184,15 @@
                                         style="margin-left:2%;">
                                         <span>Print</span>
                                     </button>
+                                    <button type="button" mat-icon-button
+                                    (click)="exportOPBillReportExcel()" [disabled]="OPBILL">
+                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                </button>
 
+                                <button type="button" mat-icon-button
+                                (click)="exportOPcreditBillReportExcel()" [disabled]="OPcreditBILL">
+                                <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                            </button>
                                 </div>
                             </form>
 

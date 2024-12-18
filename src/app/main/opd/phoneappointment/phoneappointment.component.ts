@@ -14,7 +14,7 @@ import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { phoneappointmentModule } from '../../../../../GangamaiCode/src/app/main/opd/phoneappointment/phoneappointment.module';
+// import { phoneappointmentModule } from '../../../../../GangamaiCode/src/app/main/opd/phoneappointment/phoneappointment.module';
 
 @Component({
   selector: 'app-phoneappointment',
