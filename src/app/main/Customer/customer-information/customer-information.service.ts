@@ -26,11 +26,14 @@ export class CustomerInformationService {
    CreateSearchForm(){
     return this._formbuilder.group({
       CustomerName:[''], 
+      IsActive:['']
     });
    }
    Createmyform(){
     return this._formbuilder.group({
-      CustomerName:[''],
+      CustomerName:['', [Validators.required,
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z ]*$')]],
       Address:[''],
       MobileNo:['', [ Validators.required,Validators.pattern('^[0-9]{10}$')]],
       personName:[''],
@@ -52,8 +55,15 @@ export class CustomerInformationService {
       CustomerName:[''],
       AMCamt:[''],
       Description:[''],
+      PayDate:[(new Date()).toISOString()]
     })
   }
+  public deactivateTheStatus(param, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + param, {} );
+}
    public getCustomerList(param, loader = true) {
     if(loader){
       this._loaderService.show()

@@ -136,10 +136,10 @@
 
 
                             <ng-container matColumnDef="button" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-60">
 
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-60">
 
                                     <mat-icon *ngIf="contact.PatientType =='Self'"
                                         matTooltip="Patient Category Self">account_box
@@ -154,9 +154,9 @@
 
 
                             <ng-container matColumnDef="IsBillGenerated" sticky>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80" style="color: white;">Bill
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-60" style="color: white;">Bill
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-80">
+                                <mat-cell *matCellDef="let contact" class="w-60">
                                     <mat-icon *ngIf="contact.IsBillGenerated=='1'; else noMLC "
                                         matTooltip="Bill Generated" class="pill green-600 s-16">
                                     </mat-icon>
@@ -205,16 +205,28 @@
                             </ng-container>
 
                             <ng-container matColumnDef="DOA">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    DOA
+                                </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <span> {{contact.DOA}} - {{contact.DOT}}</span>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="IPDNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>IPDNo
+                            <ng-container matColumnDef="DOD">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                  DOD
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
+                                    <span> {{contact.DischargeDate | date:'dd/MM/YYYY'}} - {{contact.DischargeTime | date:'hh:mm'}}</span>
+
+                                </mat-cell> 
+                            </ng-container>
+
+                            <ng-container matColumnDef="IPDNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">IPDNo
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-120">
                                     <span> {{contact.IPDNo}}</span>
                                 </mat-cell>
                             </ng-container>
@@ -237,6 +249,15 @@
                                     <span> {{contact.RefDocName || '--'}}</span>
                                 </mat-cell>
                             </ng-container>
+
+                            <ng-container matColumnDef="AdvanceAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-130"> 
+                                    Adv.Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-130">
+                                    <span> {{contact.AdvanceAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container> 
 
                             <ng-container matColumnDef="PatientType">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>PatientType
@@ -261,8 +282,8 @@
                             </ng-container>
 
                             <ng-container matColumnDef="buttons1" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions w-150">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-150" >
+                                <mat-header-cell *matHeaderCellDef class="table-actions w-100">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-100" >
                                     <div fxLayout="row">
                                        
                                         <button mat-icon-button (click)="printDischargeslip(contact)"  *ngIf="contact.IsDischarged"
@@ -290,8 +311,8 @@
                             </ng-container>
 
                             <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions w-100">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100">
+                                <mat-header-cell *matHeaderCellDef class="table-actions w-70">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-70">
                                     <div fxFlex="row" fxLayoutAlign="start center">
                                         <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
                                             aria-label="More" (click)="$event.stopPropagation();">
@@ -323,9 +344,9 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1500"
+                            <mat-header-row class="accent min-width-1800"
                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row class="min-width-1500" *matRowDef="let contact; columns: displayedColumns;"
+                            <mat-row class="min-width-1800" *matRowDef="let contact; columns: displayedColumns;"
                                 [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"

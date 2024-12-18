@@ -19,12 +19,21 @@ import { MatPaginator } from '@angular/material/paginator';
   animations: fuseAnimations,
 })
 export class CustomerBillRaiseComponent implements OnInit {
-  displayedColumns: string[] = [
-    'InvoiceNo',
+  displayedDueColumns: string[] = [
     'InvoiceDate',
-    'CustomerId',
+    'InvNumber',
+    'CustomerName',
+    'ContactPersonMobileNo',
     'Amount',
-    'InvoiceRaisedId',
+    'PaymentAmount',
+    'PaymentDue'
+  ];
+  displayedColumns: string[] = [
+    'CustomerName',
+    'ContactPersonName',
+    'ContactPersonMobileNo',
+    'AMCPaidDate',
+    'AMCAmount',
     'Action'
   ];
 
@@ -32,7 +41,8 @@ export class CustomerBillRaiseComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
 
-  dsBillRaiseList =new MatTableDataSource<BillRaiseList>();
+  dsBillPayDueList =new MatTableDataSource<BillPayDueList>();
+  dsAMCPayList =new MatTableDataSource<BillPayDueList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,7 +57,8 @@ export class CustomerBillRaiseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getCustomerBlilList();
+    this.getCustomerPayDueList();
+    this.getCustomerAMCPayList();
   }
   onClose(){
     this._matDialog.closeAll();
@@ -58,13 +69,26 @@ export class CustomerBillRaiseComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getCustomerBlilList(){
+  getCustomerPayDueList(){ 
     this.sIsLoading = 'loading-data';
-    this._CustomerBill.getCustomerBillList().subscribe(data =>{
-      this.dsBillRaiseList.data = data as BillRaiseList[];
-      console.log(this.dsBillRaiseList.data)
-      this.dsBillRaiseList.sort = this.sort;
-      this.dsBillRaiseList.paginator = this.paginator
+    this._CustomerBill.getCustomerPayDueList().subscribe(data =>{
+      this.dsBillPayDueList.data = data as BillPayDueList[];
+      console.log(this.dsBillPayDueList.data)
+      this.dsBillPayDueList.sort = this.sort;
+      this.dsBillPayDueList.paginator = this.paginator
+      this.sIsLoading = '';
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+  getCustomerAMCPayList(){ 
+    this.sIsLoading = 'loading-data';
+    this._CustomerBill.getCustomerAMCPayList().subscribe(data =>{
+      this.dsAMCPayList.data = data as BillPayDueList[];
+      console.log(this.dsAMCPayList.data)
+      this.dsAMCPayList.sort = this.sort;
+      this.dsAMCPayList.paginator = this.paginator
       this.sIsLoading = '';
     },
     error => {
@@ -96,23 +120,23 @@ export class CustomerBillRaiseComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getCustomerBlilList();
+      this.getCustomerPayDueList();
     });
   }
 }
-export class BillRaiseList{
+export class BillPayDueList{
   InvoiceNo: any;
   InvoiceDate: any;
   CustomerId: string;
   Amount: string;
   InvoiceRaisedId: any;
-  constructor(BillRaiseList) {
+  constructor(BillPayDueList) {
     {
-      this.InvoiceNo = BillRaiseList.InvoiceNo || 0;
-      this.InvoiceDate = BillRaiseList.InvoiceDate || 0;
-      this.CustomerId = BillRaiseList.CustomerId || '';
-      this.Amount = BillRaiseList.Amount || '';
-      this.InvoiceRaisedId = BillRaiseList.InvoiceRaisedId || 0;
+      this.InvoiceNo = BillPayDueList.InvoiceNo || 0;
+      this.InvoiceDate = BillPayDueList.InvoiceDate || 0;
+      this.CustomerId = BillPayDueList.CustomerId || '';
+      this.Amount = BillPayDueList.Amount || '';
+      this.InvoiceRaisedId = BillPayDueList.InvoiceRaisedId || 0;
     }
   }
 }

@@ -98,10 +98,14 @@
 
                     <mat-card style="padding: 6px;">
                         <div fxLayout="column" fxFlex="100%" fxFlex.sm="50%" fxFlex.gt-sm="100%">
-                            <div class="investigation-title">
+                            <div class="investigation-title" fxLayoutAlign="space-between">
                                 <span style="font-weight: 700;">
                                     AMC Details
                                 </span>
+                                <button mat-raised-button (click)="newAmc()"
+                                style="background-color: white;color: brown;">
+                                New AMC
+                            </button>
                             </div>
                             <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
                             <mat-table #table matSort [dataSource]="dsAMCDetList" [@animateStagger]="{value:'50'}"
@@ -262,6 +266,10 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button matTooltip="Payment" (click)="PayAMtamt(contact)"  >
+                                        <mat-icon>payment</mat-icon>
+                                    </button>
+
                                     <button mat-icon-button matTooltip="Edit" (click)="OnEditBillRise(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button>

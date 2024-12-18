@@ -22,12 +22,24 @@
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
                     <form [formGroup]="_CustomerInfo.PaymentForm">
-                        <div fxLayout="column" fxLayoutGap="10px">
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Customer Name</mat-label>
-                                <input name="CustomerName" formControlName="CustomerName" matInput type="text" readonly
-                                [(ngModel)]="vCustomerName"  >
-                            </mat-form-field>
+                        <div fxLayout="column" fxLayoutGap="6px">
+
+                            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="4px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Customer Name</mat-label>
+                                    <input name="CustomerName" formControlName="CustomerName" matInput type="text" readonly
+                                    [(ngModel)]="vCustomerName"  >
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Payment Date</mat-label>
+                                    <input matInput [matDatepicker]="picker" placeholder="Choose a date" 
+                                    formControlName="PayDate" >
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker> 
+                                </mat-form-field> 
+                            </div>
+                          
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>AMC Amount</mat-label>

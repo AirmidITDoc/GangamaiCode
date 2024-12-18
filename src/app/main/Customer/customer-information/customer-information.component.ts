@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NewCustomerComponent } from './new-customer/new-customer.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AMCDetailsComponent } from './amc-details/amc-details.component';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-customer-information',
@@ -21,6 +22,7 @@ import { AMCDetailsComponent } from './amc-details/amc-details.component';
 })
 export class CustomerInformationComponent implements OnInit {
   displayedColumns: string[] = [
+    'IsActive',
     'CustomerId',
     'CustomerName',
     'InstallationDate',
@@ -51,7 +53,8 @@ export class CustomerInformationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getCustomerList();
+    this.onChangeIsactive();
+    //this.getCustomerList();
   }
   onClose(){
     this._matDialog.closeAll();
@@ -63,10 +66,21 @@ export class CustomerInformationComponent implements OnInit {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
+  IsActive:any;
+  onChangeIsactive() { 
+    console.log(this._CustomerInfo.SearchForm.get('IsActive').value )
+     if (this._CustomerInfo.SearchForm.get('IsActive').value == true) {
+       this.IsActive = 1;
+     }else{
+       this.IsActive = 0;
+     }
+     this.getCustomerList(); 
+   }
   getCustomerList(){
     this.sIsLoading = 'loading-data';
     var vdata={
       "CustomerName":this._CustomerInfo.SearchForm.get('CustomerName').value + '%' || '%',
+      "IsActive": this.IsActive
     }
     console.log(vdata)
     this._CustomerInfo.getCustomerList(vdata).subscribe(data =>{
@@ -86,8 +100,8 @@ export class CustomerInformationComponent implements OnInit {
   NewCustomer(){
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
-        maxWidth: "75vw",
-        height: '70%',
+        maxWidth: "60vw",
+        height: '55%',
         width: '100%',
         
       });
@@ -99,8 +113,8 @@ export class CustomerInformationComponent implements OnInit {
     console.log(contact)
     const dialogRef = this._matDialog.open(NewCustomerComponent,
       {
-        maxWidth: "75vw",
-        height: '75%',
+        maxWidth: "60vw",
+        height: '55%',
         width: '100%',
         data: {
           Obj: contact
@@ -127,8 +141,43 @@ export class CustomerInformationComponent implements OnInit {
       this.getCustomerList();
     });
   }
-  
+  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  ActiveStatus(contact,CustomerId) {
+    this.confirmDialogRef = this._matDialog.open(
+      FuseConfirmDialogComponent,
+      {
+        disableClose: false,
+      }
+    );
+    if(contact.IsActive == 1){
+      this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to Deactive?";
+     }else{
+      this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to Active?";
+     } 
+
+    this.confirmDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let Query 
+        if(contact.IsActive == 1){
+         Query = "Update T_CustomerInformation set IsActive=0 where CustomerId=" + CustomerId;
+        }else{
+          Query = "Update T_CustomerInformation set IsActive=1 where CustomerId=" + CustomerId;
+        } 
+        console.log(Query);
+        this._CustomerInfo.deactivateTheStatus(Query).subscribe((response) => {
+          if (response) {
+            this.toastr.success('Record Updated Successfully.', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.getCustomerList();
+          }
+        })
+      }
+      this.confirmDialogRef = null;
+    });
+  }
 }
+
 export class CustomerInfoList {
   CustomerName: any;
   InstallationDate: any;

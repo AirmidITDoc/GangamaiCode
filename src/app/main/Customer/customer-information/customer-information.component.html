@@ -33,6 +33,12 @@
                             <input name="CustomerName" formControlName="CustomerName" matInput type="text">
                         </mat-form-field>
 
+                        <div class="slide-toggle mb-2">
+                            <mat-slide-toggle name="IsActive" (change)="onChangeIsactive()" formControlName="IsActive" >
+                                IsActive
+                            </mat-slide-toggle>
+                        </div>
+
                         <div class="action-buttons">
                             <button mat-raised-button (click)="onClear()" class="clearbutton">
                                 <mat-icon class="cleariconbutton">close</mat-icon></button>
@@ -67,6 +73,17 @@
                                         <mat-icon>edit</mat-icon>
                                     </button>
 
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="IsActive" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-50"> 
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50">
+                                    <mat-icon *ngIf="contact.IsActive == '1'" matTooltip="IsActive"
+                                        class="active green-600 s-16"  (click)="ActiveStatus(contact,contact.CustomerId)">check_circle</mat-icon>
+                                    <mat-icon *ngIf="contact.IsActive == '0'" matTooltip="Deactive"
+                                        class="active red-600 s-16"  (click)="ActiveStatus(contact,contact.CustomerId)">hourglass_empty</mat-icon> 
                                 </mat-cell>
                             </ng-container>
 
