@@ -134,13 +134,15 @@ export class AMCDetailsComponent implements OnInit {
     }); 
   }
   OnEditBillRise(contact) {
+    this.NewBillRise = 0
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
         maxWidth: "60vw",
         height: '53%',
         width: '100%',
         data:{
-          Obj:contact
+          Obj:contact,
+          FormName: this.NewBillRise
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -148,19 +150,27 @@ export class AMCDetailsComponent implements OnInit {
       this.getCustomerBlilList();
     });
   }
+  NewBillRise:any;
   newBillRise() {
+    this.NewBillRise = 1
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
         maxWidth: "60vw",
         height: '53%',
-        width: '100%'
+        width: '100%',
+        data:{
+          Obj:this.registerObj,
+          FormName: this.NewBillRise
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.getCustomerBlilList();
     });
   }
-  
+  newAmc(){
+
+  }
 }
 export class BillRaiseList {
   InvoiceNo: any;

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ export class CustomerBillRaiseService {
   myform:FormGroup;
   constructor( 
     public _formbuilder:FormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:HttpClient,
+    public _loaderService:LoaderService
   )
    { 
     this.myform = this.Createmyform();
@@ -34,7 +36,16 @@ export class CustomerBillRaiseService {
   public getCustomerSearchCombo(param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CustomerNameCombo", param);
   }
-  public getCustomerBillList( ) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtev_CustomerInvoiceRaise_List",{});
+  public getCustomerPayDueList(loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPaymentDueList",{});
+  }
+  public getCustomerAMCPayList(loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerBillRaiseList",{});
   }
 }

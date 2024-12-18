@@ -47,8 +47,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    CustomerBillRaiseComponent,
-    // NewBillRaiseComponent
+    CustomerBillRaiseComponent, 
   ],
 
   imports: [

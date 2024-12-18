@@ -65,7 +65,7 @@ export class CustomerPaymentComponent implements OnInit {
     if (!this.PaymentId) {
      let  customerPaymentInsertObj={
         "paymentId": 0,
-        "paymentDate":formattedDate,
+        "paymentDate":this.datePipe.transform(this._CustomerInfo.PaymentForm.get('PayDate').value, 'dd/MM/YYYY') || '1/1/1999',
         "paymentTime": formattedTime,
         "customerId":  this.vCustomerId || 0,
         "amount": this._CustomerInfo.PaymentForm.get('Amount').value || 0,

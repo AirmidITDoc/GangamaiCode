@@ -30,6 +30,10 @@ export class NewBillRaiseComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   CustomerList: any = [];
   RtrvCustomerId: any
+  filteredOptionsCutomer: any;
+  noOptionFound: any;
+  vSupplierId: any;
+  vCustomerName: any; 
 
 
   constructor(
@@ -48,12 +52,17 @@ export class NewBillRaiseComponent implements OnInit {
 
     this.getCustomerSearch();
     if (this.data) {
-      this.registerObj = this.data.Obj;
-      console.log(this.registerObj)
-      this.RtrvCustomerId = this.registerObj.CustomerId
-      this.vAmount= this.registerObj.Amount
-      this.OnEdit(this.registerObj)
-      // this.vAmount = this.registerObj.Amount; 
+      if(this.data.FormName == 0){
+        this.registerObj = this.data.Obj;
+        console.log(this.registerObj)
+        this.RtrvCustomerId = this.registerObj.CustomerId
+        this.vAmount= this.registerObj.Amount
+        this.OnEdit(this.registerObj)
+      }
+      else if(this.data.FormName == 1){
+        this.registerObj = this.data.Obj;
+        console.log('new',this.registerObj) 
+      } 
     }
   }
   toggleSidebar(name): void {
@@ -68,33 +77,8 @@ export class NewBillRaiseComponent implements OnInit {
       nextElement.focus();
     }
   }
-  filteredOptionsCutomer: any;
-  noOptionFound: any;
-  vSupplierId: any;
-  vCustomerName: any;
-  // getCustomerSearchCombo() { 
-  //   var m_data = {
-  //     'CustomerName': `${this._CustomerInfo.Billmyform.get('CustomerId').value}%`
-  //   }
-  //   console.log(m_data)
-  //   this._CustomerInfo.getCustomerSearchCombo(m_data).subscribe(data => {
-  //     this.filteredOptionsCutomer = data;
-  //     console.log(this.filteredOptionsCutomer)
-  //     if (this.filteredOptionsCutomer.length == 0) {
-  //       this.noOptionFound = true;
-  //     } else {
-  //       this.noOptionFound = false;
-  //     }
-  //   });
-  //   if(this.registerObj.CustomerId){
-  //     const Customerselected = this.filteredOptionsCutomer.some(item => item.CustomerId == this.registerObj.CustomerId);
-  //     this._CustomerInfo.Billmyform.get('CustomerId').setValue(Customerselected);
-  //     //this._CustomerInfo.Billmyform.get('CustomerId').setValue
-  //   }
-  // }
-  getOptionText(option) {
-    return option && option.CustomerName ? option.CustomerName : '';
-  }
+
+
   getCustomerSearch() {
     var m_data = {
       'CustomerName': this._CustomerInfo.Billmyform.get('CustomerId').value || "%"
@@ -120,6 +104,9 @@ export class NewBillRaiseComponent implements OnInit {
       const filterValue = value && value.CustomerName ? value.CustomerName.toLowerCase() : value.toLowerCase();
       return this.CustomerList.filter(option => option.CustomerName.toLowerCase().includes(filterValue));
     }
+  }
+  getOptionText(option) {
+    return option && option.CustomerName ? option.CustomerName : '';
   }
   onSubmit() {
     const currentDate = new Date();
