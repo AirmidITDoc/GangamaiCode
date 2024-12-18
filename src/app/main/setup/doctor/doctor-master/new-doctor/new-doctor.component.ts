@@ -45,7 +45,7 @@ export class NewDoctorComponent implements OnInit {
         );
         dialogRef.afterClosed().subscribe(result => {
             this.sanitizeImagePreview = result;
-            this.signature = this.sanitizeImagePreview;
+            this.myForm.value.signature = this.sanitizeImagePreview;
         });
     }
     toggleSelectAll() {
@@ -59,7 +59,7 @@ export class NewDoctorComponent implements OnInit {
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
                 this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
                     this.sanitizeImagePreview = data["data"] as string;
-                    this.registerObj.signature = data["data"] as string;
+                    this.myForm.value.signature = data["data"] as string;
                 });
             }, (error) => {
                 this.toastr.error(error.message);
