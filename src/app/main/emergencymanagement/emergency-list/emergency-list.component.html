@@ -80,10 +80,43 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-90">
 
-                                    <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
+                                    <button mat-icon-button matTooltip="Edit"
+                                    *ngIf="contact.IsCancelled=='0'" (click)="OnEdit(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
 
+                                    <button mat-icon-button (click)="CanclePhoneApp(contact)" 
+                                    *ngIf="contact.IsCancelled==0" matTooltip="Cancle">
+                                        <mat-icon> cancel</mat-icon>
+                                    </button>
+
+                                    <!-- <button mat-icon-button (click)="CanclePhoneApp(contact)" matTooltip="Cancle" *ngIf="contact.IsCancelled=='0'">
+                                        <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==1"
+                                            [disabled]="contact.disabled" class="disabled-icon">
+                                            cancel</mat-icon>
+                                        <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==0" (click)="CanclePhoneApp(contact)">
+                                            cancel</mat-icon>
+                                    </button> -->
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="IsCancelled" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
+                                    
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
+                                    <div class="pill-icon">
+                                        <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='0'"
+                                            matTooltip="Cancelled"
+                                            class="red-600 s-16">circle
+                                        </mat-icon>
+
+                                        <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='1'"
+                                            matTooltip="Approve"
+                                            class="green-600 s-16">circle
+                                        </mat-icon>
+                                    </div>
                                 </mat-cell>
                             </ng-container>
 

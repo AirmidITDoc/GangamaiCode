@@ -113,7 +113,7 @@
   
                       <mat-form-field appearance="outline" fxFlex >
                         <mat-label>Address</mat-label>
-                        <input name="Address" formControlName="Address" placeholder="Address" matInput
+                        <input name="Address" formControlName="Address" placeholder="Address" matInput required
                         #Address (keydown)="onEnterAddress($event)" [(ngModel)]="vAddress">
                       <!-- [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" -->
                       </mat-form-field>
@@ -128,6 +128,8 @@
                             [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)" 
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
                             type="number" value="Mobile.length">
+                            <mat-error *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">
+                              Enter 10 Digit MobileNo</mat-error>
                       </mat-form-field>
     
                     </div>
@@ -189,7 +191,7 @@
               <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
                            
                 <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
-                <button class="btn btn-primary " color="accent" (click)="OnSubmit()" [disabled]="personalFormGroup.invalid" >
+                <button class="btn btn-primary " color="accent" (click)="onSave()" [disabled]="personalFormGroup.invalid" >
                     <span>Save</span>
                 </button>
             </div>

@@ -78,7 +78,14 @@ export class EmergencyListService {
    {    
      return this._httpClient.post("InPatient/IPDEmergencyRegInsert",employee);
    }
-
+   public emgUpdate(employee)
+   {    
+     return this._httpClient.post("InPatient/IPDEmergencyRegEdit",employee);
+   }
+   public engCancle(employee)
+   {
+     return this._httpClient.post("InPatient/IPDEmergencyRegCancel", employee);
+   }
 
    public getDoctorMasterCombo(param) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", param)

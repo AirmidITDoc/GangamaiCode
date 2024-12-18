@@ -3200,6 +3200,7 @@ ServiceId:any;
 PathTestID:any;
 Adm_Visit_docId:any;
 TemplateResultInHTML:any;
+EmgId:any;
   /**
 * Constructor
 *
@@ -3350,7 +3351,8 @@ TemplateResultInHTML:any;
       this.ServiceId=AdmissionPersonl.ServiceId || 0;
       this.PathTestID=AdmissionPersonl.PathTestID || 0
       this.Adm_Visit_docId=AdmissionPersonl.Adm_Visit_docId || 0;
-      this.TemplateResultInHTML=AdmissionPersonl.TemplateResultInHTML || ''
+      this.TemplateResultInHTML=AdmissionPersonl.TemplateResultInHTML || '';
+      this.EmgId=AdmissionPersonl.EmgId || ''
     }
   }
 }

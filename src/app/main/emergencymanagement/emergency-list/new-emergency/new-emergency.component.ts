@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { EmergencyList } from '../emergency-list.component';
 
 @Component({
   selector: 'app-new-emergency',
@@ -65,6 +66,7 @@ export class NewEmergencyComponent implements OnInit {
   selectedCountryID: any;
   registerObj = new AdmissionPersonlModel({});
   currentDate = new Date();
+  RegId: any=0;
   
   constructor(
     public _EmergencyListService: EmergencyListService,
@@ -123,6 +125,7 @@ export class NewEmergencyComponent implements OnInit {
       this.vPhoneNo=this.registerObj.PhoneNo
       this.vDepartmentid = this.registerObj.DepartmentName;
       this.vDoctorId = this.registerObj.DoctorName;
+      this.RegId=this.registerObj.RegId;
 
       this.onChangeCityList(this.registerObj.CityId);
     }
@@ -261,9 +264,7 @@ export class NewEmergencyComponent implements OnInit {
     }
   }
 
-  Savebtn: boolean = false;
-  onSubmit() {
-debugger
+  onSave(){
     if (this._EmergencyListService.MyForm.get('PrefixID').value == '' || this._EmergencyListService.MyForm.get('PrefixID').value== null) {
       this.toastr.warning('Please Select Prefix Name  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -278,13 +279,13 @@ debugger
         return;
       }
     } 
-    if (this._EmergencyListService.MyForm.get('FirstName').value == '' || this._EmergencyListService.MyForm.get('FirstName').value== null) {
+    if (this.vFirstName == '' || this.vFirstName == null || this.vFirstName == undefined) {
       this.toastr.warning('Please enter First Name  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     } 
-    if (this._EmergencyListService.MyForm.get('LastName').value == '' || this._EmergencyListService.MyForm.get('LastName').value== null) {
+    if (this.vLastName == '' || this.vLastName == null || this.vLastName == undefined) { 
       this.toastr.warning('Please enter Last Name  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -296,14 +297,7 @@ debugger
       });
       return;
     }    
-  
-    if (this._EmergencyListService.MyForm.get('Address').value == '' || this._EmergencyListService.MyForm.get('Address').value== null) {
-      this.toastr.warning('Please eneter Address  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this._EmergencyListService.MyForm.get('CityId').value == '' || this._EmergencyListService.MyForm.get('CityId').value== null) {
+    if (this.vCityId == '' || this.vCityId == null || this.vCityId == undefined) {
       this.toastr.warning('Please Select City Name  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -318,7 +312,7 @@ debugger
         return;
       }
     }  
-    if (this._EmergencyListService.MyForm.get('Departmentid').value == '' || this._EmergencyListService.MyForm.get('Departmentid').value== null) {
+    if (this.vDepartmentid == '' || this.vDepartmentid == null || this.vDepartmentid == undefined) {
       this.toastr.warning('Please select Department  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -333,7 +327,7 @@ debugger
       return;
      }
     } 
-    if (this._EmergencyListService.MyForm.get('DoctorId').value == '' || this._EmergencyListService.MyForm.get('DoctorId').value== null) {
+    if (this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined) {
       this.toastr.warning('Please select Doctor  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -347,122 +341,117 @@ debugger
         });
         return;
       }
-    } 
-   
-    if (!this.registerObj.RegId) {
-      var m_data = {
-        "ipdEmergencyRegInsert": {
-          
-          "EmgId": 0,
-          "RegId ":this.registerObj.RegId || 0,
-          "EmgDate": this.dateTimeObj.date || '01/01/1900',// this.dateTimeObj.date,//
-          "EmgTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss'),// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-          "PrefixId": this._EmergencyListService.MyForm.get('PrefixID').value.PrefixID,
-          "FirstName": this._EmergencyListService.MyForm.get('FirstName').value || "",
-          "MiddleName": this._EmergencyListService.MyForm.get('MiddleName').value || "",
-          "LastName":this._EmergencyListService.MyForm.get('LastName').value || "",
-          "Address": this._EmergencyListService.MyForm.get('Address').value || "",
-         "City": this._EmergencyListService.MyForm.get('CityId').value.CityName || '',
-          "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
-         // "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-          "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
-          "GenderID": this._EmergencyListService.MyForm.get('GenderId').value.GenderId || 0,
-          "PhoneNo":this._EmergencyListService.MyForm.get('PhoneNo').value || "",// this._registerService.mySaveForm.get("PhoneNo").value || "0",
-          "MobileNo": this._EmergencyListService.MyForm.get('MobileNo').value || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
-          "AddedBy": this.accountService.currentUserValue.user.id,
-          "UpdatedBy": this.accountService.currentUserValue.user.id,
-          "AgeYear": this._EmergencyListService.MyForm.get('AgeYear').value || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-          // "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
-          // "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
-          "CountryId": this._EmergencyListService.MyForm.get('CountryId').value.CountryId,
-          "StateId": this._EmergencyListService.MyForm.get('StateId').value.StateId,
-          "CityId": this._EmergencyListService.MyForm.get('CityId').value.CityId,
+    }
+    
+    Swal.fire({
+      title: 'Do you want to Save the Emergency Recode ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save it!" ,
+      cancelButtonText: "No, Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          this.onSubmit();
+      }
+    });
+
+  }
+  Savebtn: boolean = false;
+  onSubmit() {
+  debugger
+    
+    if (!this.registerObj.EmgId) {
+      var m_data = { 
+          "emgId": 0,
+          "regId ":this.registerObj.RegId || 0,
+          "emgDate": this.dateTimeObj.date || '01/01/1900',// this.dateTimeObj.date,//
+          "emgTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss'),// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
+          "prefixId": this._EmergencyListService.MyForm.get('PrefixID').value.PrefixID,
+          "firstName": this._EmergencyListService.MyForm.get('FirstName').value || "",
+          "middleName": this._EmergencyListService.MyForm.get('MiddleName').value || "",
+          "lastName":this._EmergencyListService.MyForm.get('LastName').value || "",
+          "address": this._EmergencyListService.MyForm.get('Address').value || "",
+          "genderID": this._EmergencyListService.MyForm.get('GenderId').value.GenderId || 0,
+          "mobileNo": this._EmergencyListService.MyForm.get('MobileNo').value || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
+          "addedBy": this.accountService.currentUserValue.user.id,
+          "updatedBy": this.accountService.currentUserValue.user.id,
+          "ageYear": this._EmergencyListService.MyForm.get('AgeYear').value || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
+          "cityId": this._EmergencyListService.MyForm.get('CityId').value.CityId,
           "departmentId": this._EmergencyListService.MyForm.get('Departmentid').value.DepartmentId,
           "doctorId": this._EmergencyListService.MyForm.get('DoctorId').value.DoctorId || 0,
-        
-        
-        
-          // "MaritalStatusId": this._EmergencyListService.MyForm.get('MaritalStatusId').value ? this._EmergencyListService.MyForm.get('MaritalStatusId').value.MaritalStatusId : 0,
-          // "IsCharity": false,//Boolean(JSON.parse(this._EmergencyListService.MyForm.get("IsCharity").value)) || "0",
-          // "ReligionId": this._EmergencyListService.MyForm.get('ReligionId').value ? this._EmergencyListService.MyForm.get('ReligionId').value.ReligionId : 0,
-          // "AreaId": this._EmergencyListService.MyForm.get('AreaId').value ? this._EmergencyListService.MyForm.get('AreaId').value.AreaId : 0,
-          // "isSeniorCitizen": 0,
-          // "Aadharcardno": this._EmergencyListService.MyForm.get('AadharCardNo').value ? this._EmergencyListService.MyForm.get('AadharCardNo').value : 0,
-          // "pancardno": this._EmergencyListService.MyForm.get('PanCardNo').value ? this._EmergencyListService.MyForm.get('PanCardNo').value : 0,
-          // "Photo": ''//
-        }
+       
       }
-      console.log(m_data);
-      this._EmergencyListService.regInsert(m_data).subscribe(response => {
+      var m_data1 = { 
+          "bedId": 0      
+      }
+      let submitData={
+        "ipdEmergencyRegInsert":m_data,
+        "ipdEmergencyAdv":m_data1
+      }
+      console.log("dfdf:",submitData);
+      this._EmergencyListService.regInsert(submitData).subscribe(response => {
         if (response) {
-
-          Swal.fire('Congratulations !', 'Emergency Register Data save Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-              // this.getRegistredPatientCasepaperview(response);
-            }
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
           });
+          this.OnReset()
         } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
+          this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
         }
       });
     }
-//     else
-   
-// debugger
-//       var m_data1 = {
-//         "opdRegistrationUpdate": {
-//           "RegID": this.RegID,
-//           "PrefixId": this._EmergencyListService.MyForm.get('PrefixID').value.PrefixID,
-//           "FirstName": this.registerObj.FirstName || "",
-//           "MiddleName": this.registerObj.MiddleName || "",
-//           "LastName": this.registerObj.LastName || "",
-//           "Address": this.registerObj.Address || "",
-//           "City": this._EmergencyListService.MyForm.get('CityId').value.CityName || 0,
-//           "PinNo": '0',// this._registerService.mySaveForm.get("PinNo").value || "0",
-//           "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-//           "Age":this.registerObj.Age,
-//           "GenderID": this._EmergencyListService.MyForm.get('GenderId').value.GenderId || 0,
-//           "PhoneNo": this._EmergencyListService.MyForm.get("PhoneNo").value || "",
-//           "MobileNo": this._EmergencyListService.MyForm.get("MobileNo").value || "0",
-//           "UpdatedBy": this.accountService.currentUserValue.user.id,
-//           "AgeYear": this._EmergencyListService.MyForm.get("AgeYear").value || "0",
-//           "AgeMonth": this._EmergencyListService.MyForm.get("AgeMonth").value || "0",
-//           "AgeDay": this._EmergencyListService.MyForm.get("AgeDay").value || "0",
-//           "CountryId": this._EmergencyListService.MyForm.get('CountryId').value.CountryId,
-//           "StateId": this._EmergencyListService.MyForm.get('StateId').value.StateId,
-//           "CityId": this._EmergencyListService.MyForm.get('CityId').value.CityId,
-//           "MaritalStatusId": this._EmergencyListService.MyForm.get('MaritalStatusId').value ? this._EmergencyListService.MyForm.get('MaritalStatusId').value.MaritalStatusId : 0,
-//           "IsCharity": false,// Boolean(JSON.parse(this._EmergencyListService.MyForm.get("IsCharity").value)) || "0",
-//           "ReligionId": this._EmergencyListService.MyForm.get('ReligionId').value ? this._EmergencyListService.MyForm.get('ReligionId').value.ReligionId : 0,
-//           "AreaId": this._EmergencyListService.MyForm.get('AreaId').value ? this._EmergencyListService.MyForm.get('AreaId').value.AreaId : 0,
-//           // "isSeniorCitizen":0,
-//           "aadharcardno": this._EmergencyListService.MyForm.get('AadharCardNo').value ? this._EmergencyListService.MyForm.get('AadharCardNo').value : 0,
-//           "pancardno": this._EmergencyListService.MyForm.get('PanCardNo').value ? this._EmergencyListService.MyForm.get('PanCardNo').value : 0,
-//           "Photo": ''// this.file.name || '',
-//         }
-//       }
-//       console.log(m_data1)
-//       this._registerService.regUpdate(m_data1).subscribe(response => {
-//         if (response) {
-//           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
-//             if (result.isConfirmed) {
-//              debugger
-//               this.viewgetPatientAppointmentReportPdf(this.registerObj.VisitId);
-//               if(this.Submitflag)
-//                 this.getAdmittedPatientCasepaperview(this.registerObj.AdmissionID);
-//               this._matDialog.closeAll();
-//             }
-//           });
-//         }
+    else{
+      debugger
 
-//         else {
-//           Swal.fire('Error !', 'Register Data  not Updated', 'error');
-//         }
+      var m_dataUpdate = {
+                
+          "emgId": this.registerObj.EmgId,
+          "regId": this.registerObj.RegId || 0,
+          "emgDate": this.dateTimeObj.date || '01/01/1900',
+          "emgTime": this.datePipe.transform(this.currentDate, 'hh:mm:ss'),
+          "prefixId": this._EmergencyListService.MyForm.get('PrefixID').value.PrefixID,
+          "genderID": this._EmergencyListService.MyForm.get('GenderId').value.GenderId || 0,
+          "firstName": this._EmergencyListService.MyForm.get('FirstName').value || "",
+          "middleName": this._EmergencyListService.MyForm.get('MiddleName').value || "",
+          "lastName": this._EmergencyListService.MyForm.get('LastName').value || "",
+          "address": this._EmergencyListService.MyForm.get('Address').value || "",
+          "cityId": this._EmergencyListService.MyForm.get('CityId').value.CityId,
+          "ageYear": this._EmergencyListService.MyForm.get('AgeYear').value || "0",
+          "mobileNo": this._EmergencyListService.MyForm.get('MobileNo').value || "",
+          "departmentId":this._EmergencyListService.MyForm.get('Departmentid').value.DepartmentId,
+          "doctorId": this._EmergencyListService.MyForm.get('DoctorId').value.DoctorId || 0,
+          "updatedBy": this.accountService.currentUserValue.user.id,
+        }
+      var m_dataUpdate1 = {
+          "bedId": 0
+      }
+      let updateData={
+        "ipdEmergencyRegEdit":m_dataUpdate,
+        "ipdEmergencyAdv":m_dataUpdate1
+      }
+      console.log(updateData)
+      this._EmergencyListService.emgUpdate(updateData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.OnReset()
+        }
+        else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
 
-//       });
+      });
 
-      
+    }
+         
     }
 
 
@@ -671,7 +660,7 @@ debugger
         .subscribe((data) => {
           this.GendercmbList = data;
           this._EmergencyListService.MyForm.get("GenderId").setValue(this.GendercmbList[0]);
-          this.selectedGenderID = this.GenderList[0].GenderId;
+          // this.selectedGenderID = this.GenderList[0].GenderId;
         });
     }
   }

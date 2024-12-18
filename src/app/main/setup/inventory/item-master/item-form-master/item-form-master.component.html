@@ -34,7 +34,8 @@
             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
               <mat-label>ItemName</mat-label>
               <input name="ItemName" formControlName="ItemName" #Itemname [(ngModel)]="vItemName"
-                placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required>
+                placeholder="Enter Item Name" matInput (keydown)="onEnterItemName($event)" required
+                (ngModelChange)="vItemName = $event.toUpperCase()">
             </mat-form-field>
 
           </div>

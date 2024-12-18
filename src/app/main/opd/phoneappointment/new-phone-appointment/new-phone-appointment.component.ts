@@ -163,7 +163,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
-    this._phoneAppointListService.getPatientVisitedListSearch(m_data).subscribe(data => {
+    this._phoneAppointListService.getPatientRegisterListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       if (this.PatientListfilteredOptions.length == 0) {
         this.noOptionFound = true;
@@ -187,6 +187,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.vMobile = obj.MobileNo;
     this.vDepartmentid = obj.DepartmentName;
     this.vDoctorId = obj.DoctorName;
+
+
 
     this.getDepartmentList();
   } 
@@ -233,7 +235,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
       MobileNo:['', 
         [ 
-          // Validators.required,
+          Validators.required,
           Validators.pattern("^[0-9]{10}$"),
         ]
       ],
@@ -380,67 +382,85 @@ export class NewPhoneAppointmentComponent implements OnInit {
       // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
+onSave(){
 
+  if (this.vFirstName == '' || this.vFirstName == null || this.vFirstName == undefined) {
+    this.toastr.warning('Please enter First Name  ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
+  if (this.vLastName == '' || this.vLastName == null || this.vLastName == undefined) {
+    this.toastr.warning('Please enter Last Name  ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
+  // if (this.personalFormGroup.get('Address').value == '' || this.personalFormGroup.get('Address').value== null) {
+  //   this.toastr.warning('Please enter First Name  ', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // } 
+  if (this.vMobile == '' || this.vMobile == null || this.vMobile == undefined) {
+    this.toastr.warning('Please enter MobileNo  ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
+  if (this.vDepartmentid == '' || this.vDepartmentid == null || this.vDepartmentid == undefined) {
+    this.toastr.warning('Please select Department  ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
+  if (this.personalFormGroup.get('Departmentid').value) {
+    if(!this.DepartmentList.find(item => item.DepartmentName == this.personalFormGroup.get('Departmentid').value.DepartmentName))
+   {
+    this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+   }
+  } 
+  if (this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined) {
+    this.toastr.warning('Please select Doctor  ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  } 
+  if (this.personalFormGroup.get('DoctorId').value) {
+    if(!this.DoctorList.find(item => item.Doctorname == this.personalFormGroup.get('DoctorId').value.Doctorname))
+    {
+      this.toastr.warning('Please select Valid Doctor Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  } 
+  
+
+    Swal.fire({
+      title: 'Do you want to Save the Phone Appointment ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save it!" ,
+      cancelButtonText: "No, Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          this.OnSubmit();
+      }
+    });
+}
   OnSubmit() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 debugger
-    if (this.personalFormGroup.get('FirstName').value == '' || this.personalFormGroup.get('FirstName').value== null) {
-      this.toastr.warning('Please enter First Name  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this.personalFormGroup.get('LastName').value == '' || this.personalFormGroup.get('LastName').value== null) {
-      this.toastr.warning('Please enter Last Name  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this.personalFormGroup.get('Address').value == '' || this.personalFormGroup.get('Address').value== null) {
-      this.toastr.warning('Please enter First Name  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this.personalFormGroup.get('MobileNo').value == '' || this.personalFormGroup.get('MobileNo').value== null) {
-      this.toastr.warning('Please enter MobileNo  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this.personalFormGroup.get('Departmentid').value == '' || this.personalFormGroup.get('Departmentid').value== null) {
-      this.toastr.warning('Please select Department  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this.personalFormGroup.get('Departmentid').value) {
-      if(!this.DepartmentList.find(item => item.DepartmentName == this.personalFormGroup.get('Departmentid').value.DepartmentName))
-     {
-      this.toastr.warning('Please select Valid Department Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-     }
-    } 
-    if (this.personalFormGroup.get('DoctorId').value == '' || this.personalFormGroup.get('DoctorId').value== null) {
-      this.toastr.warning('Please select Doctor  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    if (this.personalFormGroup.get('DoctorId').value) {
-      if(!this.DoctorList.find(item => item.Doctorname == this.personalFormGroup.get('DoctorId').value.Doctorname))
-      {
-        this.toastr.warning('Please select Valid Doctor Name', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    } 
     
     if(!this.registerObj.PhoneAppId){
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
@@ -466,38 +486,43 @@ debugger
     console.log(m_data);
     this._phoneAppointListService.PhoneAppointInsert(m_data).subscribe(response => {
       if (response) {
-        Swal.fire('Record Save !', 'Phone Appointment Data save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-          }
+        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
-      } else {
-        Swal.fire('Error !', 'Register Data  not saved', 'error');
+        this.onClose()
       }
-      // this.isLoading = '';
+      else {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    }, error => {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
     });
   }
   else{
-    var m_Updatedata = {
-      "phoneAppointmentInsert": {
-        "phoneAppId": 0,
-        "RegNo":'',
-        "appDate":formattedDate, //this.dateTimeObj.date || '16/12/2023',
-        "appTime": formattedTime,// this.datePipe.transform(this.currentDate, 'hh:mm:ss'), //this.dateTimeObj.time,
-        "firstName": this.personalFormGroup.get('FirstName').value || '',
-        "middleName": this.personalFormGroup.get('MiddleName').value || '',
-        "lastName": this.personalFormGroup.get('LastName').value || '',
-        "address": this.personalFormGroup.get('Address').value || '',
-        "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
-        "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "departmentId": this.personalFormGroup.get('Departmentid').value.DepartmentId || 0,
-        "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
-        "addedBy": this.accountService.currentUserValue.user.id,
-        "UpdatedBy": this.accountService.currentUserValue.user.id,
-      }
-    }
-    console.log(m_Updatedata);
+    // var m_Updatedata = {
+    //   "phoneAppointmentInsert": {
+    //     "phoneAppId": 0,
+    //     "RegNo":'',
+    //     "appDate":formattedDate, //this.dateTimeObj.date || '16/12/2023',
+    //     "appTime": formattedTime,// this.datePipe.transform(this.currentDate, 'hh:mm:ss'), //this.dateTimeObj.time,
+    //     "firstName": this.personalFormGroup.get('FirstName').value || '',
+    //     "middleName": this.personalFormGroup.get('MiddleName').value || '',
+    //     "lastName": this.personalFormGroup.get('LastName').value || '',
+    //     "address": this.personalFormGroup.get('Address').value || '',
+    //     "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
+    //     "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+    //     "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+    //     "departmentId": this.personalFormGroup.get('Departmentid').value.DepartmentId || 0,
+    //     "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
+    //     "addedBy": this.accountService.currentUserValue.user.id,
+    //     "UpdatedBy": this.accountService.currentUserValue.user.id,
+    //   }
+    // }
+    // console.log(m_Updatedata);
     // this._phoneAppointListService.PhoneAppointUpdate(m_Updatedata).subscribe(response => {
     //   if (response) {
     //     Swal.fire('Phone Appointment Updated Successfully !', 'Updated !').then((result) => {

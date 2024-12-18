@@ -89,12 +89,12 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
   });
   return;
 }
-  if ((this.vPinCode == '' || this.vPinCode == null || this.vPinCode == undefined)) {
-    this.toastr.warning('Please enter a PinCode', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
+  // if ((this.vPinCode == '' || this.vPinCode == null || this.vPinCode == undefined)) {
+  //   this.toastr.warning('Please enter a PinCode', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
     if ((this.vpersonName == '' || this.vpersonName == null || this.vpersonName == undefined)) {
         this.toastr.warning('Please enter a Contact personName', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
