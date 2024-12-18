@@ -193,7 +193,7 @@
                                                             (ngModelChange)="registerObj.AgeYear = $event"
                                                             maxlength="3" #agey readonly
                                                             (keyup)="ageyearcheck(registerObj.AgeYear)"
-                                                            (keydown)="onEnteragey($event,registerObj.AgeYear)"
+                                                            (keydown)="onEnteragey($event)"
                                                             oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
                                                         <mat-error
                                                             *ngIf="_EmergencyListService.MyForm.get('AgeYear').invalid && _EmergencyListService.MyForm.get('AgeYear').touched">Please
