@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
@@ -59,10 +57,6 @@ export class CategorymasterService {
             return this._httpClient.PutData("PathCategoryMaster/" + Param.categoryId, Param, showLoader);
         } else return this._httpClient.PostData("PathCategoryMaster", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("PathCategoryMaster", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("PathCategoryMaster?Id=" + m_data.toString());

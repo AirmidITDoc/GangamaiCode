@@ -27,63 +27,6 @@ export class ItemMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string="StoreName";
-    /**
-     * {
-  "statusCode": 200,
-  "data": {
-    "data": [
-      {
-        "itemID": 1,
-        "itemShortName": "masrat",
-        "itemName": "masrat",
-        "itemTypeName": "",
-        "itemTypeID": 0,
-        "itemCategaryId": 0,
-        "itemCategoryName": "",
-        "itemClassId": 0,
-        "itemClassName": "",
-        "itemGenericNameId": 0,
-        "itemGenericName": "",
-        "purchaseUOMId": 0,
-        "puchaseUOM": "",
-        "stockUOMId": 0,
-        "stockUOM": "",
-        "conversionFactor": "",
-        "currencyId": 0,
-        "currencyName": "",
-        "taxPer": 0,
-        "isdeleted": false,
-        "addedby": 1,
-        "isBatchRequired": false,
-        "minQty": 0,
-        "maxQty": 0,
-        "reOrder": 0,
-        "storeName": "IMPLANT STORE",
-        "storeId": 10002,
-        "hsNcode": "",
-        "cgst": 0,
-        "sgst": 0,
-        "igst": 0,
-        "manufId": 0,
-        "isNarcotic": false,
-        "prodLocation": "",
-        "isH1Drug": false,
-        "isScheduleH": false,
-        "isHighRisk": false,
-        "isScheduleX": false,
-        "isLASA": false,
-        "isEmgerency": false,
-        "drugType": 0,
-        "drugTypeName": "",
-        "itemCompnayId": 0
-      }
-    ],
-    "recordsFiltered": 5,
-    "recordsTotal": 5,
-    "pageIndex": 0
-  }
-}
-     */
    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -236,22 +179,7 @@ export class ItemMasterComponent implements OnInit {
         // this.getItemMasterList();
     }
     chargeslist:any=[];
-    // getItemMasterList() {
-    //     this.sIsLoading = '';
-    //     var m_data = {
-    //         ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
-    //         StoreID: this._loggedService.currentUserValue.storeId
-    //     };
-    //     console.log(m_data)
-    //     this._itemService.getItemMasterList(m_data).subscribe((data) => {
-    //             this.DSItemMasterList.data = data as ItemMaster[];  
-    //             this.DSItemMasterList.sort = this.sort;
-    //             this.DSItemMasterList.paginator = this.paginator; 
-    //             console.log(this.DSItemMasterList.data)
-    //         },
-    //         (error) => (this.isLoading = false)
-    //     );
-    // }
+    
 
     onEdit(row) {
         var m_data = {
@@ -440,14 +368,4 @@ export class ItemMaster {
         }
     }
 }
-//Store master
-// export class StoreMaster {
-//     ItemID: number;
-//     StoreId: number;
-//     constructor(StoreMaster) {
-//         {
-//             this.StoreId = StoreMaster.StoreId || "";
-//             this.ItemID = StoreMaster.ItemID || "";
-//         }
-//     }
-// }
+

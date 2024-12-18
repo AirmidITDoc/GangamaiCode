@@ -34,8 +34,6 @@ export class CountryMasterService {
                 ]
             ],
             isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
 

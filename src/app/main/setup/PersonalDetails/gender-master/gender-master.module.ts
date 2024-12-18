@@ -13,7 +13,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { FuseSidebarModule } from "@fuse/components";
 import { GenderMasterComponent } from "./gender-master.component";
 import { GenderMasterService } from "./gender-master.service";
 import { SharedModule } from "app/main/shared/shared.module";

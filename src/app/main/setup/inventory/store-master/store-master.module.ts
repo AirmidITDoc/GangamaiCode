@@ -68,7 +68,6 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         MatDialogModule
-        // MatLabel,
     ],
     providers: [StoreMasterService,DatePipe],
     entryComponents: [StoreMasterComponent],

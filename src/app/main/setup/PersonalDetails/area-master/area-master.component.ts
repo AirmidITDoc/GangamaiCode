@@ -33,7 +33,6 @@ export class AreaMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            // { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width:400 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {

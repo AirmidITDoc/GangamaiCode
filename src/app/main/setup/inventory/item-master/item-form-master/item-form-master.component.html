@@ -16,35 +16,19 @@
         </button>
     </mat-toolbar> 
 
-    <!-- #tabGroup (selectedTabChange)="tabChanged($event)" -->
+ 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card"> 
-                <!-- <mat-tab-group class="mat-tab-header-small"> -->
-                
-                    <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
-                        <mat-toolbar style="justify-content: space-between; width: 100%;">
-                          <mat-toolbar-row fxLayout="row" fxLayoutAlign="start center">
-                            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                              style="color: white;">menu
-                            </mat-icon>
-                            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                              style="color: white;">account_box
-                            </mat-icon>
-                            <h3 style="color: white;">New Item Master </h3>
-                            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog"
-                              style="margin-left: 1190px;color: white;">
-                              <mat-icon>close</mat-icon>
-                            </button>
-                          </mat-toolbar-row>
-                        </mat-toolbar> -->
+         
+               
                       
                         <div style="padding: 10px; height: 50%;" fxLayoutGap="2px">
                           <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
                       
                             <form [formGroup]="itemForm" noValidate>
                               <div>
-                                <!-- style="padding: 5px;" -->
+                                
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> 
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -65,23 +49,7 @@
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       
-                                    <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                      <mat-label>ItemType Name</mat-label>
-                                      <input matAutocompletePosition="below" type="text" placeholder="Select ItemTypeID" matInput
-                                        formControlName="ItemTypeID" [matAutocomplete]="autoItemTypeID" required #ItemType
-                                        (keydown)="onEnterItemType($event)" [(ngModel)]="vItemTypeID">
-                                      <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('ItemTypeID').setValue(''); isItemTypeSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('ItemTypeID').setValue(''); isItemTypeSelected = false;">search</mat-icon>
-                                      </span>
-                                      <mat-autocomplete #autoItemTypeID="matAutocomplete" [displayWith]="getOptionTextItemtype">
-                                        <mat-option *ngFor="let option of filteredItemType | async" [value]="option">
-                                          {{option.ItemTypeName}}
-                                        </mat-option>
-                                      </mat-autocomplete>
-                                    </mat-form-field> -->
+                                 
                                     <airmid-autocomplete label="Item Type Name" formControlName="ItemTypeID"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemTypeID"
@@ -91,23 +59,7 @@
                                   </div>
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                      <mat-label>ItemCategory Name</mat-label>
-                                      <input matAutocompletePosition="below" type="text" placeholder="Select ItemCategoryId" matInput
-                                        formControlName="ItemCategoryId" [matAutocomplete]="autoItemCategoryId" #ItemCatageory
-                                        (keydown)="onEnterItemCategory($event)" [(ngModel)]="vItemCatageory">
-                                      <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('ItemCategoryId').setValue(''); isItemCategoryIdSelected = false;">search</mat-icon>
-                                      </span>
-                                      <mat-autocomplete #autoItemCategoryId="matAutocomplete" [displayWith]="getOptionTextItemcategory">
-                                        <mat-option *ngFor="let option of filteredItemcategory | async" [value]="option">
-                                          {{option.ItemCategoryName}}
-                                        </mat-option>
-                                      </mat-autocomplete>
-                                    </mat-form-field> -->
+                                  
                                     <airmid-autocomplete label="Item Category Name" formControlName="ItemCategoryId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemCategoryId"
@@ -122,23 +74,7 @@
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                    <mat-label>ItemGeneric Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select ItemGenericNameId" matInput
-                                      formControlName="ItemGenericNameId" [matAutocomplete]="autoItemGenericNameId" #ItemGeneric
-                                      (keydown)="onEnterItemGeneric($event)" [(ngModel)]="vItemGeneric">
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('ItemGenericNameId').setValue(''); isItemGenericNameIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoItemGenericNameId="matAutocomplete" [displayWith]="getOptionTextGenericname">
-                                      <mat-option *ngFor="let option of filteredItemgeneric | async" [value]="option">
-                                        {{option.ItemGenericName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                               
                                   <airmid-autocomplete label="Item Generic Name" formControlName="ItemGenericNameId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemGenericNameId"
@@ -148,23 +84,7 @@
                                   </div>
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                    <mat-label>ItemClass Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select ItemClassId" matInput #ItemClass
-                                      formControlName="ItemClassId" [matAutocomplete]="autoItemClassId" (keydown)="onEnterItemClass($event)"
-                                      [(ngModel)]="vItemClass">
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('ItemClassId').setValue(''); isClassSelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('ItemClassId').setValue(''); isClassSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoItemClassId="matAutocomplete" [displayWith]="getOptionTextClass">
-                                      <mat-option *ngFor="let option of filteredItemclass | async" [value]="option">
-                                        {{option.ItemClassName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                                  
                                   <airmid-autocomplete label="Item Class Name" formControlName="ItemClassId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ItemClassId"
@@ -174,23 +94,7 @@
                                   </div>
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                    <mat-label>CurrencyId </mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select StockUOMId" matInput
-                                      formControlName="CurrencyId" [matAutocomplete]="autoCurrencyId" (keydown)="onEnterCurrencyId($event)"
-                                      #CurrencyId >
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('CurrencyId').setValue(''); isCurrencySelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('CurrencyId').setValue(''); isCurrencySelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoCurrencyId="matAutocomplete" [displayWith]="getOptionTextCurrency">
-                                      <mat-option *ngFor="let option of filteredCurrency | async" [value]="option">
-                                        {{option.CurrencyName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                                 
                                   <airmid-autocomplete label="Currency Id" formControlName="CurrencyId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().CurrencyId"
@@ -200,23 +104,7 @@
                                   </div>
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                      <mat-label>UnitofMeasurement Name</mat-label>
-                                      <input matAutocompletePosition="below" type="text" placeholder="Select PurchaseUOMId" matInput
-                                        formControlName="PurchaseUOMId" [matAutocomplete]="autoPurchaseUOMId"
-                                        (keydown)="onEnterPurchaseUOMId($event)" #PurchaseUOMId required  [(ngModel)]="vPurchaseUOMId">
-                                      <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('PurchaseUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('PurchaseUOMId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                      </span>
-                                      <mat-autocomplete #autoPurchaseUOMId="matAutocomplete" [displayWith]="getOptionTextPurchaseUMO">
-                                        <mat-option *ngFor="let option of filteredUnitofmeasurement | async" [value]="option">
-                                          {{option.UnitOfMeasurementName}}
-                                        </mat-option>
-                                      </mat-autocomplete>
-                                    </mat-form-field> -->
+                                   
                                     <airmid-autocomplete label="Unit Of Measurement" formControlName="PurchaseUOMId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().PurchaseUOMId"
@@ -230,23 +118,7 @@
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                   
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                    <mat-label>Stock UMOID </mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select StockUOMId" matInput
-                                      formControlName="StockUOMId" [matAutocomplete]="autoStockUOMId" (keydown)="onEnterStockUOMId($event)"
-                                      #StockUOMId>
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('StockUOMId').setValue(''); isPurchaseUOMIdSelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('StockUOMId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoStockUOMId="matAutocomplete" [displayWith]="getOptionTextStockUOMId">
-                                      <mat-option *ngFor="let option of filteredStockUOMId | async" [value]="option">
-                                        {{option.UnitOfMeasurementName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                                  
                                   <airmid-autocomplete label="Stock UOM Id" formControlName="StockUOMId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().StockUOMId"
@@ -347,23 +219,7 @@
                                   </div>
                                 
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                    <mat-label>Drug TYpe</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select DrugType" matInput
-                                      formControlName="DrugType" [matAutocomplete]="autoDrugType" (keydown)="onEnterDrugType($event)"
-                                      #DrugType [(ngModel)]="vDrugType">
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('DrugType').setValue(''); isDugtypeSelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('DrugType').setValue(''); isDugtypeSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoDrugType="matAutocomplete" [displayWith]="getOptionTextDrugtype">
-                                      <mat-option *ngFor="let option of filteredOptionsDrugtype | async" [value]="option">
-                                        {{option.DrugTypeName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                                 
                                   <airmid-autocomplete label="Drug Type" formControlName="DrugType"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().DrugType"
@@ -373,23 +229,7 @@
                                   </div>
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                    <mat-label>Manufacture Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select ManufId" matInput
-                                      (keydown)="onEnterManufId($event)" #ManufId formControlName="ManufId" [matAutocomplete]="autoManufId"
-                                      [(ngModel)]="vManufId">
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('ManufId').setValue(''); isManuSelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('ManufId').setValue(''); isManuSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoManufId="matAutocomplete" [displayWith]="getOptionTextManu">
-                                      <mat-option *ngFor="let option of filteredOptionsManu | async" [value]="option">
-                                        {{option.ManufName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                                 
                                   <airmid-autocomplete label="Manufacture Name" formControlName="ManufId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().ManufId"
@@ -403,23 +243,7 @@
                                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                       
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- <mat-form-field appearance="outline" fxFlex style="margin-right:10px;">
-                                      <mat-label>Company Name </mat-label>
-                                      <input matAutocompletePosition="below" type="text" placeholder="Select Company" matInput
-                                        (keydown)="onEnterCompany($event)" #Company formControlName="CompanyId" [matAutocomplete]="autoCompany"
-                                        [(ngModel)]="vCompanyId">
-                                      <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('CompanyId').setValue(''); isCompanySelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                          (click)="itemForm.get('CompanyId').setValue(''); isCompanySelected = false;">search</mat-icon>
-                                      </span>
-                                      <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="getOptionTextCompany">
-                                        <mat-option *ngFor="let option of filteredOptionsCompany | async" [value]="option">
-                                          {{option.CompanyName}}
-                                        </mat-option>
-                                      </mat-autocomplete>
-                                    </mat-form-field> -->
+                                    
                                     <airmid-autocomplete label="Company Name" formControlName="CompanyId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().CompanyId"
@@ -428,33 +252,10 @@
                                     </airmid-autocomplete>
                                   </div>
                       
-                                  <!-- <mat-form-field appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
-                                    <mat-label>Store Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select StoreId" matInput
-                                      formControlName="StoreId" [matAutocomplete]="autoStoreId" required #storename
-                                      (keydown)="onEnterstorename($event)" [(ngModel)]="vStoreName">
-                                    <span matSuffix style="display: flex;">
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('StoreId').setValue(''); isStoreSelected = false;">close</mat-icon>
-                                      <mat-icon class="mat-icon-close"
-                                        (click)="itemForm.get('StoreId').setValue(''); isStoreSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoStoreId="matAutocomplete" [displayWith]="getOptionTextStore">
-                                      <mat-option *ngFor="let option of filteredOptionsStore | async" [value]="option"> 
-                                        {{option.StoreName}}
-                                      </mat-option>
-                                    </mat-autocomplete>
-                                  </mat-form-field> -->
+                                  
                       
                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <!-- <mat-form-field  appearance="outline" fxFlex fxFlex.xs="100%" style="margin-right:10px;">
-                                    <mat-label>Store Name</mat-label>
-                                    <mat-select  [(ngModel)]="vStoreName"  multiple  formControlName="StoreId" #storename>
-                                      <mat-option *ngFor="let option of StorecmbList" [value]="option" > 
-                                        {{ option.StoreName }}
-                                      </mat-option>
-                                    </mat-select>
-                                  </mat-form-field> -->
+                                 
                                   <airmid-autocomplete label="Store Name" formControlName="StoreId"
                                         [formGroup]="itemForm"
                                         [validations]="getValidationMessages().StoreId"
@@ -490,19 +291,6 @@
                       
                         </div>
                       </div>
-                
-                
-                <!-- </mat-tab-group> -->
-
-                <!-- <div fxLayoutAlign="end">
-                    <div class="sales-footer-buttons gap-8">
-                        <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
-                            style="font-weight: bold;margin-right: 20px;">IsActive
-                        </mat-checkbox>
-                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>&nbsp;
-                        <button class="btn btn-danger-outline" (click)="onClear">Close</button>
-                    </div>
-                </div> -->
                
                 
             </div>

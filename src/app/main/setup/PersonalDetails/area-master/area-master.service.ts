@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -65,4 +64,3 @@ export class AreaMasterService {
         return this._httpClient.DeleteData("AreaMaster?Id=" + m_data.toString());
     }
 }
-// Set NODE_OPTIONS="--max-old-space-size=8192"

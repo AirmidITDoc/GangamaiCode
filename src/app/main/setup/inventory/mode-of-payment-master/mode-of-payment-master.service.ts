@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -58,10 +58,6 @@ export class ModeOfPaymentMasterService {
             return this._httpClient.PutData("ModeOfPayment/" + Param.id, Param, showLoader);
         } else return this._httpClient.PostData("ModeOfPayment", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("ModeOfPayment", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ModeOfPayment?Id=" + m_data.toString());

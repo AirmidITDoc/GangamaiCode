@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -29,8 +29,6 @@ export class ItemGenericMasterService {
                 ]
             ],
             isDeleted: ["false"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
@@ -57,10 +55,6 @@ export class ItemGenericMasterService {
             return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param, showLoader);
         } else return this._httpClient.PostData("GenericMaster", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("ItemGenericName", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ItemGenericName?Id=" + m_data.toString());

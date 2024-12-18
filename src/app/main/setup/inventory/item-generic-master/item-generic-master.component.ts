@@ -1,10 +1,6 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { ItemGenericMasterService } from "./item-generic-master.service";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewGenericComponent } from "./new-generic/new-generic.component";

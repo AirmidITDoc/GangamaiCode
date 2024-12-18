@@ -1,12 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { CurrencymasterService } from "./currencymaster.service";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";

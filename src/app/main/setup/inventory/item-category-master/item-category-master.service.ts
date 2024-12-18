@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -29,14 +28,7 @@ export class ItemCategoryMasterService {
             ],
             itemTypeId: ["",
                 Validators.required
-                // Validators.pattern("^[0-9]*$"),
-                // Validators.minLength(1),
-                // Validators.maxLength(5),
             ],
-            // ItemTypeName: [""],
-            // IsDeleted: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
@@ -58,8 +50,6 @@ export class ItemCategoryMasterService {
             ],
             itemTypeId: [
                 { name: "required", Message: "ItemType is required" }
-                // { name: "maxlength", Message: "ItemType Id should not be greater than 10 num." },
-                // { name: "pattern", Message: "Characters not allowed." }
             ],
         };
     }
@@ -69,10 +59,6 @@ export class ItemCategoryMasterService {
             return this._httpClient.PutData("ItemCategoryMaster/" + Param.itemCategoryId, Param, showLoader);
         } else return this._httpClient.PostData("ItemCategoryMaster", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("ItemCategoryMaster", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());

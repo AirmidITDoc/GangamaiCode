@@ -23,10 +23,6 @@ export class NewUnitComponent implements OnInit {
       var m_data = {
         unitId: this.data?.unitId,
         unitName: this.data?.unitName.trim(),
-      //   printSeqNo: this.data?.printSeqNo,
-      //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
-      //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
-      // isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.unitForm.patchValue(m_data);
   }

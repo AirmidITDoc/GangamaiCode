@@ -1,7 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { gridRequest } from 'app/core/models/gridRequest';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -32,8 +30,6 @@ createTemplateForm(): FormGroup {
       templateName: [""], 
       templateDesc:[""],
       templateDescInHtml:[""],
-      // TemplateDesc:[""],
-      // IsDeleted:['true']
   });
 }
 
@@ -42,10 +38,6 @@ public templateMasterSave(Param: any, showLoader = true) {
       return this._httpClient.PutData("PathologyTemplate/" + Param.templateId, Param, showLoader);
   } else return this._httpClient.PostData("PathologyTemplate", Param, showLoader);
 }
-
-// public deactivateTheStatus(m_data) {
-//   return this._httpClient.PostData("PathologyTemplate", m_data);
-// }
 
 public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("PathologyTemplate?Id=" + m_data.toString());

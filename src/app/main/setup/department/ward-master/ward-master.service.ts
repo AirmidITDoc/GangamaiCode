@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
@@ -27,14 +25,9 @@ export class WardMasterService {
                 ]
             ],
             locationId: [""],
-           // locationName: [""],
            classId: [""],
-            //className: [""],
             roomType: ["1"],
             isAvailable: ["1"],
-           // isDeleted: ["false"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {

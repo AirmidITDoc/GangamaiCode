@@ -1,16 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { NotificationServiceService } from "app/core/notification-service.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { PatienttypeMasterService } from "./patienttype-master.service";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewPatientTypeComponent } from "./new-patient-type/new-patient-type.component";

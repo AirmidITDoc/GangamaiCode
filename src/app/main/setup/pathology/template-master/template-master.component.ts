@@ -1,14 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TemplateServieService } from './template-servie.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatAccordion } from '@angular/material/expansion';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { TemplateFormComponent } from './template-form/template-form.component';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
@@ -78,8 +73,6 @@ export class TemplateMasterComponent implements OnInit {
     public _TemplateServieService: TemplateServieService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    private reportDownloadService: ExcelDownloadService,
-    private _fuseSidebarService: FuseSidebarService,
   ) { }
 
   ngOnInit(): void {

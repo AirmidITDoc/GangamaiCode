@@ -1,26 +1,11 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { NotificationServiceService } from 'app/core/notification-service.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { EditorComponent } from './editor/editor.component';
 import { RadiologyTemplateFormComponent } from './radiology-template-form/radiology-template-form.component';
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
 
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { MAT_TAB_GROUP, MatTabGroup } from '@angular/material/tabs';
 import { ToastrService } from 'ngx-toastr';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import Swal from 'sweetalert2';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';

@@ -1,13 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { CategoryMasterService } from "./category-master.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -73,8 +69,6 @@ export class CategoryMasterComponent implements OnInit {
     constructor(
         public _categorymasterService: CategoryMasterService,
         public _matDialog: MatDialog,
-        private accountService: AuthenticationService,
-        private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
 

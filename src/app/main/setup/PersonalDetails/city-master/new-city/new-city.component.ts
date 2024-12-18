@@ -35,7 +35,6 @@ export class NewCityComponent implements OnInit {
             this.cityId= this.data?.cityId,
             this.cityName= this.data?.cityName.trim(),
             this.stateId= this.data?.stateId
-            // this.isActive= JSON.stringify(this.data?.isActive)
         }
         var mdata={
             cityId: this.data?.cityId,

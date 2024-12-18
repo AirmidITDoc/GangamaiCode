@@ -28,9 +28,6 @@ export class NewItemcategoryComponent implements OnInit {
         itemCategoryId: this.data?.itemCategoryId,
         itemCategoryName: this.data?.itemCategoryName.trim(),
         itemTypeId: this.data?.itemTypeId,
-      //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
-      //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
-      // isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.categoryForm.patchValue(m_data);
   }

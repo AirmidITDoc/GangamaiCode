@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -57,10 +56,6 @@ export class ItemClassMasterService {
             return this._httpClient.PutData("ItemClassMaster/" + Param.itemClassId, Param, showLoader);
         } else return this._httpClient.PostData("ItemClassMaster", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("ItemClassMaster", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ItemClassMaster?Id=" + m_data.toString());

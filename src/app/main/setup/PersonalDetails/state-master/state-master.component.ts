@@ -1,13 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { takeUntil } from "rxjs/operators";
 import { StateMasterService } from "./state-master.service";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { ReplaySubject, Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";

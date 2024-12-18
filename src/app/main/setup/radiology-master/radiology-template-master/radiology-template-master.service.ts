@@ -1,7 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -29,7 +27,6 @@ export class RadiologyTemplateMasterService {
     ]
   ],
       templateDesc:['', Validators.required],
-      //IsDeleted:['true']
         });
   }
   createSearchForm(): FormGroup {
@@ -38,19 +35,6 @@ export class RadiologyTemplateMasterService {
         IsDeletedSearch: ["2"],
     });
 }
-  // filterForm(): FormGroup {
-  //   return this._formBuilder.group({
-  //   RegNoSearch:[0],
-  //   FirstNameSearch:[''],
-  //   LastNameSearch:[''],
-  //   PatientTypeSearch:['1'],
-  //   StatusSearch: ['0'],
-  //   CategoryId:[''],
-  //    start: [new Date().toISOString()],
-  //    end: [new Date().toISOString()],
-  //   });
-  // }
-
 
   initializeFormGroup() {
     this.createRadiologytemplateForm();
@@ -72,12 +56,8 @@ export class RadiologyTemplateMasterService {
         return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param, showLoader);
     } else return this._httpClient.PostData("RadiologyTemplate", Param, showLoader);
   }
-  
-//   public deactivateTheStatus(m_data) {
-//     return this._httpClient.PostData("RadiologyTemplate", m_data);
-//   }
 
-  public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("RadiologyTemplate?Id=" + m_data.toString());
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("RadiologyTemplate?Id=" + m_data.toString());
+    }
 }
-  }

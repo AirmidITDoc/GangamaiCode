@@ -21,7 +21,6 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export class NewHospitalComponent implements OnInit {
   Header: string;
   editorConfig: AngularEditorConfig = {
-      // color:true,
       editable: true,
       spellcheck: true,
       height: '35rem',
@@ -109,7 +108,7 @@ export class NewHospitalComponent implements OnInit {
       hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
       hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
       hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
-      // hospitalarr.push(hospitaldata);
+
   
      
       let submitData = {

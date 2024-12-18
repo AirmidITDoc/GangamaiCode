@@ -34,7 +34,6 @@ export class NewWardComponent implements OnInit {
       locationId: this.data?.locationId || this.locationId,
       isAvailable: JSON.stringify(this.data?.isAvailable),
       classId: this.data?.classId || this.classId
-      //  isDeleted: JSON.stringify(this.data?.isActive),
     };
     this.roomForm.patchValue(m_data);
   }

@@ -1,12 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
-import { NotificationServiceService } from "app/core/notification-service.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { MaritalstatusMasterService } from "./maritalstatus-master.service";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";

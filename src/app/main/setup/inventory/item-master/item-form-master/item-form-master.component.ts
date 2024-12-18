@@ -1,20 +1,15 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import { Observable, ReplaySubject, Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { ItemMasterService } from "../item-master.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ItemMaster, ItemMasterComponent} from "../item-master.component";
-import { map, startWith, takeUntil } from "rxjs/operators";
+import { map, startWith } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { MatSelect } from "@angular/material/select";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-//import { CasepaperVisitDetails, HistoryClass } from "app/main/opd/new-casepaper/new-casepaper.component";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { DatePipe } from "@angular/common";
-import { element } from "protractor";
 import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
 
 @Component({
@@ -108,7 +103,6 @@ export class ItemFormMasterComponent implements OnInit {
     vCompanyId: any;
     vStoragelocation: any;
     vchkactive: any=true;
-    // vStoragelocation:any;
 
     private _onDestroy = new Subject<void>();
     msg: any;
@@ -181,20 +175,7 @@ export class ItemFormMasterComponent implements OnInit {
         ); 
     }
   
-    // getAssigneToStoreList() {
-    //     var vadat = {
-    //         'ItemID': this.registerObj.ItemID
-    //     }
-    //     console.log(vadat);
-    //     this._itemService.getAssigneToStoreList(vadat).subscribe(data => {
-    //         this.filteredStore = data;
-    //         console.log(this.filteredStore)
-
-    //         const AssignStore = this.StorecmbList.filter(c => c.Storeid == this.filteredStore.StoreId);
-    //         console.log(AssignStore)
-    //         //this.itemForm.get('StoreId').setValue(ddValue[0]); 
-    //     }) 
-    // }
+  
     filteredStore:any=[];
     storelist:any=[];
     getAssigneToStoreList() {
@@ -501,15 +482,7 @@ export class ItemFormMasterComponent implements OnInit {
             this.StorecmbList = data;
             console.log(this.StorecmbList)
            
-            // if (this.data) {
-               
-            //     this.data.registerObj.StoreId =this._loggedService.currentUserValue.storeId;
-            //     const ddValue = this.StorecmbList.filter(c => c.Storeid == this.data.registerObj.StoreId);
-            //     this.itemForm.get('StoreId').setValue(ddValue[0]);
-
-            //     this.itemForm.updateValueAndValidity();
-            //     return;
-            // }
+         
 
         });
     }
@@ -536,7 +509,7 @@ export class ItemFormMasterComponent implements OnInit {
 
  
 
-    //casePaperData: CasepaperVisitDetails = new CasepaperVisitDetails({});
+   
  
 
     getOptionTextManu(option) {
@@ -883,18 +856,7 @@ export class ItemFormMasterComponent implements OnInit {
             });
             return;
         }
-        // if ((this.vItemTypeID == undefined || this.vItemTypeID == undefined || this.vItemTypeID == undefined)) {
-        //     this.toastr.warning('Please enter ItemType.', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // if ((this.vPurchaseUOMId == undefined || this.vPurchaseUOMId == undefined || this.vPurchaseUOMId == undefined)) {
-        //     this.toastr.warning('Please enter UnitMeasurementName..', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
+
         if ((this.vConversionFactor == undefined || this.vConversionFactor == undefined || this.vConversionFactor == undefined)) {
             this.toastr.warning('Please enter ConversionFactor.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -908,44 +870,7 @@ export class ItemFormMasterComponent implements OnInit {
             });
             return;
         }
-        // if ((this.vCGST == undefined || this.vSGST == undefined || this.vIGST == undefined)) {
-        //     this.toastr.warning('Please enter GST.', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // if(parseFloat(this.vCGST) > 0){
-        //     if(!this.gstPerArray.some(item => item.gstPer ==  parseFloat(this.vCGST ))) {
-        //         this.toastr.warning('Please enter CGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-        //             toastClass: 'tostr-tost custom-toast-warning',
-        //         });
-        //         return 
-        //     } 
-        // }
-        // if(parseFloat(this.vSGST) > 0){
-        //     if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vSGST))) {
-        //         this.toastr.warning('Please enter SGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-        //             toastClass: 'tostr-tost custom-toast-warning',
-        //         });
-        //         return 
-        //     } 
-        // } 
-        // if(parseFloat(this.vIGST) > 0){ 
-        //     if(!this.gstPerArray.some(item => item.gstPer == parseFloat(this.vIGST))) {
-        //         this.toastr.warning('Please enter IGST percentage as 2.5%, 6%, 9% or 14%', 'Warning !', {
-        //             toastClass: 'tostr-tost custom-toast-warning',
-        //         });
-        //         return 
-        //     }  
-        // }
-    
-        // if ((this.vStoreName == undefined || this.vStoreName == undefined || this.vStoreName == undefined)) {
-        //     this.toastr.warning('Please select StoreName.', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-
+       
         this.selectedStore = this.vStoreName;
       
 ``       //console.log(this.selectedStore);
@@ -998,17 +923,7 @@ export class ItemFormMasterComponent implements OnInit {
                 this.Savebtn = true;
 
                 var data2 = [];
-                // for (var val of this.itemForm.get("StoreId").value) {
-                // var data = {
-                //     storeId: this.itemForm.get("StoreId").value.Storeid,
-                //     itemId: 0,
-                // };
-                // this.selectedStore.forEach(element =>{
-                    // let data ={
-                    //     storeId :element.Storeid,
-                    //     itemId: 0,
-                    // } 
-                    // data2.push(data);
+             
                     let AssignItemToStoresObj = {};
                     AssignItemToStoresObj['assignId'] = 0//element.StoreId
                     AssignItemToStoresObj['storeId'] = 1234 //this.storeId || "0";
@@ -1017,50 +932,7 @@ export class ItemFormMasterComponent implements OnInit {
                 // });
                 console.log("Insert data2:",data2);
               debugger
-                //  
-                // var m_data = {
-                //     insertItemMaster: {
-                //         itemName: this.itemForm.get("ItemName").value || "%",
-                //         itemTypeId: this.itemForm.get("ItemTypeID").value.ItemTypeId || 0,
-                //         ItemCategaryId: ItemCategaryId || 0,
-                //         itemGenericNameId: itemGenericNameId || 0,
-                //         itemClassId: itemClassId || 0,
-                //         purchaseUOMId: this.itemForm.get("PurchaseUOMId").value.UnitOfMeasurementId || 0,
-                //         stockUOMId: stockUOMId || 0,
-                //         conversionFactor: this.itemForm.get("ConversionFactor").value || 0,
-                //         currencyId: currencyId || 0,
-                //         taxPer: 0,
-                //         isDeleted: this.itemForm.get("IsDeleted").value || 0,
-                //         addedBy: this._loggedService.currentUserValue.userId || 0,
-                //         isBatchRequired: this.itemForm.get("IsBatchRequired").value || 0,
-                //         minQty: this.itemForm.get("MinQty").value || 0,
-                //         maxQty: this.itemForm.get("MaxQty").value || 0,
-                //         reorder: this.itemForm.get("ReOrder").value || 0,
-
-                //         hsNcode: this.itemForm.get("HSNcode").value || "%",
-                //         cgst: this.itemForm.get("CGST").value || "0",
-                //         sgst: this.itemForm.get("SGST").value || "0",
-                //         igst: this.itemForm.get("IGST").value || "0",
-                //         manufId: manufId || 0,
-                //         isNarcotic: 0,//this.itemForm.get("IsNarcotic").value || 0,
-
-                //         prodLocation: this.itemForm.get("Storagelocation").value || "%",
-                //         isH1Drug: 0,//Boolean(JSON.parse(this.itemForm.get("IsH1Drug").value)),
-                //         isScheduleH: 0,// Boolean(JSON.parse(this.itemForm.get("IsScheduleH").value)),
-                //         isHighRisk: 0,// Boolean(JSON.parse(this.itemForm.get("IsHighRisk").value)),
-                //         isScheduleX: 0,//Boolean(JSON.parse(this.itemForm.get("IsScheduleX").value)),
-                //         isLASA: 0,// Boolean(JSON.parse(this.itemForm.get("IsLASA").value)),
-                //         isEmgerency: 0,//Boolean(JSON.parse(this.itemForm.get("IsEmgerency").value)),
-
-                //         drugType: drugType || 0,
-                //         drugTypeName: drugTypeName || '',
-                //         itemCompnayId: itemCompnayId || 0,
-                //         isCreatedBy: formattedDate,
-                //         itemId: this.itemForm.get("ItemID").value || 0,
-                //     },
-
-                //     insertAssignItemToStore: data2,
-                // };
+               
 
                 var m_data={
                     "itemId": 0,
@@ -1101,24 +973,7 @@ export class ItemFormMasterComponent implements OnInit {
                 console.log(m_data);
 
                 this._itemService.insertItemMaster(m_data).subscribe((data) => {
-                //     this.msg = data;
-
-                //     if (data) {
-                //         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                //             toastClass: 'tostr-tost custom-toast-success',
-                //         });
-                //         this.Savebtn = false;
-                //         this.onClose() ;
-                //     } else {
-                //         this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
-                //             toastClass: 'tostr-tost custom-toast-error',
-                //         });
-                //     }
-                // }, error => {
-                //     this.toastr.error('Item-Form not Saved !, Please check API error..', 'Error !', {
-                //         toastClass: 'tostr-tost custom-toast-error',
-                //     });
-                // });
+               
                 this.toastr.success(data.message);
                  // this.onClear(true);
                 }, (error) => {
@@ -1128,10 +983,7 @@ export class ItemFormMasterComponent implements OnInit {
             else {
                 this.Savebtn = true;
                 var data3 = []; 
-                // var data4 = {
-                //     storeId: this.itemForm.get("StoreId").value.Storeid,//this._loggedService.currentUserValue.storeId,
-                //     itemId: this.itemForm.get("ItemID").value || 0,
-                // };
+               
 
                 this.selectedStore.forEach(element =>{
                     let data4 ={
@@ -1262,7 +1114,7 @@ export class ItemFormMasterComponent implements OnInit {
   
     onClear() {
         this.itemForm.reset();
-        // this.dialogRef.close(val);
+        this.dialogRef.close();
     }
     onClose() {
         this.itemForm.reset();

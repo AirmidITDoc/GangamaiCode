@@ -1,13 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { BedMasterService } from "./bed-master.service";
-import { ReplaySubject, Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { takeUntil } from "rxjs/operators";
-import { MatSort } from "@angular/material/sort";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -36,7 +29,6 @@ export class BedMasterComponent implements OnInit {
             { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width:600 },
             { heading: "Room Id", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width:200 },
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width:100 },
-              //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
                 {
                     heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                         {

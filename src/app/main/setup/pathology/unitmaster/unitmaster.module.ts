@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule, DatePipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { UnitmasterComponent } from "./unitmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { UnitmasterService } from "./unitmaster.service";

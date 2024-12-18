@@ -1,21 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { CategorymasterService } from "./categorymaster.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { timeStamp } from "console";
-import { forEach } from "lodash";
-import { MatAccordion } from "@angular/material/expansion";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { NewCategoryComponent } from "./new-category/new-category.component";
-
-
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -31,7 +22,6 @@ export class CategorymasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
-
     gridConfig: gridModel = {
         apiUrl: "PathCategoryMaster/List",
         columnsList: [
@@ -78,8 +68,6 @@ export class CategorymasterComponent implements OnInit {
     constructor(
         public _categorymasterService: CategorymasterService,
         public _matDialog: MatDialog,
-        private accountService: AuthenticationService,
-        private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
 

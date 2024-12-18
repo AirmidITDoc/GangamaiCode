@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -33,8 +32,6 @@ export class ReligionMasterService {
                 ]
             ],
             isActive: ["true"],
-            // AddedBy: [""],
-            // UpdatedBy: [""],
         });
     }
     initializeFormGroup() {

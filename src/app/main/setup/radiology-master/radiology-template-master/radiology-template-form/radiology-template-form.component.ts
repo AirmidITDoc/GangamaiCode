@@ -1,18 +1,7 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-// import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { NotificationServiceService } from 'app/core/notification-service.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
-import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { RadioPatientList } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
 import { ToastrService } from 'ngx-toastr';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormGroup } from '@angular/forms';
@@ -29,7 +18,6 @@ export class RadiologyTemplateFormComponent implements OnInit {
   vTemplateDesc:any;
   vTemplateName:any;
   editorConfig: AngularEditorConfig = {
-    // color:true,
     editable: true,
     spellcheck: true,
     height: '20rem',
@@ -54,7 +42,6 @@ export class RadiologyTemplateFormComponent implements OnInit {
           templateId: this.data?.templateId,
           templateName: this.data?.templateName.trim(),
           templateDesc: this.data?.templateDesc.trim(),
-        //  templateDescInHtml: this.data?.templateDescInHtml.trim(),
       };
       this.templateForm.patchValue(m_data);
   }

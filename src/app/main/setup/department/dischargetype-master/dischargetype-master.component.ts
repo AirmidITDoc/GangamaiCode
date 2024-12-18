@@ -1,15 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { DischargetypeMasterService } from "./dischargetype-master.service";
-import { MatAccordion } from "@angular/material/expansion";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
-import { NewWardComponent } from "../ward-master/new-ward/new-ward.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";

@@ -30,7 +30,6 @@ export class NewBedComponent implements OnInit {
         bedName: this.data?.bedName.trim(),
         roomId: this.data?.roomId || this.roomId,
         isAvailible: JSON.stringify(this.data?.isAvailible),
-         // isDeleted: JSON.stringify(this.data?.isActive),
       };
       this.bedForm.patchValue(m_data);
   }
@@ -75,14 +74,6 @@ export class NewBedComponent implements OnInit {
     } else{
         // update
     }
-    //   if (this.bedForm.valid) {
-    //       this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
-    //           this.toastr.success(response.message);
-    //           this.onClear(true);
-    //       }, (error) => {
-    //           this.toastr.error(error.message);
-    //       });
-    //   }
   }
 }
 

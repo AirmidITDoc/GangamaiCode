@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -60,10 +60,6 @@ export class ManufactureMasterService {
             return this._httpClient.PutData("ItemManufactureMaster/" + Param.itemManufactureId, Param, showLoader);
         } else return this._httpClient.PostData("ItemManufactureMaster", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("ItemManufactureMaster", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ItemManufactureMaster?Id=" + m_data.toString());

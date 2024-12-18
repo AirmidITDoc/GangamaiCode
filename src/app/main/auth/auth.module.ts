@@ -1,5 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { MenuMasterComponent } from './menu-master/menu-master.component';
+import { SharedModule } from "../shared/shared.module";
 
 const routes = [
     {
@@ -25,20 +27,25 @@ const routes = [
     //     path        : 'dashboards/project',
     //     loadChildren: () => import('./dashboards/project/project.module').then(m => m.ProjectDashboardModule)
     // },
+    // {
+    //     path        : 'menu-configure/menu-list',
+    //     loadChildren: () => import('./menu-configure/menu.module').then(m => m.MenuModule)
+    // },
+    // {
+    //     path: "menu-main",
+    //     loadChildren: () =>
+    //         import("./menu-configure/menu.module").then((m) => m.MenuModule),
+    // },
     {
-        path        : 'menu-configure/menu-list',
-        loadChildren: () => import('./menu-configure/menu.module').then(m => m.MenuModule)
-    },
-    {
-        path: "menu-main",
-        loadChildren: () =>
-            import("./menu-configure/menu.module").then((m) => m.MenuModule),
+        path :'menu-main',
+        loadChildren: () => import("./menu-master/menu-master.module").then(m => m.MenuMasterModule)
     }
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forChild(routes)
-    ],
+    RouterModule.forChild(routes)
+],
+    declarations: [],
 })
 export class AuthModule { }

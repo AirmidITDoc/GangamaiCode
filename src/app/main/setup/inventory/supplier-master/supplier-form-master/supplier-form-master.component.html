@@ -194,16 +194,7 @@
                             </mat-error>
                     </mat-form-field>
 
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>OpeningBal</mat-label>
-                        <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
-                             [(ngModel)]="vOpeningBal" #OpeningBal (keydown)="onEnterOpeningBal($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,10);">
-                        <mat-error class="error"
-                            *ngIf="supplierForm.get('OpeningBal').invalid && supplierForm.get('OpeningBal').touched">Only
-                            digits number is
-                            required</mat-error>
-                    </mat-form-field> -->
+                   
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -397,27 +388,7 @@
                         </mat-chip>
                     </mat-chip-list>
                 </div>
-                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Vender Type Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select VenderTypeId" matInput
-                            formControlName="VenderTypeId" [matAutocomplete]="autovender"
-                            (keydown)="onEnterVender($event)" #VenderTypeId>
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="supplierForm.get('VenderTypeId').setValue(''); isvenderselected = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="supplierForm.get('VenderTypeId').setValue(''); isvenderselected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autovender="matAutocomplete" [displayWith]="getOptionTextVendertype">
-                            <mat-option *ngFor="let option of filteredOptionsVender | async" [value]="option">
-                                {{option.VenderTypeName}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-
-
-                </div> -->
+                
                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" *ngIf="msmflag" class="mr-sm-12" fxFlex>

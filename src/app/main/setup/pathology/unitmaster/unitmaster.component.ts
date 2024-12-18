@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { UnitmasterService } from "./unitmaster.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -75,8 +71,6 @@ export class UnitmasterComponent implements OnInit {
     constructor(
         public _unitmasterService: UnitmasterService,
         public toastr: ToastrService,
-        private accountService: AuthenticationService,
-        private _fuseSidebarService: FuseSidebarService,
         public _matDialog: MatDialog,
     ) { }
 

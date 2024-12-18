@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -27,9 +26,6 @@ export class CurrencymasterService {
                 ]
             ],
             isDeleted: ["false"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
 
@@ -59,10 +55,6 @@ export class CurrencymasterService {
             return this._httpClient.PutData("CurrencyMaster/" + Param.currencyId, Param, showLoader);
         } else return this._httpClient.PostData("CurrencyMaster", Param, showLoader);
     }
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("CurrencyMaster", m_data);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("CurrencyMaster?Id=" + m_data.toString());

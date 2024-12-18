@@ -1,13 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ItemCategoryMasterService } from "./item-category-master.service";
-import { ReplaySubject, Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { takeUntil } from "rxjs/operators";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -17,7 +10,6 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { NewItemcategoryComponent } from "./new-itemcategory/new-itemcategory.component";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { NewCategoryComponent } from "../../pathology/categorymaster/new-category/new-category.component";
 
 @Component({
     selector: "app-item-category-master",
@@ -78,8 +70,6 @@ export class ItemCategoryMasterComponent implements OnInit {
     constructor(
         public _categorymasterService: ItemCategoryMasterService,
         public _matDialog: MatDialog,
-        private accountService: AuthenticationService,
-        private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
 

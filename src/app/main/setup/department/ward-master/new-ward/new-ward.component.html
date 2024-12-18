@@ -26,16 +26,13 @@
                     [value]="" [formGroup]="roomForm"
                     [validations]="_WardMasterService.getValidationMessages().roomName" [maxLength]="500">
                     </airmid-textbox>
-                    <!-- [maxLength]="300" -->
+                    
                 </div>
                 </div>
                 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <airmid-autocomplete [mode]="autocompleteModelocation" (selectDdlObject)="selectChangelocation($event)"></airmid-autocomplete>
-                    <airmid-autocomplete [mode]="autocompleteModeclass" (selectDdlObject)="selectChangeclass($event)"></airmid-autocomplete>
-                    <airmid-autocomplete [mode]="autocompleteModeroomType" (selectDdlObject)="selectChangeroomType($event)"></airmid-autocomplete> -->
-              
+                    
                         <airmid-autocomplete 
                             label="LocationId" 
                             formControlName="locationId"

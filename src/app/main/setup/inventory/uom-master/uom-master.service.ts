@@ -57,10 +57,6 @@ export class UomMasterService {
         } else return this._httpClient.PostData("UnitOfMeasurement", Param, showLoader);
     }
 
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData("UnitOfMeasurement", m_data);
-    // }
-
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("UnitOfMeasurement?Id=" + m_data.toString());
     }

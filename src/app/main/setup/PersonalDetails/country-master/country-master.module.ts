@@ -1,9 +1,8 @@
 import { NgModule } from "@angular/core";
-
 import { CountryMasterComponent } from "./country-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { CountryMasterService } from "./country-master.service";
-import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatRadioModule } from "@angular/material/radio";

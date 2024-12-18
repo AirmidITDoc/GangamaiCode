@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { TemplateServieService } from '../template-servie.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 import { FormGroup } from '@angular/forms';
@@ -20,7 +19,6 @@ export class TemplateFormComponent implements OnInit {
 
     vTemplateDesc:any;
     editorConfig: AngularEditorConfig = {
-    // color:true,
     editable: true,
     spellcheck: true,
     height: '20rem',
@@ -52,12 +50,6 @@ export class TemplateFormComponent implements OnInit {
     }
     onSubmit() {
 
-        // if(this.templateForm.invalid){
-        //     this.toastr.warning('please check from is invalid', 'Warning !', {
-        //         toastClass:'tostr-tost custom-toast-warning',
-        //     })
-        //     return;
-        // }else{
             if (!this.templateForm.get("templateId").value) {
                 debugger
                 var mdata={
@@ -75,7 +67,7 @@ export class TemplateFormComponent implements OnInit {
                       this.toastr.error(error.message);
                   });
               }
-        // }
+        
         this.onClose();
     }
     onClose(){
@@ -84,10 +76,7 @@ export class TemplateFormComponent implements OnInit {
     }
 
     onClear(){}
-    // onClear(val: boolean) {
-    //     this.templateForm.reset();
-    //     this.dialogRef.close(val);
-    // }
+
     onBlur($event: any) {
     throw new Error('Method not implemented.');
     }

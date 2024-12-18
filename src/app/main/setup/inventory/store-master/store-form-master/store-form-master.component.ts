@@ -1,13 +1,9 @@
-import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
 import { StoreMasterService } from "../store-master.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { StoreMasterComponent } from "../store-master.component";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AngularEditorConfig } from "@kolkov/angular-editor";
-import { Observable } from "rxjs";
-import { map, startWith } from "rxjs/operators";
 import { FormGroup } from "@angular/forms";
 
 @Component({
@@ -20,7 +16,6 @@ import { FormGroup } from "@angular/forms";
 export class StoreFormMasterComponent implements OnInit {
     Header: string;
     editorConfig: AngularEditorConfig = {
-        // color:true,
         editable: true,
         spellcheck: true,
         height: '20rem',
@@ -53,49 +48,6 @@ export class StoreFormMasterComponent implements OnInit {
       };
       this.storeForm.patchValue(m_data);
     }
-
-    /**
-
-{
-  "storeId": 0,
-  "storeShortName": "shilpa",
-  "storeName": "medical",
-  "indentPrefix": "abc",
-  "indentNo": "123",
-  "purchasePrefix": "xyz",
-  "purchaseNo": "453",
-  "grnPrefix": "sss",
-  "grnNo": "5643",
-  "grnreturnNoPrefix": "123",
-  "grnreturnNo": "string",
-  "issueToDeptPrefix": "string",
-  "issueToDeptNo": "11",
-  "returnFromDeptNoPrefix": "string",
-  "returnFromDeptNo": "string",
-  "workOrderPrefix": "string",
-  "workOrderNo": "string",
-  "pharSalCountId": 0,
-  "pharSalRecCountId": 0,
-  "pharSalReturnCountId": 0,
-  "pharAdvId": 0,
-  "pharAdvReptId": 0,
-  "pharAdvRefId": 0,
-  "pharAdvRefReptId": 0,
-  "printStoreName": "string",
-  "dlNo": "string",
-  "gstin": "string",
-  "storeAddress": "pune",
-  "hospitalMobileNo": "9987654311",
-  "hospitalEmailId": "shilpameshra@23gmail.com",
-  "printStoreUnitName": "facewash",
-  "isPharStore": true,
-  "isWhatsAppMsg": true,
-  "whatsAppTemplateId": "string",
-  "isSmsmsg": true,
-  "smstemplateId": "string"
-}
-
-     */
 
     onSubmit() {
         debugger

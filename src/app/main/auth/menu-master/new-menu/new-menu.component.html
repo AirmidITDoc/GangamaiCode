@@ -1,0 +1,169 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Menu Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="menuForm">
+                <input type="hidden" name="id" formControlName="id">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Menu Number" 
+                            formControlName="bedName" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().bedName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="UP Id" 
+                            formControlName="upId" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().upId" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Menu Name" 
+                            formControlName="linkName" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().linkName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Icon" 
+                            formControlName="icon" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().icon" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Action" 
+                            formControlName="linkAction" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().linkAction" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Display No" 
+                            formControlName="isDisplay" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().bedName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <mat-select placeholder="Please Select IsBlock" 
+                            formControlName="menu_master_block" required>
+                            <!-- <mat-label>Is Block</mat-label> -->
+                            <mat-option value="0">0</mat-option>
+                            <mat-option value="1">1</mat-option>
+                        </mat-select>
+                        <mat-error>Please Select IsBlock</mat-error>
+                    </mat-form-field>
+
+                    <!-- <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="IsBlock" 
+                            formControlName="upId" 
+                            [value]="" 
+                            [formGroup]="menuForm"
+                            [validations]="_MenuMasterService.getValidationMessages().upId" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div> -->
+                
+                </div>
+
+                
+                
+            </form>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div>
+                <mat-radio-group name="isActive" formControlName="isActive">
+                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="button-row">
+                <!-- <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
+                [disabled]="saveflag">Save</button>
+                <button mat-raised-button color="warn" (click)="onClear(false)">Clear</button> -->
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                    <span>Save</span>
+                </button>
+            </div>
+        
+        </div>
+        
+        <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between"> -->
+ 
+            <!-- <div>
+                <mat-radio-group name="isActive" formControlName="isActive">
+                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div> -->
+ 
+            <!-- <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                
+                <mat-radio-group name="isActive" formControlName="isActive">
+                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    </mat-radio-button> -->
+                    <!-- <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                    </mat-radio-button> -->
+                <!-- </mat-radio-group>
+
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                    <span>Save</span>
+                </button>
+            
+            </div>
+ 
+        </div> -->
+    </div>
+</div>

@@ -25,13 +25,10 @@ export class CityMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
-            stateId: ["", Validators.required],
-            // StateName: [""],
-            // countryId: [""],
-            // CountryName: [""],
-             isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
+            stateId: ["", 
+                Validators.required
+            ],
+            isActive: ["true"],
         });
     }
     createSearchForm(): FormGroup {
