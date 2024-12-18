@@ -14,6 +14,7 @@ import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -63,6 +64,7 @@ export class PhoneappointmentComponent implements OnInit {
     public _matDialog: MatDialog,
     private router: Router,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     public _geturl :GeturlService
   ) { }
 
@@ -178,17 +180,22 @@ CanclePhoneApp(contact){
         console.log(submitData);
         this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(response => {
           if (response) {
-            Swal.fire('Congratulations !', 'Phone Appointment cancelled Successfully!', 'success').then((result) => {
-              
+            this.toastr.success('Record Cancelled Successfully.', 'Cancelled !', {
+              toastClass: 'tostr-tost custom-toast-success',
             });
-          } else {
-            Swal.fire('Error !', 'Phone Appointment cancelled data not saved', 'error');
+          }
+          else {
+            this.toastr.error('Record Data not Cancelled !, Please check API error..', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
           }
           this.isLoading1 = '';
         });
+      }else{
+        this.getPhoneAppointList();
       }
     });
-    this.getPhoneAppointList();
+    
   }
 
 }

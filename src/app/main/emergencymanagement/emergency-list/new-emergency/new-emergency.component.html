@@ -12,7 +12,7 @@
             </span>
         </div>
         <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-            style="margin-left: 680px;" >
+            style="margin-left: 750px;" >
         </app-common-date>
         <div class="close-icon">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -163,24 +163,6 @@
                                                     </mat-form-field>
                                                 </div>
                                             </div>
-
-                                            <!-- <div fxFlex="25%" fxFlex.xs="100%" *ngIf="dateStyle=='Date'">
-                                                <div fxLayout="row">
-                                                    <mat-form-field appearance="outline">
-                                                        <input matInput [matDatepicker]="validFromPicker"
-                                                            formControllName="DateOfBirth" #bday
-                                                            [value]="registerObj.DateofBirth"
-                                                            (keydown)="onEnterbday($event)"
-                                                            [disabled]="dateStyle!='Date'"
-                                                            (dateChange)="onChangeDateofBirth($event.value)"
-                                                            placeholder="mm/dd/yyyy">
-                                                        <mat-datepicker-toggle matSuffix
-                                                            [for]="validFromPicker"></mat-datepicker-toggle>
-                                                        <mat-datepicker #validFromPicker></mat-datepicker>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div> -->
-
                                                 
                                             <!-- age, month, dat -->
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -397,9 +379,9 @@
                             
                         
 
-                        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end" style="margin-right: 15px;"> 
+                        <div class="modal-footer-buttons gap-8 mt-12" fxLayout="row" fxLayoutAlign="end" style="margin-right: 15px;"> 
                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Savebtn">Save</button>
+                            <button class="btn btn-primary " (click)="onSave()" [disabled]="Savebtn">Save</button>
                         </div>
                     </div>
                 </div>

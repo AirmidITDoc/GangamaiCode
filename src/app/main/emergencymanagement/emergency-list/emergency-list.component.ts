@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-emergency-list',
@@ -20,6 +21,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 })
 export class EmergencyListComponent implements OnInit {
   displayedColumns = [
+    'IsCancelled',
     'EmgDate',
     'PatientName',
     'MobileNo',
@@ -79,8 +81,8 @@ export class EmergencyListComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewEmergencyComponent,
       {
         maxWidth: "100%",
-        height: '65%',
-        width: '75%', 
+        height: '80%',
+        width: '80%', 
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -93,8 +95,8 @@ export class EmergencyListComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewEmergencyComponent,
       {
         maxWidth: "100%",
-        height: '65%',
-        width: '75%', 
+        height: '80%',
+        width: '80%', 
         data: {
           Obj: contact
         }
@@ -104,6 +106,49 @@ export class EmergencyListComponent implements OnInit {
       this.getEmergencyList();
     });
   }
+
+    CanclePhoneApp(contact){
+  
+      Swal.fire({
+        title: 'Do you want to cancel the Emergency Recode ',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel it!" 
+  
+      }).then((flag) => {
+  
+        if (flag.isConfirmed) {
+          let emgcancle={};
+          emgcancle['emgId'] =  contact.EmgId;
+         
+          let submitData = {
+            "ipdEmergencyRegCancel": emgcancle,
+            "isCanceledBy": 0
+          
+          };
+          console.log(submitData);
+          this._EmergencyListService.engCancle(submitData).subscribe(response => {
+            if (response) {
+              this.toastr.success('Record Cancelled Successfully.', 'Cancelled !', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
+            }
+            else {
+              this.toastr.error('Record Data not Cancelled !, Please check API error..', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+            }
+            this.sIsLoading = '';
+          });
+        }else{
+          this.getEmergencyList();
+        }
+      });
+      
+    }
 }
 export class EmergencyList {
  
@@ -116,6 +161,8 @@ export class EmergencyList {
   City:string;
   DepartementName:any;
   AddedBy:any;
+  EmgId:any;
+  IsCancelled: boolean;
 
   constructor(EmergencyList) {
     {
@@ -124,10 +171,12 @@ export class EmergencyList {
       this.MobileNo = EmergencyList.MobileNo || 0; 
       this.Doctorname = EmergencyList.Doctorname || '';
       this.PatientName = EmergencyList.PatientName || '';
-      this.Address=EmergencyList.Address || '',
-      this.City=EmergencyList.City || '',
-      this.DepartementName=EmergencyList.DepartementName || ''
-      this.AddedBy=EmergencyList.AddedBy || ''
+      this.Address=EmergencyList.Address || '';
+      this.City=EmergencyList.City || '';
+      this.DepartementName=EmergencyList.DepartementName || '';
+      this.AddedBy=EmergencyList.AddedBy || '';
+      this.EmgId=EmergencyList.EmgId || '';
+      this.IsCancelled = EmergencyList.IsCancelled || '';
     }
   }
 }
