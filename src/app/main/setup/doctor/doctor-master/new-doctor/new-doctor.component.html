@@ -15,7 +15,7 @@
 
 <mat-card>
     <form [formGroup]="myForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
-        <input type="hidden" name="DoctorId" formControlName="DoctorId">
+        <input type="hidden" name="DoctorId" formControlName="DoctorId" [(ngModel)]="registerObj.doctorId">
 
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
@@ -62,52 +62,6 @@
                         <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
                             [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                     </div>
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-button-toggle-group [(ngModel)]="dateStyle" (change)="OnChangeDobType($event)"
-                            aria-label="Font Style">
-                            <mat-button-toggle value="Date">Date</mat-button-toggle>
-                            <mat-button-toggle value="Day">Day</mat-button-toggle>
-                            <mat-button-toggle value="Month">Month</mat-button-toggle>
-                            <mat-button-toggle value="Year">Year</mat-button-toggle>
-                        </mat-button-toggle-group>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <div fxLayout="row" class="gap-8">
-                            <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Year'" formControlName="AgeYear" [(value)]="registerObj.ageYear"
-                                [formGroup]="myForm" [maxLength]="2" (keyup)="CalcDOB('Year',$event)">
-                            </airmid-textbox>
-                            <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Month'" formControlName="AgeMonth" [value]="registerObj.ageMonth"
-                                [formGroup]="myForm" [maxLength]="2" (keyup)="CalcDOB('Month',$event)">
-                            </airmid-textbox>
-                            <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" *ngIf="dateStyle=='Day'" formControlName="AgeDay" [value]="registerObj.ageDay"
-                                [formGroup]="myForm" [maxLength]="2" (keyup)="CalcDOB('Day',$event)">
-                            </airmid-textbox>
-                            <mat-form-field appearance="outline" fxFlex="60%">
-                                <input matInput [matDatepicker]="validFromPicker" formControllName="DateOfBirth" #bday
-                                    [value]="registerObj.dateofBirth" (keydown)="onEnterbday($event)"
-                                    [disabled]="dateStyle!='Date'" (dateChange)="onChangeDateofBirth($event.value)"
-                                    placeholder="mm/dd/yyyy">
-                                <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #validFromPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <div fxLayout="row" class="gap-8">
-                            <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" formControlName="AgeYear" [(value)]="registerObj.ageYear"
-                                [formGroup]="myForm" [readonly]="true" style="display: block !important;">
-                            </airmid-textbox>
-                            <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" formControlName="AgeMonth" [(value)]="registerObj.ageMonth"
-                                [formGroup]="myForm" [readonly]="true">
-                            </airmid-textbox>
-                            <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" formControlName="AgeDay" [(value)]="registerObj.ageDay"
-                                [formGroup]="myForm" [readonly]="true">
-                            </airmid-textbox>
-                        </div>
-                    </div> -->
-
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Pan Card No" formControlName="Pancardno" [value]="registerObj.panCardNo"
                             [formGroup]="myForm" [validations]="getValidationMessages().Pancardno" [maxLength]="10">
@@ -122,7 +76,7 @@
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Phone" formControlName="Phone" [value]="registerObj.mobile"
+                        <airmid-textbox label="Phone" formControlName="Phone" [value]="registerObj.phone"
                             [formGroup]="myForm" [validations]="getValidationMessages().Phone" [maxLength]="12">
                         </airmid-textbox>
                     </div>
@@ -248,76 +202,29 @@
             <div fxFlex>
                 <mat-card>
                     <form [formGroup]="myForm">
-
                         <div fxLayout="row">
-                            <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                <mat-label>Department</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Department"
-                                    [(ngModel)]="vDepartmentid" matInput #dept
-                                    (keydown)="onEnterdept($event,vDepartmentid)" formControlName="DepartmentId"
-                                    [matAutocomplete]="autoDep">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="myForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="myForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                    <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
-                                        <mat-checkbox [checked]="option.selected" (change)="toggleSelection(option)"
-                                            (click)="$event.stopPropagation()"> {{option.DepartmentName}}</mat-checkbox>
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            <mat-chip-list #chipList>
-                                <mat-chip *ngFor="let item of selectedItems">
-                                    {{ item.DepartmentName }} <mat-icon (click)="remove(item)">close</mat-icon>
-                                </mat-chip>
-                            </mat-chip-list> -->
-                            <!-- <airmid-autocomplete [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedep($event)" ></airmid-autocomplete> -->
-
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-autocomplete label="Department" formControlName="MDoctorDepartmentDets"
                                     [formGroup]="myForm" [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                     [validations]="getValidationMessages().Departmentid" #ddlDepartment
-                                    [mode]="autocompleteModedepartment" ValueField="departmentId" TextField="departmentName" ApiUrl="DepartmentMaster/get-departments">
+                                    ValueField="departmentId" TextField="departmentName"
+                                    ApiUrl="DepartmentMaster/get-departments">
                                 </airmid-autocomplete>
                             </div>
                             <mat-chip-list #chipList>
                                 <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
-                                    {{ item.departmentName }} <mat-icon (click)="removeDepartment(item)">close</mat-icon>
+                                    {{ item.departmentName }} <mat-icon
+                                        (click)="removeDepartment(item)">close</mat-icon>
                                 </mat-chip>
                             </mat-chip-list>
-
                         </div>
                     </form>
                 </mat-card>
             </div>
         </div>
-
     </form>
-
-
     <div class="row row-container" style="width: 100%;">
         <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
-
-            <form [formGroup]="myForm">
-                <div class="sales-radio-buttons gap-2" fxLayout="row">
-                    <!-- <mat-slide-toggle name="IsConsultant" formControlName="IsConsultant"
-                        [(ngModel)]="registerObj.IsConsultant">
-                        IsConsultant
-                    </mat-slide-toggle>
-    
-                    <mat-slide-toggle name="IsRefDoc" formControlName="IsRefDoc" [(ngModel)]="registerObj.IsRefDoc">
-                        IsRefDoctor
-                    </mat-slide-toggle>
-                    <mat-checkbox aria-label="Is Active" formControlName="isActive" (checked)=true
-                        [(ngModel)]="registerObj.IsActive" style="font-weight: bold;">
-                        IsActive
-                    </mat-checkbox> -->
-                </div>
-            </form>
-
             <div class="sales-footer-buttons gap-8" fxLayout="row">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
@@ -326,5 +233,4 @@
             </div>
         </div>
     </div>
-
 </mat-card>

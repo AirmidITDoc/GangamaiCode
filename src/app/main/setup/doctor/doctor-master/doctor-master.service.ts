@@ -177,8 +177,8 @@ export class DoctorMasterService {
     }
 
     public doctortMasterInsert(Param: any, showLoader = true) {
-        if (Param.doctorId) {
-            return this._httpClient.PutData("Doctor/Edit/" + Param.doctorId, Param, showLoader);
+        if (Param.DoctorId) {
+            return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param, showLoader);
         } else return this._httpClient.PostData("Doctor/InsertEDMX", Param, showLoader);
     }
 
