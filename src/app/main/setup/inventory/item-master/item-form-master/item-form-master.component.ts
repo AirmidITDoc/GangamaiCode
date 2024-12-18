@@ -23,31 +23,21 @@ export class ItemFormMasterComponent implements OnInit {
     itemForm:FormGroup;
 
     submitted = false;
-    CompanyList: any = [];
-    ItemTypecmbList: any = [];
-    ItemClasscmbList: any = [];
-    ItemCategorycmbList: any = [];
-    ItemGenericcmbList: any = [];
-    ItemUomcmbList: any = [];
-    StockUomcmbList: any = [];
-    ManufacurecmbList: any = [];
-    StorecmbList: any = [];
-    CurrencycmbList: any = [];
-    DrugList: any = [];
+   
     registerObj = new ItemMaster({});
 
     // new api
     autocompleteModeItemType:string="ItemType";
     autocompleteModeItemCategory:string="ItemCategory";
-    autocompleteModeItemGenericName:string="ItemGenericName";
+    autocompleteModeItemGenericName:string="ItemGeneric";
     autocompleteModeItemClass:string="ItemClass";
     autocompleteModeCurrency:string="Currency";
-    autocompleteModePurchaseUOM:string="PurchaseUOM";
-    autocompleteModeStockUOM:string="StockUOM";
+    autocompleteModePurchaseUOM:string="UnitofMeasure";
+    autocompleteModeStockUOM:string="UnitofMeasure";
     autocompleteModeCompany:string="Company";
-    autocompleteModeStore:string="StoreName";
+    autocompleteModeStore:string="Store";
     autocompleteModeDrugType:string="DrugType";
-    autocompleteModeMenu:string="ManufactureName";
+    autocompleteModeMenu:string="ItemManufacture";
 
     
     filteredOptionsManu: Observable<string[]>;
@@ -133,22 +123,12 @@ export class ItemFormMasterComponent implements OnInit {
             this.vSGST = this.registerObj.SGST
             this.vIGST = this.registerObj.IGST
             this.vchkactive = (this.registerObj.Isdeleted)
-           this.getAssigneToStoreList()
-            this.setDropdownObjs1();
-            this.getStoreNameMasterCombo();
+        //    this.getAssigneToStoreList()
+        //     this.setDropdownObjs1();
+            
         }
-        this.getitemtypeNameMasterCombo();
-        this.getitemclassNameMasterCombo();
-        this.getitemcategoryNameMasterCombo();
-        this.getitemgenericNameMasterCombo();
-        this.getitemunitofmeasureMasterCombo();
-        this.getStockUOMIDdMasterombo();
-        this.getStoreNameMasterCombo();
-        this.getManufactureNameMasterCombo();
-        this.getCurrencyNameMasterCombo();
-        this.getCompanyList();
-        this.getDrugTypeList();
-        this.setDropdownObjs1();
+      
+        // this.setDropdownObjs1();
     }
 
     onSave(row: any = null) {
@@ -167,108 +147,11 @@ export class ItemFormMasterComponent implements OnInit {
         });
     }
  
-
-    setDropdownObjs1() {  
-        this.filteredOptionsStore = this.itemForm.get('StoreId').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterStore(value) : this.StorecmbList.slice()),
-        ); 
-    }
-  
-  
-    filteredStore:any=[];
-    storelist:any=[];
-    getAssigneToStoreList() {
-        debugger
-        var vdata = {
-            'ItemID': this.registerObj.ItemID
-        }
-        this._itemService.getAssigneToStoreList(vdata).subscribe((data) => {
-          this.filteredStore.data = data;
-          console.log(data)  
-          console.log(this.filteredStore.data) 
-
-          this.StorecmbList = this.filteredStore;
-          console.log(this.StorecmbList )
-          this.vStoreName = true
-          this.itemForm.get('StoreId').setValue(this.StorecmbList); 
-          if(this.filteredStore.StoreId == this.StorecmbList.Storeid)
-            {
-                this.vStoreName =  this.filteredStore.StoreId
-                console.log(this.vStoreName )
-            }
-        }); 
-      }
-   
   
     get f() {
         return this.itemForm.controls;
     } 
-    getitemtypeNameMasterCombo() {
-
-        this._itemService.getitemtypeMasterCombo().subscribe(data => {
-            this.ItemTypecmbList = data;
-            this.filteredItemType = this.itemForm.get('ItemTypeID').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterItemtype(value) : this.ItemTypecmbList.slice()),
-            );
-
-            if (this.data) {
-                const ddValue = this.ItemTypecmbList.filter(c => c.ItemTypeId == this.data.registerObj.ItemTypeID);
-                this.itemForm.get('ItemTypeID').setValue(ddValue[0]);
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        }); 
-    }
-    private _filterItemtype(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ItemTypeName ? value.ItemTypeName.toLowerCase() : value.toLowerCase(); 
-            return this.ItemTypecmbList.filter(option => option.ItemTypeName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-    getitemclassNameMasterCombo() { 
-        this._itemService.getitemclassMasterCombo().subscribe(data => {
-            this.ItemClasscmbList = data;
-            this.filteredItemclass = this.itemForm.get('ItemClassId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterClass(value) : this.ItemClasscmbList.slice()),
-            );
-            if (this.data) { 
-                const ddValue = this.ItemClasscmbList.filter(c => c.ItemClassId == this.data.registerObj.ItemClassId);
-                this.itemForm.get('ItemClassId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        }); 
-    }
-
-
-    getitemcategoryNameMasterCombo() { 
-        this._itemService.getitemcategoryMasterCombo().subscribe(data => {
-            this.ItemCategorycmbList = data;
-            this.filteredItemcategory = this.itemForm.get('ItemCategoryId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterCategory(value) : this.ItemCategorycmbList.slice()),
-            );
-
-            if (this.data) {
-                const ddValue = this.ItemCategorycmbList.filter(c => c.ItemCategoryId == this.data.registerObj.ItemCategaryId);
-                this.itemForm.get('ItemCategoryId').setValue(ddValue[0]); 
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-    }
-    private _filterCategory(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ItemCategoryName ? value.ItemCategoryName.toLowerCase() : value.toLowerCase();
-
-            return this.ItemCategorycmbList.filter(option => option.ItemCategoryName.toLowerCase().includes(filterValue));
-        } 
-    } 
+    
     Chkdisc() {
         let Disc = parseFloat(this.itemForm.get("MaxDisc").value)
         if (Disc >= 100) {
@@ -277,301 +160,8 @@ export class ItemFormMasterComponent implements OnInit {
         } 
     }
 
-    getitemgenericNameMasterCombo() {
-        this._itemService.getitemgenericMasterCombo().subscribe(data => {
-            this.ItemGenericcmbList = data;
-            this.filteredItemgeneric = this.itemForm.get('ItemGenericNameId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterGenericname(value) : this.ItemGenericcmbList.slice()),
-            );
-            if (this.data) {
-
-                const ddValue = this.ItemGenericcmbList.filter(c => c.ItemGenericNameId == this.data.registerObj.ItemGenericNameId);
-                this.itemForm.get('ItemGenericNameId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-
-    }
-
-
-    getCompanyList() {
-        this._itemService.getCompanyCombo().subscribe(data => {
-            this.CompanyList = data;
-            this.filteredOptionsCompany = this.itemForm.get('CompanyId').valueChanges.pipe(
-                startWith(''),
-                map((ele: any | null) => ele ? this._filterCompany(ele) : this.CompanyList.slice()));
-          
     
-            if (this.data) {
-          
-                const ddValue = this.CompanyList.filter(c => c.CompanyId == this.data.registerObj.ItemCompnayId);
-                this.itemForm.get('CompanyId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-    }
-    private _filterCompany(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.CompanyName ? value.CompanyName.toLowerCase() : value.toLowerCase();
-
-            return this.optionsCompany.filter(option => option.CompanyName.toLowerCase().includes(filterValue));
-        }
-
-    }
-    getitemunitofmeasureMasterCombo() {
-
-        this._itemService.getunitofMeasurementMasterCombo().subscribe(data => {
-            this.ItemUomcmbList = data;
-            this.filteredUnitofmeasurement = this.itemForm.get('PurchaseUOMId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterUnitofmeasurement(value) : this.ItemUomcmbList.slice()),
-            );
-            if (this.data) {
-
-                const ddValue = this.ItemUomcmbList.filter(c => c.UnitOfMeasurementId == this.data.registerObj.PurchaseUOMId);
-                this.itemForm.get('PurchaseUOMId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-
-    }
-
-    getStockUOMIDdMasterombo() {
-
-        this._itemService.getStockUMOMasterCombo().subscribe(data => {
-            this.StockUomcmbList = data;
-            this.filteredStockUOMId = this.itemForm.get('StockUOMId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterStockUMO(value) : this.StockUomcmbList.slice()),
-            );
-            if (this.data) {
-
-                const ddValue = this.StockUomcmbList.filter(c => c.UnitOfMeasurementId == this.data.registerObj.StockUOMId);
-                this.itemForm.get('StockUOMId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-
-    }
-
-    getCurrencyNameMasterCombo() {
-
-        this._itemService.getCurrencyMasterCombo().subscribe(data => {
-            this.CurrencycmbList = data;
-            console.log(this.CurrencycmbList)
-            this.filteredCurrency = this.itemForm.get('CurrencyId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterSCurrency(value) : this.CurrencycmbList.slice()),
-            );
-            if (this.data) {
-
-                const ddValue = this.CurrencycmbList.filter(c => c.CurrencyId == this.data.registerObj.CurrencyId);
-                this.itemForm.get('CurrencyId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-
-    }
-
-
-    private _filterSCurrency(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.CurrencyName ? value.CurrencyName.toLowerCase() : value.toLowerCase();
-
-            return this.CurrencycmbList.filter(option => option.CurrencyName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-    private _filterManu(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ManufName ? value.ManufName.toLowerCase() : value.toLowerCase();
-
-            return this.ManufacurecmbList.filter(option => option.ManufName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-    private _filterStore(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.StorecmbList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-        }
-
-    } 
-    private _filterClass(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ItemClassName ? value.ItemClassName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.ItemClasscmbList.filter(option => option.ItemClassName.toLowerCase().includes(filterValue));
-        } 
-    } 
-
-    private _filterGenericname(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.ItemGenericName ? value.ItemGenericName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.ItemGenericcmbList.filter(option => option.ItemGenericName.toLowerCase().includes(filterValue));
-        } 
-    } 
-
-    private _filterUnitofmeasurement(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.ItemUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
-        } 
-    }
-    private _filterStockUMO(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.UnitOfMeasurementName ? value.UnitOfMeasurementName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.StockUomcmbList.filter(option => option.UnitOfMeasurementName.toLowerCase().includes(filterValue));
-        } 
-    }
-
-
-    private _filterDrugType(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.DrugTypeName ? value.DrugTypeName.toLowerCase() : value.toLowerCase();
-            //   this.isDoctorSelected = false;
-            return this.optionsDrugType.filter(option => option.DrugTypeName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-
-
-    getDrugTypeList() {
-
-        this._itemService.getDrugTypeCombo().subscribe(data => {
-            this.DrugList = data;
-            this.filteredOptionsDrugtype = this.itemForm.get('DrugType').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterDrugType(value) : this.DrugList.slice()),
-            );
-            if (this.data) {
-          
-                const ddValue = this.DrugList.filter(c => c.ItemDrugTypeId == this.data.registerObj.DrugType);
-                this.itemForm.get('DrugType').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-           
-        });
-
-    }
-
-    
-    getStoreNameMasterCombo() {
-        
-        this._itemService.getStoreMasterCombo().subscribe(data => {
-            this.StorecmbList = data;
-            console.log(this.StorecmbList)
-           
-         
-
-        });
-    }
-   
-
-    getManufactureNameMasterCombo() {
-        this._itemService.getManufactureMasterCombo().subscribe(data => {
-            this.ManufacurecmbList = data;
-            this.filteredOptionsManu = this.itemForm.get('ManufId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterManu(value) : this.ManufacurecmbList.slice()),
-            );
-            if (this.data) {
-
-                const ddValue = this.ManufacurecmbList.filter(c => c.ManufId == this.data.registerObj.ManufId);
-                this.itemForm.get('ManufId').setValue(ddValue[0]);
-
-                this.itemForm.updateValueAndValidity();
-                return;
-            }
-        });
-    }
-
-
  
-
-   
- 
-
-    getOptionTextManu(option) {
-        return option && option.ManufName ? option.ManufName : '';
-
-    }
-
-    getOptionTextStore(option) {
-
-        return option && option.StoreName ? option.StoreName : '';
-
-    }
-
-    getOptionTextItemtype(option) {
-        return option && option.ItemTypeName ? option.ItemTypeName : '';
-
-    }
-
-    getOptionTextItemcategory(option) {
-
-        return option && option.ItemCategoryName ? option.ItemCategoryName : '';
-
-    }
-
-    getOptionTextGenericname(option) {
-        return option && option.ItemGenericName ? option.ItemGenericName : '';
-
-    }
-
-    getOptionTextClass(option) {
-
-        return option && option.ItemClassName ? option.ItemClassName : '';
-
-    }
-    getOptionTextPurchaseUMO(option) {
-        return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
-
-    }
-
-    getOptionTextStockUOMId(option) {
-        return option && option.UnitOfMeasurementName ? option.UnitOfMeasurementName : '';
-
-    }
-
-    getOptionTextDrugtype(option) {
-
-        return option && option.DrugTypeName ? option.DrugTypeName : '';
-
-    }
-
-    getOptionTextCompany(option) {
-
-        return option && option.CompanyName ? option.CompanyName : '';
-
-    }
-
-    getOptionTextCurrency(option) {
-
-        return option && option.CurrencyName ? option.CurrencyName : '';
-
-    }
-
 
     @ViewChild('HSN') HSN: ElementRef;
     @ViewChild('Itemname') Itemname: ElementRef;

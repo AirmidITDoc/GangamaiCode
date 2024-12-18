@@ -24,7 +24,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class SupplierMasterComponent implements OnInit {
     
-    autocompleteModestoreName: string="StoreName";
+    autocompleteModestoreName: string="Store";
     // new code
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -120,14 +120,19 @@ export class SupplierMasterComponent implements OnInit {
                 console.log('The dialog was closed - Action', result);
             });
     }
-    storeId=0;
+    storeId="0";
     selectChangestoreName(obj:any){
         this.storeId=obj.value;
-      }
+      
+            console.log(obj);
+            this.storeId=String(obj);
+            this.gridConfig.filters = [      { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
+                {fieldName:"StoreID", fieldValue: this.storeId, opType:OperatorComparer.Equals}
+            ]
+        }
+      
 
-    // onDeactive(bankId) {
-       
-    // }
+    
 
     onEdit(row) {
         var m_data = {
