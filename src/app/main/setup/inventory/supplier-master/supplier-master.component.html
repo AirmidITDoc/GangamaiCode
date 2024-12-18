@@ -28,13 +28,12 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <airmid-autocomplete label="StoreName" formControlName="StoreId"
-                        [formGroup]="_supplierService.myform"
-                        [mode]="autocompleteModestoreName"
-                        [(ngModel)]="gridConfig.filters[1].fieldValue"
-                        (selectDdlObject)="selectChangestoreName($event)">
-                </airmid-autocomplete>
-
+               
+                <airmid-autocomplete label="Store Name" formControlName="StoreId"
+                [formGroup]="_supplierService.myform" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                [mode]="autocompleteModestoreName"
+                (selectDdlObject)="selectChangestoreName($event)"  >
+            </airmid-autocomplete>
             </ng-container>
         </airmid-table>
     </div>
