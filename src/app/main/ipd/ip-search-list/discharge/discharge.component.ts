@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { T } from '@angular/cdk/keycodes';
 import { ConfigService } from 'app/core/services/config.service';
 import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
+import { InitiateProcessComponent } from './initiate-discharge/initiate-process/initiate-process.component';
 
 @Component({
   selector: 'app-discharge',
@@ -47,7 +48,7 @@ export class DischargeComponent implements OnInit {
   DoctorNameList: any = [];
   ModeNameList: any = [];
   dateTimeObj: any;
-  vAdmissionId: any;
+  vAdmissionId: any; 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -371,18 +372,24 @@ export class DischargeComponent implements OnInit {
     });
   }
   DischargeInitiate() {
-    const dialogRef = this._matDialog.open(InitiateDischargeComponent,
+    if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
+      this.toastr.warning('selected patient already Initiated ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const dialogRef = this._matDialog.open(InitiateProcessComponent,
       {
-        maxWidth: "75vw",
-        height: '75%',
+        maxWidth: "50vw",
+        height: '72%',
         width: '100%',
         data: {
-          Obj: this.registerObj
+          Obj: this.selectedAdvanceObj
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-       // console.log(result)
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+    });
   }
 }
 

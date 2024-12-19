@@ -387,7 +387,7 @@ export class AppointmentComponent implements OnInit {
         }
 
         // this.getVisitList();
-        this.getDoctorNameCombobox();
+       // this.getDoctorNameCombobox();
 
         this.getHospitalList1();
         this.getHospitalList();
@@ -1441,15 +1441,20 @@ export class AppointmentComponent implements OnInit {
     filteredOptionsPrefix: Observable<string[]>;
     filteredOptionsCity: Observable<string[]>;
     filteredOptionsPurpose: Observable<string[]>;
-
+    filteredOptionsDoctorsearch:any; 
     getDoctorNameCombobox() {
-        this._AppointmentSreviceService.getDoctorMasterComboA().subscribe(data => {
-            this.doctorNameCmbList = data;
-            this.optionsDoctor = this.doctorNameCmbList.slice();
-            this.filteredOptionsDoctor = this._AppointmentSreviceService.myFilterform.get('DoctorId').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterDoctor(value) : this.doctorNameCmbList.slice()),
-            );
+        var vdata={
+            "@Keyword":this._AppointmentSreviceService.myFilterform.get('DoctorId').value ||  ''
+        }
+        console.log(vdata)
+        this._AppointmentSreviceService.getDoctorMasterComboList(vdata).subscribe(data => {
+            this.filteredOptionsDoctorsearch = data; 
+            console.log(this.filteredOptionsDoctorsearch) 
+            if (this.filteredOptionsDoctorsearch.length == 0) {
+                this.noOptionFound = true;
+              } else {
+                this.noOptionFound = false;
+              }
 
         });
     }

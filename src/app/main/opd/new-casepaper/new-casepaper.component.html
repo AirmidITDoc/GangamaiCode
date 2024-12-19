@@ -230,7 +230,7 @@
                                                 </div>
 
                                                 <div fxLayout="row" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex>
+                                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>ChiefComplaint</mat-label>
                                                         <textarea rows="6" name="ChiefComplaint"
                                                             formControlName="ChiefComplaint"
@@ -253,9 +253,9 @@
                                                             formControlName="Examination" placeholder="Examination"
                                                             [(ngModel)]="vExamination" matInput #ChiefComp
                                                             (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field>
+                                                    </mat-form-field> -->
 
-                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
+                                                    <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>ChiefComplaint</mat-label>
                                                         <mat-chip-list #chipList aria-label="ChiefComplaint selection">
                                                             <mat-chip *ngFor="let item of addCheiflist" [selectable]="selectable" [removable]="removable"
@@ -263,7 +263,7 @@
                                                                 {{ item}} 
                                                                 <mat-icon *ngIf="removable" (click)="removeCheif(item)">close</mat-icon>
                                                             </mat-chip> 
-                                                            <input   style="height: 40px;"
+                                                            <input   style="height: 80px;"
                                                             placeholder="New ChiefComplaint..."
                                                             formControlName="CheifComplaintControl"
                                                             [matAutocomplete]="autoChips"
@@ -271,13 +271,13 @@
                                                             (matChipInputTokenEnd)="addCheif($event)" />
                                                         </mat-chip-list>
                                                         <mat-autocomplete #autoChips="matAutocomplete"  (optionSelected)="selectedobjCheif($event.option.value)" >
-                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
-                                                                {{option.ChiefComplaint}}
+                                                            <mat-option *ngFor="let option of CheifCompListCombo" [value]="option" >
+                                                                {{option.DescriptionName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>   -->
+                                                    </mat-form-field>  
 
-                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
+                                                    <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>Diagnosis</mat-label>
                                                         <mat-chip-list #chipListdiagno aria-label="Diagnosis selection">
                                                             <mat-chip *ngFor="let item of addDiagnolist" [selectable]="selectable" [removable]="removable"
@@ -285,7 +285,7 @@
                                                                 {{ item}} 
                                                                 <mat-icon *ngIf="removable" (click)="removeDiagno(item)">close</mat-icon>
                                                             </mat-chip> 
-                                                            <input  style="height: 40px;"
+                                                            <input  style="height: 80px;"
                                                             placeholder="New Diagnosis..."
                                                             formControlName="DiagnosisControl"
                                                             [matAutocomplete]="autoDiagnosis"
@@ -293,13 +293,13 @@
                                                             (matChipInputTokenEnd)="addDiagnos($event)"   />
                                                         </mat-chip-list>
                                                         <mat-autocomplete #autoDiagnosis="matAutocomplete"  (optionSelected)="selectedobjDiagno($event.option.value)" >
-                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
-                                                                {{option.Diagnosis}}
+                                                            <mat-option *ngFor="let option of DaignoComboList" [value]="option" >
+                                                                {{option.DescriptionName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>   -->
+                                                    </mat-form-field>  
 
-                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
+                                                    <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>Examination</mat-label>
                                                         <mat-chip-list #chipListexamin aria-label="Examination selection">
                                                             <mat-chip *ngFor="let item of addExaminlist" [selectable]="selectable" [removable]="removable"
@@ -307,7 +307,7 @@
                                                                 {{ item}} 
                                                                 <mat-icon *ngIf="removable" (click)="removeExamin(item)">close</mat-icon>
                                                             </mat-chip> 
-                                                            <input  style="height: 40px;"
+                                                            <input  style="height: 80px;"
                                                             placeholder="New Examination..."
                                                             formControlName="ExaminationControl"
                                                             [matAutocomplete]="autoExamin"
@@ -315,69 +315,17 @@
                                                             (matChipInputTokenEnd)="addExamina($event)" />
                                                         </mat-chip-list>
                                                         <mat-autocomplete #autoExamin="matAutocomplete"  (optionSelected)="selectedobjExamin($event.option.value)" >
-                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
-                                                                {{option.Examination}}
+                                                            <mat-option *ngFor="let option of ExaminComboList" [value]="option" >
+                                                                {{option.DescriptionName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>  -->
+                                                    </mat-form-field> 
                                                 </div>
                                             </div>
                                         </form>
                                     </mat-card>
 
-                                    <mat-card fxLayout="column" style="padding: 5px;">
-                                        <form [formGroup]="caseFormGroup">
-                                            <div class="investigation-title">
-                                                <span style="font-weight: 700;">
-                                                    Request For Test
-                                                </span>
-                                            </div>
-                                            <hr>
-                                            <div fxLayout="row" fxLayoutGap="6px">
-                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
-                                                    <!-- <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
-                                                        (change)="getServiceList()" fxLayoutGap="10px">
-                                                        <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;
-                                                        <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;
-                                                        <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;
-                                                    </mat-radio-group> -->
-
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Service list</mat-label>
-                                                        <input matAutocompletePosition="below" type="text"
-                                                            placeholder="Select Service" [(ngModel)]="vServiceId"
-                                                            matInput formControlName="Serviceid"
-                                                            [matAutocomplete]="autoService" (input)="getServiceList()">
-                                                        <span matSuffix style="display: flex;">
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">close</mat-icon>
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">search</mat-icon>
-                                                        </span>
-
-                                                        <mat-autocomplete #autoService="matAutocomplete"
-                                                            [displayWith]="getOptionTextService">
-                                                            <mat-option *ngFor="let option of FilteredServicec"
-                                                                [value]="option">
-                                                                <mat-checkbox [checked]="option.selected"
-                                                                    (change)="toggleSelection(option)"
-                                                                    (click)="$event.stopPropagation()">
-                                                                    {{option.ServiceName}}</mat-checkbox>
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="50%">
-                                                    <mat-chip-list #chipList>
-                                                        <mat-chip *ngFor="let item of selectedItems">
-                                                            {{ item.ServiceName }} <mat-icon
-                                                                (click)="remove(item)">close</mat-icon>
-                                                        </mat-chip>
-                                                    </mat-chip-list>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </mat-card>
+                                
 
                                     <mat-card style="padding: 5px;">
                                         <div fxLayout="column" style="margin-left: 10px;">
@@ -646,6 +594,60 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </mat-card> 
+
+                                    <mat-card fxLayout="column" style="padding: 5px;">
+                                        <form [formGroup]="caseFormGroup">
+                                            <div class="investigation-title">
+                                                <span style="font-weight: 700;">
+                                                    Request For Test
+                                                </span>
+                                            </div>
+                                            <hr>
+                                            <div fxLayout="row" fxLayoutGap="6px">
+                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
+                                                    <!-- <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                                                        (change)="getServiceList()" fxLayoutGap="10px">
+                                                        <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;
+                                                        <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;
+                                                        <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;
+                                                    </mat-radio-group> -->
+
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Service list</mat-label>
+                                                        <input matAutocompletePosition="below" type="text"
+                                                            placeholder="Select Service" [(ngModel)]="vServiceId"
+                                                            matInput formControlName="Serviceid"
+                                                            [matAutocomplete]="autoService" (input)="getServiceList()">
+                                                        <span matSuffix style="display: flex;">
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                                            <mat-icon class="mat-icon-close"
+                                                                (click)="caseFormGroup.get('Serviceid').setValue(''); isServiceIdSelected = false;">search</mat-icon>
+                                                        </span>
+
+                                                        <mat-autocomplete #autoService="matAutocomplete"
+                                                            [displayWith]="getOptionTextService">
+                                                            <mat-option *ngFor="let option of FilteredServicec"
+                                                                [value]="option">
+                                                                <mat-checkbox [checked]="option.selected"
+                                                                    (change)="toggleSelection(option)"
+                                                                    (click)="$event.stopPropagation()">
+                                                                    {{option.ServiceName}}</mat-checkbox>
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="6px" fxFlex="50%">
+                                                    <mat-chip-list #chipList>
+                                                        <mat-chip *ngFor="let item of selectedItems">
+                                                            {{ item.ServiceName }} <mat-icon
+                                                                (click)="remove(item)">close</mat-icon>
+                                                        </mat-chip>
+                                                    </mat-chip-list>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </mat-card>
 
                                     <mat-card fxLayout="column" style="padding: 5px;">

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
@@ -7,11 +7,15 @@ import { PatientDischargeClearanceService } from './patient-discharge-clearance.
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { fuseAnimations } from '@fuse/animations';
+import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component';
 
 @Component({
   selector: 'app-patient-discharge-clearance',
   templateUrl: './patient-discharge-clearance.component.html',
-  styleUrls: ['./patient-discharge-clearance.component.scss']
+  styleUrls: ['./patient-discharge-clearance.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class PatientDischargeClearanceComponent implements OnInit {
   displayedColumns: string[] = [
@@ -45,33 +49,47 @@ export class PatientDischargeClearanceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.getClearancelist();
 
 
 
   }
 
-getClearancelist(){ 
-  setTimeout(() => {
+getClearancelist(){  
     this._PatientDischargeClearanceService.getClearancelist().subscribe(data =>{
       this.dspatientlist_1.data =data as ClearanceList[];
       console.log(this.dspatientlist_1.data)
-    }) 
-  }, 1000);
+    })  
 }
-getapprovelist(){
-  var vdata={
-    "DepartmentId":1 ,
-    "AdmId": 1
+//patietn click approve side list 
+getPatietnapprovelist(contact){
+  console.log(contact)
+  var vdata={ 
+    "AdmId": contact.AdmissionID
   }
   console.log(vdata)
   setTimeout(() => {
-    this._PatientDischargeClearanceService.getapprovelist(vdata).subscribe(data =>{
+    this._PatientDischargeClearanceService.getPatietnapprovelist(vdata).subscribe(data =>{
       this.dspatientlist_2.data =data as ClearanceList[];
       console.log(this.dspatientlist_2.data)
     }) 
   }, 1000);
 }
+
+ PatietnClearanceOption(element){
+    const dialogRef = this._matDialog.open(PatientClearanceOptionComponent,
+      {
+        maxWidth: "70vw",
+        height: '72%',
+        width: '100%',
+        data: {
+          Obj: element
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+      });
+  }
  
 }
 export class ClearanceList{
@@ -83,6 +101,11 @@ export class ClearanceList{
   PatientName  : any;
   IsNoDues:any;
   Comments:any;
+  ApprovedBYDate:any;
+  ApprovedBy:any; 
+  AdmID:any;
+  DepartmentID:any;
+  InitateDiscId:any;
  
   constructor(ClearanceList) {
  
@@ -94,5 +117,8 @@ export class ClearanceList{
    this.PatientName =ClearanceList.PatientName  || '';
    this.IsNoDues = ClearanceList.IsNoDues || 0;
    this.Comments =ClearanceList.Comments  || '';
+   this.InitateDiscId =ClearanceList.InitateDiscId  || 0;
+   this.DepartmentID = ClearanceList.DepartmentID || 0;
+   this.AdmID =ClearanceList.AdmID  || 0;
   }
 }

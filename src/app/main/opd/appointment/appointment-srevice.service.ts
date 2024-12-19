@@ -526,6 +526,12 @@ public documentdownloadInsert(employee,loader = true){
         }
         return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
     }
+    public getDoctorMasterComboList(param,loader = true) {
+      if (loader) {
+          this._loaderService.show();
+      }
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorMasterListForCombo",param)
+  }
     public CrossConsultationInsert(element,loader = true){
         if (loader) {
             this._loaderService.show();

@@ -127,7 +127,7 @@ export class InitiateDischargeComponent implements OnInit {
   DischargeInitiate(){
     const dialogRef = this._matDialog.open(InitiateProcessComponent,
       {
-        maxWidth: "75vw",
+        maxWidth: "50vw",
         height: '70%',
         width: '100%',
         data: {

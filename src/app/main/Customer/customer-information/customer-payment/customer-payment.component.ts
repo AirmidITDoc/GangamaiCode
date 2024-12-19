@@ -17,11 +17,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CustomerPaymentComponent implements OnInit {
 
 
-  vAmount:any;
+  vamcAmount:any;
   registerObj:any;
   PaymentId:any;
   vCustomerName:any;
   vCustomerId:any;
+  vPayAmt:any;
+  TransId:any;
+  tranType:any;
 
   constructor(
     public _CustomerInfo: CustomerInformationService,
@@ -40,22 +43,36 @@ export class CustomerPaymentComponent implements OnInit {
     if(this.data){
       this.registerObj= this.data.Obj;
       console.log(this.registerObj)
-      this.vCustomerName = this.registerObj.CustomerName;
-      this.vAmount = this.registerObj.AMCAmount;
+      this.vCustomerName = this.registerObj.CustomerName; 
       this.vCustomerId = this.registerObj.CustomerId;
+      if(this.registerObj.AMCAmount){
+        this.vamcAmount = this.registerObj.AMCAmount
+        this.TransId= this.registerObj.TranId
+        this.tranType = 'AMC'
+      }else{
+        this.vamcAmount = this.registerObj.Amount;
+        this.TransId= this.registerObj.TranId
+        this.tranType = 'Bill'
+      }
     }
   }
 
-
-
-
+  chkAmtValidation(){
+    if(this.vPayAmt > this.vamcAmount){
+      this.toastr.warning('Pay Amount should not be greater than AMC Amount', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.vPayAmt = ''
+      return;
+    }
+  } 
   onSubmit() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 
-    if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
+    if ((this.vPayAmt == '' || this.vPayAmt == null || this.vPayAmt == undefined)) {
       this.toastr.warning('Please enter a Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -65,15 +82,16 @@ export class CustomerPaymentComponent implements OnInit {
     if (!this.PaymentId) {
      let  customerPaymentInsertObj={
         "paymentId": 0,
-        "paymentDate":this.datePipe.transform(this._CustomerInfo.PaymentForm.get('PayDate').value, 'dd/MM/YYYY') || '1/1/1999',
+        "paymentDate":this.datePipe.transform(this._CustomerInfo.PaymentForm.get('PayDate').value, "yyyy-MM-dd") || '01/01/1099', 
         "paymentTime": formattedTime,
         "customerId":  this.vCustomerId || 0,
-        "amount": this._CustomerInfo.PaymentForm.get('Amount').value || 0,
+        "amount": this._CustomerInfo.PaymentForm.get('PayAmt').value || 0,
         "comments":this._CustomerInfo.PaymentForm.get('Description').value || 0,
         "createdBy":this._loggedService.currentUserValue.user.id || 0,
-        "createdByDateTime": formattedTime
-      }
-
+        "createdByDateTime": formattedTime,
+         "tranId": this.TransId || 0,
+         "tranType":   this.tranType || ''
+      }  
       let submitData = {
         "customerPaymentInsert": customerPaymentInsertObj
       };
