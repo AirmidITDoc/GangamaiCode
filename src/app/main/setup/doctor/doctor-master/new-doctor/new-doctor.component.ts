@@ -58,8 +58,8 @@ export class NewDoctorComponent implements OnInit {
                 this.registerObj = response;
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
                 this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
-                    this.sanitizeImagePreview = data["data"] as string;
-                    this.myForm.value.signature = data["data"] as string;
+                    this.sanitizeImagePreview = data;
+                    this.myForm.value.signature = data;
                 });
             }, (error) => {
                 this.toastr.error(error.message);

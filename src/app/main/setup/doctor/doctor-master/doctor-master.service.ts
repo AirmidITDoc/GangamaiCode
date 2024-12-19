@@ -134,7 +134,7 @@ export class DoctorMasterService {
     }
 
     public getSignature(Param) {
-        return this._httpClient.GetData("DoctorMaster/get-file?FileName=" + Param);
+        return this._httpClient.GetData("Doctor/get-file?FileName=" + Param);
     }
 
     public deactivateTheStatus(m_data) {
