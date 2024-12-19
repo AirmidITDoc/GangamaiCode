@@ -65,4 +65,13 @@ export class VendorListService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_VendorInformation_List",param);
   }
+
+  public vendorInsert(employee)
+   {    
+     return this._httpClient.post("CustomerInformation/SaveVendorInformation",employee);
+   }
+   public vendorUpdate(employee)
+   {    
+     return this._httpClient.post("CustomerInformation/UpdateVendorInformation",employee);
+   }
 }

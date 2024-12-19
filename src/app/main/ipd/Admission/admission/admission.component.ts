@@ -69,6 +69,7 @@ export class AdmissionComponent implements OnInit {
   isAlive = false;
   isOpen = false;
   isRegIdSelected: boolean = false;
+  isEmgIdSelected: boolean = false;
   isWardSelected: boolean = false;
   isPrefixSelected: boolean = false;
   isCitySelected: boolean = false;
@@ -86,8 +87,10 @@ export class AdmissionComponent implements OnInit {
   isSearchdoctorSelected: boolean = false;
   isRegSearchDisabled: boolean = true;
   filteredOptions: any;
+  EmgfilteredOptions: any;
   showtable: boolean = false;
   noOptionFound: boolean = false;
+  noEmgOptionFound: boolean = false;
   Regdisplay: boolean = false;
   ispatienttypeSelected: boolean = false;
   isTariffIdSelected: boolean = false;
@@ -294,6 +297,7 @@ export class AdmissionComponent implements OnInit {
   dialogRef: any;
   isLoading: string;
   Regflag: boolean = false;
+  NewRegflag:boolean=true;
   constructor(public _AdmissionService: AdmissionService,
     public _registrationService: RegistrationService,
     public _matDialog: MatDialog,
@@ -535,7 +539,8 @@ export class AdmissionComponent implements OnInit {
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
-      HospitalId: [0, [Validators.required]]
+      HospitalId: [0, [Validators.required]],
+      EmgId:['']
     });
   }
 
@@ -556,6 +561,23 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
+  
+  }
+  getSearchListEmg() {
+    debugger
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('EmgId').value}%`
+    }
+    console.log("EmgList:", m_data)
+    this._AdmissionService.getEmergencyList(m_data).subscribe(data => {
+      this.EmgfilteredOptions = data;
+      console.log(this.EmgfilteredOptions)
+      if (this.EmgfilteredOptions.length == 0) {
+        this.noEmgOptionFound = true;
+      } else {
+        this.noEmgOptionFound = false;
+      }
+    });
   
   }
 
@@ -755,6 +777,11 @@ export class AdmissionComponent implements OnInit {
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
   }
 
+  getOptionTextEmg(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.EmgId + ')';
+  }
+
 
   getSelectedObj(obj) {
 
@@ -799,6 +826,9 @@ export class AdmissionComponent implements OnInit {
       }
     });
 
+  }
+  chekEmergencypatient(obj){
+    console.log("EmergencyList:",obj)
   }
 
   setDropdownObjs() {
@@ -900,6 +930,7 @@ export class AdmissionComponent implements OnInit {
 
   onChangeReg(event) {
     if (event.value == 'registration') {
+      this.NewRegflag=true;
       this.Regflag = false;
       this.personalFormGroup.get('RegId').reset();
       this.personalFormGroup.get('RegId').disable();
@@ -944,7 +975,8 @@ export class AdmissionComponent implements OnInit {
 
     } else {
       this.Regdisplay = true;
-      this.Regflag = true;
+      this.Regflag = true;      
+      this.NewRegflag=false;
       this.searchFormGroup.get('RegId').enable();
       this.isRegSearchDisabled = false;
 
