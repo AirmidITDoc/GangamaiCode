@@ -123,4 +123,8 @@ public getGenderCombo(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_CountryMasterForCombo_Conditional", { "Id": StateId })
   }
 
+  public getPatientRegisterListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
+  }
+
 }

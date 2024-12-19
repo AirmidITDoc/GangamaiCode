@@ -11,6 +11,8 @@ import { RegInsert } from 'app/main/opd/registration/registration.component';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { EmergencyList } from '../emergency-list.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-new-emergency',
@@ -57,7 +59,10 @@ export class NewEmergencyComponent implements OnInit {
   filteredOptionsDep: Observable<string[]>;
   isCitySelected: boolean = false;
   filteredOptionsDoc: Observable<string[]>;
-
+  searchFormGroup: FormGroup;
+  PatientListfilteredOptions: any;
+  isRegIdSelected: boolean = false;
+  noOptionFound: boolean = false;
   isDepartmentSelected: boolean = false;
   isDoctorSelected: boolean = false;
   selectedState = "";
@@ -67,6 +72,8 @@ export class NewEmergencyComponent implements OnInit {
   registerObj = new AdmissionPersonlModel({});
   currentDate = new Date();
   RegId: any=0;
+
+  dataSource = new MatTableDataSource<EmergencyList>();
   
   constructor(
     public _EmergencyListService: EmergencyListService,
@@ -75,6 +82,7 @@ export class NewEmergencyComponent implements OnInit {
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    public formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef:MatDialogRef<NewEmergencyComponent>
   ) { }
@@ -109,6 +117,7 @@ export class NewEmergencyComponent implements OnInit {
     this.getDepartmentList();
     this.getcityList1();
     this.getPrefixList();
+    this.searchFormGroup = this.createSearchForm();
 
     if(this.data){
       this.registerObj = this.data.Obj;
@@ -128,20 +137,61 @@ export class NewEmergencyComponent implements OnInit {
       this.RegId=this.registerObj.RegId;
 
       this.onChangeCityList(this.registerObj.CityId);
-    }
-    console.log("vFirstName:", this.vFirstName)
-    console.log("vLastName:", this.vLastName)
-    console.log("vMiddleName:", this.vMiddleName)
-    console.log("vAddress:", this.vAddress)
-    console.log("vPinNo:", this.vPinNo)
-    console.log("vAgeDay:", this.vAgeDay)
-    console.log("vAgeMonth:", this.vAgeMonth)
-    console.log("vAgeYear:", this.vAgeYear)
-    console.log("vMobileNo:", this.vMobileNo)
-    console.log("vPhoneNo:", this.vPhoneNo)
+    }    
   }
 
+  createSearchForm() {
+    return this.formBuilder.group({
+      RegId: [''],
+      AppointmentDate: [(new Date()).toISOString()]
+    });
+  } 
 
+  getSearchList() {
+    var m_data = {
+      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
+    }
+    this._EmergencyListService.getPatientRegisterListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    }); 
+  } 
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName + "-" + option.RegNo ;
+ 
+  }
+
+  getSelectedObj1(obj){
+    console.log("EmergencyList:",obj)
+    this.dataSource.data = [];
+    this.registerObj=obj;
+    this.vPrefixID=this.registerObj.PrefixID
+    this.vFirstName = this.registerObj.FirstName
+    this.vLastName = this.registerObj.LastName
+    this.vMiddleName = this.registerObj.MiddleName
+    this.vAddress = this.registerObj.Address
+    this.vPinNo = this.registerObj.PinNo
+    this.vAgeDay=this.registerObj.AgeDay
+    this.vAgeMonth=this.registerObj.AgeMonth
+    this.vAgeYear=this.registerObj.AgeYear
+    this.vMobileNo=this.registerObj.MobileNo
+    this.vPhoneNo=this.registerObj.PhoneNo
+    this.vDepartmentid = this.registerObj.DepartmentName;
+    this.vDoctorId = this.registerObj.DoctorName;
+    this.RegId=this.registerObj.RegId;
+
+    this.getPrefixList();
+    this.getcityList1();
+    this.getDepartmentList();
+
+  }
 
   @ViewChild('fname') fname: ElementRef;
   @ViewChild('mname') mname: ElementRef;
@@ -487,17 +537,6 @@ export class NewEmergencyComponent implements OnInit {
   }
 
   onChangeDateofBirth(DateOfBirth) {
-    // console.log(DateOfBirth)
-  //   if (DateOfBirth) {     
-  //     const todayDate = new Date();
-  //     const dob = new Date(DateOfBirth);
-  //     const timeDiff = Math.abs(Date.now() - dob.getTime());
-  //     this._EmergencyListService.MyForm.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
-  //     this._EmergencyListService.MyForm.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
-  //     this._EmergencyListService.MyForm.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
-  //     this._EmergencyListService.MyForm.get('DateOfBirth').setValue(DateOfBirth);
-  // }
-
   if (DateOfBirth) {
     const todayDate = new Date();
     const dob = new Date(DateOfBirth);
@@ -522,13 +561,19 @@ export class NewEmergencyComponent implements OnInit {
       );
 
       if (this.data) {
+        const CValue = this.cityList.filter(item => item.CityId == this.registerObj.CityId);
+        console.log("CityId:",CValue)
+        this._EmergencyListService.MyForm.get('CityId').setValue(CValue[0]);
+        this._EmergencyListService.MyForm.updateValueAndValidity();
+        this.onChangeCityList(CValue[0]);        
+      }
+      if (this.registerObj) {
         debugger
         const CValue = this.cityList.filter(item => item.CityId == this.registerObj.CityId);
         console.log("CityId:",CValue)
         this._EmergencyListService.MyForm.get('CityId').setValue(CValue[0]);
         this._EmergencyListService.MyForm.updateValueAndValidity();
-        this.onChangeCityList(CValue[0]);
-        
+        this.onChangeCityList(CValue[0]);        
       }
     });
 
@@ -550,7 +595,7 @@ export class NewEmergencyComponent implements OnInit {
   }
 
   getPrefixList() {
-    
+    debugger
     this._EmergencyListService.getPrefixMasterCombo().subscribe(data => {
       this.PrefixcmbList = data;
       this.optionsPrefix = this.PrefixcmbList.slice();
@@ -560,7 +605,17 @@ export class NewEmergencyComponent implements OnInit {
 
       );
       if (this.data) {
+        debugger
         const PValue = this.PrefixcmbList.filter(item => item.PrefixID == this.data.Obj.PrefixId);
+        console.log("Prefix:",PValue)
+        this._EmergencyListService.MyForm.get('PrefixID').setValue(PValue[0]);
+        this._EmergencyListService.MyForm.updateValueAndValidity();
+        this.onChangeGenderList(PValue[0]);
+        return;
+      }
+      if(this.registerObj){
+        debugger
+        const PValue = this.PrefixcmbList.filter(item => item.PrefixID == this.registerObj.PrefixID);
         console.log("Prefix:",PValue)
         this._EmergencyListService.MyForm.get('PrefixID').setValue(PValue[0]);
         this._EmergencyListService.MyForm.updateValueAndValidity();
@@ -572,7 +627,7 @@ export class NewEmergencyComponent implements OnInit {
   }
 
   getDepartmentList() {
-    
+    debugger
     this._EmergencyListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
@@ -654,15 +709,16 @@ export class NewEmergencyComponent implements OnInit {
 
 
   onChangeGenderList(prefixObj) {
+    debugger
     if (prefixObj) {
       this._EmergencyListService
         .getGenderCombo(prefixObj.PrefixID)
         .subscribe((data) => {
           this.GendercmbList = data;
           this._EmergencyListService.MyForm.get("GenderId").setValue(this.GendercmbList[0]);
-          // this.selectedGenderID = this.GenderList[0].GenderId;
+          // this.selectedGenderID = this.GenderList[0].GenderId;         
         });
-    }
+        }
   }
 
   getDateTime(dateTimeObj) {

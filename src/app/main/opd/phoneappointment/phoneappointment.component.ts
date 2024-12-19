@@ -43,6 +43,7 @@ export class PhoneappointmentComponent implements OnInit {
   displayedColumns = [
     // 'PhoneAppId',
     'IsCancelled',
+    'RegNo',
     'SeqNo',
     'AppDate',
     'PatientName',
@@ -155,48 +156,57 @@ newPhoneAppointment(){
     });
   }
 
+CanclePhoneApp(contact) {
+  Swal.fire({
+    title: 'Do you want to cancel the Phone Appointment?',
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Cancel it!"
+  }).then((flag) => {
+    if (flag.isConfirmed) {
+      let appointmentcancle = {};
+      appointmentcancle['phoneAppId'] = contact.PhoneAppId;
 
-CanclePhoneApp(contact){
-  
-    Swal.fire({
-      title: 'Do you want to cancel the Phone Appointment ',
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!" 
+      let submitData = {
+        "phoneAppointmentCancle": appointmentcancle
+      };
 
-    }).then((flag) => {
+      console.log(submitData);
 
-      if (flag.isConfirmed) {
-        let appointmentcancle={};
-        appointmentcancle['phoneAppId'] =  contact.PhoneAppId;
-       
-        let submitData = {
-          "phoneAppointmentCancle": appointmentcancle
-        
-        };
-        console.log(submitData);
-        this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(response => {
+      this.isLoading = true;
+
+      this._phoneAppointService.PhoneAppointCancle(submitData).subscribe(
+        (response) => {
           if (response) {
-            this.toastr.success('Record Cancelled Successfully.', 'Cancelled !', {
+            this.toastr.success('Record Cancelled Successfully.', 'Cancelled!', {
               toastClass: 'tostr-tost custom-toast-success',
             });
-          }
-          else {
-            this.toastr.error('Record Data not Cancelled !, Please check API error..', 'Error !', {
+          } else {
+            this.toastr.error('Record Data not Cancelled! Please check API error..', 'Error!', {
               toastClass: 'tostr-tost custom-toast-error',
             });
           }
-          this.isLoading1 = '';
-        });
-      }else{
-        this.getPhoneAppointList();
-      }
-    });
-    
-  }
+          this.getPhoneAppointList();
+
+          this.isLoading = false;
+        },
+        (error) => {
+          
+          this.toastr.error('An error occurred while canceling the appointment.', 'Error!', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+          this.isLoading = false;
+        }
+      );
+    } else {
+      this.getPhoneAppointList();
+    }
+  });
+}
+
 
 }
 
@@ -215,7 +225,7 @@ export class PhoneAppointmentlist {
   DoctorId:any;
   DoctorName: string;
   IsCancelled: boolean;
-  RegNo: Number;
+  RegNo: any;
   SeqNo:any;
   ConsultantDocId:any;
 

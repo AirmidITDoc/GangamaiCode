@@ -135,6 +135,7 @@ export class AdmissionService {
       //---Regi starrt-------
 
       RegId: '',
+      EmgId: '',
       RegDate: '',
       RegTime: '',
       //PrefixId : '',
@@ -213,6 +214,11 @@ export class AdmissionService {
   // registration patient list
   public getRegistrationList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
+  }
+
+  //emergency list
+  public getEmergencyList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientEmergencyList", employee)
   }
   // Search Window Option
 

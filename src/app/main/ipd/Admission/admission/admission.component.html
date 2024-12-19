@@ -529,6 +529,7 @@
                                 <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
                                     <!-- getSelectedObj -->
                                     <mat-form-field appearance="outline" *ngIf="Regflag">
+                                        <mat-label>Registered Patient</mat-label>
                                         <input type="text" name="RegId" formControlName="RegId"
                                             placeholder="RegNo / First Name / Last Name / Mobile No" matInput #regno
                                             [matAutocomplete]="auto" (input)="getSearchList()">
@@ -550,6 +551,30 @@
                                             Required field cannot be left blank
                                         </mat-error>
                                     </mat-form-field>
+
+                                    <!-- New Reg dropdown -->
+
+                                    <mat-form-field class=searchEmgId appearance="outline" *ngIf="NewRegflag">
+                                        <mat-label>Emergency Patient</mat-label>
+                                          <input type="text" name="EmgId" formControlName="EmgId"
+                                              placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
+                                              [matAutocomplete]="auto1" (input)="getSearchListEmg()" maxlength="10">
+                                          <span matSuffix style="display: flex;">
+                                              <mat-icon class="mat-icon-close"
+                                                  (click)="searchFormGroup.get('EmgId').setValue(''); isEmgIdSelected = false;">close</mat-icon>
+                                              <mat-icon class="mat-icon-close"
+                                                  (click)="searchFormGroup.get('EmgId').setValue(''); isEmgIdSelected = false;">search</mat-icon>
+                                          </span>
+                                          <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextEmg"
+                                              (optionSelected)='chekEmergencypatient($event.option.value)'>
+                                              <mat-option *ngFor="let option of EmgfilteredOptions" [value]="option">
+                                                {{option.EmgId}} |{{option.FirstName}} | {{option.MiddleName}} |
+                                                {{option.LastName}} | {{option.Address}} |
+                                                {{option.MobileNo}} | {{option.DoctorName}} | {{option.DepartmentName}}
+                                              </mat-option>
+                                          </mat-autocomplete> 
+                                      </mat-form-field>
+                                    <!-- end -->
 
                                     <mat-form-field appearance="outline">
                                         <mat-label>Hospital Name</mat-label>
