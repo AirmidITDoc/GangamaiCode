@@ -21,13 +21,20 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
-// import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-
 import { CommonModule, DatePipe } from "@angular/common";
 import { OTManagementServiceService } from "../ot-management-service.service";
 import { OTRequestComponent } from "./ot-request.component";
 import { NewRequestComponent } from "./new-request/new-request.component";
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 const routes: Routes = [
@@ -56,16 +63,24 @@ const routes: Routes = [
         MatSortModule,
         MatSelectModule,
         MatRadioModule,
-        // MatSnackBarModule,
+        MatSnackBarModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         SharedModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatListModule,
+        MatExpansionModule
     ],
     providers: [DatePipe,OTManagementServiceService],
 

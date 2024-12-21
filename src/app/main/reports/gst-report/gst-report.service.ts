@@ -170,7 +170,26 @@ export class GstReportService {
   }
     return this._httpClient.get("GSTReport/view-ViewGSTR2ASupplierWisePurchaseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
+
+  public geDrWiseProfitDetailReport(FromDate,ToDate,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("GSTReport/view-SalesProfitDetailDoctorWiseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+  }
+
+  public geDrWiseProfitSummeryReport(FromDate,ToDate,DoctorId,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.get("GSTReport/view-SalesProfitSummaryDoctorWiseReport?FromDate="+FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId);
+  }
+
   getStoreList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
+  }
+
+  public getDoctorMaster() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 }

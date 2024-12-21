@@ -151,29 +151,29 @@
                                                 matInput>
 
                                         </mat-form-field> -->
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="50%" *ngIf="FlagDoctorIDSelected" style="margin-left:2%;">
-                                            <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select Doctor" matInput
-                                                formControlName="DoctorID"
-                                                [matAutocomplete]="autosearchDoctor" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_GstReportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="_GstReportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autosearchDoctor="matAutocomplete"
-                                                [displayWith]="getOptionTextsearchDoctor">
-                                                <mat-option
-                                                    *ngFor="let option of filteredOptionssearchDoctor | async"
-                                                    [value]="option">
-                                                    {{option.Doctorname}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
+                                        <div>
+                                            <mat-form-field appearance="outline" fxFlex="40%" *ngIf="FlagDoctorIDSelected" style="margin-left:2%;">
+                                                <mat-label>Doctor Name</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Doctor" matInput
+                                                    formControlName="DoctorID"
+                                                    [matAutocomplete]="autosearchDoctor" required>
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_GstReportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_GstReportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autosearchDoctor="matAutocomplete"
+                                                    [displayWith]="getOptionTextsearchDoctor">
+                                                    <mat-option
+                                                        *ngFor="let option of filteredOptionssearchDoctor | async"
+                                                        [value]="option">
+                                                        {{option.Doctorname}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
                                         <div>
                                             <!-- <mat-form-field appearance="outline" style="width:50%;">
                                                 <mat-label>Store Name</mat-label>

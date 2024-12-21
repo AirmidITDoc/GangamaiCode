@@ -62,6 +62,9 @@ export class OTManagementServiceService {
        DoctorId:'',
        SurgeryType:'1',
        DepartmentId:'',
+       DepartmentName:'',
+       GenderName:'',
+       GenderId:'',
        Assistant:'',
        operativeDiagnosis:'',
        operativeFindings:'',
@@ -205,6 +208,9 @@ export class OTManagementServiceService {
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
+  public getGenderCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {})
+    }
   // public RequestInsert(employee){
   //   return this._httpClient.post("InPatient/OTRequestInsert", employee);
   // }

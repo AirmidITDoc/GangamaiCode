@@ -69,6 +69,10 @@
 }
 
 app-ot-request{
+    .table1{
+        height: 500px !important;
+
+    }
 .mat-header-row {
     width: 2460px;
     max-width: 2460px;
@@ -275,7 +279,7 @@ app-ot-request{
 }
 
 .mat-column-action {
-    // color: white !important;
+    color: white !important;
     width:100px;
     max-width: 100px;
     min-width: 100px;

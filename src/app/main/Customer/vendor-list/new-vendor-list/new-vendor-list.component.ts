@@ -139,19 +139,6 @@ export class NewVendorListComponent implements OnInit {
     } else{
       debugger
       var m_dataUpdate={
-        
-          // "vendorId":this.vVendorId,
-          // "vendorName": this._VendorInfo.myform.get("VendorName").value || '',
-          // "vendorAddress": this._VendorInfo.myform.get("Address").value || '',
-          // "vendorMobileNo": parseInt(this._VendorInfo.myform.get("MobileNo").value) || '',
-          // "vendorPinCode": parseInt(this._VendorInfo.myform.get("PinCode").value) || '',
-          // "vendorPersonName": this._VendorInfo.myform.get("PersonName").value || '',
-          // "vendorPersonMobileNo":parseInt(this._VendorInfo.myform.get("PersonMobileNo").value) || '',
-          // "createdBy": this._loggedService.currentUserValue.user.id,
-          // "createdDateTime": formattedDate,    //this._VendorInfo.myform.get("Date").value || "2024-12-18T09:58:36.337Z",
-          // "modifiedBy": this._loggedService.currentUserValue.user.id,
-          // "modifiedDateTime": formattedDate,// this._VendorInfo.myform.get("Date").value || "2024-12-18T09:58:36.337Z",
-        
           "updateVendorInformationParam": {
           "vendorId": this.vVendorId,
           "vendorName": this._VendorInfo.myform.get("VendorName").value || '',

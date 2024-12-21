@@ -77,8 +77,6 @@ const routes: Routes = [
         MatSlideToggleModule ,
         MatDividerModule,
         MatDialogModule,
-      
-        MatSnackBarModule,
         MatStepperModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,

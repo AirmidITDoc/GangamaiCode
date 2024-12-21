@@ -138,12 +138,12 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
                                             <div class="pill-icon">
                                                 <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='0'"
-                                                    matTooltip="Appointment cancelled"
+                                                    matTooltip="Appointment Cancelled"
                                                     class="red-600 s-16">circle
                                                 </mat-icon>
 
                                                 <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='1'"
-                                                    matTooltip="Appointment Approve"
+                                                    matTooltip="Appointment Approved"
                                                     class="green-600 s-16">circle
                                                 </mat-icon>
                                             </div>
@@ -158,13 +158,13 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
                                             <div class="pill-icon">
-                                                <mat-icon style="border-radius:100% ;" *ngIf="!contact.RegNo || contact.RegNo.trim().length === 0" 
-                                                    matTooltip="New Appointment"
+                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.RegNo==0" 
+                                                    matTooltip="New Patient"
                                                     class="blue-600 s-16">circle
                                                 </mat-icon>
 
-                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.RegNo && contact.RegNo.trim().length > 0"  
-                                                    matTooltip="Old Appointment"
+                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.RegNo!= 0"  
+                                                    matTooltip="Old Patient"
                                                     class="grey-600 s-16">circle
                                                 </mat-icon>
                                             </div>

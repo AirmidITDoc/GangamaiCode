@@ -10,6 +10,13 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { NewRequestComponent } from './new-request/new-request.component';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-ot-request',
@@ -29,10 +36,12 @@ export class OTRequestComponent implements OnInit {
   OPIPNo: any;
   D_data1: any;
   dataArray = {};
+  hasSelectedContacts: boolean;
 
   
   // @ViewChild(MatSort) sort: MatSort;
   // @ViewChild(MatPaginator) paginator: MatPaginator;
+  
 
   
   displayedColumns: string[] = [
@@ -127,7 +136,7 @@ export class OTRequestComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var m_data = {
       "F_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "L_Name": this.searchFormGroup.get('F_Name').value || "%",
+      "L_Name": this.searchFormGroup.get('L_Name').value || "%",
       "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
@@ -161,21 +170,10 @@ export class OTRequestComponent implements OnInit {
         width: '100%',
         // height: "100%"
       });
-    dialogRef.afterClosed().subscribe(result => {
-      this._OtManagementService.getOTRequestList(this.D_data1).subscribe(Visit => {
-        this.dataArray =  Visit as Requestlist[];
-        this.dataSource.data = Visit as Requestlist[];
-        console.log(this.dataSource.data);
-        //  this.dataSource.sort = this.sort;
-        //  this.dataSource.paginator = this.paginator;
-
-        this.sIsLoading = '';
-        this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getRequestList();
+     });
   }
 
   onShow(event: MouseEvent) {
