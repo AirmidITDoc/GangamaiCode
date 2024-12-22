@@ -36,6 +36,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search'; 
 import { PatientDischargeClearanceComponent } from './patient-discharge-clearance.component';
+import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PatientDischargeClearanceComponent],
+  declarations: [PatientDischargeClearanceComponent, PatientClearanceOptionComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

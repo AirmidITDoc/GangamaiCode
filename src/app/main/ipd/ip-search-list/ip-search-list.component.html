@@ -344,9 +344,9 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1800"
+                            <mat-header-row class="accent min-width-2000"
                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row class="min-width-1800" *matRowDef="let contact; columns: displayedColumns;"
+                            <mat-row class="min-width-2000" *matRowDef="let contact; columns: displayedColumns;"
                                 [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"

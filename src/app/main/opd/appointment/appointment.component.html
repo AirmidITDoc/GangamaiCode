@@ -95,8 +95,8 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Doctor Name</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
-                                            matInput formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor1">
-                                        <span matSuffix style="display: flex;">
+                                            matInput formControlName="DoctorId" [matAutocomplete]="autoSearchDoctor1" (input)="getDoctorNameCombobox()">
+                                        <span matSuffix style="display: flex;" >
                                             <mat-icon class="mat-icon-close"
                                                 (click)="_AppointmentSreviceService.myFilterform.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close"
@@ -104,7 +104,7 @@
                                         </span>
                                         <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
                                             [displayWith]="getOptionTextDoctor">
-                                            <mat-option *ngFor="let option of filteredOptionsDoctor | async"
+                                            <mat-option *ngFor="let option of filteredOptionsDoctorsearch "
                                                 [value]="option" (onSelectionChange)="getVisitList1()">
                                                 {{option.Doctorname}}
                                             </mat-option>

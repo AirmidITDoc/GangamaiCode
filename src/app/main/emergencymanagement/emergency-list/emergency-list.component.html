@@ -90,6 +90,10 @@
                                         <mat-icon> cancel</mat-icon>
                                     </button>
 
+                                    <button mat-icon-button matTooltip="creditCard" *ngIf="contact.IsCancelled=='0'">
+                                        <mat-icon>credit_card</mat-icon>
+                                    </button>
+
                                     <!-- <button mat-icon-button (click)="CanclePhoneApp(contact)" matTooltip="Cancle" *ngIf="contact.IsCancelled=='0'">
                                         <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==1"
                                             [disabled]="contact.disabled" class="disabled-icon">
@@ -125,6 +129,14 @@
                                     Date</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.EmgDate | date: 'dd/MM/yyyy'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="EmgTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                    Time</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                    {{contact.EmgTime | date: 'HH:mm:ss'}}
                                 </mat-cell>
                             </ng-container>
 

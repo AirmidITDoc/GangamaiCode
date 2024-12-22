@@ -22,12 +22,23 @@ export class PatientDischargeClearanceService {
   }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientClearanceList", {})
   }
-  
+  public getPatietnapprovelist(param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientClearanceAprovViewList", param)
+  }
   public getapprovelist(param,loader = true){
     if (loader) {
       this._loaderService.show();
   }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientClearanceApprovalList", param)
+  }
+  public UpdateDischargeInitiate(param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Nursing/UpdateDischargeInitiateApproval", param)
   }
 
 }

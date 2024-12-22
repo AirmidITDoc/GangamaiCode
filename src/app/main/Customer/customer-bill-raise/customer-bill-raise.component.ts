@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { CustomerPaymentComponent } from '../customer-information/customer-payment/customer-payment.component';
 
 @Component({
   selector: 'app-customer-bill-raise',
@@ -109,13 +110,13 @@ export class CustomerBillRaiseComponent implements OnInit {
   }
   OnEdit(contact){
     console.log(contact)
-    const dialogRef = this._matDialog.open(NewBillRaiseComponent,
+    const dialogRef = this._matDialog.open(CustomerPaymentComponent,
       {
-        maxWidth: "75vw",
-        height: '55%',
+        maxWidth: "50vw",
+        height: '53%',
         width: '100%',
-        data: {
-          Obj: contact
+        data:{
+          Obj:contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {

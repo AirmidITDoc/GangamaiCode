@@ -23,7 +23,7 @@ import { MatSelect } from '@angular/material/select';
   animations: fuseAnimations
 })
 export class NewRequestComponent implements OnInit {
-  myForm:FormGroup;
+  searchFormGroup:FormGroup;
   personalFormGroup: FormGroup;
   isAlive = false;
   savedValue: number = null;
@@ -32,7 +32,6 @@ export class NewRequestComponent implements OnInit {
   loadID = 0;
   submitted = false;
   now = Date.now();
-  searchFormGroup: FormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   selectedAdvanceObj: OPIPPatientModel;
@@ -70,8 +69,14 @@ export class NewRequestComponent implements OnInit {
   vAdmissionID:any;
   PatientListfilteredOptions:any;
   isRegIdSelected: boolean = false;
+  vWardName: any;
+  vBedNo:any;
+  vPatientName:any;
+  vGenderId:any;
+  vAge:any;
+  GendercmbList: any = [];
+  optionsGender: any[] = [];
 
-  
   filteredOptionautoDepartment: Observable<string[]>;
   filteredOptionsSurgeryCategory: Observable<string[]>;
   filteredOptionsSurgeon: Observable<string[]>;
@@ -79,6 +84,7 @@ export class NewRequestComponent implements OnInit {
   filteredOptionsSite: Observable<string[]>;
   filteredOptionsSurgery: Observable<string[]>;
   filteredOptionsRegSearch: Observable<string[]>;
+  filteredOptionsGender: Observable<string[]>;
 
 
   optionsDepartment: any[] = [];
@@ -121,7 +127,7 @@ export class NewRequestComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.myForm = this.createMyForm();
+    this.searchFormGroup = this.createMyForm();
     
     this.personalFormGroup = this.createOtrequestForm();
     if (this.data) {
@@ -140,6 +146,7 @@ export class NewRequestComponent implements OnInit {
     this.getCategoryList();
     this.getSiteList();
     this.getDepartmentList();
+    this.getGenderList();
   
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -225,19 +232,23 @@ export class NewRequestComponent implements OnInit {
       CategoryId: ' ',
       IsCancelled: '',
       SiteDescId: '',
-      DoctorId: ''
-
+      DoctorId: '',
+      WardName:'',
+      BedNo:'',
+      PatientName:'',
+      GenderId:'',
+      Age:''
     });
   }
 
   
   getSearchList() {
     var m_data = {
-      "Keyword": `${this.myForm.get('RegID').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
-    if (this.myForm.get('RegID').value.length >= 1) {
+    // if (this.searchFormGroup.get('RegID').value.length >= 1) {
       this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
+        // this.filteredOptions = resData;
         this.PatientListfilteredOptions = resData;
         if (this.filteredOptions.length == 0) {
           this.noOptionFound = true;
@@ -246,19 +257,37 @@ export class NewRequestComponent implements OnInit {
         }
 
       });
+    // }
+  }
+  private _filterGen(value: any): string[] {
+    debugger
+    if (value) {
+      const filterValue = value && value.GenderName ? value.GenderName.toLowerCase() : value.toLowerCase();
+      return this.GendercmbList.filter(option => option.GenderName.toLowerCase().includes(filterValue));
     }
+  }
 
+  getGenderList(){
+    debugger
+    this._OtManagementService.getGenderCombo().subscribe(data => {
+      debugger
+      this.GendercmbList = data;
+      this.optionsGender = this.GendercmbList.slice();
+      this.filteredOptionsGender = this._OtManagementService.otreservationFormGroup.get('GenderId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterGen(value) : this.GendercmbList.slice()),
 
+      );
+    });
   }
 
   getSelectedObj(obj) {
+    console.log("AdmittedList:",obj)
     this.registerObj = obj;
     // this.PatientName = obj.FirstName + '' + obj.LastName;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
     this.vAdmissionID = obj.AdmissionID
-
-    console.log(obj);
   }
 
  
@@ -268,7 +297,10 @@ export class NewRequestComponent implements OnInit {
     return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
   }
 
- 
+  getOptionTextGender(option) {
+    debugger
+    return option && option.GenderName ? option.GenderName : '';
+  }
 
   // openChanged(event) {
   //   this.isOpen = event;
@@ -489,6 +521,7 @@ export class NewRequestComponent implements OnInit {
 
 
   private _filterDoctor(value: any): string[] {
+    debugger
     if (value) {
       const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
       return this.optionsSurgeon.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
@@ -498,13 +531,15 @@ export class NewRequestComponent implements OnInit {
 
   
   getOptionTextSurgeonId1(option) {
-    return option && option.DoctorName ? option.DoctorName : '';
+    debugger
+    return option && option.Doctorname ? option.Doctorname : '';
   }
   getOptionTextautoSurgeonName(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
 
   getDepartmentList() {
+    debugger
     this._OtManagementService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDepartment = this.DepartmentList.slice();
@@ -519,16 +554,18 @@ export class NewRequestComponent implements OnInit {
 
 
   private _filterDepartment(value: any): string[] {
+    debugger
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
-      return this.optionsDepartment.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
+      return this.optionsDepartment.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
 
   }
 
   
   getOptionTextautoDepartment(option) {
-    return option && option.departmentName ? option.departmentName : '';
+    debugger
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
   getDoctor1List() {
 
@@ -556,10 +593,38 @@ export class NewRequestComponent implements OnInit {
   @ViewChild('SurgeryId') SurgeryId: ElementRef;
   @ViewChild('AnesthType') AnesthType: ElementRef;
   @ViewChild('Instruction') Instruction: ElementRef;
+  @ViewChild('wardname') wname: ElementRef;
+  @ViewChild('bedno') bedno: ElementRef;
+  @ViewChild('pName') pName: ElementRef;
+  @ViewChild('GName') GName: ElementRef;
+  @ViewChild('age') age: ElementRef;
   
-  
-  
-  
+  public onEnterwname(event): void {
+    if (event.which === 13) {
+      this.bedno.nativeElement.focus();
+    }
+  }
+  public onEnterbedno(event): void {
+    if (event.which === 13) {
+      this.pName.nativeElement.focus();
+    }
+  }
+  public onEnterPname(event): void {
+    if (event.which === 13) {
+      this.GName.nativeElement.focus();
+    }
+  }
+  public onEnterGname(event): void {
+    if (event.which === 13) {
+      this.age.nativeElement.focus();
+    }
+  }
+  public onEnterage(event): void {
+    if (event.which === 13) {
+      this.GName.nativeElement.focus();
+    }
+  }
+
   public onEnterDepartmentId(event): void {
     if (event.which === 13) {
       this.SurgeryCategory.nativeElement.focus();

@@ -61,7 +61,9 @@
                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                     <input name="MobileNo" formControlName="MobileNo" type="Number" ONlyNUmber
                                       matInput required   (keyup.enter)="focusNext('PinCode')" placeholder="enter a valid 10-digit mobile number."
-                                        id="MobileNo" [(ngModel)]="vMobileNo" (keypress)="keyPressAlphanumeric($event)" maxlength="10" minlength="10">
+                                        id="MobileNo" [(ngModel)]="vMobileNo" (keypress)="keyPressAlphanumeric($event)" maxlength="10" minlength="10"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                                        value="9876658688">
                                         <mat-error *ngIf="_CustomerInfo.myform.get('MobileNo').hasError('required')">
                                             Please enter a valid 10-digit mobile number.
                                           </mat-error> 
@@ -72,7 +74,9 @@
                                     <mat-icon matSuffix class="secondary-text">place</mat-icon>
                                     <input name="PinCode" formControlName="PinCode" matInput    type="number" 
                                     OnlyNumber (keyup.enter)="focusNext('personName')" id="PinCode" [(ngModel)]="vPinCode"
-                                    (keypress)="keyPressAlphanumeric($event)" minlength="6" maxlength="6">
+                                    (keypress)="keyPressAlphanumeric($event)" minlength="6" maxlength="6"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);"
+                                    value="123456">
                                 </mat-form-field>
                             </div>
 
@@ -90,7 +94,9 @@
                                     <mat-icon matSuffix class="secondary-text">phone</mat-icon>
                                     <input name="PersonMobileNo" formControlName="PersonMobileNo" matInput required
                                     type="number"   id="PersonMobileNo" [(ngModel)]="vPersonMobileNo"  maxlength="10" minlength="10"
-                                    placeholder="enter a valid 10-digit mobile number." (keypress)="keyPressAlphanumeric($event)">
+                                    placeholder="enter a valid 10-digit mobile number." (keypress)="keyPressAlphanumeric($event)"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
+                                    value="9876658688">
                                     <mat-error *ngIf="_CustomerInfo.myform.get('PersonMobileNo').hasError('required')">
                                         Please enter a valid 10-digit mobile number.
                                       </mat-error> 

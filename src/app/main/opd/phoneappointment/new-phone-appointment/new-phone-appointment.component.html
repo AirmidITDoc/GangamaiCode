@@ -36,6 +36,7 @@
                   <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
                                     
                     <mat-form-field class=searchRegId appearance="outline" fxFlex="50%">
+                      <mat-label>Registered Patient</mat-label>
                         <input type="text" name="RegId" formControlName="RegId"
                             placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
                             [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
@@ -113,7 +114,7 @@
   
                       <mat-form-field appearance="outline" fxFlex >
                         <mat-label>Address</mat-label>
-                        <input name="Address" formControlName="Address" placeholder="Address" matInput required
+                        <input name="Address" formControlName="Address" placeholder="Address" matInput 
                         #Address (keydown)="onEnterAddress($event)" [(ngModel)]="vAddress">
                       <!-- [ngClass]="{ 'is-invalid': submitted && f.Address.errors }" -->
                       </mat-form-field>

@@ -55,7 +55,8 @@ export class CustomerInformationService {
       CustomerName:[''],
       AMCamt:[''],
       Description:[''],
-      PayDate:[(new Date()).toISOString()]
+      PayDate:[(new Date()).toISOString()],
+      PayAmt:['']
     })
   }
   public deactivateTheStatus(param, loader = true) {

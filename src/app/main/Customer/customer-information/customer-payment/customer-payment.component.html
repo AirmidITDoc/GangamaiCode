@@ -40,12 +40,22 @@
                                 </mat-form-field> 
                             </div>
                           
-
+                            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="4px">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>AMC Amount</mat-label>
                                 <input name="AMCamt" formControlName="AMCamt" matInput type="text"
-                                [(ngModel)]="vAmount"      (keypress)="keyPressCharater($event)"    >
+                                [(ngModel)]="vamcAmount"      (keypress)="keyPressCharater($event)"    
+                                (keyup)="chkAmtValidation()">
                             </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Pay Amount</mat-label>
+                                <input name="PayAmt" formControlName="PayAmt" matInput type="text"
+                                [(ngModel)]="vPayAmt"      (keypress)="keyPressCharater($event)"    
+                                (keyup)="chkAmtValidation()">
+                            </mat-form-field>
+
+                            </div>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Description</mat-label>

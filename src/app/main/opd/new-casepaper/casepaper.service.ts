@@ -135,8 +135,8 @@ public getServiceList(param,loader = true){
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
   } 
-  public getcheifcomplaintList( ) { 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CheifcomplaintList",{})
+  public getcheifcomplaintList(param ) { 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPCasepaperDignosisMaster",param)
   } 
   public getTemplateList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvPresTemplateName_List", {})

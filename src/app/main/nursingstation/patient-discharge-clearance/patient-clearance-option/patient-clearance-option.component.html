@@ -8,7 +8,7 @@
                 style="color: white;">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Initiate Discharge Process
+               Patietn Clearance Option
             </span>
         </div>
 
@@ -26,52 +26,27 @@
             <div class="content-card" style="border-radius:4px;">
                 <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
 
-                    <mat-card style="padding: 5px;">
+                    <!-- <mat-card style="padding: 5px;"> -->
 
-                        <div fxLayout="column" fxLayoutGap="5px">
-
-                            <mat-form-field appearance="outline" fxFlex>
+                        <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="space-between"> 
+                            <mat-form-field appearance="outline" fxFlex="60%">
                                 <mat-label>Patient Name</mat-label>
                                 <input name="PatientName" matInput [(ngModel)]="registerObj.PatientName" readonly>
-                            </mat-form-field>
+                            </mat-form-field> 
 
-                            <form [formGroup]="InitiateForm">
-                                <mat-form-field appearance="outline" fxFlex="60%">
-                                    <mat-label>Department Name</mat-label>
-                                    <input type="text" name="DepartmentName" formControlName="DepartmentName"
-                                        #DepartmentName placeholder="DepartmentName" matInput
-                                        [matAutocomplete]="autoDep" required id="myInput" [(ngModel)]="vDepartmentName">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="InitiateForm.get('DepartmentName').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="InitiateForm.get('DepartmentName').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionText">
-                                        <mat-option *ngFor="let option of filteredOptionDepartment | async"
-                                            [value]="option">
-                                            {{option.DepartmentName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
-                                    style="padding: 8px 20px 0px 20px;">
-                                    <button (click)="onAddDepartment()" class="btn btn-primary btn-with-icon py-8"
-                                        #addbutton>
-                                        <span class="btn-icon">
-                                            <mat-icon> add </mat-icon>
-                                        </span>
-                                    </button>
-                                </div>
-                            </form> 
+                            <span style="margin-right: 40px;">
+                                <app-common-date [screenFrom]="screenFromString"
+                                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                            </span>
                         </div> 
-                    </mat-card>
+
+                        
+                    <!-- </mat-card> -->
 
                     <mat-card style="padding: 5px;">
                         <div fxFlex="100%">
-                            <mat-table #table1 matSort [dataSource]="dsDepartmentlist" [@animateStagger]="{value:'50'}"
-                                style="height:250px !important;overflow: auto;">
+                            <mat-table #table1 matSort [dataSource]="dsApprovedlist" [@animateStagger]="{value:'50'}"
+                                style="height:200px !important;overflow: auto;">
 
                                 <ng-container matColumnDef="DepartmentName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -82,34 +57,50 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="AddedBy">
+                                <ng-container matColumnDef="IsApproved">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        AddedBy
+                                        IsApproved
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.AddedBy}}</span>
+                                        <span> {{contact.IsApproved}}</span>
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="AddedByDateTime">
+                                <ng-container matColumnDef="ApprovedBy">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        AddedByDateTime
+                                        ApprovedBy
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.AddedByDatetime | date:'dd/MM/YYYY'}}</span>
+                                        <span> {{contact.ApprovedBy || '-'}}</span>
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                <ng-container matColumnDef="ApprovedBYDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        ApprovedDateTime
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
-                                        <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.ApprovedDatetime | date:'dd/MM/YYYY'}}-{{contact.ApprovedDatetime | date:'hh:mm'}}</span>
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="IsNoDues">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        IsNoDues
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.IsNoDues || '-'}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Comments">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Comments
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.Comments || '-'}}</span>
+                                    </mat-cell>
+                                </ng-container> 
 
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">
@@ -128,10 +119,10 @@
                                 <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':dsDepartmentlist!=null}">
+                                    [ngClass]="{'hide':dsApprovedlist!=null}">
                                 </mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsDepartmentlist!=null && dsDepartmentlist.data.length==0)}">
+                                    [ngClass]="{'hide':!(dsApprovedlist!=null && dsApprovedlist.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
                             <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15, 20]" [pageSize]="10"
@@ -140,10 +131,29 @@
                         </div>
                     </mat-card>
 
-                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
-                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary" (click)="onSave()">Save</button>
-                    </div>
+                    
+                      
+                            <form [formGroup]="myForm"> 
+                                <div fxLayout="row"  fxLayoutGap="10px">
+                                    <div class="slide-toggle mb-2" style="margin-top: 20px;">
+                                        <mat-slide-toggle name="NoDues" (change)="onChangeDues()" formControlName="NoDues" >
+                                          No Dues
+                                        </mat-slide-toggle>
+                                    </div>
+        
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Comment</mat-label>
+                                        <input name="Comment" matInput  type="text"
+                                        formControlName="Comment" >
+                                    </mat-form-field> 
+                                </div> 
+                            </form>  
+                 
+                        <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-primary" (click)="onSave()">Save</button>
+                        </div>
+                  
                 </div>
             </div>
         </div>

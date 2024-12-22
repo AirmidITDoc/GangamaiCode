@@ -28,15 +28,19 @@ export class GSTReportComponent implements OnInit {
   StoreList:any=[];
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsstore: Observable<string[]>;
+  filteredOptionssearchDoctor: Observable<string[]>;
   isUserSelected: boolean = false;
   isSearchstoreSelected: boolean = false;
   FlagStoreSelected: boolean = false;
+  FlagDoctorIDSelected: boolean = false;
   FlagUserSelected: boolean = false;
   FlagReportTypeSelected: boolean = false;
   ReportName: any;
   SpinLoading: boolean = false;
   sIsLoading: string = '';
   ReportID:any=0
+  DoctorList: any = [];
+  optionsSurgeon: any[] = [];
 
   optionsSearchstore: any[] = [];
 
@@ -61,6 +65,7 @@ export class GSTReportComponent implements OnInit {
     this.bindReportData();
     this.GetUserList();
     this.gePharStoreList();
+    this.getDoctorList();
    // this.getStoreList();
 
 
@@ -92,91 +97,121 @@ export class GSTReportComponent implements OnInit {
        this.FlagStoreSelected = true;
        this.FlagUserSelected = false;
        this.FlagReportTypeSelected= false;
+       this.FlagDoctorIDSelected=false;
      }
      else if (this.ReportName == 'Sales Profit Item Wise Summary Report') {
        this.FlagUserSelected = false;
        this.FlagStoreSelected = true;
        this.FlagReportTypeSelected= false;
+       this.FlagDoctorIDSelected=false;
      } 
    
      else if (this.ReportName == 'Purchase GST Report Supplier Wise-GST%') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Purchase GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Purchase GST Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Sales GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Sales GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Sales Return GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'Sales GST Summary Consolidated') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'HSN Code Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'GST B2CS Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'GST B2GS Report Consolidated') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     }   else if (this.ReportName == 'GSTR2A Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
     } 
     else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=false;
+    }
+    else if(this.ReportName == "Dr Wise Profit Detail Report"){
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = false;
+      this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=true;
+    } 
+    else if(this.ReportName == "Dr Wise Profit Summary Report"){
+      this.FlagUserSelected = false;
+      this.FlagStoreSelected = false;
+      this.FlagReportTypeSelected= false;
+      this.FlagDoctorIDSelected=true;
     } 
     }
 
@@ -243,6 +278,12 @@ export class GSTReportComponent implements OnInit {
      else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
       this.viewgeGSTRAZsuppwelierwisepurchasePdf();
      } 
+     else if (this.ReportName == "Dr Wise Profit Detail Report"){
+      this.DrWiseProfitDetailReport();
+     }
+     else if (this.ReportName == "Dr Wise Profit Summary Report"){
+      this.DrWiseProfitSummeryReport();
+     }
 
     }
 
@@ -830,6 +871,7 @@ export class GSTReportComponent implements OnInit {
      }
 
      viewgeGSTRAZsuppwelierwisepurchasePdf() {
+      debugger
       this.sIsLoading = 'loading-data';
    
       let storeId =this._loggedUser.currentUserValue.user.storeId;
@@ -842,6 +884,7 @@ export class GSTReportComponent implements OnInit {
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
          ).subscribe(res => {
+          debugger
            const dialogRef = this._matDialog.open(PdfviewerComponent,
              {
                maxWidth: "85vw",
@@ -850,6 +893,74 @@ export class GSTReportComponent implements OnInit {
                data: {
                  base64: res["base64"] as string,
                  title: "GST RAZ Supplier wise Report  Viewer"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     DrWiseProfitDetailReport() {
+      debugger
+      this.sIsLoading = 'loading-data';
+   
+      let doctorId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('DoctorId').value.DoctorId)
+        doctorId = this._GstReportService.userForm.get('DoctorId').value.DoctorId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.geDrWiseProfitDetailReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",doctorId
+         ).subscribe(res => {
+          debugger
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Dr Wise Profit Detail Report"
+               }
+             });
+           dialogRef.afterClosed().subscribe(result => {
+             
+             this.sIsLoading = '';
+           });
+         });
+   
+       }, 100);
+     }
+
+     DrWiseProfitSummeryReport() {
+      debugger
+      this.sIsLoading = 'loading-data';
+   
+      let doctorId =this._loggedUser.currentUserValue.user.storeId;
+      if (this._GstReportService.userForm.get('DoctorId').value.DoctorId)
+        doctorId = this._GstReportService.userForm.get('DoctorId').value.DoctorId
+  
+       setTimeout(() => {
+       
+         this._GstReportService.geDrWiseProfitSummeryReport(
+          this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",doctorId
+         ).subscribe(res => {
+          debugger
+           const dialogRef = this._matDialog.open(PdfviewerComponent,
+             {
+               maxWidth: "85vw",
+               height: '750px',
+               width: '100%',
+               data: {
+                 base64: res["base64"] as string,
+                 title: "Dr Wise Profit Summary Report"
                }
              });
            dialogRef.afterClosed().subscribe(result => {
@@ -905,6 +1016,10 @@ export class GSTReportComponent implements OnInit {
     return option && option.StoreName ? option.StoreName : '';
   }
 
+  getOptionTextsearchDoctor(option){
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+
   gePharStoreList() {
     this._GstReportService.getStoreList().subscribe(data => {
       this.StoreList = data;
@@ -914,6 +1029,28 @@ export class GSTReportComponent implements OnInit {
         map(value => value ? this._filterSearchstore(value) : this.StoreList.slice()),
       );
     });
+  }
+
+  getDoctorList() {
+    debugger
+    this._GstReportService.getDoctorMaster().subscribe(data => {
+      this.DoctorList = data;
+      this.optionsSurgeon = this.DoctorList.slice();
+      this.filteredOptionssearchDoctor = this._GstReportService.userForm.get('DoctorId').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor(value) : this.DoctorList.slice()),
+      );
+
+    });
+
+  }
+  private _filterDoctor(value: any): string[] {
+    debugger
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsSurgeon.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+
   }
 
   private _filterSearchstore(value: any): string[] {

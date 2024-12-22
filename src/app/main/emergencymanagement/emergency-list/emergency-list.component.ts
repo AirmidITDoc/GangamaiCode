@@ -23,6 +23,7 @@ export class EmergencyListComponent implements OnInit {
   displayedColumns = [
     'IsCancelled',
     'EmgDate',
+    'EmgTime',
     'PatientName',
     'MobileNo',
     'Address',
@@ -130,6 +131,9 @@ export class EmergencyListComponent implements OnInit {
           
           };
           console.log(submitData);
+          
+          this.isLoading = true;
+
           this._EmergencyListService.engCancle(submitData).subscribe(response => {
             if (response) {
               this.toastr.success('Record Cancelled Successfully.', 'Cancelled !', {
@@ -141,8 +145,15 @@ export class EmergencyListComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-error',
               });
             }
-            this.sIsLoading = '';
+            this.getEmergencyList();
+            this.isLoading = false;
+          },
+        (error)=>{
+          this.toastr.error('An error occurred while canceling the appointment.', 'Error!', {
+            toastClass: 'tostr-tost custom-toast-error',
           });
+          this.isLoading = false;
+        });
         }else{
           this.getEmergencyList();
         }

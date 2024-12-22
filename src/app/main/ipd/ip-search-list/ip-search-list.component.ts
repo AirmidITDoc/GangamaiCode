@@ -877,6 +877,7 @@ export class AdvanceDetailObj {
   MobileNo: any;
   PatientAge: any;
   AdvTotalAmount:any;
+  IsInitinatedDischarge:any;
   /**
   * Constructor
   *
@@ -928,6 +929,7 @@ export class AdvanceDetailObj {
       this.DocNameID = AdvanceDetailObj.DocNameID | 0
       this.MobileNo = AdvanceDetailObj.MobileNo || ''
       this.AdvTotalAmount = AdvanceDetailObj.AdvTotalAmount || 0
+      this.IsInitinatedDischarge = AdvanceDetailObj.IsInitinatedDischarge || ''
     }
   }
 }

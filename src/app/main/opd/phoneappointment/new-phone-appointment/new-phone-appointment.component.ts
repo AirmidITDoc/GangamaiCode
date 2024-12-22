@@ -160,9 +160,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
     });
   } 
   getSearchList() {
+    debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}%`
     }
+    console.log(m_data)
     this._phoneAppointListService.getPatientRegisterListSearch(m_data).subscribe(data => {
       this.PatientListfilteredOptions = data;
       if (this.PatientListfilteredOptions.length == 0) {
@@ -187,8 +189,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.vMobile = obj.MobileNo;
     this.vDepartmentid = obj.DepartmentName;
     this.vDoctorId = obj.DoctorName;
-
-
 
     this.getDepartmentList();
   } 
@@ -360,8 +360,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   }
 
-
-
   getDepartmentList(){
     this._phoneAppointListService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
@@ -382,6 +380,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
       // this.filteredDepartment.next(this.DepartmentList.slice());
     });
   }
+
 onSave(){
 
   if (this.vFirstName == '' || this.vFirstName == null || this.vFirstName == undefined) {
@@ -467,7 +466,7 @@ debugger
     var m_data = {
       "phoneAppointmentInsert": {
         "phoneAppId": 0,
-        "RegNo":'',
+        "RegNo":this.RegNo,
         "appDate":formattedDate, //this.dateTimeObj.date || '16/12/2023',
         "appTime": formattedTime,// this.datePipe.transform(this.currentDate, 'hh:mm:ss'), //this.dateTimeObj.time,
         "firstName": this.personalFormGroup.get('FirstName').value || '',

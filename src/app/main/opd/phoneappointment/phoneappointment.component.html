@@ -138,17 +138,40 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
                                             <div class="pill-icon">
                                                 <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='0'"
-                                                    matTooltip="Appointment cancelled"
+                                                    matTooltip="Appointment Cancelled"
                                                     class="red-600 s-16">circle
                                                 </mat-icon>
 
                                                 <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='1'"
-                                                    matTooltip="Appointment Approve"
+                                                    matTooltip="Appointment Approved"
                                                     class="green-600 s-16">circle
                                                 </mat-icon>
                                             </div>
                                         </mat-cell>
                                     </ng-container>
+
+                                    <!-- new old icon -->
+
+                                    <ng-container matColumnDef="RegNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
+                                            New/Old
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
+                                            <div class="pill-icon">
+                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.RegNo==0" 
+                                                    matTooltip="New Patient"
+                                                    class="blue-600 s-16">circle
+                                                </mat-icon>
+
+                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.RegNo!= 0"  
+                                                    matTooltip="Old Patient"
+                                                    class="grey-600 s-16">circle
+                                                </mat-icon>
+                                            </div>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- end -->
 
                                     <ng-container matColumnDef="SeqNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">SeqNo
@@ -170,7 +193,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                             PatientName</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
-                                            {{contact.PatientName}}
+                                            {{contact.PatientName}}-{{contact.RegNo}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -178,7 +201,8 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-180">
                                             Address
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180 ellipsis"
+                                        matTooltip="{{contact.Address}}">
                                             {{contact.Address}}
                                         </mat-cell>
                                     </ng-container>

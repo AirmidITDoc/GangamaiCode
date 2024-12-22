@@ -1234,6 +1234,18 @@ public getDoseList() {
   }
     return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PackageDetails", employee)
   }
+  public SaveDischargeInitiate(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Nursing/SaveDischargeInitiate", employee)
+  }
+  public getRtrvDepartmentlist(loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvConfig_initiateDischarge", {})
+  }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"
