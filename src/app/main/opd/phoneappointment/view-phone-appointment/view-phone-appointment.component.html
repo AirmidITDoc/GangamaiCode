@@ -110,9 +110,10 @@
                       (dayHeaderClicked)="dayHeaderClicked($event.day)"
                       (hourClicked)="hourClicked($event.hour)"
                       (segmentClicked)="segmentClicked('Clicked', $event.segment)"
-                      (eventClicked)="eventClicked('Clicked', $event.event)"
+                      (eventClicked)="eventClicked('Clicked', $event.event,$event)"
                       (eventTimesChanged)="eventTimesChanged($event)"
                       [refresh]="refresh"
+                      
                     >
                     </calendar-scheduler-view>
                 </div>

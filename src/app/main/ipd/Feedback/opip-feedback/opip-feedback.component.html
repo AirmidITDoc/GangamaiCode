@@ -1,3 +1,4 @@
+
 <div class="page-layout simple inner-scroll inner-sidebar right-sidebar" fusePerfectScrollbar>
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -39,7 +40,7 @@
                                         (blur)="onChangePatientType($event)" fxLayout="row">
                                         <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
                                         <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
-                                       
+
                                     </mat-radio-group>
 
                                     <div>
@@ -95,9 +96,9 @@
 
 
                                 </div>
-                               
+
                             </div>
-                          
+
                         </mat-card>
                     </form>
 
@@ -117,22 +118,23 @@
                                             <div class="patient-info-box my-8">
                                                 <div class="patient-info-row row-gap-4" fxLayout="row wrap">
                                                     <div class="patient-col gap-1" fxFlex="30%">
-                                                        <span class="patient-col-key " >UHID NO</span>
+                                                        <span class="patient-col-key ">UHID NO</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{RegNo}}</span>
                                                     </div>
                                                     <div class="patient-col gap-1" fxFlex="30%">
-                                                        <span class="patient-col-key" >DOA | Time</span>
+                                                        <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{DOA}}</span>
                                                     </div>
                                                     <div class="patient-col gap-1" fxFlex="30%">
-                                                        <span class="patient-col-key"  >Ward | Bed Name</span>
+                                                        <span class="patient-col-key">Ward | Bed Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{RoomName}} | {{BedName}}</span>
+                                                        <span class="patient-col-value">{{RoomName}} |
+                                                            {{BedName}}</span>
                                                     </div>
                                                     <div class="patient-col gap-1" fxFlex="30%">
-                                                        <span class="patient-col-key" >Patient Name</span>
+                                                        <span class="patient-col-key">Patient Name</span>
                                                         <span>:</span>
                                                         <span class="patient-col-value">{{PatientName}}</span>
                                                     </div>
@@ -152,9 +154,11 @@
                                                         <span class="patient-col-value">{{DoctorName}}</span>
                                                     </div>
                                                     <div class="patient-col gap-1" fxFlex="30%">
-                                                        <span class="patient-col-key " >Age | Sex</span>
+                                                        <span class="patient-col-key ">Age | Sex</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vAgeYear}}Y|{{vAgeMonth}}M|{{vAgeDay}} D | {{GenderName}}</span>
+                                                        <span
+                                                            class="patient-col-value">{{vAgeYear}}Y|{{vAgeMonth}}M|{{vAgeDay}}
+                                                            D | {{GenderName}}</span>
                                                     </div>
                                                     <div class="patient-col gap-1" fxFlex="30%">
                                                         <span class="patient-col-key">Tariff Name</span>
@@ -174,7 +178,8 @@
                                                     <div class="patient-col gap-1" fxFlex="30%">
                                                         <span class="patient-col-key">Company Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value" style="color: orange;">{{CompanyName}}</span>
+                                                        <span class="patient-col-value"
+                                                            style="color: orange;">{{CompanyName}}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -187,94 +192,99 @@
                     </div>
                     <mat-card style="padding: 5px;">
 
-                        <div fxFlex.gt-sm="98%" fxFlex="100%" *ngIf="opflag">
+                        <div fxFlex.gt-sm="98%" fxFlex="100%" *ngIf="ipflag">
                             <mat-tab-group style="overflow: auto;">
 
-                                <mat-tab label="Please Rate Each of this IP Department..">
-                                  
-                                    <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+                                <mat-tab label="Please Rate Each of this For IP Department..">
+
+                                    <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper" #stepper2 (selectionChange)="onStepChange($event)">
                                         <div *ngFor="let data of feedbackquest">
-                                        <mat-step [stepControl]="firstFormGroup" style="width:20%">
-                                            <form [formGroup]="firstFormGroup">
-                                                <ng-template matStepLabel></ng-template>
+                                            <mat-step [stepControl]="firstFormGroup" style="width:20%">
+                                                <form [formGroup]="firstFormGroup">
+                                                    <ng-template matStepLabel></ng-template>
 
-                                                <mat-form-field style="width: 100%;" >
-                                                    <mat-lable style="font-size: large;color: blue;width: 100%;padding: 10px;">{{data.FeedbackQuestion}}({{data.FeedbackQuestionMarathi}})</mat-lable>
-                                                    <input matInput formControlName="firstCtrl" required>
-                                                </mat-form-field>
-                                                <div style="padding-top:20px;">
-                                                    <mat-card style="width:100%;font-size: medium;font-weight: bold;">
-                                                        <div fxLayout="column" fxFlex>
-                                                            <div fxLayout="row" fxLayoutAlign="space-between"
-                                                                style="margin-right: 10px;height: 50px;padding-left: 100px;"
-                                                                fxFlex>
-                                                              
-                                                                <lable value="1">Excellent <img width="45" height="15px"
-                                                                        src="assets/images/logos/61.png"
-                                                                        (click)="fetchresult(data,1)"   [ngClass]="{'row-yellow': Imgstatus1 == 1}"
-                                                                        style="margin: 0px 5px 0px 0px;" value="11"
-                                                                        matTooltip="Excellent">
-                                                                </lable>
-                                                                <lable value="2">Good<img width="45" height="15px"
-                                                                        src="assets/images/logos/5.jpeg"
-                                                                        (click)="fetchresult(data,2)"  [ngClass]="{'row-yellow': Imgstatus2 == 1}"
-                                                                        style="margin: 0px 15px 0px 15px;"
-                                                                        matTooltip="Good"></lable>
-                                                                <lable value="3">Average <img width="45" height="15px"
-                                                                        src="assets/images/logos/4.jpeg"  [ngClass]="{'row-yellow': Imgstatus3 == 1}"
-                                                                        (click)="fetchresult(data,3)"
-                                                                        style="margin: 0px 15px 0px 15px;"
-                                                                        matTooltip="Average">
-                                                                </lable>
-                                                                <lable value="4">Poor <img width="45" height="15px"
-                                                                        (click)="fetchresult(data,4)"  [ngClass]="{'row-yellow': Imgstatus4 == 1}"
-                                                                        src="assets/images/logos/3.jpeg"
-                                                                        style="margin-right: 10px;"
-                                                                        matTooltip="Poor">
-                                                                </lable>
-                                                                <lable value="5">Worst <img width="45" height="15px"
-                                                                        (click)="fetchresult(data,5)"  [ngClass]="{'row-yellow': Imgstatus5 == 1}"
-                                                                        src="assets/images/logos/1.jpeg"
-                                                                        style="padding-top: 0px;"
-                                                                        matTooltip="Worst"></lable>
+                                                    <mat-form-field style="width: 100%;">
+                                                        <mat-lable
+                                                            style="font-size: large;color: blue;width: 100%;padding: 10px;">{{data.FeedbackQuestion}}({{data.FeedbackQuestionMarathi}})--
+                                                            <!-- <div *ngFor="let data1 of answerlist1">
+                                                                <mat-label>{{data1[data.SequanceId].answer}}</mat-label>
+                                                            </div> -->
+                                                            <span style="color: rgb(243, 51, 89);font-size: large;">Seleted :-{{answer}} </span>
+                                                        </mat-lable>
+                                                      
+                                                     
+                                                        <input matInput formControlName="firstCtrl" required [ngmodel]="selectedanswer" value="selectedanswer">
+                                                          <span style="color: rgb(128, 16, 126);width: 200px;font-size: large;margin-left: 50px;">Already selected Answer :- {{selectedanswer}}</span>
+                                                    </mat-form-field>
+<!-- 
+                                                    <span style="color: rgb(246, 47, 216);width: 200px;">Already selected {{selectedanswer}}</span>
+                                                      -->
+                                                    <div style="padding-top:20px;">
+                                                        <mat-card
+                                                            style="width:100%;font-size: medium;font-weight: bold;">
+                                                            <div fxLayout="column" fxFlex>
+                                                                <div fxLayout="row" fxLayoutAlign="space-between"
+                                                                    style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                                    fxFlex>
+
+                                                                    <lable value="1">Excellent <img width="45"
+                                                                            height="15px"
+                                                                            src="assets/images/logos/61.png"
+                                                                            (click)="fetchresult(data,1)"
+                                                                            [ngClass]="{'row-yellow': Imgstatus1 == 1}"
+                                                                            style="margin: 0px 5px 0px 0px;" value="11"
+                                                                            matTooltip="Excellent">
+                                                                    </lable>
+                                                                    <lable value="2">Good<img width="45" height="15px"
+                                                                            src="assets/images/logos/5.jpeg"
+                                                                            (click)="fetchresult(data,2)"
+                                                                            [ngClass]="{'row-yellow': Imgstatus2 == 1}"
+                                                                            style="margin: 0px 15px 0px 15px;"
+                                                                            matTooltip="Good"></lable>
+                                                                    <lable value="3">Average <img width="45"
+                                                                            height="15px"
+                                                                            src="assets/images/logos/4.jpeg"
+                                                                            [ngClass]="{'row-yellow': Imgstatus3 == 1}"
+                                                                            (click)="fetchresult(data,3)"
+                                                                            style="margin: 0px 15px 0px 15px;"
+                                                                            matTooltip="Average">
+                                                                    </lable>
+                                                                    <lable value="4">Poor <img width="45" height="15px"
+                                                                            (click)="fetchresult(data,4)"
+                                                                            [ngClass]="{'row-yellow': Imgstatus4 == 1}"
+                                                                            src="assets/images/logos/3.jpeg"
+                                                                            style="margin-right: 10px;"
+                                                                            matTooltip="Poor">
+                                                                    </lable>
+                                                                    <lable value="5">Worst <img width="45" height="15px"
+                                                                            (click)="fetchresult(data,5)"
+                                                                            [ngClass]="{'row-yellow': Imgstatus5 == 1}"
+                                                                            src="assets/images/logos/1.jpeg"
+                                                                            style="padding-top: 0px;"
+                                                                            matTooltip="Worst"></lable>
 
 
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <button mat-button matStepperNext
-                                                            style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Next
-                                                            -></button>
-                                                    </mat-card>
+                                                            <button mat-button matStepperNext
+                                                                style="border: blue;border-radius: 50%;background-color: #4456f5;margin-left: 20%;color: bisque;">Next
+                                                                -></button>
+                                                        </mat-card>
 
-                                                </div>
-                                            </form>
-                                        </mat-step>
-                                    
-                                    </div>
-                                    </mat-horizontal-stepper>
-                                    <form [formGroup]="_FeedbackService.MyfeedbackForm" >
-                                        <!-- <mat-form-field appearance="outline" fxFlex="60%">
-                                            <mat-label>FeedbackComments</mat-label>
-                                            <input name="FeedbackComments" placeholder="Enter FeedbackComments" formControlName="FeedbackComments">
-                                        </mat-form-field> -->
-                                        <mat-form-field appearance="outline" fxFlex="60%" style="padding-left: 20px;">
-                                            <mat-label>Comment</mat-label>
-                                            <textarea matInput name="FeedbackComments"
-                                                formControlName="FeedbackComments" cols="200" rows="1"></textarea>
-                                        </mat-form-field>
-                                        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end center" style="margin-left: 400px;">
-                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                            <button class="btn btn-primary " (click)="onSubmit()">
-                                                <span>Save</span>
-                                            </button>
+                                                    </div>
+                                                </form>
+                                            </mat-step>
+
                                         </div>
-                                        </form>
+                                    </mat-horizontal-stepper>
+
                                 </mat-tab>
-                               
+
+
                             </mat-tab-group>
                         </div>
                         <!-- //Ip part -->
-                        <div fxFlex.gt-sm="98%" fxFlex *ngIf="ipflag">
+                        <div fxFlex.gt-sm="98%" fxFlex *ngIf="opflag">
                             <mat-tab-group style="overflow: auto;">
 
                                 <mat-tab label="Please Rate Each of this IP Department..">
@@ -909,15 +919,23 @@
                         </div>
                     </mat-card>
                     <div fxlayout="row" fxFlex>
-                    <mat-card>
-                   
-                        <!-- <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end center">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary " (click)="onSubmit()">
-                                <span>Save</span>
-                            </button>
-                        </div> -->
-                    </mat-card>
+                        <mat-card>
+                            <form [formGroup]="_FeedbackService.MyfeedbackForm">
+
+                                <mat-form-field appearance="outline" fxFlex="60%" style="padding-left: 20px;">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput name="FeedbackComments" formControlName="FeedbackComments"
+                                        cols="200" rows="1"></textarea>
+                                </mat-form-field>
+                                <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end center"
+                                    style="margin-left: 400px;">
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary " (click)="onSubmit()">
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-card>
                     </div>
                 </div>
             </div>

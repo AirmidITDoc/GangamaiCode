@@ -34,6 +34,7 @@ import { GeturlService } from "../geturl.service";
 import { PhoneAppointListService } from "../phone-appoint-list.service";
 import { AppService } from "./app.service";
 import { AddSchedulerAppointmentComponent } from "./add-scheduler-appointment/add-scheduler-appointment.component";
+import { Console } from "console";
 
 @Component({
     selector: "app-view-phone-appointment",
@@ -85,6 +86,7 @@ export class ViewPhoneAppointmentComponent implements OnInit {
                 console.log("Pressed action 'Restore' on event " + event.id);
             },
         },
+        
     ];
 
     events: CalendarSchedulerEvent[];
@@ -140,11 +142,12 @@ export class ViewPhoneAppointmentComponent implements OnInit {
             F_Name: "%",
             L_Name: "%",
             Doctor_Id: 0,
-            From_Dt: "01/01/1900",
-            To_Dt: "01/01/1900",
+            From_Dt: "12/01/1900",
+            To_Dt: "12/20/1900",
         };
         this._phoneAppointService.getPhoneAppointmentlist(D_data).subscribe(
             (events: CalendarSchedulerEvent[]) => {
+                console.log(events)
                 let eventsList = [];
                 events.forEach((element: any) => {
                     var parts = element.AppDate.split("/");
@@ -179,10 +182,11 @@ export class ViewPhoneAppointmentComponent implements OnInit {
                         },
                     });
                 });
+                
                 console.log(eventsList);
                 this.events = eventsList as CalendarSchedulerEvent[];
             },
-            (error) => {}
+            (error) => { }
         );
     }
     // toggle sidebar
@@ -284,22 +288,52 @@ export class ViewPhoneAppointmentComponent implements OnInit {
     segmentClicked(action: string, segment: SchedulerViewHourSegment): void {
         console.log("segmentClicked Action", action);
         console.log("segmentClicked Segment", segment);
+        console.log(segment.backgroundColor)
         //alert("Segment" + segment + '  Action' + action )
         const dialogRef = this._matDialog.open(AddSchedulerAppointmentComponent, {
             maxWidth: "85vw",
-            height: "65%",
+            height: "75%",
             width: "70%",
+            data: {
+                startTime: segment.date,
+                endTime: segment.date
+            },
+
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
+            debugger
+            if (result) {
+                segment.backgroundColor = '#CC6CE7';
+
+                segment.events['backgroundColor'].setBackgroundColor('#CC6CE7')
+              
+            }
             this.getAppointmentList();
         });
     }
 
-    eventClicked(action: string, event: CalendarSchedulerEvent): void {
+     setBackgroundColor(timeOfDay) {
+        const schedulerView = document.querySelector('.calendar-scheduler-view');
+        
+        // if (timeOfDay === 'morning') {
+        //   schedulerView.style.backgroundColor = 'lightblue';
+        // } else if (timeOfDay === 'afternoon') {
+        //   schedulerView.style.backgroundColor = 'lightyellow';
+        // } else if (timeOfDay === 'evening') {
+        //   schedulerView.style.backgroundColor = 'lightcoral';
+        // } else {
+        //   schedulerView.style.backgroundColor = 'white';
+        // }
+      }
+
+    eventClicked(action: string, event: CalendarSchedulerEvent,element): void {
+        debugger
         console.log("eventClicked Action", action);
         console.log("eventClicked Event", event);
+        console.log("eventClicked Event", element);
         alert("Event " + event + " Action" + action);
+        element.css('background-color', "yellow");
     }
 
     eventTimesChanged({
@@ -318,4 +352,6 @@ export class ViewPhoneAppointmentComponent implements OnInit {
         ev.end = newEnd;
         this.refresh.next();
     }
+
+
 }

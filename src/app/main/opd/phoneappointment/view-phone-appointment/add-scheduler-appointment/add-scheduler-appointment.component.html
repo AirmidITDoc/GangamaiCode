@@ -125,7 +125,7 @@
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
     
     
-                      <mat-form-field appearance="outline" fxFlex>
+                      <!-- <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Department</mat-label>
                         <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
                           formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" [(ngModel)]="vDepartmentid">
@@ -142,23 +142,26 @@
                             {{option.departmentName}}
                           </mat-option>
                         </mat-autocomplete>
-                      </mat-form-field>
-    
-    
-    
-                      <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Doctor Name</mat-label>
-                        <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect >
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="doctorFilterCtrl"  [placeholderLabel]="'Search'"
-                            [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                          </mat-option>
-                          <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                            {{element.Doctorname}}
-                          </mat-option>
-                        </mat-select>
                       </mat-form-field> -->
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Department</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                          formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept (keydown)="onEnterdept($event,vDepartmentid.Departmentid)" 
+                          [(ngModel)]="vDepartmentid">
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                        </span>
     
+                        <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                          <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                            (onSelectionChange)="OnChangeDoctorList(option)">
+                            {{option.DepartmentName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
     
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Doctor Name</mat-label>
@@ -197,7 +200,7 @@
               
               </div>
            
-    
+              <span style="font: bold;color: blue;padding: 10px;">Your Appointment Schduled at {{starttime}} -- {{endtime}}</span>
             </div>
            
           </form>
