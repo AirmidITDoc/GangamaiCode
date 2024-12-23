@@ -91,11 +91,11 @@ export class OTManagementServiceService {
   }
   
   public getOTReservationlist(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OTBookingList",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookinglist",employee)
   }
 
   public getOTRequestList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOTlist", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist", employee)
   }
   public getOTtableCombo(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OTTableMaster_ForCombo", {})
@@ -207,6 +207,14 @@ export class OTManagementServiceService {
 
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  // ip
+  public getAdmittedPatientList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  // op
+  public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
   public getGenderCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {})

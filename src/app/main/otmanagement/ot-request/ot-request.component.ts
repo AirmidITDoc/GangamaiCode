@@ -46,16 +46,16 @@ export class OTRequestComponent implements OnInit {
   
   displayedColumns: string[] = [
 
-    'RegNo',
-    'PatientName',
-    'GenderName',
-    // 'OTbookingDate',
+    'OTBookingId',
+    // 'PatientName',
+    // 'GenderName',
+    'OTbookingDate',
     'OTbookingTime',
-    'RoomName',
-    'BedName',
-    'OP_IP_Id',
+    // 'RoomName',
+    // 'BedName',
+    // 'OP_IP_Id',
     // 'OP_IP_Type',
-    'AdmittingDoctor',
+    // 'AdmittingDoctor',
     'SurgeonName',
     'SurgeryCategoryName',
     'SurgeryType',
@@ -135,11 +135,11 @@ export class OTRequestComponent implements OnInit {
     debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "F_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "L_Name": this.searchFormGroup.get('L_Name').value || "%",
+      // "F_Name": this.searchFormGroup.get('F_Name').value || "%",
+      // "L_Name": this.searchFormGroup.get('L_Name').value || "%",
       "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
+      // "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
     }
     console.log(m_data);
     this._OtManagementService.getOTRequestList(m_data).subscribe(Visit => {
@@ -165,10 +165,25 @@ export class OTRequestComponent implements OnInit {
   NewTestRequest() {
     const dialogRef = this._matDialog.open(NewRequestComponent,
       {
-        maxWidth: '70%',
-        height: '85%',
+        maxWidth: '80%',
+        height: '90%',
         width: '100%',
         // height: "100%"
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getRequestList();
+     });
+  }
+  OnEdit(contact){
+    const dialogRef = this._matDialog.open(NewRequestComponent,
+      {
+        maxWidth: '80%',
+        height: '90%',
+        width: '100%',
+        data: {
+          Obj: contact
+        }
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
@@ -284,6 +299,16 @@ export class Requestlist {
   GenderName: any;
   OTbookingTime: any;
   IsCancelledBy: any;
+  WardName: any;
+  WardId:any;
+  OPDNo: any;
+  CompanyName: any;
+  TariffName: any;
+  OP_IP_MobileNo: any;
+  DoctorName: any;
+  AgeYear:any;
+  MobileNo:any;
+  Age:any;
 
   constructor(Requestlist) {
     this.OTBookingId = Requestlist.OTBookingId || 0;
@@ -313,7 +338,16 @@ export class Requestlist {
     this.SurgeryType = Requestlist.SurgeryType || 0;
     this.OTbookingTime = Requestlist.OTbookingTime || 0;
     this.IsCancelledBy = Requestlist.IsCancelledBy || 0;
-
+    this.WardName = Requestlist.WardName || '';
+    this.WardId = Requestlist.WardId || 0;
+    this.MobileNo=Requestlist.MobileNo || 0;
+    this.OPDNo = Requestlist.OPDNo || 0;
+    this.CompanyName = Requestlist.CompanyName || '';
+    this.TariffName = Requestlist.TariffName || '';
+    this.OP_IP_MobileNo = Requestlist.OP_IP_MobileNo || 0;
+    this.DoctorName = Requestlist.DoctorName || '';    
+    this.AgeYear = Requestlist.AgeYear || '';
+    this.Age = Requestlist.Age || '';
   }
 }
 

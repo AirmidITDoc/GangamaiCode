@@ -1,274 +1,290 @@
 
-<div class="content-card" style="width:100%;height:100%">
-    <div class="dialog-content-wrapper">
-        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center " style="height: 40px;width: 100%;">
+<div class=" simple page-layout inner-scroll inner-sidebar left-sidebar">
 
-            <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon> -->
-
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="font-size: 20px;width: 70%; font-weight: 400;">
-                    New Reservation 
+        <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    New Reservation
                 </span>
+            </div>
+            <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+            </app-common-date> -->
+            <div class="close-icon">
+                <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
 
-                <div fxLayout="column" fxLayout.gt-xs="row">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                        style="border-color: red;"></app-common-date>
-                    <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
-                        (click)="onClose()">
-                        close
+        <form [formGroup]="myForm" class="gap-8">
+            <div fxFlexFill fxLayout="row" fxLayoutGap="4px" class="pl-40 mt-12" 
+                fxLayoutAlign="start center">
+                <mat-form-field appearance="outline"  style="width: 500px;">
+                    <input type="text" name="RegID" formControlName="RegID"
+                        placeholder="RegNo / First Name / Last Name / Mobile No" matInput
+                        [matAutocomplete]="auto1" (input)="getSearchList()">
+                    <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                            (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                            (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                     </span>
-                </div>
+                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
+                        (optionSelected)='getSelectedObj($event.option.value)'>
+                        <mat-option *ngFor="let option of PatientListfilteredOptions"
+                            [value]="option">
+                            {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                            {{option.RegNo}} |
+                            {{option.MobileNo}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="myForm.get('RegID').hasError('required')">
+                        Required field cannot be left blank
+                    </mat-error>
+                </mat-form-field>
+                
             </div>
-            <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display:none;">
-                Show
-             </button>
-        </div>
+        </form>
 
-<br/>
-        <div>
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <!-- <form [formGroup]="myRefundBillForm" style="width: 100%;"> -->
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                        <!-- ================================ LABEL HEADER  -->
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                <h3 style="font-weight: bold; font-size: 23px; margin: 0 0 0px;">Patient Information
-                                </h3>
-                            </div>
-                            <br/>
-                            <form [formGroup]="myForm">
-                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutAlign="space-between"
-                                    style="align-items: baseline;">
-                                    <div>
-                                    <mat-form-field appearance="outline"
-                                        style="width:40%;margin-left:20px; margin-right: 400px;"
-                                        disabled="isRegSearchDisabled">
-                                        <input type="text" name="RegID" formControlName="RegID"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                            [matAutocomplete]="auto1" (input)="getSearchList()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of PatientListfilteredOptions"
-                                                [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                                {{option.RegNo}} |
-                                                {{option.MobileNo}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error *ngIf="myForm.get('RegID').hasError('required')">
-                                            Required field cannot be left blank
-                                        </mat-error>
-                                    </mat-form-field>
-                                     </div>
+    <div class="content">
 
-                                    <div>
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
 
-                                        <span style="margin-left: 30px;font-size: large;color: rgb(4, 32, 122);">Patient
-                                            Name :{{PatientName}} <span style="margin-left: 20px;">RegId
-                                                :{{RegId}}</span><span style="margin-left: 20px;">Admission Id
-                                                :{{vAdmissionID}}</span>
-                                            <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
-                                            <span style="margin-left: 20px;">Tariif :{{RegId}}</span>
-                                        </span>
+            <div class="content-card" style="border-radius:4px;">
 
+                <div class="nav material2">
+
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                            <div class="modal-card-container p-12" >
+                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+                                    <div class="patient-info-sales my-8">
+                                        <div class="sales-patient-info-title">
+                                            <span style="font-weight: 700;">
+                                                Patient Information
+                                            </span>
+                                        </div>
+                                        <hr>
+                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                            fxLayoutAlign="space-between center" class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                    fxLayoutAlign="space-between">
+                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">IPD No
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vIPDNo }}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{PatientName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vDoctorName}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Age | Sex
+                                                            </span>                                              
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">
+                                                                {{Age}}Y|{{vGenderName}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Department</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vDepartmentName}}</span>
+                                                        </div>                                          
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">MobileNo</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vOP_IP_MobileNo}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+              
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Tarrif Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{tariffname}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vCompanyName}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                </mat-card>
+                            </div>
+                           <br>
+                
+                            <form [formGroup]="_OtManagementService.otreservationFormGroup" fxLayout="column">
 
-                                   
+                                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                                    class="top-header accent heading-container h-40 border-radius-4">
+                                    <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">
+                                    Surgery Details
+                                    </span>
                                 </div>
-                            </form>
-                        </mat-card>
-                        <!-- ================================ LABEL HEADER  -->
-                    </div>
-
-                </div>
-                <!-- </form> -->
-            </div>
-        </div>
-
-
-    </div>
-
-    
-    <div style="padding:5px; height: 100%;" fxLayoutGap="5px">
-        <div >
-           
-            <br>
-
-
-            <form [formGroup]="_OtManagementService.otreservationFormGroup" style="padding:20px;">
-
-                <ng-template matStepLabel>Personal</ng-template>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;margin-bottom: 10px;">
-                 
-                    <ejs-datetimepicker #ejDateTimePicker formControlName="OPDate"
-                    placeholder="Select OPDate" name="datetimepicker" floatLabelType='Auto'
-                    style="width:25%;height:60px;margin-bottom:30px ;" [(ngModel)]="Today">
-                     </ejs-datetimepicker>
-
-                </div>
-
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;">
-
-
-                    <mat-form-field appearance="outline"  style="width:60% ;">
-                        <mat-label>Surgery Name </mat-label>
-                        <mat-select formControlName="SurgeryId" required>
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let m of SurgeryList" [value]="m">
-                                {{m.SurgeryName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                 
-
-                    <mat-form-field appearance="outline" style="width:10% ;">
-                        <mat-label>Duration (D)</mat-label>
-                        <input name="Duration" formControlName="Duration" placeholder="Duration  (D)" matInput
-                            type="number" min="0">
-                        <!-- [ngModel]="registerObj.Duration " (ngModelChange)="registerObj.Duration  = $event"
-                            
-                        <!-- <mat-error *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
-        Please enter Age Day </mat-error> -->
-                    </mat-form-field>
-
-
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                style="margin-left:20px;margin-right:20px ;">
-                  
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Surgen1 Name</mat-label>
-                        <mat-select formControlName="SurgeonId" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="doctorFilterCtrl"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                                {{element.Doctorname }} <b>|</b> {{element.DepartmentName }} <b>|</b>
-                                {{element.DoctorId }}
-                            </mat-option>
-
-                        </mat-select>
-
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Surgen2 Name</mat-label>
-                        <mat-select formControlName="SurgeonId1" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="doctoroneFilterCtrl"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-
-                    </mat-form-field>
-
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;">
-                    
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>AnesthestishDoctor Name</mat-label>
-                        <mat-select formControlName="AnestheticsDr" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="AnesthDoctFilterCtrl1"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredAnesthDoctor1 | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>OTTableId </mat-label>
-                        <mat-select formControlName="OTTableId" required>
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let m of OTtableList" [value]="m">
-                                {{m.OTTableName}}
-                            </mat-option>
-                        </mat-select>
-                        <!-- <mat-error
-        *ngIf="personalFormGroup.get('GenderId').invalid && personalFormGroup.get('GenderId').touched">
-        <span *ngIf="personalFormGroup.get('GenderId').hasError('required')">
-          Gender is required</span>
-      </mat-error> -->
-                    </mat-form-field>
-
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>AnesthestishDoctor Name1</mat-label>
-                        <mat-select formControlName="AnestheticsDr1" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="AnesthDoctFilterCtrl2"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredAnesthDoctor2 | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>AnesthType</mat-label>
-                        <input name="AnesthType" formControlName="AnesthType" placeholder="AnesthType" matInput>
-                      </mat-form-field>
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;">
-
-                    <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
-                        <textarea name="Instruction" matInput rows="4" cols="5" placeholder="Enter Instruction"
-                            formControlName="Instruction">
-                    </textarea>
-                    </mat-form-field>
-
-                </div>
-
-                <br/>
-               
-                <div class="footer-navigation-container">
-           
-                    <div class="modal-footer-buttons">
+                
+                                <mat-card>
+                                    <div fxFlex="100" fxLayout="column" fxLayoutGap="12px grid" >
+                
+                                        <div  fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                                
+                                            <mat-form-field appearance="outline" fxFlex="100%">
+                                                <mat-label>Surgery Name </mat-label>
+                                                <mat-select formControlName="SurgeryId" required>
+                                                    <mat-option></mat-option>
+                                                    <mat-option *ngFor="let m of SurgeryList" [value]="m">
+                                                        {{m.SurgeryName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>                                         
                         
-                        <button class="btn btn-danger-outline" (click)="closeDialog()">Cancel</button>
-                        <button class="btn btn-primary" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
-                        <button class="btn btn-primary" (click)="Otnote()" [disabled]="personalFormGroup.invalid">OTNote</button>
-                        <button class="btn btn-primary" (click)="OPreOPrativenote()" >Pre & Post OPrative Note</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+                                        </div>
+                        
+                                        <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                        
+                        
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Surgen1 Name</mat-label>
+                                                <mat-select formControlName="SurgeonId" placeholder="Bank" #singleSelect>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="doctorFilterCtrl"
+                                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
+                                                        {{element.Doctorname }} <b>|</b> {{element.DepartmentName }} <b>|</b>
+                                                        {{element.DoctorId }}
+                                                    </mat-option>
+                        
+                                                </mat-select>
+                        
+                                            </mat-form-field>
+                        
+                        
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Surgen2 Name</mat-label>
+                                                <mat-select formControlName="SurgeonId1" placeholder="Bank" #singleSelect>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="doctoroneFilterCtrl"
+                                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
+                                                        {{element.DoctorName}}
+                                                    </mat-option>
+                                                </mat-select>
+                        
+                                            </mat-form-field>                        
+                        
+                                        </div>
+                        
+                                        <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>AnesthestishDoctor Name</mat-label>
+                                                <mat-select formControlName="AnestheticsDr" placeholder="Bank" #singleSelect>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="AnesthDoctFilterCtrl1"
+                                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredAnesthDoctor1 | async" [value]="element">
+                                                        {{element.DoctorName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                        
+                        
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>OTTableId </mat-label>
+                                                <mat-select formControlName="OTTableId" required>
+                                                    <mat-option></mat-option>
+                                                    <mat-option *ngFor="let m of OTtableList" [value]="m">
+                                                        {{m.OTTableName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                        
+                        
+                                        </div>
+                        
+                                        <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>AnesthestishDoctor Name1</mat-label>
+                                                <mat-select formControlName="AnestheticsDr1" placeholder="Bank" #singleSelect>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="AnesthDoctFilterCtrl2"
+                                                            [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let element of filteredAnesthDoctor2 | async" [value]="element">
+                                                        {{element.DoctorName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                        
+                        
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>AnesthType</mat-label>
+                                                <input name="AnesthType" formControlName="AnesthType" placeholder="AnesthType" matInput>
+                                            </mat-form-field>
+                                        </div>
+                        
+                                        <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                        
+                                            <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
+                                                <textarea name="Instruction" matInput rows="4" cols="5" placeholder="Enter Instruction"
+                                                    formControlName="Instruction">
+                                            </textarea>
+                                            </mat-form-field>
+                        
+                                        </div>
+                
+                                    </div>
+                                </mat-card>
+                               
+                                
+                            </form>
 
+                            <div class="modal-footer-buttons gap-8 mt-12" fxLayout="row" fxLayoutAlign="end" style="margin-right: 15px;"> 
+                           
+                                <!-- <div class="modal-footer-buttons"> -->
+                                    
+                                    <button class="btn btn-danger-outline" (click)="closeDialog()">Cancel</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
+                                    <button class="btn btn-primary" (click)="Otnote()" [disabled]="personalFormGroup.invalid">OTNote</button>
+                                    <button class="btn btn-primary" (click)="OPreOPrativenote()" >Pre & Post OPrative Note</button>
+                                <!-- </div> -->
+                            </div>
+                        <!-- </div> -->
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    
+
+</div>
