@@ -17,7 +17,7 @@ export class CategorymasterService {
 
     createCategorymasterForm(): FormGroup {
         return this._formBuilder.group({
-            categoryId: [""],
+            categoryId: [0],
             categoryName: ["",
                 [
                     Validators.required,

@@ -19,7 +19,7 @@ export class StoreMasterService {
 
     createStoremasterForm(): FormGroup {
         return this._formBuilder.group({
-            storeId: [""],
+            storeId: [0],
             storeShortName: ["",
                 [
                     Validators.required,

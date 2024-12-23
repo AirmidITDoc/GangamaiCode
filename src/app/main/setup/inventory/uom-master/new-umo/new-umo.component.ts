@@ -12,41 +12,34 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NewUMOComponent implements OnInit {
 
   unitForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
-      public _UomMasterService: UomMasterService,
-      public dialogRef: MatDialogRef<NewUMOComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
+    public _UomMasterService: UomMasterService,
+    public dialogRef: MatDialogRef<NewUMOComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService
   ) { }
 
-
   ngOnInit(): void {
-      this.unitForm = this._UomMasterService.createUnitofmeasurementForm();
-      var m_data = {
-        unitofMeasurementId: this.data?.unitofMeasurementId,
-        unitofMeasurementName: this.data?.unitofMeasurementName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.unitForm.patchValue(m_data);
+    this.unitForm = this._UomMasterService.createUnitofmeasurementForm();
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.unitForm.patchValue(this.data);
+    }
   }
 
   Saveflag: boolean= false;
   onSubmit() {
     this.Saveflag=true
-    if (this.unitForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if (this.unitForm.valid) {
-          this._UomMasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+   
+    if (this.unitForm.valid) {
+        this._UomMasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
     }
   }
 

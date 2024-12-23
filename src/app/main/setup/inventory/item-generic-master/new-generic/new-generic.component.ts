@@ -11,6 +11,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class NewGenericComponent implements OnInit {
   genericForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
       public _ItemGenericMasterService: ItemGenericMasterService,
       public dialogRef: MatDialogRef<NewGenericComponent>,
@@ -21,21 +23,14 @@ export class NewGenericComponent implements OnInit {
 
   ngOnInit(): void {
       this.genericForm = this._ItemGenericMasterService.createItemgenericForm();
-      var m_data = {
-        genericId: this.data?.genericId,
-        genericName: this.data?.genericName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.genericForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.genericForm.patchValue(this.data);
+     }
   }
 
   onSubmit() {
-    if (this.genericForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
+   
       if (this.genericForm.valid) {
         console.log(this.genericForm.value);
           this._ItemGenericMasterService.genericMasterSave(this.genericForm.value).subscribe((response) => {
@@ -45,7 +40,6 @@ export class NewGenericComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-    }
   }
 
   onClear(val: boolean) {

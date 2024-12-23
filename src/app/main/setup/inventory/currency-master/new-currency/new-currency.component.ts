@@ -12,32 +12,27 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NewCurrencyComponent implements OnInit {
 
     Saveflag: boolean= false;
-  currencyForm: FormGroup;
-  constructor(
-      public _CurrencymasterService: CurrencymasterService,
-      public dialogRef: MatDialogRef<NewCurrencyComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    currencyForm: FormGroup;
+    isActive:boolean=true;
 
-  ngOnInit(): void {
+    constructor(
+        public _CurrencymasterService: CurrencymasterService,
+        public dialogRef: MatDialogRef<NewCurrencyComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
+    ngOnInit(): void {
       this.currencyForm = this._CurrencymasterService.createCurrencyForm();
-      var m_data = {
-        currencyId: this.data?.currencyId,
-        currencyName: this.data?.currencyName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.currencyForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.currencyForm.patchValue(this.data);
+     }
   }
 
-  onSubmit() {
+    onSubmit() {
     this.Saveflag=true
-    if (this.currencyForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
+    
       if (this.currencyForm.valid) {
           this._CurrencymasterService.currencyMasterSave(this.currencyForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -46,11 +41,11 @@ export class NewCurrencyComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-    }
   }
 
   onClear(val: boolean) {
       this.currencyForm.reset();
       this.dialogRef.close(val);
   }
+
 }

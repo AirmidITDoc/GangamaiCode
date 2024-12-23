@@ -18,7 +18,7 @@ export class CurrencymasterService {
 
     createCurrencyForm(): FormGroup {
         return this._formBuilder.group({
-            currencyId: [""],
+            currencyId: [0],
             currencyName: ["",
                 [
                     Validators.required,

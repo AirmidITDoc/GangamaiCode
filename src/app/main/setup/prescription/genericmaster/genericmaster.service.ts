@@ -18,8 +18,17 @@ export class GenericmasterService {
 
     createGenericForm(): FormGroup {
         return this._formBuilder.group({
-            GenericId: [""],
-            GenericName: ["", [Validators.required,Validators.pattern("^[A-Za-z0-9]+$")]],
+            GenericId: [0],
+            GenericName: ["", 
+                // [
+                //     Validators.required,
+                //     Validators.pattern("^[A-Za-z0-9]+$")
+                // ]
+                [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ] 
+            ],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -64,9 +73,9 @@ export class GenericmasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("generic?Id=" + m_data, {});
-        return this._httpClient.PostData("generic", m_data);
+        return this._httpClient.DeleteData("generic?Id=" + m_data.toString());
     }
+
     populateForm(param) {
         this.genericForm.patchValue(param);
     }

@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
-import { MatTableDataSource } from "@angular/material/table";
-import Swal from "sweetalert2";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { ToastrService } from "ngx-toastr";
@@ -28,11 +26,11 @@ export class PrescriptionclassmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Priscriptionclass/List",
         columnsList: [
-            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:550 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200 },
+            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:230, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data)
@@ -82,7 +80,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewPrescriptionClassComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

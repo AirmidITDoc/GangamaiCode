@@ -19,7 +19,7 @@ export class ItemClassMasterService {
 
     createItemclassForm(): FormGroup {
         return this._formBuilder.group({
-            itemClassId: [""],
+            itemClassId: [0],
             itemClassName: ["",
                 [
                     Validators.required,

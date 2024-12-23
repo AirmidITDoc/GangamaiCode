@@ -13,6 +13,8 @@ export class NewModeofpaymentComponent implements OnInit {
 
 
   modeofpayForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
       public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,
       public dialogRef: MatDialogRef<NewModeofpaymentComponent>,
@@ -23,23 +25,16 @@ export class NewModeofpaymentComponent implements OnInit {
 
   ngOnInit(): void {
       this.modeofpayForm = this._ModeOfPaymentMasterService.createModeofpaymentForm();
-      var m_data = {
-        id: this.data?.id,
-        modeOfPayment: this.data?.modeOfPayment.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.modeofpayForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.modeofpayForm.patchValue(this.data);
+      }
   }
 
   saveflag : boolean = false;
   onSubmit() {
     this.saveflag = true;
-    if (this.modeofpayForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
+    
       if (this.modeofpayForm.valid) {
           this._ModeOfPaymentMasterService.modeofpayMasterSave(this.modeofpayForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -48,11 +43,11 @@ export class NewModeofpaymentComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-    }
   }
 
   onClear(val: boolean) {
       this.modeofpayForm.reset();
       this.dialogRef.close(val);
   }
+  
 }

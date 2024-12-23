@@ -12,52 +12,44 @@ import { ItemCategoryMasterService } from '../item-category-master.service';
 export class NewItemcategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
+  isActive:boolean=true;
 
   autocompleteModeItem: string = "Item";
 
   constructor(
-      public _CategorymasterService: ItemCategoryMasterService,
-      public dialogRef: MatDialogRef<NewItemcategoryComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
+    public _CategorymasterService: ItemCategoryMasterService,
+    public dialogRef: MatDialogRef<NewItemcategoryComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService
   ) { }
  
   ngOnInit(): void {
-      this.categoryForm = this._CategorymasterService.createItemCategoryForm();
-      var m_data = {
-        itemCategoryId: this.data?.itemCategoryId,
-        itemCategoryName: this.data?.itemCategoryName.trim(),
-        itemTypeId: this.data?.itemTypeId,
-      };
-      this.categoryForm.patchValue(m_data);
+    this.categoryForm = this._CategorymasterService.createItemCategoryForm();
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.categoryForm.patchValue(this.data);
+    }
   }
 
-  Saveflag: boolean= false;
-  onSubmit() {
+    Saveflag: boolean= false;
+    onSubmit() {
     this.Saveflag=true
-        if (this.categoryForm.invalid) {
-            this.toastr.warning('please check form is invalid', 'Warning !', {
-              toastClass:'tostr-tost custom-toast-warning',
-          })
-          return;
-        }else{
-        var m_data =
-        {
-            "itemCategoryId": 0,
-            "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
-            "itemTypeId": this.categoryForm.get("itemTypeId").value,  
-        }
+    var m_data =
+    {
+        "itemCategoryId": 0,
+        "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
+        "itemTypeId": this.categoryForm.get("itemTypeId").value,  
+    }
 
-        console.log("ItemCategoryMaster Insert:",m_data)
-        
+    console.log("ItemCategoryMaster Insert:",m_data)
+    
         this._CategorymasterService.categoryMasterSave(m_data).subscribe((response) => {
         this.toastr.success(response.message);
-        this.onClear(true);
-        }, (error) => {
+        this.onClear(true);}, 
+    (error) => {
         this.toastr.error(error.message);
         });
-   }
-}
+    }
     
     itemId=0;
 

@@ -12,6 +12,7 @@ import { FormGroup } from '@angular/forms';
 export class NewTermofpaymentComponent implements OnInit {
 
     termsofpaymentForm: FormGroup;
+    isActive:boolean=true;
 
     constructor(
       public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
@@ -22,25 +23,15 @@ export class NewTermofpaymentComponent implements OnInit {
 
     ngOnInit(): void {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
-      var m_data = {
-        Id: this.data?.Id,
-        TermsOfPayment: this.data?.TermsOfPayment.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-        this.termsofpaymentForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.termsofpaymentForm.patchValue(this.data);
+      }
     }
     
     saveflag : boolean = false;
     onSubmit() {
         this.saveflag = true;
-        
-        if (this.termsofpaymentForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', 
-        {
-            toastClass:'tostr-tost custom-toast-warning',
-        })
-        return;
-        }else{
         debugger
         var m_data =
             {
@@ -56,7 +47,6 @@ export class NewTermofpaymentComponent implements OnInit {
         }, (error) => {
         this.toastr.error(error.message);
         });
-      }
     }
 
     onClear(val: boolean) {

@@ -20,7 +20,7 @@ export class ManufactureMasterService {
 
     createManufactureForm(): FormGroup {
         return this._formBuilder.group({
-            itemManufactureId: [""],
+            itemManufactureId: [0],
             manufactureName: ["",
                 [
                     Validators.required,

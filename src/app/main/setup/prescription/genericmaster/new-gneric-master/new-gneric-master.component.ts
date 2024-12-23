@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewGnericMasterComponent implements OnInit {
 
   genericForm:FormGroup;
+  isActive:boolean=true;
 
   constructor(
     public _GenericMasterService: GenericmasterService,
@@ -22,21 +23,16 @@ export class NewGnericMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.genericForm=this._GenericMasterService.createGenericForm();
-    var m_data={
-      GenericId:this.data?.GenericId,
-      GenericName:this.data?.GenericName,      
-      isActive: JSON.stringify(this.data?.isActive)
-    };
-    this.genericForm.patchValue(m_data);    
-    console.log("mdata:", m_data)
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.genericForm.patchValue(this.data);
+    }
   }
+
+  saveflag: boolean= false;
   onSubmit() {
-    if (this.genericForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
+    this.saveflag=true
+    
       if(!this.genericForm.get("GenericId").value){
         debugger
         var mdata=
@@ -55,7 +51,7 @@ export class NewGnericMasterComponent implements OnInit {
       } else{
         //update
       }
-    }
+   
     
 //     if (this._GenericService.myForm.valid) {
 //         if (!this._GenericService.myForm.get("GenericId").value) {

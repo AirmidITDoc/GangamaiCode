@@ -20,7 +20,7 @@ export class ModeOfPaymentMasterService {
 
     createModeofpaymentForm(): FormGroup {
         return this._formBuilder.group({
-            id: [""],
+            id: [0],
             modeOfPayment: ["",
                 [
                     Validators.required,

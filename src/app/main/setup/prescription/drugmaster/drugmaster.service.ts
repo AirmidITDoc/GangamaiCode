@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -19,16 +18,18 @@ export class DrugmasterService {
 
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
-            DrugId: [""],
+            DrugId: [0],
             DrugName: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
-                ]
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ] 
             ],
-            GenericId: ["",  Validators.required],
+            GenericId: [""],
             GenericName: [""],
-            ClassId: [""],
+            ClassId: ["",
+                Validators.required
+            ],
             ClassName: [""],
             isActive: ["true"],
             AddedBy: ["0"],
@@ -36,12 +37,19 @@ export class DrugmasterService {
             AddedByName: [""],
         });
     }
+    
     getValidationMessages(){
         return{
             DrugName: [
                 { name: "required", Message: "Drug Name is required" },
                 { name: "maxlength", Message: "Drug name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
+            ],
+            ClassId: [
+                { name: "required", Message: "Class Name is required" },
+            ],
+            GenericId : [
+                // { name: "required", Message: "Generic Name is required" },
             ]
         }
     }
@@ -67,7 +75,6 @@ export class DrugmasterService {
     }
 
     public drugMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
         return this._httpClient.PostData("Drug", Param, showLoader);
     }
 

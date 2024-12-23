@@ -73,9 +73,7 @@ export class ItemCategoryMasterComponent implements OnInit {
         public toastr: ToastrService,
     ) { }
 
-    ngOnInit(): void {
-        
-    }
+    ngOnInit(): void { }
 
   onSave(row: any = null) {
         debugger

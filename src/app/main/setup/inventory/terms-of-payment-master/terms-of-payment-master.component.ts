@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { NewTermofpaymentComponent } from "./new-termofpayment/new-termofpayment.component";

@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 export class NewManufactureComponent implements OnInit {
 
   manufForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
       public _ManufactureMasterService: ManufactureMasterService,
       public dialogRef: MatDialogRef<NewManufactureComponent>,
@@ -19,26 +21,18 @@ export class NewManufactureComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-
-  ngOnInit(): void {
+    ngOnInit(): void {
       this.manufForm = this._ManufactureMasterService.createManufactureForm();
-      var m_data = {
-        itemManufactureId: this.data?.itemManufactureId,
-        manufactureName: this.data?.manufactureName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.manufForm.patchValue(m_data);
-  }
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.manufForm.patchValue(this.data);
+      }
+    }
 
   saveflag : boolean = false;
   onSubmit() {
     this.saveflag = true
-    if (this.manufForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
+   
       if (this.manufForm.valid) {
           this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -47,11 +41,12 @@ export class NewManufactureComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-    }
   }
 
-  onClear(val: boolean) {
-      this.manufForm.reset();
-      this.dialogRef.close(val);
+  onClear(val: boolean) 
+  {
+    this.manufForm.reset();
+    this.dialogRef.close(val);
   }
+
 }

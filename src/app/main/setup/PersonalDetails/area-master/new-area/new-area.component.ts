@@ -27,7 +27,7 @@ export class NewAreaComponent implements OnInit {
   ngOnInit(): void {
       this.areaForm = this._AreaMasterService.createAreaForm();
       if(this.data){
-     this.isActive=this.data.isActive
+      this.isActive=this.data.isActive
       this.areaForm.patchValue(this.data);}
   }
 
@@ -35,14 +35,14 @@ export class NewAreaComponent implements OnInit {
   onSubmit() {
     this.saveflag = true;
    
-      if (this.areaForm.valid) {
-          this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+    if (this.areaForm.valid) {
+        this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
   }
   
   getValidationCityMessages() {

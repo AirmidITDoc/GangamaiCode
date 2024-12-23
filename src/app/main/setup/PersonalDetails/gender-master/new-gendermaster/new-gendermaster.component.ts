@@ -27,8 +27,9 @@ export class NewGendermasterComponent implements OnInit {
         this.genderForm.patchValue(this.data);
     }
 
-    
+    saveflag : boolean = false;
     onSubmit() {
+        this.saveflag = true;
         if (this.genderForm.valid) {
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
                 this.toastr.success(response.message);

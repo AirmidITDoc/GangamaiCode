@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { DosemasterService } from "./dosemaster.service";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -27,14 +23,14 @@ export class DosemasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DoseMaster/List",
         columnsList: [
-            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width:250 },
-            { heading: "Dose Name English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' , width:250},
-            { heading: "Dose Name Marathi ", key: "doseNameInMarathi", sort: true, align: 'left', emptySign: 'NA', width:250 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:110 },
+            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width:400 },
+            { heading: "Dose Name English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' , width:150},
+            { heading: "Dose Name Marathi ", key: "doseNameInMarathi", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Qty/Day", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:110, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                            this.onSave(data);
@@ -73,32 +69,23 @@ export class DosemasterComponent implements OnInit {
         row:25
     }
 
-
     constructor(public _DoseService: DosemasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-    ngOnInit(): void {
-        
-    }
-    onSearch() {
-       
-    }
+    ngOnInit(): void {}
+    onSearch() {}
 
     onSearchClear() {
         this._DoseService.myformSearch.reset({
             DoseNameSearch: "",
             IsDeletedSearch: "2",
         });
-       
     }
-
-   
 
     onClear() {
         this._DoseService.myForm.reset({ IsDeleted: "false" });
         this._DoseService.initializeFormGroup();
     }
-
    
     onEdit(row) {
         var m_data1 = {
@@ -113,28 +100,12 @@ export class DosemasterComponent implements OnInit {
         this._DoseService.populateForm(m_data1);
     }
 
-    // changeStatus(status: any) {
-    //     switch (status.id) {
-    //         case 1:
-    //             //this.onEdit(status.data)
-    //             break;
-    //         case 2:
-    //             this.onEdit(status.data)
-    //             break;
-    //         case 5:
-    //             this.onDeactive(status.data.doseId);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
     onSave(row: any=null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewDoseMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '40%',
+                height: '35%',
                 width: '70%',
             });
         dialogRef.afterClosed().subscribe(result => {

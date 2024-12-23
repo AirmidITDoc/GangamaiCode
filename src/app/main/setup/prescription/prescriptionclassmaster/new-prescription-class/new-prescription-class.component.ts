@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewPrescriptionClassComponent implements OnInit {
 
   prescriptionForm:FormGroup;
+  isActive:boolean=true;
 
   constructor(
     public _PrescriptionclassService: PrescriptionclassmasterService,
@@ -22,20 +23,16 @@ export class NewPrescriptionClassComponent implements OnInit {
 
   ngOnInit(): void {
     this.prescriptionForm=this._PrescriptionclassService.createPrescriptionclassForm();
-    var m_data={
-      ClassId:this.data?.ClassId,
-      ClassName:this.data?.ClassName,
-      isActive: JSON.stringify(this.data?.isActive),
-    };
-    this.prescriptionForm.patchValue(m_data);
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.prescriptionForm.patchValue(this.data);
+    }
   }
+
+  Saveflag: boolean= false;
   onSubmit() {
-    if (this.prescriptionForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
+    this.Saveflag=true
+
       if(!this.prescriptionForm.get("ClassId").value){
         var mdata={
           "classId": 0,
@@ -52,7 +49,6 @@ export class NewPrescriptionClassComponent implements OnInit {
       } else{
         //update
       }
-    }
     
     
 //     if (this.prescriptionForm.valid) {

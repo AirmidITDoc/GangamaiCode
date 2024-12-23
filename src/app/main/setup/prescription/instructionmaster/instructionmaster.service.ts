@@ -19,14 +19,13 @@ export class InstructionmasterService {
 
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
-            InstructionId: [""],
+            InstructionId: [0],
             InstructionName: ["", 
                 [
                     Validators.required, 
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
@@ -52,12 +51,6 @@ export class InstructionmasterService {
         this.createInstructionForm();
     }
 
-    // public getInstructionMasterList(param) {
-    //     return this._httpClient.PostData(
-    //         "Generic/GetByProc?procName=Rtrv_M_PrescriptionInstructionMaster",
-    //         param
-    //     );
-    // }
 
     public instructionMasterInsert(Param: any, showLoader = true) {
         if (Param.InstructionId) {
@@ -75,7 +68,6 @@ export class InstructionmasterService {
         this.myForm.patchValue(param);
     }
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("generic?Id=" + m_data, {});
-        return this._httpClient.PostData("generic", m_data);
+        return this._httpClient.DeleteData("Instruction?Id=" + m_data.toString());
     }
 }

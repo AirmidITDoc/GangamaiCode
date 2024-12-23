@@ -19,7 +19,7 @@ export class ItemCategoryMasterService {
 
     createItemCategoryForm(): FormGroup {
         return this._formBuilder.group({
-            itemCategoryId: [""],
+            itemCategoryId: [0],
             itemCategoryName: ["",
                 [
                     Validators.required,

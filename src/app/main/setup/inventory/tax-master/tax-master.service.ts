@@ -20,7 +20,7 @@ export class TaxMasterService {
 
     createTaxMasterForm(): FormGroup {
         return this._formBuilder.group({
-            id: [""],
+            id: [0],
             taxNature: ["",
                 [
                     Validators.required,

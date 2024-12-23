@@ -264,12 +264,12 @@
 
         
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-                 
-                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                       
-                    </mat-radio-group>
+
+                            <mat-radio-group name="isActive" formControlName="isActive">
+                                <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
+                                </mat-radio-button>
+                            </mat-radio-group>
+                   
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                     <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                         <span>Save</span>
@@ -279,6 +279,5 @@
             </form>
         </div>
 
-        
     </div>
 </div>  

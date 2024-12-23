@@ -29,7 +29,9 @@ export class StoreFormMasterComponent implements OnInit {
     onBlur(e: any) {
         this.Header = e.target.innerHTML;
     }
+
     storeForm: FormGroup;
+    isActive:boolean=true;
 
     constructor(
       public _StoreMasterService: StoreMasterService,
@@ -39,24 +41,15 @@ export class StoreFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-      this.storeForm = this._StoreMasterService.createStoremasterForm();
-      var m_data = {
-        storeId: this.data?.storeId,
-        storeShortName: this.data?.storeShortName,
-        storeName: this.data?.storeName,
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.storeForm.patchValue(m_data);
+        this.storeForm = this._StoreMasterService.createStoremasterForm();
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.storeForm.patchValue(this.data);
+        }
     }
 
     onSubmit() {
         debugger
-        if (this.storeForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-            toastClass:'tostr-tost custom-toast-warning',
-        })
-        return;
-        }else{
         var mdata =
         {
             "storeId": 0,
@@ -106,7 +99,6 @@ export class StoreFormMasterComponent implements OnInit {
         this.toastr.error(error.message);
         });
 
-    }
   }
 
   onClear(val: boolean) {

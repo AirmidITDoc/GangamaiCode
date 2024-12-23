@@ -20,7 +20,7 @@ export class UomMasterService {
 
     createUnitofmeasurementForm(): FormGroup {
         return this._formBuilder.group({
-            unitofMeasurementId: [""],
+            unitofMeasurementId: [0],
             unitofMeasurementName: ["",
                 [
                     Validators.required,

@@ -32,13 +32,12 @@ export class DrugmasterComponent implements OnInit {
         apiUrl: "DrugMaster/List",
         columnsList: [
             { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA', width:500 },
-            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:150  },
-            // { heading: "Class Id", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, width:150,align: "center" },
-           
+            { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA', width:400 },
+            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:200  },
+            { heading: "Class Name", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:200},
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:100,align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -121,7 +120,7 @@ export class DrugmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewDrugMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '40%',
+                height: '35%',
                 width: '70%',
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -130,6 +129,7 @@ export class DrugmasterComponent implements OnInit {
             }
         });
     }
+
     onEdit(row) {
         var m_data = {
             DrugId: row.DrugId,

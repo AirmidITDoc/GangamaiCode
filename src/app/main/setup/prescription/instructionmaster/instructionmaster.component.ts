@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { InstructionmasterService } from "./instructionmaster.service";
-import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
@@ -32,11 +30,11 @@ export class InstructionmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "InstructionMastere/List",
         columnsList: [
-            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width:100  },
-            { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200  },
+            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width:150  },
+            { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100  },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:250, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -80,7 +78,7 @@ export class InstructionmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewInstructionMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data:row
             });

@@ -11,6 +11,8 @@ import { InstructionmasterService } from '../instructionmaster.service';
 })
 export class NewInstructionMasterComponent implements OnInit {
   instructionForm:FormGroup;
+  isActive:boolean=true;
+
   constructor(
     public _InstructionMasterService: InstructionmasterService,
     public dialogRef: MatDialogRef<NewInstructionMasterComponent>,
@@ -19,22 +21,16 @@ export class NewInstructionMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.instructionForm=this._InstructionMasterService.createInstructionForm();
-
-    var m_data={
-      InstructionId:this.data?.InstructionId,
-      InstructionName:this.data?.InstructionName,      
-      isActive: JSON.stringify(this.data?.isActive)
-    };
-    this.instructionForm.patchValue(m_data);    
-    console.log("mdata:", m_data)
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.instructionForm.patchValue(this.data);
+    }
   }
+
+  saveflag : boolean = false;
   onSubmit() {
-    if (this.instructionForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
+    this.saveflag = true;
+    
       if(!this.instructionForm.get("InstructionId").value){
         debugger
         var mdata=
@@ -53,13 +49,12 @@ export class NewInstructionMasterComponent implements OnInit {
         });
       } else{
         //update
-      }
-    }
-                    
+      }             
  }
- onClear(val: boolean) {
-  this.instructionForm.reset();
-  this.dialogRef.close(val);
-}
+    
+    onClear(val: boolean) {
+        this.instructionForm.reset();
+        this.dialogRef.close(val);
+    }
 
 }

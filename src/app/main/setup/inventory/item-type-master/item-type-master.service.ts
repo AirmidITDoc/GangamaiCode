@@ -20,7 +20,7 @@ export class ItemTypeMasterService {
 
     createItemtypeForm(): FormGroup {
         return this._formBuilder.group({
-            itemTypeId: [""],
+            itemTypeId: [0],
             itemTypeName: ["",
                 [
                     Validators.required,

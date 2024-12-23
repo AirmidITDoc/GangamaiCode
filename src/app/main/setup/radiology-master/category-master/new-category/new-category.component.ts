@@ -12,6 +12,8 @@ import { CategoryMasterService } from '../category-master.service';
 export class NewCategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
       public _CategorymasterService: CategoryMasterService,
       public dialogRef: MatDialogRef<NewCategoryComponent>,
@@ -21,23 +23,16 @@ export class NewCategoryComponent implements OnInit {
  
   ngOnInit(): void {
       this.categoryForm = this._CategorymasterService.createCategoryForm();
-      var m_data = {
-        categoryId: this.data?.categoryId,
-        categoryName: this.data?.categoryName.trim(),
-      };
-      this.categoryForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.categoryForm.patchValue(this.data);
+        }
   }
 
   saveflag : boolean = false;
   onSubmit() {
     this.saveflag = true;
     
-    if (this.categoryForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
       if (this.categoryForm.valid) {
         debugger
           this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
@@ -47,7 +42,6 @@ export class NewCategoryComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-    }
   }
 
   onClear(val: boolean) {

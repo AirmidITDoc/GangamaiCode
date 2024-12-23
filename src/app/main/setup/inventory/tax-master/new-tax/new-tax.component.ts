@@ -12,6 +12,7 @@ import { FormGroup } from '@angular/forms';
 export class NewTaxComponent implements OnInit {
 
   taxForm: FormGroup;
+  isActive:boolean=true;
   
   constructor(
       public _TaxMasterService: TaxMasterService,
@@ -23,42 +24,24 @@ export class NewTaxComponent implements OnInit {
 
   ngOnInit(): void {
       this.taxForm = this._TaxMasterService.createTaxMasterForm();
-      var m_data = {
-        id: this.data?.id,
-        taxNature: this.data?.taxNature,
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.taxForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.taxForm.patchValue(this.data);
+      }
   }
-
-  /**
-   * 
-   {
-    "id": 0,
-    "taxNature": "string",
-    "isActive": 0
-    }
-   */
 
     saveflag : boolean = false;
   onSubmit() 
   {
-    this.saveflag = true
-    if (this.taxForm.invalid) {
-    this.toastr.warning('please check form is invalid', 'Warning !', 
-    {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }
-    else{
-    debugger
-    var mdata =
-    {
-        "id": 0,
-        "taxNature": this.taxForm.get("taxNature").value,
-        "isActive": 0
-    }
+        this.saveflag = true
+   
+        debugger
+        var mdata =
+        {
+            "id": 0,
+            "taxNature": this.taxForm.get("taxNature").value,
+            "isActive": 0
+        }
 
         console.log("TaxMaster Insert:",mdata);
 
@@ -68,7 +51,6 @@ export class NewTaxComponent implements OnInit {
         }, (error) => {
         this.toastr.error(error.message);
         });
-    }
   }
 
   onClear(val: boolean) {

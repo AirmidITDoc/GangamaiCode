@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { GenericmasterService } from "./genericmaster.service";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -28,11 +24,11 @@ export class GenericmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:100  },
-            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200  },
+            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:150  },
+            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100  },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:250, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -116,7 +112,7 @@ export class GenericmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewGnericMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data:row
             });
