@@ -41,12 +41,13 @@ export class OTReservationComponent implements OnInit {
   hasSelectedContacts: boolean;
   AnesthType: any = ''
   D_data1: any;
-  dataArray = {};
+  dataArray = {};  
+  click: boolean = false;
 
   displayedColumns = [
 
     'RegNo',
-    'PatientName',
+    // 'PatientName',
     'OPDate',
     // 'OPTime',
     'Duration',
@@ -155,9 +156,9 @@ export class OTReservationComponent implements OnInit {
     debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
+      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
+      // "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
     }
     console.log(m_data);
     this._OtManagementService.getOTReservationlist(m_data).subscribe(Visit => {
@@ -166,7 +167,7 @@ export class OTReservationComponent implements OnInit {
       //  this.dataSource.sort = this.sort;
       //  this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
-      //  this.click = false;
+       this.click = false;
     },
       error => {
         this.sIsLoading = '';
@@ -297,7 +298,7 @@ export class OTReservationDetail {
   RegNo: number;
   PatientName: string;
 
-  OPDate: Date;
+  OPDate: any;
   OPTime: Date;
   Duration: number;
   OTTableID: Number;
@@ -316,7 +317,17 @@ export class OTReservationDetail {
   AddedBy: any;
   TranDate: Date;
   instruction: any;
-
+  TranTime:any;
+  WardName: any;
+  WardId:any;
+  OPDNo: any;
+  CompanyName: any;
+  TariffName: any;
+  OP_IP_MobileNo: any;
+  DoctorName: any;
+  AgeYear:any;
+  MobileNo:any;
+  Age:any;
   /**
    * Constructor
    *
@@ -346,7 +357,18 @@ export class OTReservationDetail {
       this.IsAddedBy = OTReservationDetail.IsAddedBy || '';
       this.AddedBy = OTReservationDetail.AddedBy || '';
       this.TranDate = OTReservationDetail.TranDate || '';
+      this.TranTime = OTReservationDetail.TranTime || '';
       this.instruction = OTReservationDetail.instruction || '';
+      this.WardName= OTReservationDetail.WardName || '';
+      this.WardId= OTReservationDetail.WardId || '';
+      this.OPDNo= OTReservationDetail.OPDNo || '';
+      this.CompanyName= OTReservationDetail.CompanyName || '';
+      this.TariffName= OTReservationDetail.TariffName || '';
+      this.OP_IP_MobileNo= OTReservationDetail.OP_IP_MobileNo || '';
+      this.DoctorName= OTReservationDetail.DoctorName || '';
+      this.AgeYear= OTReservationDetail.AgeYear || '';
+      this.MobileNo= OTReservationDetail.MobileNo || '';
+      this.Age= OTReservationDetail.Age || '';
 
     }
   }

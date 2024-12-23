@@ -341,6 +341,7 @@ export class OPIPPatientModel {
   ClassId: any;
   OP_IP_ID: any;
   RegNo: number;
+  AdmissionID: any;
   /**
 * Constructor
 *
@@ -372,7 +373,8 @@ export class OPIPPatientModel {
       this.PatientType = OPIPPatientModel.PatientType || '';
       this.TariffId = OPIPPatientModel.TariffId || 0;
       this.ClassId = OPIPPatientModel.ClassId || 0;
-      this.OP_IP_ID = OPIPPatientModel.OP_IP_ID || 0;
+      this.OP_IP_ID = OPIPPatientModel.OP_IP_ID || 0;      
+      this.AdmissionID = OPIPPatientModel.AdmissionID || 0;
     }
   }
 }

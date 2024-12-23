@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../../ot-management-service.service';
@@ -67,16 +67,34 @@ export class NewRequestComponent implements OnInit {
   noOptionFound: boolean = false;
   RegId:any;
   vAdmissionID:any;
-  PatientListfilteredOptions:any;
+  PatientListfilteredOptionsIP:any;
+  PatientListfilteredOptionsOP:any;
   isRegIdSelected: boolean = false;
   vWardName: any;
   vBedNo:any;
   vPatientName:any;
-  vGenderId:any;
+  vGenderName:any;
+  vAgeYear:any;
   vAge:any;
+  vRegNo:any;
+  vOPDNo:any;
+  vCompanyName:any;
+  vTariffName:any;
+  vOP_IP_MobileNo:any;
+  vDoctorName:any;
   GendercmbList: any = [];
   optionsGender: any[] = [];
-
+  vSelectedOption: any= 'OP';
+  selectedType: any='';
+  vOtReqOPD: any ;
+  vOtReqIPD: any ; 
+  vDepartmentName:any;
+  vIPDNo:any;
+  vConditionOP:boolean=false;
+  vConditionIP:boolean=false;
+  OP_IP_Id: any = 0;
+  OP_IPType: any = 2;
+  
   filteredOptionautoDepartment: Observable<string[]>;
   filteredOptionsSurgeryCategory: Observable<string[]>;
   filteredOptionsSurgeon: Observable<string[]>;
@@ -124,6 +142,7 @@ export class NewRequestComponent implements OnInit {
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
+    private _loggedService: AuthenticationService
 
 
   ngOnInit(): void {
@@ -146,7 +165,6 @@ export class NewRequestComponent implements OnInit {
     this.getCategoryList();
     this.getSiteList();
     this.getDepartmentList();
-    this.getGenderList();
   
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -164,28 +182,6 @@ export class NewRequestComponent implements OnInit {
     this.Today = new Date().toDateString;
     console.log(this.Today);
 
-
-
-     
-    // this.departmentFilterCtrl.valueChanges
-    //   .pipe(takeUntil(this._onDestroy))
-    //   .subscribe(serviceData => {
-    //     if (serviceData && this.isLoading) {
-    //       this.filteredDepartment = serviceData.filteredDepartment === null ? [] : serviceData.filteredDepartment;
-    //       this.isLoadings = false;
-    //       if (this.filteredDepartment && this.filteredDepartment && this.savedValue !== null && this.filteredDepartment) {
-    //         this.departmentFilterCtrl.setValue(this.savedValue);
-    //       }
-    //       if (serviceData.error) {
-    //         this.departmentFilterCtrl.setValue(this.savedValue);
-    //         this.departmentFilterCtrl.setErrors({ 'serviceFail': serviceData.error });
-
-    //       }
-    //     }
-    //     this.filterDepartment();
-    //   });
-
-      
     
       setTimeout(function () {
 
@@ -194,12 +190,73 @@ export class NewRequestComponent implements OnInit {
   
       }, 1000);
     
+      this.vOtReqOPD = this._loggedService.currentUserValue.user.pharOPOpt;
+      this.vOtReqIPD = this._loggedService.currentUserValue.user.pharIPOpt;
+
+      if (this.vOtReqIPD == true) { 
+        if(this.vOtReqOPD == false){
+          this.vSelectedOption = 'IP';  
+        this.searchFormGroup.get('MobileNo').clearValidators();
+        this.searchFormGroup.get('PatientName').clearValidators();
+        this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+        this.searchFormGroup.get('PatientName').updateValueAndValidity();
+        }  
+      }else{
+        this.vConditionIP = true
+      } 
+      if (this.vOtReqOPD == true) {
+        if (this.vOtReqIPD == false) { 
+          this.vSelectedOption = 'OP'; 
+          this.searchFormGroup.get('MobileNo').clearValidators();
+          this.searchFormGroup.get('PatientName').clearValidators();
+          this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+          this.searchFormGroup.get('PatientName').updateValueAndValidity();
+        }
+      } else{
+        this.vConditionOP = true
+      }
+
   }
 
-   
+  onChangePatientType(event) {
+    if (event.value == 'OP') {
+      this.OP_IPType = 0;
+      this.RegId = "";
+      this.searchFormGroup.get('MobileNo').clearValidators();
+      this.searchFormGroup.get('PatientName').clearValidators();
+      this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+      this.searchFormGroup.get('PatientName').updateValueAndValidity();
+    }
+    else if (event.value == 'IP') {
+      this.OP_IPType = 1;
+      this.RegId = "";
+      this.searchFormGroup.get('MobileNo').clearValidators();
+      this.searchFormGroup.get('PatientName').clearValidators();
+      this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+      this.searchFormGroup.get('PatientName').updateValueAndValidity();
+    } else {
+      this.searchFormGroup.get('MobileNo').reset();
+      this.searchFormGroup.get('MobileNo').setValidators([Validators.required]);
+      this.searchFormGroup.get('MobileNo').enable();
+      this.searchFormGroup.get('PatientName').reset();
+      this.searchFormGroup.get('PatientName').setValidators([Validators.required]);
+      this.searchFormGroup.get('PatientName').enable();
+      this.searchFormGroup.updateValueAndValidity();
+      this.OP_IPType = 2;  
+    }
+  }
+  getOptionTextIPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
+  getOptionTextOPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
   createMyForm() {
     return this.formBuilder.group({
       RegID: '',
+      PatientType: ['OP'],
+      MobileNo:'',
+      PatientName:''
       // PatientName: '',
       // WardName: '',
       // StoreId: '',
@@ -210,6 +267,25 @@ export class NewRequestComponent implements OnInit {
     })
   }
 
+  PatientInformRest(){
+    this.vWardName='';
+    this.vBedNo='';
+    this.vGenderName='';
+    this.vPatientName='';
+    this.vAgeYear='';
+    this.RegId='';
+    this.vAdmissionID='';
+    this.vAge='';
+    this.vRegNo
+    this.vOPDNo='';
+    this.vCompanyName='';
+    this.vTariffName='';
+    this.vOP_IP_MobileNo='';
+    this.vDoctorName='';
+    this.vDepartmentName='';
+    this.OP_IP_Id = '';
+    this.vIPDNo = '';
+  }
 
   closeDialog() {
     console.log("closed")
@@ -241,55 +317,93 @@ export class NewRequestComponent implements OnInit {
     });
   }
 
-  
+
   getSearchList() {
+    debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
-    // if (this.searchFormGroup.get('RegID').value.length >= 1) {
-      this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        // this.filteredOptions = resData;
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
-    // }
-  }
-  private _filterGen(value: any): string[] {
-    debugger
-    if (value) {
-      const filterValue = value && value.GenderName ? value.GenderName.toLowerCase() : value.toLowerCase();
-      return this.GendercmbList.filter(option => option.GenderName.toLowerCase().includes(filterValue));
-    }
-  }
-
-  getGenderList(){
-    debugger
-    this._OtManagementService.getGenderCombo().subscribe(data => {
+    if (this.searchFormGroup.get('PatientType').value == 'OP'){
       debugger
-      this.GendercmbList = data;
-      this.optionsGender = this.GendercmbList.slice();
-      this.filteredOptionsGender = this._OtManagementService.otreservationFormGroup.get('GenderId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterGen(value) : this.GendercmbList.slice()),
-
-      );
-    });
+      if (this.searchFormGroup.get('RegID').value.length >= 1) {
+        this._OtManagementService.getPatientVisitedListSearch(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptionsOP = resData;
+           console.log(resData);
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          } 
+        });
+      }
+    }else if (this.searchFormGroup.get('PatientType').value == 'IP') {
+      debugger
+      if (this.searchFormGroup.get('RegID').value.length >= 1) {
+        this._OtManagementService.getAdmittedPatientList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          // console.log(resData);
+          this.PatientListfilteredOptionsIP = resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+        });
+      }
+    }
+   this.PatientInformRest();
   }
 
-  getSelectedObj(obj) {
+  getSelectedObjOP(obj) {
     console.log("AdmittedList:",obj)
     this.registerObj = obj;
-    // this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+    this.vWardName=obj.RoomName;
+    this.vBedNo=obj.BedName;
+    this.vGenderName=obj.GenderName;
+    this.vPatientName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+    this.vAgeYear = obj.AgeYear;
+    // this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
     this.vAdmissionID = obj.AdmissionID
+    this.vAge=obj.Age;
+    this.vRegNo =obj.RegNo; 
+    this.vOPDNo = obj.OPDNo;
+    this.vCompanyName = obj.CompanyName;
+    this.vTariffName = obj.TariffName; 
+    this.vOP_IP_MobileNo = obj.MobileNo;
+    this.vDoctorName = obj.DoctorName;
+    this.vDepartmentName=obj.DepartmentName;
+
+    // this.PatientInformRest();
   }
 
+  getSelectedObjRegIP(obj) {
+    let IsDischarged = 0;
+    IsDischarged = obj.IsDischarged 
+    if(IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged'); 
+      this.RegId = ''
+    }
+    else{
+      console.log(obj)
+      this.registerObj = obj;
+      this.vPatientName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+      this.RegId = obj.RegID;
+      this.OP_IP_Id = this.registerObj.AdmissionID;
+      this.vIPDNo = obj.IPDNo;
+      this.vRegNo =obj.RegNo;
+      this.vDoctorName = obj.DoctorName;
+      this.vTariffName =obj.TariffName
+      this.vCompanyName = obj.CompanyName;
+      this.vAgeYear = obj.AgeYear;
+      this.vOP_IP_MobileNo = obj.MobileNo;
+      this.vDepartmentName=obj.DepartmentName;
+      this.vAge=obj.Age;
+      this.vGenderName=obj.GenderName;
+    } 
+    // this.PatientInformRest();
+  }
  
 
   getOptionText(option) {

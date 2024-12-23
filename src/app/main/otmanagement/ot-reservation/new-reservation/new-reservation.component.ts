@@ -5,7 +5,7 @@ import { OTReservationDetail } from '../ot-reservation.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../../ot-management-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -55,6 +55,7 @@ export class NewReservationComponent implements OnInit {
   classname: any = '';
   tariffname: any = '';
   AgeYear: any = '';
+  Age:any='';
   ipno: any = '';
   patienttype: any = '';
   Adm_Vit_ID: any = 0;
@@ -66,6 +67,25 @@ export class NewReservationComponent implements OnInit {
   RegId:any;
   vAdmissionID:any;
   PatientListfilteredOptions:any;
+
+  vGenderName:any;
+  vRegNo:any;
+  vOPDNo:any;
+  vCompanyName:any;
+  vOP_IP_MobileNo:any;
+  vDoctorName:any;
+  GendercmbList: any = [];
+  optionsGender: any[] = [];
+  vSelectedOption: any= 'OP';
+  selectedType: any='';
+  vOtReqOPD: any ;
+  vOtReqIPD: any ; 
+  vDepartmentName:any;
+  vIPDNo:any;
+  vConditionOP:boolean=false;
+  vConditionIP:boolean=false;
+  OP_IP_Id: any = 0;
+  OP_IPType: any = 2;
 
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
@@ -114,7 +134,7 @@ export class NewReservationComponent implements OnInit {
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<NewreservationComponent>,
+    public dialogRef: MatDialogRef<NewReservationComponent>,
     // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
@@ -241,6 +261,18 @@ export class NewReservationComponent implements OnInit {
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
     this.vAdmissionID = obj.AdmissionID
+
+    this.RegId = obj.RegID;
+      this.OP_IP_Id = this.registerObj.AdmissionID;
+      this.vIPDNo = obj.IPDNo;
+      this.vRegNo =obj.RegNo;
+      this.vDoctorName = obj.DoctorName;
+      this.tariffname =obj.TariffName
+      this.vCompanyName = obj.CompanyName;
+      this.Age = obj.Age;
+      this.vOP_IP_MobileNo = obj.MobileNo;
+      this.vDepartmentName=obj.DepartmentName;
+      this.vGenderName=obj.GenderName;
 
     console.log(obj);
   }
@@ -563,7 +595,7 @@ OPreOPrativenote(){
   }
 
   onClose() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
 

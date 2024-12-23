@@ -28,6 +28,17 @@ import { NewReservationComponent } from "./new-reservation/new-reservation.compo
 import { OTManagementServiceService } from "../ot-management-service.service";
 import { CommonModule, DatePipe } from "@angular/common";
 
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+
 const routes: Routes = [
     {
         path: "**",
@@ -58,7 +69,15 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
+        MatStepperModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatListModule,
+        MatExpansionModule,
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteModule,

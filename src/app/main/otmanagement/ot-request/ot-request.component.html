@@ -1,4 +1,5 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar 
+    dynamicTableHeight>
 
     <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll right-sidebar" style="height: 100%;"></div> -->
 
@@ -65,26 +66,26 @@
                                 <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Search RegNo</mat-label>
                                 <input name="Reg_No" formControlName="Reg_No" matInput>
-                                <!-- <span class="error" *ngIf="f.Reg_No.invalid && f.Reg_No.touched">Reg_No
-                                    required</span> -->
+                                <span class="error" *ngIf="f.Reg_No.invalid && f.Reg_No.touched">Reg_No
+                                    required</span>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Search First Name</mat-label>
                                 <input name="F_Name" formControlName="F_Name" matInput>
-                                <!-- <span class="error" *ngIf="f.F_Name.invalid && f.F_Name.touched">First
-                                    Name is required Enter only Alphabets</span> -->
+                                <span class="error" *ngIf="f.F_Name.invalid && f.F_Name.touched">First
+                                    Name is required Enter only Alphabets</span>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Search Last Name</mat-label>
                                 <input name="L_Name" formControlName="L_Name" matInput>
-                                <!-- <span class="error" *ngIf="f.L_Name.invalid && f.L_Name.touched">Last
-                                    Name is required Enter only Alphabets</span> -->
-                            </mat-form-field>
+                                <span class="error" *ngIf="f.L_Name.invalid && f.L_Name.touched">Last
+                                    Name is required Enter only Alphabets</span>
+                            </mat-form-field> -->
 
                           
                             <div style="margin-top: 10px;">
@@ -125,14 +126,14 @@
                                     <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">                                        
 
-                                        <ng-container matColumnDef="RegNo" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
+                                        <ng-container matColumnDef="OTBookingId" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Code
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.RegNo}}
+                                                {{contact.OTBookingId}}
                                             </mat-cell>
                                         </ng-container>
-
+<!-- 
                                         <ng-container matColumnDef="PatientName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 PatientName
@@ -149,16 +150,16 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.GenderName}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <!-- <ng-container matColumnDef="OTbookingDate" sticky>
+                                        <ng-container matColumnDef="OTbookingDate" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 OTbookingDate
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.OTbookingDate}}
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
 
 
                                         <ng-container matColumnDef="OTbookingTime" sticky>
@@ -170,9 +171,7 @@
                                             </mat-cell>
                                         </ng-container>
 
-
-
-                                        <ng-container matColumnDef="RoomName">
+                                        <!-- <ng-container matColumnDef="RoomName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 RoomName
                                             </mat-header-cell>
@@ -188,25 +187,25 @@
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.BedName}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <ng-container matColumnDef="OP_IP_Id" >
+                                        <!-- <ng-container matColumnDef="OP_IP_Id" >
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 OP_IP_Id
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.OP_IP_Id}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <ng-container matColumnDef="AdmittingDoctor" >
+                                        <!-- <ng-container matColumnDef="AdmittingDoctor" >
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 AdmittingDoctor
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.AdmittingDoctor}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
                                         <ng-container matColumnDef="SurgeonName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
@@ -278,7 +277,7 @@
                                         <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-150">Action
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
+                                            <mat-cell *matCellDef="let contact" class="w-150">
                                                 <button mat-icon-button (click)="getPrint(contact)" matTooltip="print">
                                                     <mat-icon style="color: black;">print</mat-icon>
                                                 </button>
@@ -286,6 +285,9 @@
                                                 <button mat-icon-button (click)="onEdit(contact)">
                                                     <mat-icon title="Edit Menu">launch</mat-icon>
                                                   </button> -->
+                                                  <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
+                                                    <mat-icon style="color: black;">edit</mat-icon>
+                                                </button>
                                             </mat-cell>
                                             
                                         </ng-container>
@@ -301,9 +303,9 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent"
+                                        <mat-header-row class="accent min-width-1500"
                                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1500"
                                             [@animate]="{value:'*',params:{y:'100%'}}" >
                                         </mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
