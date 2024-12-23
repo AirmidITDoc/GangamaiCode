@@ -12,6 +12,7 @@ import { CustomerInfoList } from '../customer-information.component';
 import { NewBillRaiseComponent } from '../new-bill-raise/new-bill-raise.component';
 import Swal from 'sweetalert2';
 import { CustomerPaymentComponent } from '../customer-payment/customer-payment.component';
+import { CustomerNewAMCComponent } from '../customer-new-amc/customer-new-amc.component';
 @Component({
   selector: 'app-amc-details',
   templateUrl: './amc-details.component.html',
@@ -212,8 +213,39 @@ export class AMCDetailsComponent implements OnInit {
       this.getCustomerBlilList();
     });
   }
-  newAmc() {
-
+  NewAMC:any=1
+  newAmc() { 
+    const dialogRef = this._matDialog.open(CustomerNewAMCComponent,
+      {
+        maxWidth: "60vw",
+        height: '53%',
+        width: '100%',
+        data: { 
+          Obj: this.registerObj,
+          FormName: this.NewAMC
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getAmcDetList();
+    });
+  }
+  OnEditAMC(contact) {  
+    this.NewAMC = 0
+    const dialogRef = this._matDialog.open(CustomerNewAMCComponent,
+      {
+        maxWidth: "60vw",
+        height: '53%',
+        width: '100%',
+        data: {
+          Obj: contact,
+          FormName: this.NewAMC
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getAmcDetList();
+    });
   }
 }
 export class BillRaiseList {

@@ -26,7 +26,7 @@ export class CustomerInformationService {
    CreateSearchForm(){
     return this._formbuilder.group({
       CustomerName:[''], 
-      IsActive:['']
+      IsActive:[true]
     });
    }
    Createmyform(){
@@ -110,7 +110,10 @@ export class CustomerInformationService {
     }
     return this._httpClient.post("CustomerInformation/CustomerInvoiceRaiseUpdate", Param)
   }
-  public getCustomerSearchCombo(param) {
+  public getCustomerSearchCombo(param,loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CustomerNameCombo", param);
   }
   public getCustomerBillList(vdata,loader = true) {
@@ -125,7 +128,18 @@ export class CustomerInformationService {
     }
     return this._httpClient.post("CustomerInformation/CustomerPaymentSave",Param);
   }
-
+  public SaveCustomerAmc(Param,loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("CustomerInformation/CustomerAMCSave",Param);
+  }
+  public UpdateCustomerAmc(Param,loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("CustomerInformation/CustomerAMCUpdate",Param);
+  } 
 
   PopulateFormbillRise(Param){ 
     this.Billmyform.patchValue(Param);

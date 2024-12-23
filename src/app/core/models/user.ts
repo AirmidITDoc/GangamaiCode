@@ -24,7 +24,7 @@ export class LoginUser {
     isGRNVerify :boolean;
     isCollection :boolean;
     isBedStatus :boolean;
-    IsCurrentStk :boolean;
+    isCurrentStk :boolean;
     IsPatientInfo :boolean;
     IsDateInterval :boolean;
     IsDateIntervalDays :number;

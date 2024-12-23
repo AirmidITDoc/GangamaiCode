@@ -60,7 +60,8 @@
                                     <!-- <button mat-menu-item class="" (click)="navigateToCashlessDashboard()">
                                         <span>CashLess Dashboard</span>
                                     </button> -->
-                                    <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()"
+                                    *ngIf="IsPharmacy == '1'">
                                         <span>Pharmacy Dashboard</span>
                                     </button>
                                 </mat-menu>

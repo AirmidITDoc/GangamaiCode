@@ -1345,20 +1345,20 @@ onTemplDetAdd(){
   CheifCompListCombo:any=[];
   DaignoComboList:any=[];
   ExaminComboList:any=[];
-  getCheifComplaintList() {
+  getCheifComplaintList() { 
     var vdata={
       "DescriptionType":"Complaint"
     }
     this._CasepaperService.getcheifcomplaintList(vdata).subscribe(data => {
       this.CheifCompListCombo = data;
       console.log(this.CheifCompListCombo)
-      this.filteredCheifComplaint = this.caseFormGroup.get('ChiefComplaint').valueChanges.pipe(
+      this.filteredCheifComplaint = this.caseFormGroup.get('CheifComplaintControl').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterCheif(value) : this.CheifCompListCombo.slice()),
       );
-    });
+    }); 
   }
-  private _filterCheif(value: string): string[] {
+  private _filterCheif(value: string): string[] { 
     const filterValue = value.toLowerCase();
     return this.CheifCompListCombo.filter(item => item.toLowerCase().includes(filterValue));
   }
@@ -1417,6 +1417,10 @@ onTemplDetAdd(){
       input.value = '';
     }
     console.log(this.AllTypeDescription)
+    console.log(this.caseFormGroup.get('CheifComplaintControl').value)
+    console.log(this.caseFormGroup.get('ChiefComplaint').value)
+    console.log(this.caseFormGroup.get('Diagnosis').value)
+    console.log(this.caseFormGroup.get('Examination').value)
   }
   removeCheif(cheif: string): void {
     const index = this.addCheiflist.indexOf(cheif);

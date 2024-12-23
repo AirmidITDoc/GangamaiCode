@@ -1,0 +1,89 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+            style="color: white;">account_box
+        </mat-icon>
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+            style="color: white;">
+            New AMC
+        </span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div> 
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+
+                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="NewAMCForm">
+
+                         
+                            <div> 
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Customer Name</mat-label>
+                                    <input matAutocompletePosition="below" type="text"  placeholder="Select Customer"
+                                        matInput formControlName="CustomerId" [matAutocomplete]="auto" required
+                                         [(ngModel)]="vCustomerId" >
+                                   <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="NewAMCForm.get('CustomerId').setValue(''); isCustomerIdSelected = false;">close</mat-icon>
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="NewAMCForm.get('CustomerId').setValue(''); isCustomerIdSelected = false;">search</mat-icon>
+                                    </span>
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+                                        <mat-option *ngFor="let option of filteredOptions | async"
+                                            [value]="option">
+                                            {{option.CustomerName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Amount</mat-label>
+                                    <input name="Amount" formControlName="Amount" type="text" OnlyNUmber
+                                      matInput required text-length="10" (keyup.enter)="focusNext('Duration')"
+                                        id="Amount" [(ngModel)]="vAmount">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Duration</mat-label>
+                                    <input name="Duration" formControlName="Duration" type="text" OnlyNUmber
+                                      matInput required (keyup.enter)="focusNext('Description')"
+                                        id="Duration" [(ngModel)]="vDuration">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Description</mat-label>
+                                    <textarea rows="5" name="Description" formControlName="Description" matInput required  type="text" OnlyNumber
+                                    OnlyNumber  id="Description" [(ngModel)]="vDescription"></textarea>
+                                </mat-form-field>
+                            </div>  
+                        </form>
+                    </div>
+                     
+                        <div class="modal-footer-buttons gap-8" fxLayout="row"  fxLayoutAlign="end">
+                            <button class="btn btn-danger-outline" (click)="onReset()">Close</button>
+                            <button class="btn btn-primary " (click)="onSubmit()" >Save</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

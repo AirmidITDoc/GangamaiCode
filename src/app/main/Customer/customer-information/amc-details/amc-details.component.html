@@ -172,17 +172,7 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         
-                                        <button mat-icon-button matTooltip="Edit" *ngIf="contact.PayStatus == 'Pending' || contact.IsCancelled!==0" (click)="OnEditBillRise(contact)">
-                                            <mat-icon>edit</mat-icon>
-                                        </button>
-
-                                        <button mat-icon-button matTooltip="print" *ngIf="contact.IsCancelled!==0">
-                                            <mat-icon title="Print Menu" [disabled]="contact.IsCancelled" class="disabled-icon">
-                                                print</mat-icon>
-                                        </button>
-                                        <button mat-icon-button (click)="CancleAMCInformation(contact)" *ngIf="contact.PayStatus == 'Pending'" color="warn">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
+                                        
 
                                         <button mat-icon-button>
                                             <mat-icon matTooltip="Paid" *ngIf="contact.PayStatus == Paid"
@@ -194,6 +184,20 @@
                                         <button mat-icon-button matTooltip="Payment" (click)="PayAMtamt(contact)" 
                                             *ngIf="contact.PayStatus == 'Pending' && contact.IsCancelled!==0">
                                             <mat-icon>payment</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button matTooltip="Edit" *ngIf="contact.PayStatus == 'Pending' || contact.IsCancelled!==0" 
+                                        (click)="OnEditAMC(contact)">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button matTooltip="print" *ngIf="contact.IsCancelled!==0">
+                                            <mat-icon title="Print Menu" [disabled]="contact.IsCancelled" class="disabled-icon">
+                                                print</mat-icon>
+                                        </button>
+                                        
+                                        <button mat-icon-button (click)="CancleAMCInformation(contact)" *ngIf="contact.PayStatus == 'Pending'" color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
                                         </button>
 
                                     </mat-cell>

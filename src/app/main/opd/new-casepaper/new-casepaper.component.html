@@ -157,169 +157,144 @@
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Height</mat-label>
                                                         <!-- <span matTextPrefix>cm</span> -->
-                                                        <input name="Height" formControlName="Height"
-                                                            placeholder="Height in m" [(ngModel)]="vHeight" matInput
-                                                            #EHeight (keydown)="onEnterHeight($event)" type="text"
-                                                            OnlyNumber (keyup)="getBMIcalculation()"
+                                                        <input name="Height" formControlName="Height" placeholder="Height in m" [(ngModel)]="vHeight" matInput
+                                                            #EHeight (keydown)="onEnterHeight($event)" type="text" OnlyNumber (keyup)="getBMIcalculation()"
                                                             (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;"> | cm</span>
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Weight</mat-label>
-                                                        <input name="Weight" formControlName="Weight"
-                                                            placeholder="Weight in Kg" [(ngModel)]="vWeight" matInput
-                                                            #EWeight (keydown)="onEnterWeight($event)" type="text"
-                                                            OnlyNumber (keyup)="getBMIcalculation()"
+                                                        <input name="Weight" formControlName="Weight" placeholder="Weight in Kg" [(ngModel)]="vWeight" matInput
+                                                            #EWeight (keydown)="onEnterWeight($event)" type="text" OnlyNumber (keyup)="getBMIcalculation()"
                                                             (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;"> | kg</span>
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>BMI</mat-label>
-                                                        <input name="BMI" formControlName="BMI" placeholder="BMI"
-                                                            matInput [(ngModel)]="vBMI" #EBMI
-                                                            (keydown)="onEnterBMI($event)" type="text" OnlyNumber
-                                                            readonly>
+                                                        <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="vBMI" #EBMI
+                                                            (keydown)="onEnterBMI($event)" type="text" OnlyNumber readonly>
                                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>BSL</mat-label>
-                                                        <input name="BSL" formControlName="BSL" placeholder="BSL"
-                                                            matInput [(ngModel)]="vBSL" #EBSL
-                                                            (keydown)="onEnterBSL($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
+                                                        <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="vBSL" #EBSL
+                                                            (keydown)="onEnterBSL($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>SpO2</mat-label>
-                                                        <input name="SpO2" formControlName="SpO2" placeholder="SpO2"
-                                                            [(ngModel)]="vSpO2" matInput #ESpO2
-                                                            (keydown)="onEnterSpO2($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
+                                                        <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="vSpO2" matInput #ESpO2
+                                                            (keydown)="onEnterSpO2($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <!-- <mat-icon matSuffix>KG</mat-icon> -->
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Pulse</mat-label>
-                                                        <input name="Pulse" formControlName="Pulse" placeholder="Pulse"
-                                                            [(ngModel)]="vPulse" matInput #EPulse
-                                                            (keydown)="onEnterPulse($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
+                                                        <input name="Pulse" formControlName="Pulse" placeholder="Pulse" [(ngModel)]="vPulse" matInput #EPulse
+                                                            (keydown)="onEnterPulse($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;"> |bpm</span>
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="13%">
                                                         <mat-label>BP</mat-label>
-                                                        <input name="BP" formControlName="BP" placeholder="BP" matInput
-                                                            #EBP [(ngModel)]="vBP" (keydown)="onEnterBP($event)"
-                                                            type="text" OnlyNumber (keypress)="keyPressOk($event)">
+                                                        <input name="BP" formControlName="BP" placeholder="BP" matInput #EBP [(ngModel)]="vBP"
+                                                            (keydown)="onEnterBP($event)" type="text" OnlyNumber (keypress)="keyPressOk($event)">
                                                         <span matSuffix style="font-size: x-large;"> |mmHg</span>
                                                     </mat-form-field>
-
+                                            
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Temp</mat-label>
-                                                        <input name="Temp" formControlName="Temp" placeholder="Temp"
-                                                            [(ngModel)]="vTemp" matInput #ETemp
-                                                            (keydown)="onEnterTemp($event)" type="text" OnlyNumber
-                                                            (keypress)="keyPressCharater($event)">
+                                                        <input name="Temp" formControlName="Temp" placeholder="Temp" [(ngModel)]="vTemp" matInput #ETemp
+                                                            (keydown)="onEnterTemp($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;"> | F</span>
                                                     </mat-form-field>
                                                 </div>
-
+                                            
                                                 <div fxLayout="row" class="gap-8">
                                                     <!-- <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>ChiefComplaint</mat-label>
-                                                        <textarea rows="6" name="ChiefComplaint"
-                                                            formControlName="ChiefComplaint"
-                                                            placeholder="ChiefComplaint" [(ngModel)]="vChiefComplaint"
-                                                            matInput #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
+                                                        <textarea rows="6" name="ChiefComplaint" formControlName="ChiefComplaint" placeholder="ChiefComplaint"
+                                                            [(ngModel)]="vChiefComplaint" matInput #ChiefComp (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                     </mat-form-field>
-
+                                                    
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Diagnosis</mat-label>
-                                                        <textarea rows="6" name="Diagnosis" formControlName="Diagnosis"
-                                                            placeholder="Diagnosis" [(ngModel)]="vDiagnosis" matInput
-                                                            #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
+                                                        <textarea rows="6" name="Diagnosis" formControlName="Diagnosis" placeholder="Diagnosis" [(ngModel)]="vDiagnosis"
+                                                            matInput #ChiefComp (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                     </mat-form-field>
-
-                                                      <mat-form-field appearance="outline" fxFlex>
+                                                    
+                                                    <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Examination</mat-label>
-                                                        <textarea rows="6" name="Examination"
-                                                            formControlName="Examination" placeholder="Examination"
-                                                            [(ngModel)]="vExamination" matInput #ChiefComp
-                                                            (keydown)="onEnterChiefComplaint($event)"></textarea>
+                                                        <textarea rows="6" name="Examination" formControlName="Examination" placeholder="Examination"
+                                                            [(ngModel)]="vExamination" matInput #ChiefComp (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                     </mat-form-field> -->
-
+                                            
                                                     <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>ChiefComplaint</mat-label>
                                                         <mat-chip-list #chipList aria-label="ChiefComplaint selection">
                                                             <mat-chip *ngFor="let item of addCheiflist" [selectable]="selectable" [removable]="removable"
                                                                 (removed)="removeCheif(item)">
-                                                                {{ item}} 
+                                                                {{ item}}
                                                                 <mat-icon *ngIf="removable" (click)="removeCheif(item)">close</mat-icon>
-                                                            </mat-chip> 
-                                                            <input   style="height: 80px;"
-                                                            placeholder="New ChiefComplaint..."
-                                                            formControlName="CheifComplaintControl"
-                                                            [matAutocomplete]="autoChips"
-                                                            [matChipInputFor]="chipList"
-                                                            (matChipInputTokenEnd)="addCheif($event)" />
+                                                            </mat-chip>
+                                                            <input style="height: 30px;" placeholder="New ChiefComplaint..." formControlName="CheifComplaintControl"
+                                                                [matAutocomplete]="autoChips" [matChipInputFor]="chipList"
+                                                                (matChipInputTokenEnd)="addCheif($event)" />
                                                         </mat-chip-list>
-                                                        <mat-autocomplete #autoChips="matAutocomplete"  (optionSelected)="selectedobjCheif($event.option.value)" >
-                                                            <mat-option *ngFor="let option of CheifCompListCombo" [value]="option" >
+                                                        <mat-autocomplete #autoChips="matAutocomplete" (optionSelected)="selectedobjCheif($event.option.value)"
+                                                            formControlName="ChiefComplaint">
+                                                            <mat-option *ngFor="let option of CheifCompListCombo" [value]="option">
                                                                 {{option.DescriptionName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>  
-
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="row" class="gap-8">
+                                            
                                                     <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>Diagnosis</mat-label>
                                                         <mat-chip-list #chipListdiagno aria-label="Diagnosis selection">
                                                             <mat-chip *ngFor="let item of addDiagnolist" [selectable]="selectable" [removable]="removable"
                                                                 (removed)="removeDiagno(item)">
-                                                                {{ item}} 
+                                                                {{ item}}
                                                                 <mat-icon *ngIf="removable" (click)="removeDiagno(item)">close</mat-icon>
-                                                            </mat-chip> 
-                                                            <input  style="height: 80px;"
-                                                            placeholder="New Diagnosis..."
-                                                            formControlName="DiagnosisControl"
-                                                            [matAutocomplete]="autoDiagnosis"
-                                                            [matChipInputFor]="chipListdiagno"
-                                                            (matChipInputTokenEnd)="addDiagnos($event)"   />
+                                                            </mat-chip>
+                                                            <input style="height: 30px;" placeholder="New Diagnosis..." formControlName="DiagnosisControl"
+                                                                [matAutocomplete]="autoDiagnosis" [matChipInputFor]="chipListdiagno"
+                                                                (matChipInputTokenEnd)="addDiagnos($event)" />
                                                         </mat-chip-list>
-                                                        <mat-autocomplete #autoDiagnosis="matAutocomplete"  (optionSelected)="selectedobjDiagno($event.option.value)" >
-                                                            <mat-option *ngFor="let option of DaignoComboList" [value]="option" >
+                                                        <mat-autocomplete #autoDiagnosis="matAutocomplete"
+                                                            (optionSelected)="selectedobjDiagno($event.option.value)">
+                                                            <mat-option *ngFor="let option of DaignoComboList" [value]="option">
                                                                 {{option.DescriptionName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field>  
-
+                                                    </mat-form-field>
+                                                </div>
+                                                <div fxLayout="row" class="gap-8">
+                                            
                                                     <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>Examination</mat-label>
                                                         <mat-chip-list #chipListexamin aria-label="Examination selection">
                                                             <mat-chip *ngFor="let item of addExaminlist" [selectable]="selectable" [removable]="removable"
                                                                 (removed)="removeExamin(item)">
-                                                                {{ item}} 
+                                                                {{ item}}
                                                                 <mat-icon *ngIf="removable" (click)="removeExamin(item)">close</mat-icon>
-                                                            </mat-chip> 
-                                                            <input  style="height: 80px;"
-                                                            placeholder="New Examination..."
-                                                            formControlName="ExaminationControl"
-                                                            [matAutocomplete]="autoExamin"
-                                                            [matChipInputFor]="chipListexamin"
-                                                            (matChipInputTokenEnd)="addExamina($event)" />
+                                                            </mat-chip>
+                                                            <input style="height: 30px;" placeholder="New Examination..." formControlName="ExaminationControl"
+                                                                [matAutocomplete]="autoExamin" [matChipInputFor]="chipListexamin"
+                                                                (matChipInputTokenEnd)="addExamina($event)" />
                                                         </mat-chip-list>
-                                                        <mat-autocomplete #autoExamin="matAutocomplete"  (optionSelected)="selectedobjExamin($event.option.value)" >
-                                                            <mat-option *ngFor="let option of ExaminComboList" [value]="option" >
+                                                        <mat-autocomplete #autoExamin="matAutocomplete" (optionSelected)="selectedobjExamin($event.option.value)">
+                                                            <mat-option *ngFor="let option of ExaminComboList" [value]="option">
                                                                 {{option.DescriptionName}}
                                                             </mat-option>
                                                         </mat-autocomplete>
-                                                    </mat-form-field> 
+                                                    </mat-form-field>
                                                 </div>
                                             </div>
                                         </form>

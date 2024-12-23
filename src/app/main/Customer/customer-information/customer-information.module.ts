@@ -41,6 +41,7 @@ import { CustomerInformationComponent } from './customer-information.component';
 import { AMCDetailsComponent } from './amc-details/amc-details.component';
 import { NewBillRaiseComponent } from './new-bill-raise/new-bill-raise.component'; 
 import { CustomerPaymentComponent } from './customer-payment/customer-payment.component';
+import { CustomerNewAMCComponent } from './customer-new-amc/customer-new-amc.component';
 
 const routes: Routes = [
   { 
@@ -55,7 +56,8 @@ const routes: Routes = [
     NewCustomerComponent,
     AMCDetailsComponent,
     NewBillRaiseComponent,
-    CustomerPaymentComponent
+    CustomerPaymentComponent,
+    CustomerNewAMCComponent
   ],
 
   imports: [
