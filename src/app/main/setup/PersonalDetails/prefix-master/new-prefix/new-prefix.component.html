@@ -23,7 +23,7 @@
                         <airmid-textbox 
                             label="Prefix Name"
                             formControlName="prefixName"
-                            [value]=""
+                            [value]="data?.prefixName"
                             [formGroup]="prefixForm"
                             [validations]="_PrefixMasterService.getValidationMessages().prefixName"
                             [maxLength]="300">

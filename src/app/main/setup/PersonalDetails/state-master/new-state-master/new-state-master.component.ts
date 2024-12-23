@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewStateMasterComponent implements OnInit {
 
   stateForm: FormGroup;
+  isActive:boolean=true;
   constructor(
       public _StateMasterService: StateMasterService,
       public dialogRef: MatDialogRef<NewStateMasterComponent>,
@@ -27,27 +28,22 @@ export class NewStateMasterComponent implements OnInit {
 
   ngOnInit(): void {
       this.stateForm = this._StateMasterService.createStateForm();
-      
-      var m_data = {
-        stateId: this.data?.stateId,
-        stateName: this.data?.stateName.trim(),
-        countryId: this.data?.countryId || this.countryId ,
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.stateForm.patchValue(m_data);
+      console.log(this.data)
+    if(this.data.stateId > 0){
+      this.isActive=this.data.isActive;
+      this.stateForm.patchValue(this.data);
+}
+    else{
+      this.stateForm.reset();
+      this.stateForm.get('isActive').setValue(1);
+
+    }
   }
 
   saveflag : boolean = false;
   onSubmit() {
     this.saveflag = true;
-    
-    if (this.stateForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if (this.stateForm.valid) {
+    console.log(this.stateForm.value)
           this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -55,16 +51,21 @@ export class NewStateMasterComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-    }  
-  }
+      
+  
 
-  getValidationCountryMessages() {
+  getValidationMessages() {
     return {
       countryId: [
             { name: "required", Message: "Country Name is required" }
-        ]
+        ],
+        stateName: [
+          { name: "required", Message: "State Name is required" },
+          { name: "pattern", Message: "Only char allowed." }
+      ]
     };
 }
+
 
   selectChangecountry(obj: any){
     console.log(obj);

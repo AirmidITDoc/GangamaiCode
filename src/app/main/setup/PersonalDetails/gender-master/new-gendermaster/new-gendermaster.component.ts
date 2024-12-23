@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class NewGendermasterComponent implements OnInit {
     genderForm: FormGroup;
+    isActive:boolean=true
     constructor(
         public _GenderMasterService: GenderMasterService,
         public dialogRef: MatDialogRef<NewGendermasterComponent>,
@@ -21,13 +22,12 @@ export class NewGendermasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.genderForm = this._GenderMasterService.createGenderForm();
-        var m_data = {
-            genderId: this.data?.genderId,
-            genderName: this.data?.genderName.trim(),
-            isDeleted: JSON.stringify(this.data?.isActive),
-        };
-        this.genderForm.patchValue(m_data);
+        if(this.data)
+      this.isActive=this.data.isActive
+        this.genderForm.patchValue(this.data);
     }
+
+    
     onSubmit() {
         if (this.genderForm.valid) {
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
@@ -39,6 +39,17 @@ export class NewGendermasterComponent implements OnInit {
         }
     }
 
+
+
+    getValidationMessages() {
+        return {
+            genderName: [
+                { name: "required", Message: "Gender Name is required" },
+                { name: "maxlength", Message: "Gender name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
     onClear(val: boolean) {
         this.genderForm.reset();
         this.dialogRef.close(val);

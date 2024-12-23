@@ -18,7 +18,7 @@ export class CityMasterService {
 
     createCityForm(): FormGroup {
         return this._formBuilder.group({
-            cityId: [""],
+            cityId: [0],
             cityName: ["",
                 [
                     Validators.required,
@@ -28,7 +28,7 @@ export class CityMasterService {
             stateId: ["", 
                 Validators.required
             ],
-            isActive: ["true"],
+            // isActive: [true],
         });
     }
     createSearchForm(): FormGroup {
@@ -42,15 +42,7 @@ export class CityMasterService {
         this.createCityForm();
     }
 
-    getValidationMessages() {
-        return {
-           cityName: [
-                { name: "required", Message: "City Name is required" },
-                { name: "maxlength", Message: "City name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+   
 
     public cityMasterSave(Param: any, showLoader = true) {
         if (Param.cityId) {

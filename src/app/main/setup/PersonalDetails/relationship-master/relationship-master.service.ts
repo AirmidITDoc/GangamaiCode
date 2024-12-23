@@ -18,14 +18,14 @@ export class RelationshipMasterService {
 
     createRelationshipForm(): FormGroup {
         return this._formBuilder.group({
-            relationshipId: [""],
+            relationshipId: [0],
             relationshipName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
+            // isActive: ["true"],
         });
     }
 
@@ -40,15 +40,7 @@ export class RelationshipMasterService {
         this.createRelationshipForm();
     }
 
-    getValidationMessages() {
-        return {
-            relationshipName: [
-                { name: "required", Message: "Relationship Name is required" },
-                { name: "maxlength", Message: "Relationship name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+    
 
     public relationshipMasterSave(Param: any, showLoader = true) {
         if (Param.relationshipId) {

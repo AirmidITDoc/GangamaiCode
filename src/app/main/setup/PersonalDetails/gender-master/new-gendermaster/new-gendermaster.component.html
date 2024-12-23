@@ -22,29 +22,28 @@
                     <airmid-textbox 
                         label="Gender name"
                         formControlName="genderName"
-                        [value]=""
+                        [value]="data?.genderName"
                         [formGroup]="genderForm"
-                        [validations]="_GenderMasterService.getValidationMessages().genderName"
-                        [maxLength]="300">
+                        [validations]="getValidationMessages().genderName"
+                        [maxLength]="200">
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='false'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    <mat-radio-group name="isActive" formControlName="isActive">
+                        <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>
             </form>
         </div>
-        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-            <div class="button-row">
-                <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                    
-                    >Save</button>
-                <button mat-raised-button color="warn" (click)="onClear(false)">Clear</button>
-            </div>
+       
+        <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+            <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                <span>Save</span>
+            </button>
         </div>
     </div>
 </div>

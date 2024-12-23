@@ -21,9 +21,9 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox label="Country Name" 
-                        formControlName="countryName" [value]=""
+                        formControlName="countryName" [value]="data?.countryName"
                         [formGroup]="countryForm"
-                        [validations]="_CountryMasterService.getValidationMessages().countryName" [maxLength]="300">
+                        [validations]="getValidationMessages().countryName" [maxLength]="300">
                     </airmid-textbox>
                 </div>
                 </div>
@@ -32,9 +32,9 @@
  
                     <div>
                         <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                            <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                             </mat-radio-button>
-                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                            <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>

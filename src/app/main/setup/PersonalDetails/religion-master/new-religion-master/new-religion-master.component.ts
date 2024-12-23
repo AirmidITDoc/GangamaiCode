@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewReligionMasterComponent implements OnInit {
   religionForm: FormGroup;
+  isActive:boolean=true
   constructor(   public _ReligionMasterService: ReligionMasterService,
     public dialogRef: MatDialogRef<NewReligionMasterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -19,24 +20,16 @@ export class NewReligionMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.religionForm = this._ReligionMasterService.CreateReligionForm();
-    var m_data = {
-      religionId: this.data?.religionId,
-      religionName: this.data?.religionName.trim(),
-      isDeleted: JSON.stringify(this.data?.isActive),
-    };
-    this.religionForm.patchValue(m_data);
+    if(this.data)
+      this.isActive=this.data.isActive
+    this.religionForm.patchValue(this.data);
   }
 
   saveflag : boolean = false ;
   onSubmit() {
     this.saveflag = true;
     
-    if (this.religionForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
+   
     if (this.religionForm.valid) {
         this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {
             this.toastr.success(response.message);
@@ -46,6 +39,15 @@ export class NewReligionMasterComponent implements OnInit {
         });
     }
   }
+
+getValidationMessages() {
+  return {
+      religionName: [
+          { name: "required", Message: "Religion Name is required" },
+          { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
+          { name: "pattern", Message: "Special char not allowed." }
+      ]
+  };
 }
 
 onClear(val: boolean) {

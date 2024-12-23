@@ -20,24 +20,16 @@ export class GenderMasterService {
     }
     createGenderForm() {
         return this._formBuilder.group({
-            genderId: [""],
+            genderId: [0],
             genderName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
                 Validators.pattern('^[a-zA-Z () ]*$')
             ]],
-            isActive: ["true"],
+            // isActive: ["true"],
         });
     }
-    getValidationMessages() {
-        return {
-            genderName: [
-                { name: "required", Message: "Gender Name is required" },
-                { name: "maxlength", Message: "Gender name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+  
 
     public genderMasterSave(Param: any, showLoader = true) {
         if (Param.genderId) {

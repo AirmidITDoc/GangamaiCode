@@ -11,6 +11,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
+    isActive:boolean=true
+
     constructor( public _WardMasterService: WardMasterService,
     public dialogRef: MatDialogRef<NewWardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -27,15 +29,10 @@ export class NewWardComponent implements OnInit {
     
   ngOnInit(): void {
     this.roomForm = this._WardMasterService.createWardForm();
-    var m_data = {
-      roomId: this.data?.roomId || 0,
-      roomName: this.data?.roomName.trim(),
-      roomType: this.data?.roomType || this.roomType,
-      locationId: this.data?.locationId || this.locationId,
-      isAvailable: JSON.stringify(this.data?.isAvailable),
-      classId: this.data?.classId || this.classId
-    };
-    this.roomForm.patchValue(m_data);
+    if(this.data){
+     this.isActive=this.data.isActive
+      this.roomForm.patchValue(this.data);}
+   
   }
 
   saveflag : boolean = false;
@@ -43,24 +40,10 @@ export class NewWardComponent implements OnInit {
     this.saveflag = true;
     
     if (this.roomForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-        debugger
-        var mdata =
-        {
-            "roomId": 0,
-            "roomName": this.roomForm.get("roomName").value,
-            "roomType": this.roomForm.get("roomType").value,
-            "locationId": 0,
-            "isAvailible": true,
-            "classId": 0
-        }
-        console.log("WardMaster Insert:",mdata)
+      
+        console.log("WardMaster Insert:",this.roomForm.value)
 
-        this._WardMasterService.roomMasterSave(mdata).subscribe((response) => {
+        this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
         this.toastr.success(response.message);
        this.onClear(true);
       }, (error) => {
@@ -70,29 +53,17 @@ export class NewWardComponent implements OnInit {
     }
 }
 
-getValidationlocationMessages() {
+getValidationMessages() {
   return {
     locationId: [
           { name: "required", Message: "Location Name is required" }
-      ]
-  };
-}
-
-
-getValidationclassMessages() {
-  return {
-    classId: [
-          { name: "required", Message: "Class Name is required" }
-      ]
-  };
-}
-
-
-getValidationroomMessages() {
-  return {
+      ],
+      classId: [
+        { name: "required", Message: "Class Name is required" }
+    ],
     roomId: [
-          { name: "required", Message: "Room Name is required" }
-      ]
+      { name: "required", Message: "Room Name is required" }
+  ]
   };
 }
 

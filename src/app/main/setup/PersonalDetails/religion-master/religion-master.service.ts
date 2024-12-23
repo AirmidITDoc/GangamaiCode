@@ -24,14 +24,14 @@ export class ReligionMasterService {
     }
     CreateReligionForm(): FormGroup {
         return this._formBuilder.group({
-            religionId: [""],
+            religionId: [0],
             religionName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
+            // isActive: ["true"],
         });
     }
     initializeFormGroup() {
@@ -42,15 +42,7 @@ export class ReligionMasterService {
         return this._httpClient.PostData("ReligionMaster/List", param, showLoader);
     }
 
-    getValidationMessages() {
-        return {
-            religionName: [
-                { name: "required", Message: "Religion Name is required" },
-                { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+   
 
     public religionMasterSave(Param: any, showLoader = true) {
         if (Param.religionId) {

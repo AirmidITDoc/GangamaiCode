@@ -26,14 +26,14 @@ export class CountryMasterService {
     }
     createCountryForm(): FormGroup {
         return this._formBuilder.group({
-            countryId: [""],
+            countryId: [0],
             countryName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
+            // isActive: ["true"],
         });
     }
 
@@ -41,15 +41,7 @@ export class CountryMasterService {
         this.createCountryForm();
     }
 
-    getValidationMessages() {
-        return {
-            countryName: [
-                { name: "required", Message: "Country Name is required" },
-                { name: "maxlength", Message: "Country name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+   
 
     public countryMasterSave(Param: any, showLoader = true) {
         if (Param.countryId) {

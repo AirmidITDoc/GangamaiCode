@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewRelationshipComponent implements OnInit {
   relationshipForm: FormGroup;
+  isActive:boolean=true
   constructor(
       public _RelationshipMasterService: RelationshipMasterService,
       public dialogRef: MatDialogRef<NewRelationshipComponent>,
@@ -21,27 +22,15 @@ export class NewRelationshipComponent implements OnInit {
 
   ngOnInit(): void {
       this.relationshipForm = this._RelationshipMasterService.createRelationshipForm();
-      var m_data = {
-        relationshipId: this.data?.relationshipId || 0,
-        relationshipName: this.data?.relationshipName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
-        addBy:10,
-        updatedBy:1
-      };
-      this.relationshipForm.patchValue(m_data);
+      if(this.data)
+        this.isActive=this.data.isActive
+      this.relationshipForm.patchValue(this.data);
   }
 
   saveflag : boolean = false;
   onSubmit() {
     this.saveflag = true;
-    
-    debugger
-    if (this.relationshipForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
+  
       if (this.relationshipForm.valid) {
           this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -51,8 +40,16 @@ export class NewRelationshipComponent implements OnInit {
           });
       }
     }
+  
+    getValidationMessages() {
+      return {
+          relationshipName: [
+              { name: "required", Message: "Relationship Name is required" },
+              { name: "maxlength", Message: "Relationship name should not be greater than 50 char." },
+              { name: "pattern", Message: "Special char not allowed." }
+          ]
+      };
   }
-
   onClear(val: boolean) {
       this.relationshipForm.reset();
       this.dialogRef.close(val);

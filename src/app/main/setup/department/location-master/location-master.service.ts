@@ -41,15 +41,7 @@ export class LocationMasterService {
         this.createLocationForm();
     }
 
-    getValidationMessages() {
-        return {
-            locationName: [
-                { name: "required", Message: "LocationName  is required" },
-                { name: "maxlength", Message: "LocationName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+  
 
     public locationMasterSave(Param: any, showLoader = true) {
         if (Param.locationId) {

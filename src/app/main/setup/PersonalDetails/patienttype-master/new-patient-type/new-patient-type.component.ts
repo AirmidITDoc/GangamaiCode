@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewPatientTypeComponent implements OnInit {
 
   patienttypeForm: FormGroup;
+  isActive:boolean=true
   constructor(
       public _PatienttypeMasterService: PatienttypeMasterService,
       public dialogRef: MatDialogRef<NewPatientTypeComponent>,
@@ -22,12 +23,9 @@ export class NewPatientTypeComponent implements OnInit {
 
   ngOnInit(): void {
       this.patienttypeForm = this._PatienttypeMasterService.createPatientTypeForm();
-      var m_data = {
-        patientTypeId: this.data?.patientTypeId,
-        patientType: this.data?.patientType.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.patienttypeForm.patchValue(m_data);
+      if(this.data)
+        this.isActive=this.data.isActive
+      this.patienttypeForm.patchValue(this.data);
   }
 
   saveflag : boolean = false;

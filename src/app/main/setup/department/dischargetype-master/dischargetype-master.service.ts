@@ -55,15 +55,7 @@ export class DischargetypeMasterService {
         return this._httpClient.PostData("DischargeType/List", param, showLoader);
     }
 
-    getValidationMessages() {
-        return {
-            dischargeTypeName: [
-                { name: "required", Message: "DischargeType Name is required" },
-                { name: "maxlength", Message: "DischargeType name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+  
 
     public dischargeTypeMasterSave(Param: any, showLoader = true) {
         if (Param.dischargeTypeId) {

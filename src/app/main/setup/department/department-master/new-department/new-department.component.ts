@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NewDepartmentComponent implements OnInit {
 
   departmentForm: FormGroup;
+  isActive:boolean=true
   constructor(
       public _DepartmentMasterService: DepartmentMasterService,
       public dialogRef: MatDialogRef<NewDepartmentComponent>,
@@ -22,12 +23,11 @@ export class NewDepartmentComponent implements OnInit {
 
   ngOnInit(): void {
       this.departmentForm = this._DepartmentMasterService.createDepartmentForm();
-      var m_data = {
-          departmentId: this.data?.departmentId,
-          departmentName: this.data?.departmentName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.departmentForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+         this.departmentForm.patchValue(this.data);}
+      
+      
   }
 
   saveflag : boolean = false;

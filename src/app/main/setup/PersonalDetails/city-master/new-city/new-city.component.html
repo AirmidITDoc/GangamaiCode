@@ -20,48 +20,41 @@
                 <input type="hidden" name="cityId" formControlName="cityId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="City Name" 
-                        formControlName="cityName" 
-                        [value]="" [formGroup]="cityForm"
-                        [validations]="_CityMasterService.getValidationMessages().cityName" 
-                        >
-                    </airmid-textbox>
-                </div>
-                
+                        <airmid-textbox label="City Name" formControlName="cityName" [value]="data?.cityName"
+                            [formGroup]="cityForm" [validations]="getValidationMessages().cityName">
+                        </airmid-textbox>
+                    </div>
+
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete 
-                            label="State Name" formControlName="stateId"
-                            [formGroup]="cityForm"
-                            [validations]="getValidationStateMessages().stateId"
-                            (selectDdlObject)="selectChangestate($event)"
-                            [mode]="autocompleteModestatus">
+                        <airmid-autocomplete label="State Name" formControlName="stateId" [formGroup]="cityForm"
+                            [value]="data?.stateId" [validations]="getValidationMessages().stateId"
+                            (selectDdlObject)="selectChangestate($event)" [mode]="autocompleteModestatus">
                         </airmid-autocomplete>
                     </div>
-                
-                </div>
 
+                </div>
+            </form>
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
+
                     <div>
                         <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                            <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                             </mat-radio-button>
-                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                            <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
-         
+
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
                             <span>Save</span>
                         </button>
                     </div>
-         
+
                 </div>
 
-            </form>
+            
         </div>
     </div>
 </div>

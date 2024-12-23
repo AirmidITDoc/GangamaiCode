@@ -19,7 +19,7 @@ export class AreaMasterService {
 
     createAreaForm(): FormGroup {
         return this._formBuilder.group({
-            areaId: [""],
+            areaId: [0],
             areaName: ["",
                 [
                     Validators.required,

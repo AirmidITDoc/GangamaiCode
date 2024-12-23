@@ -38,7 +38,7 @@
                             formControlName="locationId"
                             [value]="data?.locationId" 
                             [formGroup]="roomForm"
-                            [validations]="getValidationlocationMessages().locationId"
+                            [validations]="getValidationMessages().locationId"
                             [mode]="autocompleteModelocation"
                             (selectDdlObject)="selectChangelocation($event)">
                         </airmid-autocomplete>
@@ -48,7 +48,7 @@
                             formControlName="classId"
                             [value]="data?.classId" 
                             [formGroup]="roomForm"
-                            [validations]="getValidationclassMessages().classId"
+                            [validations]="getValidationMessages().classId"
                             [mode]="autocompleteModeclass"
                             (selectDdlObject)="selectChangeclass($event)">
                         </airmid-autocomplete>
@@ -58,7 +58,7 @@
                             formControlName="roomId"
                             [value]="data?.roomId" 
                             [formGroup]="roomForm"
-                            [validations]="getValidationroomMessages().roomId"
+                            [validations]="getValidationMessages().roomId"
                             [mode]="autocompleteModeroomId"
                             (selectDdlObject)="selectChangeroomType($event)">
                         </airmid-autocomplete>
@@ -70,9 +70,9 @@
  
                     <div>
                         <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                            <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                             </mat-radio-button>
-                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                            <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>

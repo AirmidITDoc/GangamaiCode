@@ -24,14 +24,14 @@ export class MaritalstatusMasterService {
 
     createMaritalForm(): FormGroup {
         return this._formBuilder.group({
-            maritalStatusId: [""],
+            maritalStatusId: [0],
             maritalStatusName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
+            // isActive: ["true"],
         });
     }
 
@@ -39,15 +39,7 @@ export class MaritalstatusMasterService {
         this.createMaritalForm();
     }
 
-    getValidationMessages() {
-        return {
-            maritalStatusName: [
-                { name: "required", Message: "MaritalStatusName  is required" },
-                { name: "maxlength", Message: "MaritalStatusName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+  
 
     public MaritalStatusMasterSave(Param: any, showLoader = true) {
         if (Param.maritalStatusId) {

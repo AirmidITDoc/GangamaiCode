@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NewDischargetypeComponent implements OnInit {
 
   dischargetypeForm: FormGroup;
+  isActive:boolean=true
   constructor(
       public _DischargetypeMasterService: DischargetypeMasterService,
       public dialogRef: MatDialogRef<NewDischargetypeComponent>,
@@ -22,24 +23,17 @@ export class NewDischargetypeComponent implements OnInit {
 
   ngOnInit(): void {
       this.dischargetypeForm = this._DischargetypeMasterService.createDischargetypeForm();
-      var m_data = {
-        dischargeTypeId: this.data?.dischargeTypeId,
-        dischargeTypeName: this.data?.dischargeTypeName.trim(),
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.dischargetypeForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+         this.dischargetypeForm.patchValue(this.data);}
+      
+     
   }
 
   saveflag : boolean = false;
   onSubmit() {
     this.saveflag = true;
     
-    if (this.dischargetypeForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
       if (this.dischargetypeForm.valid) {
           this._DischargetypeMasterService.dischargeTypeMasterSave(this.dischargetypeForm.value).subscribe((response) => {
               this.toastr.success(response.message);
@@ -49,8 +43,16 @@ export class NewDischargetypeComponent implements OnInit {
           });
       }
     }
-  }
-
+  
+  getValidationMessages() {
+    return {
+        dischargeTypeName: [
+            { name: "required", Message: "DischargeType Name is required" },
+            { name: "maxlength", Message: "DischargeType name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
+}
   onClear(val: boolean) {
       this.dischargetypeForm.reset();
       this.dialogRef.close(val);
