@@ -59,6 +59,15 @@ export class CustomerInformationService {
       PayAmt:['']
     })
   }
+
+ 
+  public AMCInformationCancle(param, loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("CustomerInformation/CustomerAMCCancel", param)
+}
+
   public deactivateTheStatus(param, loader = true) {
     if(loader){
       this._loaderService.show()

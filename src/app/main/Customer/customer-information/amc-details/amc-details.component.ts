@@ -23,28 +23,29 @@ export class AMCDetailsComponent implements OnInit {
   displayedColumns: string[] = [
     'CustomerName',
     'AMCStartDate',
-    'AMCDuration',
     'AMCEndDate',
+    'AMCDuration',
     'AMCAmount',
     'AMCPaidDate',
     'PaymentId'
   ]
   displayedColumnsBillRise: string[] = [
-    'InvoiceDate', 
+    'InvoiceDate',
     'CustomerName',
-    'Amount', 
+    'Amount',
     'CreatedBy',
     'Action'
   ];
 
 
   registerObj: any;
-  isLoading: String = '';
+  // isLoading: String = '';
+  isLoading = true;
   sIsLoading: string = "";
   chargeslist: any = [];
   vDoctorName: any;
   selectedAdvanceObj: any;
-  chargelist:any=[];
+  chargelist: any = [];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -75,7 +76,6 @@ export class AMCDetailsComponent implements OnInit {
   }
 
   getAmcDetList() {
-    this.isLoading = 'loading-data'
     var vdata = {
       "CustomerId": this.registerObj.CustomerId
     }
@@ -88,13 +88,12 @@ export class AMCDetailsComponent implements OnInit {
     })
   }
   getCustomerBlilList() {
-    this.sIsLoading = 'loading-data';
     var vdata = {
       "CustomerId": this.registerObj.CustomerId
     }
     this._CustomerInfo.getCustomerBillList(vdata).subscribe(data => {
       this.dsBillRiseList.data = data as BillRaiseList[];
-      this.chargelist =  data as BillRaiseList[];
+      this.chargelist = data as BillRaiseList[];
       console.log(this.dsBillRiseList.data)
       this.dsBillRiseList.sort = this.sort;
       this.dsBillRiseList.paginator = this.paginator
@@ -104,15 +103,60 @@ export class AMCDetailsComponent implements OnInit {
         this.sIsLoading = '';
       });
   }
-  deleteTableRow(element) {
-    let index = this.chargelist.indexOf(element);
-    if (index >= 0) {
-      this.chargelist.splice(index, 1);
-      this.dsBillRiseList.data = [];
-      this.dsBillRiseList.data = this.chargelist;
-    }
-    Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success'); 
+
+  CancleAMCInformation(contact) {
+    console.log(contact);
+    Swal.fire({
+      title: 'Do you want to cancel the AMC?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let AmcCancle = {};
+        AmcCancle['amcId'] = contact.TranId,
+        AmcCancle['isCancelledBy'] = this._loggedService.currentUserValue.user.id;
+
+        let submitData = {
+          "customerAmcCancel": AmcCancle
+        };
+
+        console.log(submitData);
+
+        this.isLoading = true;
+
+        this._CustomerInfo.AMCInformationCancle(submitData).subscribe(
+          (response) => {
+            if (response) {
+              this.toastr.success('Record Cancelled Successfully.', 'Cancelled!', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
+            } else {
+              this.toastr.error('Record Data not Cancelled! Please check API error..', 'Error!', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+            }
+            this.getAmcDetList();
+
+            this.isLoading = false;
+          },
+          (error) => {
+
+            this.toastr.error('An error occurred while canceling the appointment.', 'Error!', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this.isLoading = false;
+          }
+        );
+      } else {
+        this.getAmcDetList();
+      }
+    });
   }
+  
   onClose() {
     this._matDialog.closeAll();
   }
@@ -123,15 +167,15 @@ export class AMCDetailsComponent implements OnInit {
         maxWidth: "50vw",
         height: '53%',
         width: '100%',
-        data:{
-          Obj:contact
+        data: {
+          Obj: contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.getCustomerBlilList();
       this.getAmcDetList();
-    }); 
+    });
   }
   OnEditBillRise(contact) {
     this.NewBillRise = 0
@@ -140,8 +184,8 @@ export class AMCDetailsComponent implements OnInit {
         maxWidth: "60vw",
         height: '53%',
         width: '100%',
-        data:{
-          Obj:contact,
+        data: {
+          Obj: contact,
           FormName: this.NewBillRise
         }
       });
@@ -150,7 +194,7 @@ export class AMCDetailsComponent implements OnInit {
       this.getCustomerBlilList();
     });
   }
-  NewBillRise:any;
+  NewBillRise: any;
   newBillRise() {
     this.NewBillRise = 1
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
@@ -158,8 +202,8 @@ export class AMCDetailsComponent implements OnInit {
         maxWidth: "60vw",
         height: '53%',
         width: '100%',
-        data:{
-          Obj:this.registerObj,
+        data: {
+          Obj: this.registerObj,
           FormName: this.NewBillRise
         }
       });
@@ -168,7 +212,7 @@ export class AMCDetailsComponent implements OnInit {
       this.getCustomerBlilList();
     });
   }
-  newAmc(){
+  newAmc() {
 
   }
 }
