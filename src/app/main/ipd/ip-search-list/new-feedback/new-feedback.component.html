@@ -1,0 +1,349 @@
+<div fxFlexFill class="page-layout ip-billing-section grid-container modal-wrapper">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span>FeedBack</span>
+            </div>
+            <div class="modal-header-icon">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <!-- <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <span class="modal-icon">
+                                <mat-icon>close</mat-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content">
+
+        <div class="center p-2" style="border-radius: 4px;">
+            <div class="content-card">
+
+                <div fxLayout="column" fxLayoutAlign="start none">
+                    <form [formGroup]="Feedbackpatientform" class="pt-0">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                                class="gap-2">
+                                <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-radio-group aria-label="Select an option" formControlName="PatientType"
+                                        [(ngModel)]="vSelectedOption" (change)="onChangePatientType($event)"
+                                        (blur)="onChangePatientType($event)" fxLayout="row">
+                                        <mat-radio-button value="OP" [disabled]="vCondition">OP</mat-radio-button>
+                                        <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
+
+                                    </mat-radio-group>
+
+                                    <div>
+                                        <mat-form-field appearance="outline" style="width: 500px;"
+                                            *ngIf="Feedbackpatientform.get('PatientType').value != 'IP' && Feedbackpatientform.get('PatientType').value != 'External'">
+                                            <input type="text" name="RegID" formControlName="RegID"
+                                                placeholder="OP-RegNo / First Name / Last Name / Mobile No" matInput
+                                                [matAutocomplete]="auto1" (input)="getSearchListIP()">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto1="matAutocomplete"
+                                                [displayWith]="getOptionTextOPObj"
+                                                (optionSelected)='getSelectedObjOP($event.option.value)'>
+                                                <mat-option *ngFor="let option of PatientListfilteredOptionsOP"
+                                                    [value]="option">
+                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                    {{option.MobileNo}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+
+                                        </mat-form-field>
+
+
+                                        <mat-form-field appearance="outline" style="width: 500px;"
+                                            *ngIf="Feedbackpatientform.get('PatientType').value != 'OP' && Feedbackpatientform.get('PatientType').value != 'External'">
+                                            <input type="text" name="RegID" formControlName="RegID"
+                                                placeholder="IP RegNo / First Name / Last Name / Mobile No" matInput
+                                                [matAutocomplete]="auto2" (input)="getSearchListIP()">
+                                            <span matSuffix style="display: flex;">
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                <mat-icon class="mat-icon-close"
+                                                    (click)="Feedbackpatientform.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                            </span>
+                                            <mat-autocomplete #auto2="matAutocomplete"
+                                                [displayWith]="getOptionTextIPObj"
+                                                (optionSelected)='getSelectedObjRegIP($event.option.value)'>
+                                                <mat-option *ngFor="let option of PatientListfilteredOptionsIP"
+                                                    [value]="option">
+                                                    {{option.FirstName}} {{option.MiddleName}}
+                                                    {{option.LastName}} | {{option.RegNo}} |
+                                                    {{option.MobileNo}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
+                        </mat-card>
+                    </form>
+
+                </div>
+
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+
+                    <div fxlayout="row" fxLayoutGap="5px">
+                        <div fxFlex="100%">
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                    <div class="patient-info-container">
+                                        <div class="patient-info-box">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="patient-info-box my-8">
+                                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key ">UHID NO</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{RegNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">DOA | Time</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{DOA}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Ward | Bed Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{RoomName}} |
+                                                            {{BedName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Patient Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{PatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">IPD No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{IPDNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Patient Type</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{PatientType}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{DoctorName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key ">Age | Sex</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{vAgeYear}}Y|{{vAgeMonth}}M|{{vAgeDay}}
+                                                            D | {{GenderName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Tariff Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{TariffName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key"> Department Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vDepartmentName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Ref-Doctor Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{RefDocName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1" fxFlex="30%">
+                                                        <span class="patient-col-key">Company Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value"
+                                                            style="color: orange;">{{CompanyName}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+
+                        </div>
+                    </div>
+                    <div fxlayout="row" fxLayoutGap="5px">
+                        <div fxFlex="100%">
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
+                                <!-- <mat-tab-group>
+
+                                    <mat-tab label="Please Rate Each of this IP Department.."> -->
+
+                                <form [formGroup]="feedbackForm">
+
+
+                                    <div *ngFor="let data of feedbackquest">
+                                        <!-- <label>
+                                                       
+                                                    </label> -->
+                                        <!-- <label
+                                                        style="font-size: large;color: rgb(178, 100, 251);padding: 10px;">{{data.FeedbackQuestion}}({{data.FeedbackQuestionMarathi}})</label> -->
+                                        <!-- <div>
+                                                        <label>
+                                                            <input type="radio" formControlName="experience[data[SequanceId]]"
+                                                                value="Excellent" value="1"
+                                                                (change)="onChangePatientType($event)" /> Excellent
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" formControlName="experience"
+                                                                value="Good" value="2" /> Good
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" formControlName="experience"
+                                                                value="Fair" value="3" /> Fair
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" formControlName="experience"
+                                                                value="Poor" value="4" /> Poor
+                                                        </label>
+
+
+                                                    </div> -->
+                                        <!-- <mat-radio-group aria-label="Select an option"
+                                                        formControlName="experience{{i}}"
+                                                        (change)="onChangeoption($event)"
+                                                        (blur)="onChangeoption($event)" fxLayout="row">
+                                                        <mat-radio-button value="1">Excellent</mat-radio-button>
+                                                        <mat-radio-button value="2">Good</mat-radio-button>
+                                                        <mat-radio-button value="3">Fair</mat-radio-button>
+                                                        <mat-radio-button value="4">Poor</mat-radio-button>
+
+                                                    </mat-radio-group> -->
+
+                                        <!-- <mat-radio-group class="mat-radio-button" aria-label="Select an option"
+                                                formControlName="experience" name="experience"
+                                                (change)="onChangeoption($event)"> -->
+
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-lable
+                                                style="font-size: large;color: blue;width: 100%;padding: 10px;">{{data.FeedbackQuestion}}({{data.FeedbackQuestionMarathi}})--
+                                                {{answer}}
+                                            </mat-lable>
+                                            <input matInput formControlName="firstCtrl" required
+                                                [ngmodel]="selectedanswer">
+                                            <span style="color: rgb(246, 47, 216);width: 200px;">Already selected
+                                                {{selectedanswer}}</span>
+                                        </mat-form-field>
+                                        <!-- <mat-radio-button value="Excellent">
+                                                    <img src="assets/images/logos/61.png" Width="33px" height="33px" />
+                                                </mat-radio-button>
+                                                <mat-radio-button value="Good">
+                                                    <img src="assets/images/logos/5.jpeg" Width="33px" height="33px" />
+                                                </mat-radio-button>
+                                                <mat-radio-button value="Average">
+                                                    <img src="assets/images/logos/4.jpeg" Width="33px" height="33px" />
+                                                </mat-radio-button>
+                                                <mat-radio-button value="Poor">
+                                                    <img src="assets/images/logos/3.jpeg" Width="33px" height="33px" />
+                                                </mat-radio-button>
+                                                <mat-radio-button value="Worst">
+                                                    <img src="assets/images/logos/1.jpeg" Width="33px" height="33px" />
+                                                </mat-radio-button>-->
+
+                                        <div style="padding-top:20px;">
+                                            <mat-card style="width:100%;font-size: medium;font-weight: bold;">
+                                                <div fxLayout="column" fxFlex>
+                                                    <div fxLayout="row" fxLayoutAlign="space-between"
+                                                        style="margin-right: 10px;height: 50px;padding-left: 100px;"
+                                                        fxFlex>
+
+                                                        <lable value="1">Excellent <img width="45" height="15px"
+                                                                src="assets/images/logos/61.png"
+                                                                (click)="fetchresult(data,1)"
+                                                                [ngClass]="{'row-yellow': Imgstatus1 == 1}"
+                                                                style="margin: 0px 5px 0px 0px;" value="11"
+                                                                matTooltip="Excellent">
+                                                        </lable>
+                                                        <lable value="2">Good<img width="45" height="15px"
+                                                                src="assets/images/logos/5.jpeg"
+                                                                (click)="fetchresult(data,2)"
+                                                                [ngClass]="{'row-yellow': Imgstatus2 == 1}"
+                                                                style="margin: 0px 15px 0px 15px;" matTooltip="Good">
+                                                        </lable>
+                                                        <lable value="3">Average <img width="45" height="15px"
+                                                                src="assets/images/logos/4.jpeg"
+                                                                [ngClass]="{'row-yellow': Imgstatus3 == 1}"
+                                                                (click)="fetchresult(data,3)"
+                                                                style="margin: 0px 15px 0px 15px;" matTooltip="Average">
+                                                        </lable>
+                                                        <lable value="4">Poor <img width="45" height="15px"
+                                                                (click)="fetchresult(data,4)"
+                                                                [ngClass]="{'row-yellow': Imgstatus4 == 1}"
+                                                                src="assets/images/logos/3.jpeg"
+                                                                style="margin-right: 10px;" matTooltip="Poor">
+                                                        </lable>
+                                                        <lable value="5">Worst <img width="45" height="15px"
+                                                                (click)="fetchresult(data,5)"
+                                                                [ngClass]="{'row-yellow': Imgstatus5 == 1}"
+                                                                src="assets/images/logos/1.jpeg"
+                                                                style="padding-top: 0px;" matTooltip="Worst"></lable>
+
+
+                                                    </div>
+                                                </div>
+
+                                            </mat-card>
+
+                                        </div>
+                                    </div>
+
+
+                                </form>
+
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxlayout="row" fxLayoutGap="5px">
+                        <div fxFlex="100%">
+                            <mat-card>
+
+                                <form [formGroup]="_FeedbackService.MyfeedbackForm">
+
+                                    <mat-form-field appearance="outline" fxFlex="60%" style="padding-left: 20px;">
+                                        <mat-label>Comment</mat-label>
+                                        <textarea matInput name="FeedbackComments" formControlName="FeedbackComments"
+                                            cols="200" rows="1"></textarea>
+                                    </mat-form-field>
+                                    <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end center"
+                                        style="margin-left: 400px;">
+                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                        <button class="btn btn-primary " (click)="onSubmit()">
+                                            <span>Save</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

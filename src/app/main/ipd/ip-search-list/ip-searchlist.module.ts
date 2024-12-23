@@ -63,6 +63,7 @@ import { DischargesummaryTemplateComponent } from './dischargesummary-template/d
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { InitiateDischargeComponent } from './discharge/initiate-discharge/initiate-discharge.component';
 import { InitiateProcessComponent } from './discharge/initiate-discharge/initiate-process/initiate-process.component';
+import { NewFeedbackComponent } from './new-feedback/new-feedback.component';
 
 
 
@@ -96,7 +97,8 @@ const routes: Routes = [
       UpdateCompanyDetailsComponent,
       DischargesummaryTemplateComponent,
       InitiateDischargeComponent,
-      InitiateProcessComponent
+      InitiateProcessComponent,
+      NewFeedbackComponent
     ],
     imports: [
         RouterModule.forChild(routes),

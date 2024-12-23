@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -103,6 +103,7 @@ export class AddSchedulerAppointmentComponent implements OnInit {
     public _phoneAppointListService: PhoneAppointListService,
     public formBuilder: FormBuilder,
     public _matDialog: MatDialog,
+        @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<AddSchedulerAppointmentComponent>,
@@ -120,12 +121,15 @@ export class AddSchedulerAppointmentComponent implements OnInit {
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
-
+  starttime:any;
+  endtime:any;
   ngOnInit(): void {
     this.personalFormGroup = this.createPesonalForm();
     this.getDepartmentList();
     this.minDate = new Date();
-
+    console.log(this.data)
+    this.starttime= this.datePipe.transform(this.data.startTime, "MMM-dd-yy hh:mm:ss")
+    this.endtime=this.datePipe.transform(this.data.endTime, "yyyy-MM-dd hh:mm:ss")
     this.doctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -170,7 +174,7 @@ export class AddSchedulerAppointmentComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      Address: ['', Validators.required],
+      Address: [''],
       PhAppDate: '',
       PhAppTime: '',
       DepartmentId: '',
@@ -194,7 +198,7 @@ export class AddSchedulerAppointmentComponent implements OnInit {
 
   getOptionTextDep(option) {
     
-    return option && option.departmentName ? option.departmentName : '';
+    return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   getOptionTextDoc(option) {
@@ -220,7 +224,7 @@ export class AddSchedulerAppointmentComponent implements OnInit {
     }
     // filter
     this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
+      this.DepartmentList.filter(bank => bank.DepartmentName.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -262,18 +266,22 @@ export class AddSchedulerAppointmentComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
+    console.log(departmentObj)
   
+    var vdata={
+      "Id":departmentObj.DepartmentId
+    } 
+
     this.isDepartmentSelected = true;
-    this._phoneAppointListService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
-      data => {
+    this._phoneAppointListService.getDoctorMasterCombo(vdata).subscribe(data => {
         this.DoctorList = data;
-       
-        // this.filteredDoctor.next(this.DoctorList.slice());
-        this.optionsDoc = this.DoctorList.slice();
+       this.optionsDoc = this.DoctorList.slice();
         this.filteredOptionsDoc = this.personalFormGroup.get('DoctorId').valueChanges.pipe(
           startWith(''),
           map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
         );
+       
+        console.log("doctor ndfkdf:",this.personalFormGroup.get('DoctorId').value)
       })
   }
 
@@ -281,9 +289,9 @@ export class AddSchedulerAppointmentComponent implements OnInit {
 
    private _filterDep(value: any): string[] {
     if (value) {
-      const filterValue = value && value.departmentName ? value.departmentName.toLowerCase() : value.toLowerCase();
+      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
       // this.isDepartmentSelected = false;
-      return this.optionsDep.filter(option => option.departmentName.toLowerCase().includes(filterValue));
+      return this.optionsDep.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
 
   }
@@ -304,7 +312,7 @@ export class AddSchedulerAppointmentComponent implements OnInit {
 
   OnSubmit() {
 debugger
-    if(!isNaN(this.vDepartmentid.Departmentid) && !isNaN(this.vDoctorId.DoctorId)){
+    if(!isNaN(this.vDepartmentid.DepartmentId) && !isNaN(this.vDoctorId.DoctorId)){
 
     
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
@@ -333,13 +341,14 @@ debugger
       if (response) {
         Swal.fire('Record Save !', 'Phone Appointment Data save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            this._matDialog.closeAll();
+            // this._matDialog.closeAll();
+            this.dialogRef.close(true);
           }
         });
       } else {
         Swal.fire('Error !', 'Register Data  not saved', 'error');
       }
-      // this.isLoading = '';
+      
     });
   }else{
     this.toastr.warning('Please Enter Valid Department & Doctor', 'Warning !', {

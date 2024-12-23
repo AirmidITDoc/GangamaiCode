@@ -1,3 +1,26 @@
 .md-red-500{
  color: red !important;   
 }
+
+.calendar-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    border: 1px solid #197cde;
+    background-color: #fff;
+  }
+
+  .calendar-day:hover {
+    background-color: rgb(176, 43, 43);
+  }
+  .selected{
+    color: rgb(92, 191, 35) !important;  
+  }
+
+  .fc-day.fc-widget-content {
+    background-color: #6c1365; /* Change background of cells */
+}
+.selected-date {
+    background-color: rgb(230, 199, 173) !important;
+  }

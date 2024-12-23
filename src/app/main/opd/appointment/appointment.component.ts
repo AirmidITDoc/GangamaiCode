@@ -51,6 +51,7 @@ import { WhatsAppEmailService } from "app/main/shared/services/whats-app-email.s
 import { PatientVitalInformationComponent } from "./patient-vital-information/patient-vital-information.component";
 import { CompanyInformationComponent } from "app/main/ipd/company-information/company-information.component";
 import { UpdateRegisteredPatientInfoComponent } from "./update-registered-patient-info/update-registered-patient-info.component";
+import { NewCasepaperComponent } from "../new-casepaper/new-casepaper.component";
 
 export class DocData {
     doc: any;
@@ -384,6 +385,7 @@ export class AppointmentComponent implements OnInit {
             // this.menuActions.push("Update Registration");
             this.menuActions.push("Update Consultant Doctor");
             this.menuActions.push("Update Referred Doctor");
+            this.menuActions.push("Medial Record");
         }
 
         // this.getVisitList();
@@ -2326,6 +2328,29 @@ export class AppointmentComponent implements OnInit {
                 data: {
                     registerObj: contact,
                     FormName: "Appointment"
+                },
+            });
+            dialogRef.afterClosed().subscribe((result) => {
+                console.log("The dialog was closed - Insert Action", result);
+                this.getVisitList1();
+            });
+        } else if (m == "Medial Record") {
+            var m_data3 = {
+                RegId: contact.RegId,
+                PatientName: contact.PatientName,
+                VisitId: contact.VisitId,
+                OPD_IPD_Id: contact.OPD_IPD_Id,
+                RefDoctorId: contact.RefDocId,
+                RefDocName: contact.RefDocName,
+            };
+            this._registrationService.populateFormpersonal(contact);
+            const dialogRef = this._matDialog.open(NewCasepaperComponent, {
+                maxWidth: "90vw",
+                height: "990px",
+                width: "90%",
+                data: {
+                    registerObj: contact,
+                    FormName: "Medical Record"
                 },
             });
             dialogRef.afterClosed().subscribe((result) => {
