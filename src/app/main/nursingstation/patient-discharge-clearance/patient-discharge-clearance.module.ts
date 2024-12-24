@@ -36,7 +36,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search'; 
 import { PatientDischargeClearanceComponent } from './patient-discharge-clearance.component';
-import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component';
+import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component'; 
+import { BrowserModule } from '@angular/platform-browser';  
 
 const routes: Routes = [
   {

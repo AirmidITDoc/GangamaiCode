@@ -20,8 +20,8 @@
             <div class="content-card">
                 <div fxFlex="100%" fxLayout="row" fxLayout.xs="column" fxLayout.sm="row" fxLayoutGap="10px">
 
-                    <div fxFlex="40%" fxLayoutGap="8px">  
-                        <mat-card style="padding: 5px;"  fxLayout="column" fxLayout.xs="column" fxLayout.sm="row">
+                    <div fxFlex="50%" fxLayoutGap="8px">  
+                        <mat-card style="padding: 5px;"  fxLayout="column" fxLayout.xs="column" fxLayout.sm="row" fxLayoutGap="10px">
 
                             <mat-table class="table" matSort [dataSource]="dspatientlist_1"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
@@ -81,71 +81,101 @@
                             <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                 showFirstLastButtons>
                             </mat-paginator>
+
+                            <mat-table class="table" matSort [dataSource]="dspatientlist_2"
+                            [@animateStagger]="{value:'50'}" style="overflow: auto;">
+
+                            <ng-container matColumnDef="DepartmentName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Department Name </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.DepartmentName}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="IsApproved">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    IsApproved</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.IsApproved}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="IsApprovedBy">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    IsApprovedBy</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.ApprovedBy}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="IsNoDues">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    IsNoDues </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.IsNoDues}} </mat-cell>
+                            </ng-container> 
+                            
+                            <ng-container matColumnDef="Comments">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Comments </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{element.Comments}} </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dspatientlist_2!=null && dspatientlist_2.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                            showFirstLastButtons>
+                        </mat-paginator>
                         </mat-card> 
                     </div>
 
-                    <div  fxFlex="60%" fxLayoutGap="8px"> 
+                    <div  fxFlex="50%" fxLayoutGap="8px"> 
                         <mat-card style="padding: 5px;"  fxLayout="column" fxLayout.xs="column" fxLayout.sm="row"> 
-                            <mat-table class="table" matSort [dataSource]="dspatientlist_2"
-                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
-    
-                                <ng-container matColumnDef="DepartmentName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Department Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.DepartmentName}} </mat-cell>
-                                </ng-container>
-    
-                                <ng-container matColumnDef="IsApproved">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        IsApproved</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.IsApproved}} </mat-cell>
-                                </ng-container>
-    
-                                <ng-container matColumnDef="IsApprovedBy">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        IsApprovedBy</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.ApprovedBy}} </mat-cell>
-                                </ng-container>
-    
-                                <ng-container matColumnDef="IsNoDues">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        IsNoDues </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.IsNoDues}} </mat-cell>
-                                </ng-container> 
-                                
-                                <ng-container matColumnDef="Comments">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Comments </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.Comments}} </mat-cell>
-                                </ng-container>
-    
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-    
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-    
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dspatientlist_2!=null && dspatientlist_2.data.length==0)}">
-                                </mat-footer-row>
-                            </mat-table>
-                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                                showFirstLastButtons>
-                            </mat-paginator>
+                            <mat-vertical-stepper linear>
+                                <mat-step *ngFor="let department of DepartmentList; let i = index" 
+                                [completed]="department.approved"
+                                [ngClass]="{'approved-step': department.IsApproved}">
+                                  <ng-template matStepLabel>{{department.DepartmentName}} {{ i + 1 }}</ng-template>
+                                  
+                                  <p>DepartmentName: {{ department.DepartmentName }}</p>
+                                  <p>ApprovedByName: {{ department.ApprovedByName }}</p>
+                                  <p>IsNoDues: {{ department.IsNoDues }}</p> 
+                                  
+                                  <!-- <mat-form-field>
+                                    <mat-label>Approval Status</mat-label>
+                                    <mat-select [(value)]="department.approved">
+                                      <mat-option [value]="true">Approved</mat-option>
+                                      <mat-option [value]="false">Not Approved</mat-option>
+                                    </mat-select>
+                                  </mat-form-field> -->
+                              
+                                  <!-- <div>
+                                    <button mat-button matStepperNext>Next</button>
+                                    <button mat-button matStepperPrevious>Back</button>
+                                  </div> -->
+                                </mat-step>
+                              </mat-vertical-stepper>
+                              
+                              <!-- <button mat-raised-button (click)="submit()">Submit All Approvals</button>  -->
+
+                              
+                        
                         </mat-card> 
                     </div> 
                 </div>

@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @Component({
   selector: 'app-patient-discharge-clearance',
@@ -54,6 +55,20 @@ export class PatientDischargeClearanceComponent implements OnInit {
 
 
   }
+  departments = [
+    { dischargeNumber: 'D001', approved: false },
+    { dischargeNumber: 'D002', approved: false },
+    { dischargeNumber: 'D003', approved: false },
+    { dischargeNumber: 'D004', approved: false },
+    { dischargeNumber: 'D005', approved: false },
+  ];
+
+  submit() {
+    const approvedDepartments = this.departments.filter(department => department.approved);
+    console.log('Approved Departments:', approvedDepartments);
+    // You can add further logic to handle the submission of approved departments
+  }
+
 
 getClearancelist(){  
     this._PatientDischargeClearanceService.getClearancelist().subscribe(data =>{
@@ -61,6 +76,7 @@ getClearancelist(){
       console.log(this.dspatientlist_1.data)
     })  
 }
+DepartmentList:any=[];
 //patietn click approve side list 
 getPatietnapprovelist(contact){
   console.log(contact)
@@ -71,6 +87,7 @@ getPatietnapprovelist(contact){
   setTimeout(() => {
     this._PatientDischargeClearanceService.getPatietnapprovelist(vdata).subscribe(data =>{
       this.dspatientlist_2.data =data as ClearanceList[];
+      this.DepartmentList = data as ClearanceList[];
       console.log(this.dspatientlist_2.data)
     }) 
   }, 1000);
