@@ -22,6 +22,7 @@ export class CurrencyMasterComponent implements OnInit {
     
     constructor(public _CurrencymasterService: CurrencymasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
+        
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
             apiUrl: "CurrencyMaster/List",

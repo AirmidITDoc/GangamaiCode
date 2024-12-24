@@ -18,10 +18,10 @@ export class CurrencymasterService {
 
     createCurrencyForm(): FormGroup {
         return this._formBuilder.group({
-            currencyId: [""],
+            currencyId: [0],
             currencyName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -38,16 +38,6 @@ export class CurrencymasterService {
     
     initializeFormGroup() {
         this.createCurrencyForm();
-    }
-
-    getValidationMessages() {
-        return {
-            currencyName: [
-                { name: "required", Message: "Currency Name is required" },
-                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public currencyMasterSave(Param: any, showLoader = true) {

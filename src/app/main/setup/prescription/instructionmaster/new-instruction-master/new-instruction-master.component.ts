@@ -11,6 +11,8 @@ import { InstructionmasterService } from '../instructionmaster.service';
 })
 export class NewInstructionMasterComponent implements OnInit {
   instructionForm:FormGroup;
+  isActive:boolean=true;
+
   constructor(
     public _InstructionMasterService: InstructionmasterService,
     public dialogRef: MatDialogRef<NewInstructionMasterComponent>,
@@ -19,47 +21,55 @@ export class NewInstructionMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.instructionForm=this._InstructionMasterService.createInstructionForm();
-
-    var m_data={
-      InstructionId:this.data?.InstructionId,
-      InstructionName:this.data?.InstructionName,      
-      isActive: JSON.stringify(this.data?.isActive)
-    };
-    this.instructionForm.patchValue(m_data);    
-    console.log("mdata:", m_data)
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.instructionForm.patchValue(this.data);
+    }
   }
-  onSubmit() {
-    if (this.instructionForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
-      if(!this.instructionForm.get("InstructionId").value){
+
+    saveflag : boolean = false;
+    onSubmit() {
         debugger
-        var mdata=
-        {
-          "InstructionId": 0,
-          "instructionDescription": this.instructionForm.get("InstructionName").value || "",
-          "instructioninMarathi": "ABC"
-        }
-        console.log("Instruction json:", mdata);
+      if(!this.instructionForm.invalid){
+        this.saveflag = true;
+        
+        // var mdata=
+        // {
+        //   "InstructionId": 0,
+        //   "instructionDescription": this.instructionForm.get("InstructionName").value || "",
+        //   "instructioninMarathi": "ABC"
+        // }
+        console.log("Instruction json:", this.instructionForm.value);
   
-        this._InstructionMasterService.instructionMasterInsert(mdata).subscribe((response)=>{
+        this._InstructionMasterService.instructionMasterInsert(this.instructionForm.value).subscribe((response)=>{
           this.toastr.success(response.message);
           this.onClear(true);
         }, (error)=>{
           this.toastr.error(error.message);
         });
-      } else{
-        //update
-      }
+      } 
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }             
     }
-                    
- }
- onClear(val: boolean) {
-  this.instructionForm.reset();
-  this.dialogRef.close(val);
-}
+    
+    onClear(val: boolean) {
+        this.instructionForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    getValidationMessages(){
+        return{
+            instructionDescription: [
+                { name: "required", Message: "Instruction Name is required" },
+                { name: "maxlength", Message: "Instruction name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
+    }
 
 }

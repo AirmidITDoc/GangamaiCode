@@ -20,10 +20,10 @@ export class ItemTypeMasterService {
 
     createItemtypeForm(): FormGroup {
         return this._formBuilder.group({
-            itemTypeId: [""],
+            itemTypeId: [0],
             itemTypeName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
@@ -43,15 +43,15 @@ export class ItemTypeMasterService {
         this.createItemtypeForm();
     }
 
-    getValidationMessages() {
-        return {
-            itemTypeName: [
-                { name: "required", Message: "ItemType Name is required" },
-                { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+    // getValidationMessages() {
+    //     return {
+    //         itemTypeName: [
+    //             { name: "required", Message: "ItemType Name is required" },
+    //             { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
+    //             { name: "pattern", Message: "Special char not allowed." }
+    //         ]
+    //     };
+    // }
 
     public itemtypeMasterSave(Param: any, showLoader = true) {
         if (Param.itemTypeId) {

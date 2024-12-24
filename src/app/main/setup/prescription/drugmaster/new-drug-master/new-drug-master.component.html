@@ -19,49 +19,68 @@
         <div class="modal-body-container">
             <form [formGroup]="drugForm">
 
-                <input type="hidden" name="DrugId" formControlName="DrugId">
+                <input type="hidden" name="DrugId" formControlName="drugId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Drug Name" formControlName="DrugName" [value]=""
-                        [formGroup]="drugForm"
-                        [validations]="_durgMasterService.getValidationMessages().DrugName"
-                         [maxLength]="50">
-                    </airmid-textbox>
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Generic Name" formControlName="GenericId"
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Drug Name" 
+                            formControlName="drugName" 
+                            [value]="data?.drugName"
                             [formGroup]="drugForm"
-                            [validations]="getValidationGeneric().GenericId"
-                            [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
-                        </airmid-autocomplete>
-
+                            [validations]="getValidationMessages().drugName"
+                            [maxLength]="50">
+                        </airmid-textbox>
                     </div>
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Class Name" formControlName="ClassId"
-                            [formGroup]="drugForm"
-                            [validations]="getValidationClass().ClassId"
-                            [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
-                        </airmid-autocomplete>
-                    </div>
+                </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete 
+                                label="Generic Name" 
+                                formControlName="genericId"
+                                [value]="data?.genericId"
+                                [formGroup]="drugForm"
+                                [validations]="getValidationMessages().genericId"
+                                [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
+                            </airmid-autocomplete>
+
+                        </div>
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete 
+                                label="Class Name" 
+                                formControlName="classId"
+                                [value]="data?.classId"
+                                [formGroup]="drugForm"
+                                [validations]="getValidationMessages().classId"
+                                [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
+                            </airmid-autocomplete>
+                        </div>
+                    </div>
+               
+                
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                    <div>
+                        <mat-radio-group name="isActive" formControlName="isActive">
+                            <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
+                            </mat-radio-button>
+                            <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                            <span>Save</span>
+                        </button>
+                    </div>
+         
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12"
-                            fxFlex>IsActive</mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12"
-                            fxFlex>IsDeactive</mat-radio-button>
-                    </mat-radio-group>
-                </div>
+
             </form>
         </div>
 
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                <span>Save</span>
-            </button>
-        </div>
     </div>
 </div>

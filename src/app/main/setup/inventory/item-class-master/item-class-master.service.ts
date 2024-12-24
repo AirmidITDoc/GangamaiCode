@@ -19,10 +19,10 @@ export class ItemClassMasterService {
 
     createItemclassForm(): FormGroup {
         return this._formBuilder.group({
-            itemClassId: [""],
+            itemClassId: [0],
             itemClassName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
@@ -31,25 +31,27 @@ export class ItemClassMasterService {
             UpdatedBy: ["0"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemClassNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createItemclassForm();
     }
 
-    getValidationMessages() {
-        return {
-            itemClassName: [
-                { name: "required", Message: "itemClassName  is required" },
-                { name: "maxlength", Message: "itemClassName  should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+    // getValidationMessages() {
+    //     return {
+    //         itemClassName: [
+    //             { name: "required", Message: "itemClassName  is required" },
+    //             { name: "maxlength", Message: "itemClassName  should not be greater than 50 char." },
+    //             { name: "pattern", Message: "Special char not allowed." }
+    //         ]
+    //     };
+    // }
 
     public itemclassMasterSave(Param: any, showLoader = true) {
         if (Param.itemClassId) {

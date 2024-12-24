@@ -20,10 +20,10 @@ export class TermsOfPaymentMasterService {
 
     createtermsofpaymentForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [""],
+            Id: [0],
             TermsOfPayment: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50), 
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -42,16 +42,6 @@ export class TermsOfPaymentMasterService {
 
     initializeFormGroup() {
         this.createtermsofpaymentForm();
-    }
-
-    getValidationMessages() {
-        return {
-            TermsOfPayment: [
-                { name: "required", Message: "TermsOfPayment Name is required" },
-                { name: "maxlength", Message: "TermsOfPayment name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public termofpayMasterSave(Param: any, showLoader = true) {

@@ -30,11 +30,11 @@
                         </airmid-textbox> 
                     </div>
                 </div>
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isDeleted" formControlName="isDeleted">
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                <div>
+                    <mat-radio-group name="isActive" formControlName="isActive">
+                        <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>

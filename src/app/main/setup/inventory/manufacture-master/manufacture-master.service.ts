@@ -20,10 +20,10 @@ export class ManufactureMasterService {
 
     createManufactureForm(): FormGroup {
         return this._formBuilder.group({
-            itemManufactureId: [""],
+            itemManufactureId: [0],
             manufactureName: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -42,17 +42,6 @@ export class ManufactureMasterService {
 
     initializeFormGroup() {
         this.createManufactureForm();
-    }
-
-   
-    getValidationMessages() {
-        return {
-            manufactureName: [
-                { name: "required", Message: "Currency Name is required" },
-                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public manufactureMasterSave(Param: any, showLoader = true) {

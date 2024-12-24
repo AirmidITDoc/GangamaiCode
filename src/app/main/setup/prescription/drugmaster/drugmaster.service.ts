@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -19,32 +18,35 @@ export class DrugmasterService {
 
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
-            DrugId: [""],
-            DrugName: ["", 
+            //as per payload :-
+            //{
+//   "drugId": 0,
+//   "drugName": "string",
+//   "genericId": 0,
+//   "classId": 0
+// }
+            drugId: [0],
+            drugName: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
-                ]
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ] 
             ],
-            GenericId: ["",  Validators.required],
-            GenericName: [""],
-            ClassId: [""],
-            ClassName: [""],
-            isActive: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            genericId: ["",
+                Validators.required
+            ],
+            // GenericName: [""],
+            classId: ["",
+                // Validators.required
+            ],
+            // ClassName: [""],
+            // isActive: true,
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
-    getValidationMessages(){
-        return{
-            DrugName: [
-                { name: "required", Message: "Drug Name is required" },
-                { name: "maxlength", Message: "Drug name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        }
-    }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DrugNameSearch: [""],
@@ -56,25 +58,14 @@ export class DrugmasterService {
         this.createDrugForm();
     } 
 
-    public getdrugMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("DrugMaster/List", param, showLoader);
-    }
-
-    public drugMasterInsert(Param: any, showLoader = true) {
-        if (Param.DrugId) {
-            return this._httpClient.PutData("DrugMaster/" + Param.DrugId, Param, showLoader);
+    public drugMasterSave(Param: any, showLoader = true) {
+        if (Param.drugId) {
+            return this._httpClient.PutData("DrugMaster/" + Param.drugId, Param, showLoader);
         } else return this._httpClient.PostData("DrugMaster", Param, showLoader);
-    }
-
-    public drugMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("Gender/" + id , Param, showLoader);
-        return this._httpClient.PostData("Drug", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("Drug?Id=" + m_data.toString());
     }
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
+
 }

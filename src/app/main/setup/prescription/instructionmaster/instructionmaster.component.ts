@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { InstructionmasterService } from "./instructionmaster.service";
-import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
@@ -32,11 +30,11 @@ export class InstructionmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "InstructionMastere/List",
         columnsList: [
-            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width:100  },
-            { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200  },
+            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width:150  },
+            { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100  },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:250, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -80,7 +78,7 @@ export class InstructionmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewInstructionMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data:row
             });
@@ -92,34 +90,20 @@ export class InstructionmasterComponent implements OnInit {
         });
     }
 
-    InstructionMasterList: any;
-    sIsLoading:string= '';
-    msg: any;
+    // InstructionMasterList: any;
+    // sIsLoading:string= '';
+    // msg: any;
 
-    displayedColumns: string[] = [
-        "InstructionId",
-        "InstructionName",
-        "IsDeleted",
-        "action",
-    ];
-
-    // DSInstructionMasterList = new MatTableDataSource<InstructionMaster>();
-
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    // displayedColumns: string[] = [
+    //     "InstructionId",
+    //     "InstructionName",
+    //     "IsDeleted",
+    //     "action",
+    // ];
 
     ngOnInit(): void {
     }
-    onSearch() {
-    }
-
-    onSearchClear() {
-        this._InstructionService.myformSearch.reset({
-            InstructionNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-    }
+    
 
     // getInstructionMasterList() {
     //     this.sIsLoading = 'loading-data';
@@ -245,38 +229,38 @@ export class InstructionmasterComponent implements OnInit {
     //     }
     // }
 
-    onEdit(row) {
-        var m_data1 = {
-            InstructionId: row.InstructionId,
-            InstructionName: row.InstructionName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        console.log(m_data1);
-        this._InstructionService.populateForm(m_data1);
-    }
+    // onEdit(row) {
+    //     var m_data1 = {
+    //         InstructionId: row.InstructionId,
+    //         InstructionName: row.InstructionName.trim(),
+    //         IsDeleted: JSON.stringify(row.IsActive),
+    //         UpdatedBy: row.UpdatedBy,
+    //     };
+    //     console.log(m_data1);
+    //     this._InstructionService.populateForm(m_data1);
+    // }
 }
-export class InstructionMaster {
-    InstructionId: number;
-    InstructionName: string;
+// export class InstructionMaster {
+//     InstructionId: number;
+//     InstructionName: string;
 
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+//     IsDeleted: boolean;
+//     AddedBy: number;
+//     UpdatedBy: number;
 
-    /**
-     * Constructor
-     *
-     * @param InstructionMaster
-     */
-    constructor(InstructionMaster) {
-        {
-            this.InstructionId = InstructionMaster.InstructionId || "";
-            this.InstructionName = InstructionMaster.InstructionName || "";
+//     /**
+//      * Constructor
+//      *
+//      * @param InstructionMaster
+//      */
+//     constructor(InstructionMaster) {
+//         {
+//             this.InstructionId = InstructionMaster.InstructionId || "";
+//             this.InstructionName = InstructionMaster.InstructionName || "";
 
-            this.IsDeleted = InstructionMaster.IsDeleted || "false";
-            this.AddedBy = InstructionMaster.AddedBy || "";
-            this.UpdatedBy = InstructionMaster.UpdatedBy || "";
-        }
-    }
-}
+//             this.IsDeleted = InstructionMaster.IsDeleted || "false";
+//             this.AddedBy = InstructionMaster.AddedBy || "";
+//             this.UpdatedBy = InstructionMaster.UpdatedBy || "";
+//         }
+//     }
+// }

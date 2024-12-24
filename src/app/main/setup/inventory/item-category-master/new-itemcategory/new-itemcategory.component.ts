@@ -12,52 +12,54 @@ import { ItemCategoryMasterService } from '../item-category-master.service';
 export class NewItemcategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
+  isActive:boolean=true;
 
   autocompleteModeItem: string = "Item";
 
   constructor(
-      public _CategorymasterService: ItemCategoryMasterService,
-      public dialogRef: MatDialogRef<NewItemcategoryComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
+    public _CategorymasterService: ItemCategoryMasterService,
+    public dialogRef: MatDialogRef<NewItemcategoryComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService
   ) { }
  
   ngOnInit(): void {
-      this.categoryForm = this._CategorymasterService.createItemCategoryForm();
-      var m_data = {
-        itemCategoryId: this.data?.itemCategoryId,
-        itemCategoryName: this.data?.itemCategoryName.trim(),
-        itemTypeId: this.data?.itemTypeId,
-      };
-      this.categoryForm.patchValue(m_data);
+    this.categoryForm = this._CategorymasterService.createItemCategoryForm();
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.categoryForm.patchValue(this.data);
+    }
   }
 
-  Saveflag: boolean= false;
-  onSubmit() {
-    this.Saveflag=true
-        if (this.categoryForm.invalid) {
-            this.toastr.warning('please check form is invalid', 'Warning !', {
-              toastClass:'tostr-tost custom-toast-warning',
-          })
-          return;
-        }else{
-        var m_data =
+    Saveflag: boolean= false;
+    onSubmit() {
+        if(!this.categoryForm.invalid)
         {
-            "itemCategoryId": 0,
-            "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
-            "itemTypeId": this.categoryForm.get("itemTypeId").value,  
-        }
+        this.Saveflag=true
+        // var m_data =
+        // {
+        //     "itemCategoryId": 0,
+        //     "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
+        //     "itemTypeId": this.categoryForm.get("itemTypeId").value,  
+        // }
 
-        console.log("ItemCategoryMaster Insert:",m_data)
+        console.log("ItemCategoryMaster Insert:",this.categoryForm.value)
         
-        this._CategorymasterService.categoryMasterSave(m_data).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-        }, (error) => {
-        this.toastr.error(error.message);
-        });
-   }
-}
+            this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);}, 
+        (error) => {
+            this.toastr.error(error.message);
+            });
+        }
+        else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+    }
     
     itemId=0;
 
@@ -69,5 +71,18 @@ export class NewItemcategoryComponent implements OnInit {
     onClear(val: boolean) {
         this.categoryForm.reset();
         this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            itemCategoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            itemTypeId: [
+                { name: "required", Message: "ItemType is required" }
+            ],
+        };
     }
 }

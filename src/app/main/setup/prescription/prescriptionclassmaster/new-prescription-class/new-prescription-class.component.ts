@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewPrescriptionClassComponent implements OnInit {
 
   prescriptionForm:FormGroup;
+  isActive:boolean=true;
 
   constructor(
     public _PrescriptionclassService: PrescriptionclassmasterService,
@@ -22,26 +23,23 @@ export class NewPrescriptionClassComponent implements OnInit {
 
   ngOnInit(): void {
     this.prescriptionForm=this._PrescriptionclassService.createPrescriptionclassForm();
-    var m_data={
-      ClassId:this.data?.ClassId,
-      ClassName:this.data?.ClassName,
-      isActive: JSON.stringify(this.data?.isActive),
-    };
-    this.prescriptionForm.patchValue(m_data);
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.prescriptionForm.patchValue(this.data);
+    }
   }
+
+  Saveflag: boolean= false;
   onSubmit() {
-    if (this.prescriptionForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
-      if(!this.prescriptionForm.get("ClassId").value){
-        var mdata={
-          "classId": 0,
-          "className": this.prescriptionForm.get("ClassName").value || ""
-        }
-        console.log("class json:", mdata);
+
+      if(!this.prescriptionForm.invalid)
+        {
+            this.Saveflag=true
+        // var mdata={
+        //   "classId": 0,
+        //   "className": this.prescriptionForm.get("ClassName").value || ""
+        // }
+        console.log("class json:", this.prescriptionForm.value);
   
         this._PrescriptionclassService.prescriptionClassMasterSave(this.prescriptionForm.value).subscribe((response)=>{
           this.toastr.success(response.message);
@@ -49,121 +47,28 @@ export class NewPrescriptionClassComponent implements OnInit {
         }, (error)=>{
           this.toastr.error(error.message);
         });
-      } else{
-        //update
+      } 
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
       }
+    
+}
+    onClear(val: boolean) {
+        this.prescriptionForm.reset();
+        this.dialogRef.close(val);
     }
-    
-    
-//     if (this.prescriptionForm.valid) {
-//         if (
-//             !this.prescriptionForm.get("TemplateId").value
-//         ) {
-//             var m_data = {
-//                 prescriptionTemplateMasterInsert: {
-//                     templateName: this.prescriptionForm
-//                         .get("TemplateName")
-//                         .value.trim(),
-//                     templateDesc: this.prescriptionForm
-//                         .get("TemplateDesc")
-//                         .value.trim(),
-//                     isDeleted: Boolean(
-//                         JSON.parse(
-//                             this.prescriptionForm.get(
-//                                 "IsDeleted"
-//                             ).value
-//                         )
-//                     ),
-//                     addedBy: 1,
-//                 },
-//             };
-//             this._PrescriptionclassService
-//                 .prescriptionTemplateMasterInsert(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = m_data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-                         
-//                         // Swal.fire(
-//                         //     "Saved !",
-//                         //     "Record saved Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //        
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Prescription Class Master Data not saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-                   
-//                 },error => {
-//                     this.toastr.error('Prescription Class Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         } else {
-//             var m_dataUpdate = {
-//                 prescriptionTemplateMasterUpdate: {
-//                     templateId:
-//                         this.prescriptionForm.get(
-//                             "TemplateId"
-//                         ).value,
-//                     templateName: this.prescriptionForm
-//                         .get("TemplateName")
-//                         .value.trim(),
-//                     templateDesc: this.prescriptionForm
-//                         .get("TemplateDesc")
-//                         .value.trim(),
-//                     isDeleted: Boolean(
-//                         JSON.parse(
-//                             this.prescriptionForm.get(
-//                                 "IsDeleted"
-//                             ).value
-//                         )
-//                     ),
-//                     updatedBy: 1,
-//                 },
-//             };
-//             this._PrescriptionclassService
-//                 .prescriptionTemplateMasterUpdate(m_dataUpdate)
-//                 .subscribe((data) => {
-//                     this.msg = m_dataUpdate;
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-                         
-//                         // Swal.fire(
-//                         //     "Updated !",
-//                         //     "Record updated Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //        
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Prescription Class Master Data not updated !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-                   
-//                 },error => {
-//                     this.toastr.error('Prescription Class Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         }
-//         this.onClear();
-//     }
-}
-onClear(val: boolean) {
-  this.prescriptionForm.reset();
-  this.dialogRef.close(val);
-}
+
+    getValidationMessages() {
+        return {
+            ClassName: [
+                { name: "required", Message: "Class Name is required" },
+                { name: "maxlength", Message: "Class Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special Char Not Allowed." }
+            ]
+        };
+    }
 }

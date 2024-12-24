@@ -12,6 +12,8 @@ import { ItemClassMasterService } from '../item-class-master.service';
 export class NewItemClassComponent implements OnInit {
 
   classForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
       public _ItemClassMasterService: ItemClassMasterService,
       public dialogRef: MatDialogRef<NewItemClassComponent>,
@@ -22,36 +24,45 @@ export class NewItemClassComponent implements OnInit {
 
   ngOnInit(): void {
       this.classForm = this._ItemClassMasterService.createItemclassForm();
-      var m_data = {
-        itemClassId: this.data?.itemClassId,
-        itemClassName: this.data?.itemClassName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.classForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.classForm.patchValue(this.data);
+     }
   }
 
   Saveflag: boolean= false;
   onSubmit() {
-    this.Saveflag=true
-    if (this.classForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if (this.classForm.valid) {
-          this._ItemClassMasterService.itemclassMasterSave(this.classForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
+      if (!this.classForm.invalid) {
+            this.Saveflag=true
+            this._ItemClassMasterService.itemclassMasterSave(this.classForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
           }, (error) => {
-              this.toastr.error(error.message);
+            this.toastr.error(error.message);
           });
       }
-    }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
   }
 
   onClear(val: boolean) {
       this.classForm.reset();
       this.dialogRef.close(val);
   }
+
+    getValidationMessages() {
+        return {
+            itemClassName: [
+                { name: "required", Message: "itemClassName  is required" },
+                { name: "maxlength", Message: "itemClassName  should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+
 }

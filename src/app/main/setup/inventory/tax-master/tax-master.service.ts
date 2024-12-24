@@ -20,10 +20,10 @@ export class TaxMasterService {
 
     createTaxMasterForm(): FormGroup {
         return this._formBuilder.group({
-            id: [""],
+            id: [0],
             taxNature: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -40,16 +40,6 @@ export class TaxMasterService {
 
     initializeFormGroup() {
         this.createTaxMasterForm();
-    }
-
-    getValidationMessages() {
-        return {
-            taxNature: [
-                { name: "required", Message: "TaxNature Name is required" },
-                { name: "maxlength", Message: "TaxNature name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public taxMasterSave(Param: any, showLoader = true) {

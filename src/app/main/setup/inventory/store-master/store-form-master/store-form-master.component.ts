@@ -14,6 +14,7 @@ import { FormGroup } from "@angular/forms";
     animations: fuseAnimations,
 })
 export class StoreFormMasterComponent implements OnInit {
+
     Header: string;
     editorConfig: AngularEditorConfig = {
         editable: true,
@@ -29,7 +30,9 @@ export class StoreFormMasterComponent implements OnInit {
     onBlur(e: any) {
         this.Header = e.target.innerHTML;
     }
+
     storeForm: FormGroup;
+    isActive:boolean=true;
 
     constructor(
       public _StoreMasterService: StoreMasterService,
@@ -39,73 +42,71 @@ export class StoreFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-      this.storeForm = this._StoreMasterService.createStoremasterForm();
-      var m_data = {
-        storeId: this.data?.storeId,
-        storeShortName: this.data?.storeShortName,
-        storeName: this.data?.storeName,
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.storeForm.patchValue(m_data);
+        this.storeForm = this._StoreMasterService.createStoremasterForm();
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.storeForm.patchValue(this.data);
+        }
     }
 
+    saveflag : boolean = false;
     onSubmit() {
         debugger
-        if (this.storeForm.invalid) {
-        this.toastr.warning('please check form is invalid', 'Warning !', {
-            toastClass:'tostr-tost custom-toast-warning',
-        })
-        return;
-        }else{
-        var mdata =
-        {
-            "storeId": 0,
-            "storeShortName": this.storeForm.get("storeShortName").value,
-            "storeName": this.storeForm.get("storeName").value,
-            "indentPrefix": this.storeForm.get("indentPrefix").value,
-            "indentNo": this.storeForm.get("indentNo").value,
-            "purchasePrefix": this.storeForm.get("purchasePrefix").value,
-            "purchaseNo": this.storeForm.get("purchaseNo").value,
-            "grnPrefix": this.storeForm.get("grnPrefix").value,
-            "grnNo": this.storeForm.get("grnNo").value,
-            "grnreturnNoPrefix": this.storeForm.get("grnreturnNoPrefix").value,
-            "grnreturnNo": this.storeForm.get("grnreturnNo").value,
-            "issueToDeptPrefix": this.storeForm.get("issueToDeptPrefix").value,
-            "issueToDeptNo": this.storeForm.get("issueToDeptNo").value,
-            "returnFromDeptNoPrefix":  this.storeForm.get("returnFromDeptNoPrefix").value,
-            "returnFromDeptNo": this.storeForm.get("returnFromDeptNo").value,
-            "workOrderPrefix": 0,
-            "workOrderNo": 0,
-            "pharSalCountId": 0,
-            "pharSalRecCountId": 0,
-            "pharSalReturnCountId": 0,
-            "pharAdvId": 0,
-            "pharAdvReptId": 0,
-            "pharAdvRefId": 0,
-            "pharAdvRefReptId": 0,
-            "printStoreName": "String",
-            "dlNo": "String",
-            "gstin": "String",
-            "storeAddress": "String",
-            "hospitalMobileNo": 0,
-            "hospitalEmailId": "String",
-            "printStoreUnitName": "String",
-            "isPharStore": true,
-            "isWhatsAppMsg": true,
-            "whatsAppTemplateId": "String",
-            "isSmsmsg": true,
-            "smstemplateId": "String",
-        }
-
-        console.log("StoreCategoryMaster Insert:",mdata)
+        // var mdata =
+        // {
+        //     "storeId": 0,
+        //     "storeShortName": this.storeForm.get("storeShortName").value,
+        //     "storeName": this.storeForm.get("storeName").value,
+        //     "indentPrefix": this.storeForm.get("indentPrefix").value,
+        //     "indentNo": this.storeForm.get("indentNo").value,
+        //     "purchasePrefix": this.storeForm.get("purchasePrefix").value,
+        //     "purchaseNo": this.storeForm.get("purchaseNo").value,
+        //     "grnPrefix": this.storeForm.get("grnPrefix").value,
+        //     "grnNo": this.storeForm.get("grnNo").value,
+        //     "grnreturnNoPrefix": this.storeForm.get("grnreturnNoPrefix").value,
+        //     "grnreturnNo": this.storeForm.get("grnreturnNo").value,
+        //     "issueToDeptPrefix": this.storeForm.get("issueToDeptPrefix").value,
+        //     "issueToDeptNo": this.storeForm.get("issueToDeptNo").value,
+        //     "returnFromDeptNoPrefix":  this.storeForm.get("returnFromDeptNoPrefix").value,
+        //     "returnFromDeptNo": this.storeForm.get("returnFromDeptNo").value,
+        //     "workOrderPrefix": 0,
+        //     "workOrderNo": 0,
+        //     "pharSalCountId": 0,
+        //     "pharSalRecCountId": 0,
+        //     "pharSalReturnCountId": 0,
+        //     "pharAdvId": 0,
+        //     "pharAdvReptId": 0,
+        //     "pharAdvRefId": 0,
+        //     "pharAdvRefReptId": 0,
+        //     "printStoreName": "String",
+        //     "dlNo": "String",
+        //     "gstin": "String",
+        //     "storeAddress": "String",
+        //     "hospitalMobileNo": 0,
+        //     "hospitalEmailId": "String",
+        //     "printStoreUnitName": "String",
+        //     "isPharStore": true,
+        //     "isWhatsAppMsg": true,
+        //     "whatsAppTemplateId": "String",
+        //     "isSmsmsg": true,
+        //     "smstemplateId": "String",
+        // }
+        if(!this.storeForm.invalid){
+            this.saveflag = true;
+        console.log("StoreCategoryMaster Insert:",this.storeForm.value)
         
-        this._StoreMasterService.storeMasterSave(mdata).subscribe((response) => {
+        this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
         }, (error) => {
         this.toastr.error(error.message);
         });
-
+    }
+    else{
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
     }
   }
 
@@ -113,5 +114,90 @@ export class StoreFormMasterComponent implements OnInit {
       this.storeForm.reset();
       this.dialogRef.close(val);
   }
+
+  getValidationMessages() {
+    return {
+        storeName: [
+            { name: "required", Message: "storeName  is required" },
+            { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ],
+        storeShortName: [
+            { name: "required", Message: "storeShortName is required" },
+            { name: "maxlength", Message: "storeShortName should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ],
+        indentPrefix:[
+            {name : "required", Message: "Indent Prefix is required"},
+            { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ],
+        indentNo:[
+            {name : "required", Message: "Indent No is required"},
+            { name: "maxlength", Message: "Indent No should not be greater than 30 Numbers." },
+            { name: "pattern", Message: "Only Numbers allowed." }
+        ],
+        grnreturnNoPrefix:[
+            {name : "required", Message: "GRN Return No Prefix is required"},
+            { name: "maxlength", Message: "GRN Return No Prefix should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ],
+        grnreturnNo:[
+            {name : "required", Message: "GRN Return No is required"},
+            { name: "maxlength", Message: "GRN Return No should not be greater than 30 Numbers." },
+            { name: "pattern", Message: "Only Numbers allowed." }
+        ],
+        purchasePrefix:[
+            {name : "required", Message: "Purchase Prefix is required"},
+            { name: "maxlength", Message: "Purchase Prefix should not be greater than 50 char." },
+            { name: "pattern", Message: "Only Characters allowed." }
+        ],
+        purchaseNo:[
+            {name : "required", Message: "Purchase No is required"},
+            { name: "maxlength", Message: "Purchase No should not be greater than 30 char." },
+            { name: "pattern", Message: "Only Numbers allowed." }
+        ],
+        issueToDeptPrefix:[
+            {name : "required", Message: "Issue to Dept Prefix is required"},
+            { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
+            { name: "pattern", Message: "Only Characters allowed." }
+        ],
+        issueToDeptNo:[
+            {name : "required", Message: "Issue to Dept No is required"},
+            { name: "maxlength", Message: "Issue to Dept No should not be greater than 30 char." },
+            { name: "pattern", Message: "Only Numbers allowed." }
+        ],
+        grnPrefix:[
+            {name : "required", Message: "GRN Prefix is required"},
+            { name: "maxlength", Message: "GRN Prefix should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ],
+        grnNo:[
+            {name : "required", Message: "GRN No is required"},
+            { name: "maxlength", Message: "GRN No should not be greater than 30 char." },
+            { name: "pattern", Message: "Only Numbers allowed."}
+        ],
+        returnFromDeptNoPrefix:[
+            {name : "required", Message: "Return From Dept No Prefix is required"},
+            { name: "maxlength", Message: "Return From Dept No Prefix should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ],
+        returnFromDeptNo:[
+            {name : "required", Message: "Return From Dept No is required"},
+            { name: "maxlength", Message: "Return From Dept No should not be greater than 30 char." },
+            { name: "pattern", Message: "Only Numbers allowed."}
+        ],
+        pharSalCountId:[
+            {name : "required", Message: "Phar Sales Cash Counter is required"}
+        ],
+        pharSalRecCountId:[
+            {name : "required", Message: "Phar Sales Rec Cash Counter is required"}
+        ],
+        pharSalReturnCountId:[
+            {name : "required", Message: "Phar Sales Return Cash Counter is required"}
+        ],
+
+    };
+ }
 
 }

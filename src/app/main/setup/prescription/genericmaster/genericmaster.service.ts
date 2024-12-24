@@ -18,14 +18,20 @@ export class GenericmasterService {
 
     createGenericForm(): FormGroup {
         return this._formBuilder.group({
-            GenericId: [""],
-            GenericName: ["", [Validators.required,Validators.pattern("^[A-Za-z0-9]+$")]],
+            GenericId: [0],
+            GenericName: ["", 
+                [
+                    Validators.required,Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ] 
+            ],
             isActive: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             GenericNameSearch: [""],
@@ -37,20 +43,9 @@ export class GenericmasterService {
         this.createGenericForm();
     }
 
-    getValidationMessages(){
-        return{
-            GenericName: [
-                { name: "required", Message: "Generic Name is required" },
-                { name: "maxlength", Message: "Generic Name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        }
-    }
-  
-
-    public getgenericMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("generic/List", param, showLoader);
-    }
+    // public getgenericMasterList(param: gridRequest, showLoader = true) {
+    //     return this._httpClient.PostData("generic/List", param, showLoader);
+    // }
 
     public genericMasterInsert(Param: any, showLoader = true) {
         if (Param.GenericId) {
@@ -64,10 +59,10 @@ export class GenericmasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        //return this._httpClient.delete("generic?Id=" + m_data, {});
-        return this._httpClient.PostData("generic", m_data);
+        return this._httpClient.DeleteData("generic?Id=" + m_data.toString());
     }
-    populateForm(param) {
-        this.genericForm.patchValue(param);
-    }
+
+    // populateForm(param) {
+    //     this.genericForm.patchValue(param);
+    // }
 }

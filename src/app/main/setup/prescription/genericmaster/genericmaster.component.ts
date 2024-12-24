@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { GenericmasterService } from "./genericmaster.service";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -28,11 +24,11 @@ export class GenericmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:100  },
-            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200  },
+            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:150  },
+            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100  },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:250, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -76,39 +72,39 @@ export class GenericmasterComponent implements OnInit {
     ngOnInit(): void {
        
     }
-    onSearch() {
+    // onSearch() {
        
-    }
+    // }
 
-    onSearchClear() {
-        this._GenericService.myformSearch.reset({
-            GenericNameSearch: "",
-            IsDeletedSearch: "2",
-        });
+    // onSearchClear() {
+    //     this._GenericService.myformSearch.reset({
+    //         GenericNameSearch: "",
+    //         IsDeletedSearch: "2",
+    //     });
        
-    }
+    // }
    
 
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.genericId);
-                break;
-            default:
-                break;
-        }
-    }
+    // changeStatus(status: any) {
+    //     switch (status.id) {
+    //         case 1:
+    //             //this.onEdit(status.data)
+    //             break;
+    //         case 2:
+    //             this.onEdit(status.data)
+    //             break;
+    //         case 5:
+    //             this.onDeactive(status.data.genericId);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
     
-    onDeactive(genericId) {
-        debugger
+    // onDeactive(genericId) {
+    //     debugger
         
-    }
+    // }
 
     onSave(row: any = null) {
         debugger
@@ -116,7 +112,7 @@ export class GenericmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewGnericMasterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data:row
             });
@@ -128,23 +124,23 @@ export class GenericmasterComponent implements OnInit {
         });
     }
   
-    onEdit(row) {
-        var m_data1 = {
-            GenericId: row.GenericId,
-            GenericName: row.GenericName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        console.log(m_data1);
-        this._GenericService.populateForm(m_data1);
-    }
+    // onEdit(row) {
+    //     var m_data1 = {
+    //         GenericId: row.GenericId,
+    //         GenericName: row.GenericName.trim(),
+    //         IsDeleted: JSON.stringify(row.IsActive),
+    //         UpdatedBy: row.UpdatedBy,
+    //     };
+    //     console.log(m_data1);
+    //     this._GenericService.populateForm(m_data1);
+    // }
 }
 
-export class GenericMaster {
-    genericId: number;
-    genericName: string;
+// export class GenericMaster {
+//     genericId: number;
+//     genericName: string;
 
-    isActive: boolean;
+//     isActive: boolean;
     // AddedBy: number;
     // UpdatedBy: number;
     // AddedByName: string;
@@ -152,17 +148,17 @@ export class GenericMaster {
     /**
      * Constructor
      *
-     * @param GenericMaster
+     * 
      */
-    constructor(GenericMaster) {
-        {
-            this.genericId = GenericMaster.genericId || "";
-            this.genericName = GenericMaster.genericName || "";
+    // constructor(GenericMaster) {
+    //     {
+    //         this.genericId = GenericMaster.genericId || "";
+    //         this.genericName = GenericMaster.genericName || "";
 
-            this.isActive = GenericMaster.isActive || "false";
+    //         this.isActive = GenericMaster.isActive || "false";
             // this.AddedBy = GenericMaster.AddedBy || "";
             // this.UpdatedBy = GenericMaster.UpdatedBy || "";
             // this.AddedByName = GenericMaster.AddedByName || "";
-        }
-    }
-}
+//         }
+//     }
+// }

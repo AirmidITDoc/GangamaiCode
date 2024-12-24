@@ -12,6 +12,7 @@ import { FormGroup } from '@angular/forms';
 export class NewTaxComponent implements OnInit {
 
   taxForm: FormGroup;
+  isActive:boolean=true;
   
   constructor(
       public _TaxMasterService: TaxMasterService,
@@ -23,57 +24,57 @@ export class NewTaxComponent implements OnInit {
 
   ngOnInit(): void {
       this.taxForm = this._TaxMasterService.createTaxMasterForm();
-      var m_data = {
-        id: this.data?.id,
-        taxNature: this.data?.taxNature,
-        isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.taxForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.taxForm.patchValue(this.data);
+      }
   }
-
-  /**
-   * 
-   {
-    "id": 0,
-    "taxNature": "string",
-    "isActive": 0
-    }
-   */
 
     saveflag : boolean = false;
-  onSubmit() 
-  {
-    this.saveflag = true
-    if (this.taxForm.invalid) {
-    this.toastr.warning('please check form is invalid', 'Warning !', 
+    onSubmit() 
     {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }
-    else{
     debugger
-    var mdata =
-    {
-        "id": 0,
-        "taxNature": this.taxForm.get("taxNature").value,
-        "isActive": 0
-    }
+        if(!this.taxForm.invalid)
+        {
+            this.saveflag = true        
+            // var mdata =
+            // {
+            //     "id": 0,
+            //     "taxNature": this.taxForm.get("taxNature").value,
+            //     "isActive": 0
+            // }
 
-        console.log("TaxMaster Insert:",mdata);
+            console.log("TaxMaster Insert:",this.taxForm.value);
 
-        this._TaxMasterService.taxMasterSave(mdata).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-        }, (error) => {
-        this.toastr.error(error.message);
-        });
+            this._TaxMasterService.taxMasterSave(this.taxForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+            }, (error) => {
+            this.toastr.error(error.message);
+            });
+        }
+        else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
     }
-  }
 
   onClear(val: boolean) {
     this.taxForm.reset();
     this.dialogRef.close(val);
   }
+
+    getValidationMessages() {
+        return {
+            taxNature: [
+                { name: "required", Message: "TaxNature Name is required" },
+                { name: "maxlength", Message: "TaxNature name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 
 }

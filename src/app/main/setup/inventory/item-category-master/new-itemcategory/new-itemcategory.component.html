@@ -24,17 +24,19 @@
                         <airmid-textbox 
                             label="Category Name" 
                             formControlName="itemCategoryName" 
-                            [value]=""
+                            [value]="data?.itemCategoryName"
                             [formGroup]="categoryForm"
-                            [validations]="_CategorymasterService.getValidationMessages().itemCategoryName"
+                            [validations]="getValidationMessages().itemCategoryName"
                             [maxLength]="300">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Item Name" formControlName="itemTypeId"
+                        <airmid-autocomplete label="Item Name" 
+                            formControlName="itemTypeId"
+                            [value]="data?.itemTypeId"
                             [formGroup]="categoryForm"
-                            [validations]="_CategorymasterService.getValidationMessages().itemTypeId"
+                            [validations]="getValidationMessages().itemTypeId"
                             (selectDdlObject)="selectChangeItem($event)"
                             [mode]="autocompleteModeItem">
                         </airmid-autocomplete>
@@ -44,10 +46,10 @@
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                     <div>
-                        <mat-radio-group name="isActive" formControlName="isActive" >
-                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                        <mat-radio-group name="isActive" formControlName="isActive">
+                            <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                             </mat-radio-button>
-                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                            <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>

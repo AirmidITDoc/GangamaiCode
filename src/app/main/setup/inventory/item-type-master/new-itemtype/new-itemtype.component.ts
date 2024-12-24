@@ -11,48 +11,60 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewItemtypeComponent implements OnInit {
 
-    
   itemtypeForm: FormGroup;
+  isActive:boolean=true;
+
   constructor(
       public _ItemTypeMasterService: ItemTypeMasterService,
       public dialogRef: MatDialogRef<NewItemtypeComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
-  ) { }
+    ) { }
 
 
   ngOnInit(): void {
       this.itemtypeForm = this._ItemTypeMasterService.createItemtypeForm();
-      var m_data = {
-        itemTypeId: this.data?.itemTypeId,
-        itemTypeName: this.data?.itemTypeName.trim(),
-          isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.itemtypeForm.patchValue(m_data);
-  }
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.itemtypeForm.patchValue(this.data);
+        }
+    }
 
   Saveflag: boolean= false;
-  onSubmit() {
-    this.Saveflag=true
-    if (this.itemtypeForm.invalid) {
+  onSubmit() 
+  {
+    if (!this.itemtypeForm.invalid) {
+        this.Saveflag=true
+        this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+    else
+    {
         this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if (this.itemtypeForm.valid) {
-          this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
+            toastClass: 'tostr-tost custom-toast-warning',
           });
-      }
+          return;
     }
   }
 
-  onClear(val: boolean) {
-      this.itemtypeForm.reset();
-      this.dialogRef.close(val);
+  onClear(val: boolean) 
+  {
+    this.itemtypeForm.reset();
+    this.dialogRef.close(val);
   }
+
+    getValidationMessages() {
+        return {
+            itemTypeName: [
+                { name: "required", Message: "ItemType Name is required" },
+                { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+
 }

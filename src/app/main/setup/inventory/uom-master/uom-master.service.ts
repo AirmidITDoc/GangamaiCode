@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -20,10 +19,10 @@ export class UomMasterService {
 
     createUnitofmeasurementForm(): FormGroup {
         return this._formBuilder.group({
-            unitofMeasurementId: [""],
+            unitofMeasurementId: [0],
             unitofMeasurementName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
@@ -41,15 +40,7 @@ export class UomMasterService {
     initializeFormGroup() {
         this.createUnitofmeasurementForm();
     }
-    getValidationMessages() {
-        return {
-            unitofMeasurementName: [
-                { name: "required", Message: "Currency Name is required" },
-                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+    
 
     public unitMasterSave(Param: any, showLoader = true) {
         if (Param.unitofMeasurementId) {

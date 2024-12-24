@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewGnericMasterComponent implements OnInit {
 
   genericForm:FormGroup;
+  isActive:boolean=true;
 
   constructor(
     public _GenericMasterService: GenericmasterService,
@@ -22,139 +23,55 @@ export class NewGnericMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.genericForm=this._GenericMasterService.createGenericForm();
-    var m_data={
-      GenericId:this.data?.GenericId,
-      GenericName:this.data?.GenericName,      
-      isActive: JSON.stringify(this.data?.isActive)
-    };
-    this.genericForm.patchValue(m_data);    
-    console.log("mdata:", m_data)
+    if(this.data){
+        this.isActive=this.data.isActive
+        this.genericForm.patchValue(this.data);
+    }
   }
+
+  saveflag: boolean= false;
   onSubmit() {
-    if (this.genericForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
-      if(!this.genericForm.get("GenericId").value){
-        debugger
-        var mdata=
-        {
-          "genericId": 0,
-          "genericName": this.genericForm.get("GenericName").value || ""
-        }
-        console.log("generic json:", mdata);
+    debugger
+      if(!this.genericForm.invalid){
+        
+        this.saveflag=true
+        // var mdata=
+        // {
+        //   "genericId": 0,
+        //   "genericName": this.genericForm.get("GenericName").value || ""
+        // }
+        console.log("generic json:", this.genericForm.value);
   
-        this._GenericMasterService.genericMasterInsert(mdata).subscribe((response)=>{
+        this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response)=>{
           this.toastr.success(response.message);
           this.onClear(true);
         }, (error)=>{
           this.toastr.error(error.message);
         });
-      } else{
-        //update
+      } 
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
       }
     }
-    
-//     if (this._GenericService.myForm.valid) {
-//         if (!this._GenericService.myForm.get("GenericId").value) {
-//             var m_data = {
-//                 insertGenericMaster: {
-//                     genericName: this._GenericService.myForm
-//                         .get("GenericName")
-//                         .value.trim(),
-//                     isActive: Boolean(
-//                         JSON.parse(
-//                             this._GenericService.myForm.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                     // addedBy: 1,
-//                 },
-//             };
-//             this._GenericService
-//                 .insertGenericMaster(m_data)
-//                 .subscribe((data) => {
-//                     this.msg = m_data;
-//                     if (data) {
-//                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                         this.getGenericMasterList();
-//                         // Swal.fire(
-//                         //     "Saved !",
-//                         //     "Record saved Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //         this.getGenericMasterList();
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Generic Master Data not saved !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getGenericMasterList();
-//                 },error => {
-//                     this.toastr.error('Generic Class Data not saved !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         } else {
-//             var m_dataUpdate = {
-//                 updateGenericMaster: {
-//                     genericId:
-//                         this._GenericService.myForm.get("GenericId").value,
-//                     genericName: this._GenericService.myForm
-//                         .get("GenericName")
-//                         .value.trim(),
 
-//                     isActive: Boolean(
-//                         JSON.parse(
-//                             this._GenericService.myForm.get("IsDeleted")
-//                                 .value
-//                         )
-//                     ),
-//                     //  updatedBy: 1,
-//                 },
-//             };
-//             this._GenericService
-//                 .updateGenericMaster(m_dataUpdate)
-//                 .subscribe((data) => {
-//                     this.msg = m_dataUpdate;
-//                     if (data) {
-//                         this.toastr.success('Record updated Successfully.', 'updated !', {
-//                             toastClass: 'tostr-tost custom-toast-success',
-//                           });
-//                         this.getGenericMasterList();
-//                         // Swal.fire(
-//                         //     "Updated !",
-//                         //     "Record updated Successfully !",
-//                         //     "success"
-//                         // ).then((result) => {
-//                         //     if (result.isConfirmed) {
-//                         //         this.getGenericMasterList();
-//                         //     }
-//                         // });
-//                     } else {
-//                         this.toastr.error('Generic Master Data not updated !, Please check API error..', 'Error !', {
-//                             toastClass: 'tostr-tost custom-toast-error',
-//                           });
-//                     }
-//                     this.getGenericMasterList();
-//                 },error => {
-//                     this.toastr.error('Generic Class Data not updated !, Please check API error..', 'Error !', {
-//                      toastClass: 'tostr-tost custom-toast-error',
-//                    });
-//                  });
-//         }
-//         this.onClear();
-//     }
- }
- onClear(val: boolean) {
-  this.genericForm.reset();
-  this.dialogRef.close(val);
-}
+    onClear(val: boolean) {
+        this.genericForm.reset();
+        this.dialogRef.close(val);
+    }
+
+
+    getValidationMessages(){
+        return{
+            GenericName: [
+                { name: "required", Message: "Generic Name is required" },
+                { name: "maxlength", Message: "Generic Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
+    }
+
 }

@@ -17,10 +17,10 @@ export class CategorymasterService {
 
     createCategorymasterForm(): FormGroup {
         return this._formBuilder.group({
-            categoryId: [""],
+            categoryId: [0],
             categoryName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -39,17 +39,6 @@ export class CategorymasterService {
 
     initializeFormGroup() {
         this.createCategorymasterForm();
-    }
-
-
-    getValidationMessages() {
-        return {
-            categoryName: [
-                { name: "required", Message: "Category Name is required" },
-                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public categoryMasterSave(Param: any, showLoader = true) {

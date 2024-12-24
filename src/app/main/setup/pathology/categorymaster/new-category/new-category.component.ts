@@ -10,7 +10,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./new-category.component.scss']
 })
 export class NewCategoryComponent implements OnInit {
-  categoryForm: FormGroup;
+  
+    categoryForm: FormGroup;
+    isActive:boolean=true;
+
+
   constructor(
       public _CategorymasterService: CategorymasterService,
       public dialogRef: MatDialogRef<NewCategoryComponent>,
@@ -20,25 +24,20 @@ export class NewCategoryComponent implements OnInit {
  
   ngOnInit(): void {
       this.categoryForm = this._CategorymasterService.createCategorymasterForm();
-      var m_data = {
-        categoryId: this.data?.categoryId,
-        categoryName: this.data?.categoryName.trim(),
-      };
-      this.categoryForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.categoryForm.patchValue(this.data);
+    }
   }
 
-  saveflag : boolean = false;
-  onSubmit() {
-    this.saveflag = true;
-    
-    if (this.categoryForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if (this.categoryForm.valid) {
-        debugger
+   saveflag : boolean = false;
+   onSubmit() {
+    debugger
+      if (!this.categoryForm.invalid) {
+        this.saveflag = true;
+
+        console.log("Category JSON :", this.categoryForm.value);
+        
           this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -46,11 +45,28 @@ export class NewCategoryComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
     }
-  }
 
-  onClear(val: boolean) {
-      this.categoryForm.reset();
-      this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.categoryForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            categoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+
 }

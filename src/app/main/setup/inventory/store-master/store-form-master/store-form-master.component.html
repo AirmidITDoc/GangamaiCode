@@ -36,9 +36,9 @@
                                 <airmid-textbox 
                                     label="Store Short Name"
                                     formControlName="storeShortName"
-                                    [value]=""
+                                    [value]="data?.storeShortName"
                                     [formGroup]="storeForm"
-                                    [validations]="_StoreMasterService.getValidationMessages().storeShortName"
+                                    [validations]="getValidationMessages().storeShortName"
                                     [maxLength]="50">
                                 </airmid-textbox> 
                             </div>
@@ -47,9 +47,9 @@
                             <airmid-textbox 
                                 label="Store Name"
                                 formControlName="storeName"
-                                [value]=""
+                                [value]="data?.storeName"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().storeName"
+                                [validations]="getValidationMessages().storeName"
                                 [maxLength]="50">
                             </airmid-textbox> 
                         </div>
@@ -67,9 +67,9 @@
                         <airmid-textbox 
                             label="Indent Prefix"
                             formControlName="indentPrefix"
-                            [value]=""
+                            [value]="data?.indentPrefix"
                             [formGroup]="storeForm"
-                            [validations]="_StoreMasterService.getValidationMessages().indentPrefix"
+                            [validations]="getValidationMessages().indentPrefix"
                             [maxLength]="50">
                         </airmid-textbox> 
                     </div>
@@ -77,9 +77,9 @@
                         <airmid-textbox 
                             label="Indent No"
                             formControlName="indentNo"
-                            [value]=""
+                            [value]="data?.indentNo"
                             [formGroup]="storeForm"
-                            [validations]="_StoreMasterService.getValidationMessages().indentNo"
+                            [validations]="getValidationMessages().indentNo"
                             [maxLength]="30">
                         </airmid-textbox>
                     </div>
@@ -87,9 +87,9 @@
                         <airmid-textbox 
                             label="GRN Return No Prefix"
                             formControlName="grnreturnNoPrefix"
-                            [value]=""
+                            [value]="data?.grnreturnNoPrefix"
                             [formGroup]="storeForm"
-                            [validations]="_StoreMasterService.getValidationMessages().grnreturnNoPrefix"
+                            [validations]="getValidationMessages().grnreturnNoPrefix"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
@@ -97,9 +97,9 @@
                         <airmid-textbox 
                             label="GRN Return No"
                             formControlName="grnreturnNo"
-                            [value]=""
+                            [value]="data?.grnreturnNo"
                             [formGroup]="storeForm"
-                            [validations]="_StoreMasterService.getValidationMessages().grnreturnNo"
+                            [validations]="getValidationMessages().grnreturnNo"
                             [maxLength]="30">
                         </airmid-textbox>
                     </div>
@@ -111,9 +111,9 @@
                             <airmid-textbox 
                                 label="Purchase Prefix"
                                 formControlName="purchasePrefix"
-                                [value]=""
+                                [value]="data?.purchasePrefix"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().purchasePrefix"
+                                [validations]="getValidationMessages().purchasePrefix"
                                 [maxLength]="50">
                             </airmid-textbox> 
                         </div>
@@ -121,9 +121,9 @@
                             <airmid-textbox 
                                 label="Purchase No"
                                 formControlName="purchaseNo"
-                                [value]=""
+                                [value]="data?.purchaseNo"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().purchaseNo"
+                                [validations]="getValidationMessages().purchaseNo"
                                 [maxLength]="30">
                             </airmid-textbox>
                         </div>
@@ -131,9 +131,9 @@
                             <airmid-textbox 
                                 label="Issue To Dept Prefix"
                                 formControlName="issueToDeptPrefix"
-                                [value]=""
+                                [value]="data?.issueToDeptPrefix"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().issueToDeptPrefix"
+                                [validations]="getValidationMessages().issueToDeptPrefix"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -141,9 +141,9 @@
                             <airmid-textbox 
                                 label="Issue To Dept No"
                                 formControlName="issueToDeptNo"
-                                [value]=""
+                                [value]="data?.issueToDeptNo"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().issueToDeptNo"
+                                [validations]="getValidationMessages().issueToDeptNo"
                                 [maxLength]="30">
                             </airmid-textbox>
                         </div>
@@ -156,9 +156,9 @@
                             <airmid-textbox 
                                 label="GRN Prefix"
                                 formControlName="grnPrefix"
-                                [value]=""
+                                [value]="data?.grnPrefix"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().grnPrefix"
+                                [validations]="getValidationMessages().grnPrefix"
                                 [maxLength]="50">
                             </airmid-textbox> 
                         </div>
@@ -166,9 +166,9 @@
                             <airmid-textbox 
                                 label="GRN No"
                                 formControlName="grnNo"
-                                [value]=""
+                                [value]="data?.grnNo"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().grnNo"
+                                [validations]="getValidationMessages().grnNo"
                                 [maxLength]="30">
                             </airmid-textbox>
                         </div>
@@ -176,9 +176,9 @@
                             <airmid-textbox 
                                 label="Return From Dept No Prefix"
                                 formControlName="returnFromDeptNoPrefix"
-                                [value]=""
+                                [value]="data?.returnFromDeptNoPrefix"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().returnFromDeptNoPrefix"
+                                [validations]="getValidationMessages().returnFromDeptNoPrefix"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -186,9 +186,9 @@
                             <airmid-textbox 
                                 label="Return From Dept No"
                                 formControlName="returnFromDeptNo"
-                                [value]=""
+                                [value]="data?.returnFromDeptNo"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().returnFromDeptNo"
+                                [validations]="getValidationMessages().returnFromDeptNo"
                                 [maxLength]="30">
                             </airmid-textbox>
                         </div>
@@ -206,9 +206,9 @@
                             <airmid-textbox 
                                 label="Phar Sales Cash Counter"
                                 formControlName="pharSalCountId"
-                                [value]=""
+                                [value]="data?.pharSalCountId"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().pharSalCountId"
+                                [validations]="getValidationMessages().pharSalCountId"
                                 [maxLength]="50">
                             </airmid-textbox> 
                         </div>
@@ -216,9 +216,9 @@
                             <airmid-textbox 
                                 label="Phar Sales Rec Cash Counter"
                                 formControlName="pharSalRecCountId"
-                                [value]=""
+                                [value]="data?.pharSalRecCountId"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().pharSalRecCountId"
+                                [validations]="getValidationMessages().pharSalRecCountId"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -226,9 +226,9 @@
                             <airmid-textbox 
                                 label="Phar Sales Return Cash Counter"
                                 formControlName="pharSalReturnCountId"
-                                [value]=""
+                                [value]="data?.pharSalReturnCountId"
                                 [formGroup]="storeForm"
-                                [validations]="_StoreMasterService.getValidationMessages().pharSalReturnCountId"
+                                [validations]="getValidationMessages().pharSalReturnCountId"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -264,14 +264,14 @@
 
         
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-                 
-                     <mat-radio-group name="isActive" formControlName="isActive" value='false'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                       
-                    </mat-radio-group>
+
+                            <mat-radio-group name="isActive" formControlName="isActive">
+                                <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
+                                </mat-radio-button>
+                            </mat-radio-group>
+                   
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                    <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
                         <span>Save</span>
                     </button>
                 </div>
@@ -279,6 +279,5 @@
             </form>
         </div>
 
-        
     </div>
 </div>  

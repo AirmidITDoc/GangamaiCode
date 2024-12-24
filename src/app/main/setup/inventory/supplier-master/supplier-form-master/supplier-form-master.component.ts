@@ -1,15 +1,11 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { map, startWith, takeUntil } from "rxjs/operators";
 import { SupplierMaster, SupplierMasterComponent } from "../supplier-master.component";
 import { SupplierMasterService } from "../supplier-master.service";
-import { FormControl, FormGroup } from "@angular/forms";
-import { Observable, ReplaySubject, Subject } from "rxjs";
-import Swal from "sweetalert2";
+import { FormGroup } from "@angular/forms";
+import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
-import { MatSelect } from "@angular/material/select";
-import { size } from "lodash";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
 
@@ -161,7 +157,7 @@ export class SupplierFormMasterComponent implements OnInit {
     // }
     // else {
 
-// validation
+// validatio
 
 //       if ((this.vSupplierName == undefined || this.vSupplierName == undefined || this.vSupplierName == undefined)) {
 //         this.toastr.warning('Please enter SupplierName.', 'Warning !', {

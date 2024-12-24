@@ -19,11 +19,11 @@ export class PrescriptionclassmasterService {
 
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
-            ClassId: [""],
+            ClassId: [0],
             ClassName: ["",
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isActive: ["true"]
@@ -42,35 +42,15 @@ export class PrescriptionclassmasterService {
         this.createPrescriptionclassForm();
     }
 
-    getValidationMessages() {
-        return {
-            ClassName: [
-                { name: "required", Message: "Class Name is required" },
-                { name: "maxlength", Message: "Class Name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
 
     public prescriptionClassMasterSave(Param: any, showLoader = true) {
         if (Param.classId) {
             return this._httpClient.PutData("Priscriptionclass/" + Param.ClassId, Param, showLoader);
         } else return this._httpClient.PostData("Priscriptionclass", Param, showLoader);
     }
-   
-    public getgenericMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("GenericMaster/List", param, showLoader);
-    }
-
-    public genericMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("generic/" + id , Param, showLoader);
-        return this._httpClient.PostData("Generic", Param, showLoader);
-    }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("Priscriptionclass?Id=" + m_data.toString());
     }
-    populateForm(param) {
-        this.prescriptionForm.patchValue(param);
-    }
+
 }

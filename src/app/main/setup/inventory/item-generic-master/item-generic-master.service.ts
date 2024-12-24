@@ -20,8 +20,7 @@ export class ItemGenericMasterService {
 
     createItemgenericForm(): FormGroup {
         return this._formBuilder.group({
-          
-                genericId: [""],
+                genericId: [0],
                 genericName: ["",
                 [
                     Validators.required,
@@ -31,6 +30,7 @@ export class ItemGenericMasterService {
             isDeleted: ["false"],
         });
     }
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemGenericNameSearch: [""],
