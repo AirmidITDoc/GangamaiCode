@@ -156,4 +156,10 @@ public getServiceList(param,loader = true){
   public getvitalInfo(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query,{})
   }
+  public getRtrvCheifComplaintList(visistId,loader = true) {
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPCasepaperDignosisList",visistId);
+  }
 } 

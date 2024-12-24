@@ -349,6 +349,7 @@ export class NewCasepaperComponent implements OnInit {
     this.getVisistList();
     this.getRtrvTestService();
     this.getAdmittedDoctorCombo();
+    this.getRtrvCheifComplaintList(obj)
    
   }
   getOptionText1(option) {
@@ -739,7 +740,37 @@ onTemplDetAdd(){
 
 }
   onSave() {
-    debugger
+    debugger  
+    if (this.addCheiflist) {
+      this.addCheiflist.forEach(element => {
+        this.AllTypeDescription.push(
+          {
+            DescriptionName: element.trim(),
+            DescriptionType: "Complaint"
+          }
+        )
+      })
+    }
+    if (this.addDiagnolist) {
+      this.addDiagnolist.forEach(element => {
+        this.AllTypeDescription.push(
+          {
+            DescriptionName: element.trim(),
+            DescriptionType: "Diagnosis"
+          }
+        )
+      })
+    }
+    if (this.addExaminlist) {
+      this.addExaminlist.forEach(element => {
+        this.AllTypeDescription.push(
+          {
+            DescriptionName: element.trim(),
+            DescriptionType: "Examination"
+          }
+        )
+      })
+    }
     if (this.RegNo == '' || this.RegNo == undefined || this.RegNo == null) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -834,12 +865,14 @@ onTemplDetAdd(){
     let OpDescriptinList = [];
     if (this.AllTypeDescription.length == 0) {
       let OpDescriptinListObj = {};
+      OpDescriptinListObj['visitId'] = this.VisitId || 0;
       OpDescriptinListObj['descriptionType'] = '';
       OpDescriptinListObj['descriptionName'] = ''
       OpDescriptinList.push(OpDescriptinListObj);
     } else {
       this.AllTypeDescription.forEach(element => {
         let OpDescriptinListObj = {};
+        OpDescriptinListObj['visitId'] = this.VisitId || 0;
         OpDescriptinListObj['descriptionType'] = element.DescriptionType || '';
         OpDescriptinListObj['descriptionName'] = element.DescriptionName || '';
         OpDescriptinList.push(OpDescriptinListObj);
@@ -913,6 +946,7 @@ onTemplDetAdd(){
     this.addExaminlist = [];
     this.specificDate = new Date();
     this.vDays = 10
+    this.AllTypeDescription = [];
     this.getDignosisList();
     this.getExaminList();
     this.getCheifComplaintList();
@@ -1325,12 +1359,45 @@ onTemplDetAdd(){
       console.log('The dialog was closed - Insert Action', result);
     });
   }
-
+ RtrvDescriptionList:any=[];
+  getRtrvCheifComplaintList(obj) { 
+    this.addCheiflist = [];
+    this.addDiagnolist = [];
+    this.addExaminlist = [];
+    this.AllTypeDescription = [];
+    var vdata={
+      "VisitId":obj.VisitId
+    }
+    this._CasepaperService.getRtrvCheifComplaintList(vdata).subscribe(data => {
+      this.RtrvDescriptionList = data;
+      console.log(this.RtrvDescriptionList) 
+      let Cheifcomplaint = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Complaint')
+      if(Cheifcomplaint){
+        Cheifcomplaint.forEach(element=>{
+          const value = element.DescriptionName;
+          this.addCheiflist.push(value.trim());
+        })
+      }
+      let Diagnosis = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Diagnosis')
+      if(Diagnosis){
+        Diagnosis.forEach(element=>{
+          const value = element.DescriptionName;
+          this.addDiagnolist.push(value.trim()); 
+        })
+      }
+      let Examination = this.RtrvDescriptionList.filter(item => item.DescriptionType == 'Examination')
+      if(Examination){
+        Examination.forEach(element=>{
+          const value = element.DescriptionName;
+          this.addExaminlist.push(value.trim()); 
+        })
+      } 
+    }); 
+  }
   //chipset cheifcomplaint
-  // CheifComplaintControl = new FormControl();
-  // ExaminationControl = new FormControl();
-  // DiagnosisControl = new FormControl();
-  filteredHistory: Observable<string[]>;
+  CheifComplaintControl = new FormControl();
+  ExaminationControl = new FormControl();
+  DiagnosisControl = new FormControl(); 
   selectable = true;
   removable = true;
   HistoryList: any = [];
@@ -1338,13 +1405,14 @@ onTemplDetAdd(){
   addDiagnolist: any = [];
   addExaminlist: any = [];
 
-
+ 
   filteredCheifComplaint:Observable<string[]>
   filteredDaignosis:Observable<string[]>
   filteredExamin:Observable<string[]>
   CheifCompListCombo:any=[];
   DaignoComboList:any=[];
   ExaminComboList:any=[];
+ 
   getCheifComplaintList() { 
     var vdata={
       "DescriptionType":"Complaint"
@@ -1352,15 +1420,17 @@ onTemplDetAdd(){
     this._CasepaperService.getcheifcomplaintList(vdata).subscribe(data => {
       this.CheifCompListCombo = data;
       console.log(this.CheifCompListCombo)
-      this.filteredCheifComplaint = this.caseFormGroup.get('CheifComplaintControl').valueChanges.pipe(
+      this.filteredCheifComplaint = this.CheifComplaintControl.valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterCheif(value) : this.CheifCompListCombo.slice()),
-      );
+        map(value => value ? this._filter(value) : this.CheifCompListCombo.slice()),
+      );  
     }); 
   }
-  private _filterCheif(value: string): string[] { 
-    const filterValue = value.toLowerCase();
-    return this.CheifCompListCombo.filter(item => item.toLowerCase().includes(filterValue));
+  private _filter(value: any): string[] {  
+    if (value) {
+      const filterValue = value && value.DescriptionName ? value.DescriptionName.toLowerCase() : value.toLowerCase();
+      return this.CheifCompListCombo.filter(option => option.DescriptionName.toLowerCase().includes(filterValue));
+    } 
   }
   getDignosisList() {
     var vdata={
@@ -1369,15 +1439,17 @@ onTemplDetAdd(){
     this._CasepaperService.getcheifcomplaintList(vdata).subscribe(data => {
       this.DaignoComboList = data;
       console.log(this.DaignoComboList)
-      this.filteredDaignosis = this.caseFormGroup.get('Diagnosis').valueChanges.pipe(
+      this.filteredDaignosis = this.DiagnosisControl.valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterDaignosis(value) : this.DaignoComboList.slice()),
       );
     });
   }
-  private _filterDaignosis(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.DaignoComboList.filter(item => item.toLowerCase().includes(filterValue));
+  private _filterDaignosis(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DescriptionName ? value.DescriptionName.toLowerCase() : value.toLowerCase();
+      return this.DaignoComboList.filter(option => option.DescriptionName.toLowerCase().includes(filterValue));
+    } 
   }
   getExaminList() {
     var vdata={
@@ -1386,140 +1458,151 @@ onTemplDetAdd(){
     this._CasepaperService.getcheifcomplaintList(vdata).subscribe(data => {
       this.ExaminComboList = data;
       console.log(this.ExaminComboList)
-      this.filteredExamin = this.caseFormGroup.get('Examination').valueChanges.pipe(
+      this.filteredExamin = this.ExaminationControl.valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterExam(value) : this.ExaminComboList.slice()),
       );
     });
   }
-  private _filterExam(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.ExaminComboList.filter(item => item.toLowerCase().includes(filterValue));
+  private _filterExam(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DescriptionName ? value.DescriptionName.toLowerCase() : value.toLowerCase();
+      return this.ExaminComboList.filter(option => option.DescriptionName.toLowerCase().includes(filterValue));
+    } 
   }
   //Cheifcomplaint
   AllTypeDescription:any=[]
-  addCheif(event: any): void {
-    const input = event.input;
-    const value = event.value;
-    // Add cheif
-    if ((value || '').trim()) {
-      this.addCheiflist.push(value.trim());
-
-      this.AllTypeDescription.push(
-        {
-         DescriptionName :value.trim(),
-         DescriptionType: "Complaint" 
-        }
-      )
-    }
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-    console.log(this.AllTypeDescription)
-    console.log(this.caseFormGroup.get('CheifComplaintControl').value)
-    console.log(this.caseFormGroup.get('ChiefComplaint').value)
-    console.log(this.caseFormGroup.get('Diagnosis').value)
-    console.log(this.caseFormGroup.get('Examination').value)
+  addCheif(event: any): void { 
+    if(this.onSelecteCheif != 1){
+      const input = event.input;
+      const value = event.value;
+      // Add cheif
+      if ((value || '').trim()) {
+        this.addCheiflist.push(value.trim());
+  
+        // this.AllTypeDescription.push(
+        //   {
+        //    DescriptionName :value.trim(),
+        //    DescriptionType: "Complaint" 
+        //   }
+        // )
+      }
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+    } 
+    console.log(this.AllTypeDescription) 
+    this.onSelecteCheif = 0
   }
   removeCheif(cheif: string): void {
     const index = this.addCheiflist.indexOf(cheif);
     if (index >= 0) {
       this.addCheiflist.splice(index, 1);  
       console.log(index)
-      this.AllTypeDescription.splice(index, 1);
+     // this.AllTypeDescription.splice(index, 1);
     }
   }
-  selectedobjCheif(obj): void {
+  onSelecteCheif:any=0;
+  selectedobjCheif(obj): void { 
+    this.onSelecteCheif = 1
     const value = obj.DescriptionName;
     if ((value || '').trim()) {
       this.addCheiflist.push(value.trim());
-      this.AllTypeDescription.push(
-        {
-         DescriptionName :value.trim(),
-         DescriptionType: "Complaint" 
-        }
-      )
-    }
+      // this.AllTypeDescription.push(
+      //   {
+      //    DescriptionName :value.trim(),
+      //    DescriptionType: "Complaint" 
+      //   }
+      // )
+    } 
   }
   //Diagnosis
   addDiagnos(event: any): void {
-    const input = event.input;
-    const value = event.value;
-    // Add cheif
-    if ((value || '').trim()) {
-      this.addDiagnolist.push(value.trim());
-      this.AllTypeDescription.push(
-        {
-         DescriptionName :value.trim(),
-         DescriptionType: "Diagnosis" 
-        }
-      )
-    }
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
+    if( this.onSelecteDaigno != 1){
+      const input = event.input;
+      const value = event.value;
+      // Add cheif
+      if ((value || '').trim()) {
+        this.addDiagnolist.push(value.trim());
+        // this.AllTypeDescription.push(
+        //   {
+        //    DescriptionName :value.trim(),
+        //    DescriptionType: "Diagnosis" 
+        //   }
+        // )
+      }
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+    } 
     console.log(this.AllTypeDescription)
+    this.onSelecteDaigno = 0
   }
   removeDiagno(Diagno: string): void {
     const index = this.addDiagnolist.indexOf(Diagno);
     if (index >= 0) {
       this.addDiagnolist.splice(index, 1);
-      this.AllTypeDescription.splice(index, 1);
-      
+     // this.AllTypeDescription.splice(index, 1); 
     }
   }
+  onSelecteDaigno:any=0;
   selectedobjDiagno(obj): void {
     const value = obj.DescriptionName;
+    this.onSelecteDaigno = 1
     if ((value || '').trim()) {
       this.addDiagnolist.push(value.trim());
-      this.AllTypeDescription.push(
-        {
-         DescriptionName :value.trim(),
-         DescriptionType: "Diagnosis" 
-        }
-      )
+      // this.AllTypeDescription.push(
+      //   {
+      //    DescriptionName :value.trim(),
+      //    DescriptionType: "Diagnosis" 
+      //   }
+      // )
     }
   }
   //Examination
   addExamina(event: any): void {
-    const input = event.input;
-    const value = event.value;
-    // Add cheif
-    if ((value || '').trim()) {
-      this.addExaminlist.push(value.trim());
-      this.AllTypeDescription.push(
-        {
-         DescriptionName :value.trim(),
-         DescriptionType: "Examination" 
-        }
-      )
-    }
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-
+    if(this.onSelecteExam != 1){
+      const input = event.input;
+      const value = event.value;
+      // Add cheif
+      if ((value || '').trim()) {
+        this.addExaminlist.push(value.trim());
+        // this.AllTypeDescription.push(
+        //   {
+        //    DescriptionName :value.trim(),
+        //    DescriptionType: "Examination" 
+        //   }
+        // )
+      }
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+    } 
     console.log(this.AllTypeDescription)
+    this.onSelecteExam = 1
   }
   removeExamin(Examin: string): void {
     const index = this.addExaminlist.indexOf(Examin);
     if (index >= 0) {
       this.addExaminlist.splice(index, 1);
-      this.AllTypeDescription.splice(index, 1);
+      //this.AllTypeDescription.splice(index, 1);
     }
   }
+  onSelecteExam:any=0;
   selectedobjExamin(obj): void {
     const value = obj.DescriptionName;
+    this.onSelecteExam = 1
     if ((value || '').trim()) {
       this.addExaminlist.push(value.trim());
-      this.AllTypeDescription.push(
-        {
-         DescriptionName :value.trim(),
-         DescriptionType: "Examination" 
-        }
-      )
+      // this.AllTypeDescription.push(
+      //   {
+      //    DescriptionName :value.trim(),
+      //    DescriptionType: "Examination" 
+      //   }
+      // )
     }
   } 
 
