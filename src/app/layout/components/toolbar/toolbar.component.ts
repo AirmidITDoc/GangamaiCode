@@ -42,7 +42,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     currentDate: Date = new Date();
     IsCollection: any;
     IsBedStatus: any;
-    IsPharmacy:any;
+    isPatientInfo:any;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -142,7 +142,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.IsCollection = this.accountService.currentUserValue.user.isCollection
         this.IsBedStatus = this.accountService.currentUserValue.user.isBedStatus
-        this.IsPharmacy = this.accountService.currentUserValue.user.isCurrentStk
+        this.isPatientInfo = this.accountService.currentUserValue.user.IsPatientInfo
         // console.log( this.IsCollection)
         // console.log(this.IsBedStatus)
     }
