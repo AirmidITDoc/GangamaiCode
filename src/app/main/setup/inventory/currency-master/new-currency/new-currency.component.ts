@@ -28,18 +28,24 @@ export class NewCurrencyComponent implements OnInit {
         this.isActive=this.data.isActive
         this.currencyForm.patchValue(this.data);
      }
-  }
+    }
 
     onSubmit() {
-    this.Saveflag=true
-    
-      if (this.currencyForm.valid) {
-          this._CurrencymasterService.currencyMasterSave(this.currencyForm.value).subscribe((response) => {
+      if (!this.currencyForm.invalid) {
+        this.Saveflag=true
+        this._CurrencymasterService.currencyMasterSave(this.currencyForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
           }, (error) => {
               this.toastr.error(error.message);
           });
+      }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
       }
   }
 
@@ -47,5 +53,15 @@ export class NewCurrencyComponent implements OnInit {
       this.currencyForm.reset();
       this.dialogRef.close(val);
   }
+
+    getValidationMessages() {
+        return {
+            currencyName: [
+                { name: "required", Message: "Currency Name is required" },
+                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 
 }

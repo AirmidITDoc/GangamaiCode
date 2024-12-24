@@ -23,10 +23,10 @@
                         <airmid-textbox 
                             label="Mode Of Payment"
                             formControlName="modeOfPayment"
-                            [value]=""
+                            [value]="data?.modeOfPayment"
                             [formGroup]="modeofpayForm"
-                            [validations]="_ModeOfPaymentMasterService.getValidationMessages().modeOfPayment"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().modeOfPayment"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                 </div>

@@ -31,15 +31,22 @@ export class NewManufactureComponent implements OnInit {
 
   saveflag : boolean = false;
   onSubmit() {
-    this.saveflag = true
-   
-      if (this.manufForm.valid) {
-          this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {
+      if (!this.manufForm.invalid) 
+        {
+        this.saveflag = true
+        this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
           }, (error) => {
               this.toastr.error(error.message);
           });
+      }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
   }
 
@@ -48,5 +55,15 @@ export class NewManufactureComponent implements OnInit {
     this.manufForm.reset();
     this.dialogRef.close(val);
   }
+     
+    getValidationMessages() {
+        return {
+            manufactureName: [
+                { name: "required", Message: "Currency Name is required" },
+                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 
 }

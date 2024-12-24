@@ -23,10 +23,11 @@
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="Category Name" 
-                            formControlName="categoryName" [value]=""
+                            formControlName="categoryName" 
+                            [value]="data?.categoryName"
                             [formGroup]="categoryForm"
-                            [validations]="_CategorymasterService.getValidationMessages().categoryName"
-                            [maxLength]="500">
+                            [validations]="getValidationMessages().categoryName"
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
                 </div>

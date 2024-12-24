@@ -19,13 +19,16 @@
     <div class="modal-body-container">
             <form [formGroup]="instructionForm">
 
-                <input type="hidden" name="InstructionId" formControlName="InstructionId">
+                <input type="hidden" name="InstructionId" formControlName="instructionId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Instruction Name" formControlName="InstructionName" [value]=""
+                        <airmid-textbox 
+                            label="Instruction Name" 
+                            formControlName="instructionDescription" 
+                            [value]="data?.instructionDescription"
                             [formGroup]="instructionForm"
-                            [validations]="_InstructionMasterService.getValidationMessages().InstructionName"
+                            [validations]="getValidationMessages().instructionDescription"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>

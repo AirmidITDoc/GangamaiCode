@@ -23,10 +23,10 @@
                         <airmid-textbox 
                             label="Tax Nature Name"
                             formControlName="taxNature"
-                            [value]=""
+                            [value]="data?.taxNature"
                             [formGroup]="taxForm"
-                            [validations]="_TaxMasterService.getValidationMessages().taxNature"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().taxNature"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                 </div>

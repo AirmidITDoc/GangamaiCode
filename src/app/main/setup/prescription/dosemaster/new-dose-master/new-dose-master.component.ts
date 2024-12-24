@@ -32,19 +32,19 @@ export class NewDoseMasterComponent implements OnInit {
 
     saveflag : boolean = false
     onSubmit() {
-    this.saveflag = true
-
+ 
     debugger
-    if(!this.doseForm.get("doseId").value){
-      var mdata=
-      {
-        "doseId": 0,
-        "doseName": this.doseForm.get("doseName").value || "",
-        "doseNameInEnglish": this.doseForm.get("doseNameInEnglish").value,
-        "doseNameInMarathi": this.doseForm.get("doseNameInMarathi").value,
-        "doseQtyPerDay": parseInt(this.doseForm.get("doseQtyPerDay").value )     
-      }
-      console.log("dose json:", mdata);
+    if(!this.doseForm.invalid){
+        this.saveflag = true
+    //   var mdata=
+    //   {
+    //     "doseId": 0,
+    //     "doseName": this.doseForm.get("doseName").value || "",
+    //     "doseNameInEnglish": this.doseForm.get("doseNameInEnglish").value,
+    //     "doseNameInMarathi": this.doseForm.get("doseNameInMarathi").value,
+    //     "doseQtyPerDay": parseInt(this.doseForm.get("doseQtyPerDay").value )     
+    //   }
+      console.log("dose json:", this.doseForm.value);
 
       this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response)=>{
         this.toastr.success(response.message);
@@ -52,13 +52,43 @@ export class NewDoseMasterComponent implements OnInit {
       }, (error)=>{
         this.toastr.error(error.message);
       });
-    } else{
-      //update
+    } 
+    else
+    {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
     }
-}
+  }
+
     onClear(val: boolean) {
         this.doseForm.reset();
         this.dialogRef.close(val);
+    }
+
+     getValidationMessages(){
+        return{
+            doseName: [
+                { name: "required", Message: "Dose Name is required" },
+                { name: "maxlength", Message: "Dose name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            doseNameInEnglish: [
+                { name: "required", Message: "DoseName In English is required" },
+                { name: "maxlength", Message: "DoseName In English should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            doseQtyPerDay: [
+                { name: "required", Message: "Dose Qty Per Day is required" },
+                { name: "pattern", Message: "Special char not allowed, only Digits." }
+            ],
+            doseNameInMarathi: [
+                { name: "required", Message: "DoseName In Marathi is required" },
+                { name: "maxlength", Message: "DoseName In Marathi should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
     }
 
 }

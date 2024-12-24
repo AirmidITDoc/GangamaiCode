@@ -24,10 +24,10 @@
                         <airmid-textbox 
                             label="Terms Of Payment Type Name"
                             formControlName="TermsOfPayment"
-                            [value]=""
+                            [value]="data?.TermsOfPayment"
                             [formGroup]="termsofpaymentForm"
-                            [validations]="_TermsOfPaymentMasterService.getValidationMessages().TermsOfPayment"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().TermsOfPayment"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                 </div>

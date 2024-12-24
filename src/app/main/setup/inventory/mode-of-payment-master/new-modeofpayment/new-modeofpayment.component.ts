@@ -33,15 +33,25 @@ export class NewModeofpaymentComponent implements OnInit {
 
   saveflag : boolean = false;
   onSubmit() {
-    this.saveflag = true;
-    
-      if (this.modeofpayForm.valid) {
-          this._ModeOfPaymentMasterService.modeofpayMasterSave(this.modeofpayForm.value).subscribe((response) => {
+      if(!this.modeofpayForm.invalid)
+        {
+            this.saveflag = true;
+
+            console.log("TaxMaster Insert:",this.modeofpayForm.value);
+
+            this._ModeOfPaymentMasterService.modeofpayMasterSave(this.modeofpayForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
           }, (error) => {
               this.toastr.error(error.message);
           });
+      }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
   }
 
@@ -49,5 +59,15 @@ export class NewModeofpaymentComponent implements OnInit {
       this.modeofpayForm.reset();
       this.dialogRef.close(val);
   }
+
+  getValidationMessages() {
+    return {
+        modeOfPayment: [
+            { name: "required", Message: "modeOfPayment Name is required" },
+            { name: "maxlength", Message: "modeOfPayment name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
+    }
   
 }

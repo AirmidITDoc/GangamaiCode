@@ -23,10 +23,10 @@
                         <airmid-textbox 
                             label="manufacture Name"
                             formControlName="manufactureName"
-                            [value]=""
+                            [value]="data?.manufactureName"
                             [formGroup]="manufForm"
-                            [validations]="_ManufactureMasterService.getValidationMessages().manufactureName"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().manufactureName"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                 </div>

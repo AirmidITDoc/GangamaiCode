@@ -31,27 +31,47 @@ export class NewTermofpaymentComponent implements OnInit {
     
     saveflag : boolean = false;
     onSubmit() {
-        this.saveflag = true;
         debugger
-        var m_data =
-            {
-                "id": 0,
-                "TermsOfPayment": this.termsofpaymentForm.get("TermsOfPayment").value,
-            }
+        if(!this.termsofpaymentForm.value)
+        {
+            this.saveflag = true;
+        // var m_data =
+        //     {
+        //         "id": 0,
+        //         "TermsOfPayment": this.termsofpaymentForm.get("TermsOfPayment").value,
+        //     }
 
-        console.log("TermsOfPaymentMaster Insert:",m_data)
-        
-        this._TermsOfPaymentMasterService.termofpayMasterSave(m_data).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-        }, (error) => {
-        this.toastr.error(error.message);
-        });
+            console.log("TermsOfPaymentMaster Insert:",this.termsofpaymentForm.value)
+            
+            this._TermsOfPaymentMasterService.termofpayMasterSave(this.termsofpaymentForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+            }, (error) => {
+            this.toastr.error(error.message);
+            });
+        }
+        else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;  
+        }
     }
 
     onClear(val: boolean) {
     this.termsofpaymentForm.reset();
     this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            TermsOfPayment: [
+                { name: "required", Message: "TermsOfPayment Name is required" },
+                { name: "maxlength", Message: "TermsOfPayment name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 
 }

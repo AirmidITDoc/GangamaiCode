@@ -31,10 +31,12 @@ export class NewUnitComponent implements OnInit {
 
     saveflag : boolean = false;
     onSubmit() {
-    this.saveflag = true;
+        debugger
+    if (!this.unitForm.invalid){
+        this.saveflag = true;
     
-    if (this.unitForm.valid) {
-    debugger
+        console.log("unit JSON :-",this.unitForm.value);
+
         this._UnitmasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
@@ -42,10 +44,27 @@ export class NewUnitComponent implements OnInit {
             this.toastr.error(error.message);
         });
       }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
     }
 
     onClear(val: boolean) {
         this.unitForm.reset();
         this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            unitName: [
+                { name: "required", Message: "Unit Name is required" },
+                { name: "maxlength", Message: "Unit name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
     }
 }

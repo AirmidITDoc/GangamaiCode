@@ -33,15 +33,21 @@ export class NewItemtypeComponent implements OnInit {
   Saveflag: boolean= false;
   onSubmit() 
   {
-    this.Saveflag=true
- 
-    if (this.itemtypeForm.valid) {
+    if (!this.itemtypeForm.invalid) {
+        this.Saveflag=true
         this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
         }, (error) => {
             this.toastr.error(error.message);
         });
+    }
+    else
+    {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
     }
   }
 
@@ -50,5 +56,15 @@ export class NewItemtypeComponent implements OnInit {
     this.itemtypeForm.reset();
     this.dialogRef.close(val);
   }
+
+    getValidationMessages() {
+        return {
+            itemTypeName: [
+                { name: "required", Message: "ItemType Name is required" },
+                { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 
 }

@@ -32,15 +32,21 @@ export class NewItemClassComponent implements OnInit {
 
   Saveflag: boolean= false;
   onSubmit() {
-    this.Saveflag=true
-   
-      if (this.classForm.valid) {
-          this._ItemClassMasterService.itemclassMasterSave(this.classForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
+      if (!this.classForm.invalid) {
+            this.Saveflag=true
+            this._ItemClassMasterService.itemclassMasterSave(this.classForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
           }, (error) => {
-              this.toastr.error(error.message);
+            this.toastr.error(error.message);
           });
+      }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
   }
 
@@ -48,4 +54,15 @@ export class NewItemClassComponent implements OnInit {
       this.classForm.reset();
       this.dialogRef.close(val);
   }
+
+    getValidationMessages() {
+        return {
+            itemClassName: [
+                { name: "required", Message: "itemClassName  is required" },
+                { name: "maxlength", Message: "itemClassName  should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+
 }

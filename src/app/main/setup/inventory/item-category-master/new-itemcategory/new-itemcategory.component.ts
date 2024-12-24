@@ -33,22 +33,32 @@ export class NewItemcategoryComponent implements OnInit {
 
     Saveflag: boolean= false;
     onSubmit() {
-    this.Saveflag=true
-    var m_data =
-    {
-        "itemCategoryId": 0,
-        "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
-        "itemTypeId": this.categoryForm.get("itemTypeId").value,  
-    }
+        if(!this.categoryForm.invalid)
+        {
+        this.Saveflag=true
+        // var m_data =
+        // {
+        //     "itemCategoryId": 0,
+        //     "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
+        //     "itemTypeId": this.categoryForm.get("itemTypeId").value,  
+        // }
 
-    console.log("ItemCategoryMaster Insert:",m_data)
-    
-        this._CategorymasterService.categoryMasterSave(m_data).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);}, 
-    (error) => {
-        this.toastr.error(error.message);
-        });
+        console.log("ItemCategoryMaster Insert:",this.categoryForm.value)
+        
+            this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);}, 
+        (error) => {
+            this.toastr.error(error.message);
+            });
+        }
+        else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
     }
     
     itemId=0;
@@ -61,5 +71,18 @@ export class NewItemcategoryComponent implements OnInit {
     onClear(val: boolean) {
         this.categoryForm.reset();
         this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            itemCategoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            itemTypeId: [
+                { name: "required", Message: "ItemType is required" }
+            ],
+        };
     }
 }

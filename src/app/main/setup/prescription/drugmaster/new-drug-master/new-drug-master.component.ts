@@ -34,62 +34,68 @@ export class NewDrugMasterComponent implements OnInit {
 
   saveflag : boolean = false;
   onSubmit() {
-    this.saveflag = true
-   
-      if(!this.drugForm.get("DrugId").value){
-        debugger
-        var mdata=
-        {
-          "drugId": 0,
-          "drugName": this.drugForm.get("DrugName").value || "",
-          "genericId": parseInt(this.drugForm.get("GenericId").value) || 0,
-          "classId": parseInt(this.drugForm.get("ClassId").value) || 0,
-          "isActive": true
-        }
-        console.log("drug json:", mdata);
+    
+    debugger
+      if(!this.drugForm.invalid){
+        this.saveflag = true    
+        // var mdata=
+        // {
+        //   "drugId": 0,
+        //   "drugName": this.drugForm.get("DrugName").value || "",
+        //   "genericId": parseInt(this.drugForm.get("GenericId").value) || 0,
+        //   "classId": parseInt(this.drugForm.get("ClassId").value) || 0,
+        //   "isActive": true
+        // }
+        console.log("drug json:", this.drugForm.value);
   
-        this._durgMasterService.drugMasterInsert(mdata).subscribe((response)=>{
+        this._durgMasterService.drugMasterSave(this.drugForm.value).subscribe((response)=>{
           this.toastr.success(response.message);
           this.onClear(true);
         }, (error)=>{
           this.toastr.error(error.message);
         });
-      } else{
-        //update
+      } 
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
       }
     
-}
+  }
 
-onClear(val: boolean) {
-  this.drugForm.reset();
-  this.dialogRef.close(val);
-}
+    onClear(val: boolean) {
+        this.drugForm.reset();
+        this.dialogRef.close(val);
+    }
 
-ClassId=0;
-GenericId=0;
+    ClassId=0;
+    GenericId=0;
 
-selectChangeClass(obj: any){
-  console.log(obj);
-  this.ClassId=obj.value
-}
-selectChangeGeneric(obj: any){
-  console.log(obj);
-  this.ClassId=obj.value
-}
-
-getValidationGeneric(){
-  return {
-    GenericId: [
-          { name: "required", Message: "Generic Name is required" }
-      ]
-  };
-}
-getValidationClass(){
-  return {
-    ClassId: [
-          { name: "required", Message: "Class Name is required" }
-      ]
-  };
-}
+    selectChangeClass(obj: any){
+        console.log(obj);
+        this.ClassId=obj.value
+    }
+    selectChangeGeneric(obj: any){
+        console.log(obj);
+        this.ClassId=obj.value
+    }
+        
+    getValidationMessages(){
+        return{
+            drugName: [
+                { name: "required", Message: "Drug Name is required" },
+                { name: "maxlength", Message: "Drug name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            classId: [
+                { name: "required", Message: "Class Name is required" },
+            ],
+            genericId : [
+                { name: "required", Message: "Generic Name is required" },
+            ]
+        }
+    }
 
 }

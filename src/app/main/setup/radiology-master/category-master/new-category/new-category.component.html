@@ -24,9 +24,9 @@
                         <airmid-textbox 
                             label="Category Name" 
                             formControlName="categoryName" 
-                            [value]=""
+                            [value]="data?.categoryName"
                             [formGroup]="categoryForm"
-                            [validations]="_CategorymasterService.getValidationMessages().categoryName"
+                            [validations]="getValidationMessages().categoryName"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>

@@ -72,39 +72,39 @@ export class GenericmasterComponent implements OnInit {
     ngOnInit(): void {
        
     }
-    onSearch() {
+    // onSearch() {
        
-    }
+    // }
 
-    onSearchClear() {
-        this._GenericService.myformSearch.reset({
-            GenericNameSearch: "",
-            IsDeletedSearch: "2",
-        });
+    // onSearchClear() {
+    //     this._GenericService.myformSearch.reset({
+    //         GenericNameSearch: "",
+    //         IsDeletedSearch: "2",
+    //     });
        
-    }
+    // }
    
 
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.genericId);
-                break;
-            default:
-                break;
-        }
-    }
+    // changeStatus(status: any) {
+    //     switch (status.id) {
+    //         case 1:
+    //             //this.onEdit(status.data)
+    //             break;
+    //         case 2:
+    //             this.onEdit(status.data)
+    //             break;
+    //         case 5:
+    //             this.onDeactive(status.data.genericId);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
     
-    onDeactive(genericId) {
-        debugger
+    // onDeactive(genericId) {
+    //     debugger
         
-    }
+    // }
 
     onSave(row: any = null) {
         debugger
@@ -124,23 +124,23 @@ export class GenericmasterComponent implements OnInit {
         });
     }
   
-    onEdit(row) {
-        var m_data1 = {
-            GenericId: row.GenericId,
-            GenericName: row.GenericName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        console.log(m_data1);
-        this._GenericService.populateForm(m_data1);
-    }
+    // onEdit(row) {
+    //     var m_data1 = {
+    //         GenericId: row.GenericId,
+    //         GenericName: row.GenericName.trim(),
+    //         IsDeleted: JSON.stringify(row.IsActive),
+    //         UpdatedBy: row.UpdatedBy,
+    //     };
+    //     console.log(m_data1);
+    //     this._GenericService.populateForm(m_data1);
+    // }
 }
 
-export class GenericMaster {
-    genericId: number;
-    genericName: string;
+// export class GenericMaster {
+//     genericId: number;
+//     genericName: string;
 
-    isActive: boolean;
+//     isActive: boolean;
     // AddedBy: number;
     // UpdatedBy: number;
     // AddedByName: string;
@@ -148,17 +148,17 @@ export class GenericMaster {
     /**
      * Constructor
      *
-     * @param GenericMaster
+     * 
      */
-    constructor(GenericMaster) {
-        {
-            this.genericId = GenericMaster.genericId || "";
-            this.genericName = GenericMaster.genericName || "";
+    // constructor(GenericMaster) {
+    //     {
+    //         this.genericId = GenericMaster.genericId || "";
+    //         this.genericName = GenericMaster.genericName || "";
 
-            this.isActive = GenericMaster.isActive || "false";
+    //         this.isActive = GenericMaster.isActive || "false";
             // this.AddedBy = GenericMaster.AddedBy || "";
             // this.UpdatedBy = GenericMaster.UpdatedBy || "";
             // this.AddedByName = GenericMaster.AddedByName || "";
-        }
-    }
-}
+//         }
+//     }
+// }

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule, DatePipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { InstructionmasterComponent } from "./instructionmaster.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
@@ -20,7 +20,6 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { InstructionmasterService } from "./instructionmaster.service";
 import { NewInstructionMasterComponent } from './new-instruction-master/new-instruction-master.component';
-import { MatDatepickerModule } from "@angular/material/datepicker";
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatDialogModule } from "@angular/material/dialog";
 

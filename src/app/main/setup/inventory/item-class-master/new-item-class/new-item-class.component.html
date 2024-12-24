@@ -23,10 +23,10 @@
                         <airmid-textbox 
                             label="Item Class  name"
                             formControlName="itemClassName"
-                            [value]=""
+                            [value]="data?.itemClassName"
                             [formGroup]="classForm"
-                            [validations]="_ItemClassMasterService.getValidationMessages().itemClassName"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().itemClassName"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                 </div>

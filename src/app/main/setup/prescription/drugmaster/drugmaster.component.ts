@@ -77,43 +77,7 @@ export class DrugmasterComponent implements OnInit {
     constructor(public _drugService: DrugmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-    ngOnInit(): void {
-             
-    }
-    onSearch() {
-        
-    }
-
-    onSearchClear() {
-        this._drugService.myformSearch.reset({
-            DrugNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        
-    }
-
-    // changeStatus(status: any) {
-    //     switch (status.id) {
-    //         case 1:
-    //             //this.onEdit(status.data)
-    //             break;
-    //         case 2:
-    //             this.onEdit(status.data)
-    //             break;
-    //         case 5:
-    //             this.onDeactive(status.data.drugId);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
-     
-
-    // onClear() {
-    //     this._drugService.myform.reset({ IsDeleted: "false" });
-    //     this._drugService.initializeFormGroup();
-    // }
+    ngOnInit(): void {}
 
     onSave(row: any=null) {
         let that = this;
@@ -130,43 +94,5 @@ export class DrugmasterComponent implements OnInit {
         });
     }
 
-    onEdit(row) {
-        var m_data = {
-            DrugId: row.DrugId,
-            DrugName: row.DrugName.trim(),
-            GenericId: row.GenericId,
-            ClassId: row.ClassId,
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._drugService.populateForm(m_data);
-    }
 }
-export class DrugMaster {
-    drugId: number;
-    drugName: string;
-    genericId: number;
-    classId: string;
-    isActive: boolean;
-    // AddedBy: number;
-    // UpdatedBy: number;
-    // AddedByName: string;
 
-    /**
-     * Constructor
-     *
-     * @param DrugMaster
-     */
-    constructor(DrugMaster) {
-        {
-            this.drugId = DrugMaster.drugId || "";
-            this.drugName = DrugMaster.drugName || "";
-            this.genericId = DrugMaster.genericId || "";
-            this.classId = DrugMaster.classId || "";
-            this.isActive = DrugMaster.isActive || "true";
-            // this.AddedBy = DrugMaster.AddedBy || "";
-            // this.UpdatedBy = DrugMaster.UpdatedBy || "";
-            // this.AddedByName = DrugMaster.AddedByName || "";
-        }
-    }
-}

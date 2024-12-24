@@ -17,56 +17,46 @@ export class InstructionmasterService {
         this.myformSearch = this.createSearchForm();
     }
 
+    // {
+    //     "instructionId": 0,
+    //     "instructionDescription": "string",
+    //     "instructioninMarathi": "string"
+    //   }
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
-            InstructionId: [0],
-            InstructionName: ["", 
+            instructionId: [0],
+            instructionDescription: ["", 
                 [
-                    Validators.required, 
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            IsDeleted: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            instructioninMarathi: "string",
+            // IsDeleted: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
-    getValidationMessages(){
-        return{
-            InstructionName: [
-                { name: "required", Message: "Instruction Name is required" },
-                { name: "maxlength", Message: "Instruction name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        }
-    }
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             InstructionNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createInstructionForm();
     }
 
-
     public instructionMasterInsert(Param: any, showLoader = true) {
-        if (Param.InstructionId) {
-            return this._httpClient.PutData("InstructionMastere/" + Param.InstructionId, Param, showLoader);
+        if (Param.instructionId) {
+            return this._httpClient.PutData("InstructionMastere/" + Param.instructionId, Param, showLoader);
         } else
-        
         return this._httpClient.PostData("InstructionMastere", Param, showLoader);
     }
 
-    public updateInstructionMaster(param) {
-        return this._httpClient.PostData("Prescription/InstructionUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myForm.patchValue(param);
-    }
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("Instruction?Id=" + m_data.toString());
     }

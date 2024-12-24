@@ -23,7 +23,7 @@ export class ModeOfPaymentMasterService {
             id: [0],
             modeOfPayment: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -33,6 +33,7 @@ export class ModeOfPaymentMasterService {
             AddedByName: [""],
         });
     }
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ModeOfPaymentSearch: [""],
@@ -43,15 +44,7 @@ export class ModeOfPaymentMasterService {
         this.createModeofpaymentForm();
     }
 
-    getValidationMessages() {
-        return {
-            modeOfPayment: [
-                { name: "required", Message: "modeOfPayment Name is required" },
-                { name: "maxlength", Message: "modeOfPayment name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+    
 
     public modeofpayMasterSave(Param: any, showLoader = true) {
         if (Param.id) {

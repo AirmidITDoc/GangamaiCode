@@ -90,34 +90,20 @@ export class InstructionmasterComponent implements OnInit {
         });
     }
 
-    InstructionMasterList: any;
-    sIsLoading:string= '';
-    msg: any;
+    // InstructionMasterList: any;
+    // sIsLoading:string= '';
+    // msg: any;
 
-    displayedColumns: string[] = [
-        "InstructionId",
-        "InstructionName",
-        "IsDeleted",
-        "action",
-    ];
-
-    // DSInstructionMasterList = new MatTableDataSource<InstructionMaster>();
-
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    // displayedColumns: string[] = [
+    //     "InstructionId",
+    //     "InstructionName",
+    //     "IsDeleted",
+    //     "action",
+    // ];
 
     ngOnInit(): void {
     }
-    onSearch() {
-    }
-
-    onSearchClear() {
-        this._InstructionService.myformSearch.reset({
-            InstructionNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-    }
+    
 
     // getInstructionMasterList() {
     //     this.sIsLoading = 'loading-data';
@@ -243,38 +229,38 @@ export class InstructionmasterComponent implements OnInit {
     //     }
     // }
 
-    onEdit(row) {
-        var m_data1 = {
-            InstructionId: row.InstructionId,
-            InstructionName: row.InstructionName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        console.log(m_data1);
-        this._InstructionService.populateForm(m_data1);
-    }
+    // onEdit(row) {
+    //     var m_data1 = {
+    //         InstructionId: row.InstructionId,
+    //         InstructionName: row.InstructionName.trim(),
+    //         IsDeleted: JSON.stringify(row.IsActive),
+    //         UpdatedBy: row.UpdatedBy,
+    //     };
+    //     console.log(m_data1);
+    //     this._InstructionService.populateForm(m_data1);
+    // }
 }
-export class InstructionMaster {
-    InstructionId: number;
-    InstructionName: string;
+// export class InstructionMaster {
+//     InstructionId: number;
+//     InstructionName: string;
 
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
+//     IsDeleted: boolean;
+//     AddedBy: number;
+//     UpdatedBy: number;
 
-    /**
-     * Constructor
-     *
-     * @param InstructionMaster
-     */
-    constructor(InstructionMaster) {
-        {
-            this.InstructionId = InstructionMaster.InstructionId || "";
-            this.InstructionName = InstructionMaster.InstructionName || "";
+//     /**
+//      * Constructor
+//      *
+//      * @param InstructionMaster
+//      */
+//     constructor(InstructionMaster) {
+//         {
+//             this.InstructionId = InstructionMaster.InstructionId || "";
+//             this.InstructionName = InstructionMaster.InstructionName || "";
 
-            this.IsDeleted = InstructionMaster.IsDeleted || "false";
-            this.AddedBy = InstructionMaster.AddedBy || "";
-            this.UpdatedBy = InstructionMaster.UpdatedBy || "";
-        }
-    }
-}
+//             this.IsDeleted = InstructionMaster.IsDeleted || "false";
+//             this.AddedBy = InstructionMaster.AddedBy || "";
+//             this.UpdatedBy = InstructionMaster.UpdatedBy || "";
+//         }
+//     }
+// }

@@ -31,6 +31,8 @@ export class NewUMOComponent implements OnInit {
 
   Saveflag: boolean= false;
   onSubmit() {
+    if(!this.unitForm.invalid)
+    {
     this.Saveflag=true
    
     if (this.unitForm.valid) {
@@ -41,10 +43,28 @@ export class NewUMOComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+    }
+    else
+    {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return; 
+    }
   }
 
   onClear(val: boolean) {
       this.unitForm.reset();
       this.dialogRef.close(val);
   }
+
+  getValidationMessages() {
+    return {
+        unitofMeasurementName: [
+            { name: "required", Message: "Currency Name is required" },
+            { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
+}
 }

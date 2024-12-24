@@ -26,9 +26,10 @@
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="Dose Name" 
-                                formControlName="doseName" [value]=""
+                                formControlName="doseName" 
+                                [value]="data?.doseName"
                                 [formGroup]="doseForm"
-                                [validations]="_doseMasterService.getValidationMessages().doseName"
+                                [validations]="getValidationMessages().doseName"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -40,9 +41,10 @@
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInEnglish" 
-                                formControlName="doseNameInEnglish" [value]=""
+                                formControlName="doseNameInEnglish" 
+                                [value]="data?.doseNameInEnglish"
                                 [formGroup]="doseForm"
-                                [validations]="_doseMasterService.getValidationMessages().doseNameInEnglish"
+                                [validations]="getValidationMessages().doseNameInEnglish"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -50,9 +52,10 @@
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInMarathi" 
-                                formControlName="doseNameInMarathi" [value]=""
+                                formControlName="doseNameInMarathi" 
+                                [value]="data?.doseNameInMarathi"
                                 [formGroup]="doseForm"
-                                [validations]="_doseMasterService.getValidationMessages().doseNameInMarathi"
+                                [validations]="getValidationMessages().doseNameInMarathi"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
@@ -60,9 +63,10 @@
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseQtyPerDay" 
-                                formControlName="doseQtyPerDay" [value]=""
+                                formControlName="doseQtyPerDay" 
+                                [value]="data?.doseQtyPerDay"
                                 [formGroup]="doseForm"
-                                [validations]="_doseMasterService.getValidationMessages().doseQtyPerDay"
+                                [validations]="getValidationMessages().doseQtyPerDay"
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>

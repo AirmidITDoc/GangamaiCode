@@ -30,12 +30,14 @@ export class NewCategoryComponent implements OnInit {
     }
   }
 
-  saveflag : boolean = false;
-  onSubmit() {
-    this.saveflag = true;
-   
-      if (this.categoryForm.valid) {
-        debugger
+   saveflag : boolean = false;
+   onSubmit() {
+    debugger
+      if (!this.categoryForm.invalid) {
+        this.saveflag = true;
+
+        console.log("Category JSON :", this.categoryForm.value);
+        
           this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -43,10 +45,28 @@ export class NewCategoryComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
-  }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
+    }
 
-  onClear(val: boolean) {
-      this.categoryForm.reset();
-      this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.categoryForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            categoryName: [
+                { name: "required", Message: "Category Name is required" },
+                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
+
 }

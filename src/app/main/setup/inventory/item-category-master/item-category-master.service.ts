@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { validateBasis } from "@angular/flex-layout";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -22,7 +23,7 @@ export class ItemCategoryMasterService {
             itemCategoryId: [0],
             itemCategoryName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -31,27 +32,16 @@ export class ItemCategoryMasterService {
             ],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemCategoryNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createItemCategoryForm();
-    }
-
-    getValidationMessages() {
-        return {
-            itemCategoryName: [
-                { name: "required", Message: "Category Name is required" },
-                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ],
-            itemTypeId: [
-                { name: "required", Message: "ItemType is required" }
-            ],
-        };
     }
 
     public categoryMasterSave(Param: any, showLoader = true) {

@@ -24,17 +24,19 @@
                         <airmid-textbox 
                             label="Category Name" 
                             formControlName="itemCategoryName" 
-                            [value]=""
+                            [value]="data?.itemCategoryName"
                             [formGroup]="categoryForm"
-                            [validations]="_CategorymasterService.getValidationMessages().itemCategoryName"
+                            [validations]="getValidationMessages().itemCategoryName"
                             [maxLength]="300">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Item Name" formControlName="itemTypeId"
+                        <airmid-autocomplete label="Item Name" 
+                            formControlName="itemTypeId"
+                            [value]="data?.itemTypeId"
                             [formGroup]="categoryForm"
-                            [validations]="_CategorymasterService.getValidationMessages().itemTypeId"
+                            [validations]="getValidationMessages().itemTypeId"
                             (selectDdlObject)="selectChangeItem($event)"
                             [mode]="autocompleteModeItem">
                         </airmid-autocomplete>

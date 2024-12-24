@@ -23,7 +23,7 @@ export class UnitmasterService {
             unitId: [0],
             unitName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -39,17 +39,6 @@ export class UnitmasterService {
 
     initializeFormGroup() {
         this.createUnitmasterForm();
-    }
-
-    
-    getValidationMessages() {
-        return {
-            unitName: [
-                { name: "required", Message: "Unit Name is required" },
-                { name: "maxlength", Message: "Unit name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public unitMasterSave(Param: any, showLoader = true) {

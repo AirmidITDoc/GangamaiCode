@@ -18,18 +18,20 @@
         <div class="modal-body-container">
             <form [formGroup]="currencyForm">
                 <input type="hidden" name="currencyId" formControlName="currencyId">
+                
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="Currency Name"
                             formControlName="currencyName"
-                            [value]=""
+                            [value]="data?.currencyName"
                             [formGroup]="currencyForm"
-                            [validations]="_CurrencymasterService.getValidationMessages().currencyName"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().currencyName"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                 </div>
+
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                     <div>

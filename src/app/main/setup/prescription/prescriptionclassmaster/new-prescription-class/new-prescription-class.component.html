@@ -23,14 +23,16 @@
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Class Name" formControlName="ClassName" [value]=""
+                        <airmid-textbox 
+                            label="Class Name" 
+                            formControlName="ClassName" 
+                            [value]="data?.ClassName"
                             [formGroup]="prescriptionForm"
-                            [validations]="_PrescriptionclassService.getValidationMessages().ClassName"
+                            [validations]="getValidationMessages().ClassName"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
                 </div>
-
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  

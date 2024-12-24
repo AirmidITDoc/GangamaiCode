@@ -26,9 +26,9 @@
                         <airmid-textbox 
                             label="Generic Name" 
                             formControlName="GenericName" 
-                            [value]=""
+                            [value]="data?.GenericName"
                             [formGroup]="genericForm"
-                            [validations]="_GenericMasterService.getValidationMessages().GenericName"
+                            [validations]="getValidationMessages().GenericName"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>

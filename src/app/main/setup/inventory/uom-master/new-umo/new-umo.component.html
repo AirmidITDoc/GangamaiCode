@@ -23,9 +23,9 @@
                     <airmid-textbox 
                         label="Unit of Measurement Name "
                         formControlName="unitofMeasurementName"
-                        [value]=""
+                        [value]="data?.unitofMeasurementName"
                         [formGroup]="unitForm"
-                        [validations]="_UomMasterService.getValidationMessages().unitofMeasurementName"
+                        [validations]="getValidationMessages().unitofMeasurementName"
                         [maxLength]="50">
                     </airmid-textbox> 
                     </div>
