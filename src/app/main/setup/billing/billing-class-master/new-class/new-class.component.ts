@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NewClassComponent implements OnInit {
 
   classForm: FormGroup;
+  isActive:boolean=true
   constructor(
       public _BillingClassMasterService: BillingClassMasterService,
       public dialogRef: MatDialogRef<NewClassComponent>,
@@ -21,20 +22,13 @@ export class NewClassComponent implements OnInit {
  
   ngOnInit(): void {
       this.classForm = this._BillingClassMasterService.createClassForm();
-      var m_data = {
-        classId: this.data?.classId,
-       className: this.data?.className.trim(),
-       isActive: JSON.stringify(this.data?.isActive),
-      };
-      this.classForm.patchValue(m_data);
+      if(this.data){
+        this.isActive=this.data.isActive
+         this.classForm.patchValue(this.data);}
+      
   }
   onSubmit() {
-    if (this.classForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
+   
       if (this.classForm.valid) {
         debugger
           this._BillingClassMasterService.classMasterSave(this.classForm.value).subscribe((response) => {
@@ -45,7 +39,7 @@ export class NewClassComponent implements OnInit {
           });
       }
     }     
-  }
+  
 
   onClear(val: boolean) {
       this.classForm.reset();

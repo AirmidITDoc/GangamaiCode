@@ -20,20 +20,20 @@ export class NewRegistrationComponent implements OnInit {
 
 
     personalFormGroup: FormGroup;
-    charcount: any = 0;
+    registerObj = new RegInsert({});
+
+
     submitted = false;
     now = Date.now();
     searchFormGroup: FormGroup;
     isRegSearchDisabled: boolean = true;
     newRegSelected: any = 'registration';
-
+    minDate: Date;
     msg: any = [];
     AgeYear: any;
     AgeMonth: any;
     AgeDay: any;
-    registerObj = new RegInsert({});
-    Prefix: any;
-    isDisabled: boolean = false;
+
     Submitflag: boolean = false;
     screenFromString = 'registration';
     matDialogRef: any;
@@ -57,108 +57,46 @@ export class NewRegistrationComponent implements OnInit {
         public toastr: ToastrService,
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
         public datePipe: DatePipe
-    ) {}
+    ) {
+        this.personalFormGroup = this._registerService.createPesonalForm();
+    }
 
 
     ngOnInit(): void {
-        this.RegID = 0;
-        this.personalFormGroup = this._registerService.createPesonalForm();
-        if (this.data) {
-            this.isDisabled = true
-            this.Submitflag = this.data.Submitflag;
-            this.RegID = this.data?.regId || 0;
-            var m_data = {
-                RegId: this.data?.regId,
-                RegNo: this.data?.regNo,
-                PrefixId: this.data?.prefixId,
-                FirstName: this.data?.firstName,
-                MiddleName: this.data?.middleName, 
-                LastName: this.data?.lastName,
-                GenderId: this.data?.genderId,
-                Address: this.data?.address,
-                DateOfBirth: this.data?.dateofBirth,//this.datePipe.transform(this.data?.dateofBirth,  "yyyy-MM-dd 00:00:00.000"),//new Date(this.data?.dateofBirth),
-                AgeYear: this.data?.ageYear.trim(),
-                AgeMonth: this.data?.ageMonth.trim(),
-                AgeDay:this.data?.ageDay.trim(),
-                PhoneNo: this.data?.phoneNo,
-                MobileNo: this.data?.mobileNo,
-                AadharCardNo: this.data?.aadharCardNo.trim(),
-                PanCardNo: this.data?.panCardNo || '',
-                MaritalStatusId: this.data?.maritalStatusId,
-                ReligionId: this.data?.religionId,
-                AreaId: this.data?.areaId,
-                CityId: this.data?.cityId,
-                StateId: this.data?.stateId,
-                CountryId: this.data?.countryId,
-                IsCharity: this.data?.isCharity
-            };
-            this.personalFormGroup.patchValue(m_data);
+
+        this.minDate = new Date();
+
+        console.log(this.data)
+        if (this.data.regId > 0) {
+            this.registerObj = this.data;
+            this.personalFormGroup.patchValue(this.registerObj);
+        } else {
+            this.personalFormGroup.reset();
         }
     }
     get f() {
         return this.personalFormGroup.controls;
     }
-    getDate(dateStr:string){
-        let dtStr = dateStr.split('-');
-        var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
-        return new Date(newDate);
-    }
-    dateTimeObj: any;
-    getDateTime(dateTimeObj) {
-        console.log('dateTimeObj ==', dateTimeObj);
-        this.dateTimeObj = dateTimeObj;
-    }
+
     OnSubmit() {
-        if(this.personalFormGroup.invalid){
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-              });
-              return;
-        } else {
-            var m_data = {
-                "regID": this.RegID || 0,
-                "regDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || this.dateTimeObj.date,
-                "regTime": this.dateTimeObj.time,//this.datePipe.transform(this.dateTimeObj.time, 'hh:mm:ss'),// this.dateTimeObj.time,// this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-                "prefixId": this.personalFormGroup.value.PrefixId || 0,
-                "firstName": this.personalFormGroup.value.FirstName || "",
-                "middleName": this.personalFormGroup.value.MiddleName || "",
-                "lastName": this.personalFormGroup.value.LastName || "",
-                "address": this.personalFormGroup.value.Address || "",
-                "city": this.personalFormGroup.value.CityId || '',
-                "pinNo": '0',// this._registerService.mySaveForm.value.PinNo || "0",
-                "dateOfBirth": this.datePipe.transform(this.personalFormGroup.value?.DateOfBirth, 'yyyy-MM-dd') || (this.personalFormGroup.value?.DateOfBirth || "2021-03-31"),// this.datePipe.transform(this.personalFormGroup.value?.DateofBirth, 'yyyy-MM-dd'),// this.registerObj.DateofBirth || "2021-03-31",
-                "age": (this.personalFormGroup.value?.AgeYear || "0").toString(),
-                "genderID": this.personalFormGroup.value.GenderId || 0,
-                "phoneNo": this.personalFormGroup.value?.PhoneNo || "0",
-                "mobileNo": this.personalFormGroup.value?.MobileNo || "0",
-                "addedBy": this.accountService.currentUserValue.userId,
-                "updatedBy": this.accountService.currentUserValue.userId,
-                "ageYear": (this.personalFormGroup.value?.AgeYear || "0").toString(),// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-                "ageMonth": (this.personalFormGroup.value?.AgeMonth || "").toString(),
-                "ageDay": (this.personalFormGroup.value?.AgeDay || "").toString(),
-                "countryId": 1,// this.personalFormGroup.get('CountryId').value,
-                "stateId": this.personalFormGroup.value.StateId || 0,
-                "cityId": this.personalFormGroup.value.CityId || 0,
-                "maritalStatusId": this.personalFormGroup.value.MaritalStatusId ? this.personalFormGroup.value.MaritalStatusId : 0,
-                "isCharity": false,//Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-                "religionId": this.personalFormGroup.value.ReligionId ? this.personalFormGroup.value.ReligionId : 0,
-                "areaId": this.personalFormGroup.value.AreaId ? this.personalFormGroup.value.AreaId : 0,
-                "isSeniorCitizen": false,
-                "aadharcardno": this.personalFormGroup.value?.AadharCardNo ? this.personalFormGroup.value.AadharCardNo : 0,
-                "pancardno": "",// this.personalFormGroup.value.PanCardNo.toString()  ? this.personalFormGroup.value.PanCardNo.toString()  : 0,
-                "Photo": ''
-            }
-            if (this.RegID > 0) {
-                delete m_data.addedBy;
-            }
-            this._registerService.RegstrationtSaveData(m_data).subscribe((response) => {
+
+        console.log(this.personalFormGroup.value)
+        // if (this.personalFormGroup.valid) {
+            this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        }
+        // } 
+        // else {
+        //     this.toastr.warning('Please Check Form Invalid', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
     }
+
     onClose() {
         this.dialogRef.close();
     }
@@ -166,17 +104,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.reset();
         this.dialogRef.close(val);
     }
-    onChangeDateofBirth(DateOfBirth) {
-        if (DateOfBirth) {     
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.personalFormGroup.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
-            this.personalFormGroup.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
-            this.personalFormGroup.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
-            this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-        }
-    }
+   
     // Change Registered or New Registration
     onChangeReg(event) {
         if (event.value == 'registration') {
@@ -258,5 +186,77 @@ export class NewRegistrationComponent implements OnInit {
         if (event.which === 13) {
             this.phone.nativeElement.focus();
         }
+    }
+
+    getValidationMessages() {
+        return {
+            FirstName: [
+                { name: "required", Message: "First Name is required" },
+                { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }
+            ],
+            middleName: [
+                // { name: "required", Message: "Middle Name is required" },
+                // { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }
+            ],
+            lastName: [
+                { name: "required", Message: "Last Name is required" },
+                // { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }
+            ],
+            address: [
+                { name: "required", Message: "Address is required" },
+
+            ],
+            prefixId: [
+                { name: "required", Message: "Prefix Name is required" }
+            ],
+            genderId: [
+                { name: "required", Message: "Gender is required" }
+            ],
+            areaId: [
+                { name: "required", Message: "Area Name is required" }
+            ],
+            cityId: [
+                { name: "required", Message: "City Name is required" }
+            ],
+            religionId: [
+                { name: "required", Message: "Religion Name is required" }
+            ],
+            countryId: [
+                { name: "required", Message: "Country Name is required" }
+            ],
+            maritalStatusId: [
+                { name: "required", Message: "Mstatus Name is required" }
+            ],
+            stateId: [
+                { name: "required", Message: "State Name is required" }
+            ],
+            mobileNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Mobile No is required" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+            ],
+            aadharCardNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "AadharCard No is required" },
+                { name: "minLength", Message: "12 digit required." },
+                { name: "maxLength", Message: "More than 12 digits not allowed." }
+            ],
+        };
+    }
+
+    getDate(dateStr: string) {
+        let dtStr = dateStr.split('-');
+        var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
+        return new Date(newDate);
+    }
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        console.log('dateTimeObj ==', dateTimeObj);
+        this.dateTimeObj = dateTimeObj;
     }
 }

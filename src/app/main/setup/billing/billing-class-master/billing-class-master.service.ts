@@ -20,7 +20,7 @@ export class BillingClassMasterService {
 
     createClassForm(): FormGroup {
         return this._formBuilder.group({
-            classId: [""],
+            classId: [0],
             className: ["", 
                 [
                     Validators.required,

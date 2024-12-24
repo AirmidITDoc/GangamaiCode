@@ -57,33 +57,33 @@ export class PhoneAppointListService {
 
   createphoneForm(): FormGroup {
     return this._formBuilder.group({
-      phoneAppId: '',
-      appDate: '',
-      appTime: '',
+      phoneAppId: [1],
+      appDate:  [(new Date()).toISOString()],
+      appTime:  [(new Date()).toISOString()],
      // seqNo: '',
-     FirstName:  ['', [
+     firstName:  ['', [
         Validators.required,
         Validators.maxLength(50),
         // Validators.pattern("^[a-zA-Z._ -]*$"),
         Validators.pattern('^[a-zA-Z () ]*$')
       ]],
-      MiddleName: ['', [
+      middleName: ['', [
 
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      LastName: ['', [
+      lastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      Address: ['', Validators.required],
-      MobileNo:'',
-      PhAppDate: [(new Date()).toISOString()],
-      PhAppTime: '',
-      Departmentid: '',
-      DoctorId: '',
-      addedBy: '',
-      updatedBy: '',
-      regNo: '',
+      address: ['', Validators.required],
+      mobileNo:[''],
+      phAppDate: [(new Date()).toISOString()],
+      phAppTime: [(new Date()).toISOString()],
+      departmentId: '',
+      doctorId: [1],
+      addedBy: 1,
+      updatedBy:1,
+      regNo: [''],
    
     });
 }

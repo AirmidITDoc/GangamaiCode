@@ -41,50 +41,29 @@ export class EditConsultantDoctorComponent implements OnInit {
       if(this.data){
         this.RegId=this.data.regId
         this.VisitId=this.data.visitId
+        this.ConsdrForm.patchValue(this.data);
             }
 
-            
-      var m_data = {
-        doctorID: this.data?.doctorID,
-        departmentid: this.data?.departmentid,
-        // roomId: this.data?.roomId,
-        // isAvailible: JSON.stringify(this.data?.isAvailible),
-         // isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.ConsdrForm.patchValue(m_data);
-
-
-  }
+        }
 
 
 
-  getValidationDeptMessages() {
+  getValidationMessages() {
     return {
       Departmentid: [
             { name: "required", Message: "Department Name is required" }
-        ]
+        ],
+        DoctorID: [
+          { name: "required", Message: "Doctor Name is required" }
+      ]
     };
   }
-  
-  getValidationdoctorMessages() {
-    return {
-      DoctorID: [
-            { name: "required", Message: "Doctor Name is required" }
-        ]
-    };
-  }
-  
+ 
   onSubmit() {
       if (this.ConsdrForm.valid) {
-        debugger
-        var m_data={
-          "visitId":this.VisitId,
-          "regId":this.RegId,
-          "consultantDocId":this.ConsdrForm.get('DoctorID').value,
-           "departmentId":this.ConsdrForm.get('Departmentid').value,
-        }
-        console.log(m_data)
-          this._AppointmentlistService.EditConDoctor(m_data).subscribe((response) => {
+       
+        console.log(this.ConsdrForm.value)
+          this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
           }, (error) => {

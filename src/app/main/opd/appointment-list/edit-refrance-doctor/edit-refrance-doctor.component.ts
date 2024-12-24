@@ -47,14 +47,8 @@ export class EditRefranceDoctorComponent implements OnInit {
       this.VisitId = this.data.visitId
     }
 
-    var m_data = {
-      refDoctorId: this.data?.refDoctorId,
-      // departmentid: this.data?.departmentid,
-      // roomId: this.data?.roomId,
-      // isAvailible: JSON.stringify(this.data?.isAvailible),
-      // isDeleted: JSON.stringify(this.data?.isActive),
-    };
-    this.RefrancedrForm.patchValue(m_data);
+    
+    this.RefrancedrForm.patchValue(this.data);
 
     
   }
@@ -71,15 +65,9 @@ export class EditRefranceDoctorComponent implements OnInit {
 
   onSubmit() {
     if (this.RefrancedrForm.valid) {
-    debugger
-    var m_data = {
-      "visitId": this.VisitId,
-      "regId": this.RegId,
-      "refDocId": this.RefrancedrForm.get("DoctorID").value || 0
-
-    }
-    console.log(m_data);
-    this._AppointmentlistService.EditRefDoctor(m_data).subscribe((response) => {
+   
+    console.log(this.RefrancedrForm.value);
+    this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {

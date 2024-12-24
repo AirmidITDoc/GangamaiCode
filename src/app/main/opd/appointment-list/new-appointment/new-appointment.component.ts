@@ -32,27 +32,7 @@ export class NewAppointmentComponent implements OnInit {
     OnChangeDobType(e) {
         this.dateStyle = e.value;
     }
-    CalcDOB(mode, e) {
-        let d = new Date();
-        if (mode == "Day") {
-            d.setDate(d.getDate() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-            //this.personalFormGroup.get('DateOfBirth').setValue(moment().add(Number(e.target.value), 'days').format("DD-MMM-YYYY"));
-        }
-        else if (mode == "Month") {
-            d.setMonth(d.getMonth() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        else if (mode == "Year") {
-            d.setFullYear(d.getFullYear() - Number(e.target.value));
-            this.registerObj.DateofBirth = d;
-        }
-        let todayDate = new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        // this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        // this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - this.registerObj.dateofBirth.getMonth());
-        // this.registerObj.ageDay = Math.abs(todayDate.getDate() - this.registerObj.dateofBirth.getDate());
-    }
+   
     msg: any;
     // isLoading = true;
     isRateLimitReached = false;
@@ -280,7 +260,7 @@ export class NewAppointmentComponent implements OnInit {
         if (this.data)
             this.registerObj = this.data;
         console.log(this.registerObj)
-        this.CalcDOB('', null);
+     
         this.data.tariffId=1
         this.data.PatientTypeId=1
     }
@@ -454,44 +434,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     }
-
-
-
-
-    // AppointmentCancle(contact) {
-    //     Swal.fire({
-    //         title: 'Do you want to Cancle Appointment',
-    //         // showDenyButton: true,
-    //         showCancelButton: true,
-    //         confirmButtonText: 'OK',
-
-    //     }).then((flag) => {
-
-
-    //         if (flag.isConfirmed) {
-    //             let appointmentcancle = {};
-    //             appointmentcancle['visitId'] = contact.VisitId;
-
-    //             let submitData = {
-    //                 "appointmentcancle": appointmentcancle
-
-    //             };
-    //             console.log(submitData);
-    //             this._AppointmentSreviceService.Appointmentcancle(submitData).subscribe(response => {
-    //                 if (response) {
-    //                     Swal.fire('Appointment cancelled !', 'Appointment cancelled Successfully!', 'success').then((result) => {
-
-    //                     });
-    //                     this.getVisitList1();
-    //                 } else {
-    //                     Swal.fire('Error !', 'Appointment cancelled data not saved', 'error');
-    //                 }
-    //                 this.isLoading = '';
-    //             });
-    //         }
-    //     });
-    //     this.getVisitList1();
-    // }
+    
     isRowDisabled: boolean = false
 
     chkdisabled(contact) {
@@ -684,114 +627,52 @@ export class NewAppointmentComponent implements OnInit {
         return {
             prefixId: [
                 { name: "required", Message: "Prefix Name is required" }
-            ]
-        };
-    }
-
-
-    getValidationAreaMessages() {
-        return {
+            ],
             AreaId: [
                 { name: "required", Message: "Area Name is required" }
-            ]
-        };
-    }
-    getValidationCityMessages() {
-        return {
+            ],
             CityId: [
                 { name: "required", Message: "City Name is required" }
-            ]
-        };
-    }
-    getValidationStateMessages() {
-        return {
+            ],
             StateId: [
                 { name: "required", Message: "State Name is required" }
-            ]
-        };
-    }
-
-    getValidationReligionMessages() {
-        return {
+            ],
             ReligionId: [
                 { name: "required", Message: "Religion Name is required" }
-            ]
-        };
-    }
-    getValidationCountryMessages() {
-        return {
+            ],
             CountryId: [
                 { name: "required", Message: "Country Name is required" }
-            ]
-        };
-    }
-    getValidationMstatusMessages() {
-        return {
+            ],
             MaritalStatusId: [
                 { name: "required", Message: "Mstatus Name is required" }
-            ]
-        };
-    }
-
-    getValidationPatientTypeMessages() {
-        return {
+            ],
             patientTypeId: [
                 { name: "required", Message: "Country Name is required" }
-            ]
-        };
-    }
-    getValidationTariffMessages() {
-        return {
+            ],
             tariffId: [
                 { name: "required", Message: "Mstatus Name is required" }
-            ]
-        };
-    }
-
-    getValidationDepartmentMessages() {
-        return {
+            ],
             departmentId: [
                 { name: "required", Message: "Department Name is required" }
-            ]
-        };
-    }
-
-    getValidationdeptDocMessages() {
-        return {
+            ],
             DoctorID: [
                 { name: "required", Message: "Doctor Name is required" }
-            ]
-        };
-    }
-    getValidationRefDocMessages() {
-        return {
+            ],
             refDocId: [
                 { name: "required", Message: "Ref Doctor Name is required" }
-            ]
-        };
-    }
-    getValidationPurposeMessages() {
-        return {
+            ],
             PurposeId: [
                 { name: "required", Message: "Purpose Name is required" }
-            ]
-        };
-    }
-    getValidationcompanyMessages() {
-        return {
+            ],
             CompanyId: [
                 { name: "required", Message: "Company Name is required" }
-            ]
-        };
-    }
-
-    getValidationsubcompanyMessages() {
-        return {
+            ],
             SubCompanyId: [
                 { name: "required", Message: "SubCompany Name is required" }
             ]
         };
     }
+
     onNewSave() {
 
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
@@ -806,55 +687,12 @@ export class NewAppointmentComponent implements OnInit {
                 this.onClose();
             }
         }
-        // this.getVisitList1();
+      
     }
 
     onSave() {
 
-        this.prefixId = this.personalFormGroup.get('PrefixId').value
-        if ((this.prefixId ==0)) {
-            this.toastr.warning('Please select valid Prefix ', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        this.areaId = this.personalFormGroup.get('AreaId').value
-        if ((this.areaId == 0)) {
-            this.toastr.warning('Please select valid Area ', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        // this.cityId = this.personalFormGroup.get('CityId').value
-        // if ((this.CityId == '' || this.CityId == null || this.CityId == undefined)) {
-        //     this.toastr.warning('Please select valid City ', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // this.departmentId = this.VisitFormGroup.get('Departmentid').value
-        // if ((this.Departmentid == '' || this.Departmentid == null || this.Departmentid == undefined)) {
-        //     this.toastr.warning('Please select valid Department ', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // this.DoctorID = this.VisitFormGroup.get('DoctorID').value
-        // if ((this.DoctorID == '' || this.DoctorID == null || this.DoctorID == undefined)) {
-        //     this.toastr.warning('Please select valid Department Doctor ', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // this.vDoctorId = this.VisitFormGroup.get('RefDocId').value
-        // if ((this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined)) {
-        //     this.toastr.warning('Please select valid Ref Doctor ', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        else {debugger
-            var Ageflag=false
+                   var Ageflag=false
             // if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
                 if (this.registerObj.ageYear != 0 || this.registerObj.ageMonth != 0 || this.registerObj.ageDay != 0) {
                 
@@ -874,13 +712,34 @@ export class NewAppointmentComponent implements OnInit {
 
         }
         
-    }
+    
+        OnsaveNewRegister(){
+            console.log(this.personalFormGroup.value);
 
+            this._AppointmentlistService.NewappointmentSave(this.personalFormGroup.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+                this._matDialog.closeAll();
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
+        onSaveRegistered(){
+            console.log(this.personalFormGroup.value);
 
-    OnsaveNewRegister() {
-        debugger
-      
+            this._AppointmentlistService.RregisteredappointmentSave(this.personalFormGroup.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+                this._matDialog.closeAll();
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+                      
+    
+        }
 
+    OnsaveNewRegister1() {
+       
         var m_data = {
 
             "Registration": {
@@ -955,7 +814,7 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
-    onSaveRegistered() {
+    onSaveRegistered1() {
 
         let Areaid = 0;
         if (this.personalFormGroup.get('AreaId').value)
@@ -1063,54 +922,9 @@ export class NewAppointmentComponent implements OnInit {
 
     objICard = {};
     QrCode = "";
-    printIcard(row) {
+    
 
-        this.objICard = row;
-        this.QrCode = row.RegId.toString();
-        setTimeout(() => {
-            this.OnPrint();
-        }, 100);
-    }
-    OnPrint() {
-
-        const printContents = document.getElementById("i-card").innerHTML;
-        const pageContent = `<!DOCTYPE html><html><head></head><body onload="window.print()">${printContents}</html>`;
-        let popupWindow: Window;
-        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-            popupWindow = window.open(
-                '',
-                '_blank',
-                'width=600,height=600,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no'
-            );
-            popupWindow.window.focus();
-            popupWindow.document.write(pageContent);
-            popupWindow.document.close();
-            popupWindow.onbeforeunload = event => {
-                popupWindow.close();
-            };
-            popupWindow.onabort = event => {
-                popupWindow.document.close();
-                popupWindow.close();
-            };
-        } else {
-            popupWindow = window.open('', '_blank', 'width=600,height=600');
-            popupWindow.document.open();
-            popupWindow.document.write(pageContent);
-            popupWindow.document.close();
-        }
-
-    }
-
-
-    feedback() {
-        // const dialogRef = this._matDialog.open(FeedbackComponent, {
-        //     maxWidth: "80vw",
-        //     height: "90%",
-        //     width: "100%",
-
-        // });
-    }
-
+   
     PatientAppointment() {
         // const dialogRef = this._matDialog.open(PatientAppointmentComponent,
         //     {
@@ -1132,32 +946,6 @@ export class NewAppointmentComponent implements OnInit {
     }
 
 
-
-    //
-
-    // createCDKPortal(data, windowInstance) {
-    //   if (windowInstance) {
-    //     const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
-    //     const injector = this.createInjector(data);
-    //     let componentInstance;
-    //     componentInstance = this.attachHeaderContainer(outlet, injector);
-    //     // console.log(windowInstance.document)
-    //     let template = windowInstance.document.createElement('div'); // is a node
-    //     template.innerHTML = this.printTemplate;
-    //     windowInstance.document.body.appendChild(template);
-    //   }
-    // }
-    // createInjector(data): any {
-    //   const injectionTokens = new WeakMap();
-    //   injectionTokens.set({}, data);
-    //   return new PortalInjector(this.injector, injectionTokens);
-    // }
-
-    // attachHeaderContainer(outlet, injector) {
-    //   const containerPortal = new ComponentPortal(HeaderComponent, null, injector);
-    //   const containerRef: ComponentRef<HeaderComponent> = outlet.attach(containerPortal);
-    //   return containerRef.instance;
-    // }
 
 
     // Image Upload
@@ -1293,49 +1081,7 @@ export class NewAppointmentComponent implements OnInit {
         // }
     }
 
-    // onClose() {
-
-    //     // this.registerObj = new RegInsert({});
-    //     this.personalFormGroup.reset();
-    //     this.personalFormGroup.get('RegId').reset();
-
-    //     this.searchFormGroup.get('RegId').reset();
-
-    //     this.personalFormGroup = this.createPesonalForm();
-    //     this.personalFormGroup.markAllAsTouched();
-    //     this.VisitFormGroup = this.createVisitdetailForm();
-    //     this.VisitFormGroup.markAllAsTouched();
-
-    //     this.getHospitalList1();
-    //     this.getHospitalList();
-    //     this.getTariffCombo();
-    //     this.getPatientTypeList();
-    //     this.getPrefixList();
-    //     this.getDepartmentList();
-    //     this.getcityList1();
-    //     this.getCompanyList();
-    //     this.getSubTPACompList();
-
-    //     this.isCompanySelected = false;
-    //     this.VisitFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
-    //     this.VisitFormGroup.get('CompanyId').clearValidators();
-    //     this.VisitFormGroup.get('SubCompanyId').clearValidators();
-    //     this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
-    //     this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
-    //     this.patienttype = 1;
-
-    //     const todayDate = new Date();
-    //     const dob = new Date(this.currentDate);
-    //     const timeDiff = Math.abs(Date.now() - dob.getTime());
-    //     // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    //     // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-    //     // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-    //     // this.registerObj.DateofBirth = this.currentDate;
-    //     this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
-
-    //     this.personalFormGroup.get('PhoneNo').clearValidators();
-    //     this.VisitFormGroup.get('PhoneNo').updateValueAndValidity();
-    // }
+   
     onClose() {
         this.dialogRef.close();
     }
@@ -1547,22 +1293,7 @@ export class NewAppointmentComponent implements OnInit {
             this.personalFormGroup.get('HealthCardNo').updateValueAndValidity();
         }
     }
-    // onDaysChange(){
-    //     if (this.vDays > 0) {
-    //         const today = new Date();
-    //         const todaydays = today.getDate()
-    //         const followDays = ((todaydays) + parseInt(this.vDays))
-    //         console.log(followDays)
-    //         const followUp = new Date();
-    //         followUp.setDate((todaydays) + parseInt(this.vDays));
-    //         this.followUpDate = this.datePipe.transform(followUp.toDateString(), 'MM/dd/YYYY');
-    //         this.HealthCardExpDate = new Date(this.followUpDate);
-    //         console.log(this.followUpDate)
-    //       }else{
-    //         if(this.vDays == '' || this.vDays == 0 || this.vDays == null || this.vDays == undefined)
-    //             this.HealthCardExpDate = new Date();
-    //       }
-    // }
+   
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -1691,8 +1422,8 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onClear(val: boolean) {
-        // this.personalform.reset();
-        // this.dialogRef.close(val);
+        this.personalFormGroup.reset();
+        this.dialogRef.close(val);
     }
 
 

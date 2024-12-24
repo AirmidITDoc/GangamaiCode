@@ -41,11 +41,7 @@ export class BedMasterService {
 
     getValidationMessages() {
         return {
-            bedName: [
-                { name: "required", Message: "Bed Name is required" },
-                { name: "maxlength", Message: "Bed name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
+           
         };
     }
 

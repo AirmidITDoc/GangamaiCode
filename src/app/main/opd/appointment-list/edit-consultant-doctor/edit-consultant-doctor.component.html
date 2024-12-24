@@ -107,15 +107,15 @@
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
                                        
-                                        <airmid-autocomplete label="Departmentid" formControlName="Departmentid" [value]="Departmentid"
+                                        <airmid-autocomplete label="Departmentid" formControlName="Departmentid" [value]="data?.Departmentid"
                                         [formGroup]="ConsdrForm"
-                                        [validations]="getValidationDeptMessages().Departmentid"
+                                        [validations]="getValidationMessages().Departmentid"
                                         [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
                                     </airmid-autocomplete>
                                        
-                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID" [value]="DoctorID"
+                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID" [value]="data?.DoctorID"
                                         [formGroup]="ConsdrForm"
-                                        [validations]="getValidationdoctorMessages().DoctorID"
+                                        [validations]="getValidationMessages().DoctorID"
                                         [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)">
                                     </airmid-autocomplete>
                                     

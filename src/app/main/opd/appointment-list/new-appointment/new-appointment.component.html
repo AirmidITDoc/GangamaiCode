@@ -180,87 +180,12 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-button-toggle-group [(ngModel)]="dateStyle"
-                                                        (change)="OnChangeDobType($event)" aria-label="Font Style">
-                                                        <mat-button-toggle value="Date">Date</mat-button-toggle>
-                                                        <mat-button-toggle value="Day">Day</mat-button-toggle>
-                                                        <mat-button-toggle value="Month">Month</mat-button-toggle>
-                                                        <mat-button-toggle value="Year">Year</mat-button-toggle>
-                                                    </mat-button-toggle-group>
-                                                </div>
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <div fxLayout="row" class="gap-8">
-                                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Year'">
-                                                            <mat-label>Age (Y)</mat-label>
-                                                            <input placeholder="Age (Y)" matInput
-                                                                [(ngModel)]="registerObj.ageYear"
-                                                                (keyup)="CalcDOB('Year',$event)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                        </mat-form-field>
-                                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Month'">
-                                                            <mat-label>Age (M)</mat-label>
-                                                            <input placeholder="Age (M)" matInput
-                                                                [(ngModel)]="registerObj.ageMonth"
-                                                                (keyup)="CalcDOB('Month',$event)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                                        </mat-form-field>
-                                                        <mat-form-field appearance="outline" *ngIf="dateStyle=='Day'">
-                                                            <mat-label>Age (D)</mat-label>
-                                                            <input placeholder="Age (D)" matInput
-                                                                [(ngModel)]="registerObj.ageDay"
-                                                                (keyup)="CalcDOB('Day',$event)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                                        </mat-form-field>
-                                                        <mat-form-field appearance="outline">
-                                                            <input matInput [matDatepicker]="validFromPicker"
-                                                                formControllName="DateOfBirth" #bday
-                                                                (keydown)="onEnterbday($event)"
-                                                                [disabled]="dateStyle!='Date'"
-                                                                (dateChange)="onChangeDateofBirth($event.value)"
-                                                                placeholder="mm/dd/yyyy">
-                                                            <mat-datepicker-toggle matSuffix
-                                                                [for]="validFromPicker"></mat-datepicker-toggle>
-                                                            <mat-datepicker #validFromPicker></mat-datepicker>
-                                                        </mat-form-field>
+                                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
+                                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth"
+                                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                                     </div>
                                                 </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <div fxLayout="row" class="gap-8">
-                                                        <mat-form-field appearance="outline">
-                                                            <mat-label>Age (Y)</mat-label>
-                                                            <input name="AgeYear" formControlName="AgeYear"
-                                                                [(ngModel)]="registerObj.ageYear" placeholder="Age (Y)"
-                                                                matInput maxlength="3" #agey readonly
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                            <mat-error
-                                                                *ngIf="personalFormGroup.get('AgeYear').invalid && personalFormGroup.get('AgeYear').touched">Please
-                                                                enter Age Year </mat-error>
-                                                        </mat-form-field>
-                                                        <mat-form-field appearance="outline">
-                                                            <mat-label>Age (M)</mat-label>
-                                                            <input name="AgeMonth" formControlName="AgeMonth"
-                                                                [(ngModel)]="registerObj.ageMonth" placeholder="Age (M)"
-                                                                matInput readonly type="number" maxlength="2" #agem
-                                                                (keydown)="onEnteragem($event)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                                            <mat-error
-                                                                *ngIf="personalFormGroup.get('AgeMonth').invalid && personalFormGroup.get('AgeMonth').touched">
-                                                                Please enter Age Month </mat-error>
-                                                        </mat-form-field>
-                                                        <mat-form-field appearance="outline">
-                                                            <mat-label>Age (D)</mat-label>
-                                                            <input name="AgeDay" formControlName="AgeDay"
-                                                                [(ngModel)]="registerObj.ageDay" placeholder="Age (D)"
-                                                                matInput type="number" maxlength="2" #aged
-                                                                (keydown)="onEnteraged($event)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,2);">
-                                                            <mat-error
-                                                                *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
-                                                                Please enter Age Day </mat-error>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
+                                           
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
@@ -289,48 +214,48 @@
                                                             enter Address </mat-error>
                                                     </mat-form-field>
                                                 </div>
-                                                <!-- [value]="AreaId"  -->
+                                               
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="Area" formControlName="AreaId"
                                                       [formGroup]="personalFormGroup" [value]="data?.areaId"
-                                                        [validations]="getValidationAreaMessages().AreaId"
+                                                        [validations]="getValidationMessages().AreaId"
                                                         [mode]="autocompleteModearea"
                                                         (selectDdlObject)="selectChangearea($event)">
                                                     </airmid-autocomplete>
                                                 </div>
-                                                <!-- [value]="CityId" -->
+                                            
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="City" formControlName="CityId"
                                                         [formGroup]="personalFormGroup"  [value]="data?.cityId"
-                                                        [validations]="getValidationCityMessages().CityId"
+                                                        [validations]="getValidationMessages().CityId"
                                                         [mode]="autocompleteModecity"
                                                         (selectDdlObject)="selectChangecity($event)">
                                                     </airmid-autocomplete>
                                                 </div>
-                                                <!-- [value]="StateId" -->
+                                               
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="State" formControlName="StateId"
                                                         [formGroup]="personalFormGroup"  [value]="data?.stateId"
-                                                        [validations]="getValidationStateMessages().StateId"
+                                                        [validations]="getValidationMessages().StateId"
                                                         [mode]="autocompleteModestate"
                                                         (selectDdlObject)="selectChangestate($event)">
                                                     </airmid-autocomplete>
                                                 </div>
-                                                <!-- [value]="CountryId" -->
+                                              
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="Country" formControlName="CountryId"
                                                         [formGroup]="personalFormGroup"  [value]="data?.countryId"
-                                                        [validations]="getValidationCountryMessages().CountryId"
+                                                        [validations]="getValidationMessages().CountryId"
                                                         [mode]="autocompleteModecountry"
                                                         (selectDdlObject)="selectChangecountry($event)">
                                                     </airmid-autocomplete>
                                                 </div>
-                                                <!-- [value]="MaritalStatusId" -->
+                                               
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="MaritalStatusId"
                                                         formControlName="MaritalStatusId"
                                                         [formGroup]="personalFormGroup"
-                                                        [validations]="getValidationMstatusMessages().MaritalStatusId"
+                                                        [validations]="getValidationMessages().MaritalStatusId"
                                                         [mode]="autocompleteModemstatus"
                                                         (selectDdlObject)="selectChangemstatus($event)">
                                                     </airmid-autocomplete>
@@ -374,10 +299,10 @@
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <!-- [value]="ReligionId" -->
+                                                  
                                                     <airmid-autocomplete label="ReligionId" formControlName="ReligionId"
                                                         [formGroup]="personalFormGroup"  [value]="data?.religionId"
-                                                        [validations]="getValidationReligionMessages().ReligionId"
+                                                        [validations]="getValidationMessages().ReligionId"
                                                         [mode]="autocompleteModereligion"
                                                         (selectDdlObject)="selectChangereligion($event)">
                                                     </airmid-autocomplete>
@@ -455,7 +380,7 @@
                                                 <airmid-autocomplete label="PatientTypeID"
                                                     formControlName="PatientTypeID"    [value]="data?.patientTypeId"
                                                     [formGroup]="VisitFormGroup"
-                                                    [validations]="getValidationPatientTypeMessages().patientTypeId"
+                                                    [validations]="getValidationMessages().patientTypeId"
                                                     [mode]="autocompleteModepatienttype"
                                                     (selectDdlObject)="selectChangepatienttype($event)">
                                                 </airmid-autocomplete> 
@@ -465,7 +390,7 @@
                                                 <!-- [value]="TrariffId" -->
                                                  <airmid-autocomplete label="TariffId" formControlName="TariffId"
                                                     [formGroup]="VisitFormGroup"    [value]="data?.tariffId"
-                                                    [validations]="getValidationTariffMessages().tariffId"
+                                                    [validations]="getValidationMessages().tariffId"
                                                     [mode]="autocompleteModetariff"
                                                     (selectDdlObject)="selectChangetariff($event)">
                                                 </airmid-autocomplete> 
@@ -503,7 +428,7 @@
                                                 <!-- [value]="Departmentid" -->
                                                  <airmid-autocomplete label="Departmentid" formControlName="Departmentid"
                                                    [formGroup]="VisitFormGroup"  [value]="data?.departmentId"
-                                                    [validations]="getValidationDepartmentMessages().departmentId"
+                                                    [validations]="getValidationMessages().departmentId"
                                                     [mode]="autocompleteModedepartment"
                                                     (selectDdlObject)="selectChangedepartment($event)">
                                                 </airmid-autocomplete> 
@@ -514,7 +439,7 @@
                                                 <!-- [value]="DoctorID" -->
                                                 <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
                                                     [formGroup]="VisitFormGroup"  [value]="data?.doctorID"
-                                                    [validations]="getValidationdeptDocMessages().DoctorID"
+                                                    [validations]="getValidationMessages().DoctorID"
                                                     [mode]="autocompleteModedeptdoc"
                                                     (selectDdlObject)="selectChangedeptdoc($event)">
                                                 </airmid-autocomplete>
@@ -524,7 +449,7 @@
                                                 <!-- [value]="RefDocId" -->
                                               <airmid-autocomplete label="RefDocId" formControlName="RefDocId"
                                                     [formGroup]="VisitFormGroup" [value]="data?.refDocId"
-                                                    [validations]="getValidationRefDocMessages().refDocId"
+                                                    [validations]="getValidationMessages().refDocId"
                                                     [mode]="autocompleteModerefdoc"
                                                     (selectDdlObject)="selectChangerefdoc($event)">
                                                 </airmid-autocomplete>
@@ -535,7 +460,7 @@
                                                 <!-- [value]="PurposeId" -->
                                                 <airmid-autocomplete label="PurposeId" formControlName="PurposeId"
                                                     [formGroup]="VisitFormGroup"
-                                                    [validations]="getValidationPurposeMessages().PurposeId"
+                                                    [validations]="getValidationMessages().PurposeId"
                                                     [mode]="autocompleteModepurpose"
                                                     (selectDdlObject)="selectChangepurpose($event)">
                                                 </airmid-autocomplete>
@@ -560,129 +485,6 @@
             </div>
         </mat-tab>
 
-        <mat-tab>
-            <ng-template mat-tab-label>
-                Document Upload
-            </ng-template>
-            <div fxLayout="column" class="upload-body">
-                <!-- <form [formGroup]="personalFormGroup">
-                    <mat-form-field appearance="outline" style="width:40%;margin-left:20px;">
-                        <input type="text" name="RegId" formControlName="RegId"
-                            placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto1"
-                            (input)="getSearchDocuploadPatientList()">
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="personalFormGroup.get('RegId').setValue(''); isRegIdSelected1 = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getPatientOptionText"
-                            (optionSelected)='getPatientSelectedObj($event.option.value)'>
-                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} | {{option.RegNo}} |
-                                {{option.MobileNo}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                    <div class="patient-info" *ngIf="false">
-                        <span>RegId:{{RegId}} | </span>
-                        <span> Patient Name : {{PatientName}} | </span>
-                        <span> VisitId: {{VisitId}} | </span>
-                    </div>
-                    <span style="margin-left: 20px;font-size: medium;font-weight: bold;color: blue;">RegId:{{RegId}} |
-                        Patient
-                        Name : {{PatientName}} | VisitId: {{VisitId}}
-                    </span>
-                </form> -->
-
-                <form [formGroup]="imageForm">
-                    <div class="upload-container">
-                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column"
-                            fxLayout.lt-md="column">
-                            <div class="upload-option-div">
-                                <div class="img-container gap-12">
-                                    <input formControlName="imageFile" type="file" #attachments
-                                        accept="image/*,application/pdf" multiple name="file" id="file"
-                                        class="inputfile" (change)="onImageFileChange($event)"
-                                        style="margin-right: 10px;" />
-
-                                    <label class="btn btn-primary-outline btn-with-icon btn-hover btn-xs" for="file">
-                                        <span class="btn-icon">
-                                            <mat-icon>cloud_upload</mat-icon>
-                                        </span>
-                                        <span>Browse</span>
-                                    </label>
-                                    <label class="btn btn-primary-outline btn-with-icon btn-hover btn-xs"
-                                        (click)="openCamera('camera','doc')">
-                                        <span class="btn-icon">
-                                            <mat-icon>camera_enhance</mat-icon>
-                                        </span>
-                                        <span>Capture</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div>
-                                <button class="btn btn-primary" [disabled]="imgDataSource.data.length == 0"
-                                    (click)="onSubmitImgFiles()">Upload Image/Pdf</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 10px;">
-                        <mat-table #table matSort [dataSource]="imgDataSource" class="table2 auto-height-table h-400"
-                            [@animateStagger]="{value:'50'}">
-
-                            <ng-container matColumnDef="DocumentName">
-                                <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
-                                    Document Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    {{contact.name}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="DocumentPath">
-                                <mat-header-cell *matHeaderCellDef>
-                                    Document Path
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <img [src]="contact.url" style="width: 80px;height: 40px;margin: 3px;"
-                                        (click)="onViewImage(contact.url, 'img')"
-                                        *ngIf="!contact.name.endsWith('.pdf');else content" />
-                                    <ng-template #content>
-                                        <button mat-icon-button (click)="viewPdf(contact)" color="warn">
-                                            <mat-icon>visibility</mat-icon>
-                                        </button></ng-template>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="buttons" sticky>
-                                <mat-header-cell *matHeaderCellDef>
-                                    Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button (click)="deleteImage(contact)" color="warn">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    <span>No Data Found</span>
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1;">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns1;"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(imgDataSource!=null && imgDataSource.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-                    </div>
-                </form>
-            </div>
-
-        </mat-tab>
+      
     </mat-tab-group>
 </div>

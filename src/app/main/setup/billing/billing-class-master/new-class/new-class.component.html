@@ -19,7 +19,7 @@
             <form [formGroup]="classForm">
                 <input type="hidden" name="classId" formControlName="classId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Class Name" formControlName="className" [value]="" [formGroup]="classForm"
+                    <airmid-textbox label="Class Name" formControlName="className" [value]="data?.className" [formGroup]="classForm"
                         [validations]="_BillingClassMasterService.getValidationMessages().className" [maxLength]="50">
                     </airmid-textbox>
                    
@@ -28,10 +28,10 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                    
 
-                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
+                    <mat-radio-group name="isActive" formControlName="isActive">
+                        <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
+                        <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
                     </mat-radio-group>
                 </div>

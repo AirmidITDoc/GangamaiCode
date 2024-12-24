@@ -29,7 +29,7 @@ export class RegistrationComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
     toDate = this.datePipe.transform(Date.now(), 'dd/MM/yyyy');
@@ -41,13 +41,13 @@ export class RegistrationComponent implements OnInit {
             { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Prefix Id", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "GenderId", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 100},
+            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' , width: 30 },
-            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 30  },
-            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 30  },
-            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:6 },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             // { heading: "AreaId", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 30  },
@@ -59,19 +59,42 @@ export class RegistrationComponent implements OnInit {
             // { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            //  { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA' },
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 let that = this;
+            //                 const dialogRef = this._matDialog.open(NewRegistrationComponent,
+            //                     {
+            //                         maxWidth: "95vw",
+            //                         height: '75%',
+            //                         width: '70%',
+            //                         data:data
+            //                     });
+            //                 dialogRef.afterClosed().subscribe(result => {
+            //                     if (result) {
+            //                         that.grid.bindGridData();
+            //                     }
+            //                 });
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 debugger
+            //             }
+            //         }]
+            // } //
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                            this.onEdit(data);
                         }
                     },
                     {
                         action: gridActions.view, callback: (data: any) => {
                             // Set the view record logic.
                         }
-                    },                    
+                    },
                     {
                         action: gridActions.print, callback: (data: any) => {
                             this.getAdmittedPatientCasepaperview(data);
@@ -98,7 +121,7 @@ export class RegistrationComponent implements OnInit {
                             });
                         }
                     }]
-            } //Action 1-view, 2-Edit,3-delete
+            } 
         ],
         sortField: "RegId",
         sortOrder: 1,
@@ -106,10 +129,10 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "From_Dt", fieldValue: "01/12/2024", opType: OperatorComparer.Equals },
-            // { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "01/12/2024", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
+            // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            // { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -119,20 +142,20 @@ export class RegistrationComponent implements OnInit {
     }
 
     constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
-        public toastr: ToastrService,public datePipe: DatePipe) { }
+        public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
 
     }
-    onSave(row: any = null) {
-        
+    onNewregistration(row: any = null) {
+
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '65%',
+                height: '70%',
                 width: '90%',
-                data: row
+
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -140,7 +163,75 @@ export class RegistrationComponent implements OnInit {
             }
         });
     }
-    getAdmittedPatientCasepaperview(Id){}
+
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                this.onEdit(status.data)
+                break;
+            case 5:
+                this.onDeactive(status.data.genderId);
+                break;
+            default:
+                break;
+        }
+    }
+
+    onEdit(row) {
+        console.log(row)
+        this._RegistrationService.populateForm(row);
+        debugger
+        const dialogRef = this._matDialog.open(
+            NewRegistrationComponent,
+            {
+                maxWidth: "95vw",
+                height: '70%',
+                width: '90%',
+                data: row
+            }
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+
+        });
+    }
+
+    onDeactive(doctorId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            debugger
+            if (result) {
+                this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
+                    //  this.msg = data
+                    if (data.StatusCode == 200) {
+                        this.toastr.success(
+                            "Record updated Successfully.",
+                            "updated !",
+                            {
+                                toastClass:
+                                    "tostr-tost custom-toast-success",
+                            }
+                        );
+                        // this.getGenderMasterList();
+                    }
+                });
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+    getAdmittedPatientCasepaperview(Id) { }
 }
 
 
@@ -172,7 +263,7 @@ export class RegInsert {
     Age: any;
     age: any;
     GenderId: Number;
-    genderId: Number;
+    genderId: any;
     PhoneNo: string;
     phoneNo: string;
     MobileNo: string;
@@ -207,7 +298,11 @@ export class RegInsert {
     currentDate = new Date();
     AdmissionID: any;
     VisitId: any;
+    isSeniorCitizen: boolean
+    // addedBy:any;
+    // updatedBy:any;
 
+    
     /**
      * Constructor
      *
@@ -216,16 +311,16 @@ export class RegInsert {
 
     constructor(RegInsert) {
         {
-            this.RegId = RegInsert.RegId || '';
-            this.regId = RegInsert.regId || '';
-            this.RegID = RegInsert.RegID || '';
-            this.RegDate = RegInsert.RegDate || '';
-            this.RegTime = RegInsert.RegTime || '';
+            this.RegId = RegInsert.RegId || 0;
+            this.regId = RegInsert.regId || 0;
+            this.RegID = RegInsert.RegID || 0;
+            this.RegDate = RegInsert.RegDate || this.currentDate;
+            this.RegTime = RegInsert.RegTime || this.currentDate;
 
-            this.prefixId = RegInsert.prefixId || '';
-            this.PrefixId = RegInsert.PrefixId || '';
-            this.PrefixID = RegInsert.PrefixID || '';
-            this.PrefixID = RegInsert.PrefixID || '';
+            this.prefixId = RegInsert.prefixId || 0;
+            this.PrefixId = RegInsert.PrefixId || 0;
+            this.PrefixID = RegInsert.PrefixID || 0;
+            this.PrefixID = RegInsert.PrefixID || 0;
             this.firstName = RegInsert.firstName || '';
             this.middleName = RegInsert.middleName || '';
             this.lastName = RegInsert.lastName || '';
@@ -234,34 +329,34 @@ export class RegInsert {
             this.LastName = RegInsert.LastName || '';
             this.Address = RegInsert.Address || '';
             this.RegNo = RegInsert.RegNo || '';
-            this.City = RegInsert.City || '';
+            this.City = RegInsert.City || 'SS';
             this.PinNo = RegInsert.PinNo || '';
             this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
             this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
             this.Age = RegInsert.Age || '';
-            this.GenderId = RegInsert.GenderId || '';
-            this.genderId = RegInsert.genderId || '';
+            this.GenderId = RegInsert.GenderId || 0;
+            this.genderId = RegInsert.genderId || 0;
             this.PhoneNo = RegInsert.PhoneNo || '';
             this.phoneNo = RegInsert.phoneNo || '';
             this.MobileNo = RegInsert.MobileNo || '';
             this.mobileNo = RegInsert.mobileNo || '';
             this.AddedBy = RegInsert.AddedBy || '';
-            this.AgeYear = RegInsert.AgeYear || '';
-            this.AgeMonth = RegInsert.AgeMonth || '';
-            this.AgeDay = RegInsert.AgeDay || '';
-            this.ageYear = RegInsert.ageYear || '';
-            this.ageMonth = RegInsert.ageMonth || '';
-            this.ageDay = RegInsert.ageDay || '';
-            this.CountryId = RegInsert.CountryId || '';
-            this.countryId = RegInsert.countryId || '';
-            this.StateId = RegInsert.StateId || '';
-            this.stateId = RegInsert.stateId || '';
-            this.CityId = RegInsert.CityId || '';
-            this.cityId = RegInsert.cityId || '';
-            this.MaritalStatusId = RegInsert.MaritalStatusId || '';
-            this.IsCharity = RegInsert.IsCharity || '';
-            this.ReligionId = RegInsert.ReligionId || '';
-            this.AreaId = RegInsert.AreaId || '';
+            this.AgeYear = RegInsert.AgeYear || '0';
+            this.AgeMonth = RegInsert.AgeMonth || '0';
+            this.AgeDay = RegInsert.AgeDay || '0';
+            this.ageYear = RegInsert.ageYear || '0';
+            this.ageMonth = RegInsert.ageMonth || '0';
+            this.ageDay = RegInsert.ageDay || '0';
+            this.CountryId = RegInsert.CountryId || 0;
+            this.countryId = RegInsert.countryId || 0;
+            this.StateId = RegInsert.StateId || 0;
+            this.stateId = RegInsert.stateId || 0;
+            this.CityId = RegInsert.CityId || 0;
+            this.cityId = RegInsert.cityId || 0;
+            this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
+            this.IsCharity = RegInsert.IsCharity || false;
+            this.ReligionId = RegInsert.ReligionId || 0;
+            this.AreaId = RegInsert.AreaId || 0;
             this.VillageId = RegInsert.VillageId || '';
             this.TalukaId = RegInsert.TalukaId || '';
             this.PatientWeight = RegInsert.PatientWeight || '';
@@ -270,7 +365,11 @@ export class RegInsert {
             this.aadharCardNo = RegInsert.aadharCardNo || '';
             this.PanCardNo = RegInsert.PanCardNo || '';
             this.AdmissionID = RegInsert.AdmissionID || '';
-            this.VisitId = RegInsert.VisitId || ''
+            this.VisitId = RegInsert.VisitId || 0;
+            this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
+            // this.addedBy = RegInsert.addedBy || 0 ;
+            // this.updatedBy = RegInsert.updatedBy || 0 ;
+            
         }
     }
 }

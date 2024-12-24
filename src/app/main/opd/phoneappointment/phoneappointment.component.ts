@@ -103,7 +103,7 @@ onSave(row: any = null) {
       const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
           {
               maxWidth: "75vw",
-              height: '75%',
+              height: '55%',
               width: '70%',
               data: row
           });

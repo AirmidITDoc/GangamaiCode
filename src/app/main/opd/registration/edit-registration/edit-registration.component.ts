@@ -17,6 +17,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-registration',
@@ -27,753 +28,246 @@ import { SearchPageComponent } from '../../op-search-list/search-page/search-pag
 })
 export class EditRegistrationComponent implements OnInit {
 
-  personalFormGroup: FormGroup;
-
-  submitted = false;
-  now = Date.now();
-  searchFormGroup: FormGroup;
-  isRegSearchDisabled: boolean = true;
-  newRegSelected: any = 'registration';
-  snackmessage: any;
-  msg: any = [];
-  AgeYear: any;
-  AgeMonth: any;
-  AgeDay: any;
-  HospitalList: any = [];
-  PatientTypeList: any = [];
-  TariffList: any = [];
-  AreaList: any = [];
-  MaritalStatusList: any = [];
-  PrefixList: any = [];
-  ReligionList: any = [];
-  GenderList: any = [];
-  DoctorList: any = [];
-  Doctor1List: any = [];
-  Doctor2List: any = [];
-  cityList: any = [];
-  stateList: any = [];
-  countryList: any = [];
-  selectedState = "";
-  VisitTime: String;
-  selectedStateID: any;
-  selectedCountry: any;
-  selectedCountryID: any;
-  selectedHName: any;
-  seelctedHospID: any;
-  registerObj = new RegInsert({});
-  selectedGender = "";
-  selectedGenderID: any;
-  capturedImage: any;
-  isLinear = true;
-  isLoading: string = '';
-  Prefix: any;
-
-
-  IsSaveupdate: any;
-  IsSave: any;
-
-
-  // prefix filter
-  public bankFilterCtrl: FormControl = new FormControl();
-  public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  // city filter
-  public cityFilterCtrl: FormControl = new FormControl();
-  public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //religion filter
-  public religionFilterCtrl: FormControl = new FormControl();
-  public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //maritalstatus filter
-  public maritalstatusFilterCtrl: FormControl = new FormControl();
-  public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //area filter
-  public areaFilterCtrl: FormControl = new FormControl();
-  public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
-  // private _onDestroy1 = new Subject<void>();
-
-  options = [];
-
-  isCompanySelected: boolean = false;
-  filteredOptions: any;
-  noOptionFound: boolean = false;
-  screenFromString = 'registration';
-  selectedPrefixId: any;
-
-  matDialogRef: any;
-
-  constructor(public _registerService: RegistrationService,
-    private formBuilder: FormBuilder,
-    private accountService: AuthenticationService,
-    public _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<EditRegistrationComponent>,
-    private _snackBar: MatSnackBar,
-    public datePipe: DatePipe,
-    private router: Router) { }
-
-
-  ngOnInit(): void {
-
-    this.IsSaveupdate = "true";
-    console.log(this.data)
-    this.personalFormGroup = this.createPesonalForm();
-    this.searchFormGroup = this.createSearchForm();
-    // this.getHospitalList();
-    this.getPrefixList();
-    this.getMaritalStatusList();
-    this.getReligionList();
-    // this.getPatientTypeList();
-    this.getAreaList();
-    // this.getCityList();
-    this.getcityList();
-    this.getDoctor1List();
-    this.getDoctor2List();
-    // this.addEmptyRow();
-
-    this.bankFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterPrefix();
-      });
-
-    this.cityFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCity();
-      });
-
-    this.religionFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterReligion();
-      });
-
-    this.maritalstatusFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterMaritalstatus();
-      });
-
-    this.areaFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterArea();
-      });
-
-
-
-    if (this.data) {
-      // this.IsSave="false";
-      // this.IsSaveupdate='false';
-      this.registerObj = this.data.registerObj;
-
-      console.log(this.registerObj);
-
-      // this.AgeYear = this.data.PatObj.AgeYear;
-      this.Prefix = this.data.registerObj.PrefixID;
-      // this.PatientName=this.data.PatObj.PatientName;
-      // this.AdmissionDate=this.data.PatObj.AdmissionDate;
-      // this.RelativeName= this.data.PatObj.RelativeName;
-      // this.RelativeAddress= this.data.PatObj.RelativeAddress;
-      // this.RelatvieMobileNo= this.data.PatObj.RelatvieMobileNo;
-      this.setDropdownObjs1();
-    }
-
-
-  }
-
-  closeDialog() {
-    console.log("closed")
-    //  this.dialogRef.close();
-    // this.personalFormGroup.reset();
-  }
-  createPesonalForm() {
-    return this.formBuilder.group({
-      RegId: '',
-      RegNo: '',
-      PrefixId: '',
-      PrefixID: new FormControl('', [Validators.required]),
-      FirstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      MiddleName: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-      ]],
-      LastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      GenderId: '',
-      Address: '',
-      DateOfBirth: [{ value: this.registerObj.DateofBirth }],
-      AgeYear: ['', [
-        Validators.required,
-        Validators.maxLength(3),
-        Validators.pattern("^[0-9]*$")]],
-      AgeMonth: ['', [
-        Validators.pattern("^[0-9]*$")]],
-      AgeDay: ['', [
-        Validators.pattern("^[0-9]*$")]],
-      PhoneNo: ['', [Validators.minLength(10),
-      Validators.maxLength(15),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      MobileNo: ['', [Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      AadharCardNo: ['', [
-        // Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),
-      ]],
-      PanCardNo: '',
-      MaritalStatusId: '',
-      ReligionId: '',
-      AreaId: '',
-      CityId: '',
-      StateId: '',
-      CountryId: '',
-      IsCharity: '',
-    });
-  }
-
-
-
-  get f() { return this._registerService.mySaveForm.controls }
-
-  // prefix filter
-  private filterPrefix() {
-
-    if (!this.PrefixList) {
-
-      return;
-    }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredPrefix.next(this.PrefixList.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredPrefix.next(
-      this.PrefixList.filter(bank => bank.PrefixName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // City filter code
-  private filterCity() {
-
-    if (!this.cityList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.cityFilterCtrl.value;
-    if (!search) {
-      this.filteredCity.next(this.cityList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCity.next(
-      this.cityList.filter(bank => bank.CityName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // religion filter code
-  private filterReligion() {
-
-    if (!this.ReligionList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.religionFilterCtrl.value;
-    if (!search) {
-      this.filteredReligion.next(this.ReligionList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredReligion.next(
-      this.ReligionList.filter(bank => bank.ReligionName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-  // maritalstatus filter code
-  private filterMaritalstatus() {
-
-    if (!this.MaritalStatusList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.maritalstatusFilterCtrl.value;
-    if (!search) {
-      this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredMaritalstatus.next(
-      this.MaritalStatusList.filter(bank => bank.MaritalStatusName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-  // area filter code  
-  private filterArea() {
-
-    if (!this.AreaList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.areaFilterCtrl.value;
-    if (!search) {
-      this.filteredArea.next(this.AreaList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredArea.next(
-      this.AreaList.filter(bank => bank.AreaName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-  addEmptyRow() { }
-
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj ==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-  getHospitalList() {
-    //this._registerService.getHospitalCombo().subscribe(data => { this.HospitalList = data; })
-  }
-
-
-  getPrefixList() {
-
-    this._registerService.getPrefixCombo().subscribe(data => {
-      this.PrefixList = data;
-      debugger
-      this.filteredPrefix.next(this.PrefixList.slice());
-      if (this.data) {
-        const ddValue = this.PrefixList.find(c => c.PrefixID == this.data.registerObj.PrefixID);
-        this.personalFormGroup.get('PrefixID').setValue(ddValue);
-      }
-      this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-    });
-  }
-
-  getCityList() {
-    this._registerService.getCityListCombo().subscribe(data => {
-      this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
-    });
-  }
-
-  getPatientTypeList() {
-    this._registerService.getPatientTypeCombo().subscribe(data => { this.PatientTypeList = data; })
-  }
-
-
-  getAreaList() {
-
-    this._registerService.getAreaCombo().subscribe(data => {
-      this.AreaList = data;
-      this.filteredArea.next(this.AreaList.slice());
-
-      if (this.data) {
-        const ddValue = this.AreaList.find(c => c.AreaId == this.data.registerObj.AreaId);
-        this.personalFormGroup.get('AreaId').setValue(ddValue);
-      }
-    });
-  }
-
-  getMaritalStatusList() {
-    // this._registerService.getMaritalStatusCombo().subscribe(data => { this.MaritalStatusList = data; })
-    this._registerService.getMaritalStatusCombo().subscribe(data => {
-      this.MaritalStatusList = data;
-      this.filteredMaritalstatus.next(this.MaritalStatusList.slice());
-      if (this.data) {
-        const ddValue = this.MaritalStatusList.find(c => c.MaritalStatusId == this.data.registerObj.MaritalStatusId);
-        this.personalFormGroup.get('MaritalStatusId').setValue(ddValue);
-      }
-    });
-  }
-
-  getReligionList() {
-
-    this._registerService.getReligionCombo().subscribe(data => {
-      this.ReligionList = data;
-      this.filteredReligion.next(this.ReligionList.slice());
-      if (this.data) {
-        const ddValue = this.ReligionList.find(c => c.ReligionId == this.data.registerObj.ReligionId);
-        this.personalFormGroup.get('ReligionId').setValue(ddValue);
-      }
-    });
-  }
-
-
-  getGendorMasterList() {
-
-    this._registerService.getGenderMasterCombo().subscribe(data => {
-      this.GenderList = data;
-      const ddValue = this.GenderList.find(c => c.GenderId == this.data.registerObj.GenderId);
-      this.personalFormGroup.get('GenderId').setValue(ddValue);
-    })
-  }
-
-  getcityList() {
-    this._registerService.getCityListCombo().subscribe(data => {
-      this.cityList = data;
-      this.filteredCity.next(this.cityList.slice());
-      if (this.data) {
-        const ddValue = this.cityList.find(c => c.CityId == this.data.registerObj.CityId);
-        this.personalFormGroup.get('CityId').setValue(ddValue);
-        this.onChangeCityList(this.data.registerObj.CityId)
-      }
-    });
-  }
-
-  onChangeStateList(CityId) {
-    if (CityId > 0) {
-      this._registerService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
-        //  this._AdmissionService.myFilterform.get('StateId').setValue(this.selectedState);
-      });
-    }
-  }
-  onChangeCityList(CityId) {
-    if (CityId > 0) {
-      this._registerService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
-        this.selectedStateID = this.stateList[0].StateId;
-        this.personalFormGroup.get('StateId').setValue(this.stateList[0]);
-        this.onChangeCountryList(this.selectedStateID);
-      });
-    } else {
-      this.selectedState = null;
-      this.selectedStateID = null;
-      this.selectedCountry = null;
-      this.selectedCountryID = null;
-    }
-  }
-  onChangeCountryList(StateId) {
-    if (StateId > 0) {
-      this._registerService.getCountryList(StateId).subscribe(data => {
-        this.countryList = data;
-        this.selectedCountry = this.countryList[0].CountryName;
-        this.personalFormGroup.get('CountryId').setValue(this.countryList[0]);
-        this.personalFormGroup.updateValueAndValidity();
-      });
-    }
-  }
-
-
-  onChangeGenderList(prefixObj) {
-    if (prefixObj) {
-      this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
-        this.GenderList = data;
-        this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);
-
-        this.selectedGenderID = this.GenderList[0].GenderId;
-      });
-    }
-  }
-
-
-  searchRegList() {
-
-    const dialogRef = this._matDialog.open(SearchPageComponent,
-      {
-        maxWidth: "90vw",
-        maxHeight: "85vh", width: '100%', height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      if (result) {
-
-        this.registerObj = result as RegInsert;
-        this.setDropdownObjs1();
-      }
-      //this.getRegistrationList();
-    });
-  }
-
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
-
-  getSelectedObj(obj) {
-
-    console.log('obj==', obj);
-
-    let a, b, c;
-
-    a = obj.AgeDay.trim();;
-    b = obj.AgeMonth.trim();
-    c = obj.AgeYear.trim();
-    console.log(a, b, c);
-    obj.AgeDay = a;
-    obj.AgeMonth = b;
-    obj.AgeYear = c;
-
-    this.registerObj = obj;
-
-    // this.setDropdownObjs();
-  }
-
-
-  setDropdownObjs1() {
-   
-    const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
-    this.personalFormGroup.get('PrefixID').setValue(toSelect);
-
-    const toSelectMarital = this.MaritalStatusList.find(c => c.MaritalStatusId == this.registerObj.MaritalStatusId);
-    this.personalFormGroup.get('MaritalStatusId').setValue(toSelectMarital);
-
-    const toSelectReligion = this.ReligionList.find(c => c.ReligionId == this.registerObj.ReligionId);
-    this.personalFormGroup.get('ReligionId').setValue(toSelectReligion);
-
-    const toSelectArea = this.AreaList.find(c => c.AreaId == this.registerObj.AreaId);
-    this.personalFormGroup.get('AreaId').setValue(toSelectArea);
-
-    const toSelectCity = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-    // const toSelectMat = this.cityList.find(c => c.CityId == this.registerObj.CityId);
-    // this.personalFormGroup.get('CityId').setValue(toSelectCity);
-
-
-    this.onChangeGenderList(this.personalFormGroup.get('PrefixID').value);
-
-    this.onChangeCityList(this.registerObj.CityId);
-
-    this.personalFormGroup.updateValueAndValidity();
-    // this.dialogRef.close();
-
-  }
-
-
-  OnChangeDoctorList(departmentObj) {
-    this._registerService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(data => { this.DoctorList = data; })
-  }
-
-  getDoctor1List() {
-    this._registerService.getDoctorMaster1Combo().subscribe(data => { this.Doctor1List = data; })
-  }
-  getDoctor2List() {
-    this._registerService.getDoctorMaster2Combo().subscribe(data => { this.Doctor2List = data; })
-  }
-
-
-  onSubmit() {
-    debugger;
-    let reg = this.registerObj.RegId;
-    this.isLoading = 'submit';
-
-    if (!reg) {
-      var m_data = {
-        "opdRegistrationSave": {
-          "RegId": 0,
-          "RegDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-          "RegTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-          "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
-          "FirstName": this.registerObj.FirstName || "",
-          "MiddleName": this.registerObj.MiddleName || "",
-          "LastName": this.registerObj.LastName || "",
-          "Address": this.registerObj.Address || "",
-          "City": this.personalFormGroup.get('CityId').value.CityId || 0,
-          "PinNo": '222',// this._registerService.mySaveForm.get("PinNo").value || "0",
-          "DateOfBirth": this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-          "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
-          "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
-          "PhoneNo": this.registerObj.PhoneNo || "",// this._registerService.mySaveForm.get("PhoneNo").value || "0",
-          "MobileNo": this.registerObj.MobileNo || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
-          "AddedBy": this.accountService.currentUserValue.userId,
-          "UpdatedBy": 0,
-          "AgeYear": this.registerObj.AgeYear || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-          "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
-          "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
-          "CountryId": this.personalFormGroup.get('CountryId').value.CountryId,
-          "StateId": this.personalFormGroup.get('StateId').value.StateId,
-          "CityId": this.personalFormGroup.get('CityId').value.CityId,
-          "MaritalStatusId": this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
-          "IsCharity": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-          "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
-          "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
-          "isSeniorCitizen": 0,
-          // "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
-          // "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
-        }
-      }
-      console.log(m_data);
-      this._registerService.regInsert(m_data).subscribe(response => {
-        if (response) {
-          this.myFunction("Register Data Save Successfully !");
-
-          setTimeout(() => {
-            this._matDialog.closeAll();
-          }, 1000);
-
-        } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
-        }
-
-      });
-    }
-    else {
-      debugger;
-      var m_data1 = {
-
-        "opdRegistrationUpdate": {
-          "RegID": this.registerObj.RegId,
-          "RegDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-          "RegTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-          "PrefixId": this.personalFormGroup.get('PrefixID').value.PrefixID,
-          "FirstName": this.registerObj.FirstName || "",
-          "MiddleName": this.registerObj.MiddleName || "",
-          "LastName": this.registerObj.LastName || "",
-          "Address": this.registerObj.Address || "",
-          "City": this.personalFormGroup.get('CityId').value.CityName || 0,
-          "PinNo": '222',// this._registerService.mySaveForm.get("PinNo").value || "0",
-          "DateOfBirth": "2023-04-26T11:13:30.638Z",//this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"),// this.registerObj.DateofBirth || "2021-03-31",
-          "Age": this.registerObj.AgeYear || 0,//this._registerService.mySaveForm.get("Age").value || "0",
-          "GenderID": this.personalFormGroup.get('GenderId').value.GenderId || 0,
-          "PhoneNo": this.registerObj.PhoneNo || "",// this._registerService.mySaveForm.get("PhoneNo").value || "0",
-          "MobileNo": this.registerObj.MobileNo || "",// this._registerService.mySaveForm.get("MobileNo").value || "0",
-          "UpdatedBy": this.accountService.currentUserValue.userId,
-          "AgeYear": this.registerObj.AgeYear || "0",// this._registerService.mySaveForm.get("AgeYear").value.trim() || "%",
-          "AgeMonth": this.registerObj.AgeMonth || "0",// this._registerService.mySaveForm.get("AgeMonth").value.trim() || "%",
-          "AgeDay": this.registerObj.AgeDay || "0",// this._registerService.mySaveForm.get("AgeDay").value.trim() || "%",
-          "CountryId": this.personalFormGroup.get('CountryId').value.CountryId,
-          "StateId": this.personalFormGroup.get('StateId').value.StateId,
-          "CityId": this.personalFormGroup.get('CityId').value.CityId,
-          "MaritalStatusId": this.personalFormGroup.get('MaritalStatusId').value ? this.personalFormGroup.get('MaritalStatusId').value.MaritalStatusId : 0,
-          "IsCharity": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-          // "ReligionId": this.personalFormGroup.get('ReligionId').value ? this.personalFormGroup.get('ReligionId').value.ReligionId : 0,
-          // "AreaId": this.personalFormGroup.get('AreaId').value ? this.personalFormGroup.get('AreaId').value.AreaId : 0,
-          // "isSeniorCitizen":0,
-          // "aadharcardno": this.personalFormGroup.get('AadharCardNo').value ? this.personalFormGroup.get('AadharCardNo').value : 0,
-          // "pancardno": this.personalFormGroup.get('PanCardNo').value ? this.personalFormGroup.get('PanCardNo').value : 0,
-        }
-      }
-      console.log(m_data1);
-      this._registerService.regUpdate(m_data1).subscribe(response => {
-        if (response) {
-          this.myFunction("Register Data Updated Successfully !");
-
-          setTimeout(() => {
-            this._matDialog.closeAll();
-          }, 1000);
-        } else {
-          Swal.fire('Error !', 'Register Data  not saved', 'error');
-        }
-
-      });
-    }
-
-
-    // console.log(this.personalFormGroup.invalid && this.IsSave);
-  }
-
-
-  onClose() {
-    this.dialogRef.close();
-  }
-
-  createSearchForm() {
-    return this.formBuilder.group({
-      regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }]
-    });
-  }
-  onChangeDateofBirth(DateOfBirth) {
-    if (DateOfBirth) {
-      const todayDate = new Date();
-      const dob = new Date(DateOfBirth);
-      const timeDiff = Math.abs(Date.now() - dob.getTime());
-      // this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-      // this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-      // this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-      this.registerObj.DateofBirth = DateOfBirth;
-      this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-    }
-
-  }
-
-  // Change Registered or New Registration
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.registerObj = new RegInsert({});
-      this.personalFormGroup.reset();
-      this.searchFormGroup.get('RegId').reset();
-      this.searchFormGroup.get('RegId').disable();
-      this.isRegSearchDisabled = true;
-    } else {
-      this.searchFormGroup.get('RegId').enable();
-      this.isRegSearchDisabled = false;
-      // this.personalFormGroup.reset();
-    }
-  }
-  getSearchList() {
-    var m_data = {
-      "F_Name": `${this.searchFormGroup.get('RegId').value}%`,
-      "L_Name": '%',
-      "Reg_No": '0',
-      "From_Dt": '01/01/1900',
-      "To_Dt": '01/01/1900',
-      "MobileNo": '%'
-    }
-    console.log(m_data);
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._registerService.getRegistrationList(m_data).subscribe(resData => {
-
-        this.filteredOptions = resData;
-
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
-    }
-
-  }
-  IsCharity: any;
-  onChangeIsactive(SiderOption) {
-    this.IsCharity = SiderOption.checked
-    console.log(this.IsCharity);
-  }
-
-  myFunction(s) {
-    this.snackmessage = s;
-    console.log(s);
-    console.log(this.snackmessage);
-    var x = document.getElementById("snackbar");
-    x.className = "show";
-    setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
-  }
-}
+ 
+     personalFormGroup: FormGroup;
+     registerObj = new RegInsert({});
+ 
+ 
+     submitted = false;
+     now = Date.now();
+     searchFormGroup: FormGroup;
+     isRegSearchDisabled: boolean = true;
+     newRegSelected: any = 'registration';
+     minDate: Date;
+     msg: any = [];
+     AgeYear: any;
+     AgeMonth: any;
+     AgeDay: any;
+ 
+     Submitflag: boolean = false;
+     screenFromString = 'registration';
+     matDialogRef: any;
+     RegID: number = 0;
+ 
+     // New Api
+     autocompleteModeprefix: string = "Prefix";
+     autocompleteModegender: string = "Gender";
+     autocompleteModearea: string = "Area";
+     autocompleteModecity: string = "City";
+     autocompleteModestate: string = "State";
+     autocompleteModecountry: string = "Country";
+     autocompleteModemstatus: string = "MaritalStatus";
+     autocompleteModereligion: string = "Religion";
+ 
+ 
+     constructor(public _registerService: RegistrationService,
+         private accountService: AuthenticationService,
+         public _matDialog: MatDialog,
+         @Inject(MAT_DIALOG_DATA) public data: any,
+         public toastr: ToastrService,
+         public dialogRef: MatDialogRef<EditRegistrationComponent>,
+         public datePipe: DatePipe
+     ) { }
+ 
+ 
+     ngOnInit(): void {
+ 
+         this.minDate = new Date();
+         this.personalFormGroup = this._registerService.createPesonalForm();
+         console.log(this.data)
+         if (this.data.regId > 0) {
+             this.registerObj = this.data;
+             this.personalFormGroup.patchValue(this.registerObj);
+         } else {
+             this.personalFormGroup.reset();
+         }
+     }
+     get f() {
+         return this.personalFormGroup.controls;
+     }
+ 
+     OnSubmit() {
+ 
+         console.log(this.personalFormGroup.value)
+ 
+         this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
+             this.toastr.success(response.message);
+             this.onClear(true);
+         }, (error) => {
+             this.toastr.error(error.message);
+         });
+     }
+     // }
+     onClose() {
+         this.dialogRef.close();
+     }
+     onClear(val: boolean) {
+         this.personalFormGroup.reset();
+         this.dialogRef.close(val);
+     }
+     onChangeDateofBirth(DateOfBirth) {
+         if (DateOfBirth) {
+             const todayDate = new Date();
+             const dob = new Date(DateOfBirth);
+             const timeDiff = Math.abs(Date.now() - dob.getTime());
+             this.personalFormGroup.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
+             this.personalFormGroup.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
+             this.personalFormGroup.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
+             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+         }
+     }
+     // Change Registered or New Registration
+     onChangeReg(event) {
+         if (event.value == 'registration') {
+             this.registerObj = new RegInsert({});
+             this.personalFormGroup.reset();
+             this.searchFormGroup.get('RegId').reset();
+             this.searchFormGroup.get('RegId').disable();
+             this.isRegSearchDisabled = true;
+         } else {
+             this.searchFormGroup.get('RegId').enable();
+             this.isRegSearchDisabled = false;
+             // this.personalFormGroup.reset();
+         }
+ 
+     }
+ 
+     @ViewChild('fname') fname: ElementRef;
+     @ViewChild('mname') mname: ElementRef;
+     @ViewChild('lname') lname: ElementRef;
+     @ViewChild('bday') bday: ElementRef;
+     @ViewChild('agey') agey: ElementRef;
+     @ViewChild('agem') agem: ElementRef;
+     @ViewChild('aged') aged: ElementRef;
+     @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
+     @ViewChild('address') address: ElementRef;
+     @ViewChild('mobile') mobile: ElementRef;
+     @ViewChild('phone') phone: ElementRef;
+     public onEnterfname(event): void {
+         if (event.which === 13) {
+             this.fname.nativeElement.focus();
+         }
+     }
+     public onEntermname(event): void {
+         if (event.which === 13) {
+             this.mname.nativeElement.focus();
+         }
+     }
+     public onEnterlname(event): void {
+         if (event.which === 13) {
+             this.lname.nativeElement.focus();
+         }
+     }
+     public onEnterbday(event): void {
+         if (event.which === 13) {
+             this.bday.nativeElement.focus();
+         }
+     }
+     public onEnteragey(event): void {
+         if (event.which === 13) {
+             this.agem.nativeElement.focus();
+         }
+     }
+     public onEnteragem(event): void {
+         if (event.which === 13) {
+             this.aged.nativeElement.focus();
+         }
+     }
+     public onEnteraged(event): void {
+         if (event.which === 13) {
+             this.AadharCardNo.nativeElement.focus();
+         }
+     }
+     public onEnterAadharCardNo(event): void {
+         if (event.which === 13) {
+             this.AadharCardNo.nativeElement.focus();
+         }
+     }
+     public onEnteraddress(event): void {
+         if (event.which === 13) {
+             this.address.nativeElement.focus();
+         }
+     }
+     public onEntermobile(event): void {
+         if (event.which === 13) {
+             this.mobile.nativeElement.focus();
+         }
+     }
+     public onEnterphone(event): void {
+         if (event.which === 13) {
+             this.phone.nativeElement.focus();
+         }
+     }
+ 
+     getValidationMessages() {
+         return {
+             FirstName: [
+                 { name: "required", Message: "First Name is required" },
+                 { name: "maxLength", Message: "Enter only upto 50 chars" },
+                 { name: "pattern", Message: "only char allowed." }
+             ],
+             middleName: [
+                 // { name: "required", Message: "Middle Name is required" },
+                 // { name: "maxLength", Message: "Enter only upto 50 chars" },
+                 { name: "pattern", Message: "only char allowed." }
+             ],
+             lastName: [
+                 { name: "required", Message: "Last Name is required" },
+                 // { name: "maxLength", Message: "Enter only upto 50 chars" },
+                 { name: "pattern", Message: "only char allowed." }
+             ],
+             address: [
+                 { name: "required", Message: "Address is required" },
+ 
+             ],
+             prefixId: [
+                 { name: "required", Message: "Prefix Name is required" }
+             ],
+             genderId: [
+                 { name: "required", Message: "Gender is required" }
+             ],
+             areaId: [
+                 { name: "required", Message: "Area Name is required" }
+             ],
+             cityId: [
+                 { name: "required", Message: "City Name is required" }
+             ],
+             religionId: [
+                 { name: "required", Message: "Religion Name is required" }
+             ],
+             countryId: [
+                 { name: "required", Message: "Country Name is required" }
+             ],
+             maritalStatusId: [
+                 { name: "required", Message: "Mstatus Name is required" }
+             ],
+             stateId: [
+                 { name: "required", Message: "State Name is required" }
+             ],
+             mobileNo: [
+                 { name: "pattern", Message: "Only numbers allowed" },
+                 { name: "required", Message: "Mobile No is required" },
+                 { name: "minLength", Message: "10 digit required." },
+                 { name: "maxLength", Message: "More than 10 digits not allowed." }
+ 
+             ],
+             aadharCardNo: [
+                 { name: "pattern", Message: "Only numbers allowed" },
+                 { name: "required", Message: "AadharCard No is required" },
+                 { name: "minLength", Message: "12 digit required." },
+                 { name: "maxLength", Message: "More than 12 digits not allowed." }
+             ],
+         };
+     }
+ 
+     getDate(dateStr: string) {
+         let dtStr = dateStr.split('-');
+         var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
+         return new Date(newDate);
+     }
+     dateTimeObj: any;
+     getDateTime(dateTimeObj) {
+         console.log('dateTimeObj ==', dateTimeObj);
+         this.dateTimeObj = dateTimeObj;
+     }
+ }

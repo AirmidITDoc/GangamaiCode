@@ -24,11 +24,11 @@ import { ToastrService } from 'ngx-toastr';
 export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
   hasSelectedContacts: boolean;
-  
+
   DepartmentList: any = [];
   DoctorList: any = [];
   Doctor1List: any = [];
-  
+
 
   hospitalFormGroup: FormGroup;
   // registerObj = new AdmissionPersonlModel({});
@@ -42,9 +42,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
   sIsLoading: string = '';
   minDate: Date;
   vMobile: any;
-  
-  vDepartmentid: any = '';
-  vDoctorId: any = '';
+  phoneAppId:any=0;
+
+  vDepartmentid: any = '1';
+  vDoctorId: any = '2';
 
 
   isChecked = true;
@@ -69,27 +70,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.minDate = new Date();
 
     this.phoneappForm = this._phoneAppointListService.createphoneForm();
-    var m_data = {
-      phoneAppId: this.data?.phoneAppId,
-      categoryName: this.data?.categoryName.trim(),
-      appDate: this.data?.appDate,
-      appTime: this.data?.appTime,
-      firstName: this.data?.firstName.trim(),
-      middleName: this.data?.middleName.trim(),
-      lastName: this.data?.lastName.trim(),
-      address: this.data?.address.trim(),
-      mobileNo: this.data?.mobileNo.trim(),
-      phAppDate: this.data?.phAppDate,
-      phAppTime: this.data?.phAppTime,
-      departmentId: this.data?.departmentId,
-      doctorId: this.data?.doctorId,
-      addedBy: this.data?.addedBy,
-      updatedBy: this.data?.updatedBy,
-      regNo: this.data?.regNo,
-    };
-    this.phoneappForm.patchValue(m_data);
-
-  }
+     }
 
 
   get f() { return this.phoneappForm.controls; }
@@ -98,47 +79,64 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  
-  getValidationDeptMessages() {
+
+  getValidationMessages() {
     return {
+      firstName: [
+        { name: "required", Message: "First Name is required" },
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      middleName: [
+        // { name: "required", Message: "Middle Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      lastName: [
+        { name: "required", Message: "Last Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      address: [
+        { name: "required", Message: "Address is required" },
+       
+      ],
       departmentId: [
-            { name: "required", Message: "Department Name is required" }
-        ]
-    };
-  }
-  
-  getValidationdoctorMessages() {
-    return {
+        { name: "required", Message: "Department Name is required" }
+      ],
       doctorId: [
-            { name: "required", Message: "Doctor Name is required" }
-        ]
+        { name: "required", Message: "Doctor Name is required" }
+      ]
     };
   }
+
+
 
   OnSubmit() {
     debugger
-  
-    var m_data = {
-      "phoneAppId": 0,
-      "regNo": '',
-      "appDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-      "appTime": this.dateTimeObj.time,
-      "firstName": this.phoneappForm.get('FirstName').value || '',
-      "middleName": this.phoneappForm.get('MiddleName').value || '',
-      "lastName": this.phoneappForm.get('LastName').value || '',
-      "address": this.phoneappForm.get('Address').value || '',
-      "mobileNo": this.phoneappForm.get('MobileNo').value.toString() || '',
-      "phAppDate": this.datePipe.transform(this.phoneappForm.get('PhAppDate').value, "yyyy-MM-dd"),
-      "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
-      "departmentId": this.vDepartmentid,
-      "doctorId": this.vDoctorId,
-      "addedBy": 1,// this.accountService.currentUserValue.userId,
-      "updatedBy": 1,// this.accountService.currentUserValue.userId,
 
-    }
-    console.log(m_data);
-  
-    this._phoneAppointListService.phoneMasterSave(m_data).subscribe((response) => {
+    // var m_data = {
+    //   "phoneAppId": 0,
+    //   "regNo": '',
+    //   "appDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+    //   "appTime": this.dateTimeObj.time,
+    //   "firstName": this.phoneappForm.get('firstName').value || '',
+    //   "middleName": this.phoneappForm.get('middleName').value || '',
+    //   "lastName": this.phoneappForm.get('lastName').value || '',
+    //   "address": this.phoneappForm.get('address').value || '',
+    //   "mobileNo": this.phoneappForm.get('mobileNo').value.toString() || '',
+    //   "phAppDate": this.datePipe.transform(this.phoneappForm.get('phAppDate').value, "yyyy-MM-dd"),
+    //   "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
+    //   "departmentId": this.vDepartmentid,
+    //   "doctorId": this.vDoctorId,
+    //   "addedBy": 1,// this.accountService.currentUserValue.userId,
+    //   "updatedBy": 1,// this.accountService.currentUserValue.userId,
+
+    // }
+    // console.log(m_data);
+    console.log(this.phoneappForm.value);
+    // this._phoneAppointListService.phoneMasterSave(m_data).subscribe((response) => {
+    this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {
@@ -199,29 +197,29 @@ export class NewPhoneAppointmentComponent implements OnInit {
       this.dept.nativeElement.focus();
     }
   }
-  
-
-Phappcancle(data){
-  this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
-    this.toastr.success(response.message);
-    // that.grid.bindGridData();
-});
-}
 
 
+  Phappcancle(data) {
+    this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+      this.toastr.success(response.message);
+      // that.grid.bindGridData();
+    });
+  }
 
-// new Api
 
 
-selectChangedepartment(obj: any){
-  console.log(obj);
-  this.vDepartmentid=obj.value
-}
+  // new Api
 
-selectChangedoctor(obj: any){
-  console.log(obj);
-  this.vDoctorId=obj.value
-}
+
+  selectChangedepartment(obj: any) {
+    console.log(obj);
+    this.vDepartmentid = obj.value
+  }
+
+  selectChangedoctor(obj: any) {
+    console.log(obj);
+    this.vDoctorId = obj.value
+  }
 }
 
 export class PhoneschlistMaster {
