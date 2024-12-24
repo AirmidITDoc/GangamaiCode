@@ -68,8 +68,8 @@ dynamicTableHeight>
                       <mat-form-field appearance="outline" style="margin-top: 5px;">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate formControlName="start" placeholder="Start date" dateChange="getOtreservationList()">
-                          <input matEndDate formControlName="end" placeholder="End date">
+                          <input matStartDate formControlName="start" placeholder="Start date" >
+                          <input matEndDate formControlName="end" placeholder="End date" dateChange="getOtreservationList()">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -295,11 +295,19 @@ dynamicTableHeight>
   
   
                       <ng-container matColumnDef="action" stickyEnd>
-                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Select
+                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;" class="w-150"> Select
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row" fxShow.gt-sm>
+                        <mat-cell *matCellDef="let row" class="w-150">
                           <button mat-icon-button (click)="onEdit(row)">
-                            <mat-icon title="Edit Menu">launch</mat-icon>
+                            <mat-icon title="Edit Menu">edit</mat-icon>
+                          </button>
+
+                          <button mat-icon-button (click)="Otnote()">
+                            <mat-icon title="OTNote">note_add</mat-icon>
+                          </button>
+
+                          <button mat-icon-button (click)="OPreOPrativenote()">
+                            <mat-icon title="OPreOPrativeNote">note_add</mat-icon>
                           </button>
                           <!-- <button mat-icon-button (click)="addNewOtBooking(row)" color="warn"><mat-icon>add</mat-icon></button>       -->
                         </mat-cell>
@@ -317,9 +325,9 @@ dynamicTableHeight>
                         </mat-footer-cell>
                       </ng-container>
   
-                      <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                      <mat-header-row class="accent min-width-1500" *matHeaderRowDef="displayedColumns; sticky: true">
                       </mat-header-row>
-                      <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                      <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1500"
                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                       <mat-footer-row *matFooterRowDef="['loading']"
                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

@@ -1,17 +1,18 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { OTReservationDetail } from '../ot-reservation.component';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../../ot-management-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { OTNoteComponent } from '../../ot-note/ot-note.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { GetOTRequetComponent } from '../get-otrequet/get-otrequet.component';
 
 @Component({
   selector: 'app-new-reservation',
@@ -86,6 +87,19 @@ export class NewReservationComponent implements OnInit {
   vConditionIP:boolean=false;
   OP_IP_Id: any = 0;
   OP_IPType: any = 2;
+  vWardName: any;
+  vBedNo:any;
+  vPatientName:any;
+  vAgeYear:any;
+  vAge:any;
+  vTariffName:any;
+  vSiteDescId:any;
+  vSurgeryCategoryId:any;
+  vSurgeryId:any;
+  vDocName:any;
+  vDepName:any;
+  PatientListfilteredOptionsIP:any;
+  PatientListfilteredOptionsOP:any;
 
   // @Input() panelWidth: string | number;
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
@@ -137,18 +151,89 @@ export class NewReservationComponent implements OnInit {
     public dialogRef: MatDialogRef<NewReservationComponent>,
     // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
-    private router: Router) { }
+    private router: Router) { }    
+    private _loggedService: AuthenticationService
 
 
   ngOnInit(): void {
-    this.myForm = this.createMyForm();
+    this.searchFormGroup = this.createMyForm();
     console.log(this.data)
     this.personalFormGroup = this.createOtCathlabForm();
+    this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
 
     if (this.data) {
 
       this.registerObj1 = this.data.PatObj;
     
+      // ip and op edit
+      if (this.registerObj1.OP_IP_Type === 1) {
+        // Fetch IP-specific information
+      console.log("IIIIIIIIIIIIIPPPPPPPPP:",this.registerObj1);
+      this.vWardName=this.registerObj1.RoomName;
+      this.vBedNo=this.registerObj1.BedName;
+      this.vGenderName=this.registerObj1.GenderName;
+      this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+      this.vAgeYear = this.registerObj1.AgeYear;
+      this.RegId = this.registerObj1.RegID;
+      this.vAdmissionID = this.registerObj1.AdmissionID
+      this.vAge=this.registerObj1.Age;
+      this.vRegNo =this.registerObj1.RegNo; 
+      this.vIPDNo = this.registerObj1.IPDNo;
+      this.vCompanyName = this.registerObj1.CompanyName;
+      this.vTariffName = this.registerObj1.TariffName; 
+      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+      this.vDoctorName = this.registerObj1.DoctorName;
+      this.vDepartmentName=this.registerObj1.DepartmentName;      
+      this.vSelectedOption = 'IP';
+      this.vSiteDescId=this.registerObj1.SiteDescId
+      this.vSurgeryCategoryId=this.registerObj1.SurgeryCategoryId;
+      this.vSurgeryId=this.registerObj1.SurgeryId;
+      this.vDocName = this.registerObj1.DoctorName;
+      this.vDepName=this.registerObj1.DepartmentName;
+
+      this.setDropdownObjs1();
+      this.getSergeryList();
+      this.getOttableList();
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getAnesthestishDoctorList1();
+      this.getAnesthestishDoctorList2();
+      } else if (this.registerObj1.OP_IP_Type === 0) {
+        // Fetch OP-specific information
+      console.log("OOOOOOOPPPPPPPPP:",this.registerObj1);
+      this.vWardName=this.registerObj1.RoomName;
+      this.vBedNo=this.registerObj1.BedName;
+      this.vGenderName=this.registerObj1.GenderName;
+      this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+      this.vAgeYear = this.registerObj1.AgeYear;
+     this.RegId = this.registerObj1.RegID;
+      this.vAdmissionID = this.registerObj1.AdmissionID
+      this.vAge=this.registerObj1.Age;
+      this.vRegNo =this.registerObj1.RegNo; 
+      this.vOPDNo = this.registerObj1.OPDNo;
+      this.vCompanyName = this.registerObj1.CompanyName;
+      this.vTariffName = this.registerObj1.TariffName; 
+      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+      this.vDoctorName = this.registerObj1.DoctorName;
+      this.vDepartmentName=this.registerObj1.DepartmentName;
+      this.vSelectedOption = 'OP';
+      this.vSiteDescId=this.registerObj1.SiteDescId
+      this.vSurgeryCategoryId=this.registerObj1.SurgeryCategoryId;
+      this.vSurgeryId=this.registerObj1.SurgeryId;
+      this.vDocName = this.registerObj1.DoctorName;
+      this.vDepName=this.registerObj1.DepartmentName;
+
+      this.setDropdownObjs1();
+      this.getSergeryList();
+      this.getOttableList();
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getAnesthestishDoctorList1();
+      this.getAnesthestishDoctorList2();
+      }
+
       console.log(this.registerObj1);
 
       this.setDropdownObjs1();
@@ -216,12 +301,74 @@ export class NewReservationComponent implements OnInit {
 
     }, 1000);
 
+    this.vOtReqOPD = this._loggedService.currentUserValue.user.pharOPOpt;
+    this.vOtReqIPD = this._loggedService.currentUserValue.user.pharIPOpt;
+
+    if (this.vOtReqIPD == true) { 
+      if(this.vOtReqOPD == false){
+        this.vSelectedOption = 'IP';  
+      this.searchFormGroup.get('MobileNo').clearValidators();
+      this.searchFormGroup.get('PatientName').clearValidators();
+      this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+      this.searchFormGroup.get('PatientName').updateValueAndValidity();
+      }  
+    }else{
+      this.vConditionIP = true
+    } 
+    if (this.vOtReqOPD == true) {
+      if (this.vOtReqIPD == false) { 
+        this.vSelectedOption = 'OP'; 
+        this.searchFormGroup.get('MobileNo').clearValidators();
+        this.searchFormGroup.get('PatientName').clearValidators();
+        this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+        this.searchFormGroup.get('PatientName').updateValueAndValidity();
+      }
+    } else{
+      this.vConditionOP = true
+    }
+
   }
 
-
+  onChangePatientType(event) {
+    if (event.value == 'OP') {
+      this.OP_IPType = 0;
+      this.RegId = "";
+      this.searchFormGroup.get('MobileNo').clearValidators();
+      this.searchFormGroup.get('PatientName').clearValidators();
+      this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+      this.searchFormGroup.get('PatientName').updateValueAndValidity();
+    }
+    else if (event.value == 'IP') {
+      this.OP_IPType = 1;
+      this.RegId = "";
+      this.searchFormGroup.get('MobileNo').clearValidators();
+      this.searchFormGroup.get('PatientName').clearValidators();
+      this.searchFormGroup.get('MobileNo').updateValueAndValidity();
+      this.searchFormGroup.get('PatientName').updateValueAndValidity();
+    } else {
+      this.searchFormGroup.get('MobileNo').reset();
+      this.searchFormGroup.get('MobileNo').setValidators([Validators.required]);
+      this.searchFormGroup.get('MobileNo').enable();
+      this.searchFormGroup.get('PatientName').reset();
+      this.searchFormGroup.get('PatientName').setValidators([Validators.required]);
+      this.searchFormGroup.get('PatientName').enable();
+      this.searchFormGroup.updateValueAndValidity();
+      this.OP_IPType = 2;  
+    }
+  }
+  getOptionTextIPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
+  getOptionTextOPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
+  
   createMyForm() {
     return this.formBuilder.group({
       RegID: '',
+      PatientType: ['OP'],
+      MobileNo:'',
+      PatientName:''
       // PatientName: '',
       // WardName: '',
       // StoreId: '',
@@ -232,55 +379,155 @@ export class NewReservationComponent implements OnInit {
     })
   }
 
-
-
   getSearchList() {
     var m_data = {
-      "Keyword": `${this.myForm.get('RegID').value}%`
+      "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
-    if (this.myForm.get('RegID').value.length >= 1) {
-      this._OtManagementService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
+    if (this.searchFormGroup.get('PatientType').value == 'OP'){
 
-      });
+      if (this.searchFormGroup.get('RegID').value.length >= 1) {
+        this._OtManagementService.getPatientVisitedListSearch(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptionsOP = resData;
+           console.log(resData);
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          } 
+        });
+      }
+    }else if (this.searchFormGroup.get('PatientType').value == 'IP') {
+
+      if (this.searchFormGroup.get('RegID').value.length >= 1) {
+        this._OtManagementService.getAdmittedPatientList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          // console.log(resData);
+          this.PatientListfilteredOptionsIP = resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+        });
+      }
     }
-
-
+   this.PatientInformRest();
   }
 
-  getSelectedObj(obj) {
-    this.registerObj = obj;
-    // this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
-    this.RegId = obj.RegID;
-    this.vAdmissionID = obj.AdmissionID
-
-    this.RegId = obj.RegID;
-      this.OP_IP_Id = this.registerObj.AdmissionID;
-      this.vIPDNo = obj.IPDNo;
-      this.vRegNo =obj.RegNo;
-      this.vDoctorName = obj.DoctorName;
-      this.tariffname =obj.TariffName
-      this.vCompanyName = obj.CompanyName;
-      this.Age = obj.Age;
-      this.vOP_IP_MobileNo = obj.MobileNo;
-      this.vDepartmentName=obj.DepartmentName;
-      this.vGenderName=obj.GenderName;
-
-    console.log(obj);
+  PatientInformRest(){
+    this.vWardName='';
+    this.vBedNo='';
+    this.vGenderName='';
+    this.vPatientName='';
+    this.vAgeYear='';
+    this.RegId='';
+    this.vAdmissionID='';
+    this.vAge='';
+    this.vRegNo
+    this.vOPDNo='';
+    this.vCompanyName='';
+    this.vTariffName='';
+    this.vOP_IP_MobileNo='';
+    this.vDoctorName='';
+    this.vDepartmentName='';
+    this.OP_IP_Id = '';
+    this.vIPDNo = '';
   }
 
+  // getSelectedObj(obj) {
+  //   this.registerObj = obj;
+  //   // this.PatientName = obj.FirstName + '' + obj.LastName;
+  //   this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
+  //   this.RegId = obj.RegID;
+  //   this.vAdmissionID = obj.AdmissionID
+
+  //   this.RegId = obj.RegID;
+  //     this.OP_IP_Id = this.registerObj.AdmissionID;
+  //     this.vIPDNo = obj.IPDNo;
+  //     this.vRegNo =obj.RegNo;
+  //     this.vDoctorName = obj.DoctorName;
+  //     this.tariffname =obj.TariffName
+  //     this.vCompanyName = obj.CompanyName;
+  //     this.Age = obj.Age;
+  //     this.vOP_IP_MobileNo = obj.MobileNo;
+  //     this.vDepartmentName=obj.DepartmentName;
+  //     this.vGenderName=obj.GenderName;
+
+  //   console.log(obj);
+  // }
 
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
+  }
+
+  
+  getSelectedObjOP(obj) {
+    debugger
+    console.log("AdmittedListOP:",obj)
+    this.registerObj = obj;
+    this.vWardName=obj.RoomName;
+    this.vBedNo=obj.BedName;
+    this.vGenderName=obj.GenderName;
+    this.vPatientName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+    this.vAgeYear = obj.AgeYear;
+    this.RegId = obj.RegID;
+    this.vAdmissionID = obj.AdmissionID
+    this.vAge=obj.Age;
+    this.vRegNo =obj.RegNo; 
+    this.vOPDNo = obj.OPDNo;
+    this.vCompanyName = obj.CompanyName;
+    this.vTariffName = obj.TariffName; 
+    this.vOP_IP_MobileNo = obj.MobileNo;
+    this.vDoctorName = obj.DoctorName;
+    this.vDepartmentName=obj.DepartmentName;
+    this.vDocName = obj.DoctorName;
+    this.vDepName=obj.DepartmentName;
+    
+    this.getSergeryList();
+    this.getOttableList();
+    this.getDoctorList();
+    this.getDoctor1List();
+    this.getDoctor2List();
+    this.getAnesthestishDoctorList1();
+    this.getAnesthestishDoctorList2();
+  }
+
+  getSelectedObjRegIP(obj) {
+    debugger
+    let IsDischarged = 0;
+    IsDischarged = obj.IsDischarged 
+    if(IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged'); 
+      this.RegId = ''
+    }
+    else{
+      console.log("AdmittedListIP:",obj)
+      this.registerObj = obj;
+      this.vPatientName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+      this.RegId = obj.RegID;
+      this.OP_IP_Id = this.registerObj.AdmissionID;
+      this.vIPDNo = obj.IPDNo;
+      this.vRegNo =obj.RegNo;
+      this.vDoctorName = obj.DoctorName;
+      this.vTariffName =obj.TariffName
+      this.vCompanyName = obj.CompanyName;
+      this.vAgeYear = obj.AgeYear;
+      this.vOP_IP_MobileNo = obj.MobileNo;
+      this.vDepartmentName=obj.DepartmentName;
+      this.vAge=obj.Age;
+      this.vGenderName=obj.GenderName;
+      this.vDocName = obj.DoctorName;
+      this.vDepName=obj.DepartmentName;
+    } 
+      this.getSergeryList();
+      this.getOttableList();
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getAnesthestishDoctorList1();
+      this.getAnesthestishDoctorList2();
   }
 
   closeDialog() {
@@ -477,6 +724,7 @@ export class NewReservationComponent implements OnInit {
 
 
   getSergeryList() {
+    debugger
     this._OtManagementService.getSurgeryCombo().subscribe(data => { this.SurgeryList = data; })
   }
 
@@ -512,20 +760,22 @@ export class NewReservationComponent implements OnInit {
   //   this._registerService.getDoctorMaster1Combo().subscribe(data => { this.Doctor1List = data; })
   // }
 
+// doctor 1 start 
 
   getDoctorList() {
     this._OtManagementService.getDoctorMaster().subscribe(
       data => {
-        this.DoctorList = data;
+      this.DoctorList = data;
         console.log(data)
         // data => {
         //   this.DoctorList = data;
         this.filteredDoctor.next(this.DoctorList.slice());
       })
   }
+  // doctor end
 
   getDoctor1List() {
-
+    debugger
     this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {
       this.Doctor1List = data;
       console.log(this.Doctor1List);
@@ -540,31 +790,17 @@ export class NewReservationComponent implements OnInit {
     })
   }
 
-Otnote(){
-
-  const dialogRef = this._matDialog.open(OTNoteComponent,
+  getOTRequest(){
+    const dialogRef = this._matDialog.open(GetOTRequetComponent,
       {
-        maxWidth: "85%",
-        height: "630px !important ", width: '100%',
+        maxWidth: '80%',
+        height: '90%',
+        width: '100%',
       });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed - Insert Action', result);
-      });
-}
-
-OPreOPrativenote(){
-
-  // const dialogRef = this._matDialog.open(PrepostotnoteComponent,
-  //     {
-  //       maxWidth: "85%",
-  //       height: "530px !important ", width: '100%',
-  //     });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // console.log('The dialog was closed - Insert Action', result);
-  //     });
-}
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+     });
+  }
 
   searchPatientList() {
     // const dialogRef = this._matDialog.open(IPPatientsearchComponent,

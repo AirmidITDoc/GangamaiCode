@@ -1,0 +1,20 @@
+<div class=" simple page-layout inner-scroll inner-sidebar left-sidebar">
+
+    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+      <div fxLayout="row" fxLayoutAlign="start center">
+          
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+              New OT Get Request
+          </span>
+      </div>
+      <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+      </app-common-date> -->
+      <div class="close-icon">
+          <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+              <mat-icon>close</mat-icon>
+          </button>
+      </div>
+  </mat-toolbar>
+
+
+</div>

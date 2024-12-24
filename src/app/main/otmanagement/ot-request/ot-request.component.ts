@@ -88,33 +88,6 @@ export class OTRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
-
-    var D_data= {
-      
-      "F_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "L_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
-    
-  } 
-   console.log(D_data);
-    this.D_data1=D_data;
-    this._OtManagementService.getOTRequestList(this.D_data1).subscribe(Visit => {
-      this.dataArray =  Visit as Requestlist[];
-      this.dataSource.data = Visit as Requestlist[];
-      console.log(this.dataSource.data);
-      //  this.dataSource.sort = this.sort;
-      //  this.dataSource.paginator = this.paginator;
-
-      this.sIsLoading = '';
-      this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-
-
     this.getRequestList();
     // this.onEdit();
   }
@@ -123,9 +96,6 @@ export class OTRequestComponent implements OnInit {
     return this.formBuilder.group({
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      Reg_No: [''],
-      F_Name: '',
-      L_Name: ''
     });
   }
 
@@ -135,11 +105,8 @@ export class OTRequestComponent implements OnInit {
     debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
-      // "F_Name": this.searchFormGroup.get('F_Name').value || "%",
-      // "L_Name": this.searchFormGroup.get('L_Name').value || "%",
       "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
       "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      // "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
     }
     console.log(m_data);
     this._OtManagementService.getOTRequestList(m_data).subscribe(Visit => {
@@ -275,6 +242,11 @@ export class Requestlist {
   OTBookingId: any;
   RegNo: any;
   PatientName: String;
+  FirstName:string;
+  MiddleName:string;
+  LastName:string;
+  RegID:any;
+  AdmissionID:any;
   RoomName: any;
   OTbookingDate: any;
   BedName: any;
@@ -302,6 +274,7 @@ export class Requestlist {
   WardName: any;
   WardId:any;
   OPDNo: any;
+  IPDNo:any;
   CompanyName: any;
   TariffName: any;
   OP_IP_MobileNo: any;
@@ -309,6 +282,8 @@ export class Requestlist {
   AgeYear:any;
   MobileNo:any;
   Age:any;
+  SiteDescId:any;
+  SurgeryCategoryId:any;
 
   constructor(Requestlist) {
     this.OTBookingId = Requestlist.OTBookingId || 0;
@@ -335,19 +310,26 @@ export class Requestlist {
     this.UpdateBy = Requestlist.UpdateBy || '';
     this.IsCancelled = Requestlist.IsCancelled || '';
     this.GenderName = Requestlist.GenderName || '';
-    this.SurgeryType = Requestlist.SurgeryType || 0;
     this.OTbookingTime = Requestlist.OTbookingTime || 0;
     this.IsCancelledBy = Requestlist.IsCancelledBy || 0;
     this.WardName = Requestlist.WardName || '';
     this.WardId = Requestlist.WardId || 0;
     this.MobileNo=Requestlist.MobileNo || 0;
     this.OPDNo = Requestlist.OPDNo || 0;
+    this.IPDNo = Requestlist.IPDNo || 0;
     this.CompanyName = Requestlist.CompanyName || '';
     this.TariffName = Requestlist.TariffName || '';
     this.OP_IP_MobileNo = Requestlist.OP_IP_MobileNo || 0;
     this.DoctorName = Requestlist.DoctorName || '';    
     this.AgeYear = Requestlist.AgeYear || '';
     this.Age = Requestlist.Age || '';
+    this.FirstName=Requestlist.FirstName || '';
+    this.MiddleName=Requestlist.MiddleName || '';
+    this.LastName=Requestlist.LastName || '';
+    this.RegID=Requestlist.RegID || '';
+    this.AdmissionID=Requestlist.AdmissionID || '';
+    this.SiteDescId=Requestlist.SiteDescId || '';
+    this.SurgeryCategoryId=Requestlist.SurgeryCategoryId || ''
   }
 }
 

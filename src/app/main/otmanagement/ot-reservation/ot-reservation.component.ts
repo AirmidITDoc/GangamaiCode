@@ -205,6 +205,32 @@ export class OTReservationComponent implements OnInit {
     //  if(row) this.dialogRef.close(m_data);
   }
 
+  Otnote(){
+
+  // const dialogRef = this._matDialog.open(OTNoteComponent,
+  //     {
+  //       maxWidth: "85%",
+  //       height: "630px !important ", width: '100%',
+  //     });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // console.log('The dialog was closed - Insert Action', result);
+  //     });
+}
+
+OPreOPrativenote(){
+
+  // const dialogRef = this._matDialog.open(PrepostotnoteComponent,
+  //     {
+  //       maxWidth: "85%",
+  //       height: "530px !important ", width: '100%',
+  //     });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // console.log('The dialog was closed - Insert Action', result);
+  //     });
+}
+
   onEdit(contact) {
 
 
@@ -268,7 +294,7 @@ export class OTReservationComponent implements OnInit {
     });
     // if (contact) this.dialogRef.close(PatInforObj);
   }
-
+  
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -328,6 +354,36 @@ export class OTReservationDetail {
   AgeYear:any;
   MobileNo:any;
   Age:any;
+
+  OTBookingId: any;
+  FirstName:string;
+  MiddleName:string;
+  LastName:string;
+  RegID:any;
+  RoomName: any;
+  OTbookingDate: any;
+  BedName: any;
+  OP_IP_Id: any;
+  OP_IP_Type: any;
+  SurgeryId: any;
+  DoctorId: any;
+  DepartmentId: any;
+  CategoryId: any;
+  RoomId: any;
+  BedId: any;
+  GenderId: any;
+  AdmittingDoctor: any;
+  SurgeryCategoryName: any;
+  SurgeryType: any;
+  DepartmentName: any;
+  UpdateBy: any;
+  IsCancelled: any;
+  GenderName: any;
+  OTbookingTime: any;
+  IsCancelledBy: any;
+  IPDNo:any;
+  SiteDescId:any;
+  SurgeryCategoryId:any;
   /**
    * Constructor
    *
@@ -370,6 +426,32 @@ export class OTReservationDetail {
       this.MobileNo= OTReservationDetail.MobileNo || '';
       this.Age= OTReservationDetail.Age || '';
 
+    this.RoomName = OTReservationDetail.RoomName || '';
+    this.OTbookingDate = OTReservationDetail.OTbookingDate || '';
+    this.BedName = OTReservationDetail.BedName || 0;
+    this.OP_IP_Id = OTReservationDetail.OP_IP_Id || 0;
+    this.OP_IP_Type = OTReservationDetail.OP_IP_Type || '';
+    this.DoctorId = OTReservationDetail.DoctorId || 0;
+    this.DepartmentId = OTReservationDetail.DepartmentId || '';
+    this.CategoryId = OTReservationDetail.CategoryId || '';
+    this.RoomId = OTReservationDetail.RoomId || '';
+    this.BedId = OTReservationDetail.BedId || 0;
+    this.GenderId = OTReservationDetail.GenderId || 0;
+    this.AdmittingDoctor = OTReservationDetail.AdmittingDoctor || '';
+    this.SurgeryCategoryName = OTReservationDetail.SurgeryCategoryName || '';
+    this.SurgeryType = OTReservationDetail.SurgeryType || 0;
+    this.UpdateBy = OTReservationDetail.UpdateBy || '';
+    this.IsCancelled = OTReservationDetail.IsCancelled || '';
+    this.GenderName = OTReservationDetail.GenderName || '';
+    this.OTbookingTime = OTReservationDetail.OTbookingTime || 0;
+    this.IsCancelledBy = OTReservationDetail.IsCancelledBy || 0;
+    this.IPDNo = OTReservationDetail.IPDNo || 0;
+    this.FirstName=OTReservationDetail.FirstName || '';
+    this.MiddleName=OTReservationDetail.MiddleName || '';
+    this.LastName=OTReservationDetail.LastName || '';
+    this.RegID=OTReservationDetail.RegID || '';
+    this.SiteDescId=OTReservationDetail.SiteDescId || '';
+    this.SurgeryCategoryId=OTReservationDetail.SurgeryCategoryId || ''
     }
   }
 }

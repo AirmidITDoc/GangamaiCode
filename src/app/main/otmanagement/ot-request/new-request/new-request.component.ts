@@ -90,6 +90,12 @@ export class NewRequestComponent implements OnInit {
   vOtReqIPD: any ; 
   vDepartmentName:any;
   vIPDNo:any;
+  vSiteDescId:any;
+  vSurgeryCategoryId:any;
+  vSurgeryId:any;
+  vDocName:any;
+  vDepName:any;
+  // vOP_IP_Type:any;
   vConditionOP:boolean=false;
   vConditionIP:boolean=false;
   OP_IP_Id: any = 0;
@@ -146,17 +152,88 @@ export class NewRequestComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
     this.searchFormGroup = this.createMyForm();
     
     this.personalFormGroup = this.createOtrequestForm();
-    if (this.data) {
+    this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
+    if(this.data) {
 
-      this.registerObj1 = this.data.PatObj;
-     
-      console.log(this.registerObj1);
+      this.registerObj1 = this.data.Obj;
+
+      // ip and op edit
+      if (this.registerObj1.OP_IP_Type === 1) {
+        // Fetch IP-specific information
+      console.log("IIIIIIIIIIIIIPPPPPPPPP:",this.registerObj1);
+      this.vWardName=this.registerObj1.RoomName;
+      this.vBedNo=this.registerObj1.BedName;
+      this.vGenderName=this.registerObj1.GenderName;
+      this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+      this.vAgeYear = this.registerObj1.AgeYear;
+      this.RegId = this.registerObj1.RegID;
+      this.vAdmissionID = this.registerObj1.AdmissionID
+      this.vAge=this.registerObj1.Age;
+      this.vRegNo =this.registerObj1.RegNo; 
+      this.vIPDNo = this.registerObj1.IPDNo;
+      this.vCompanyName = this.registerObj1.CompanyName;
+      this.vTariffName = this.registerObj1.TariffName; 
+      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+      this.vDoctorName = this.registerObj1.DoctorName;
+      this.vDepartmentName=this.registerObj1.DepartmentName;      
+      this.vSelectedOption = 'IP';
+      this.vSiteDescId=this.registerObj1.SiteDescId
+      this.vSurgeryCategoryId=this.registerObj1.SurgeryCategoryId;
+      this.vSurgeryId=this.registerObj1.SurgeryId;
+      this.vDocName = this.registerObj1.DoctorName;
+      this.vDepName=this.registerObj1.DepartmentName;
 
       this.setDropdownObjs1();
+      this.getSurgeryList();
+      this.getOttableList();
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getCategoryList();
+      this.getSiteList();
+      this.getDepartmentList();
+      } else if (this.registerObj1.OP_IP_Type === 0) {
+        // Fetch OP-specific information
+      console.log("OOOOOOOPPPPPPPPP:",this.registerObj1);
+      this.vWardName=this.registerObj1.RoomName;
+      this.vBedNo=this.registerObj1.BedName;
+      this.vGenderName=this.registerObj1.GenderName;
+      this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+      this.vAgeYear = this.registerObj1.AgeYear;
+     this.RegId = this.registerObj1.RegID;
+      this.vAdmissionID = this.registerObj1.AdmissionID
+      this.vAge=this.registerObj1.Age;
+      this.vRegNo =this.registerObj1.RegNo; 
+      this.vOPDNo = this.registerObj1.OPDNo;
+      this.vCompanyName = this.registerObj1.CompanyName;
+      this.vTariffName = this.registerObj1.TariffName; 
+      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+      this.vDoctorName = this.registerObj1.DoctorName;
+      this.vDepartmentName=this.registerObj1.DepartmentName;
+      this.vSelectedOption = 'OP';
+      this.vSiteDescId=this.registerObj1.SiteDescId
+      this.vSurgeryCategoryId=this.registerObj1.SurgeryCategoryId;
+      this.vSurgeryId=this.registerObj1.SurgeryId;
+      this.vDocName = this.registerObj1.DoctorName;
+      this.vDepName=this.registerObj1.DepartmentName;
+
+      this.setDropdownObjs1();
+      this.getSurgeryList();
+      this.getOttableList();
+      this.getDoctorList();
+      this.getDoctor1List();
+      this.getDoctor2List();
+      this.getCategoryList();
+      this.getSiteList();
+      this.getDepartmentList();
+      }
+      this.setDropdownObjs1();
     }
+
     this.getSurgeryList();
     this.getOttableList();
     this.getDoctorList();
@@ -251,6 +328,7 @@ export class NewRequestComponent implements OnInit {
   getOptionTextOPObj(option) { 
     return option && option.FirstName + " " + option.LastName; 
   }
+  
   createMyForm() {
     return this.formBuilder.group({
       RegID: '',
@@ -319,12 +397,11 @@ export class NewRequestComponent implements OnInit {
 
 
   getSearchList() {
-    debugger
     var m_data = {
       "Keyword": `${this.searchFormGroup.get('RegID').value}%`
     }
     if (this.searchFormGroup.get('PatientType').value == 'OP'){
-      debugger
+
       if (this.searchFormGroup.get('RegID').value.length >= 1) {
         this._OtManagementService.getPatientVisitedListSearch(m_data).subscribe(resData => {
           this.filteredOptions = resData;
@@ -338,7 +415,7 @@ export class NewRequestComponent implements OnInit {
         });
       }
     }else if (this.searchFormGroup.get('PatientType').value == 'IP') {
-      debugger
+
       if (this.searchFormGroup.get('RegID').value.length >= 1) {
         this._OtManagementService.getAdmittedPatientList(m_data).subscribe(resData => {
           this.filteredOptions = resData;
@@ -356,7 +433,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   getSelectedObjOP(obj) {
-    console.log("AdmittedList:",obj)
+    console.log("AdmittedListOP:",obj)
     this.registerObj = obj;
     this.vWardName=obj.RoomName;
     this.vBedNo=obj.BedName;
@@ -374,8 +451,20 @@ export class NewRequestComponent implements OnInit {
     this.vOP_IP_MobileNo = obj.MobileNo;
     this.vDoctorName = obj.DoctorName;
     this.vDepartmentName=obj.DepartmentName;
+    this.vDocName = obj.DoctorName;
+    this.vDepName=obj.DepartmentName;
+    // this.OP_IPType=0;
+    // this.OP_IPType=1;
 
     // this.PatientInformRest();
+    this.getSurgeryList(); //SurgeryName
+    this.getOttableList();
+    this.getDoctorList(); //SurgeonName
+    this.getDoctor1List();
+    this.getDoctor2List();
+    this.getCategoryList(); //SurgeryCategoryName
+    this.getSiteList(); //sitName
+    this.getDepartmentList(); //departmentName
   }
 
   getSelectedObjRegIP(obj) {
@@ -386,7 +475,7 @@ export class NewRequestComponent implements OnInit {
       this.RegId = ''
     }
     else{
-      console.log(obj)
+      console.log("AdmittedListIP:",obj)
       this.registerObj = obj;
       this.vPatientName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
       this.RegId = obj.RegID;
@@ -401,19 +490,23 @@ export class NewRequestComponent implements OnInit {
       this.vDepartmentName=obj.DepartmentName;
       this.vAge=obj.Age;
       this.vGenderName=obj.GenderName;
+      this.vDocName = obj.DoctorName;
+      this.vDepName=obj.DepartmentName;
     } 
-    // this.PatientInformRest();
+    this.getSurgeryList();
+    this.getOttableList();
+    this.getDoctorList();
+    this.getDoctor1List();
+    this.getDoctor2List();
+    this.getCategoryList();
+    this.getSiteList();
+    this.getDepartmentList();
   }
  
 
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.PatientName + ' (' + option.RegID + ')';
-  }
-
-  getOptionTextGender(option) {
-    debugger
-    return option && option.GenderName ? option.GenderName : '';
   }
 
   // openChanged(event) {
@@ -458,8 +551,6 @@ export class NewRequestComponent implements OnInit {
     // this.isAlive = false;
   }
 
-
-
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     console.log('dateTimeObj ==', dateTimeObj);
@@ -476,25 +567,8 @@ export class NewRequestComponent implements OnInit {
     this._OtManagementService.getSurgeryCombo().subscribe(data => { this.SurgeryList = data; })
   }
 
-
-  // getOptionText(option) {
-  //   if (!option) return '';
-  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  // }
-
-
-
-  // getCategoryList() {
-  //   this._OtManagementService.getCategoryCombo().subscribe(data => {
-  //     this.CategoryList = data;
-  //     console.log(data);
-  //     this.filteredCategory.next(this.CategoryList.slice());
-
-  //   })
-  // }
-
+  // SurgeryCategory start
   getCategoryList() {
-    debugger
     this._OtManagementService.getCategoryCombo().subscribe(data => {
       this.CategoryList = data;
       this.optionsSurgeryCategory = this.CategoryList.slice();
@@ -502,7 +576,14 @@ export class NewRequestComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterSurgeryCategory(value) : this.CategoryList.slice()),
       );
-
+      if (this.data) {
+        
+        const DValue = this.CategoryList.filter(item => item.SurgeryCategoryId == this.registerObj1.SurgeryId);
+        console.log("SurgeryCategoryId:",DValue)
+        this._OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(DValue[0]);
+        this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        return;
+      }
     });
 
   }
@@ -512,23 +593,15 @@ export class NewRequestComponent implements OnInit {
       return this.optionsSurgeryCategory.filter(option => option.SurgeryCategoryName.toLowerCase().includes(filterValue));
     }
 
-  }
-  
+  }  
   
   getOptionTextautoSurgeryCategory(option) {
     return option && option.SurgeryCategoryName ? option.SurgeryCategoryName : '';
   }
-  // getSurgeryList() {
-  //   this._OtManagementService.getSurgeryCombo().subscribe(data => {
-  //     this.SurgeryList = data;
-  //     console.log(data);
-  //     this.filteredsurgery.next(this.SurgeryList.slice());
-
-  //   })
-  // }
+  // SurgeryCategory end
 
   getSurgeryList() {
-    debugger
+    
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
       this.SurgeryList = data;
       this.optionsSurgery = this.SurgeryList.slice();
@@ -536,7 +609,14 @@ export class NewRequestComponent implements OnInit {
         startWith(''),
         map(value => value ? this.Surgery(value) : this.SurgeryList.slice()),
       );
-
+      if (this.data) {
+        
+        const DValue = this.SurgeryList.filter(item => item.SurgeryId == this.registerObj1.SurgeryId);
+        console.log("SurgeryId:",DValue)
+        this._OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(DValue[0]);
+        this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        return;
+      }
     });
 
   }
@@ -548,26 +628,13 @@ export class NewRequestComponent implements OnInit {
 
   }
 
-
   getOptionTextautoSurgery(option) {
     return option && option.SurgeryName ? option.SurgeryName : '';
   }
 
-  // getSiteList() {
-  //   // 
-  //  var m_data = {
-  //     "Id": 1
-  //   }
-  //   this._OtManagementService.getSiteCombo().subscribe(data => {
-  //     this.Sitelist = data;
-  //     console.log(data);
-  //     this.filteredSite.next(this.Sitelist.slice());
-
-  //   })
-  // }
-
-
+  // site star
   getSiteList() {
+    
     var m_data = {
           "Id": 1
         }
@@ -579,6 +646,15 @@ export class NewRequestComponent implements OnInit {
         map(value => value ? this._Site(value) : this.Sitelist.slice()),
       );
 
+      if (this.data) {
+        
+        const SValue = this.Sitelist.filter(item => item.SiteDescId == this.registerObj1.SiteDescId);
+        console.log("SiteDescId:",SValue)
+        this._OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(SValue[0]);
+        this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        return;
+      }
+
     });
 
   }
@@ -589,36 +665,12 @@ export class NewRequestComponent implements OnInit {
     }
 
   }
-
-  
   getOptionTextautoSiteDesc(option) {
     return option && option.SiteDescriptionName ? option.SiteDescriptionName : '';
   }
+   // site end
 
-  // getDoctor1List() {
-  //   this._registerService.getDoctorMaster1Combo().subscribe(data => { this.Doctor1List = data; })
-  // }
-
-
-  // getDoctorList() {
-  //   this._OtManagementService.getDoctorMaster().subscribe(
-  //     data => {
-  //       this.DoctorList = data;
-  //       console.log(data)
-  //       // data => {
-  //       //   this.DoctorList = data;
-  //       // this.filteredDoctor.next(this.DoctorList.slice());
-  //     })
-  // }
-
-  // getDepartmentList() {
-  //   let cData = this._OtManagementService.getDepartmentCombo().subscribe(data => {
-  //     this.DepartmentList = data;
-  //     console.log(this.DepartmentList);
-  //     this.filteredDepartment.next(this.DepartmentList.slice());
-  //   });
-  // }
-
+  // doctor start
   getDoctorList() {
     debugger
     this._OtManagementService.getDoctorMaster().subscribe(data => {
@@ -628,12 +680,19 @@ export class NewRequestComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterDoctor(value) : this.DoctorList.slice()),
       );
+      if (this.data) {
+        debugger
+        const DValue = this.DoctorList.filter(item => item.DoctorId == this.registerObj1.SurgeonId);
+        console.log("DoctorId:",DValue)
+        this._OtManagementService.otreservationFormGroup.get('DoctorId').setValue(DValue[0]);
+        this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+
+        return;
+      }
 
     });
 
   }
-
-
   private _filterDoctor(value: any): string[] {
     debugger
     if (value) {
@@ -643,17 +702,20 @@ export class NewRequestComponent implements OnInit {
 
   }
 
-  
   getOptionTextSurgeonId1(option) {
     debugger
     return option && option.Doctorname ? option.Doctorname : '';
   }
+
+  // doctor end
+
   getOptionTextautoSurgeonName(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
 
+  // deparment start
   getDepartmentList() {
-    debugger
+
     this._OtManagementService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDepartment = this.DepartmentList.slice();
@@ -662,25 +724,30 @@ export class NewRequestComponent implements OnInit {
         map(value => value ? this._filterDepartment(value) : this.DepartmentList.slice()),
       );
 
-    });
+      if (this.data) {
+        
+        const DValue = this.DepartmentList.filter(item => item.DepartmentId == this.registerObj1.DepartmentId);
+        console.log("Departmentid:",DValue)
+        this._OtManagementService.otreservationFormGroup.get('DepartmentId').setValue(DValue[0]);
+        this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        // this.OnChangeDoctorList(DValue[0]);
+        return;
+      }
 
+    });
   }
 
-
   private _filterDepartment(value: any): string[] {
-    debugger
     if (value) {
       const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
       return this.optionsDepartment.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
 
   }
-
-  
   getOptionTextautoDepartment(option) {
-    debugger
     return option && option.DepartmentName ? option.DepartmentName : '';
   }
+  // deparment end
   getDoctor1List() {
 
     this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {

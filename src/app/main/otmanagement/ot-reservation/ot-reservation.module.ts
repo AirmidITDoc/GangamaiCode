@@ -37,6 +37,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { GetOTRequetComponent } from './get-otrequet/get-otrequet.component';
 
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OTReservationComponent,NewReservationComponent],
+    declarations: [OTReservationComponent,NewReservationComponent, GetOTRequetComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
