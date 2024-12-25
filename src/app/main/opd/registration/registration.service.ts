@@ -13,8 +13,7 @@ export class RegistrationService {
   myFilterform: FormGroup;
   mySaveForm: FormGroup;
   personalFormGroup: FormGroup;
-  registerObj = new RegInsert({});
-
+ 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private _formBuilder: FormBuilder,
@@ -45,13 +44,14 @@ export class RegistrationService {
   }
   createPesonalForm() {
     return this._formBuilder.group({
-      regID: [0],
+      regId: [0],
       RegNo: '1',
       PrefixId: ['', [Validators.required]],
-      FirstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
+      FirstName:[""],
+      //  ['', [
+      //   Validators.required,
+      //   Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+      // ]],
       MiddleName: ['', [
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
@@ -64,7 +64,7 @@ export class RegistrationService {
       DateOfBirth: [(new Date()).toISOString()],
       age: ['2'],
       AgeYear: ['12', [
-        Validators.required,
+        // Validators.required,
         Validators.maxLength(3),
         Validators.pattern("^[0-9]*$")]],
       AgeMonth: ['2', [
@@ -103,7 +103,10 @@ export class RegistrationService {
     });
 
   }
-
+ // new Api
+ initializeFormGroup() {
+  this.createPesonalForm();
+}
 
 
   public getRegistrationList(employee) {
@@ -111,10 +114,7 @@ export class RegistrationService {
   }
 
 
-  // new Api
-  initializeFormGroup() {
-    this.createPesonalForm();
-  }
+ 
   public RegstrationtSaveData(Param: any, showLoader = true) {
     if (Param.regID) {
       return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
