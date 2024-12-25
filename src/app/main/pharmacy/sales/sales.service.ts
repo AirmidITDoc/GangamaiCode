@@ -163,7 +163,7 @@ export class SalesService {
   }
   
   public getSubstitutes(emp) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_Item_Generic_ByName",emp);
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemGeneric_ByName",emp);
   }
   public getItemListSearchList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param);

@@ -142,7 +142,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         this.IsCollection = this.accountService.currentUserValue.user.isCollection
         this.IsBedStatus = this.accountService.currentUserValue.user.isBedStatus
-        this.isPatientInfo = this.accountService.currentUserValue.user.IsPatientInfo
+        this.isPatientInfo = this.accountService.currentUserValue.user.isPatientInfo
         // console.log( this.IsCollection)
         // console.log(this.IsBedStatus)
     }
