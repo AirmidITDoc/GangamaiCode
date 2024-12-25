@@ -10,6 +10,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { Admission } from "app/main/ipd/Admission/admission/admission.component";
 
 @Component({
     selector: "app-item-master",
@@ -90,17 +91,23 @@ export class ItemMasterComponent implements OnInit {
         this.getItemMasterList();
     }
     chargeslist:any=[];
+    resultsLength=0;
     getItemMasterList() {
         this.sIsLoading = '';
         var m_data = {
             ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
-            StoreID: this._loggedService.currentUserValue.user.storeId
+            StoreID: this._loggedService.currentUserValue.user.storeId,
+            Start:(this.paginator?.pageIndex ?? 0),
+            Length:(this.paginator?.pageSize ?? 35),                  
         };
         console.log(m_data)
         this._itemService.getItemMasterList(m_data).subscribe((data) => {
-                this.DSItemMasterList.data = data as ItemMaster[];  
+             
+                this.DSItemMasterList.data = data["Table1"] ?? [] as ItemMaster[];
+                // console.log(this.dataSource.data)
                 this.DSItemMasterList.sort = this.sort;
-                this.DSItemMasterList.paginator = this.paginator; 
+                this.resultsLength = data["Table"][0]["total_row"];
+                this.sIsLoading = '';
                 console.log(this.DSItemMasterList.data)
             },
             (error) => (this.isLoading = false)
@@ -149,7 +156,7 @@ export class ItemMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "95vw",
-            maxHeight: "80vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
             data : {
@@ -191,7 +198,7 @@ export class ItemMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
             maxWidth: "95vw",
-            maxHeight: "80vh",
+            maxHeight: "95vh",
             width: "100%",
             height: "100%",
         });

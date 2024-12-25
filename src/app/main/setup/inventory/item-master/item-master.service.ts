@@ -88,7 +88,7 @@ export class ItemMasterService {
 
     public getItemMasterList(param) {
         return this._httpClient.post( 
-            "Generic/GetByProc?procName=m_Rtrv_ItemMaster_by_Name",
+            "Generic/GetDataSetByProc?procName=m_Rtrv_ItemMaster_by_Name_Pagn",
             param
         );
     }

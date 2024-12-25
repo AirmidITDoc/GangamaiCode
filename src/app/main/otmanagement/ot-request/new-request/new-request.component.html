@@ -209,13 +209,14 @@
                         [(ngModel)]="vSurgeryCategoryId" [matAutocomplete]="autoSurgeryCategory" required>
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
-                          (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSurgerySelected = false;">close</mat-icon>
+                          (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSystemSelected = false;">close</mat-icon>
                         <mat-icon class="mat-icon-close"
-                          (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSurgerySelected = false;">search</mat-icon>
+                          (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSystemSelected = false;">search</mat-icon>
                       </span>
                       <mat-autocomplete #autoSurgeryCategory="matAutocomplete"
                         [displayWith]="getOptionTextautoSurgeryCategory">
-                        <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" [value]="option">
+                        <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" [value]="option"
+                        (onSelectionChange)="onChangeSiteList(option)">
                           {{option.SurgeryCategoryName}}
                         </mat-option>
                       </mat-autocomplete>
@@ -230,12 +231,13 @@
                         [matAutocomplete]="autoSite" required>
                       <span matSuffix style="display: flex;">
                         <mat-icon class="mat-icon-close"
-                          (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSurgerySelected = false;">close</mat-icon>
+                          (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSiteSelected = false;">close</mat-icon>
                         <mat-icon class="mat-icon-close"
-                          (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSurgerySelected = false;">search</mat-icon>
+                          (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSiteSelected = false;">search</mat-icon>
                       </span>
                       <mat-autocomplete #autoSite="matAutocomplete" [displayWith]="getOptionTextautoSiteDesc">
-                        <mat-option *ngFor="let option of filteredOptionsSite | async" [value]="option">
+                        <mat-option *ngFor="let option of filteredOptionsSite | async" [value]="option"
+                        (onSelectionChange)="isSiteSelected = true;">
                           {{option.SiteDescriptionName}}
                         </mat-option>
                       </mat-autocomplete>

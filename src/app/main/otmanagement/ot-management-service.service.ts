@@ -146,8 +146,8 @@ export class OTManagementServiceService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
    
   }
-  public getSiteCombo(){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_SiteDescriptionMasterForCombo_Conditional",{"Id":1})
+  public getSiteCombo(param){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_M_SiteDescriptionMasterForCombo_Conditional",param)
   }
     //Doctor Master Combobox List
     public getDoctorMasterCombo(Id) {

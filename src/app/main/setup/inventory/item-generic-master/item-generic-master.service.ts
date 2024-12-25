@@ -21,7 +21,7 @@ export class ItemGenericMasterService {
         return this._formBuilder.group({
             ItemGenericNameId: [""],
             ItemGenericName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -49,6 +49,12 @@ export class ItemGenericMasterService {
 
     public updateItemGenericMaster(param) {
         return this._httpClient.post("Inventory/ItemGenericUpdate", param);
+    }
+    public deactivateTheStatus(param) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + param,
+            {}
+        );
     }
 
     populateForm(param) {
