@@ -1,19 +1,24 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SubGroupMasterService } from '../sub-group-master.service';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-subgroup',
-  templateUrl: './new-subgroup.component.html',
-  styleUrls: ['./new-subgroup.component.scss']
+    selector: 'app-new-subgroup',
+    templateUrl: './new-subgroup.component.html',
+    styleUrls: ['./new-subgroup.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewSubgroupComponent implements OnInit {
 
   autocompleteModegroupName:string="GroupName";
 
   subgroupForm: FormGroup;
+  isActive:boolean=true;
+  saveflag : boolean = false;
 
   constructor(
       public _SubGroupMasterService: SubGroupMasterService,
@@ -23,56 +28,41 @@ export class NewSubgroupComponent implements OnInit {
   ) { }
  
  
-  ngOnInit(): void {
-      this.subgroupForm = this._SubGroupMasterService.createSubgroupForm();
-      var m_data = {
-        subGroupId: this.data?.subGroupId,
-        subGroupName: this.data?.subGroupName.trim(),
-        groupId: this.data?.groupId,
-        isActive: JSON.stringify(this.data?.isActive),
-      };
-      this.subgroupForm.patchValue(m_data);
-  }
+    ngOnInit(): void {
+        this.subgroupForm = this._SubGroupMasterService.createSubgroupForm();
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.subgroupForm.patchValue(this.data);
+        }
+    }
 
 
-
-  
-  onSubmit() {
-      // if (this.subgroupForm.valid) {
-      //   debugger
-      //     this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response) => {
-      //         this.toastr.success(response.message);
-      //         this.onClear(true);
-      //     }, (error) => {
-      //         this.toastr.error(error.message);
-      //     });
-      // }
+    onSubmit() {    
       debugger
-      if (this.subgroupForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-      }else{
-        if(!this.subgroupForm.get("subGroupId").value){
-          var mdata={
-              "subGroupId": 0,
-              "groupId": this.subgroupForm.get("groupId").value || 0,
-              "subGroupName": this.subgroupForm.get("subGroupName").value || "",
-          }
-          console.log("sub group:", mdata);
+        if(!this.subgroupForm.invalid)
+        {
+        //   var mdata={
+        //       "subGroupId": 0,
+        //       "groupId": this.subgroupForm.get("groupId").value || 0,
+        //       "subGroupName": this.subgroupForm.get("subGroupName").value || "",
+        //   }
+            console.log("sub group:", this.subgroupForm.value);
   
-          this._SubGroupMasterService.SubGroupMasterSave(mdata).subscribe((response)=>{
+            this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response)=>{
             this.toastr.success(response.message);
             this.onClear(true);
           }, (error)=>{
             this.toastr.error(error.message);
           })
-        } else{
-          // update
+        } 
+        else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
-      }     
-  }
+    }
 
   onClear(val: boolean) {
       this.subgroupForm.reset();
@@ -87,14 +77,17 @@ export class NewSubgroupComponent implements OnInit {
     this.groupId=obj.value;
   }
 
-  getValidationGroupNameMessages(){
-    return {
-      groupId: [
-          { name: "required", Message: "Group Name is required" }
-      ]
-  };
-  }
-
- 
+    getValidationMessages() {
+        return {
+            subGroupName: [
+                { name: "required", Message: "SubGroup Name is required" },
+                { name: "maxlength", Message: "SubGroup name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            groupId: [
+                { name: "required", Message: "Group Name is required" }
+            ]
+        };
+    }
 
 }

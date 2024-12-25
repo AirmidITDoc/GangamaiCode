@@ -22,14 +22,14 @@ export class CreditreasonService {
         creditId: [""],
         creditReason: ["", 
             [
-                Validators.required,
-                Validators.pattern("^[A-Za-z0-9]+$")
+                Validators.required,Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]
         ],
-          isActive: ["true"],
-          AddedBy: ["0"],
-          UpdatedBy: ["0"],
-          AddedByName: [""],
+        //   isActive: ["true"],
+        //   AddedBy: ["0"],
+        //   UpdatedBy: ["0"],
+        //   AddedByName: [""],
       });
   }
   createSearchForm(): FormGroup {
@@ -42,16 +42,7 @@ export class CreditreasonService {
   initializeFormGroup() {
       this.createCreditreasonForm();
   }
-  getValidationMessages() {
-      return {
-        creditReason: [
-              { name: "required", Message: "Credit Reason is required" },
-              { name: "maxlength", Message: "Credit Reason should not be greater than 50 char." },
-              { name: "pattern", Message: "Special char not allowed." }
-          ]
-      };
-  }
-
+  
   public creditreasonMasterSave(Param: any, showLoader = true) {
       if (Param.creditId) {
           return this._httpClient.PutData("CreditReasonMaster/" + Param.creditId, Param, showLoader);

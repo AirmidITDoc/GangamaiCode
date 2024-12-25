@@ -17,39 +17,37 @@ export class WardMasterService {
 
     createWardForm(): FormGroup {
         return this._formBuilder.group({
-            roomId: [""],
+            roomId: ["",
+                Validators.required
+            ],
             roomName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            locationId: [""],
-           classId: [""],
+            locationId: ["",
+                Validators.required
+            ],
+            classId: ["",
+                Validators.required
+            ],
             roomType: ["1"],
             isAvailable: ["1"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             RoomNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createWardForm();
     }
-
-    getValidationMessages() {
-        return {
-            roomName: [
-                { name: "required", Message: "RoomName  is required" },
-                { name: "maxlength", Message: "RoomName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
+    
     public roomMasterSave(Param: any, showLoader = true) {
         if (Param.roomId) {
             return this._httpClient.PutData("WardMaster/" + Param.roomId, Param, showLoader);

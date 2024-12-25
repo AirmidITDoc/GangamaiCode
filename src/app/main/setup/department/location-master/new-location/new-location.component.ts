@@ -1,37 +1,38 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { LocationMasterService } from '../location-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-location',
-  templateUrl: './new-location.component.html',
-  styleUrls: ['./new-location.component.scss']
+    selector: 'app-new-location',
+    templateUrl: './new-location.component.html',
+    styleUrls: ['./new-location.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewLocationComponent implements OnInit {
   locationForm: FormGroup;
-  isActive:boolean=true
+  isActive:boolean=true;
+  saveflag : boolean = false;
 
   constructor( public _LocationMasterService: LocationMasterService,
     public dialogRef: MatDialogRef<NewLocationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService) { }
 
-  ngOnInit(): void {
-    this.locationForm = this._LocationMasterService.createLocationForm();
-     if(this.data){
-     this.isActive=this.data.isActive
-      this.locationForm.patchValue(this.data);}
-   
-  }
+    ngOnInit(): void {
+        this.locationForm = this._LocationMasterService.createLocationForm();
+        if(this.data){
+        this.isActive=this.data.isActive
+        this.locationForm.patchValue(this.data);}
+    }
 
-  saveflag : boolean = false;
   onSubmit() {
-    this.saveflag = true;
-    
-   
-    if (this.locationForm.valid) {
+    if(!this.locationForm.invalid) 
+    {
+        this.saveflag = true;
         this._LocationMasterService.locationMasterSave(this.locationForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
@@ -39,19 +40,27 @@ export class NewLocationComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+    else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
   }
-  getValidationMessages() {
-    return {
-        locationName: [
-            { name: "required", Message: "LocationName  is required" },
-            { name: "maxlength", Message: "LocationName should not be greater than 50 char." },
-            { name: "pattern", Message: "Special char not allowed." }
-        ]
-    };
-}
 
-onClear(val: boolean) {
-    this.locationForm.reset();
-    this.dialogRef.close(val);
-}
+    onClear(val: boolean) {
+        this.locationForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    getValidationMessages() {
+        return {
+            locationName: [
+                { name: "required", Message: "LocationName  is required" },
+                { name: "maxlength", Message: "LocationName should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 }

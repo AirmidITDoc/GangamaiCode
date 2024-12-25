@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,60 +19,37 @@ export class CashCounterMasterService {
 
     createcashcounterForm(): FormGroup {
         return this._formBuilder.group({
-            cashCounterId: [""],
+            cashCounterId: [0],
             cashCounterName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             prefix: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
             billNo: ["", 
                 [
-                    Validators.required,
+                    Validators.required, 
                     Validators.pattern("^[0-9]*$")
                 ]
             ],
-           isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CashCounterNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createcashcounterForm();
-    }
-
-  
-    getValidationMessages() {
-        return {
-            cashCounterName: [
-                { name: "required", Message: "CashCounter Name is required" },
-                { name: "maxlength", Message: "CashCounter name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ],
-            prefix: [
-                { name: "required", Message: "Prefix Name is required" },
-                { name: "maxlength", Message: "Prefix name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ],
-            billNo: [
-                { name: "required", Message: "BillNo Name is required" },
-                { name: "maxlength", Message: "BillNo name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed, only digits." }
-            ],
-
-        };
     }
 
     public cashcounterMasterSave(Param: any, showLoader = true) {
@@ -86,4 +61,5 @@ export class CashCounterMasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("CashCounter?Id=" + m_data.toString());
     }
+    
 }

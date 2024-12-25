@@ -18,10 +18,10 @@ export class LocationMasterService {
 
     createLocationForm(): FormGroup {
         return this._formBuilder.group({
-            locationId: [""],
+            locationId: [0],
             locationName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -40,8 +40,6 @@ export class LocationMasterService {
     initializeFormGroup() {
         this.createLocationForm();
     }
-
-  
 
     public locationMasterSave(Param: any, showLoader = true) {
         if (Param.locationId) {

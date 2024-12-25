@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NewCreditReasonComponent } from './new-credit-reason/new-credit-reason.component';
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -7,13 +7,15 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { CreditreasonService } from './creditreason.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-credit-reason-master',
   templateUrl: './credit-reason-master.component.html',
-  styleUrls: ['./credit-reason-master.component.scss']
+  styleUrls: ['./credit-reason-master.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class CreditReasonMasterComponent implements OnInit {
 
@@ -25,11 +27,11 @@ export class CreditReasonMasterComponent implements OnInit {
       gridConfig: gridModel = {
           apiUrl: "CreditReasonMaster/List",
           columnsList: [
-              { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-              { heading: "Credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA', width:580 },
-              { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
+              { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+              { heading: "Credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA', width:800 },
+              { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
               {
-                  heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:190, actions: [
+                  heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                       {
                           action: gridActions.edit, callback: (data: any) => {
                               this.onSave(data);
@@ -73,7 +75,7 @@ export class CreditReasonMasterComponent implements OnInit {
           const dialogRef = this._matDialog.open(NewCreditReasonComponent,
               {
                   maxWidth: "45vw",
-                  height: '35%',
+                  height: '30%',
                   width: '70%',
                   data: row
               });

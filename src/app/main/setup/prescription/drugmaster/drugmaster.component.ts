@@ -93,6 +93,5 @@ export class DrugmasterComponent implements OnInit {
             }
         });
     }
-
 }
 

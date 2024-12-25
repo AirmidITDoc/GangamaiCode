@@ -1,20 +1,22 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SubtpaCompanyMasterService } from '../subtpa-company-master.service';
-import { SubtpacompanyMaster } from '../subtpa-company-master.component';
-import { error } from 'console';
+import { fuseAnimations } from '@fuse/animations';
+
 @Component({
-  selector: 'app-new-subtap',
-  templateUrl: './new-subtap.component.html',
-  styleUrls: ['./new-subtap.component.scss']
+    selector: 'app-new-subtap',
+    templateUrl: './new-subtap.component.html',
+    styleUrls: ['./new-subtap.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewSubtapComponent implements OnInit {
 
   subTpaForm: FormGroup;
-
-  registerObj = new SubtpacompanyMaster({});
+  isActive:boolean=true;
+  saveflag : boolean = false;
 
   autocompleteModetypeName:string="CompanyType";
   autocompleteModecity:string="City";
@@ -29,62 +31,44 @@ export class NewSubtapComponent implements OnInit {
   ngOnInit(): void {
     this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
     if(this.data){
-      this.registerObj = this.data.registerObj;
-      console.log(this.registerObj);
-
-      this.vCompany=this.data.registerObj.CompanyName;
-      this.vAddress=this.data.registerObj.Address;
-      this.vPinNo=this.data.registerObj.PinNo;
-      this.vFaxNo=this.data.registerObj.FaxNo;
-      this.vMobile= this.data.registerObj.Mobile.trim();
-      this.vPhone= this.data.registerObj.Phone.trim();
-      this.vCity=this.data.cityId;
+        this.isActive=this.data.isActive
+        this.subTpaForm.patchValue(this.data);
     }
   }
 
-  vCompany:any;
-  vAddress:any;
-  vMobile:any;
-  vPhone:any;
-  vPinNo:any;
-  vFaxNo:any;
-  vCity:any;
-  vCompanyType:any;
-
-  onSubmit(){
-    debugger
-    if(this.subTpaForm.invalid){
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-      if(!this.subTpaForm.get("SubCompanyId").value){
+    onSubmit(){
         debugger
-        var mdata={
-            "subCompanyId": 0,
-            "compTypeId": this.typeId || 0,
-            "companyName": this.subTpaForm.get('CompanyName').value || "",
-            "address": this.subTpaForm.get('Address').value || "",
-            "city": this.subTpaForm.get('City').value || "0",
-            "pinNo": this.subTpaForm.get('PinNo').value || "",
-            "phoneNo": this.subTpaForm.get('Phone').value.toString() || "",
-            "mobileNo": this.subTpaForm.get('Mobile').value.toString() || "",
-            "faxNo": this.subTpaForm.get('FaxNo').value || ""        
-        }
-        console.log("SubTpa Json:", mdata);
+        if(!this.subTpaForm.invalid){
+        this.saveflag = true;
+        // var mdata={
+        //     "subCompanyId": 0,
+        //     "compTypeId": this.typeId || 0,
+        //     "companyName": this.subTpaForm.get('CompanyName').value || "",
+        //     "address": this.subTpaForm.get('Address').value || "",
+        //     "city": this.subTpaForm.get('City').value || "0",
+        //     "pinNo": this.subTpaForm.get('PinNo').value || "",
+        //     "phoneNo": this.subTpaForm.get('Phone').value.toString() || "",
+        //     "mobileNo": this.subTpaForm.get('Mobile').value.toString() || "",
+        //     "faxNo": this.subTpaForm.get('FaxNo').value || ""        
+        // }
+        console.log("SubTpa Json:", this.subTpaForm.value);
   
-        this._subTpaServiceMaster.subTpaCompanyMasterInsert(mdata).subscribe((response)=>{
+        this._subTpaServiceMaster.subTpaCompanyMasterInsert(this.subTpaForm.value).subscribe((response)=>{
           this.toastr.success(response.message);
           this.onClear(true);
         }, (error)=>{
           this.toastr.error(error.message);
         });
-      } else{
-        // update
+      } 
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
     }
-  }
+
   onClear(val: boolean) {
     this.subTpaForm.reset();
     this.dialogRef.close(val);
@@ -103,68 +87,24 @@ export class NewSubtapComponent implements OnInit {
       this.cityId=obj.value
       this.cityName=obj.text
     }
-    getValidationCompanyMessages(){
-      return{
-        CompTypeId: [
-          { name: "required", Message: "Company Name is required" }
-        ]
-      }
-    }
-    getValidationCityMessages(){
-      return{
-        City: [
-          { name: "required", Message: "City Name is required" }
-        ]
-      }
-    }
 
     onClose(){
       this.subTpaForm.reset();
       this.dialogRef.close();
     }
 
-    @ViewChild('company') company: ElementRef;
-    @ViewChild('pin') pin: ElementRef;
-    @ViewChild('phone') phone: ElementRef;
-    @ViewChild('mobile') mobile: ElementRef;
-    @ViewChild('address') address: ElementRef;
-    @ViewChild('city') city: ElementRef;
-    @ViewChild('fax') fax:ElementRef;
-    
-    public onEnterCompany(event): void {
-      if (event.which === 13) {
-         this.company.nativeElement.focus();
-      }
-    }
+    getValidationMessages()
+    {
+        return{
+            companyName:[],
+            compTypeId:[],
+            city:[],
+            address:[],
+            pinNo:[],
+            phoneNo:[],
+            mobileNo:[]
 
-    public onEnterAddress(event): void {
-      if (event.which === 13) {
-         this.address.nativeElement.focus();
-      }
-    }
-
-    public onEnterPin(event): void {
-      if (event.which === 13) {
-         this.pin.nativeElement.focus();
-      }
-    }
-
-    public onEnterphone(event): void {
-      if (event.which === 13) {
-         this.phone.nativeElement.focus();
-      }
-    }
-
-    public onEntermobile(event): void {
-      if (event.which === 13) {
-         this.mobile.nativeElement.focus();
-      }
-    }
-
-    public onEnterfax(event): void {
-      if (event.which === 13) {
-         this.fax.nativeElement.focus();
-      }
+        }
     }
 
 

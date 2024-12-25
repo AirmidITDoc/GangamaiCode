@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -13,96 +13,88 @@ export class CompanyMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: FormBuilder
     ) {
-        // this.companyForm = this.createCompanymasterForm();
+        this.companyForm = this.createCompanymasterForm();
         this.myformSearch = this.createSearchForm();
     }
 
     createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
-            CompanyId: [""],
-            CompanyName: ["",
+            /* swagger :- JSON insert
+            {
+  "companyId": 0,
+  "compTypeId": 0,
+  "companyName": "string",
+  "address": "string",
+  "city": "string",
+  "pinNo": "string",
+  "phoneNo": "string",
+  "mobileNo": "string",
+  "faxNo": "string",
+  "traiffId": 0
+}
+            */
+            companyId: [0],
+            companyName: ["",
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            CompTypeId: [""],
-            TypeName: [""],
-            Address: ["", Validators.required],
-            City: [
-                "",
+            compTypeId: ["",
+                Validators.required
+            ],
+            // TypeName: [""],
+            address: ["",
+                 Validators.required
+            ],
+            city: ["",
                 [
                     Validators.required
                 ],
             ],
-            PinNo: ["", 
+            pinNo: ["", 
                 [
                     Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(6),
-                     Validators.maxLength(6)
-                    ]
+                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    // Validators.maxLength(6)
+                ]
+            ],
+            phoneNo: ["",
+                [
+                    Validators.required,
+                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    // Validators.maxLength(10),
                 ],
-            PhoneNo: [
+            ],
+            mobileNo: [
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
+                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    // Validators.maxLength(10),
                 ],
             ],
-            MobileNo: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                ],
-            ],
-            FaxNo: [
-                "",
-                [
-                    // Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(15),
-                ],
-            ],
-            TariffId: [
+            faxNo: ["0"],
+            traiffId: [
                 "",
                 [
                     Validators.required
                 ]
             ],
-            TariffName: [""],
-            IsCancelled: [""],
-            IsCancelledBy: ["", Validators.pattern("[0-9]+")],
-            IsCancelledDate: [""],
-            AddedByName: [""],
-            IsDeleted: ["true"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createCompanymasterForm();
     }
-    getValidationMessages() {
-        return {
-            companyName: [
-                { name: "required", Message: "Company Name is required" },
-                { name: "maxlength", Message: "Company name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
+    
     public companyMasterSave(Param: any, showLoader = true) {
         if (Param.companyId) {
             return this._httpClient.PutData("CompanyMaster/" + Param.companyId, Param, showLoader);

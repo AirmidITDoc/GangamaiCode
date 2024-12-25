@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GenericmasterService } from '../genericmaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-gneric-master',
   templateUrl: './new-gneric-master.component.html',
-  styleUrls: ['./new-gneric-master.component.scss']
+  styleUrls: ['./new-gneric-master.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewGnericMasterComponent implements OnInit {
 

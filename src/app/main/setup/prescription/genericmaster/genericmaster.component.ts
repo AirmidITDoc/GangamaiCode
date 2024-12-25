@@ -18,6 +18,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class GenericmasterComponent implements OnInit {
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
@@ -69,43 +70,24 @@ export class GenericmasterComponent implements OnInit {
     constructor(public _GenericService: GenericmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-    ngOnInit(): void {
-       
+    ngOnInit(): void { }
+
+    changeStatus(status: any) {
+        switch (status.id) {
+            case 1:
+                //this.onEdit(status.data)
+                break;
+            case 2:
+                // this.onEdit(status.data)
+                break;
+            case 5:
+                // this.onDeactive(status.data.genericId);
+                break;
+            default:
+                break;
+        }
     }
-    // onSearch() {
-       
-    // }
-
-    // onSearchClear() {
-    //     this._GenericService.myformSearch.reset({
-    //         GenericNameSearch: "",
-    //         IsDeletedSearch: "2",
-    //     });
-       
-    // }
-   
-
-    // changeStatus(status: any) {
-    //     switch (status.id) {
-    //         case 1:
-    //             //this.onEdit(status.data)
-    //             break;
-    //         case 2:
-    //             this.onEdit(status.data)
-    //             break;
-    //         case 5:
-    //             this.onDeactive(status.data.genericId);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
     
-    // onDeactive(genericId) {
-    //     debugger
-        
-    // }
-
     onSave(row: any = null) {
         debugger
         let that = this;
@@ -124,41 +106,6 @@ export class GenericmasterComponent implements OnInit {
         });
     }
   
-    // onEdit(row) {
-    //     var m_data1 = {
-    //         GenericId: row.GenericId,
-    //         GenericName: row.GenericName.trim(),
-    //         IsDeleted: JSON.stringify(row.IsActive),
-    //         UpdatedBy: row.UpdatedBy,
-    //     };
-    //     console.log(m_data1);
-    //     this._GenericService.populateForm(m_data1);
-    // }
 }
 
-// export class GenericMaster {
-//     genericId: number;
-//     genericName: string;
 
-//     isActive: boolean;
-    // AddedBy: number;
-    // UpdatedBy: number;
-    // AddedByName: string;
-
-    /**
-     * Constructor
-     *
-     * 
-     */
-    // constructor(GenericMaster) {
-    //     {
-    //         this.genericId = GenericMaster.genericId || "";
-    //         this.genericName = GenericMaster.genericName || "";
-
-    //         this.isActive = GenericMaster.isActive || "false";
-            // this.AddedBy = GenericMaster.AddedBy || "";
-            // this.UpdatedBy = GenericMaster.UpdatedBy || "";
-            // this.AddedByName = GenericMaster.AddedByName || "";
-//         }
-//     }
-// }

@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { TariffMasterService } from "./tariff-master.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -27,14 +23,11 @@ export class TariffMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "TarrifMaster/List",
         columnsList: [
-            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width:160 },
-
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:700 },
-           
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
-            
+            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     
                     {
                         action: gridActions.edit, callback: (data: any) => {
@@ -85,7 +78,7 @@ export class TariffMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewTariffComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

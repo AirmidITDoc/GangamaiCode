@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { GroupMasterService } from "./group-master.service";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -28,13 +24,13 @@ export class GroupMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GroupMaster/List",
         columnsList: [
-            { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:470 },
-            { heading: "Isconsolidated", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA',width:150 },
-            { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:150 },
+            { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:400 },
+            { heading: "Isconsolidated", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA', width:200 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:150, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -83,7 +79,7 @@ export class GroupMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewGroupComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

@@ -1,18 +1,18 @@
-
+<!-- 
     <div class="modal-wrapper grid-container">
-        <!-- heading -->
-        <div class="modal-header accent">
+         heading -->
+        <!-- <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> SabTpaCompany Master</span>
                 </div>
                 <div class="modal-header-right">
-                    <div class="close-icon">
+                    <div class="close-icon"> -->
                         <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button> -->
-                        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                        <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -25,8 +25,8 @@
 
                 <form [formGroup]="subTpaForm" fxLayout="column">
 
-                    <input type="hidden" name="SubCompanyId" formControlName="SubCompanyId">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <input type="hidden" name="SubCompanyId" formControlName="SubCompanyId"> --> 
+                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
 
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Company Name</mat-label>
@@ -38,9 +38,9 @@
                                 </mat-error>
                         </mat-form-field>
                         
-                    </div>
+                    </div> -->
                     
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                         <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-autocomplete label="Company Type" formControlName="CompTypeId"
                                 [formGroup]="subTpaForm"
@@ -57,9 +57,9 @@
                             </airmid-autocomplete>
                         </div>
 
-                    </div>
+                    </div> -->
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Address</mat-label>
                             <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
@@ -69,9 +69,9 @@
                                 Address is required
                                 </mat-error>
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>PinNo</mat-label>
                             <input name="PinNo" placeholder="Enter PinNo" formControlName="PinNo" matInput
@@ -80,9 +80,9 @@
                                 *ngIf="subTpaForm.get('PinNo').invalid && subTpaForm.get('PinNo').touched">
                                 PinNo is required Enter only 6 Digits
                                 </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     
-                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Phone Number</mat-label>
                             <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
                                 [(ngModel)]="vPhone" #Phone (keydown)="onEnterphone($event)"
@@ -93,9 +93,9 @@
                                 digits Phone number is required
                             </mat-error>
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Mobile Number</mat-label>
                             <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
@@ -106,9 +106,9 @@
                                 *ngIf="subTpaForm.get('Mobile').invalid && subTpaForm.get('Mobile').touched">10
                                 digits Mobile number is required
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Fax</mat-label>
                             <input name="FaxNo" placeholder="Select Fax" formControlName="FaxNo" matInput
                                 (keydown)="onEnterfax($event)" #FaxNo maxlength="15" minlength="10" >
@@ -140,3 +140,136 @@
             </div>
         </div>
     </div>
+
+
+
+/* -->
+
+<div class="modal-wrapper grid-container"> 
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Sub TPA Company Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+        <form [formGroup]="subTpaForm">
+            <input type="hidden" name="SubCompanyId" formControlName="SubCompanyId">
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="Company Name" 
+                        formControlName="companyName" 
+                        [value]="data?.companyName" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().companyName" 
+                        [maxLength]="50">
+                    </airmid-textbox>       
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-autocomplete 
+                        label="Company Type Name" 
+                        formControlName="compTypeId" 
+                        [value]="data?.compTypeId" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().compTypeId" 
+                        [mode]="autocompleteModetypeName">
+                    </airmid-autocomplete>       
+                </div>
+            </div>
+
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                
+                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="Enter Address" 
+                        formControlName="address" 
+                        [value]="data?.address" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().address" 
+                        [maxlength]="100">
+                    </airmid-textbox> 
+                </div>
+                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-autocomplete 
+                        label="City" 
+                        formControlName="city" 
+                        [value]="data?.city" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().city" 
+                        [mode]="autocompleteModecity">
+                    </airmid-autocomplete>       
+                </div>
+                
+            </div>
+
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="Pin Code" 
+                        formControlName="pinNo" 
+                        [value]="data?.pinNo" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().pinNo" 
+                        [maxLength]="6">
+                    </airmid-textbox> 
+                </div>
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="Phone Number" 
+                        formControlName="phoneNo" 
+                        [value]="data?.phoneNo" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().phoneNo" 
+                        [maxLength]="10">
+                    </airmid-textbox>       
+                </div>
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="Mobile Number" 
+                        formControlName="mobileNo" 
+                        [value]="data?.mobileNo" 
+                        [formGroup]="subTpaForm"
+                        [validations]="getValidationMessages().mobileNo" 
+                        [maxLength]="10">
+                    </airmid-textbox> 
+                </div>
+
+            </div>
+
+            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                <div>
+                    <mat-radio-group name="isActive" formControlName="isActive">
+                        <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+     
+                <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                    <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                        <span>Save</span>
+                    </button>
+                </div>
+     
+            </div>
+
+        </form>
+    </div>
+</div>
+</div>
+
+  

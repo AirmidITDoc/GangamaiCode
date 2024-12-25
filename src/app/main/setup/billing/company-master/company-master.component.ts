@@ -1,25 +1,14 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { CompanyMasterService } from "./company-master.service";
-import { ReplaySubject, Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import {  MatDialogRef } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { compact } from "lodash";
-
-
 
 @Component({
     selector: "app-company-master",
@@ -37,14 +26,13 @@ export class CompanyMasterComponent implements OnInit {
         apiUrl: "CompanyMaster/List",
         columnsList: [
             { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:150 },
             { heading: "CompTypeId", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA',width:200 },
             { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA',width:150 },
             { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA',width:150 },
-           
-           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:110 },
+           { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
@@ -85,8 +73,6 @@ export class CompanyMasterComponent implements OnInit {
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public _matDialog: MatDialog,
-        private accountService: AuthenticationService,
-        private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
 
@@ -99,8 +85,8 @@ export class CompanyMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
-                maxWidth: "95vw",
-                height: '65%',
+                maxWidth: "60vw",
+                height: '45%',
                 width: '70%',
                 data: row
             });
@@ -111,22 +97,3 @@ export class CompanyMasterComponent implements OnInit {
         });
     }
 }
-
-export class CompanyMaster{
-    Address: string;
-    Mobile: any;
-    Phone: String;
-    Fax: String;
-    PinCode: any;
-
-    constructor(CompanyMaster){
-        {
-            this.Address=CompanyMaster.Address || "";
-            this.Mobile = CompanyMaster.Mobile || "";
-            this.Phone = CompanyMaster.Phone || "";
-            this.Fax = CompanyMaster.Fax || "";
-            this.PinCode = CompanyMaster.PinCode || 0;
-        }
-    }
-}
-CompanyMaster

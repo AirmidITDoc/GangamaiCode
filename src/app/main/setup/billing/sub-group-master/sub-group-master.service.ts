@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -20,14 +18,16 @@ export class SubGroupMasterService {
 
     createSubgroupForm(): FormGroup {
         return this._formBuilder.group({
-            subGroupId: [""],
+            subGroupId: [0],
             subGroupName: ["", 
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            groupId: [""],
+            groupId: ["",
+                Validators.required
+            ],
             //GroupName: [""],
             isActive: ["true"],
             // UpdatedBy: ["0"],
@@ -44,24 +44,6 @@ export class SubGroupMasterService {
     initializeFormGroup() {
         this.createSubgroupForm();
     }
-
-   
-    getValidationMessages() {
-        return {
-            subGroupName: [
-                { name: "required", Message: "SubGroup Name is required" },
-                { name: "maxlength", Message: "SubGroup name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-    // getValidationGroupName(){
-    //     return{
-    //       groupId:[
-    //         { name: "required", Message: "Group Name is required" }
-    //       ]
-    //     }
-    //   }
 
     public SubGroupMasterSave(Param: any, showLoader = true) {
         if (Param.subGroupId) {

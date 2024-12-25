@@ -10,55 +10,66 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-group.component.scss']
 })
 export class NewGroupComponent implements OnInit {
-  groupForm: FormGroup;
-  constructor(
-      public _GroupMasterService: GroupMasterService,
-      public dialogRef: MatDialogRef<NewGroupComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+  
+    groupForm: FormGroup;
+    isActive:boolean=true;
+    saveflag : boolean = false;
+
+    constructor(
+        public _GroupMasterService: GroupMasterService,
+        public dialogRef: MatDialogRef<NewGroupComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
  
   ngOnInit(): void {
       this.groupForm = this._GroupMasterService.createGroupForm();
-      var m_data = {
-        groupId: this.data?.groupId,
-        groupName: this.data?.groupName.trim(),
-      //   printSeqNo: this.data?.printSeqNo,
-      //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
-      //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
-      isDeleted: JSON.stringify(this.data?.isActive),
-      };
-      this.groupForm.patchValue(m_data);
-      console.log("group m_data:", m_data)
+      if(this.data){
+        this.isActive=this.data.isActive
+        this.groupForm.patchValue(this.data);
+    }
   }
   onSubmit() {
-    if (this.groupForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
-      if(!this.groupForm.get("groupId").value){
-        debugger
-        var mdata=
-        {
-          "groupId": 0,
-          "groupName": this.groupForm.get("groupName").value || ""
-        }
+    debugger
+      if(!this.groupForm.invalid)
+        {  
+            this.saveflag = true;
+        // var mdata=
+        // {
+        //   "groupId": 0,
+        //   "groupName": this.groupForm.get("groupName").value || ""
+        // }
 
-        console.log("bank json:", mdata);
-          this._GroupMasterService.GroupMasterSave(mdata).subscribe((response) => {
+        console.log("bank json:", this.groupForm.value);
+
+          this._GroupMasterService.GroupMasterSave(this.groupForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
           }, (error) => {
               this.toastr.error(error.message);
           });
       }
-    }      
+      else
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
   }
 
   onClear(val: boolean) {
       this.groupForm.reset();
       this.dialogRef.close(val);
   }
+
+  getValidationMessages() {
+    return {
+        groupName: [
+            { name: "required", Message: "Group Name is required" },
+            { name: "maxlength", Message: "Group name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
+}
 }
