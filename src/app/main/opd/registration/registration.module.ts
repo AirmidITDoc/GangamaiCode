@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RegistrationComponent } from './registration.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -37,6 +37,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
 import { CharmaxLengthDirective } from './new-registration/charmax-length.directive';
 import { ChkCharlengthDirective } from './chk-charlength.directive';
+import { MatListModule } from '@angular/material/list';
+import { NgxSignaturePadModule } from '@o.krucheniuk/ngx-signature-pad';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import { RegistrationService } from './registration.service';
 
 
 const routes: Routes = [
@@ -57,46 +62,39 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
     //  MatTableExporterModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatTabsModule,
-        MatCardModule,
-        MatDividerModule,  
-        MatProgressSpinnerModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        MatDialogModule,
-        MatGridListModule,
-        MatSnackBarModule,
-        MatSlideToggleModule ,
-        MatDividerModule,
-        MatDialogModule,
-      
-        MatStepperModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
-        MatCardModule,
-        MatTooltipModule,
-        MatExpansionModule,
-        // ToastrModule.forRoot({ positionClass: 'inline' }),
-        // ToastContainerModule,
+        MatChipsModule,
+              MatButtonModule,
+              MatCheckboxModule,
+              MatDatepickerModule,
+              MatFormFieldModule,
+              MatIconModule,
+              MatInputModule,
+              MatMenuModule,
+              MatRippleModule,
+              MatTableModule,
+              MatToolbarModule,
+              MatPaginatorModule,
+              MatSortModule,
+              MatSelectModule,
+              MatRadioModule,
+              MatSnackBarModule,
+              FuseSharedModule,
+              FuseConfirmDialogModule,
+              FuseSidebarModule,
+              CommonModule,
+              MatExpansionModule,
+              MatCardModule,
+              MatSlideToggleModule,
+              MatListModule,
+              MatStepperModule,
+              MatAutocompleteModule,
+              MatProgressSpinnerModule,
+              SharedModule,
+              NgxMatSelectSearchModule,
+              NgxSignaturePadModule,
+              MatButtonToggleModule
     ],
-    providers: [
+    providers: [RegistrationService,
         DatePipe
     ],
     entryComponents: [

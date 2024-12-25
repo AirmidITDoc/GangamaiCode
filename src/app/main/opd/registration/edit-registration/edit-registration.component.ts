@@ -67,25 +67,32 @@ export class EditRegistrationComponent implements OnInit {
          public toastr: ToastrService,
          public dialogRef: MatDialogRef<EditRegistrationComponent>,
          public datePipe: DatePipe
-     ) { }
+     ) {
+       
+      }
  
  
      ngOnInit(): void {
- 
-         this.minDate = new Date();
-         this.personalFormGroup = this._registerService.createPesonalForm();
+        
+       
          console.log(this.data)
-         if (this.data.regId > 0) {
-             this.registerObj = this.data;
-             this.personalFormGroup.patchValue(this.registerObj);
-         } else {
-             this.personalFormGroup.reset();
-         }
+         setTimeout(() => {
+            this.personalFormGroup = this._registerService.createPesonalForm();
+            }, 10)
+       
+        if (this.data.regId > 0) {
+            debugger
+            // setTimeout(() => {
+                this.registerObj = this.data;
+                // }, 10)
+          
+           
+        }
+        this.minDate = new Date();
      }
-     get f() {
-         return this.personalFormGroup.controls;
+     toggleSelectAll() {
+
      }
- 
      OnSubmit() {
  
          console.log(this.personalFormGroup.value)
@@ -105,17 +112,7 @@ export class EditRegistrationComponent implements OnInit {
          this.personalFormGroup.reset();
          this.dialogRef.close(val);
      }
-     onChangeDateofBirth(DateOfBirth) {
-         if (DateOfBirth) {
-             const todayDate = new Date();
-             const dob = new Date(DateOfBirth);
-             const timeDiff = Math.abs(Date.now() - dob.getTime());
-             this.personalFormGroup.get('AgeYear').setValue(Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25));
-             this.personalFormGroup.get('AgeMonth').setValue(Math.abs(todayDate.getMonth() - dob.getMonth()));
-             this.personalFormGroup.get('AgeDay').setValue(Math.abs(todayDate.getDate() - dob.getDate()));
-             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-         }
-     }
+    
      // Change Registered or New Registration
      onChangeReg(event) {
          if (event.value == 'registration') {
@@ -132,76 +129,10 @@ export class EditRegistrationComponent implements OnInit {
  
      }
  
-     @ViewChild('fname') fname: ElementRef;
-     @ViewChild('mname') mname: ElementRef;
-     @ViewChild('lname') lname: ElementRef;
-     @ViewChild('bday') bday: ElementRef;
-     @ViewChild('agey') agey: ElementRef;
-     @ViewChild('agem') agem: ElementRef;
-     @ViewChild('aged') aged: ElementRef;
-     @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
-     @ViewChild('address') address: ElementRef;
-     @ViewChild('mobile') mobile: ElementRef;
-     @ViewChild('phone') phone: ElementRef;
-     public onEnterfname(event): void {
-         if (event.which === 13) {
-             this.fname.nativeElement.focus();
-         }
-     }
-     public onEntermname(event): void {
-         if (event.which === 13) {
-             this.mname.nativeElement.focus();
-         }
-     }
-     public onEnterlname(event): void {
-         if (event.which === 13) {
-             this.lname.nativeElement.focus();
-         }
-     }
-     public onEnterbday(event): void {
-         if (event.which === 13) {
-             this.bday.nativeElement.focus();
-         }
-     }
-     public onEnteragey(event): void {
-         if (event.which === 13) {
-             this.agem.nativeElement.focus();
-         }
-     }
-     public onEnteragem(event): void {
-         if (event.which === 13) {
-             this.aged.nativeElement.focus();
-         }
-     }
-     public onEnteraged(event): void {
-         if (event.which === 13) {
-             this.AadharCardNo.nativeElement.focus();
-         }
-     }
-     public onEnterAadharCardNo(event): void {
-         if (event.which === 13) {
-             this.AadharCardNo.nativeElement.focus();
-         }
-     }
-     public onEnteraddress(event): void {
-         if (event.which === 13) {
-             this.address.nativeElement.focus();
-         }
-     }
-     public onEntermobile(event): void {
-         if (event.which === 13) {
-             this.mobile.nativeElement.focus();
-         }
-     }
-     public onEnterphone(event): void {
-         if (event.which === 13) {
-             this.phone.nativeElement.focus();
-         }
-     }
  
      getValidationMessages() {
          return {
-             FirstName: [
+            firstName: [
                  { name: "required", Message: "First Name is required" },
                  { name: "maxLength", Message: "Enter only upto 50 chars" },
                  { name: "pattern", Message: "only char allowed." }
@@ -251,6 +182,13 @@ export class EditRegistrationComponent implements OnInit {
                  { name: "maxLength", Message: "More than 10 digits not allowed." }
  
              ],
+             phoneNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Mobile No is required" },
+                // { name: "minLength", Message: "10 digit required." },
+                // { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+            ],
              aadharCardNo: [
                  { name: "pattern", Message: "Only numbers allowed" },
                  { name: "required", Message: "AadharCard No is required" },
@@ -265,9 +203,5 @@ export class EditRegistrationComponent implements OnInit {
          var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
          return new Date(newDate);
      }
-     dateTimeObj: any;
-     getDateTime(dateTimeObj) {
-         console.log('dateTimeObj ==', dateTimeObj);
-         this.dateTimeObj = dateTimeObj;
-     }
+    
  }
