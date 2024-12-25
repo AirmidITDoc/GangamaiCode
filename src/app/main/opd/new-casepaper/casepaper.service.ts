@@ -47,7 +47,10 @@ public getServiceList(param,loader = true){
   
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
     } 
-  public getDoseList() {
+  public getDoseList( loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
   }
 
@@ -79,7 +82,10 @@ public getServiceList(param,loader = true){
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
-  public getOPDPrecriptionPrint(PrecriptionId) {
+  public getOPDPrecriptionPrint(PrecriptionId, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDPrecriptionPrint ", PrecriptionId)
   }
   public RtrvPreviousprescriptionDetails(visistId,loader = true) {
@@ -104,13 +110,16 @@ public getServiceList(param,loader = true){
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BalanceQty",Param)
   }
   public getPatientVisitedListSearch(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
 
-  public getIpPrescriptionview(OP_IP_ID,PatientType){
+  public getIpPrescriptionview(OP_IP_ID,PatientType, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
   }
   public getOpPrescriptionview(VisitId,loader = true){ 

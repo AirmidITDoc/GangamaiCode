@@ -358,7 +358,7 @@ public documentdownloadInsert(employee,loader = true){
     if (loader) {
         this._loaderService.show();
     }
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional",Id)
   }
   //Doctor 1 Combobox List
   public getDoctorMaster1Combo(loader = true) {
@@ -566,4 +566,10 @@ public documentdownloadInsert(employee,loader = true){
       } 
       return this._httpClient.post("OutPatient/UpdateVitalInformation",element)
     }
+    public getLastVisitDoctorList(param,loader = true) {
+      if (loader) {
+          this._loaderService.show();
+      }
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PreviousDoctorVisitList", param)
+  }
 }

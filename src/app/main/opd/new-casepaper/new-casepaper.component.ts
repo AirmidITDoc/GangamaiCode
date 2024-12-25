@@ -440,7 +440,7 @@ getVitalInfo(obj){
     console.log(m_data);
     this._CasepaperService.getItemlist(m_data).subscribe(data => {
       this.filteredOptionsItem = data;
-      // console.log(this.data);
+       //console.log(this.filteredOptionsItem);
       this.filteredOptionsItem = data;
       if (this.filteredOptionsItem.length == 0) {
         this.noOptionFound = true;
@@ -455,9 +455,14 @@ getVitalInfo(obj){
     return option.ItemName;
   }
   getSelectedObjItem(obj) {
+    console.log(obj)
     this.ItemId = obj.ItemId;
+    this.vDoseId = obj.DoseName
+    this.vDay = obj.DoseDay
+    this.vInstruction = obj.Instruction
+    this.getDoseList();
   }
-
+  vDoseId:any;
   getDoseList() {
     this._CasepaperService.getDoseList().subscribe((data) => {
       this.doseList = data;
@@ -466,6 +471,10 @@ getVitalInfo(obj){
         startWith(''),
         map(value => value ? this._filterDosename(value) : this.doseList.slice()),
       );
+      if(this.vDoseId){
+        const dvalue = this.doseList.filter(item=> item.DoseId == this.vDoseId)
+        this.MedicineItemForm.get('DoseId').setValue(dvalue[0])
+      }
     });
   }
   private _filterDosename(value: any): string[] {
@@ -1582,7 +1591,7 @@ onTemplDetAdd(){
       }
     } 
     console.log(this.AllTypeDescription)
-    this.onSelecteExam = 1
+    this.onSelecteExam = 0
   }
   removeExamin(Examin: string): void {
     const index = this.addExaminlist.indexOf(Examin);

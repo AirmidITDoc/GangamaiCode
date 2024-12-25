@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-scroll inner-sidebar left-sidebar"  dynamicTableHeight>
+<div class="page-layout simple inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
 
     <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -18,18 +18,18 @@
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
-                <div fxFlex="100%" fxLayout="row" fxLayout.xs="column" fxLayout.sm="row" fxLayoutGap="10px">
+                <div  fxLayout="column" fxLayout="row" fxLayoutGap="10px">
 
-                    <div fxFlex="50%" fxLayoutGap="8px">  
-                        <mat-card style="padding: 5px;"  fxLayout="column" fxLayout.xs="column" fxLayout.sm="row" fxLayoutGap="10px">
+                    <div fxFlex="65%" fxLayoutGap="8px">  
+                        <mat-card style="padding: 5px;">
 
                             <mat-table class="table" matSort [dataSource]="dspatientlist_1"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
     
                                 <ng-container matColumnDef="RegNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         RegNo </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                         {{element.RegNo}} </mat-cell>
                                 </ng-container>
     
@@ -82,7 +82,7 @@
                                 showFirstLastButtons>
                             </mat-paginator>
 
-                            <mat-table class="table" matSort [dataSource]="dspatientlist_2"
+                            <!-- <mat-table class="table" matSort [dataSource]="dspatientlist_2"
                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                             <ng-container matColumnDef="DepartmentName">
@@ -138,45 +138,38 @@
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(dspatientlist_2!=null && dspatientlist_2.data.length==0)}">
                             </mat-footer-row>
-                        </mat-table>
-                        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                            showFirstLastButtons>
-                        </mat-paginator>
+                        </mat-table> -->
+                         
                         </mat-card> 
                     </div>
 
-                    <div  fxFlex="50%" fxLayoutGap="8px"> 
-                        <mat-card style="padding: 5px;"  fxLayout="column" fxLayout.xs="column" fxLayout.sm="row"> 
-                            <mat-vertical-stepper linear>
-                                <mat-step *ngFor="let department of DepartmentList; let i = index" 
-                                [completed]="department.approved"
-                                [ngClass]="{'approved-step': department.IsApproved}">
-                                  <ng-template matStepLabel>{{department.DepartmentName}} {{ i + 1 }}</ng-template>
-                                  
-                                  <p>DepartmentName: {{ department.DepartmentName }}</p>
-                                  <p>ApprovedByName: {{ department.ApprovedByName }}</p>
-                                  <p>IsNoDues: {{ department.IsNoDues }}</p> 
-                                  
-                                  <!-- <mat-form-field>
-                                    <mat-label>Approval Status</mat-label>
-                                    <mat-select [(value)]="department.approved">
-                                      <mat-option [value]="true">Approved</mat-option>
-                                      <mat-option [value]="false">Not Approved</mat-option>
-                                    </mat-select>
-                                  </mat-form-field> -->
-                              
-                                  <!-- <div>
-                                    <button mat-button matStepperNext>Next</button>
-                                    <button mat-button matStepperPrevious>Back</button>
-                                  </div> -->
+                    <div  fxFlex="35%" fxLayoutGap="8px"> 
+                       
+                            <mat-vertical-stepper linear style="background-color:  rgb(238, 245, 245);">
+                                <mat-step *ngFor="let department of DepartmentList; let i = index"  
+                                [ngClass]="{'red-row ': department.IsApproved === 'true'}">
+                                  <ng-template matStepLabel>{{department.DepartmentName}} {{ i + 1 }}</ng-template> 
+                                  <p>DepartmentName: {{ department.DepartmentName }} </p>
+                                  <p>ApprovedByName: {{ department.ApprovedByName }} </p>  
                                 </mat-step>
                               </mat-vertical-stepper>
                               
                               <!-- <button mat-raised-button (click)="submit()">Submit All Approvals</button>  -->
 
-                              
-                        
-                        </mat-card> 
+                              <!-- <mat-vertical-stepper>
+                                <mat-step *ngFor="let department of departments" [ngClass]="{'approved-step': department === firstApprovedDepartment}">
+                                    <ng-template matStepLabel>{{ department.name }}</ng-template>
+                                    <p>Approved By: {{ department.approved ? department.approvedBy : 'Not Approved' }}</p>
+                                </mat-step>
+                            </mat-vertical-stepper> -->
+
+                            <!-- <mat-vertical-stepper>
+                                <mat-step *ngFor="let department of DepartmentList" [ngClass]="{'approved-step': department.IsApproved}">
+                                    <ng-template matStepLabel>{{ department.DepartmentName }}</ng-template>
+                                    <p>Approved By: {{ department.ApprovedByName ? department.ApprovedByName : 'Not Approved' }}</p>
+                                </mat-step>
+                            </mat-vertical-stepper>   -->
+                       
                     </div> 
                 </div>
             </div>
