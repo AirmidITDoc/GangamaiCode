@@ -26,6 +26,7 @@ import { AppointmentSreviceService } from "../appointment-srevice.service";
 import { RegistrationService } from "../../registration/registration.service";
 import { ImageViewComponent } from "../image-view/image-view.component";
 import { RegInsert } from "../appointment.component";
+import { PreviousDepartmentListComponent } from "./previous-department-list/previous-department-list.component";
 
 
 @Component({
@@ -282,6 +283,8 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
           this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
           this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - d.getMonth());
           this.registerObj.AgeDay = Math.abs(todayDate.getDate() - d.getDate()); 
+
+          this.getLastDepartmetnNameList(this.registerObj)
         }  
         this.getPrefixList(); 
         this.getDoctorNameCombobox();  
@@ -524,8 +527,15 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
                 startWith(''),
                 map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
             );
-            if (this.configService.configParams.DepartmentId) {  
-                const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
+            // if (this.configService.configParams.DepartmentId) {  
+            //     const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.configService.configParams.DepartmentId);
+            //     this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
+            //     this.OnChangeDoctorList(ddValue[0]);
+            //     this.VisitFormGroup.updateValueAndValidity();
+            //     return;
+            // }
+              if (this.PrevregisterObj) {  
+                const ddValue = this.DepartmentList.filter(c => c.DepartmentId == this.PrevregisterObj.DepartmentId);
                 this.VisitFormGroup.get('Departmentid').setValue(ddValue[0]);
                 this.OnChangeDoctorList(ddValue[0]);
                 this.VisitFormGroup.updateValueAndValidity();
@@ -840,14 +850,7 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             }
         });
         // this.IsLoading = false;
-    }
- 
-  
- 
-
-   
- 
-   
+    }  
 
     onNewSave() { 
 
@@ -1218,58 +1221,39 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
         this.dateTimeObj = dateTimeObj;
     }
  
-    OnChangeDoctorList1(departmentObj) { 
-        this.isDepartmentSelected = true;
-        this._opappointmentService.getDoctorMasterCombo(departmentObj).subscribe(
-            data => {
-                this.DoctorList = data;
-
-                this.optionsDoc = this.DoctorList.slice();
-                this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-                    startWith(''),
-                    map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-                );
-            })
-
-        if (this.configService.configParams.DoctorId) {
-
-            const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-            this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-        }
-
-    } 
     OnChangeDoctorList(departmentObj) {
-        
+
         this.isDepartmentSelected = true;
-        this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
-            data => {
-                this.DoctorList = data;
-                console.log(data)
-                this.optionsDoc = this.DoctorList.slice();
-                this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-                    startWith(''),
-                    map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-                );
-            })
-
-        if (this.configService.configParams.DoctorId) {
-
-            // this.configService.configParams.DoctorId = 269;
-            // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-            // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-            this.doctorset();
+        var vdata = {
+            "Id": departmentObj.DepartmentId
         }
+        this._opappointmentService.getDoctorMasterCombo(vdata).subscribe(data => {
+            this.DoctorList = data;
+            console.log(data)
+            this.optionsDoc = this.DoctorList.slice();
+            this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+            );
+
+            if (this.PrevregisterObj) {
+                // this.configService.configParams.DoctorId = 269;
+                const toSelectDoc = this.DoctorList.filter(c => c.DoctorId == this.PrevregisterObj.ConsultantDocId);
+                this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc[0]);
+                //this.doctorset();
+            }
+        })
     }
 
-    doctorset() {
+    // doctorset() {
 
-        this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-        );
-        const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-        this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-    }
+    //     this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+    //         startWith(''),
+    //         map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    //     );
+    //     const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+    //     this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+    // }
     dateStyle?: string = 'Date';
     OnChangeDobType(e) {
         this.dateStyle = e.value;
@@ -1580,7 +1564,24 @@ export class UpdateRegisteredPatientInfoComponent implements OnInit {
             // if(this.purpose) this.purpose.focus();
             this.purpose.nativeElement.focus();
         }
-    } 
+    }
+    PrevregisterObj:any;
+    getLastDepartmetnNameList(row) {  
+        const dialogRef = this._matDialog.open(PreviousDepartmentListComponent,
+          {
+            maxWidth: "45vw",
+            height: '45%',
+            width: '100%',
+            data: {
+              Obj: row, 
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result); 
+            this.PrevregisterObj = result
+            this.getDepartmentList();
+          });
+      }   
 }
  
  

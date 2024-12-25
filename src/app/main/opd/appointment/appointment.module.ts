@@ -53,6 +53,7 @@ import {NgxPrintModule} from 'ngx-print';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
 import { UpdateRegisteredPatientInfoComponent } from './update-registered-patient-info/update-registered-patient-info.component';
+import { PreviousDepartmentListComponent } from './update-registered-patient-info/previous-department-list/previous-department-list.component';
 
 const routes: Routes = [
     {
@@ -74,6 +75,7 @@ const routes: Routes = [
         CrossConsultationComponent,
         PatientVitalInformationComponent,
         UpdateRegisteredPatientInfoComponent,
+        PreviousDepartmentListComponent,
         
     ],
     imports: [
