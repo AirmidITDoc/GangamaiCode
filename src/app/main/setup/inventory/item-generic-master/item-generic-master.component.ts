@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { DataRowOutlet } from "@angular/cdk/table";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-item-generic-master",
@@ -69,13 +71,14 @@ export class ItemGenericMasterComponent implements OnInit {
     }
 
     onClear() {
-        this._itemgenericService.myform.reset({ IsDeleted: "false" });
+        this._itemgenericService.myform.reset({ IsDeleted: "true" });
         this._itemgenericService.initializeFormGroup();
        // this._matDialog.closeAll(); 
       // this.dialogRef.close();
     }
     onClose(){
-       // this.dialogRef.close(); 
+    //    this.dialogRef.close(); 
+       this._itemgenericService.myform.reset();
         this._matDialog.closeAll();  
     }
 
@@ -99,6 +102,8 @@ export class ItemGenericMasterComponent implements OnInit {
                         updatedBy: 1,
                     },
                 };
+
+                console.log("m_data:",m_data)
 
                 this._itemgenericService
                     .insertItemGenericMaster(m_data)
@@ -148,7 +153,7 @@ export class ItemGenericMasterComponent implements OnInit {
                         updatedBy: 1,
                     },
                 };
-
+                console.log("m_dataUpdate:",m_dataUpdate)
                 this._itemgenericService
                     .updateItemGenericMaster(m_dataUpdate)
                     .subscribe((data) => {
@@ -184,13 +189,17 @@ export class ItemGenericMasterComponent implements OnInit {
     }
 
     onEdit(row) {
+        console.log(row)
         var m_data = {
             ItemGenericNameId: row.ItemGenericNameId,
             ItemGenericName: row.ItemGenericName.trim(),
+            // IsDeleted: row.IsDeleted,
+            IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
         };
         this._itemgenericService.populateForm(m_data);
     }
+
       getEdit() { 
         const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
           {
@@ -201,8 +210,37 @@ export class ItemGenericMasterComponent implements OnInit {
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);
+          this.getitemgenericMasterList();
         });
       }
+
+      confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+      
+      onDeactive(DischargeTypeId) {
+        debugger
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =
+            "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                let Query =
+                    "Update M_ItemGenericNameMaster set Isdeleted=0 where ItemID=" +
+                    DischargeTypeId;
+                console.log(Query);
+                this._itemgenericService
+                    .deactivateTheStatus(Query)
+                    .subscribe((data) => (this.msg = data));
+                this.getitemgenericMasterList();
+            }
+            this.confirmDialogRef = null;
+        });
+    }
+
 }
 export class ItemGenericMaster {
     ItemGenericNameId: number;

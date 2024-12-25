@@ -100,6 +100,8 @@ export class NewRequestComponent implements OnInit {
   vConditionIP:boolean=false;
   OP_IP_Id: any = 0;
   OP_IPType: any = 2;
+  isSystemSelected: boolean = false;  
+  isSiteSelected: boolean = false;  
   
   filteredOptionautoDepartment: Observable<string[]>;
   filteredOptionsSurgeryCategory: Observable<string[]>;
@@ -194,7 +196,7 @@ export class NewRequestComponent implements OnInit {
       this.getDoctor1List();
       this.getDoctor2List();
       this.getCategoryList();
-      this.getSiteList();
+      // this.getSiteList();
       this.getDepartmentList();
       } else if (this.registerObj1.OP_IP_Type === 0) {
         // Fetch OP-specific information
@@ -228,7 +230,7 @@ export class NewRequestComponent implements OnInit {
       this.getDoctor1List();
       this.getDoctor2List();
       this.getCategoryList();
-      this.getSiteList();
+      // this.getSiteList();
       this.getDepartmentList();
       }
       this.setDropdownObjs1();
@@ -240,7 +242,7 @@ export class NewRequestComponent implements OnInit {
     this.getDoctor1List();
     this.getDoctor2List();
     this.getCategoryList();
-    this.getSiteList();
+    // this.getSiteList();
     this.getDepartmentList();
   
     if (this.advanceDataStored.storage) {
@@ -463,7 +465,7 @@ export class NewRequestComponent implements OnInit {
     this.getDoctor1List();
     this.getDoctor2List();
     this.getCategoryList(); //SurgeryCategoryName
-    this.getSiteList(); //sitName
+    // this.getSiteList(); //sitName
     this.getDepartmentList(); //departmentName
   }
 
@@ -499,7 +501,7 @@ export class NewRequestComponent implements OnInit {
     this.getDoctor1List();
     this.getDoctor2List();
     this.getCategoryList();
-    this.getSiteList();
+    // this.getSiteList();
     this.getDepartmentList();
   }
  
@@ -567,7 +569,7 @@ export class NewRequestComponent implements OnInit {
     this._OtManagementService.getSurgeryCombo().subscribe(data => { this.SurgeryList = data; })
   }
 
-  // SurgeryCategory start
+  // System start 
   getCategoryList() {
     this._OtManagementService.getCategoryCombo().subscribe(data => {
       this.CategoryList = data;
@@ -582,6 +584,7 @@ export class NewRequestComponent implements OnInit {
         console.log("SurgeryCategoryId:",DValue)
         this._OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(DValue[0]);
         this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        this.onChangeSiteList(DValue[0]);
         return;
       }
     });
@@ -598,7 +601,7 @@ export class NewRequestComponent implements OnInit {
   getOptionTextautoSurgeryCategory(option) {
     return option && option.SurgeryCategoryName ? option.SurgeryCategoryName : '';
   }
-  // SurgeryCategory end
+  // System end
 
   getSurgeryList() {
     
@@ -633,40 +636,69 @@ export class NewRequestComponent implements OnInit {
   }
 
   // site star
-  getSiteList() {
-    
-    var m_data = {
-          "Id": 1
-        }
-    this._OtManagementService.getSiteCombo().subscribe(data => {
-      this.Sitelist = data;
-      this.optionsSite = this.Sitelist.slice();
-      this.filteredOptionsSite = this._OtManagementService.otreservationFormGroup.get('SiteDescId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._Site(value) : this.Sitelist.slice()),
-      );
-
-      if (this.data) {
+  // getSiteList() {
         
-        const SValue = this.Sitelist.filter(item => item.SiteDescId == this.registerObj1.SiteDescId);
-        console.log("SiteDescId:",SValue)
-        this._OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(SValue[0]);
-        this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
-        return;
-      }
+  //   this._OtManagementService.getSiteCombo().subscribe(data => {
+  //     this.Sitelist = data;
+  //     this.optionsSite = this.Sitelist.slice();
+  //     this.filteredOptionsSite = this._OtManagementService.otreservationFormGroup.get('SiteDescId').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filterSite(value) : this.Sitelist.slice()),
+  //     );
 
-    });
+  //     if (this.data) {
+        
+  //       const SValue = this.Sitelist.filter(item => item.SiteDescId == this.registerObj1.SiteDescId);
+  //       console.log("SiteDescId:",SValue)
+  //       this._OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(SValue[0]);
+  //       this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+  //       return;
+  //     }
 
-  }
-  private _Site(value: any): string[] {
+  //   });
+
+  // }
+  private _filterSite(value: any): string[] {
     if (value) {
       const filterValue = value && value.SiteDescriptionName ? value.SiteDescriptionName.toLowerCase() : value.toLowerCase();
+      this.isSiteSelected=false;
       return this.optionsSite.filter(option => option.SiteDescriptionName.toLowerCase().includes(filterValue));
     }
 
   }
   getOptionTextautoSiteDesc(option) {
     return option && option.SiteDescriptionName ? option.SiteDescriptionName : '';
+  }
+
+  onChangeSiteList(systemObj){
+    debugger
+    console.log(systemObj)
+    this._OtManagementService.otreservationFormGroup.get('SiteDescId').reset();
+    var vdata={
+      "Id":systemObj.SurgeryCategoryId
+    } 
+    this.isSystemSelected = true;
+
+    this._OtManagementService.getSiteCombo(vdata).subscribe(
+      data => {
+        this.Sitelist = data;
+        console.log(this.Sitelist)
+        this.optionsSite = this.Sitelist.slice();
+        this.filteredOptionsSite = this._OtManagementService.otreservationFormGroup.get('SiteDescId').valueChanges.pipe(
+          startWith(''),
+            map(value => value ? this._filterSite(value) : this.Sitelist.slice()),
+        );
+        if (this.registerObj1) {    
+          debugger    
+          const SValue = this.Sitelist.filter(item => item.SiteDescId == this.registerObj1.SiteDescId);
+          console.log("SiteDescId:",SValue)
+          this._OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(SValue[0]);
+          this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+          return;
+        }
+        console.log("Site ndfkdf:",this._OtManagementService.otreservationFormGroup.get('SiteDescId').value)
+      })
+
   }
    // site end
 
