@@ -3,7 +3,7 @@
   <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
     <div fxLayout="row" fxLayoutAlign="start center">
         <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-          Schduled Phone Appointment
+          Phone Appointment
         </span>
     </div>
 
@@ -191,7 +191,7 @@
              
               <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
                            
-                <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary " color="accent" (click)="onSave()" [disabled]="personalFormGroup.invalid" >
                     <span>Save</span>
                 </button>
