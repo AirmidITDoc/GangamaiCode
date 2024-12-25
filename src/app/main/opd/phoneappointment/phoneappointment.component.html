@@ -182,18 +182,27 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="AppDate" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AppointDate
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>App Date
                                         </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.AppDate}}
+                                                    {{contact.PhAppDate}}
                                             </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="AppTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>App Time
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.PhAppTime}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
                                     <ng-container matColumnDef="PatientName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
-                                            PatientName</mat-header-cell>
+                                            Patient Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
-                                            {{contact.PatientName}}-{{contact.RegNo}}
+                                            {{contact.PatientName}} - {{contact.RegNo}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -208,7 +217,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="MobileNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>MobileNo
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Mobile No
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.MobileNo}}
@@ -217,7 +226,7 @@
 
                                     <ng-container matColumnDef="DepartmentName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                            DepartmentName
+                                            Department Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.DepartmentName}}
@@ -226,21 +235,14 @@
 
                                     <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                            DoctorName
+                                            Doctor Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.DoctorName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="PhAppDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>PhAppDate
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.PhAppDate}}
-                                        </mat-cell>
-                                    </ng-container>
-
+                                  
                                    
 
                                     <ng-container matColumnDef="action" stickyEnd>

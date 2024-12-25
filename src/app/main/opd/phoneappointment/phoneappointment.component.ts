@@ -46,12 +46,12 @@ export class PhoneappointmentComponent implements OnInit {
     'RegNo',
     'SeqNo',
     'AppDate',
+    'AppTime',
     'PatientName',
     'Address',
     'MobileNo',
     'DepartmentName',
     'DoctorName',
-    'PhAppDate',
     'action'
   ];
 
