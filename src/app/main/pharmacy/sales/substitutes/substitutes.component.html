@@ -64,7 +64,7 @@
     <div fxLayoutGap="2px">
         <div class="dialog-content-wrapper">
             <div fxlayout="row">
-                    <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                    <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}">
                         <ng-container matColumnDef="ItemName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                 ItemName
