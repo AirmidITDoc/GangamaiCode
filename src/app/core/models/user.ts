@@ -25,7 +25,7 @@ export class LoginUser {
     isCollection :boolean;
     isBedStatus :boolean;
     isCurrentStk :boolean;
-    IsPatientInfo :boolean;
+    isPatientInfo :boolean;
     IsDateInterval :boolean;
     IsDateIntervalDays :number;
     MailId :string; 
