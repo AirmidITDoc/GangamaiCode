@@ -34,7 +34,7 @@ export class ItemMasterComponent implements OnInit {
 
     displayedColumns: string[] = [
         "ItemID",
-        // "ItemShortName",
+        "HSNcode",
         "ItemName",
         "ItemTypeName",
         "ItemCategoryName",
@@ -44,11 +44,10 @@ export class ItemMasterComponent implements OnInit {
         "StockUOMId",
         "ConversionFactor",
         "CurrencyName",
-        "TaxPer",
+        // "TaxPer",
         "MinQty",
         "MaxQty",
         "ReOrder",
-        "HSNcode",
         "CGST",
         "SGST",
         "IGST",
@@ -100,11 +99,9 @@ export class ItemMasterComponent implements OnInit {
             Start:(this.paginator?.pageIndex ?? 0),
             Length:(this.paginator?.pageSize ?? 35),                  
         };
-        console.log(m_data)
-        this._itemService.getItemMasterList(m_data).subscribe((data) => {
-             
+                console.log(m_data)
+                this._itemService.getItemMasterList(m_data).subscribe((data) => {
                 this.DSItemMasterList.data = data["Table1"] ?? [] as ItemMaster[];
-                // console.log(this.dataSource.data)
                 this.DSItemMasterList.sort = this.sort;
                 this.resultsLength = data["Table"][0]["total_row"];
                 this.sIsLoading = '';

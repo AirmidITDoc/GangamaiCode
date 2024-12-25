@@ -17,7 +17,7 @@
     <div>
         <form [formGroup]="IssueSearchGroup">
 
-            <div fxFlex="100" fxLayout="row" fxLayoutGap="12px grid" style="padding: 10px;">
+            <div fxFlex="100" fxLayout="row" fxLayoutGap="12px grid" style="padding:10px;">
 
                 <mat-form-field appearance="outline" fxflex="35">
                     <mat-label>Item Name </mat-label>
@@ -40,7 +40,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxflex="35">
+                <mat-form-field appearance="outline" fxflex="50">
                     <mat-label>Generic Name </mat-label>
                     <input type="text" name="FromStoreId" formControlName="FromStoreId" matInput
                         [matAutocomplete]="autoItem" (input)="getGenericList()">
@@ -65,12 +65,12 @@
         </form>
     </div>
 
-    <div style=" padding: 10px;">
+    <div style=" padding: 3px;">
         <mat-table #table matSort [dataSource]="dsItemList">
 
             <ng-container matColumnDef="ItemName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                    ItemName
+                    Item Name
                 </mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                     {{contact.ItemName}}
@@ -79,9 +79,9 @@
 
             <ng-container matColumnDef="ItemGenericName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                    ItemGenericName</mat-header-cell>
+                    Generic Name</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                    {{contact.ItemGenericName}}
+                    {{contact.ItemGenericName  || '-'}}
                 </mat-cell>
             </ng-container>
 
