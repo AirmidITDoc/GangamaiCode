@@ -35,6 +35,7 @@ export class OTManagementServiceService {
        TranTime : [new Date().toISOString()],
        OP_IP_ID : '',
        OP_IP_Type : '',
+       OTbookingDate:[new Date().toISOString()],
        OPDate : [new Date().toISOString()],
       //  OPTime : [new Date().toISOString()],
        SurgeryId: ['', [
@@ -215,6 +216,10 @@ export class OTManagementServiceService {
   // op
   public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
+  public BookingCancle(employee)
+  {
+    return this._httpClient.post("CustomerInformation/CancelOTBookingRequest", employee);
   }
   public getGenderCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {})

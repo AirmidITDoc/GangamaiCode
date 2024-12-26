@@ -156,13 +156,13 @@
                                                 <mat-label>Doctor Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Doctor" matInput
-                                                    formControlName="DoctorID"
+                                                    formControlName="DoctorId"
                                                     [matAutocomplete]="autosearchDoctor" required>
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_GstReportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
+                                                        (click)="_GstReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_GstReportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
+                                                        (click)="_GstReportService.userForm.get('DoctorId').setValue(''); isSearchdoctorSelected = false;">search</mat-icon>
                                                 </span>
                                                 <mat-autocomplete #autosearchDoctor="matAutocomplete"
                                                     [displayWith]="getOptionTextsearchDoctor">

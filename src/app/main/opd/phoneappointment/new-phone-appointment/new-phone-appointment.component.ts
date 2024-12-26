@@ -459,6 +459,7 @@ onSave(){
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+    
 debugger
     
     if(!this.registerObj.PhoneAppId){
@@ -475,7 +476,7 @@ debugger
         "address": this.personalFormGroup.get('Address').value || '',
         "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
         "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "HH:mm:ss"),
         "departmentId": this.personalFormGroup.get('Departmentid').value.DepartmentId || 0,
         "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
         "addedBy": this.accountService.currentUserValue.user.id,

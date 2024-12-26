@@ -125,14 +125,29 @@
 
                                     <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">                                        
+                                        
 
-                                        <ng-container matColumnDef="OTBookingId" sticky>
+                                        <ng-container matColumnDef="IsCancelled" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
+                                            
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-60">
+                                                <mat-icon
+                                                    *ngIf="!contact.IsCancelled=='0'" matTooltip="IsCancelled"
+                                                    class=" pill orange-600 s-16 ">circle</mat-icon>
+                                                <mat-icon
+                                                    *ngIf="!contact.IsCancelled=='1'" matTooltip="IsNotCancelled"
+                                                    class="pill green-600 s-16 ">circle</mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <!-- <ng-container matColumnDef="OTBookingId" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Code
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.OTBookingId}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 <!-- 
                                         <ng-container matColumnDef="PatientName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -153,20 +168,20 @@
                                         </ng-container> -->
 
                                         <ng-container matColumnDef="OTbookingDate" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                                 OTbookingDate
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                 {{contact.OTbookingDate}}
                                             </mat-cell>
                                         </ng-container>
 
 
                                         <ng-container matColumnDef="OTbookingTime" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                                 OTbookingTime
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                 {{contact.OTbookingTime}}
                                             </mat-cell>
                                         </ng-container>
@@ -186,15 +201,6 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.BedName}}
-                                            </mat-cell>
-                                        </ng-container> -->
-
-                                        <!-- <ng-container matColumnDef="OP_IP_Id" >
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                OP_IP_Id
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.OP_IP_Id}}
                                             </mat-cell>
                                         </ng-container> -->
 
@@ -252,27 +258,16 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="IsCancelledBy">
+                                        <!-- <ng-container matColumnDef="IsCancelledBy">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 IsCancelledBy
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 {{contact.IsCancelledBy}}
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <ng-container matColumnDef="IsCancelled" sticky>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
-                                                IsCancelled</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
-                                                <mat-icon
-                                                    *ngIf="contact.IsCancelled=='1' " matTooltip="IsCancelled"
-                                                    class=" pill orange-600 s-16 ">circle</mat-icon>
-                                                <mat-icon
-                                                    *ngIf="contact.IsCancelled=='0' " matTooltip="IsNotCancelled"
-                                                    class="pill green-600 s-16 ">circle</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
+                                        
 
                                         <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-150">Action
@@ -281,13 +276,16 @@
                                                 <button mat-icon-button (click)="getPrint(contact)" matTooltip="print">
                                                     <mat-icon style="color: black;">print</mat-icon>
                                                 </button>
-<!-- 
-                                                <button mat-icon-button (click)="onEdit(contact)">
-                                                    <mat-icon title="Edit Menu">launch</mat-icon>
-                                                  </button> -->
+
                                                   <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
                                                     <mat-icon style="color: black;">edit</mat-icon>
                                                 </button>
+
+                                                <button mat-icon-button (click)="CancleOTBooking(contact)" 
+                                                *ngIf="contact.IsCancelled==0" matTooltip="Cancle">
+                                                    <mat-icon> cancel</mat-icon>
+                                                </button>
+                                               
                                             </mat-cell>
                                             
                                         </ng-container>

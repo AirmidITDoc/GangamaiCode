@@ -908,12 +908,12 @@ export class GSTReportComponent implements OnInit {
       debugger
       this.sIsLoading = 'loading-data';
    
-      let doctorId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('DoctorId').value.DoctorId)
+      let doctorId =0;
+      if (this._GstReportService.userForm.get('DoctorId').value)
         doctorId = this._GstReportService.userForm.get('DoctorId').value.DoctorId
   
        setTimeout(() => {
-       
+       debugger
          this._GstReportService.geDrWiseProfitDetailReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",doctorId
@@ -942,12 +942,12 @@ export class GSTReportComponent implements OnInit {
       debugger
       this.sIsLoading = 'loading-data';
    
-      let doctorId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('DoctorId').value.DoctorId)
+      let doctorId =0;
+      if (this._GstReportService.userForm.get('DoctorId').value)
         doctorId = this._GstReportService.userForm.get('DoctorId').value.DoctorId
   
        setTimeout(() => {
-       
+       debugger
          this._GstReportService.geDrWiseProfitSummeryReport(
           this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",doctorId
@@ -966,6 +966,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+
            });
          });
    
