@@ -2,18 +2,12 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ItemFormMasterComponent } from "./item-form-master/item-form-master.component";
 import { ItemMasterService } from "./item-master.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatAccordion } from "@angular/material/expansion";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
-import { StockAdjustmentService } from "app/main/inventory/stock-adjustment/stock-adjustment.service";
 
 @Component({
     selector: "app-item-master",
@@ -51,8 +45,6 @@ export class ItemMasterComponent implements OnInit {
         { heading: "CurrencyId", key: "currencyId", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "CurrencyName", key: "currencyName", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "TaxPer", key: "taxPer", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        // { heading: "Isdeleted", key: "isdeleted", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "Addedby", key: "addedby", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "MinQty", key: "minQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MaxQty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
@@ -75,7 +67,7 @@ export class ItemMasterComponent implements OnInit {
         { heading: "DrugType", key: "drugType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DrugTypeName", key: "drugTypeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "ItemCompnayId", key: "itemCompnayId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -121,8 +113,8 @@ export class ItemMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
                 maxWidth: "95%",
-                height: '85%',
-                width: '80%',
+                height: '75%',
+                width: '85%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -137,144 +129,16 @@ export class ItemMasterComponent implements OnInit {
         this.storeId=obj.value;
       }
 
-    isLoading = true;
-    msg: any;
-    step = 0;
-
-    setStep(index: number) {
-        this.step = index;
-    }
-    SearchName: string;
-    sIsLoading: string = ''; 
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-
-    DSItemMasterList = new MatTableDataSource<ItemMaster>();
-
     constructor(
         public _itemService: ItemMasterService,
-        private _loggedService: AuthenticationService,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
     ) { }
 
-    ngOnInit(): void {
-        // this.getItemMasterList();
-    }
-
-    onSearchClear() {
-        this._itemService.myformSearch.reset({
-            ItemNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        // this.getItemMasterList();
-    }
-
-    onClear() {
-        this._itemService.myform.reset({ IsDeleted: "false" });
-        this._itemService.initializeFormGroup();
-    }
-
-    onSearch() {
-        // this.getItemMasterList();
-    }
-    chargeslist:any=[];
-    
-
-    onEdit(row) {
-        var m_data = {
-            ItemID: row.ItemID,
-            //  ItemShortName: row.ItemShortName.trim(),
-            ItemName: row.ItemName,
-            ItemTypeID: row.ItemTypeID,
-            ItemCategoryId: row.ItemCategoryId,
-            ItemGenericNameId: row.ItemGenericNameId,
-            ItemClassId: row.ItemClassId,
-            PurchaseUOMId: row.PurchaseUOMId,
-            StockUOMId: row.StockUOMId,
-            ConversionFactor: row.ConversionFactor,
-            CurrencyId: row.CurrencyId,
-            TaxPer: row.TaxPer,
-            IsDeleted: JSON.stringify(row.Isdeleted),
-            UpdatedBy: row.UpdatedBy,
-            IsBatchRequired: JSON.stringify(row.IsBatchRequired),
-            MinQty: row.MinQty,
-            MaxQty: row.MaxQty,
-            ReOrder: row.ReOrder,
-            IsNursingFlag: JSON.stringify(row.IsNursingFlag),
-            HSNcode: row.HSNcode,
-            CGST: row.CGST,
-            SGST: row.SGST,
-            IGST: row.IGST,
-            IsNarcotic: JSON.stringify(row.IsNarcotic),
-            ManufId: row.ManufId,
-            ProdLocation: row.ProdLocation,
-            IsH1Drug: JSON.stringify(row.IsH1Drug),
-            IsScheduleH: JSON.stringify(row.IsScheduleH),
-            IsHighRisk: JSON.stringify(row.IsHighRisk),
-            IsScheduleX: JSON.stringify(row.IsScheduleX),
-            IsLASA: JSON.stringify(row.IsLASA),
-            IsEmgerency: JSON.stringify(row.IsEmgerency),
-            //StoreId: row.StoreId,
-            
-        };
-
-        this._itemService.populateForm(m_data);
-
-        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "75vw",
-            maxHeight: "80vh",
-            width: "90%",
-            height: "90%",
-            data : {
-                registerObj : row,
-              }
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            // this.getItemMasterList();
-        });
-    }
-    // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    onDeactive(ItemID) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
-                    "Update M_ItemMaster set Isdeleted=0 where ItemID=" +
-                    ItemID;
-                console.log(Query);
-                this._itemService
-                    .deactivateTheStatus(Query)
-                    .subscribe((data) => (this.msg = data));
-                // this.getItemMasterList();
-            }
-            this.confirmDialogRef = null;
-        });
-    }
-
-    onAdd() {
-        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-            maxWidth: "95vw",
-            maxHeight: "80vh",
-            width: "90%",
-            height: "80%",
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            // this.getItemMasterList();
-        });
-    }
+    ngOnInit(): void { }   
 }
+
+
 export class ItemMaster {
     ItemID: number;
     //  ItemShortName: string;
@@ -318,7 +182,8 @@ export class ItemMaster {
     DrugTypeName :any;
     ItemCompnayId:any;
     position:any;
-    
+    mAssignItemToStores:any[];
+
     /**
      * Constructor
      *
@@ -365,6 +230,9 @@ export class ItemMaster {
             this.DrugType=ItemMaster.DrugType ||""
             this.DrugTypeName=ItemMaster.DrugTypeName ||""
             this.ItemCompnayId=ItemMaster.ItemCompnayId || 0
+            
+            this.mAssignItemToStores=ItemMaster.mAssignItemToStores||[];
+
         }
     }
 }

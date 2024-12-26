@@ -13,6 +13,7 @@ export class NewItemtypeComponent implements OnInit {
 
   itemtypeForm: FormGroup;
   isActive:boolean=true;
+  Saveflag: boolean= false;
 
   constructor(
       public _ItemTypeMasterService: ItemTypeMasterService,
@@ -30,7 +31,7 @@ export class NewItemtypeComponent implements OnInit {
         }
     }
 
-  Saveflag: boolean= false;
+  
   onSubmit() 
   {
     if (!this.itemtypeForm.invalid) {

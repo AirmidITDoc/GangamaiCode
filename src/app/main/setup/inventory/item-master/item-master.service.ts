@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -8,10 +8,6 @@ import { ApiCaller } from "app/core/services/apiCaller";
 })
 
 export class ItemMasterService {
-
-    currencyMasterSave(value: any) {
-        throw new Error("Method not implemented.");
-    }
 
     myform: FormGroup;
     myformSearch: FormGroup;
@@ -35,31 +31,109 @@ export class ItemMasterService {
         });
     }
 
+    
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
              
             // as per payload list (insert)
                 itemId: 0,
                 itemShortName: [""],
-                itemName: [""],
-                itemTypeId: [""],
-                itemCategaryId: [""],
-                itemGenericNameId: [""],
-                itemClassId: [""],
-                purchaseUomid: [""],
-                stockUomid: [""],
-                conversionFactor: [""],
-                currencyId: [""],
+                itemName: ["",
+                    [
+                        Validators.required, Validators.maxLength(50),
+                        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    ] 
+                ],
+                itemTypeId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
+                itemCategaryId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
+                itemGenericNameId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
+                itemClassId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
+                purchaseUomid: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
+                stockUomid: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
+                conversionFactor: ["",
+                    [
+                        Validators.required, Validators.maxLength(50),
+                        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    ] 
+                ],
+                currencyId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
                 taxPer: [""],
                 isBatchRequired: true,
-                minQty: [""],
-                maxQty: [""],
-                reOrder: [""],
-                hsncode: [""],
-                cgst: [""],
-                sgst: [""],
-                igst: [""],
-                manufId: [""],
+                minQty: ["",
+                    [
+                        Validators.required,Validators.maxLength(50),
+                        Validators.pattern('^[0-9]*$')
+                    ] 
+                ],
+                maxQty: ["",
+                    [
+                        Validators.required,Validators.maxLength(50),
+                        Validators.pattern('^[0-9]*$')
+                    ] 
+                ],
+                reOrder: ["",
+                    [
+                        Validators.required,Validators.maxLength(50),
+                        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    ] 
+                ],
+                hsncode: ["",
+                    [
+                        Validators.required, Validators.maxLength(50),
+                        Validators.pattern('^[0-9]*$')
+                    ] 
+                ],
+                cgst: ["",
+                    [
+                        Validators.required,Validators.maxLength(15),
+                        Validators.pattern('^[0-9]*$')
+                    ] 
+                ],
+                sgst: ["",
+                    [
+                        Validators.required,Validators.maxLength(15),
+                        Validators.pattern('^[0-9]*$')
+                    ] 
+                ],
+                igst: ["",
+                    [
+                        Validators.required,Validators.maxLength(15),
+                        Validators.pattern('^[0-9]*$')
+                    ] 
+                ],
+                manufId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
                 isNarcotic : true,
                 isH1drug: true,
                 isScheduleH: true,
@@ -67,112 +141,38 @@ export class ItemMasterService {
                 isScheduleX: true,
                 isLasa: true,
                 isEmgerency: true,
-                drugType: [""],
+                drugType: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
                 drugTypeName: [""],
-                prodLocation: [""],
-                itemCompnayId: [""],
+                prodLocation: ["",
+                    [
+                        Validators.required,Validators.maxLength(50),
+                        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    ] 
+                ],
+                itemCompnayId: ["",
+                    [
+                        Validators.required,
+                    ] 
+                ],
                 itemTime: [""],
                 mAssignItemToStores: [
                     {
                         assignId: [""],
-                        storeId: [""],
+                        storeId: ["",
+                            [
+                                Validators.required,
+                            ] 
+                        ],
                         itemId: [""]
                     }
-                ]
-
+                ],
         });
     }
 
-    public itemMasterSave(Param: any, showLoader = true) {
-        if (Param.ItemID) {
-            return this._httpClient.PutData("CurrencyMaster/" + Param.ItemID, Param, showLoader);
-        } else return this._httpClient.PostData("CurrencyMaster", Param, showLoader);
-    }
-
-    getValidationMessages() {
-        return {
-            itemName: [
-                { name: "required", Message: "Item Name is required" },
-                { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("itemMaster?Id=" + m_data.toString());
-    }
-
-    public getItemMasterList(param) {
-        return this._httpClient.PostData( 
-            "Generic/GetByProc?procName=m_Rtrv_ItemMaster_by_Name",
-            param
-        );
-    }
-
-    public getitemtypeMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_ItemTypeMasterForCombo",
-            {}
-        );
-    }
-
-    public getitemclassMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_ItemClassForCombo",
-            {}
-        );
-    }
-
-    public getitemcategoryMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_ItemCategoryMasterForCombo",
-            {}
-        );
-    }
-
-    public getitemgenericMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_ItemGenericNameMasterForCombo",
-            {}
-        );
-    }
-
-    public getunitofMeasurementMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_PurchaseUOMForCombo",
-            {}
-        );
-    }
-
-    public getStockUMOMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_StockUOMForCombo",
-            {}
-        );
-    }
-
-
-    public getManufactureMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_ItemManufactureMasterForCombo",
-            {}
-        );
-    }
-
-    public getStoreMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=RetrieveStoerMasterForCombo",
-            {}
-        );
-    }
-
-    public getCurrencyMasterCombo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Retrieve_CurrencyForCombo",
-            {}
-        );
-    }
 
     //insert update of item master
     public insertItemMaster(Param: any, showLoader = true) {
@@ -181,33 +181,11 @@ export class ItemMasterService {
         } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param, showLoader);
     }
 
-    public updateItemMaster(param) {
-        return this._httpClient.PostData("Inventory/ItemMasterUpdate", param);
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("itemMaster?Id=" + m_data.toString());
     }
 
-    public InsertAssignItemToStore(param) {
-        return this._httpClient.PostData("Inventory/ItemMasterSave", param);
-    }
-
-    public DeleteAssignItemToStore(param) {
-        return this._httpClient.PostData("Inventory/ItemMasterUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
-      //company Combobox List
-  public getCompanyCombo() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_ItemCompanyMasterForCombo", {})
-  }
-  public getDrugTypeCombo() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_ItemDrugTypeList", {})
-  }
-
-  public getHistoryList() {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_M_PastHistoryMasterForCombo",{});
-  }
-  public getAssigneToStoreList(param) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_ItemMaster_by_Store",param);
-  }
+    public getstoreById(Id, showLoader = true) {
+        return this._httpClient.GetData("ItemMaster/" + Id,showLoader);
+    } 
 }
