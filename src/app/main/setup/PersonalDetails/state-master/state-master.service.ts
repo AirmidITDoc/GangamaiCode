@@ -19,7 +19,7 @@ export class StateMasterService {
             stateId: [0],
             stateName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

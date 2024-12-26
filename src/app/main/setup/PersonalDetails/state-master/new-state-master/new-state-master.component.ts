@@ -42,8 +42,10 @@ export class NewStateMasterComponent implements OnInit {
 
   saveflag : boolean = false;
   onSubmit() {
-    this.saveflag = true;
-    console.log(this.stateForm.value)
+    if(!this.stateForm.invalid)
+        {
+        this.saveflag = true;
+        console.log(this.stateForm.value)
           this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -51,6 +53,15 @@ export class NewStateMasterComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
+
+    }
       
   
 
@@ -61,6 +72,7 @@ export class NewStateMasterComponent implements OnInit {
         ],
         stateName: [
           { name: "required", Message: "State Name is required" },
+          { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
           { name: "pattern", Message: "Only char allowed." }
       ]
     };

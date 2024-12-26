@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -31,11 +31,13 @@ export class PrefixMasterService {
             prefixId: 0,
             prefixName: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            sexId: 0,
+            sexId:["",
+                Validators.required
+            ] ,
         });
     }
     initializeFormGroup() {
@@ -53,19 +55,6 @@ export class PrefixMasterService {
         } else return this._httpClient.PostData("PrefixMaster", Param, showLoader);
     }
 
-    getValidationMessages() {
-        return {
-            prefixName: [
-                { name: "required", Message: "Prefix Name is required" },
-                { name: "maxlength", Message: "Prefix name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
 
     public deactivateTheStatus(m_data) {
       return this._httpClient.DeleteData("PrefixMaster?Id=" + m_data.toString());

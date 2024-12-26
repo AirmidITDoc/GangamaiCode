@@ -4,9 +4,6 @@ import { UnitmasterService } from "./unitmaster.service";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewUnitComponent } from "./new-unit/new-unit.component";

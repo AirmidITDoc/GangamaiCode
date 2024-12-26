@@ -9,7 +9,6 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
-
 @Component({
     selector: "app-store-master",
     templateUrl: "./store-master.component.html",

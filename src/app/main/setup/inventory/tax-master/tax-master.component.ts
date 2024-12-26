@@ -1,12 +1,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { TaxMasterService } from "./tax-master.service";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
@@ -36,8 +32,8 @@ export class TaxMasterComponent implements OnInit {
     apiUrl: "TaxMaster/List",
     columnsList: [
         { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA',width :400 },
-        { heading: "CreatedDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',width :400 },
+        { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA',width :800 },
+        // { heading: "CreatedDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',width :400 },
         { heading: "IsActive", key: "isActive",width :100, type: gridColumnTypes.status, align: "center" },
         { heading: "Action", key: "action",width :100, align: "right", type: gridColumnTypes.action, actions: [
                     {

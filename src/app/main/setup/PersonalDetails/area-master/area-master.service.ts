@@ -22,7 +22,7 @@ export class AreaMasterService {
             areaId: [0],
             areaName: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

@@ -27,7 +27,7 @@ export class PatienttypeMasterService {
             patientTypeId: [""],
             patientType: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -41,15 +41,7 @@ export class PatienttypeMasterService {
         this.createPatientTypeForm();
     }
     
-    getValidationMessages() {
-        return {
-            patientType: [
-                { name: "required", Message: "PatientType Name is required" },
-                { name: "maxlength", Message: "PatientType name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+    
 
     public patienttypeMasterSave(Param: any, showLoader = true) {
         if (Param.patientTypeId) {

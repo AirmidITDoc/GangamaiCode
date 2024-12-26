@@ -1,12 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { PrefixMasterService } from '../prefix-master.service';
 import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { gridModel } from 'app/core/models/gridRequest';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { isatty } from 'tty';
 
 
 @Component({
@@ -41,16 +38,27 @@ export class NewPrefixComponent implements OnInit {
 
  
     onSubmit() {
-        // if(this.prefixForm.invalid){
+        debugger
+        if(!this.prefixForm.invalid){
         this.saveflag = true;
-debugger
+
+        console.log("JSON :- ", this.prefixForm.value);
+
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        // }
+        }
+        else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
+
     }
     genderId = 0;
 
@@ -59,9 +67,15 @@ debugger
         this.genderId = obj.value;
     }
 
-    getValidationGenderMessages() {
+
+    getValidationMessages() {
         return {
-            GenderId: [
+            prefixName: [
+                { name: "required", Message: "Prefix Name is required" },
+                { name: "maxlength", Message: "Prefix name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            sexId: [
                 { name: "required", Message: "Gender is required" }
             ]
         };

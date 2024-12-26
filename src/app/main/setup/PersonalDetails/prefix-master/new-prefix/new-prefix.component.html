@@ -25,8 +25,8 @@
                             formControlName="prefixName"
                             [value]="data?.prefixName"
                             [formGroup]="prefixForm"
-                            [validations]="_PrefixMasterService.getValidationMessages().prefixName"
-                            [maxLength]="300">
+                            [validations]="getValidationMessages().prefixName"
+                            [maxLength]="50">
                         </airmid-textbox> 
                     </div>
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -35,7 +35,7 @@
                             formControlName="sexId" 
                             [formGroup]="prefixForm"
                             [value]="data?.sexId"
-                            [validations]="getValidationGenderMessages().GenderId" 
+                            [validations]="getValidationMessages().sexId" 
                             [mode]="autocompleteModegender">
                         </airmid-autocomplete>
                     </div>

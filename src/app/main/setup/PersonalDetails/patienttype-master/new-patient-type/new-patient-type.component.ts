@@ -1,18 +1,23 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { PatienttypeMasterService } from '../patienttype-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-patient-type',
   templateUrl: './new-patient-type.component.html',
-  styleUrls: ['./new-patient-type.component.scss']
+  styleUrls: ['./new-patient-type.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewPatientTypeComponent implements OnInit {
 
   patienttypeForm: FormGroup;
-  isActive:boolean=true
+  isActive:boolean=true;
+  saveflag : boolean = false;
+
   constructor(
       public _PatienttypeMasterService: PatienttypeMasterService,
       public dialogRef: MatDialogRef<NewPatientTypeComponent>,
@@ -28,9 +33,9 @@ export class NewPatientTypeComponent implements OnInit {
       this.patienttypeForm.patchValue(this.data);
   }
 
-  saveflag : boolean = false;
+  
   onSubmit() {
-    this.saveflag = true;
+   
     
     if (this.patienttypeForm.invalid) {
         this.toastr.warning('please check from is invalid', 'Warning !', {
@@ -39,6 +44,7 @@ export class NewPatientTypeComponent implements OnInit {
       return;
     }else{
         if (this.patienttypeForm.valid) {
+            this.saveflag = true;
             this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
@@ -47,6 +53,16 @@ export class NewPatientTypeComponent implements OnInit {
             });
         }
     }
+}
+
+getValidationMessages() {
+    return {
+        patientType: [
+            { name: "required", Message: "PatientType Name is required" },
+            { name: "maxlength", Message: "PatientType name should not be greater than 50 char." },
+            { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
 }
 
   onClear(val: boolean) {

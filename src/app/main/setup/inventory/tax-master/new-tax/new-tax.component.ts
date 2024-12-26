@@ -37,12 +37,6 @@ export class NewTaxComponent implements OnInit {
         if(!this.taxForm.invalid)
         {
             this.saveflag = true        
-            // var mdata =
-            // {
-            //     "id": 0,
-            //     "taxNature": this.taxForm.get("taxNature").value,
-            //     "isActive": 0
-            // }
 
             console.log("TaxMaster Insert:",this.taxForm.value);
 

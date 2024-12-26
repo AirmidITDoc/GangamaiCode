@@ -23,9 +23,9 @@
                         <airmid-textbox 
                             label="Patient Type Name"
                             formControlName="patientType"
-                            [value]=""
+                            [value]="data?.patientType"
                             [formGroup]="patienttypeForm"
-                            [validations]="_PatienttypeMasterService.getValidationMessages().patientType"
+                            [validations]="getValidationMessages().patientType"
                             [maxLength]="50">
                            
                         </airmid-textbox> 

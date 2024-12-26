@@ -1,5 +1,4 @@
 import { NgModule } from "@angular/core";
-
 import { PatienttypeMasterComponent } from "./patienttype-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";

@@ -21,11 +21,10 @@ export class RelationshipMasterService {
             relationshipId: [0],
             relationshipName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // isActive: ["true"],
         });
     }
 
@@ -39,8 +38,6 @@ export class RelationshipMasterService {
     initializeFormGroup() {
         this.createRelationshipForm();
     }
-
-    
 
     public relationshipMasterSave(Param: any, showLoader = true) {
         if (Param.relationshipId) {

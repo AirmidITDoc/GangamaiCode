@@ -1,14 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { takeUntil } from "rxjs/operators";
 import { AreaMasterService } from "./area-master.service";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { ReplaySubject, Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
