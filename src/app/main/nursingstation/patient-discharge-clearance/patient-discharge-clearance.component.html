@@ -145,30 +145,39 @@
 
                     <div  fxFlex="35%" fxLayoutGap="8px"> 
                        
-                            <mat-vertical-stepper linear style="background-color:  rgb(238, 245, 245);">
+                            <!-- <mat-vertical-stepper linear style="background-color:  rgb(238, 245, 245);">
                                 <mat-step *ngFor="let department of DepartmentList; let i = index"  
                                 [ngClass]="{'red-row ': department.IsApproved === 'true'}">
                                   <ng-template matStepLabel>{{department.DepartmentName}} {{ i + 1 }}</ng-template> 
                                   <p>DepartmentName: {{ department.DepartmentName }} </p>
                                   <p>ApprovedByName: {{ department.ApprovedByName }} </p>  
                                 </mat-step>
-                              </mat-vertical-stepper>
+                              </mat-vertical-stepper> -->
                               
-                              <!-- <button mat-raised-button (click)="submit()">Submit All Approvals</button>  -->
+                         
 
-                              <!-- <mat-vertical-stepper>
-                                <mat-step *ngFor="let department of departments" [ngClass]="{'approved-step': department === firstApprovedDepartment}">
-                                    <ng-template matStepLabel>{{ department.name }}</ng-template>
-                                    <p>Approved By: {{ department.approved ? department.approvedBy : 'Not Approved' }}</p>
-                                </mat-step>
-                            </mat-vertical-stepper> -->
+                                <!-- <div  *ngFor="let department of DepartmentList; let i = index" >
+                                    <div fxLayout="column" style="padding: 10px;">
+                                        <span [ngClass]="{'red-row ': department.ApprovedByName !== ''}"  > 
+                                            <strong> {{ i + 1 }} - {{department.DepartmentName}} </strong> </span> 
+                                        <span> DepartmentName : {{ department.DepartmentName }} </span>
+                                        <span> ApprovedByName : {{ department.ApprovedByName }} </span>  
+                                    </div>
+                                </div> -->
 
-                            <!-- <mat-vertical-stepper>
-                                <mat-step *ngFor="let department of DepartmentList" [ngClass]="{'approved-step': department.IsApproved}">
-                                    <ng-template matStepLabel>{{ department.DepartmentName }}</ng-template>
-                                    <p>Approved By: {{ department.ApprovedByName ? department.ApprovedByName : 'Not Approved' }}</p>
-                                </mat-step>
-                            </mat-vertical-stepper>   -->
+
+                                <div class="stepper">
+                                    <div class="step" *ngFor="let department of DepartmentList; let i = index">
+                                        <div class="step-number">{{ i + 1 }}</div>
+                                        <div class="step-content">
+                                            <div class="step-title">{{ department.DepartmentName }}</div> 
+                                            <div>Department Name : {{ department.DepartmentName }} </div>
+                                            <div [ngClass]="{'red-row ': department.ApprovedByName !== ''}"
+                                            >ApprovedBy Name : {{ department.ApprovedByName }}</div>
+                                        </div>
+                                        <div class="step-line" *ngIf="i < DepartmentList.length - 1"></div>
+                                    </div>
+                                </div>
                        
                     </div> 
                 </div>

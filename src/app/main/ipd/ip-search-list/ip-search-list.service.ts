@@ -862,7 +862,13 @@ public updateIPDDischargSummaryTemplate(employee)
   public getCheckBalanceAmt(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
-
+  public ChkPathologyTestComplete(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+ data, {});
+  }
+  public ChkRadiologyTestComplete(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+ data, {});
+  }
+  
   // public getDischargeId(data){
   //   return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   // }
