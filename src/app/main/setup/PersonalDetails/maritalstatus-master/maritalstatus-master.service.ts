@@ -31,7 +31,6 @@ export class MaritalstatusMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // isActive: ["true"],
         });
     }
 

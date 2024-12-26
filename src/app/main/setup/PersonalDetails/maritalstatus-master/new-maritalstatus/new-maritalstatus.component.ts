@@ -11,7 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewMaritalstatusComponent implements OnInit {
   maritalForm: FormGroup;
-  isActive:boolean=true
+  isActive:boolean=true;
+  saveflag : boolean = false;
+  
   constructor( public _MaritalstatusMasterService: MaritalstatusMasterService,
     public dialogRef: MatDialogRef<NewMaritalstatusComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -24,10 +26,11 @@ export class NewMaritalstatusComponent implements OnInit {
     this.maritalForm.patchValue(this.data);
   }
 
-  saveflag : boolean = false;
+  
   onSubmit() {
-    this.saveflag = true;
-   
+    if(!this.maritalForm.invalid)
+        {
+        this.saveflag = true;
         this._MaritalstatusMasterService.MaritalStatusMasterSave(this.maritalForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
@@ -35,6 +38,14 @@ export class NewMaritalstatusComponent implements OnInit {
             this.toastr.error(error.message);
         });
     }
+    else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
+}
  
     getValidationMessages() {
       return {

@@ -28,7 +28,6 @@ export class CityMasterService {
             stateId: ["", 
                 Validators.required
             ],
-            // isActive: [true],
         });
     }
     createSearchForm(): FormGroup {

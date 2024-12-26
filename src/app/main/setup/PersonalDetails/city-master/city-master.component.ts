@@ -1,13 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { ReplaySubject, Subject } from "rxjs";
 import { CityMasterService } from "./city-master.service";
-import { takeUntil } from "rxjs/operators";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { NewCityComponent } from "./new-city/new-city.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";

@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
 import { PrefixMasterService } from "./prefix-master.service";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";

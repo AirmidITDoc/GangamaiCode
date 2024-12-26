@@ -40,8 +40,8 @@ export class CompanyMasterListComponent implements OnInit {
     
     onSubmit() {  
         debugger       
-        if(!this.companyForm.invalid)
-        {
+        // if(!this.companyForm.invalid)
+        // {
             this.saveflag = true;
             // debugger
             // var m_data =
@@ -62,18 +62,18 @@ export class CompanyMasterListComponent implements OnInit {
 
             this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
             this.toastr.success(response.message);
-            this.onClear(true);
+            // this.onClear(true);
             }, (error) => {
             this.toastr.error(error.message);
             });
-        }
-        else
-        {
-            this.toastr.warning('please check form is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // }
+        // else
+        // {
+        //     this.toastr.warning('please check form is invalid', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
     }
   
     onClear(val: boolean) {

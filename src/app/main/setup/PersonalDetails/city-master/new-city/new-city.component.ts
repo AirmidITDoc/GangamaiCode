@@ -42,13 +42,18 @@ export class NewCityComponent implements OnInit {
             this.cityForm.get('isActive').setValue(1);
 
         }
+        // if(this.data){
+        //     this.isActive=this.data.isActive
+        //   this.cityForm.patchValue(this.data);}
     }
 
     saveflag: boolean = false;
     onSubmit() {
-        this.saveflag = true;
-        console.log(this.cityForm.value)
+        
+        
         if (this.cityForm.valid) {
+            this.saveflag = true;
+            console.log(this.cityForm.value)
             this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

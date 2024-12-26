@@ -27,11 +27,10 @@ export class ReligionMasterService {
             religionId: [0],
             religionName: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // isActive: ["true"],
         });
     }
     initializeFormGroup() {
@@ -42,8 +41,6 @@ export class ReligionMasterService {
         return this._httpClient.PostData("ReligionMaster/List", param, showLoader);
     }
 
-   
-
     public religionMasterSave(Param: any, showLoader = true) {
         if (Param.religionId) {
             return this._httpClient.PutData("ReligionMaster/" + Param.religionId, Param, showLoader);
@@ -52,10 +49,6 @@ export class ReligionMasterService {
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ReligionMaster?Id=" + m_data.toString());
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
     }
 
 }

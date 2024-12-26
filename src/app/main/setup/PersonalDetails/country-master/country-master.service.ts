@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -29,11 +27,10 @@ export class CountryMasterService {
             countryId: [0],
             countryName: ["",
                 [
-                    Validators.required,
+                    Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // isActive: ["true"],
         });
     }
 

@@ -11,7 +11,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewRelationshipComponent implements OnInit {
   relationshipForm: FormGroup;
-  isActive:boolean=true
+  isActive:boolean=true;
+  saveflag : boolean = false;
+
   constructor(
       public _RelationshipMasterService: RelationshipMasterService,
       public dialogRef: MatDialogRef<NewRelationshipComponent>,
@@ -19,19 +21,17 @@ export class NewRelationshipComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-
   ngOnInit(): void {
       this.relationshipForm = this._RelationshipMasterService.createRelationshipForm();
-      if(this.data)
+      if(this.data){
         this.isActive=this.data.isActive
-      this.relationshipForm.patchValue(this.data);
+      this.relationshipForm.patchValue(this.data);}
   }
 
-  saveflag : boolean = false;
   onSubmit() {
-    this.saveflag = true;
-  
-      if (this.relationshipForm.valid) {
+
+      if(!this.relationshipForm.invalid) {
+        this.saveflag = true;
           this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -39,6 +39,14 @@ export class NewRelationshipComponent implements OnInit {
               this.toastr.error(error.message);
           });
       }
+      else
+      {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+      }
+
     }
   
     getValidationMessages() {
