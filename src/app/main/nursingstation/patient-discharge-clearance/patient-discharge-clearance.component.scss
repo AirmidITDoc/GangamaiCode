@@ -1,53 +1,57 @@
-// .approved-step .mat-step-header {
-//     background-color: green !important; /* Change background color to green */
-//     color: white !important; /* Change text color to white for better contrast */
-//   }
-  
-//   .approved-step .mat-step-icon {
-//     background-color: green !important; /* Change icon background color to green */
-//     color: white !important; /* Change icon color to white */
-//   }
-  
-//   .approved-step .mat-step-label {
-//     color: green !important; /* Change label color to green */
-//   }
-
-//   .approved-step {
-//     background-color: green; /* Change to your desired color */
-//     color: white; /* Change text color if needed */
-// }
-
-// .mat-step-header.completed {
-//     background-color: green; /* Change completed step color */
-// }
-
+ 
 .red-row {
-	background-color: green !important; /* Use !important to override default styles */
-	//color: white; /* Optional: Change text color for better visibility */
-  }
-
-
-
-.approved-step {
-  background-color: rgb(58, 0, 128); /* Change to your desired color */
-  color: rgb(202, 75, 75); /* Change text color if needed */
+	background-color: green; /* Use !important to override default styles */
+	color: white; /* Optional: Change text color for better visibility */
+  }  
+.stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding: 20px;
 }
 
-.mat-step-header.approved-step {
-  background-color: rgb(209, 28, 194); /* Change completed step color */
+.step {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
 }
 
-.mat-vertical-stepper .mat-step-header {
-  transition: background-color 0.3s ease;
+.step-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #6e0fe3;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+  z-index: 1; /* Ensure number is above the line */
 }
 
-.mat-step-header.approved-step .mat-step-icon {
-  color: white; /* Change icon color for approved steps */
+.step-content {
+  margin-left: 10px;
 }
 
-.mat-vertical-stepper .mat-step-header.approved-step {
-  border-left: 4px solid green; /* Change the line color for approved steps */
+.step-title {
+  font-weight: bold;
+  margin-top: 20px;
 }
+
+.step-line {
+  position: absolute;
+  left: 15px; /* Align with the step number */
+  top: 30px; /* Position below the step number */
+  width: 2px;
+  height: 70px; /* Adjust height as needed */
+  background-color: #7e09f3ed;
+  z-index: 0; /* Behind the step number */
+}
+
+ 
 
 
 

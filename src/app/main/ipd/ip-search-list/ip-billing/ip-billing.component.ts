@@ -819,7 +819,7 @@ ServiceList:any=[];
       }); 
   } 
   getChargesList() {
-    debugger
+   // debugger
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
@@ -1107,7 +1107,7 @@ CalculateAdminCharge(){
 }
 // Total Bill Disc Per cal 
   CalFinalDisc() {
-    debugger
+   // debugger
     let BillDiscPer = this.Ipbillform.get('Percentage').value || 0;
 
     if (this.Ipbillform.get('AdminAmt').value > 0) {
@@ -1310,24 +1310,34 @@ CalculateAdminCharge(){
     this.getChargesList();
     this.interimArray = [];
   }
-  deletecharges(contact) {
-    Swal.fire({
+  deletecharges(contact) { 
+    this.chkchargeTestCompleted(contact)
+    Swal.fire({  
       title: 'Do you want to Delete Charges',
-      // showDenyButton: true,
+      text: "You won't be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'OK',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete it!"
 
     }).then((flag) => {
 
-      if (flag.isConfirmed) {
+      if (flag.isConfirmed) { 
+      
+        if(this.ChkTest[0].IsCompleted  == true){
+          this.toastr.warning('Selected Service Test is Already Completed !','warning', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return
+        }
         let Chargescancle = {};
         Chargescancle['ChargesId'] = contact.ChargesId;
         Chargescancle['userId'] = this.accountService.currentUserValue.user.id;
 
         let submitData = {
           "deleteCharges": Chargescancle
-        };
-
+        }; 
         console.log(submitData);
         this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
           if (response) {
@@ -1347,10 +1357,28 @@ CalculateAdminCharge(){
           }
           this.isLoading = '';
         });  
-      }
-
-    });
-
+      } 
+    }); 
+  }
+  ChkTest:any;
+  chkchargeTestCompleted(contact){
+    let Query 
+    if(contact.IsPathology == 1){
+      Query = "select IsCompleted from t_pathologyReportheader where chargeid=" + contact.ChargesId
+      this._IpSearchListService.ChkPathologyTestComplete(Query).subscribe(data=>{
+        this.ChkTest  = data     
+         console.log(this.ChkTest)
+         console.log(this.ChkTest[0].IsCompleted )
+      }); 
+    } 
+    else if(contact.IsRadiology == 1){
+      Query = "select IsCompleted from T_RadiologyReportHeader where chargeid=" + contact.ChargesId
+      this._IpSearchListService.ChkRadiologyTestComplete(Query).subscribe(data=>{
+        this.ChkTest  = data     
+        console.log(this.ChkTest)
+        console.log(this.ChkTest[0].IsCompleted )  
+    })
+    } 
   }
   showAllFilter(event) {
     console.log(event);

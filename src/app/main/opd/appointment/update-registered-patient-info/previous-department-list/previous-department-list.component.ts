@@ -18,6 +18,7 @@ import { RegInsert } from '../../appointment.component';
 })
 export class PreviousDepartmentListComponent implements OnInit {
   displayedColumns: string[] = [
+    'VisitDate',
     'DepartmentName',
     'DoctorName'
   ]

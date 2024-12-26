@@ -1,7 +1,7 @@
-<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-          
+
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Previous Visit Doctor List
             </span>
@@ -19,73 +19,66 @@
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px;">
-                <div fxLayout="column" fxFlexFill fxLayoutGap="10px"> 
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"  fxLayoutGap="10px" fxLayoutAlign="stretch"  > 
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="50%">
+                       
+                                <mat-table #table1 matSort [dataSource]="dsLastDepartmentname"
+                                    [@animateStagger]="{value:'50'}" style="overflow-x: auto;">
 
-                    <mat-card style="padding: 5px;">
-                        <div fxFlex="100%">
-                            <mat-table #table1 matSort [dataSource]="dsLastDepartmentname" [@animateStagger]="{value:'50'}"
-                                style="overflow: auto;">   
-                                
-                                <ng-container matColumnDef="DepartmentName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Department Name
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.DepartmentName || '-'}}</span>
-                                    </mat-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="VisitDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Visit Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.VisitDate | date:'dd/MM/YYYY'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
 
-                                <ng-container matColumnDef="DoctorName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                        >DoctorName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
-                                        <span> {{contact.DoctorName || '-'}}</span>
-                                    </mat-cell>
-                                </ng-container> 
+                                    <ng-container matColumnDef="DepartmentName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Department Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.DepartmentName || '-'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
 
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DoctorName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.DoctorName || '-'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
 
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        <span>No Data Found</span>
-                                    </mat-footer-cell>
-                                </ng-container>
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
 
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"
-                                    (click)="getDoctor(contact)"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsLastDepartmentname!=null}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsLastDepartmentname!=null && dsLastDepartmentname.data.length==0)}">
-                                </mat-footer-row>
-                            </mat-table>
-                        </div>
-                    </mat-card>
- 
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between">
-
-                        <!-- <div fxLayout="row" fxLayoutAlign=center>
-                            <span style="color: rgb(161, 158, 158);margin-top: 30px;">Note :- </span>&nbsp;
-                            <span style="color: rgb(161, 158, 158);margin-top: 30px;">By checking this box, users can
-                                enter a total amount for the entire bill instead of specifying prices for each
-                                service.</span>
-                        </div> -->
-
-                        <!-- <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onSavePackage()">Save</button>
-                        </div>  -->
-                    </div> 
-                </div> 
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"
+                                        (click)="getDoctor(contact)"></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dsLastDepartmentname!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsLastDepartmentname!=null && dsLastDepartmentname.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                         
+                       
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -10,11 +10,11 @@ import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component';
 import {MatStepperModule} from '@angular/material/stepper';
-interface Department {
-  name: string;
-  approved: boolean;
-  approvedBy: string; // Name of the person who approved
+interface Step {
+  title: string;
+  content: string;
 }
+ 
 @Component({
   selector: 'app-patient-discharge-clearance',
   templateUrl: './patient-discharge-clearance.component.html',
@@ -59,34 +59,22 @@ export class PatientDischargeClearanceComponent implements OnInit {
 
 
   }
-  departments1 = [
-    { dischargeNumber: 'D001', approved: false },
-    { dischargeNumber: 'D002', approved: false },
-    { dischargeNumber: 'D003', approved: false },
-    { dischargeNumber: 'D004', approved: false },
-    { dischargeNumber: 'D005', approved: false },
-  ];
-
-  submit() {
-    const approvedDepartments = this.departments.filter(department => department.approved);
-    console.log('Approved Departments:', approvedDepartments);
-    // You can add further logic to handle the submission of approved departments
-  }
-  departments: Department[] = [
-    { name: 'Department 1', approved: true, approvedBy: 'Alice' },
-    { name: 'Department 2', approved: false, approvedBy: '' },
-    { name: 'Department 3', approved: true, approvedBy: 'Bob' },
-    { name: 'Department 4', approved: false, approvedBy: '' },
-    { name: 'Department 5', approved: false, approvedBy: '' }
+  steps: Step[] = [
+    { title: 'Step 1', content: 'This is the content for Step 1.' },
+    { title: 'Step 2', content: 'This is the content for Step 2.' },
+    { title: 'Step 3', content: 'This is the content for Step 3.' },
+    { title: 'Step 4', content: 'This is the content for Step 4.' },
+    { title: 'Step 5', content: 'This is the content for Step 5.' }
 ];
 
-get firstApprovedDepartment() {
-  return this.departments.find(department => department.approved);
-}
+ 
+ 
 getClearancelist(){  
     this._PatientDischargeClearanceService.getClearancelist().subscribe(data =>{
       this.dspatientlist_1.data =data as ClearanceList[];
       console.log(this.dspatientlist_1.data)
+      console.log(this.dspatientlist_1.data[0])
+      this.getPatietnapprovelist(this.dspatientlist_1.data[0])
     })  
 }
 DepartmentList:any=[];

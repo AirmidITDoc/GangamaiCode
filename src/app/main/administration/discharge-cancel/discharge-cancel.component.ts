@@ -195,6 +195,8 @@ getSelectedDischargeObj(obj){
           if (response) {
             Swal.fire('Congratulations !', 'Discharge Cancel Successfully !', 'success').then((result) => {
               if (result.isConfirmed) { 
+                
+                this.filteredOptions = [];
                 this.onClear();
               }
             });
@@ -244,6 +246,7 @@ getSelectedDischargeObj(obj){
             this.toastr.success('Admission Date & Time Updated Successfuly', 'Updated !', {
               toastClass: 'tostr-tost custom-toast-success',
             });
+            this.filteredOptions = [];
             this.onClear();
           } else {
             this.toastr.error('API Error!', 'Error !', {

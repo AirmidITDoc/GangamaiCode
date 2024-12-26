@@ -216,7 +216,7 @@ export class ItemGenericMasterComponent implements OnInit {
 
       confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
       
-      onDeactive(DischargeTypeId) {
+      onDeactive(ItemGenericNameId) {
         debugger
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
@@ -228,9 +228,10 @@ export class ItemGenericMasterComponent implements OnInit {
             "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
+                debugger
                 let Query =
-                    "Update M_ItemGenericNameMaster set Isdeleted=0 where ItemID=" +
-                    DischargeTypeId;
+                    "Update M_ItemGenericNameMaster set IsDeleted=0 where ItemGenericNameId=" +
+                    ItemGenericNameId;
                 console.log(Query);
                 this._itemgenericService
                     .deactivateTheStatus(Query)

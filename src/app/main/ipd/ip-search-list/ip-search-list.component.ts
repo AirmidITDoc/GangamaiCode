@@ -491,13 +491,16 @@ export class IPSearchListComponent implements OnInit {
           console.log('The dialog was closed - Insert Action', result);
           this.getAdmittedPatientList();
         });
-      } else {
+      } else { 
         console.log(contact)
         Swal.fire({
           title: 'Patient Already Discharged Do you Want to Edit',
-          // showDenyButton: true,
+          text: "You won't be able to revert this!",
+          icon: "warning",
           showCancelButton: true,
-          confirmButtonText: 'OK',
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Edit it!"
 
         }).then((result) => {
 
@@ -512,7 +515,7 @@ export class IPSearchListComponent implements OnInit {
               });
             dialogRef.afterClosed().subscribe(result => {
               console.log('The dialog was closed - Insert Action', result);
-
+              this.getAdmittedPatientList();
             });
           }
           else {

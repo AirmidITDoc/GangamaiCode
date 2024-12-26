@@ -29,6 +29,7 @@ export class OTRequestComponent implements OnInit {
 
   
   sIsLoading: string = '';
+  isLoading = true;
   searchFormGroup: FormGroup;
   click: boolean = false;
   MouseEvent = true;
@@ -46,7 +47,8 @@ export class OTRequestComponent implements OnInit {
   
   displayedColumns: string[] = [
 
-    'OTBookingId',
+    'IsCancelled',
+    // 'OTBookingId',
     // 'PatientName',
     // 'GenderName',
     'OTbookingDate',
@@ -62,10 +64,7 @@ export class OTRequestComponent implements OnInit {
     'DepartmentName',
     'AddedBy',
     // 'UpdateBy',
-    'IsCancelled',
-    'IsCancelledBy',
-
-
+    // 'IsCancelledBy',
     'action'
   ];
   dataSource = new MatTableDataSource<Requestlist>();
@@ -80,6 +79,7 @@ export class OTRequestComponent implements OnInit {
     // public dialogRef: MatDialogRef<OTRequestComponent>,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     private accountService: AuthenticationService,
     private _fuseSidebarService: FuseSidebarService,) {
@@ -123,7 +123,65 @@ export class OTRequestComponent implements OnInit {
       });
   }
 
+  CancleOTBooking(contact) {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+    
+    debugger
+    Swal.fire({
+      title: 'Do you want to cancel the OT Booking?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let bookingcancle = {};
+        bookingcancle['otBookingId'] = contact.OTBookingId;
+        bookingcancle['isCancelled'] = 1;
+        bookingcancle['isCancelledBy'] = this.accountService.currentUserValue.user.id;
+        bookingcancle['isCancelledDateTime'] = formattedDate;
+  
+        let submitData = {
+          "cancelOTBookingRequestParam": bookingcancle,
+        };
 
+        console.log(submitData);
+  
+        this.isLoading = true;
+  
+        this._OtManagementService.BookingCancle(submitData).subscribe(
+          (response) => {
+            if (response) {
+              this.toastr.success('Record Cancelled Successfully.', 'Cancelled!', {
+                toastClass: 'tostr-tost custom-toast-success',
+              });
+            } else {
+              this.toastr.error('Record Data not Cancelled! Please check API error..', 'Error!', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+            }
+            this.getRequestList();
+  
+            this.isLoading = false;
+          },
+          (error) => {
+            
+            this.toastr.error('An error occurred while canceling the appointment.', 'Error!', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this.isLoading = false;
+          }
+        );
+      } else {
+        this.getRequestList();
+      }
+    });
+  }
 
   getPrint() {
 
