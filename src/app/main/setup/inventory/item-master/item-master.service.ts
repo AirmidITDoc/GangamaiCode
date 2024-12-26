@@ -37,7 +37,7 @@ export class ItemMasterService {
              
             // as per payload list (insert)
                 itemId: 0,
-                itemShortName: [""],
+                itemShortName: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
                 itemName: ["",
                     [
                         Validators.required, Validators.maxLength(50),
@@ -64,12 +64,12 @@ export class ItemMasterService {
                         Validators.required,
                     ] 
                 ],
-                purchaseUomid: ["",
+                purchaseUomid: [0,
                     [
                         Validators.required,
                     ] 
                 ],
-                stockUomid: ["",
+                stockUomid: [0,
                     [
                         Validators.required,
                     ] 
@@ -85,7 +85,7 @@ export class ItemMasterService {
                         Validators.required,
                     ] 
                 ],
-                taxPer: [""],
+                taxPer: ["0"],
                 isBatchRequired: true,
                 minQty: ["",
                     [
@@ -99,13 +99,13 @@ export class ItemMasterService {
                         Validators.pattern('^[0-9]*$')
                     ] 
                 ],
-                reOrder: ["",
+                reOrder: [0,
                     [
-                        Validators.required,Validators.maxLength(50),
-                        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                        // Validators.required,Validators.maxLength(50),
+                        // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     ] 
                 ],
-                hsncode: ["",
+                hsNcode: ["",
                     [
                         Validators.required, Validators.maxLength(50),
                         Validators.pattern('^[0-9]*$')
@@ -129,6 +129,7 @@ export class ItemMasterService {
                         Validators.pattern('^[0-9]*$')
                     ] 
                 ],
+                
                 manufId: ["",
                     [
                         Validators.required,
@@ -141,7 +142,7 @@ export class ItemMasterService {
                 isScheduleX: true,
                 isLasa: true,
                 isEmgerency: true,
-                drugType: ["",
+                drugType: [0,
                     [
                         Validators.required,
                     ] 
@@ -158,18 +159,19 @@ export class ItemMasterService {
                         Validators.required,
                     ] 
                 ],
-                itemTime: [""],
-                mAssignItemToStores: [
-                    {
-                        assignId: [""],
-                        storeId: ["",
-                            [
-                                Validators.required,
-                            ] 
-                        ],
-                        itemId: [""]
-                    }
-                ],
+                itemTime: [(new Date()).toISOString()],
+                // mAssignItemToStores: [
+                //     {
+                //         assignId: [""],
+                //         storeId: ["",
+                //             [
+                //                 Validators.required,
+                //             ] 
+                //         ],
+                //         itemId: [""]
+                //     }
+                // ],
+                mAssignItemToStores: ["", Validators.required],
         });
     }
 
@@ -177,7 +179,8 @@ export class ItemMasterService {
     //insert update of item master
     public insertItemMaster(Param: any, showLoader = true) {
         if (Param.itemId) {
-            return this._httpClient.PutData("ItemMaster/InsertEDMX" + Param.itemId, Param, showLoader);
+            debugger
+            return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemId, Param, showLoader);
         } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param, showLoader);
     }
 

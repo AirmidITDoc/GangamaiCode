@@ -38,6 +38,7 @@ import { NewSupplierComponent } from './new-supplier/new-supplier.component';
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { SuppliertestingComponent } from './suppliertesting/suppliertesting.component';
 const routes: Routes = [
     {
         path: "**",
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [SupplierMasterComponent, SupplierFormMasterComponent, NewSupplierComponent],
+    declarations: [SupplierMasterComponent, SupplierFormMasterComponent, NewSupplierComponent, SuppliertestingComponent],
     imports: [
         RouterModule.forChild(routes),
       MatChipsModule,

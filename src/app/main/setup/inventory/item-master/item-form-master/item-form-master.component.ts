@@ -54,13 +54,13 @@ export class ItemFormMasterComponent implements OnInit {
     ngOnInit(): void {
         this.itemForm=this._itemService.createItemmasterForm();
 
-       
-        if (this.data.supplierId > 0) {
+       console.log(this.data)
+        if (this.data.itemID > 0) {
  
-            this._itemService.getstoreById(this.data.ItemId).subscribe((response) => {
+            this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
               this.registerObj = response;
-              this.ItemId = this.registerObj.ItemID 
-              console.log(this.registerObj)
+              this.ItemId = this.registerObj.itemId 
+              
               this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
     
             }, (error) => {
@@ -73,6 +73,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     onSave(row: any = null) {
         let that = this;
+
         const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
             {
                 maxWidth: "85%",
@@ -87,6 +88,14 @@ export class ItemFormMasterComponent implements OnInit {
         });
     }
 
+
+    removestore(item) {
+        let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
+        this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
+        this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
+      }
+
+      
     itemId=0;
     categoryId=0;
     genericId=0;
@@ -135,12 +144,13 @@ export class ItemFormMasterComponent implements OnInit {
 
     onSubmit() {
                 debugger
-            if (!this.itemForm.invalid) 
-            {
-                this.Saveflag = true;
-
                 console.log("Item JSON :-", this.itemForm.value);
 
+            // if (!this.itemForm.invalid) 
+            // {
+                this.Saveflag = true;
+
+               
                 this._itemService.insertItemMaster(this.itemForm.value).subscribe((data) => {
                
                 this.toastr.success(data.message);
@@ -148,13 +158,13 @@ export class ItemFormMasterComponent implements OnInit {
                 }, (error) => {
                   this.toastr.error(error.message);
                 });
-            } 
-            else {
-                this.toastr.warning('please check from is invalid', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                  });
-                  return;
-            }
+            // } 
+            // else {
+            //     this.toastr.warning('please check from is invalid', 'Warning !', {
+            //         toastClass: 'tostr-tost custom-toast-warning',
+            //       });
+            //       return;
+            // }
         }
 
         onClear(val: boolean) 
@@ -165,7 +175,7 @@ export class ItemFormMasterComponent implements OnInit {
 
         getValidationMessages() {
             return {
-                hsncode: [
+                hsNcode: [
                     { name: "required", Message: "HSN Code is required" },
                     { name: "pattern", Message: "Only Numbers allowed." }
                 ],
@@ -174,6 +184,12 @@ export class ItemFormMasterComponent implements OnInit {
                     { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Special char not allowed." }
                 ],
+                itemShortName:[
+                    // { name: "required", Message: "Item Name is required" },
+                    // { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
+                    { name: "pattern", Message: "Special char not allowed." }
+                ],
+                
                 itemTypeId:[
                     { name: "required", Message: "Item Type is required" }
                 ],

@@ -19,7 +19,7 @@
     </div>
     <mat-card>
         <form [formGroup]="supplierForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
-            <input type="hidden" name="SupplierId" formControlName="SupplierId" [(ngModel)]="registerObj.supplierId">
+            <input type="hidden" name="SupplierId" formControlName="supplierId" [(ngModel)]="registerObj.supplierId">
             <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
                 class="top-header accent heading-container h-40 border-radius-4">
                 <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
@@ -169,7 +169,7 @@
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                         <airmid-textbox label="GSTNo" formControlName="gstNo" [value]="registerObj.gstNo"
-                            [formGroup]="supplierForm" [validations]="getValidationMessages().gstNo">
+                            [formGroup]="supplierForm" [validations]="getValidationMessages().gstNo" [maxLength]="15">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -316,43 +316,18 @@
                     </mat-form-field> -->
                     <!-- </div> -->
 
-                    
-                        <!-- <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                    <!-- <form [formGroup]="myForm" fxLayout="column" style="padding: 0px 5px 0px 5px;"> -->
+
+                    <!-- <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
                         class="top-header accent heading-container h-40 border-radius-4">
                         <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Details</span>
                     </div> -->
-                        <div fxLayout="row">
-
-                            <div fxFlex>
-                                <mat-card>
-                                    <form [formGroup]="supplierForm">
-                                        <div fxLayout="row">
-                                            <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete label="Store"
-                                                    formControlName="mAssignSupplierToStores" [formGroup]="supplierForm"
-                                                    [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores"
-                                                    [validations]="getValidationMessages().storeId" #ddlStore
-                                                    ValueField="storeId" TextField="storeName"
-                                                    ApiUrl="StoreMaster/get-store">
-                                                </airmid-autocomplete>
-                                            </div>
-                                            <mat-chip-list #chipList>
-                                                <mat-chip
-                                                    *ngFor="let item of supplierForm.value.mAssignSupplierToStores">
-                                                    {{ item.storeName }} <mat-icon
-                                                        (click)="removestore(item)">close</mat-icon>
-                                                </mat-chip>
-                                            </mat-chip-list>
-                                        </div>
-                                    </form>
-                                </mat-card>
-                            </div>
-                        </div>
-                    
+                 
+                    <!-- </form> -->
                 </div>
             </mat-card>
             <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                <input matInput [matDatepicker]="picker2"  placeholder="Choose a Date" name="Date"
+                <input matInput [matDatepicker]="picker2" placeholder="Choose a Date" name="Date"
                     formControlName="supplierTime">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
@@ -360,7 +335,43 @@
         </form>
 
 
+        <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
 
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Assigned Store Details</span>
+            </div>
+
+            <mat-card>
+
+                <div fxLayout="row">
+
+                    <div fxFlex>
+                        <mat-card>
+                            <form [formGroup]="supplierForm">
+                                <div fxLayout="row">
+                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-autocomplete label="Store" formControlName="mAssignSupplierToStores"
+                                            [formGroup]="supplierForm" [IsMultiPle]="true"
+                                            [value]="registerObj.mAssignSupplierToStores"
+                                            [validations]="getValidationMessages().storeId" #ddlStore
+                                            ValueField="storeId" TextField="storeName"
+                                            ApiUrl="StoreMaster/get-store">
+                                        </airmid-autocomplete>
+                                    </div>
+                                    <mat-chip-list #chipList>
+                                        <mat-chip *ngFor="let item of supplierForm.value.mAssignSupplierToStores">
+                                            {{ item.storeName }} <mat-icon
+                                                (click)="removestore(item)">close</mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-card>
+        </form>
         <div class="row row-container" style="width: 100%;">
             <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
 

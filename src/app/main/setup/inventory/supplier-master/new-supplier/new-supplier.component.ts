@@ -89,7 +89,7 @@ export class NewSupplierComponent implements OnInit {
         this._supplierService.getstoreById(this.data.supplierId).subscribe((response) => {
             this.registerObj = response;
             console.log(this.registerObj )
-            this.ddlStore.SetSelection(this.registerObj.MstoreDets);
+            this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
           
         }, (error) => {
             this.toastr.error(error.message);

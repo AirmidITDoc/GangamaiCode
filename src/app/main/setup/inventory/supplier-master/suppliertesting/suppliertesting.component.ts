@@ -1,33 +1,27 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { SupplierMaster, SupplierMasterComponent } from "../supplier-master.component";
-import { SupplierMasterService } from "../supplier-master.service";
-import { FormGroup } from "@angular/forms";
-import { Subject } from "rxjs";
-import { ToastrService } from "ngx-toastr";
-import { fuseAnimations } from "@fuse/animations";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { SupplierMaster } from '../supplier-master.component';
+import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { SupplierMasterService } from '../supplier-master.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: "app-supplier-form-master",
-  templateUrl: "./supplier-form-master.component.html",
-  styleUrls: ["./supplier-form-master.component.scss"],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-suppliertesting',
+  templateUrl: './suppliertesting.component.html',
+  styleUrls: ['./suppliertesting.component.scss']
 })
-export class SupplierFormMasterComponent implements OnInit {
+export class SuppliertestingComponent implements OnInit {
 
   supplierForm: FormGroup;
   @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
   submitted = false;
   registerObj = new SupplierMaster({});
-
-
   msg: any;
   msmflag: boolean = false;
   CityId: any;
-
+  SupplierId: any = 0;
 
   // new API
 
@@ -46,7 +40,7 @@ export class SupplierFormMasterComponent implements OnInit {
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _loggedService: AuthenticationService,
-    public dialogRef: MatDialogRef<SupplierMasterComponent>
+    public dialogRef: MatDialogRef<SuppliertestingComponent>
   ) {
 
   }
@@ -54,32 +48,23 @@ export class SupplierFormMasterComponent implements OnInit {
   ngOnInit(): void {
     this.supplierForm = this._supplierService.createSuppliermasterForm();
 
-    // setTimeout(() => {
-    //   this.supplierForm = this._supplierService.createSuppliermasterForm();
-    // }, 0)
 
+    if (this.data.supplierId > 0) {
 
-    // if (this.data) {
-      // this.registerObj = this.data.registerObj;
-      // console.log(this.registerObj);
+      this._supplierService.getstoreById(this.data.supplierId).subscribe((response) => {
+        this.registerObj = response;
+        this.SupplierId = this.registerObj.supplierId
+        console.log(this.registerObj)
+        this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
 
-      if (this.data.supplierId > 0) {
-
-        this._supplierService.getstoreById(this.data.supplierId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-          this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
-
-        }, (error) => {
-          this.toastr.error(error.message);
-        });
-      }   else {
-        this.supplierForm.reset();
-        // this.supplierForm.get('isActive').setValue(1);
-        
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    } else {
+      this.supplierForm.reset();
     }
-    }
-  // }
+  }
+
   removestore(item) {
     let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
     this.supplierForm.value.mAssignSupplierToStores.splice(removedIndex, 1);
@@ -104,47 +89,29 @@ export class SupplierFormMasterComponent implements OnInit {
   }
 
 
-
   Savebtn: boolean = false;
   onSubmit() {
 
-   
+
     console.log(this.supplierForm.value);
-
-    this._supplierService.SupplierSave(this.supplierForm.value).subscribe((response) => {
-      this.toastr.success(response.message);
-      this.onClear();
-    }, (error) => {
-      this.toastr.error(error.message);
-    });
-    
+    // if (this.supplierForm.valid) {
+      this._supplierService.SupplierSave(this.supplierForm.value).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear();
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    // } else {
+    //   this.toastr.warning('please check from is invalid', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     this.onClose();
-    
-  }
-
-
-
-
-  onChangeMsm(event) {
-
-    if (event.checked == true)
-      this.msmflag = true;
-    else
-      this.msmflag = false;
-  }
-
-  onChangeMode(event) {
 
   }
 
 
-  onClear() {
-    this.supplierForm.reset();
-  }
-  onClose() {
-    this.supplierForm.reset();
-    this.dialogRef.close();
-  }
 
   // new API
 
@@ -263,6 +230,30 @@ export class SupplierFormMasterComponent implements OnInit {
         { name: "required", Message: "contactPerson is required" }
       ]
     }
+  }
 
-}
+
+
+  onChangeMsm(event) {
+
+    if (event.checked == true)
+      this.msmflag = true;
+    else
+      this.msmflag = false;
+  }
+
+  onChangeMode(event) {
+
+  }
+
+
+  onClear() {
+    this.supplierForm.reset();
+  }
+  onClose() {
+    this.supplierForm.reset();
+    this.dialogRef.close();
+  }
+
+
 }

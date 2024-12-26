@@ -14,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { SuppliertestingComponent } from "./suppliertesting/suppliertesting.component";
 
 @Component({
     selector: "app-supplier-master",
@@ -23,28 +24,28 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class SupplierMasterComponent implements OnInit {
-    
-    autocompleteModestoreName: string="Store";
+
+    autocompleteModestoreName: string = "Store";
     // new code
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    gridConfig: gridModel={
-        apiUrl:"Supplier/SupplierList",
-        columnsList:[
-            {heading: "Supplier", key: "supplierName", sort:true, align:'left',emptySign: 'NA', width:200 },
-            {heading: "ContactPerson", key: "contactPerson", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "Address", key: "address", sort:true, align:'left',emptySign: 'NA', width:300 },
-            {heading: "CityName", key: "cityName", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "StateName", key: "stateName", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "CreditPeriod", key: "creditPeriod", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "Mobile", key: "mobile", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "Phone", key: "phone", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "Fax", key: "fax", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "Email", key: "email", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "GSTNo", key: "gstNo", sort:true, align:'left',emptySign: 'NA', width:150 },
-            {heading: "PanNo", key: "panNo", sort:true, align:'left',emptySign: 'NA', width:150 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:50 },
+    gridConfig: gridModel = {
+        apiUrl: "Supplier/SupplierList",
+        columnsList: [
+            { heading: "Supplier", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Fax", key: "fax", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 50 },
             // {
             //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:150, actions: [
             //         {
@@ -73,89 +74,89 @@ export class SupplierMasterComponent implements OnInit {
             //             }
             //         }]
             // } //Action 1-view, 2-Edit,3-delete
-             {
-                            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            let that = this;
+                            const dialogRef = this._matDialog.open(SuppliertestingComponent,
                                 {
-                                    action: gridActions.edit, callback: (data: any) => {
-                                        let that = this;
-                                        const dialogRef = this._matDialog.open(SupplierFormMasterComponent,
-                                            {
-                                                maxWidth: "95vw",
-                                                height: '85%',
-                                                width: '70%',
-                                                data:{supplierId: data.supplierId}
-                                            });
-                                        dialogRef.afterClosed().subscribe(result => {
-                                            if (result) {
-                                                that.grid.bindGridData();
-                                            }
-                                        });
-                                    }
-                                }, {
-                                    action: gridActions.delete, callback: (data: any) => {
-                                        
-                                    }
-                                }]
-                        } //Action 1-view, 2-Edit,3-delete
+                                    maxWidth: "95vw",
+                                    height: '85%',
+                                    width: '70%',
+                                    data: { supplierId: data.supplierId }
+                                });
+                            dialogRef.afterClosed().subscribe(result => {
+                                if (result) {
+                                    that.grid.bindGridData();
+                                }
+                            });
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "SupplierId",
         sortOrder: 0,
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-            {fieldName:"StoreID", fieldValue:"2", opType:OperatorComparer.Equals},
+            { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
 
-    constructor(public _supplierService: SupplierMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
-        ngOnInit(): void {
-      ;
-        }
-        onSearch() {
-          
-        }
-    
-        onSearchClear() {
-            this._supplierService.myformSearch.reset({
-                SupplierNameSearch: "",
-                IsDeletedSearch: "2",
-            });
-          
-        }
+    ngOnInit(): void {
+        ;
+    }
+    onSearch() {
 
-    onSave(obj:any=null){
+    }
+
+    onSearchClear() {
+        this._supplierService.myformSearch.reset({
+            SupplierNameSearch: "",
+            IsDeletedSearch: "2",
+        });
+
+    }
+
+    onSave(obj: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(SupplierFormMasterComponent,
+        const dialogRef = this._matDialog.open(SuppliertestingComponent,
             {
                 maxWidth: "100vw",
                 height: '95%',
-                width: '70%',
-                data: obj
+                width: '70%'
+                // data: obj
             });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-                console.log('The dialog was closed - Action', result);
-            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+            console.log('The dialog was closed - Action', result);
+        });
     }
-    storeId="0";
-    selectChangestoreName(obj:any){
-        this.storeId=obj.value;
-      
-            console.log(obj);
-            this.storeId=String(obj);
-            this.gridConfig.filters = [      { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-                {fieldName:"StoreID", fieldValue: this.storeId, opType:OperatorComparer.Equals}
-            ]
-        }
-      
+    storeId = "0";
+    selectChangestoreName(obj: any) {
+        this.storeId = obj.value;
 
-    
+        console.log(obj);
+        this.storeId = String(obj);
+        this.gridConfig.filters = [{ fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "StoreID", fieldValue: this.storeId, opType: OperatorComparer.Equals }
+        ]
+    }
+
+
+
 
     onEdit(row) {
         var m_data = {
@@ -218,9 +219,11 @@ export class SupplierMasterComponent implements OnInit {
 }
 export class SupplierMaster {
     SupplierId: Number;
+    supplierId: Number;
     SupplierName: String;
     supplierName: String;
     ContactPerson: String;
+    contactPerson: String;
     Address: String;
     address: String;
     CityId: Number;
@@ -231,6 +234,7 @@ export class SupplierMaster {
     countryId: Number;
 
     CreditPeriod: String;
+    creditPeriod: String;
     Mobile: String;
     mobile: String;
     Phone: String;
@@ -239,8 +243,9 @@ export class SupplierMaster {
     email: String;
     ModeOfPayment: Number;
     TermOfPayment: Number;
-    modeOfPayment: Number;
-    termOfPayment: Number;
+    
+modeofPayment: Number;
+    termofPayment: Number;
     TaxNature: Number;
     CurrencyId: Number;
     Octroi: Number;
@@ -248,7 +253,7 @@ export class SupplierMaster {
     IsDeleted: boolean;
     AddedBy: Number;
     UpdatedBy: Number;
-    gSTNo: String;
+    gstNo: String;
     panNo: String;
     ExpDate: Date;
     currentDate = new Date();
@@ -267,7 +272,7 @@ export class SupplierMaster {
     Branch: any;
     VenderType: any;
     OpeningBalance: any;
-    MstoreDets:any[];
+    mAssignSupplierToStores: any[];
     /**
      * Constructor
      *
@@ -275,10 +280,12 @@ export class SupplierMaster {
      */
     constructor(SupplierMaster) {
         {
+            this.supplierId = SupplierMaster.supplierId || 0;
             this.SupplierId = SupplierMaster.SupplierId || "";
             this.SupplierName = SupplierMaster.SupplierName || "";
             this.supplierName = SupplierMaster.supplierName || "";
             this.ContactPerson = SupplierMaster.ContactPerson || "";
+            this.contactPerson = SupplierMaster.contactPerson || "";
             this.Address = SupplierMaster.Address || "";
             this.address = SupplierMaster.address || "";
             this.CityId = SupplierMaster.CityId || "";
@@ -288,6 +295,8 @@ export class SupplierMaster {
             this.stateId = SupplierMaster.stateId || "";
             this.countryId = SupplierMaster.countryId || "";
             this.CreditPeriod = SupplierMaster.CreditPeriod || "";
+            this.creditPeriod = SupplierMaster.creditPeriod || "";
+
             this.Mobile = SupplierMaster.Mobile || "";
             this.mobile = SupplierMaster.mobile || "";
             this.Phone = SupplierMaster.Phone || "";
@@ -296,15 +305,15 @@ export class SupplierMaster {
             this.email = SupplierMaster.email || "";
             this.ModeOfPayment = SupplierMaster.ModeOfPayment || "";
             this.TermOfPayment = SupplierMaster.TermOfPayment || "";
-            this.modeOfPayment = SupplierMaster.modeOfPayment || "";
-            this.termOfPayment = SupplierMaster.termOfPayment || "";
+            this.modeofPayment = SupplierMaster.modeofPayment || "";
+            this.termofPayment = SupplierMaster.termofPayment || "";
             this.TaxNature = SupplierMaster.TaxNature || "";
             this.CurrencyId = SupplierMaster.CurrencyId || "";
             this.Octroi = SupplierMaster.Octroi || "";
             this.freight = SupplierMaster.freight || "";
             this.IsDeleted = SupplierMaster.IsDeleted || "true";
             this.UpdatedBy = SupplierMaster.UpdatedBy || "";
-            this.gSTNo = SupplierMaster.gSTNo || "";
+            this.gstNo = SupplierMaster.gstNo || "";
             this.panNo = SupplierMaster.panNo || "";
             this.ExpDate = SupplierMaster.ExpDate || this.currentDate;
             this.IsDeletedSearch = SupplierMaster.IsDeletedSearch || "";
@@ -324,7 +333,7 @@ export class SupplierMaster {
             this.Branch = SupplierMaster.Branch || 0;
             this.VenderType = SupplierMaster.VenderType || 0;
             this.OpeningBalance = SupplierMaster.OpeningBalance || 0;
-            this.MstoreDets=SupplierMaster.MstoreDets||[];
+            this.mAssignSupplierToStores = SupplierMaster.mAssignSupplierToStores || [];
 
         }
     }

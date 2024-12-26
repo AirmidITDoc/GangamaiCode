@@ -69,7 +69,7 @@ export class NewRegistrationComponent implements OnInit {
         console.log(this.data)
         if (this.data.regId > 0) {
             this.registerObj = this.data;
-            this.personalFormGroup.patchValue(this.registerObj);
+            // this.personalFormGroup.patchValue(this.registerObj);
         } else {
             this.personalFormGroup.reset();
         }

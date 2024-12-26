@@ -20,10 +20,10 @@ export class SupplierMasterService {
 
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
-            SupplierId: [0],
+            supplierId: [0],
             supplierName:["", [
-                // Validators.required
-                // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                Validators.required,
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
               ]],
             ContactPerson:["sk", [ 
                 // Validators.required,
@@ -45,15 +45,15 @@ export class SupplierMasterService {
             ],
           
             mobile: ["", [Validators.required,
-                // Validators.minLength(10),
+                Validators.minLength(10),
                 Validators.maxLength(10),
-                // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]],
             phone:["", 
                 [
-                    // Validators.minLength(10),
+                    Validators.minLength(10),
                     Validators.maxLength(10),
-                    // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
             Fax: ['',
@@ -168,8 +168,8 @@ export class SupplierMasterService {
    
     public SupplierSave(Param: any, showLoader = true) {
         debugger
-        if (Param["SupplierId"]) {
-            return this._httpClient.PutData("Supplier/Edit" + Param.SupplierId, Param, showLoader);
+        if (Param.supplierId) {
+            return this._httpClient.PutData("Supplier/Edit/" + Param.supplierId,Param, showLoader);
         } else return this._httpClient.PostData("Supplier/InsertEDMX", Param, showLoader);
     }
 

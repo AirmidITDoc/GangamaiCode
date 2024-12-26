@@ -141,46 +141,49 @@ export class ItemMasterComponent implements OnInit {
 
 export class ItemMaster {
     ItemID: number;
-    //  ItemShortName: string;
-    ItemName: string;
-    ItemTypeID: number;
-    ItemCategoryId: number;
-    ItemGenericNameId: number;
-    ItemClassId: number;
-    PurchaseUOMId: number;
-    StockUOMId: number;
-    ConversionFactor: string;
-    CurrencyId: number;
-    TaxPer: number;
+    itemID: number;
+    itemId: number;
+    itemShortName: string;
+    itemName: string;
+    itemTypeID: number;
+    itemCategoryId: number;
+    itemGenericNameId: number;
+    itemClassId: number;
+    purchaseUOMId: number;
+    stockUOM: number;
+    conversionFactor: string;
+    currencyId: number;
+    taxPer: number;
     Isdeleted: boolean;
     Addedby: number;
     UpdatedBy: number;
-    IsBatchRequired: boolean;
-    MinQty: number;
-    MaxQty: number;
-    ReOrder: number;
-    IsNursingFlag: boolean;
-    HSNcode: string;
-    CGST: number;
-    SGST: number;
-    IGST: number;
+    isBatchRequired: boolean;
+    minQty: number;
+    maxQty: number;
+    reOrder: number;
+    isNursingFlag: boolean;
+    hsNcode: string;
+    cgst: number;
+    sgst: number;
+    igst: number;
     IsNarcotic: boolean;
     ManufId: number;
-    ProdLocation: string;
-    IsH1Drug: boolean;
-    IsScheduleH: boolean;
-    IsHighRisk: boolean;
-    IsScheduleX: boolean;
-    IsLASA: boolean;
-    IsEmgerency: boolean;
+    manufId:any;
+    prodLocation: string;
+    isH1Drug: boolean;
+    isScheduleH: boolean;
+    isHighRisk: boolean;
+    isScheduleX: boolean;
+    isLASA: boolean;
+    isEmgerency: boolean;
     AddedByName: string;
     IsDeletedSearch: number;
-    MaxDisc:any;
-    Storagelocation:any;
-    CompanyId:any;
-    DrugType :any;
-    DrugTypeName :any;
-    ItemCompnayId:any;
+    maxDisc:any;
+    storagelocation:any;
+    companyId:any;
+    drugType :any;
+    drugTypeName :any;
+    itemCompnayId:any;
     position:any;
     mAssignItemToStores:any[];
 
@@ -191,45 +194,50 @@ export class ItemMaster {
      */
     constructor(ItemMaster) {
         {
-            this.ItemID = ItemMaster.ItemID || "";
-            //    this.ItemShortName = ItemMaster.ItemShortName || "";
-            this.ItemName = ItemMaster.ItemName || "";
-            this.ItemTypeID = ItemMaster.ItemTypeID || "";
-            this.ItemCategoryId = ItemMaster.ItemCategoryId || "";
-            this.ItemGenericNameId = ItemMaster.ItemGenericNameId || "";
-            this.ItemClassId = ItemMaster.ItemClassId || "";
-            this.PurchaseUOMId = ItemMaster.PurchaseUOMId || "";
-            this.ConversionFactor = ItemMaster.ConversionFactor || "";
-            this.CurrencyId = ItemMaster.CurrencyId || "";
-            this.TaxPer = ItemMaster.TaxPer || "";
+            this.ItemID = ItemMaster.ItemID || 0;
+            this.itemID = ItemMaster.itemID || 0;
+            this.itemId = ItemMaster.itemId || 0;
+            
+               this.itemShortName = ItemMaster.itemShortName || "";
+            this.itemName = ItemMaster.itemName || "";
+            this.itemTypeID = ItemMaster.itemTypeID || "";
+            this.itemCategoryId = ItemMaster.itemCategoryId || "";
+            this.itemGenericNameId = ItemMaster.itemGenericNameId || "";
+            this.itemClassId = ItemMaster.itemClassId || "";
+            this.purchaseUOMId = ItemMaster.purchaseUOMId || "";
+            this.stockUOM = ItemMaster.stockUOM || "";
+            this.conversionFactor = ItemMaster.conversionFactor || "";
+            this.currencyId = ItemMaster.currencyId || "";
+            this.taxPer = ItemMaster.taxPer || "";
             this.Isdeleted = ItemMaster.Isdeleted || "true";
             this.Addedby = ItemMaster.Addedby || "";
             this.UpdatedBy = ItemMaster.UpdatedBy || "";
-            this.IsBatchRequired = ItemMaster.IsBatchRequired || "false";
-            this.MinQty = ItemMaster.MinQty || "";
-            this.MaxQty = ItemMaster.MaxQty || "";
-            this.ReOrder = ItemMaster.ReOrder || "";
-            this.IsNursingFlag = ItemMaster.IsNursingFlag || "false";
-            this.HSNcode = ItemMaster.HSNcode || "";
-            this.CGST = ItemMaster.CGST || "";
-            this.SGST = ItemMaster.SGST || "";
-            this.IGST = ItemMaster.IGST || "";
+            this.isBatchRequired = ItemMaster.isBatchRequired || "false";
+            this.minQty = ItemMaster.minQty || "";
+            this.maxQty = ItemMaster.maxQty || "";
+            this.reOrder = ItemMaster.reOrder || "";
+            this.isNursingFlag = ItemMaster.isNursingFlag || "false";
+            this.hsNcode = ItemMaster.hsNcode || "";
+            this.cgst = ItemMaster.cgst || "";
+            this.sgst = ItemMaster.sgst || "";
+            this.igst = ItemMaster.igst || "";
+            this.manufId = ItemMaster.manufId || 0;
             this.IsNarcotic = ItemMaster.IsNarcotic || "false";
-            this.ProdLocation = ItemMaster.ProdLocation || "";
-            this.IsH1Drug = ItemMaster.IsH1Drug || "false";
-            this.IsScheduleH = ItemMaster.IsScheduleH || "false";
-            this.IsHighRisk = ItemMaster.IsHighRisk || "false";
-            this.IsScheduleX = ItemMaster.IsScheduleX || "false";
-            this.IsLASA = ItemMaster.IsLASA || "false";
-            this.IsEmgerency = ItemMaster.IsEmgerency || "false";
+            this.prodLocation = ItemMaster.prodLocation || "";
+            this.isH1Drug = ItemMaster.isH1Drug || "false";
+            this.isScheduleH = ItemMaster.isScheduleH || "false";
+            this.isHighRisk = ItemMaster.isHighRisk || "false";
+            this.isScheduleX = ItemMaster.isScheduleX || "false";
+            this.isLASA = ItemMaster.isLASA || "false";
+            this.isEmgerency = ItemMaster.isEmgerency || "false";
             this.AddedByName = ItemMaster.AddedByName || "";
             this.IsDeletedSearch = ItemMaster.IsDeletedSearch || "";
-            this.MaxDisc=ItemMaster.MaxDisc || 0
-            this.Storagelocation=ItemMaster.Storagelocation ||""
-            this.CompanyId=ItemMaster.CompanyId ||""
-            this.DrugType=ItemMaster.DrugType ||""
-            this.DrugTypeName=ItemMaster.DrugTypeName ||""
-            this.ItemCompnayId=ItemMaster.ItemCompnayId || 0
+            this.maxDisc=ItemMaster.maxDisc || 0
+            this.storagelocation=ItemMaster.storagelocation ||""
+            this.companyId=ItemMaster. ompanyId ||""
+            this.drugType=ItemMaster.drugType ||""
+            this.drugTypeName=ItemMaster.DrugTypeName ||""
+            this.itemCompnayId=ItemMaster.itemCompnayId || 0
             
             this.mAssignItemToStores=ItemMaster.mAssignItemToStores||[];
 

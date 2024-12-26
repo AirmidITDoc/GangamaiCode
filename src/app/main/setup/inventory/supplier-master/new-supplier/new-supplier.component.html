@@ -221,7 +221,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                     <airmid-autocomplete label="ModeOfPayment" formControlName="ModeOfPayment"
-                        [formGroup]="supplierForm" [value]="registerObj.modeOfPayment"
+                        [formGroup]="supplierForm" [value]="registerObj.modeofPayment"
                         [validations]="getValidationMessages().ModeOfPayment"
                         [mode]="autocompleteModeofpayment"
                         (selectDdlObject)="selectChangemodeofpayment($event)">
@@ -230,7 +230,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                     <airmid-autocomplete label="TermOfPayment" formControlName="TermOfPayment"
-                        [formGroup]="supplierForm" [value]="registerObj.termOfPayment"
+                        [formGroup]="supplierForm" [value]="registerObj.termofPayment"
                         [validations]="getValidationMessages().TermOfPayment"
                         [mode]="autocompleteModetermofpayment"
                         (selectDdlObject)="selectChangetermofpayment($event)">
@@ -428,7 +428,7 @@
                     </mat-form-field> -->
                 <!-- </div> -->
 
-                <form [formGroup]="myForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
+                <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
 
                     <!-- <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
                         class="top-header accent heading-container h-40 border-radius-4">
