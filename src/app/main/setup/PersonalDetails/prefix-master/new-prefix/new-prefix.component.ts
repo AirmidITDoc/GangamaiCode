@@ -19,7 +19,9 @@ import { isatty } from 'tty';
 export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
     isActive:boolean=false;
+    saveflag: boolean = false;
     autocompleteModegender: string = "Gender";
+
     constructor(
         public _PrefixMasterService: PrefixMasterService,
         public dialogRef: MatDialogRef<NewPrefixComponent>,
@@ -31,38 +33,24 @@ export class NewPrefixComponent implements OnInit {
     ngOnInit(): void {
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
         debugger
-        // if (this.data) {
-        //     var m_data = {
-        //         prefixId: this.data?.prefixId,
-        //         prefixName: this.data?.prefixName,
-        //         sexId: this.data?.sexId,
-        //         isActive: JSON.stringify(this.data?.isActive),
-        //     };
-        //     this.isActive=this.data.isActive;
-        //     this.prefixForm.patchValue(m_data);
-        // } else {
-        //     var m_data1 = {
-        //         prefixId: 0,
-        //         prefixName: "",
-        //         sexId: 0,
-        //         isActive: 1,
-        //     };
-        //     this.prefixForm.patchValue(m_data1);
-        // }
-
+        this.prefixForm = this._PrefixMasterService.createPrefixForm();
+        if(this.data)
+      this.isActive=this.data.isActive
+        this.prefixForm.patchValue(this.data);
     }
 
-    saveflag: boolean = false;
+ 
     onSubmit() {
+        // if(this.prefixForm.invalid){
         this.saveflag = true;
-
+debugger
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        
+        // }
     }
     genderId = 0;
 

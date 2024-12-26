@@ -30,7 +30,7 @@
                 </mat-form-field>
                
                 <airmid-autocomplete label="Store Name" formControlName="StoreId"
-                [formGroup]="_supplierService.myform" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                [formGroup]="_supplierService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
                 [mode]="autocompleteModestoreName"
                 (selectDdlObject)="selectChangestoreName($event)"  >
             </airmid-autocomplete>

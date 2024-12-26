@@ -33,7 +33,8 @@ export class StoreFormMasterComponent implements OnInit {
 
     storeForm: FormGroup;
     isActive:boolean=true;
-
+    
+    autocompleteModeCashcounter: string = "CashCounter";
     constructor(
       public _StoreMasterService: StoreMasterService,
       public dialogRef: MatDialogRef<StoreFormMasterComponent>,
@@ -198,6 +199,24 @@ export class StoreFormMasterComponent implements OnInit {
         ],
 
     };
+ }
+ cashcounterId1=0;
+ cashcounterId2=0;
+ cashcounterId3=0;
+ selectChangepharSalCountId(obj){
+    console.log(obj);
+    this.cashcounterId1=obj
+ }
+
+
+ selectChangepharSalRecCountId(obj){
+    console.log(obj);
+    this.cashcounterId2=obj
+ }
+ 
+ selectChangepharSalReturnCountId(obj){
+    console.log(obj);
+    this.cashcounterId3=obj
  }
 
 }

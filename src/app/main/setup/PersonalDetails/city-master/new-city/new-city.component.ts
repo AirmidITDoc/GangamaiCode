@@ -30,10 +30,11 @@ export class NewCityComponent implements OnInit {
     autocompleteModestatus: string = "State";
 
     ngOnInit(): void {
-        
+
         this.cityForm = this._CityMasterService.createCityForm();
         console.log(this.data)
         if (this.data.cityId > 0) {
+            this.isActive=this.data.isActive
             this.cityForm.patchValue(this.data);
         }
         else {
@@ -47,13 +48,18 @@ export class NewCityComponent implements OnInit {
     onSubmit() {
         this.saveflag = true;
         console.log(this.cityForm.value)
-        this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-
+        if (this.cityForm.valid) {
+            this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        } else {
+            this.toastr.warning('Please Enter Valid Data.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+        }
     }
     getValidationMessages() {
         return {
@@ -64,16 +70,16 @@ export class NewCityComponent implements OnInit {
                 { name: "required", Message: "City Name is required" },
                 { name: "pattern", Message: "Only char allowed." }
             ],
-                }
-            }
-  
-    onClear(val: boolean) {
-                    this.cityForm.reset();
-                    this.dialogRef.close(val);
-                }
+        }
+    }
 
-    selectChangestate(obj: any){
-                    console.log(obj);
-                    this.stateId = obj
-                }
+    onClear(val: boolean) {
+        this.cityForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    selectChangestate(obj: any) {
+        console.log(obj);
+        this.stateId = obj
+    }
 }

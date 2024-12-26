@@ -45,7 +45,7 @@ export class AppointmentListComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    fromDate = "01/01/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+    fromDate = "01/01/2022"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     DoctorId="0";
     autocompleteModedeptdoc: string = "ConDoctor";
@@ -257,8 +257,8 @@ debugger
                 { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
                 { fieldName: "Reg_No", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
                 { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: '01/01/2024', opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: '12/25/2024', opType: OperatorComparer.Equals },
                 { fieldName: "IsMark", fieldValue: "1", opType: OperatorComparer.Equals },
                 { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
                 { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals },

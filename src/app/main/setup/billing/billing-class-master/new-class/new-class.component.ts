@@ -25,36 +25,28 @@ export class NewClassComponent implements OnInit {
         public toastr: ToastrService
     ) { }
  
-    ngOnInit(): void {
-        this.classForm = this._BillingClassMasterService.createClassForm();
-        if(this.data){
-            this.isActive=this.data.isActive
-            this.classForm.patchValue(this.data);
-        }
-    }
-
-    onSubmit() {
-    debugger
-        if(!this.classForm.invalid) 
-        {
-            this.saveflag = true;
+  ngOnInit(): void {
+      this.classForm = this._BillingClassMasterService.createClassForm();
+      if(this.data){
+        this.isActive=this.data.isActive
+         this.classForm.patchValue(this.data);}
+      
+  }
+  onSubmit() {
+   
+      if (this.classForm.valid) {
         
-            console.log("WardMaster Insert:",this.classForm.value);
-            
-            this._BillingClassMasterService.classMasterSave(this.classForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error) => {
+          this._BillingClassMasterService.classMasterSave(this.classForm.value).subscribe((response) => {
+              this.toastr.success(response.message);
+              this.onClear(true);
+          }, (error) => {
               this.toastr.error(error.message);
           });
-        }
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+      }else{
+        this.toastr.warning('Please Enter Valid data.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+      }
     }     
   
     onClear(val: boolean) {

@@ -71,23 +71,23 @@ export class NewHospitalComponent implements OnInit {
   onSubmit(){
     let hospitalarr = [];
    if(this.HospitalId==0){
-    let hospitaldata = {};
+    // let hospitaldata = {};
     
-    hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
-    hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
-    hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
-    hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
-    hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
-    hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
-    hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
-    hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
+    // hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
+    // hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
+    // hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
+    // hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
+    // hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
+    // hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
+    // hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
+    // hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
    
-    let submitData = {
-      hospitalMasterInsert:hospitaldata
-    };
+    // let submitData = {
+    //   hospitalMasterInsert:hospitaldata
+    // };
     
-    console.log(submitData)
-    this._HospitalService.HospitalInsert(submitData).subscribe(response => {
+    console.log(this._HospitalService.HospitalForm.value)
+    this._HospitalService.HospitalInsert(this._HospitalService.HospitalForm.value).subscribe(response => {
         if (response) {
           Swal.fire('Congratulations !', 'Hospital  Saved Successfully  !', 'success').then((result) => {
          
@@ -97,36 +97,38 @@ export class NewHospitalComponent implements OnInit {
         }
         
       });
-    }else{
-      let hospitaldata = {};
-      hospitaldata['HospitalId'] = this.HospitalId;
-      hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
-      hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
-      hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
-      hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
-      hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
-      hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
-      hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
-      hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
+    }
+    
+    // else{
+    //   let hospitaldata = {};
+    //   hospitaldata['HospitalId'] = this.HospitalId;
+    //   hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
+    //   hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
+    //   hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
+    //   hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
+    //   hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
+    //   hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
+    //   hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
+    //   hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
 
   
      
-      let submitData = {
-        hospitalMasterUpdate:hospitaldata
-      };
+    //   let submitData = {
+    //     hospitalMasterUpdate:hospitaldata
+    //   };
       
-      console.log(submitData)
-      this._HospitalService.HospitalUpdate(submitData).subscribe(response => {
-          if (response) {
-            Swal.fire('Congratulations !', 'Hospital Updated Successfully  !', 'success').then((result) => {
+    //   console.log(submitData)
+    //   this._HospitalService.HospitalUpdate(submitData).subscribe(response => {
+    //       if (response) {
+    //         Swal.fire('Congratulations !', 'Hospital Updated Successfully  !', 'success').then((result) => {
            
-            });
-          } else {
-            Swal.fire('Error !');
-          }
+    //         });
+    //       } else {
+    //         Swal.fire('Error !');
+    //       }
           
-        });
-    }
+    //     });
+    // }
     this._matDialog.closeAll();
   }
   
