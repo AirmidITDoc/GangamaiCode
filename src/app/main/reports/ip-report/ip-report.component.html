@@ -101,7 +101,7 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="60%">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="59%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -223,7 +223,7 @@
                                             </mat-radio-button>
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                     </mat-radio-group> -->
-                                        <span *ngIf="FlaOPIPTypeSelected"
+                                        <!-- <span *ngIf="FlaOPIPTypeSelected"
                                             style="font-weight: bold;margin-left: 2%;">Patient Type</span>
                                         <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
                                             *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
@@ -233,7 +233,7 @@
                                             <mat-radio-button value="0">OP
                                             </mat-radio-button>
                                             <mat-radio-button value="1">IP</mat-radio-button>
-                                        </mat-radio-group>
+                                        </mat-radio-group> -->
 
 
                                         <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected"
@@ -258,6 +258,20 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
+                                    <div style="margin-left: 2%;">
+                                        <span *ngIf="FlaOPIPTypeSelected"
+                                            style="font-weight: bold;margin-left: 2%;">Patient Type</span>
+                                        <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
+                                            *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
+
+                                            <mat-radio-button value="2">All
+                                            </mat-radio-button>
+                                            <mat-radio-button value="0">OP
+                                            </mat-radio-button>
+                                            <mat-radio-button value="1">IP</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
                                     <div style="margin-left: 2%;">
                                         <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagWardSelected">
                                             <mat-label>Ward Name</mat-label>
