@@ -108,19 +108,19 @@ export class StoreMasterService {
             UpdatedBy: [""],
             AddedByName: [""],
             Header:[""],
-            pharSalCountId:["",
+            pharSalCountId:[1,
                 [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            pharSalRecCountId:["",
+            pharSalRecCountId:[2,
                 [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            pharSalReturnCountId:["",
+            pharSalReturnCountId:[3,
                 [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
@@ -133,18 +133,18 @@ export class StoreMasterService {
             pharAdvReptId: 0,
             pharAdvRefId: 0,
             pharAdvRefReptId: 0,
-            printStoreName: "String",
-            dlNo: "String",
-            gstin: "String",
-            storeAddress: "String",
+            printStoreName: [""],
+            dlNo: [""],
+            gstin: [""],
+            storeAddress:[""],
             hospitalMobileNo: 0,
-            hospitalEmailId: "String",
-            printStoreUnitName: "String",
+            hospitalEmailId: [""],
+            printStoreUnitName: [""],
             isPharStore: true,
             isWhatsAppMsg: true,
-            whatsAppTemplateId: "String",
+            whatsAppTemplateId: [""],
             isSmsmsg: true,
-            smstemplateId: "String",
+            smstemplateId: [""],
         });
     }
 
@@ -159,90 +159,6 @@ export class StoreMasterService {
         this.createStoremasterForm();
     }
 
-    // getValidationMessages() {
-    //     return {
-    //         storeName: [
-    //             { name: "required", Message: "storeName  is required" },
-    //             { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ],
-    //         storeShortName: [
-    //             { name: "required", Message: "storeShortName is required" },
-    //             { name: "maxlength", Message: "storeShortName should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ],
-    //         indentPrefix:[
-    //             {name : "required", Message: "Indent Prefix is required"},
-    //             { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ],
-    //         indentNo:[
-    //             {name : "required", Message: "Indent No is required"},
-    //             { name: "maxlength", Message: "Indent No should not be greater than 30 char." },
-    //             { name: "pattern", Message: "Only Numbers allowed." }
-    //         ],
-    //         grnreturnNoPrefix:[
-    //             {name : "required", Message: "GRN Return No Prefix is required"},
-    //             { name: "maxlength", Message: "GRN Return No Prefix should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ],
-    //         grnreturnNo:[
-    //             {name : "required", Message: "GRN Return No is required"},
-    //             { name: "maxlength", Message: "GRN Return No should not be greater than 30 char." },
-    //             { name: "pattern", Message: "Only Numbers allowed." }
-    //         ],
-    //         purchasePrefix:[
-    //             {name : "required", Message: "Purchase Prefix is required"},
-    //             { name: "maxlength", Message: "Purchase Prefix should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Only Characters allowed." }
-    //         ],
-    //         purchaseNo:[
-    //             {name : "required", Message: "Purchase No is required"},
-    //             { name: "maxlength", Message: "Purchase No should not be greater than 30 char." },
-    //             { name: "pattern", Message: "Only Numbers allowed." }
-    //         ],
-    //         issueToDeptPrefix:[
-    //             {name : "required", Message: "Issue to Dept Prefix is required"},
-    //             { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Only Characters allowed." }
-    //         ],
-    //         issueToDeptNo:[
-    //             {name : "required", Message: "Issue to Dept No is required"},
-    //             { name: "maxlength", Message: "Issue to Dept No should not be greater than 30 char." },
-    //             { name: "pattern", Message: "Only Numbers allowed." }
-    //         ],
-    //         grnPrefix:[
-    //             {name : "required", Message: "GRN Prefix is required"},
-    //             { name: "maxlength", Message: "GRN Prefix should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ],
-    //         grnNo:[
-    //             {name : "required", Message: "GRN No is required"},
-    //             { name: "maxlength", Message: "GRN No should not be greater than 30 char." },
-    //             { name: "pattern", Message: "Only Numbers allowed."}
-    //         ],
-    //         returnFromDeptNoPrefix:[
-    //             {name : "required", Message: "Return From Dept No Prefix is required"},
-    //             { name: "maxlength", Message: "Return From Dept No Prefix should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ],
-    //         returnFromDeptNo:[
-    //             {name : "required", Message: "Return From Dept No is required"},
-    //             { name: "maxlength", Message: "Return From Dept No should not be greater than 30 char." },
-    //             { name: "pattern", Message: "Only Numbers allowed."}
-    //         ],
-    //         pharSalCountId:[
-    //             {name : "required", Message: "Phar Sales Cash Counter is required"}
-    //         ],
-    //         pharSalRecCountId:[
-    //             {name : "required", Message: "Phar Sales Rec Cash Counter is required"}
-    //         ],
-    //         pharSalReturnCountId:[
-    //             {name : "required", Message: "Phar Sales Return Cash Counter is required"}
-    //         ],
-
-    //     };
-    // }
 
     public storeMasterSave(Param: any, showLoader = true) {
         debugger
