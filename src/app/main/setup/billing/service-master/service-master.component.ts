@@ -1,7 +1,4 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ServiceMasterService } from "./service-master.service";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";

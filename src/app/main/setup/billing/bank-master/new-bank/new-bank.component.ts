@@ -16,13 +16,9 @@ export class NewBankComponent implements OnInit {
 
   
   bankForm: FormGroup;
-  format="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);";
-  format1="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);";
-  maxLength1="10"
-  minLength1="10"
-   maxLength="12"
-  minLength="12"
-  value="true"
+  isActive:boolean=true;
+  saveflag : boolean = false;
+
   constructor(
     public _BankMasterService: BankMasterService,
     public dialogRef: MatDialogRef<NewBankComponent>,
@@ -30,52 +26,55 @@ export class NewBankComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.bankForm=this._BankMasterService.createBankForm();
-    
-    var m_data = {
-      bankId: this.data?.bankId,
-     bankName: this.data?.bankName.trim(),
-     isActive: JSON.stringify(this.data?.isActive),
-    };
-    this.bankForm.patchValue(m_data);
-    console.log("mdata:", m_data)
-  }
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.bankForm.patchValue(this.data);
+        }
+    }
 
   onSubmit(){
-    console.log(this.bankForm.get("isActive").value)
-    if (this.bankForm.invalid) {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass:'tostr-tost custom-toast-warning',
-    })
-    return;
-    }else{
-      if(!this.bankForm.get("bankId").value){
-        debugger
-        var mdata=
-        {
-          "bankId": 0,
-          "bankName": this.bankForm.get("bankName").value || ""
-        }
-        console.log("bank json:", mdata);
+    debugger
+      if(!this.bankForm.invalid){
+        
+        // var mdata=
+        // {
+        //   "bankId": 0,
+        //   "bankName": this.bankForm.get("bankName").value || ""
+        // }
+        console.log("bank json:", this.bankForm.value);
 
-        this._BankMasterService.bankMasterSave(mdata).subscribe((response)=>{
+        this._BankMasterService.bankMasterSave(this.bankForm.value).subscribe((response)=>{
           this.toastr.success(response.message);
           this.onClear(true);
         }, (error)=>{
           this.toastr.error(error.message);
         });
-      } else{
-        //update
+      } 
+      else
+      {
+          this.toastr.warning('please check from is invalid', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
       }
-    }
-    
   }
 
-  onClear(val: boolean) {
-    this.bankForm.reset();
-    this.dialogRef.close(val);
-}
+    onClear(val: boolean) {
+        this.bankForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    getValidationMessages(){
+        return{
+            bankName:[
+                { name: "required", Message: "Bank Name is required" },
+                { name: "maxlength", Message: "Bank Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        }
+    }
 
  
 }

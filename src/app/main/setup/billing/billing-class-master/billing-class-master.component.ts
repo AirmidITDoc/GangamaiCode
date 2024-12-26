@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { BillingClassMasterService } from "./billing-class-master.service";
 import { fuseAnimations } from "@fuse/animations";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -29,12 +25,11 @@ export class BillingClassMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "ClassMaster/List",
     columnsList: [
-        { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:160 },
-        { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:700 },
-       
-       { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
-             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:155, actions: [
+        { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+        { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:800 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -71,19 +66,19 @@ export class BillingClassMasterComponent implements OnInit {
         row: 25
     }
     
-
     constructor(
         public _BillingClassMasterService: BillingClassMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
     ngOnInit(): void { }
+
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewClassComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

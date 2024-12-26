@@ -97,7 +97,7 @@ export class DosemasterComponent implements OnInit {
             UpdatedBy: row.UpdatedBy,
         };
 
-        this._DoseService.populateForm(m_data1);
+        // this._DoseService.populateForm(m_data1);
     }
 
     onSave(row: any=null) {

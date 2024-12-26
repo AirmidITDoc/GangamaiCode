@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -20,11 +18,11 @@ export class GroupMasterService {
 
     createGroupForm(): FormGroup {
         return this._formBuilder.group({
-            groupId: [""],
+            groupId: [0],
             groupName: ["", 
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             // printSeqNo: ["", Validators.pattern("[0-9]+")],
@@ -44,17 +42,6 @@ export class GroupMasterService {
 
     initializeFormGroup() {
         this.createGroupForm();
-    }
-
-  
-    getValidationMessages() {
-        return {
-            groupName: [
-                { name: "required", Message: "Group Name is required" },
-                { name: "maxlength", Message: "Group name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public GroupMasterSave(Param: any, showLoader = true) {

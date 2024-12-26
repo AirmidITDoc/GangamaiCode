@@ -2,23 +2,15 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, Inject, 
 import { ServiceMaster, ServiceMasterComponent, Servicedetail } from "../service-master.component";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ReplaySubject, Subject } from "rxjs";
+import { FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ServiceMasterService } from "../service-master.service";
 import { MatPaginator } from "@angular/material/paginator";
-import { takeUntil } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
-import { element } from "protractor";
-import { NONE_TYPE } from "@angular/compiler";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { compact } from "lodash";
-import { error } from "console";
 
 @Component({
     selector: "app-service-master-form",
@@ -36,7 +28,7 @@ import { error } from "console";
       { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:160 },
       { heading: "Billing Class Name", key: "class Name", sort: true, align: 'left', emptySign: 'NA', width:700 },
      
-     { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
+     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:160 },
            {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:160, actions: [
                   {

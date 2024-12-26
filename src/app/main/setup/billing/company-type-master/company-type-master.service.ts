@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -19,10 +18,10 @@ export class CompanyTypeMasterService {
 
     createcompanytypeForm(): FormGroup {
         return this._formBuilder.group({
-            companyTypeId: [""],
+            companyTypeId: [0],
             typeName: ["", 
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
@@ -31,24 +30,16 @@ export class CompanyTypeMasterService {
             UpdatedBy: ["0"],
         });
     }
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TypeNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createcompanytypeForm();
-    }
-
-    getValidationMessages() {
-        return {
-            typeName: [
-                { name: "required", Message: "Company type Name is required" },
-                { name: "maxlength", Message: "Company type name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public companytypeMasterSave(Param: any, showLoader = true) {

@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -23,33 +22,23 @@ export class BillingClassMasterService {
             classId: [0],
             className: ["", 
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ClassNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createClassForm();
-    }
-    getValidationMessages() {
-        return {
-            className: [
-                { name: "required", Message: "Class Name is required" },
-                { name: "maxlength", Message: "Class name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public classMasterSave(Param: any, showLoader = true) {
@@ -61,4 +50,5 @@ export class BillingClassMasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ClassMaster?Id=" + m_data.toString());
     }
+    
 }

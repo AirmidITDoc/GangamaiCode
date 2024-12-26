@@ -18,31 +18,29 @@ export class BedMasterService {
 
     createBedForm(): FormGroup {
         return this._formBuilder.group({
-            bedId:[""],
+            bedId:[0],
             bedName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            roomId: [""],
+            roomId: ["",
+                Validators.required
+            ],
             isAvailible: ["true"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             BedNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createBedForm();
-    }
-
-    getValidationMessages() {
-        return {
-           
-        };
     }
 
     public bedMasterSave(Param: any, showLoader = true) {

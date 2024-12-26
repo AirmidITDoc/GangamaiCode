@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ConcessionReasonMasterService } from "./concession-reason-master.service";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -31,11 +27,11 @@ export class ConcessionReasonMasterComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "ConcessionReasonMaster/List",
             columnsList: [
-                { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-                { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA',width:600 },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
+                { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+                { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA',width:800 },
+                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
                 {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:180, actions: [
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
@@ -79,7 +75,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
             const dialogRef = this._matDialog.open(NewConcessionreasonComponent,
                 {
                     maxWidth: "45vw",
-                    height: '35%',
+                    height: '30%',
                     width: '70%',
                     data: row
                 });

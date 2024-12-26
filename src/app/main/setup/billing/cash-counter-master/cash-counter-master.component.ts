@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { CashCounterMasterService } from "./cash-counter-master.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -30,12 +26,12 @@ export class CashCounterMasterComponent implements OnInit {
         apiUrl: "CashCounter/List",
         columnsList: [
             { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width:430 },
-            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width:160 },
-           { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width:400 },
+            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width:250 },
+            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:170, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -78,13 +74,14 @@ export class CashCounterMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
+
     onSave(row: any = null) {
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(NewCashCounterComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

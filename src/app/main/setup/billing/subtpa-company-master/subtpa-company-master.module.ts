@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule, DatePipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { SubtpaCompanyMasterComponent } from "./subtpa-company-master.component";
 import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
@@ -64,6 +64,7 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatDialogModule,
         
     ],
     providers: [SubtpaCompanyMasterService, DatePipe],

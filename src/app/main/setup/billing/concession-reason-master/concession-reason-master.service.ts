@@ -20,17 +20,17 @@ export class ConcessionReasonMasterService {
     
     createConcessionreasonForm(): FormGroup {
         return this._formBuilder.group({
-            concessionId: [""],
+            concessionId: [0],
             concessionReason: ["", 
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required,Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            // isActive: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -43,16 +43,7 @@ export class ConcessionReasonMasterService {
     initializeFormGroup() {
         this.createConcessionreasonForm();
     }
-    getValidationMessages() {
-        return {
-            concessionReason: [
-                { name: "required", Message: "Concession Name is required" },
-                { name: "maxlength", Message: "Concession name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
+    
     public concessionreasonMasterSave(Param: any, showLoader = true) {
         if (Param.concessionId) {
             return this._httpClient.PutData("ConcessionReasonMaster/" + Param.concessionId, Param, showLoader);

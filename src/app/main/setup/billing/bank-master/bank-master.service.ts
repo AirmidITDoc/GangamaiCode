@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -21,11 +21,11 @@ export class BankMasterService {
 
     createBankForm(): FormGroup {
         return this._formBuilder.group({
-            bankId: [""],
+            bankId: [0],
             bankName: ["", 
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required,Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isActive: ["true"],
@@ -45,15 +45,7 @@ export class BankMasterService {
         this.createBankForm();
     }
 
-    getValidationMessages(){
-        return{
-            bankName: [
-                { name: "required", Message: "Bank Name is required" },
-                { name: "maxlength", Message: "Bank name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        }
-    }
+    
    
     public getbankMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("BankMaster/List", param, showLoader);
@@ -78,8 +70,4 @@ export class BankMasterService {
         return this._httpClient.DeleteData("BankMaster?Id=" + m_data.toString());
     }
 
-
-    populateForm(param) {
-        this.myform.patchValue(param);
-    }
 }

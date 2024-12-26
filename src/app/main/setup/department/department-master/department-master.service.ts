@@ -20,10 +20,10 @@ export class DepartmentMasterService {
 
     createDepartmentForm(): FormGroup {
         return this._formBuilder.group({
-            departmentId: [""],
+            departmentId: [0],
             departmentName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -45,16 +45,7 @@ export class DepartmentMasterService {
     public getdepartmentMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("DepartmentMaster/List", param, showLoader);
     }
-    getValidationMessages() {
-        return {
-            departmentName: [
-                { name: "required", Message: "Department Name is required" },
-                { name: "maxlength", Message: "Department name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
+    
     public departmentMasterSave(Param: any, showLoader = true) {
         if (Param.departmentId) {
             return this._httpClient.PutData("DepartmentMaster/" + Param.departmentId, Param, showLoader);

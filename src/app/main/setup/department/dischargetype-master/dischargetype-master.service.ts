@@ -18,10 +18,10 @@ export class DischargetypeMasterService {
 
     createDischargetypeForm(): FormGroup {
         return this._formBuilder.group({
-            dischargeTypeId: [""],
+            dischargeTypeId: [0],
             dischargeTypeName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -45,17 +45,15 @@ export class DischargetypeMasterService {
 
    
 
-    populateForm(Param) {
-        this.myform.patchValue(Param);
-    }
+    // populateForm(Param) {
+    //     this.myform.patchValue(Param);
+    // }
 
 
 
-    public getDischargeTypeMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("DischargeType/List", param, showLoader);
-    }
-
-  
+    // public getDischargeTypeMasterList(param: gridRequest, showLoader = true) {
+    //     return this._httpClient.PostData("DischargeType/List", param, showLoader);
+    // }
 
     public dischargeTypeMasterSave(Param: any, showLoader = true) {
         if (Param.dischargeTypeId) {

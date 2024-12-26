@@ -1,18 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { fuseAnimations } from "@fuse/animations";
 import { CompanyTypeMasterService } from "./company-type-master.service";
-import { MatTableDataSource } from "@angular/material/table";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import {  MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { NewCompanyTypeComponent } from "./new-company-type/new-company-type.component";
 
 
@@ -32,11 +26,11 @@ export class CompanyTypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CompanyTypeMaster/List",
         columnsList: [
-            { heading: "Code", key: "companyTypeId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "Company Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:200 },
+            { heading: "Code", key: "companyTypeId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+            { heading: "Company Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:170, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -75,8 +69,6 @@ export class CompanyTypeMasterComponent implements OnInit {
     constructor(
         public _CompanyMasterService: CompanyTypeMasterService,
         public _matDialog: MatDialog,
-        private accountService: AuthenticationService,
-        private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
 
@@ -90,7 +82,7 @@ export class CompanyTypeMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewCompanyTypeComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
+                height: '30%',
                 width: '70%',
                 data: row
             });

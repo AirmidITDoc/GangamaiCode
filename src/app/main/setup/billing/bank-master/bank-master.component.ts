@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { BankMasterService } from "./bank-master.service";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -28,11 +24,11 @@ export class BankMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "BankMaster/List",
         columnsList: [
-            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:600 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100},
+            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA',width:150 },
+            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA',width:800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100},
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:180, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records
@@ -72,13 +68,7 @@ export class BankMasterComponent implements OnInit {
     constructor(public _bankService: BankMasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
-    ngOnInit(): void {
-      
-        this._bankService.myform.get("IsDeleted").setValue(true);
-    }
-    onSearch() {
-      
-    }
+    ngOnInit(): void { }
 
     onSearchClear() {
         this._bankService.myformSearch.reset({
@@ -87,15 +77,13 @@ export class BankMasterComponent implements OnInit {
         });
       
     }
-   
-  
 
     onSave(row:any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewBankComponent,
         {
             maxWidth: "45vw",
-            height: '35%',
+            height: '30%',
             width: '70%',
             data: row
         });
@@ -106,38 +94,6 @@ export class BankMasterComponent implements OnInit {
             console.log('The dialog was closed - Action', result);
         });
     }
-
-
-    onEdit(row) {
-        var m_data = {
-            BankId: row.bankId,
-            BankName: row.BankName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._bankService.populateForm(m_data);
-    }
+    
 }
 
-export class BankMaster {
-    bankId: number;
-    bankName: string;
-    isActive: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param BankMaster
-     */
-    constructor(BankMaster) {
-        {
-            this.bankId = BankMaster.bankId || "";
-            this.bankName = BankMaster.bankName || "";
-            this.isActive = BankMaster.isActive || "true";
-            this.AddedBy = BankMaster.AddedBy || "";
-            this.UpdatedBy = BankMaster.UpdatedBy || "";
-        }
-    }
-}

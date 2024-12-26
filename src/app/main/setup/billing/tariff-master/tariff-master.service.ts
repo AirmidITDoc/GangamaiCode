@@ -1,7 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -21,57 +19,31 @@ export class TariffMasterService {
 
     createTariffForm(): FormGroup {
         return this._formBuilder.group({
-            tariffId: [""],
+            tariffId: [0],
             tariffName: ["", 
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
+            isActive: ["true"]
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TariffNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createTariffForm();
     }
-    getValidationMessages(){
-        return{
-            tariffName: [
-                { name: "required", Message: "Tariff Name is required" },
-                { name: "maxlength", Message: "Tariff Name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        }
-    }
-
-    public getTariffMasterList(param: gridRequest, showLoader=true) {
-        return this._httpClient.PostData("TarrifMaster/List", param, showLoader);
-    }
-
-    // public tariffMasterInsert(param) {
-    //     return this._httpClient.post("Billing/TeriffSave", param);
-    // }
-
-    // public tariffMasterUpdate(param) {
-    //     return this._httpClient.post("Billing/TariffUpdate", param);
-    // }
-
+    
     // New code
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("TarrifMaster?Id=" + m_data.toString());
-    }
-    // 
-
-    populateForm(param) {
-        this.myform.patchValue(param);
     }
 
     public tariffMasterSave(Param: any, showLoader = true) {

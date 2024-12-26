@@ -18,59 +18,74 @@ export class SubtpaCompanyMasterService {
     }
     createsubtpacompanyForm(): FormGroup {
         return this._formBuilder.group({
-            SubCompanyId: [""],
-            CompTypeId: [""],
-            TypeName: [""],
-            CompanyName: ["",
+            /**
+             * { swagger JSON insert :-
+            "subCompanyId": 0,
+            "compTypeId": 0,
+            "companyName": "string",
+            "address": "string",
+            "city": "string",
+            "pinNo": "string",
+            "phoneNo": "string",
+            "mobileNo": "string",
+            "faxNo": "string"
+            }
+             */
+            subCompanyId: [0],
+            compTypeId: [""],
+            // TypeName: [""],
+            companyName: ["",
                 [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z0-9]+$")
+                    // Validators.required,
+                    // Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            Address: ["", Validators.required],
-            City: [
+            address: ["", 
+                // Validators.required
+            ],
+            city: [
                 "",
                 [
-                    Validators.required
+                    // Validators.required
                 ],
             ],
-            PinNo: ["", 
+            pinNo: ["", 
                 [
-                    Validators.required,
-                    Validators.minLength(6), 
-                    Validators.maxLength(6),
-                    Validators.pattern("^[0-9]*$")
+                    // Validators.required,
+                    // Validators.minLength(6), 
+                    // Validators.maxLength(6),
+                    // Validators.pattern("^[0-9]*$")
                 ]
             ],
-            Phone: [
+            phoneNo: [
                 "",
                 [
-                    Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(15),
-                ],
-            ],
-            Mobile: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                ],
-            ],
-            FaxNo: [
-                "",
-                [
-                    Validators.required,
+                    // Validators.required,
                     // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.pattern("^[+]?[0-9]*[- ()0-9]*$"),
-                    Validators.minLength(10),
-                    Validators.maxLength(15),
+                    // Validators.minLength(10),
+                    // Validators.maxLength(15),
                 ],
             ],
-            IsDeleted: ["true"],
+            mobileNo: [
+                "",
+                [
+                    // Validators.required,
+                    // Validators.pattern("^[0-9]*$"),
+                    // Validators.minLength(10),
+                    // Validators.maxLength(10),
+                ],
+            ],
+            faxNo: [
+                "0",
+                // [
+                //     Validators.required,
+                //     // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                //     Validators.pattern("^[+]?[0-9]*[- ()0-9]*$"),
+                //     Validators.minLength(10),
+                //     Validators.maxLength(15),
+                // ],
+            ],
+            // IsDeleted: ["true"],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // IsCancelled: ["false"],
@@ -90,32 +105,10 @@ export class SubtpaCompanyMasterService {
         this.createsubtpacompanyForm();
     }
 
-    public getSubtpacompanyMasterList(param) {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Rtrv_M_SubTPACompanyMasterList_by_Name",
-            param
-        );
-    }
-    public getCompanytypeCombobox() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=RetrieveCompanyTypeMasterForCombo ",
-            {}
-        );
-    }
-
     public subTpaCompanyMasterInsert(Param: any, showLoader = true) {
-        // return this._httpClient.PostData("Billing/SubTpaCompanySave", param);
-        if (Param.SubCompanyId) {
-            return this._httpClient.PutData("SubTpaCompany/" + Param.SubCompanyId, Param, showLoader);
+        if (Param.subCompanyId) {
+            return this._httpClient.PutData("SubTpaCompany/" + Param.subCompanyId, Param, showLoader);
         } else return this._httpClient.PostData("SubTpaCompany", Param, showLoader);
-    }
-
-    public subTpaCompanyMasterUpdate(param) {
-        return this._httpClient.PostData("Billing/SubTpaCompanyUpdate", param);
-    }
-
-    populateForm(param) {
-        this.myform.patchValue(param);
     }
 
     public deactivateTheStatus(m_data) {

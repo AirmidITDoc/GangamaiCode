@@ -30,8 +30,9 @@ export class NewGendermasterComponent implements OnInit {
 
     
     onSubmit() {
-        this.saveflag = true;
+        
         if (this.genderForm.valid) {
+            this.saveflag = true;
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

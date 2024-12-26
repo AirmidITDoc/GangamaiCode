@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Group Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Group Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -20,30 +20,39 @@
             <form [formGroup]="groupForm">
                 <input type="hidden" name="groupId" formControlName="groupId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <airmid-textbox label="Group Name" formControlName="groupName" [value]=""
-                        [formGroup]="groupForm"
-                        [validations]="_GroupMasterService.getValidationMessages().groupName"
-                        [maxLength]="50">
-                    </airmid-textbox>
-                 
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%"> 
+                        <airmid-textbox 
+                            label="Group Name" 
+                            formControlName="groupName" 
+                            [value]="data?.groupName"
+                            [formGroup]="groupForm"
+                            [validations]="getValidationMessages().groupName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
                 </div>
 
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <mat-radio-group name="isActive" formControlName="isActive" value='true'>
-                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                        <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                        </mat-radio-button>
-                    </mat-radio-group>
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                    <div>
+                        <mat-radio-group name="isActive" formControlName="isActive">
+                            <mat-radio-button value='true' [checked]="isActive" class="mr-sm-12" fxFlex>IsActive
+                            </mat-radio-button>
+                            <mat-radio-button value='false' [checked]="!isActive" class="mr-sm-12" fxFlex>IsDeactive
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                            <span>Save</span>
+                        </button>
+                    </div>
+         
                 </div>
+
             </form>
-        </div>
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                <span>Save</span>
-            </button>
         </div>
     </div>
 </div>
