@@ -43,6 +43,14 @@
                                         <mat-table #table matSort [dataSource]="dsBillPayDueList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;"> 
 
+                                            <ng-container matColumnDef="Type">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Type </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.lbl}}
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="InvoiceDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     InvoiceDate </mat-header-cell>

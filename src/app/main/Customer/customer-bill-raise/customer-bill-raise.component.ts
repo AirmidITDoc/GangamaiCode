@@ -21,6 +21,7 @@ import { CustomerPaymentComponent } from '../customer-information/customer-payme
 })
 export class CustomerBillRaiseComponent implements OnInit {
   displayedDueColumns: string[] = [
+    'Type',
     'InvoiceDate',
     'InvNumber',
     'CustomerName',
