@@ -657,7 +657,7 @@
                                 *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1600"
-                                [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                [ngClass]="{'red-row': contact.IsPathTestCompleted == '1' ||  contact.IsRadTestCompleted == '1' }"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
                             </mat-footer-row>
