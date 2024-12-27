@@ -92,7 +92,7 @@
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);padding: 10px;">Selected
                                         Report : <span style="font-weight: bold;">{{ReportName}}</span> | </span>
 
-                                    <span
+                                    <span *ngIf="CurrentUser"
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);float: right;">Current
                                         User : <span style="font-weight:bold ;"> {{UserId}} | {{UserName}}
                                         </span></span>
@@ -101,7 +101,7 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <br />
 
-                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="59%">
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="69%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="startdate" placeholder="Start date">
@@ -138,9 +138,9 @@
                                     </div>
                                     <div style="margin-left: 2%;">
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagDoctorSelected" fxFlex="60%">
+                                        <mat-form-field appearance="outline" *ngIf="FlagDoctorSelected" fxFlex="70%">
                                             <mat-label>Doctor Name</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
+                                            <input matAutocompletePosition="below" type="text" (input)="getDoctorList()"
                                                 placeholder="Select  Doctor Name" matInput formControlName="DoctorId"
                                                 [matAutocomplete]="autosearchDoctorReport" [(ngModel)]="vDescType">
                                             <span matSuffix style="display: flex;">
@@ -153,7 +153,7 @@
                                                 [displayWith]="getOptionTextsearchDoctor">
                                                 <mat-option *ngFor="let option of filteredOptionsDoctorMode | async"
                                                     [value]="option">
-                                                    {{option.Doctorname}}
+                                                    {{option.Doctorname}} | {{option.DoctorId}}
                                                 </mat-option>
                                             </mat-autocomplete>
                                         </mat-form-field>
@@ -197,7 +197,7 @@
 
 
 
-                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected" fxFlex="60%">
+                                        <mat-form-field appearance="outline" *ngIf="FlagGroupSelected" fxFlex="70%">
                                             <mat-label>Group Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select GroupId" matInput formControlName="GroupId"
@@ -237,7 +237,7 @@
 
 
                                         <mat-form-field appearance="outline" *ngIf="FlagDischargetypeIdSelected"
-                                            fxFlex="60%">
+                                                fxFlex="70%">
                                             <mat-label>Discharge Type Name</mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select DischargeTypeName" matInput
@@ -258,7 +258,7 @@
                                             </mat-autocomplete>
                                         </mat-form-field>
                                     </div>
-                                    <div style="margin-left: 2%;">
+                                    <div style="margin-left: 2%;margin-bottom: 3%;">
                                         <span *ngIf="FlaOPIPTypeSelected"
                                             style="font-weight: bold;margin-left: 2%;">Patient Type</span>
                                         <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
@@ -273,7 +273,7 @@
                                     </div>
 
                                     <div style="margin-left: 2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagWardSelected">
+                                        <mat-form-field appearance="outline" fxFlex="70%" *ngIf="FlagWardSelected">
                                             <mat-label>Ward Name</mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select Ward"
                                                 matInput formControlName="RoomId" [(ngModel)]="vRoomId"
@@ -294,7 +294,7 @@
                                         </mat-form-field>
                                     </div>
                                     <div style="margin-left: 2%;">
-                                        <mat-form-field appearance="outline" fxFlex="60%" *ngIf="FlagCompanySelected">
+                                        <mat-form-field appearance="outline" fxFlex="70%" *ngIf="FlagCompanySelected">
                                             <mat-label>Company Name </mat-label>
                                             <input matAutocompletePosition="below" type="text"
                                                 placeholder="Select Company" [(ngModel)]="vCompanyId" matInput

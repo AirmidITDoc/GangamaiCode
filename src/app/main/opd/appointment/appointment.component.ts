@@ -1340,36 +1340,36 @@ export class AppointmentComponent implements OnInit {
 
 
 
-    getVisitDetails() {
+   // getVisitDetails() {
 
-        const dialogRef = this._matDialog.open(VisitDetailsComponent,
-            {
-                maxWidth: "800px",
-                minWidth: '800px',
-                width: '800px',
-                height: '380px',
-                disableClose: true,
-                data: {
-                    "VisitId": this.VisitId// 159641
+        // const dialogRef = this._matDialog.open(VisitDetailsComponent,
+        //     {
+        //         maxWidth: "800px",
+        //         minWidth: '800px',
+        //         width: '800px',
+        //         height: '380px',
+        //         disableClose: true,
+        //         data: {
+        //             "VisitId": this.VisitId// 159641
 
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
+        //         }
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
 
-            this.VisitFlag = 1;
-            this.DoctorId = result.DoctorId;
+        //     this.VisitFlag = 1;
+        //     this.DoctorId = result.DoctorId;
 
-            const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
-            this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
+        //     const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
+        //     this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
 
-            this.OnChangeDoctorList(result);
-            this.dept.nativeElement.focus();
-        });
+        //     this.OnChangeDoctorList(result);
+        //     this.dept.nativeElement.focus();
+        // });
 
 
-        this.isLoading = '';
+        // this.isLoading = '';
         // this.Quantity.nativeElement.focus();
-    }
+    // }
 
 
     // toggle sidebar
@@ -2771,33 +2771,34 @@ export class AppointmentComponent implements OnInit {
         }
     }
 
-    OnChangeDoctorList1(departmentObj) {
+    // OnChangeDoctorList1(departmentObj) {
 
+    //     this.isDepartmentSelected = true;
+    //     this._opappointmentService.getDoctorMasterCombo(departmentObj).subscribe(
+    //         data => {
+    //             this.DoctorList = data;
+
+    //             this.optionsDoc = this.DoctorList.slice();
+    //             this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+    //                 startWith(''),
+    //                 map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    //             );
+    //         })
+
+    //     if (this.configService.configParams.DoctorId) {
+
+    //         const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+    //         this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+    //     }
+
+    // }
+
+    OnChangeDoctorList(departmentObj) { 
         this.isDepartmentSelected = true;
-        this._opappointmentService.getDoctorMasterCombo(departmentObj).subscribe(
-            data => {
-                this.DoctorList = data;
-
-                this.optionsDoc = this.DoctorList.slice();
-                this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-                    startWith(''),
-                    map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-                );
-            })
-
-        if (this.configService.configParams.DoctorId) {
-
-            const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-            this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+        var vdata={
+            "Id":departmentObj.DepartmentId
         }
-
-    }
-
-    OnChangeDoctorList(departmentObj) {
-        
-        this.isDepartmentSelected = true;
-        this._opappointmentService.getDoctorMasterCombo(departmentObj.DepartmentId).subscribe(
-            data => {
+        this._opappointmentService.getDoctorMasterCombo(vdata).subscribe(data => {
                 this.DoctorList = data;
                 console.log(data)
                 this.optionsDoc = this.DoctorList.slice();
@@ -2807,24 +2808,24 @@ export class AppointmentComponent implements OnInit {
                 );
             })
 
-        if (this.configService.configParams.DoctorId) {
+       /// if (this.configService.configParams.DoctorId) {
 
             // this.configService.configParams.DoctorId = 269;
             // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
             // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-            this.doctorset();
-        }
+            //this.doctorset();
+       // }
     }
 
-    doctorset() {
+    // doctorset() {
 
-        this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-            startWith(''),
-            map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-        );
-        const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-        this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-    }
+    //     this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+    //         startWith(''),
+    //         map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+    //     );
+    //     const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+    //     this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+    // }
 
 
     CreateFormData(obj: any, formData: FormData, subKeyStr = '') {

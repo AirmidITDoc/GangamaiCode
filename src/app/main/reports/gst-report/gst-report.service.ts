@@ -189,7 +189,7 @@ export class GstReportService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
   }
 
-  public getDoctorMaster() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+  public getDoctorMaster(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo", param)
   }
 }

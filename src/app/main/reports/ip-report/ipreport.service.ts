@@ -27,7 +27,7 @@ export class IPReportService {
         CompanyId:'',
         DischargeTypeId:'',
         GroupId:'',
-        OPIPType:["1"],
+        OPIPType:["2"],
         RegId:[""]
         // Radio:['1']
 
@@ -41,8 +41,8 @@ export class IPReportService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerUserForCombo",data)
   }
 
-  public getDoctorList(){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",{})
+  public getDoctorMaster(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo", param) //m_Rtrv_DoctorListMasterForCombo
   }
   
   public getgroupList(){
@@ -471,11 +471,11 @@ public getConDoctorSharesReportView(FromDate,ToDate,DoctorId,OP_IP_Type,loader =
   
 }
 
-public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
+public getDoctorShareListWithChargesview(Doctor_Id, From_Dt, To_Dt, OP_IP_Type,loader = true){
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
   }
 
   public getAdmittedPatientList(employee) {

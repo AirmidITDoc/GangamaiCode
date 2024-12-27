@@ -27,7 +27,7 @@ export class PatientDischargeClearanceComponent implements OnInit {
     'RegNo',
     'PatientName',
     'IPDNo',
-    'Action'
+    //'Action'
   ] 
   displayedColumns2: string[] = [
     'DepartmentName',
@@ -72,12 +72,13 @@ export class PatientDischargeClearanceComponent implements OnInit {
 getClearancelist(){  
     this._PatientDischargeClearanceService.getClearancelist().subscribe(data =>{
       this.dspatientlist_1.data =data as ClearanceList[];
-      console.log(this.dspatientlist_1.data)
-      console.log(this.dspatientlist_1.data[0])
+      //console.log(this.dspatientlist_1.data)
+      //onsole.log(this.dspatientlist_1.data[0])
       this.getPatietnapprovelist(this.dspatientlist_1.data[0])
     })  
 }
 DepartmentList:any=[];
+chkEditOpt:any;
 //patietn click approve side list 
 getPatietnapprovelist(contact){
   console.log(contact)
@@ -90,11 +91,14 @@ getPatietnapprovelist(contact){
       this.dspatientlist_2.data =data as ClearanceList[];
       this.DepartmentList = data as ClearanceList[];
       console.log(this.dspatientlist_2.data)
+      this.chkEditOpt = this.DepartmentList.some(item=> item.DepartmentID == this.accountService.currentUserValue.user.id)
+      console.log(this.chkEditOpt) 
     }) 
   }, 1000);
 }
 
  PatietnClearanceOption(element){
+  console.log(element)
     const dialogRef = this._matDialog.open(PatientClearanceOptionComponent,
       {
         maxWidth: "70vw",

@@ -1310,9 +1310,20 @@ CalculateAdminCharge(){
     this.getChargesList();
     this.interimArray = [];
   }
-  deletecharges(contact) { 
-    this.chkchargeTestCompleted(contact)
-    Swal.fire({  
+  deletecharges(contact) {
+    if (contact.IsPathTestCompleted == 1) {
+      this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
+    if (contact.IsRadTestCompleted == 1) {
+      this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
+    Swal.fire({
       title: 'Do you want to Delete Charges',
       text: "You won't be able to revert this!",
       icon: "warning",
@@ -1323,30 +1334,23 @@ CalculateAdminCharge(){
 
     }).then((flag) => {
 
-      if (flag.isConfirmed) { 
-      
-        if(this.ChkTest[0].IsCompleted  == true){
-          this.toastr.warning('Selected Service Test is Already Completed !','warning', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return
-        }
+      if (flag.isConfirmed) {
         let Chargescancle = {};
         Chargescancle['ChargesId'] = contact.ChargesId;
         Chargescancle['userId'] = this.accountService.currentUserValue.user.id;
 
         let submitData = {
           "deleteCharges": Chargescancle
-        }; 
+        };
         console.log(submitData);
         this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
           if (response) {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
-              if (contact.IsPackage == '1' && contact.ServiceId) { 
-                this.PacakgeList  = this.PacakgeList.filter(item=>  item.ServiceId !== contact.ServiceId)  
-                console.log(this.PacakgeList) 
-                this.PackageDatasource.data = this.PacakgeList; 
-              } 
+              if (contact.IsPackage == '1' && contact.ServiceId) {
+                this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== contact.ServiceId)
+                console.log(this.PacakgeList)
+                this.PackageDatasource.data = this.PacakgeList;
+              }
               this.getChargesList();
               this.CalculateAdminCharge();
               this.CalFinalDisc();
@@ -1356,30 +1360,11 @@ CalculateAdminCharge(){
             Swal.fire('Error !', 'Charges cancelled data not saved', 'error');
           }
           this.isLoading = '';
-        });  
-      } 
-    }); 
+        });
+      }
+    });
   }
-  ChkTest:any;
-  chkchargeTestCompleted(contact){
-    let Query 
-    if(contact.IsPathology == 1){
-      Query = "select IsCompleted from t_pathologyReportheader where chargeid=" + contact.ChargesId
-      this._IpSearchListService.ChkPathologyTestComplete(Query).subscribe(data=>{
-        this.ChkTest  = data     
-         console.log(this.ChkTest)
-         console.log(this.ChkTest[0].IsCompleted )
-      }); 
-    } 
-    else if(contact.IsRadiology == 1){
-      Query = "select IsCompleted from T_RadiologyReportHeader where chargeid=" + contact.ChargesId
-      this._IpSearchListService.ChkRadiologyTestComplete(Query).subscribe(data=>{
-        this.ChkTest  = data     
-        console.log(this.ChkTest)
-        console.log(this.ChkTest[0].IsCompleted )  
-    })
-    } 
-  }
+
   showAllFilter(event) {
     console.log(event);
     if (event.checked == true)

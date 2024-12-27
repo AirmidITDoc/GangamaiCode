@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { GstReportService } from './gst-report.service';
@@ -41,6 +41,9 @@ export class GSTReportComponent implements OnInit {
   ReportID:any=0
   DoctorList: any = [];
   optionsSurgeon: any[] = [];
+  searchFormGroup: FormGroup;  
+  DoctoreListfilteredOptions: any;  
+  noOptionFound: boolean = false;
 
   optionsSearchstore: any[] = [];
 
@@ -98,12 +101,14 @@ export class GSTReportComponent implements OnInit {
        this.FlagUserSelected = false;
        this.FlagReportTypeSelected= false;
        this.FlagDoctorIDSelected=false;
+       this.clearField();
      }
      else if (this.ReportName == 'Sales Profit Item Wise Summary Report') {
        this.FlagUserSelected = false;
        this.FlagStoreSelected = true;
        this.FlagReportTypeSelected= false;
        this.FlagDoctorIDSelected=false;
+       this.clearField();
      } 
    
      else if (this.ReportName == 'Purchase GST Report Supplier Wise-GST%') {
@@ -111,107 +116,131 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      
+             this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+      
+             this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+      
+             this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      
+             this.clearField();
     } 
     else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      
+             this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+             this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+             this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+             this.clearField();
     } 
     else if (this.ReportName == 'Sales Return GST Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+             this.clearField();
     } 
     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
-      this.FlagDoctorIDSelected=false;
+      this.FlagDoctorIDSelected=false;      
+      this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Summary Consolidated') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.clearField();
+      
     } 
     else if (this.ReportName == 'HSN Code Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.clearField();
     } 
     else if (this.ReportName == 'GST B2CS Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.clearField();
     } 
     else if (this.ReportName == 'GST B2GS Report Consolidated') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.clearField();
     }   else if (this.ReportName == 'GSTR2A Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.clearField();
     } 
     else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.clearField();
     }
     else if(this.ReportName == "Dr Wise Profit Detail Report"){
       this.FlagUserSelected = false;
       this.FlagStoreSelected = false;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=true;
+      this.clearField();
     } 
     else if(this.ReportName == "Dr Wise Profit Summary Report"){
       this.FlagUserSelected = false;
       this.FlagStoreSelected = false;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=true;
+      this.clearField();
     } 
     }
 
@@ -315,6 +344,7 @@ export class GSTReportComponent implements OnInit {
           matDialog.afterClosed().subscribe(result => {
             // this.AdList=false;
             this.sIsLoading = ' ';
+            this.clearField();
           });
       });
      
@@ -350,6 +380,7 @@ export class GSTReportComponent implements OnInit {
           matDialog.afterClosed().subscribe(result => {
             // this.AdList=false;
             this.sIsLoading = ' ';
+            this.clearField();
           });
       });
      
@@ -383,6 +414,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -416,6 +448,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -456,6 +489,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -488,6 +522,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -519,6 +554,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -551,6 +587,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -583,6 +620,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -615,6 +653,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -656,6 +695,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -730,6 +770,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -762,6 +803,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -795,6 +837,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -829,6 +872,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -864,6 +908,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -898,6 +943,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -932,6 +978,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
            });
          });
    
@@ -966,6 +1013,7 @@ export class GSTReportComponent implements OnInit {
            dialogRef.afterClosed().subscribe(result => {
              
              this.sIsLoading = '';
+             this.clearField();
 
            });
          });
@@ -1032,17 +1080,28 @@ export class GSTReportComponent implements OnInit {
     });
   }
 
+  clearField(){
+    this._GstReportService.userForm.get('startdate').setValue(new Date());
+    this._GstReportService.userForm.get('DoctorId').setValue('');
+    this._GstReportService.userForm.get('StoreId').setValue('');
+  }
+
   getDoctorList() {
     debugger
-    this._GstReportService.getDoctorMaster().subscribe(data => {
+    var m_data = {
+      "Keywords": `${this._GstReportService.userForm.get('DoctorId').value}%`
+    }
+    console.log("ggggg:", m_data)
+    this._GstReportService.getDoctorMaster(m_data).subscribe(data => {
       this.DoctorList = data;
+      console.log(this.DoctorList)
+      // this.DoctoreListfilteredOptions = data;
       this.optionsSurgeon = this.DoctorList.slice();
       this.filteredOptionssearchDoctor = this._GstReportService.userForm.get('DoctorId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterDoctor(value) : this.DoctorList.slice()),
       );
-
-    });
+    }); 
 
   }
   private _filterDoctor(value: any): string[] {

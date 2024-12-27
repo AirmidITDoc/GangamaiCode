@@ -156,7 +156,7 @@
                                                 <mat-label>Doctor Name</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Doctor" matInput
-                                                    formControlName="DoctorId"
+                                                    formControlName="DoctorId" (input)="getDoctorList()"
                                                     [matAutocomplete]="autosearchDoctor" required>
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
@@ -169,10 +169,31 @@
                                                     <mat-option
                                                         *ngFor="let option of filteredOptionssearchDoctor | async"
                                                         [value]="option">
-                                                        {{option.Doctorname}}
+                                                        {{option.Doctorname}} | {{option.DoctorId}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
+
+                                            <!-- <mat-form-field class=searchRegId appearance="outline" fxFlex="50%">
+                                                <mat-label>Registered Patient</mat-label>
+                                                <input type="text" name="RegId" formControlName="RegId"
+                                                  placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto1"
+                                                  (input)="getSearchList()" maxlength="10">
+                                                <span matSuffix style="display: flex;">
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                                  <mat-icon class="mat-icon-close"
+                                                    (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
+                                                  (optionSelected)='getSelectedObj1($event.option.value)'>
+                                                  <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                                    {{option.RegNo}} |{{option.FirstName}} | {{option.MiddleName}} |
+                                                    {{option.LastName}} | {{option.Address}} |
+                                                    {{option.MobileNo}} | {{option.DoctorName}} | {{option.DepartmentName}}
+                                                  </mat-option>
+                                                </mat-autocomplete>
+                                              </mat-form-field> -->
                                         </div>
                                         <div>
                                             <!-- <mat-form-field appearance="outline" style="width:50%;">
