@@ -57,7 +57,7 @@ export class PatientClearanceOptionComponent implements OnInit {
   CreatemyForm(){
     return this._formbuilder.group({
       Comment:[''],
-      NoDues:['']
+      NoDues:[true]
     })
   }
   NoDues:any;
@@ -75,7 +75,7 @@ export class PatientClearanceOptionComponent implements OnInit {
 getapprovelist(Obj){
   var vdata={
     "DepartmentId": this.accountService.currentUserValue.user.id || 0,
-    "AdmId": Obj.AdmissionID
+    "AdmId": Obj.AdmID
   }
   console.log(vdata)
   setTimeout(() => {

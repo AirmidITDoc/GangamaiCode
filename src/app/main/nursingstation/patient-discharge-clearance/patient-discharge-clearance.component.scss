@@ -1,8 +1,12 @@
  
-.red-row {
+.green-row {
 	background-color: green; /* Use !important to override default styles */
 	color: white; /* Optional: Change text color for better visibility */
   }  
+  .red-row {
+    background-color: red; /* Use !important to override default styles */
+    color: white; /* Optional: Change text color for better visibility */
+    } 
 .stepper {
   display: flex;
   flex-direction: column;
@@ -39,6 +43,11 @@
 .step-title {
   font-weight: bold;
   margin-top: 20px;
+}
+.step-icon {
+  font-weight: bold;
+  color: #6e0fe3;;
+  margin-top: 16px;
 }
 
 .step-line {
