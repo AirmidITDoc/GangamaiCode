@@ -12,12 +12,16 @@
         New OT Booking Request
       </span>
     </div>
-    <div fxLayout="row" fxLayoutALign="end start">
+    <div fxLayout="row" fxLayoutALign="end start" style="color: white;">
+
+      <app-common-date [screenFrom]="screenFromString" style="color: white;" (dateTimeEventEmitter)="getDateTime($event)">
+      </app-common-date>
 
       <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
         <mat-icon>close</mat-icon>
       </button>
     </div>
+
   </mat-toolbar>
 
 
@@ -87,6 +91,8 @@
                     </mat-autocomplete>
                   </mat-form-field>
                   <!-- end Ip -->
+
+
 
                 </div>
 
@@ -173,7 +179,8 @@
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                       <div class="patient-info-container">
                         <div class="patient-info-box">
-                          <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px" style="width: 100%;"
+                          <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                            style="width: 100%;"
                             class="top-header accent heading-container h-40 border-radius-4">
                             <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">
                               Surgery Details
@@ -182,21 +189,12 @@
 
                           <div fxLayout="column">
 
-                            <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8 mt-12">
-                              <mat-form-field appearance="outline" fxFlex="25%">
-                                <mat-label>Booking Date</mat-label>
-                                <input name="Date" matInput [matDatepicker]="picker" formControlName="OTbookingDate" id=Date>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                              </mat-form-field>
-                            </div>
-        
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-        
+
                               <mat-form-field appearance="outline" fxFlex="100%">
                                 <mat-label>Department Name</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select DepartmentId" matInput
-                                  (keydown)="onEnterDepartmentId($event)" [(ngModel)]="vDepartmentName"
+                                <input matAutocompletePosition="below" type="text" placeholder="Select DepartmentId"
+                                  matInput (keydown)="onEnterDepartmentId($event)" [(ngModel)]="vDepartmentName"
                                   formControlName="DepartmentId" [matAutocomplete]="autoDepartment" required>
                                 <span matSuffix style="display: flex;">
                                   <mat-icon class="mat-icon-close"
@@ -204,22 +202,24 @@
                                   <mat-icon class="mat-icon-close"
                                     (click)="_OtManagementService.otreservationFormGroup.get('DepartmentId').setValue(''); isSurgerySelected = false;">search</mat-icon>
                                 </span>
-                                <mat-autocomplete #autoDepartment="matAutocomplete" [displayWith]="getOptionTextautoDepartment">
-                                  <mat-option *ngFor="let option of filteredOptionautoDepartment | async" [value]="option">
+                                <mat-autocomplete #autoDepartment="matAutocomplete"
+                                  [displayWith]="getOptionTextautoDepartment">
+                                  <mat-option *ngFor="let option of filteredOptionautoDepartment | async"
+                                    [value]="option">
                                     {{option.DepartmentName}}
                                   </mat-option>
                                 </mat-autocomplete>
                               </mat-form-field>
-        
+
                             </div>
-        
+
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                               <mat-form-field appearance="outline" fxFlex="100%">
                                 <mat-label>System</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select SurgeryCategoryId"
-                                  matInput #SurgeryCategory (keydown)="onEnterSurgeryCategory($event)"
-                                  formControlName="SurgeryCategoryId" [(ngModel)]="vSurgeryCategoryId"
-                                  [matAutocomplete]="autoSurgeryCategory" required>
+                                <input matAutocompletePosition="below" type="text"
+                                  placeholder="Select SurgeryCategoryId" matInput #SurgeryCategory
+                                  (keydown)="onEnterSurgeryCategory($event)" formControlName="SurgeryCategoryId"
+                                  [(ngModel)]="vSurgeryCategoryId" [matAutocomplete]="autoSurgeryCategory" required>
                                 <span matSuffix style="display: flex;">
                                   <mat-icon class="mat-icon-close"
                                     (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSystemSelected = false;">close</mat-icon>
@@ -228,20 +228,20 @@
                                 </span>
                                 <mat-autocomplete #autoSurgeryCategory="matAutocomplete"
                                   [displayWith]="getOptionTextautoSurgeryCategory">
-                                  <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" [value]="option"
-                                    (onSelectionChange)="onChangeSiteList(option)">
+                                  <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async"
+                                    [value]="option" (onSelectionChange)="onChangeSiteList(option)">
                                     {{option.SurgeryCategoryName}}
                                   </mat-option>
                                 </mat-autocomplete>
                               </mat-form-field>
                             </div>
-        
+
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                               <mat-form-field appearance="outline" fxFlex="100%">
                                 <mat-label>Site</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Site" matInput #Site
-                                  (keydown)="onEnterSite($event)" formControlName="SiteDescId" [(ngModel)]="vSiteDescId"
-                                  [matAutocomplete]="autoSite" required>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Site" matInput
+                                  #Site (keydown)="onEnterSite($event)" formControlName="SiteDescId"
+                                  [(ngModel)]="vSiteDescId" [matAutocomplete]="autoSite" required>
                                 <span matSuffix style="display: flex;">
                                   <mat-icon class="mat-icon-close"
                                     (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSiteSelected = false;">close</mat-icon>
@@ -255,14 +255,14 @@
                                   </mat-option>
                                 </mat-autocomplete>
                               </mat-form-field>
-        
+
                             </div>
-        
+
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                               <mat-form-field appearance="outline" fxFlex="100%">
                                 <mat-label>Procedure </mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name" matInput
-                                  #SurgeryId (keydown)="onEnterSurgery($event)" formControlName="SurgeryId"
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name"
+                                  matInput #SurgeryId (keydown)="onEnterSurgery($event)" formControlName="SurgeryId"
                                   [(ngModel)]="vSurgeryId" [matAutocomplete]="autoSurgeryId" required>
                                 <span matSuffix style="display: flex;">
                                   <mat-icon class="mat-icon-close"
@@ -270,19 +270,20 @@
                                   <mat-icon class="mat-icon-close"
                                     (click)="_OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(''); isSurgerySelected = false;">search</mat-icon>
                                 </span>
-                                <mat-autocomplete #autoSurgeryId="matAutocomplete" [displayWith]="getOptionTextautoSurgery">
+                                <mat-autocomplete #autoSurgeryId="matAutocomplete"
+                                  [displayWith]="getOptionTextautoSurgery">
                                   <mat-option *ngFor="let option of filteredOptionsSurgery | async" [value]="option">
                                     {{option.SurgeryName }}
                                   </mat-option>
                                 </mat-autocomplete>
                               </mat-form-field>
                             </div>
-        
+
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                               <mat-form-field appearance="outline" fxFlex="100%">
                                 <mat-label>Surgeon Name</mat-label>
-                                <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId" matInput
-                                  #SurgeonId1 (keydown)="onEnterSystem($event)" formControlName="DoctorId"
+                                <input matAutocompletePosition="below" type="text" placeholder="Select DoctorId"
+                                  matInput #SurgeonId1 (keydown)="onEnterSystem($event)" formControlName="DoctorId"
                                   [(ngModel)]="vDoctorName" [matAutocomplete]="autoSurgeonId1" required>
                                 <span matSuffix style="display: flex;">
                                   <mat-icon class="mat-icon-close"
@@ -290,22 +291,23 @@
                                   <mat-icon class="mat-icon-close"
                                     (click)="_OtManagementService.otreservationFormGroup.get('DoctorId').setValue(''); isSurgerySelected = false;">search</mat-icon>
                                 </span>
-                                <mat-autocomplete #autoSurgeonId1="matAutocomplete" [displayWith]="getOptionTextSurgeonId1">
+                                <mat-autocomplete #autoSurgeonId1="matAutocomplete"
+                                  [displayWith]="getOptionTextSurgeonId1">
                                   <mat-option *ngFor="let option of filteredOptionsSurgeon | async" [value]="option">
                                     {{option.Doctorname}}
                                   </mat-option>
                                 </mat-autocomplete>
                               </mat-form-field>
-        
+
                             </div>
-        
+
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                               <mat-radio-group aria-label="Select an option" formControlName="SurgeryType">Surgery Type
                                 <mat-radio-button value="1" [checked]="true"> Normal </mat-radio-button>
                                 <mat-radio-button value="0"> Emergency</mat-radio-button>
                               </mat-radio-group>
                             </div>
-        
+
                           </div>
 
                         </div>

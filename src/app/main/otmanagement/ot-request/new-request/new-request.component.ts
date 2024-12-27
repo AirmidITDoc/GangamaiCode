@@ -129,7 +129,7 @@ export class NewRequestComponent implements OnInit {
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
 
-  screenFromString = 'registration';
+  screenFromString = 'otBooking-form';
   selectedPrefixId: any;
 
   // @Input() childName: string[];

@@ -513,7 +513,7 @@ export class IpReportComponent implements OnInit {
       debugger
       this.FlagDoctorSelected = true;
       this.FlagUserSelected = false;
-      this.FlagGroupSelected = false;
+      this.FlagGroupSelected = true;
       this.FlaOPIPTypeSelected = true;
       this.CurrentUser= false;
       this.clearField();
@@ -2794,9 +2794,9 @@ export class IpReportComponent implements OnInit {
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
 
-    // let GroupId = 0;
-    // if (this._IPReportService.userForm.get('GroupId').value)
-    //   GroupId = this._IPReportService.userForm.get('GroupId').value.GroupId
+    let GroupId = 0;
+    if (this._IPReportService.userForm.get('GroupId').value)
+      GroupId = this._IPReportService.userForm.get('GroupId').value.GroupId
 
     this.OPIPType = parseInt(this._IPReportService.userForm.get('OPIPType').value)
 
@@ -2804,7 +2804,7 @@ export class IpReportComponent implements OnInit {
 
       this.SpinLoading = true;
       this.AdList = true;
-      this._IPReportService.getDoctorShareListWithChargesview(DoctorId,
+      this._IPReportService.getDoctorShareListWithChargesview(DoctorId, GroupId,
         this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
         this.OPIPType
