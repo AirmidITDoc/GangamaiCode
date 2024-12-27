@@ -88,5 +88,5 @@ export class BillingClassMasterComponent implements OnInit {
             }
         });
     }
-
+    
 }
