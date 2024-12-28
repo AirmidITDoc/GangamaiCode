@@ -223,9 +223,7 @@ public documentdownloadInsert(employee,loader = true){
         this._loaderService.show();
     }
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtvr_VisitDetailsList_1", employee)
-  }
-
-
+  } 
   public getRegIdDetail(data,loader = true){
     if (loader) {
         this._loaderService.show();
@@ -530,8 +528,9 @@ public documentdownloadInsert(employee,loader = true){
       if (loader) {
           this._loaderService.show();
       }
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorMasterListForCombo",param)
-  }
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
+  } 
+  
     public CrossConsultationInsert(element,loader = true){
         if (loader) {
             this._loaderService.show();

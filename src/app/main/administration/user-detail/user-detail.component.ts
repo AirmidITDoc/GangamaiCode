@@ -340,17 +340,14 @@ export class UserDetailComponent implements OnInit {
     }
   }
 
-  DoctorId:any=0;
+ 
   docflag: boolean = false;
   chkdoctor(event) {
     // debugger
     if (this.UserForm.get('IsDoctor').value  == true) {
-      this.docflag = true
-      this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
-      console.log(this.DoctorId)
+      this.docflag = true  
     }else{
-      this.docflag = false
-      this.DoctorId=0;
+      this.docflag = false 
     }            
   }
   DisclimitFlag: boolean = false;
@@ -376,15 +373,8 @@ export class UserDetailComponent implements OnInit {
   vRoleName:any;
   mobileno:number= 0;
   Save() {
-// debugger
+// debugger 
 
-    if (this.UserForm.get('IsDoctor').value == true) {
-      this.docflag = true
-      
-    }else{
-      this.docflag = false
-      this.DoctorId=0;
-    }
     if ((this.vFirstName == '' || this.vFirstName == null || this.vFirstName == undefined)) {
       this.toastr.warning('Please enter a FirstName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -427,6 +417,14 @@ export class UserDetailComponent implements OnInit {
       });
       return;
     }  
+    if (this.docflag == true) {
+      if(!this.UserForm.get('DoctorId').value){
+        this.toastr.warning('Please select Doctor Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }  
+    }
     if(this.UserForm.get('IsDicslimit').value == true){ 
       if ((this.UserForm.get('DiscLimitPer').value == '' || this.UserForm.get('DiscLimitPer').value == 0 
       || this.UserForm.get('DiscLimitPer').value == undefined)) {
@@ -437,6 +435,14 @@ export class UserDetailComponent implements OnInit {
       } 
     }  
 
+
+    let DoctorID = 0
+    if (this.docflag == true) {
+      if(this.UserForm.get('DoctorId').value){
+        DoctorID= this.UserForm.get('DoctorId').value.DoctorId
+      }  
+    }  
+    
     let PharmExpOpt = 0;
     let PharmIPOpt = false;
     let PharmOPOpt = false; 
@@ -465,7 +471,7 @@ export class UserDetailComponent implements OnInit {
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType": this.UserForm.get('IsDoctor').value || 0,
-          "doctorID":  this.DoctorId ,
+          "doctorID":  DoctorID,
           "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,
           "isCollection": this.UserForm.get('CollectionInformation').value || 0,
@@ -525,7 +531,7 @@ export class UserDetailComponent implements OnInit {
           "StoreId": this.UserForm.get('StoreId').value.StoreId || 0,
           "RoleId": this.UserForm.get('RoleId').value.RoleId || 0,
           "isDoctorType":this.UserForm.get('IsDoctor').value || 0,
-          "doctorID":  this.DoctorId , 
+          "doctorID":  DoctorID, 
           "isPOVerify": this.UserForm.get('Poverify').value || 0,
           "isPOInchargeVerify": this.UserForm.get('Ipoverify').value || 0,
           "isGRNVerify": this.UserForm.get('Grnverify').value || 0,

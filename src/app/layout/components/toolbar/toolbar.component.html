@@ -46,6 +46,11 @@
                                     </div>
                                 </button>
                                 <mat-menu #dashboardMenu="matMenu" [overlapTrigger]="false">
+
+                                    <!-- <button mat-menu-item (click)="navigateToHomePage()" >
+                                        <span>Home Page</span>
+                                    </button> -->
+
                                     <button mat-menu-item (click)="navigateToDailyDashboard()"
                                     *ngIf="IsCollection == '1'">
                                         <span>Daily Dashboard</span>

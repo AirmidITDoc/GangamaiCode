@@ -344,6 +344,7 @@ export class AppointmentComponent implements OnInit {
     filterMaritalstatus: any;
     filterArea: any;
     filterHospital: any;
+    UserLoginDOctorID:any;
 
     public height: string;
     sanitizeImagePreview;
@@ -367,12 +368,13 @@ export class AppointmentComponent implements OnInit {
         private changeDetectorRefs: ChangeDetectorRef,
         public _WhatsAppEmailService: WhatsAppEmailService
     ) {
-        this.getVisitList1();
+       /// this.UserLoginDOctorID = this.accountService.currentUserValue.user.doctorID 
+        this.getVisitList1();  
     }
 
 
     ngOnInit(): void {
-        this.getVisitList1();
+        this.getVisitList1(); 
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
@@ -444,6 +446,8 @@ export class AppointmentComponent implements OnInit {
 
         );
         this.CalcDOB('', null);
+        this.getDoctorNameCombobox()
+       
     }
 
 
@@ -1302,6 +1306,7 @@ export class AppointmentComponent implements OnInit {
         }, 1000);
 
         console.log(this.dataSource.data)
+        
     }
 
     Vtotalcount = 0;
@@ -1443,10 +1448,10 @@ export class AppointmentComponent implements OnInit {
     filteredOptionsPrefix: Observable<string[]>;
     filteredOptionsCity: Observable<string[]>;
     filteredOptionsPurpose: Observable<string[]>;
-    filteredOptionsDoctorsearch:any; 
-    getDoctorNameCombobox() {
+    filteredOptionsDoctorsearch:any;  
+    getDoctorNameCombobox() { 
         var vdata={
-            "@Keyword":this._AppointmentSreviceService.myFilterform.get('DoctorId').value ||  ''
+            "@Keywords":`${this._AppointmentSreviceService.myFilterform.get('DoctorId').value}%`
         }
         console.log(vdata)
         this._AppointmentSreviceService.getDoctorMasterComboList(vdata).subscribe(data => {
@@ -1456,12 +1461,9 @@ export class AppointmentComponent implements OnInit {
                 this.noOptionFound = true;
               } else {
                 this.noOptionFound = false;
-              }
-
-        });
-    }
-
-
+              } 
+        }); 
+    }  
     getOptionTextDoctor(option) {
         return option && option.Doctorname ? option.Doctorname : '';
     }
