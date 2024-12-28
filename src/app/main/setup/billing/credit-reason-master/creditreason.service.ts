@@ -19,7 +19,7 @@ export class CreditreasonService {
   
   createCreditreasonForm(): FormGroup {
       return this._formBuilder.group({
-        creditId: [""],
+        creditId: [0],
         creditReason: ["", 
             [
                 Validators.required,Validators.maxLength(50),

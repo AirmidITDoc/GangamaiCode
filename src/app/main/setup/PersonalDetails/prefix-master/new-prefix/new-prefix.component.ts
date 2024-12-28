@@ -28,12 +28,13 @@ export class NewPrefixComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.prefixForm = this._PrefixMasterService.createPrefixForm();
         debugger
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
-        if(this.data)
-      this.isActive=this.data.isActive
+        if(this.data){
+    //   this.isActive=this.data.isActive
         this.prefixForm.patchValue(this.data);
+        this.getGenderNameCombobox();
+        }
     }
 
  
@@ -80,6 +81,17 @@ export class NewPrefixComponent implements OnInit {
             ]
         };
     }
+
+    GendercmbList: any = [];
+    getGenderNameCombobox() {
+        debugger
+            this._PrefixMasterService.getGenderMasterCombo().subscribe(data => {
+                this.GendercmbList = data;
+                console.log(this.GendercmbList);
+            });
+             
+        }
+     
 
     onClear(val: boolean) {
         this.prefixForm.reset();

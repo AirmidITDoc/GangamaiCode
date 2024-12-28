@@ -30,14 +30,29 @@
                         </airmid-textbox> 
                     </div>
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete 
+                        
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-select placeholder="Select Gender Name" name="sexId"
+                                formControlName="sexId" required>
+                                <mat-option *ngFor="let M of GendercmbList" [value]="M">
+                                    {{ M.GenderName }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Please Select Gender
+                                Name</mat-error>
+                        </mat-form-field>
+
+                        
+                        
+                        
+                        <!-- <airmid-autocomplete 
                             label="Gender Id" 
                             formControlName="sexId" 
                             [formGroup]="prefixForm"
                             [value]="data?.sexId"
                             [validations]="getValidationMessages().sexId" 
                             [mode]="autocompleteModegender">
-                        </airmid-autocomplete>
+                        </airmid-autocomplete> -->
                     </div>
                     
                 </div>
