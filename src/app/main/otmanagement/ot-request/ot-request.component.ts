@@ -325,7 +325,7 @@ export class Requestlist {
   DepartmentName: any;
   AddedBy: any;
   UpdateBy: any;
-  IsCancelled: any;
+  IsCancelled: boolean;
   GenderName: any;
   OTbookingTime: any;
   IsCancelledBy: any;

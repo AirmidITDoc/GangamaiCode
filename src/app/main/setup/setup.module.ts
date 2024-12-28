@@ -54,6 +54,13 @@ const appRoutes: Routes = [
                 (m) => m.InventoryModule
             ),
     },
+    {
+        path: "OTmanagement", //linkaction Name
+        loadChildren: () =>
+            import("./OTManagement/ot-management.module").then(
+                (m) => m.OtManagementModule
+            ),
+    },
 ];
 
 @NgModule({
