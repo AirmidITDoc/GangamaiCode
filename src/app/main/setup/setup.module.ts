@@ -55,7 +55,7 @@ const appRoutes: Routes = [
             ),
     },
     {
-        path: "OTmanagement", //linkaction Name
+        path: "otmanagement", //linkaction Name
         loadChildren: () =>
             import("./OTManagement/ot-management.module").then(
                 (m) => m.OtManagementModule
