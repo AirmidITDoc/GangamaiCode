@@ -17,73 +17,60 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class WardMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
-            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width:450 },
-            { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
-           { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this.confirmDialogRef = this._matDialog.open(
-                            FuseConfirmDialogComponent,
-                            {
-                                disableClose: false,
-                            }
-                        );
-                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                        this.confirmDialogRef.afterClosed().subscribe((result) => {
-                            if (result) {
-                                let that = this;
-                                this._wardService.deactivateTheStatus(data.roomId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    that.grid.bindGridData();
-                                });
-                            }
-                            this.confirmDialogRef = null;
-                        });
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "roomId",
-    sortOrder: 0,
-    filters: [
-        { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-    ],
-    row: 25
+            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+            { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._wardService.deactivateTheStatus(data.roomId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "roomId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
     constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,) { }
 
-    ngOnInit(): void {}
-    
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewWardComponent,
-                {
-                    maxWidth: "55vw",
-                    height: '35%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
+    ngOnInit(): void { }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewWardComponent,
+            {
+                maxWidth: "55vw",
+                height: '35%',
+                width: '70%',
+                data: row
             });
-        }
-
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
+
+}

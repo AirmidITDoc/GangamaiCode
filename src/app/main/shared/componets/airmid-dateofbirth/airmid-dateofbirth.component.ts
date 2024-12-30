@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'airmid-dateofbirth',
+    selector: 'app-airmid-dateofbirth',
     templateUrl: './airmid-dateofbirth.component.html',
     styleUrls: ['./airmid-dateofbirth.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -41,7 +41,7 @@ export class AirmidDateofbirthComponent implements OnInit {
         }
         this.formGroup.controls[this.formControlName].setValue(d);
     }
-    onChangeDateofBirth(DateOfBirth) {
+    onChangeDateofBirth(DateOfBirth:Date) {
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);

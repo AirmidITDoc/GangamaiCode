@@ -17,62 +17,48 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class StateMasterComponent implements OnInit {
-    
+
     msg: any;
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-     
-        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        gridConfig: gridModel = {
-            apiUrl: "StateMaster/List",
-            columnsList: [
-                { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-                { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width:400 },
-                { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width:400 },
-                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
-                { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this.confirmDialogRef = this._matDialog.open(
-                                    FuseConfirmDialogComponent,
-                                    {
-                                        disableClose: false,
-                                    }
-                                );
-                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                                this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                    if (result) {
-                                        let that = this;
-                                        this._StateMasterService.deactivateTheStatus(data.stateId).subscribe((response: any) => {
-                                            this.toastr.success(response.message);
-                                            that.grid.bindGridData();
-                                        });
-                                    }
-                                    this.confirmDialogRef = null;
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "stateId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
-        }
-    
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "StateMaster/List",
+        columnsList: [
+            { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._StateMasterService.deactivateTheStatus(data.stateId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "stateId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
     constructor(
         public _StateMasterService: StateMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
-    
+
     ngOnInit(): void { }
-    
+
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewStateMasterComponent,
@@ -87,5 +73,5 @@ export class StateMasterComponent implements OnInit {
                 that.grid.bindGridData();
             }
         });
-    } 
+    }
 }

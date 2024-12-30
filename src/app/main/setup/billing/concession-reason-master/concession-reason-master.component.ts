@@ -19,71 +19,56 @@ import { NewConcessionreasonComponent } from "./new-concessionreason/new-concess
     animations: fuseAnimations,
 })
 export class ConcessionReasonMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
- 
-    constructor(public _ConcessionReasonMasterService: ConcessionReasonMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
-        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        gridConfig: gridModel = {
-            apiUrl: "ConcessionReasonMaster/List",
-            columnsList: [
-                { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA',width:150 },
-                { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA',width:800 },
-                { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
-                {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this.confirmDialogRef = this._matDialog.open(
-                                    FuseConfirmDialogComponent,
-                                    {
-                                        disableClose: false,
-                                    }
-                                );
-                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                                this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                    if (result) {
-                                        let that = this;
-                                        this._ConcessionReasonMasterService.deactivateTheStatus(data.concessionId).subscribe((response: any) => {
-                                            this.toastr.success(response.message);
-                                            that.grid.bindGridData();
-                                        });
-                                    }
-                                    this.confirmDialogRef = null;
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "concessionId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "concessionReason", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
-        }
-    
-     
-        ngOnInit(): void { }
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewConcessionreasonComponent,
-                {
-                    maxWidth: "45vw",
-                    height: '30%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
-        }
-    
+    constructor(public _ConcessionReasonMasterService: ConcessionReasonMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "ConcessionReasonMaster/List",
+        columnsList: [
+            { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._ConcessionReasonMasterService.deactivateTheStatus(data.concessionId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "concessionId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "concessionReason", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
+
+
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewConcessionreasonComponent,
+            {
+                maxWidth: "45vw",
+                height: '30%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+}

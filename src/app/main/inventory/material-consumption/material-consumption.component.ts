@@ -19,31 +19,29 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
-  selector: 'app-material-consumption',
-  templateUrl: './material-consumption.component.html',
-  styleUrls: ['./material-consumption.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-material-consumption',
+    templateUrl: './material-consumption.component.html',
+    styleUrls: ['./material-consumption.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class MaterialConsumptionComponent implements OnInit {
-
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
-   
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-    apiUrl: "MaterialConsumption/MaterialConsumptionList",
-    columnsList: [
-        { heading: "Code", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA',width :120 },
-        // { heading: "ConsumptionDate", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        { heading: "Consumption Date & Time", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA',width :250 },
-        { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA',width :200 },
-        { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        // { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsActive", key: "isActive",width :100 , type: gridColumnTypes.status, align: "center" },
+        apiUrl: "MaterialConsumption/MaterialConsumptionList",
+        columnsList: [
+            { heading: "Code", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            // { heading: "ConsumptionDate", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
+            { heading: "Consumption Date & Time", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA',width :50 },
+            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA',width :50 },
+            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -52,22 +50,9 @@ export class MaterialConsumptionComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._MaterialConsumptionService.deactivateTheStatus(data.materialConsumptionId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._MaterialConsumptionService.deactivateTheStatus(data.materialConsumptionId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -90,13 +75,13 @@ export class MaterialConsumptionComponent implements OnInit {
     paginator: any;
     sIsLoading: string;
     sort: any;
-   
+
     constructor(
         public _MaterialConsumptionService: MaterialConsumptionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void { 
+    ngOnInit(): void {
         this.getMaterialConList();
     }
 
@@ -116,12 +101,12 @@ export class MaterialConsumptionComponent implements OnInit {
         // });
     }
 
-    NewMatrialCon(){
+    NewMatrialCon() {
         const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
             {
-            maxWidth: "100%",
-            height: '95%',
-            width: '98%',
+                maxWidth: "100%",
+                height: '95%',
+                width: '98%',
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
@@ -132,224 +117,224 @@ export class MaterialConsumptionComponent implements OnInit {
     getMaterialConList() {
         this.sIsLoading = 'loading-data';
         var vdata = {
-            "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
-            "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-            "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "ToStoreId": this._loggedService.currentUserValue.storeId || 0,
+            "From_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "To_Dt": this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         }
         console.log(vdata);
-            this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
+        this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
             this.dsMaterialConLList.data = data as MaterialConList[];
             this.dsMaterialConLList.sort = this.sort;
             this.dsMaterialConLList.paginator = this.paginator;
             this.sIsLoading = '';
             console.log(this.dsMaterialConLList.data)
         },
-        error => {
-            this.sIsLoading = '';
-        });
+            error => {
+                this.sIsLoading = '';
+            });
     }
-    
 
-//   displayedColumns = [
-//     'ConsumptionNo',
-//     'ConsumptionDate',
-//     'ConsumptionTime',
-//     'MaterialConsumptionId',
-//     'LandedTotalAmount',
-//     'Remark',
-//     'AddedBy',
-//     'action',
-//   ];
-//   displayedNewMaterialList = [
-//     'ItemName',
-//     'BatchNo',
-//     'ExpDate',
-//     'BalQty',
-//     'UsedQty',
-//     'Rate',
-//     'TotalAmount',
-//     'Remark',
-//     'StkId'
-//   ];
 
-//   SpinLoading: boolean = false;
-//   StoreList: any = [];
-//   screenFromString = 'admission-form';
-//   sIsLoading: string = '';
-//   isLoading = true;
-//   showAutocomplete = false;
-//   ItemName:any;
-//   isItemIdSelected:boolean = false;
-//   ItemId: any;
-//   dateTimeObj: any;
+    //   displayedColumns = [
+    //     'ConsumptionNo',
+    //     'ConsumptionDate',
+    //     'ConsumptionTime',
+    //     'MaterialConsumptionId',
+    //     'LandedTotalAmount',
+    //     'Remark',
+    //     'AddedBy',
+    //     'action',
+    //   ];
+    //   displayedNewMaterialList = [
+    //     'ItemName',
+    //     'BatchNo',
+    //     'ExpDate',
+    //     'BalQty',
+    //     'UsedQty',
+    //     'Rate',
+    //     'TotalAmount',
+    //     'Remark',
+    //     'StkId'
+    //   ];
 
-  
-//   dsMaterialConLList = new MatTableDataSource<MaterialConList>();
-//   dsNewMaterialConList = new MatTableDataSource<NewMaterialList>();
+    //   SpinLoading: boolean = false;
+    //   StoreList: any = [];
+    //   screenFromString = 'admission-form';
+    //   sIsLoading: string = '';
+    //   isLoading = true;
+    //   showAutocomplete = false;
+    //   ItemName:any;
+    //   isItemIdSelected:boolean = false;
+    //   ItemId: any;
+    //   dateTimeObj: any;
 
-//   @ViewChild(MatSort) sort: MatSort;
-//   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-//   constructor(
-//     public _MaterialConsumptionService: MaterialConsumptionService,
-//     public _matDialog: MatDialog,
-//     private _fuseSidebarService: FuseSidebarService,
-//     public datePipe: DatePipe,
-//     private _loggedService: AuthenticationService,
-//     private accountService: AuthenticationService,
-    
-//   ) { }
+    //   dsMaterialConLList = new MatTableDataSource<MaterialConList>();
+    //   dsNewMaterialConList = new MatTableDataSource<NewMaterialList>();
 
-//   ngOnInit(): void {
-//    this. gePharStoreList();
-//    this.getMaterialConList();
-//   }
-  
-//   toggleSidebar(name): void {
-//     this._fuseSidebarService.getSidebar(name).toggleOpen();
-//   }
-//   getDateTime(dateTimeObj) {
-//     this.dateTimeObj = dateTimeObj;
-//   }
-//   getMaterialConList() {
-//     this.sIsLoading = 'loading-data';
-//     var vdata = {
-//       "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
-//        "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//        "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-//     }
-//     console.log(vdata);
-//       this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
-//       this.dsMaterialConLList.data = data as MaterialConList[];
-//       this.dsMaterialConLList.sort = this.sort;
-//       this.dsMaterialConLList.paginator = this.paginator;
-//       this.sIsLoading = '';
-//       console.log(this.dsMaterialConLList.data)
-//     },
-//     error => {
-//       this.sIsLoading = '';
-//     });
-//   }
-//   gePharStoreList() {
-//     var vdata = {
-//       Id: this._loggedService.currentUserValue.storeId
-//     }
-//     this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
-//       this.StoreList = data;
-//       this._MaterialConsumptionService.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
-//     });
-//   }
-//   NewMatrialCon(){
-//     const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
-//       {
-//         maxWidth: "100%",
-//         height: '95%',
-//         width: '95%',
-//       });
-//     dialogRef.afterClosed().subscribe(result => {
-//       console.log('The dialog was closed - Insert Action', result);
-//       this.getMaterialConList();
-//     });
-//   }
+    //   @ViewChild(MatSort) sort: MatSort;
+    //   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-     
-//   viewgetMaterialconsumptionReportPdf(contact) {
-    
-//     console.log(contact)
-//     this.sIsLoading == 'loading-data'
-  
-//     setTimeout(() => {
-//     this.SpinLoading =true;
-//     let MaterialConsumptionId= contact.MaterialConsumptionId
-//   this._MaterialConsumptionService.getMaterialconsumptionview(MaterialConsumptionId).subscribe(res => {
-     
-//       const dialogRef = this._matDialog.open(PdfviewerComponent,
-//         {
-//           maxWidth: "95vw",
-//           height: '850px',
-//           width: '100%',
-//           data: {
-//             base64: res["base64"] as string,
-//             title: "Material Consumption Report Viewer"
-//           }
-//         });
-//         dialogRef.afterClosed().subscribe(result => {
-//           this.sIsLoading = '';
-//         });
-//     });
-//     },1000);
-//   }
-// }
+    //   constructor(
+    //     public _MaterialConsumptionService: MaterialConsumptionService,
+    //     public _matDialog: MatDialog,
+    //     private _fuseSidebarService: FuseSidebarService,
+    //     public datePipe: DatePipe,
+    //     private _loggedService: AuthenticationService,
+    //     private accountService: AuthenticationService,
 
-// export class NewMaterialList {
-//   ItemName: string;
-//   BatchNo: number;
-//   ExpDate:number;
-//   BalQty:number;
-//   UsedQty:any;
-//   Rate:any;
-//   TotalAmount:any;
-//   Remark:any;
-//   StkId:any;
- 
-//   constructor(NewMaterialList) {
-//     {
-//       this.ItemName = NewMaterialList.ItemName || "";
-//       this.BatchNo = NewMaterialList.BatchNo || 0;
-//       this.ExpDate = NewMaterialList.ExpDate || 0;
-//       this.BalQty = NewMaterialList.BalQty|| 0;
-//       this.UsedQty = NewMaterialList.UsedQty || 0;
-//       this.Rate =NewMaterialList.Rate || 0;
-//       this.TotalAmount = NewMaterialList.TotalAmount|| 0;
-//       this.Remark = NewMaterialList.Remark || ' ';
-//       this.StkId =NewMaterialList.StkId || 0;
-//     }
-//   }
-// }
-// export class MaterialConList {
-//   ConsumptionNo:any;
-//   Date: Number;
-//   FromStoreName:string;
-//   PurchaseTotalAmount: number;
-//   TotalVatAmount:any;
-//   Addedby:number;
-//   Remark:any;
-  
-//   constructor(MaterialConList) {
-//     {
-//       this.ConsumptionNo = MaterialConList.ConsumptionNo || 0;
-//       this.Date = MaterialConList.Date || 0;
-//       this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
-//       this.FromStoreName = MaterialConList.FromStoreName || "";
-//       this.TotalVatAmount = MaterialConList.TotalVatAmount || 0;
-//       this.Addedby = MaterialConList.Addedby || 0;
-//       this.Remark = MaterialConList.Remark || "";
- 
-//     }
-//   }
+    //   ) { }
+
+    //   ngOnInit(): void {
+    //    this. gePharStoreList();
+    //    this.getMaterialConList();
+    //   }
+
+    //   toggleSidebar(name): void {
+    //     this._fuseSidebarService.getSidebar(name).toggleOpen();
+    //   }
+    //   getDateTime(dateTimeObj) {
+    //     this.dateTimeObj = dateTimeObj;
+    //   }
+    //   getMaterialConList() {
+    //     this.sIsLoading = 'loading-data';
+    //     var vdata = {
+    //       "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
+    //        "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //        "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+    //     }
+    //     console.log(vdata);
+    //       this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
+    //       this.dsMaterialConLList.data = data as MaterialConList[];
+    //       this.dsMaterialConLList.sort = this.sort;
+    //       this.dsMaterialConLList.paginator = this.paginator;
+    //       this.sIsLoading = '';
+    //       console.log(this.dsMaterialConLList.data)
+    //     },
+    //     error => {
+    //       this.sIsLoading = '';
+    //     });
+    //   }
+    //   gePharStoreList() {
+    //     var vdata = {
+    //       Id: this._loggedService.currentUserValue.storeId
+    //     }
+    //     this._MaterialConsumptionService.getLoggedStoreList(vdata).subscribe(data => {
+    //       this.StoreList = data;
+    //       this._MaterialConsumptionService.SearchGroup.get('StoreId').setValue(this.StoreList[0]);
+    //     });
+    //   }
+    //   NewMatrialCon(){
+    //     const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
+    //       {
+    //         maxWidth: "100%",
+    //         height: '95%',
+    //         width: '95%',
+    //       });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //       console.log('The dialog was closed - Insert Action', result);
+    //       this.getMaterialConList();
+    //     });
+    //   }
+
+
+    //   viewgetMaterialconsumptionReportPdf(contact) {
+
+    //     console.log(contact)
+    //     this.sIsLoading == 'loading-data'
+
+    //     setTimeout(() => {
+    //     this.SpinLoading =true;
+    //     let MaterialConsumptionId= contact.MaterialConsumptionId
+    //   this._MaterialConsumptionService.getMaterialconsumptionview(MaterialConsumptionId).subscribe(res => {
+
+    //       const dialogRef = this._matDialog.open(PdfviewerComponent,
+    //         {
+    //           maxWidth: "95vw",
+    //           height: '850px',
+    //           width: '100%',
+    //           data: {
+    //             base64: res["base64"] as string,
+    //             title: "Material Consumption Report Viewer"
+    //           }
+    //         });
+    //         dialogRef.afterClosed().subscribe(result => {
+    //           this.sIsLoading = '';
+    //         });
+    //     });
+    //     },1000);
+    //   }
+    // }
+
+    // export class NewMaterialList {
+    //   ItemName: string;
+    //   BatchNo: number;
+    //   ExpDate:number;
+    //   BalQty:number;
+    //   UsedQty:any;
+    //   Rate:any;
+    //   TotalAmount:any;
+    //   Remark:any;
+    //   StkId:any;
+
+    //   constructor(NewMaterialList) {
+    //     {
+    //       this.ItemName = NewMaterialList.ItemName || "";
+    //       this.BatchNo = NewMaterialList.BatchNo || 0;
+    //       this.ExpDate = NewMaterialList.ExpDate || 0;
+    //       this.BalQty = NewMaterialList.BalQty|| 0;
+    //       this.UsedQty = NewMaterialList.UsedQty || 0;
+    //       this.Rate =NewMaterialList.Rate || 0;
+    //       this.TotalAmount = NewMaterialList.TotalAmount|| 0;
+    //       this.Remark = NewMaterialList.Remark || ' ';
+    //       this.StkId =NewMaterialList.StkId || 0;
+    //     }
+    //   }
+    // }
+    // export class MaterialConList {
+    //   ConsumptionNo:any;
+    //   Date: Number;
+    //   FromStoreName:string;
+    //   PurchaseTotalAmount: number;
+    //   TotalVatAmount:any;
+    //   Addedby:number;
+    //   Remark:any;
+
+    //   constructor(MaterialConList) {
+    //     {
+    //       this.ConsumptionNo = MaterialConList.ConsumptionNo || 0;
+    //       this.Date = MaterialConList.Date || 0;
+    //       this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
+    //       this.FromStoreName = MaterialConList.FromStoreName || "";
+    //       this.TotalVatAmount = MaterialConList.TotalVatAmount || 0;
+    //       this.Addedby = MaterialConList.Addedby || 0;
+    //       this.Remark = MaterialConList.Remark || "";
+
+    //     }
+    //   }
 
 
 }
 export class MaterialConList {
-    ConsumptionNo:any;
+    ConsumptionNo: any;
     Date: Number;
-    FromStoreName:string;
+    FromStoreName: string;
     PurchaseTotalAmount: number;
-    TotalVatAmount:any;
-    Addedby:number;
-    Remark:any;
-    
+    TotalVatAmount: any;
+    Addedby: number;
+    Remark: any;
+
     constructor(MaterialConList) {
-      {
-        this.ConsumptionNo = MaterialConList.ConsumptionNo || 0;
-        this.Date = MaterialConList.Date || 0;
-        this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
-        this.FromStoreName = MaterialConList.FromStoreName || "";
-        this.TotalVatAmount = MaterialConList.TotalVatAmount || 0;
-        this.Addedby = MaterialConList.Addedby || 0;
-        this.Remark = MaterialConList.Remark || "";
-   
-      }
+        {
+            this.ConsumptionNo = MaterialConList.ConsumptionNo || 0;
+            this.Date = MaterialConList.Date || 0;
+            this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
+            this.FromStoreName = MaterialConList.FromStoreName || "";
+            this.TotalVatAmount = MaterialConList.TotalVatAmount || 0;
+            this.Addedby = MaterialConList.Addedby || 0;
+            this.Remark = MaterialConList.Remark || "";
+
+        }
     }
 }
 

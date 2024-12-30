@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, ViewChild, ContentChildren, QueryList, OnInit, ElementRef, AfterViewInit, Output } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -14,7 +16,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe) {
+    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe,public _matDialog: MatDialog) {
     }
     dateType = DATE_TYPES;
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
@@ -31,6 +33,7 @@ export class AirmidTableComponent implements OnInit {
     //     this.gridConfig.columnsList.forEach(columnDef => this.table.addColumnDef(columnDef));
     // }
     headers = [];
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     ngOnInit(): void {
         this.bindGridData();
     }
@@ -40,7 +43,7 @@ export class AirmidTableComponent implements OnInit {
     public get GridColumnType() {
         return gridColumnTypes;
     }
-    public get Headers(){
+    public get Headers() {
         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
     }
     bindGridData() {
@@ -63,5 +66,20 @@ export class AirmidTableComponent implements OnInit {
     }
     getStatus(status: boolean) {
         return status;
+    }
+    onDelete(obj,element) {
+        this.confirmDialogRef = this._matDialog.open(
+            FuseConfirmDialogComponent,
+            {
+                disableClose: false,
+            }
+        );
+        this.confirmDialogRef.componentInstance.confirmMessage =obj.message?? "Are you sure you want to deactive?";
+        this.confirmDialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                obj.callback(element);
+            }
+            this.confirmDialogRef = null;
+        });
     }
 }

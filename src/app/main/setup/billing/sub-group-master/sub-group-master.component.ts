@@ -17,40 +17,26 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class SubGroupMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
     gridConfig: gridModel = {
         apiUrl: "SubGroupMaster/List",
         columnsList: [
-            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA',width:150 },
-            { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA',width:400 },
-            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:400 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._subgroupService.deactivateTheStatus(data.subGroupId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._subgroupService.deactivateTheStatus(data.subGroupId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -73,10 +59,10 @@ export class SubGroupMasterComponent implements OnInit {
     // private _onDestroy = new Subject<void>();
 
     constructor(public _subgroupService: SubGroupMasterService, public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-    
+
     }
     onSave(row: any = null) {
         debugger

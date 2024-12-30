@@ -19,41 +19,27 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class CashCounterMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
     gridConfig: gridModel = {
         apiUrl: "CashCounter/List",
         columnsList: [
-            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width:400 },
-            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width:250 },
-            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._CashCounterMasterService.deactivateTheStatus(data.cashCounterId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._CashCounterMasterService.deactivateTheStatus(data.cashCounterId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]

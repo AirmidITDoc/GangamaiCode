@@ -19,47 +19,32 @@ import { NewSubtapComponent } from "./new-subtap/new-subtap.component";
     animations: fuseAnimations,
 })
 export class SubtpaCompanyMasterComponent implements OnInit {
-    
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
         apiUrl: "SubTpaCompany/List",
         columnsList: [
-            { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "PinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
-                    
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) 
+                            this.onSave(data)
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
-                                            this.toastr.success(response.Message);
-                                            that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
+                                this.toastr.success(response.Message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -79,7 +64,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
 
     onSave(row: any = null) {
         debugger
@@ -97,5 +82,5 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             }
         });
     }
-} 
+}
 

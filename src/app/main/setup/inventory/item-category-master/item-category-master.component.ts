@@ -19,41 +19,27 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
     animations: fuseAnimations,
 })
 export class ItemCategoryMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
 
     gridConfig: gridModel = {
         apiUrl: "ItemCategoryMaster/List",
         columnsList: [
-            { heading: "Code", key: "itemCategoryId", sort: true, width:150, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "itemCategoryName", sort: true, width:400, align: 'left', emptySign: 'NA' },
-            { heading: "Item Type ID", key: "itemTypeId", sort: true, width:400, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "itemCategoryId", sort: true, width: 150, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "itemCategoryName", sort: true, width: 400, align: 'left', emptySign: 'NA' },
+            { heading: "Item Type ID", key: "itemTypeId", sort: true, width: 400, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._categorymasterService.deactivateTheStatus(data.itemCategoryId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._categorymasterService.deactivateTheStatus(data.itemCategoryId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -75,7 +61,7 @@ export class ItemCategoryMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-  onSave(row: any = null) {
+    onSave(row: any = null) {
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(NewItemcategoryComponent,

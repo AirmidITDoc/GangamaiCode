@@ -27,7 +27,6 @@ import { NewRegistrationComponent } from './new-registration/new-registration.co
 })
 export class RegistrationComponent implements OnInit {
 
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     nowdate = new Date();
@@ -102,26 +101,13 @@ export class RegistrationComponent implements OnInit {
                     },
                     {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
-            } 
+            }
         ],
         sortField: "RegId",
         sortOrder: 1,
@@ -302,7 +288,7 @@ export class RegInsert {
     // addedBy:any;
     // updatedBy:any;
 
-    
+
     /**
      * Constructor
      *
@@ -369,7 +355,7 @@ export class RegInsert {
             this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
             // this.addedBy = RegInsert.addedBy || 0 ;
             // this.updatedBy = RegInsert.updatedBy || 0 ;
-            
+
         }
     }
 }

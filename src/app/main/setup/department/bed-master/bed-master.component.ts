@@ -18,75 +18,59 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class BedMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  
-   
-        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        gridConfig: gridModel = {
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
         apiUrl: "BedMaster/List",
         columnsList: [
-            { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width:600 },
-            { heading: "Room Id", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width:100 },
-                {
-                    heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this.confirmDialogRef = this._matDialog.open(
-                                    FuseConfirmDialogComponent,
-                                    {
-                                        disableClose: false,
-                                    }
-                                );
-                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                                this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                    if (result) {
-                                        let that = this;
-                                        this._BedMasterService.deactivateTheStatus(data.bedId).subscribe((response: any) => {
-                                            this.toastr.success(response.message);
-                                            that.grid.bindGridData();
-                                        });
-                                    }
-                                    this.confirmDialogRef = null;
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "bedId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "bedName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
-        }
-    
-        constructor(
-            public _BedMasterService: BedMasterService,
-            public toastr: ToastrService, public _matDialog: MatDialog
-        ) { }
-    
-        ngOnInit(): void { }
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewBedComponent,
-                {
-                    maxWidth: "45vw",
-                    height: '30%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
-        }
-    
+            { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 600 },
+            { heading: "Room Id", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._BedMasterService.deactivateTheStatus(data.bedId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "bedId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "bedName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
+
+    constructor(
+        public _BedMasterService: BedMasterService,
+        public toastr: ToastrService, public _matDialog: MatDialog
+    ) { }
+
+    ngOnInit(): void { }
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewBedComponent,
+            {
+                maxWidth: "45vw",
+                height: '30%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+}

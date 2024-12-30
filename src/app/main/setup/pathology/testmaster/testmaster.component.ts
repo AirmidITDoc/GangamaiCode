@@ -30,39 +30,26 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class TestmasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
-    
+
+
     gridConfig: gridModel = {
         apiUrl: "PathTestMaster/TestMasterList",
         columnsList: [
-            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width :100 },
-            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width :850 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width :100 },
-            { heading: "Action", key: "action", align: "right", width :100, type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 850 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._TestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._TestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -87,10 +74,10 @@ export class TestmasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        
+
     }
-  
-   
+
+
     onSave(row: any = null) {
         debugger
         let that = this;
@@ -121,7 +108,7 @@ export class TestMaster {
     SuggestionNote: string;
     FootNote: string;
     ServiceID: number;
-    ServiceName:any;
+    ServiceName: any;
     IsTemplateTest: number;
     IsCategoryPrint: boolean;
     IsPrintTestName: boolean;
@@ -147,7 +134,7 @@ export class TestMaster {
             this.FootNote = TestMaster.FootNote || "";
             this.Isdeleted = TestMaster.Isdeleted || "false";
             this.ServiceID = TestMaster.ServiceID || 0;
-            this.ServiceName= TestMaster.ServiceName || "";
+            this.ServiceName = TestMaster.ServiceName || "";
             this.IsTemplateTest = TestMaster.IsTemplateTest || "";
             this.IsCategoryPrint = TestMaster.IsCategoryPrint || "false";
             this.IsPrintTestName = TestMaster.IsPrintTestName || "false";
@@ -164,7 +151,7 @@ export class TestList {
     ParameterID: number;
     Isdeleted: any;
     IsDeleted: any;
-    ParameterId:any;
+    ParameterId: any;
     /**
      * Constructor
      *

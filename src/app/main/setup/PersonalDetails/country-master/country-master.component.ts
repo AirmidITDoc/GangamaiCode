@@ -18,38 +18,24 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class CountryMasterComponent implements OnInit {
     msg: any;
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "CountryMaster/List",
         columnsList: [
-            { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._CountryService.deactivateTheStatus(data.countryId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._CountryService.deactivateTheStatus(data.countryId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -65,23 +51,23 @@ export class CountryMasterComponent implements OnInit {
     }
 
     constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,) { }
 
-    ngOnInit(): void {}
-   
-            onSave(row: any = null) {
-                let that = this;
-                const dialogRef = this._matDialog.open(NewCountryMasterComponent,
-                    {
-                        maxWidth: "45vw",
-                        height: '30%',
-                        width: '70%',
-                        data: row
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    if (result) {
-                        that.grid.bindGridData();
-                    }
-                });
+    ngOnInit(): void { }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCountryMasterComponent,
+            {
+                maxWidth: "45vw",
+                height: '30%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
             }
+        });
+    }
 }

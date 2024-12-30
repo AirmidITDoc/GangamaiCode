@@ -19,40 +19,26 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class CityMasterComponent implements OnInit {
 
     msg: any;
-    options:any[]=[{Text:'Text-1',Id:1},{Text:'Text-2',Id:2},{Text:'Text-3',Id:3}];
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  
+    options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: [
-        { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-        { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width:400 },
-        { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width:400 },
-        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
-        { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._CityMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._CityMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -90,7 +76,7 @@ export class CityMasterComponent implements OnInit {
         });
     }
 
-    selectChange(obj: any){
+    selectChange(obj: any) {
         console.log(obj);
     }
 

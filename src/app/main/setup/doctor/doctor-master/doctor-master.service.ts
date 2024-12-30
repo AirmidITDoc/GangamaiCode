@@ -138,10 +138,7 @@ export class DoctorMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData(
-            "Generic/ExecByQueryStatement?query=" + m_data,
-            {}
-        );
+        return this._httpClient.DeleteData("Doctor?Id=" + m_data.toString());
     }
 
     public getDepartmentCombobox() {
