@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'app-airmid-dateofbirth',
+    selector: 'airmid-dateofbirth',
     templateUrl: './airmid-dateofbirth.component.html',
     styleUrls: ['./airmid-dateofbirth.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
