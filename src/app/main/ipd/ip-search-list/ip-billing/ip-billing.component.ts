@@ -35,6 +35,7 @@ import { PrebillDetailsComponent } from './prebill-details/prebill-details.compo
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { query } from '@angular/animations';
+import { OpPackageBillInfoComponent } from 'app/main/opd/OPBilling/new-opbilling/op-package-bill-info/op-package-bill-info.component';
 
 
 @Component({
@@ -97,7 +98,7 @@ export class IPBillingComponent implements OnInit {
   ];
   PackageBillColumns = [ 
     'IsCheck',
-   // 'ChargesDate',
+    'ServiceNamePackage',
     'ServiceName',
     'Price',
     'Qty',
@@ -105,7 +106,6 @@ export class IPBillingComponent implements OnInit {
     'DiscAmt',
     'NetAmount', 
    // 'DoctorName',  
-    'Action'
   ];
 
   Ipbillform: FormGroup;
@@ -647,6 +647,9 @@ ServiceList:any=[];
               NetAmount: 0,
               IsPathology: element.IsPathology,
               IsRadiology: element.IsRadiology, 
+              PackageId:element.PackageId,
+              PackageServiceId:element.PackageServiceId,
+              PacakgeServiceName:element.PacakgeServiceName,
             })
         })
         this.PackageDatasource.data = this.PacakgeList
@@ -654,16 +657,7 @@ ServiceList:any=[];
         console.log(this.PackageDatasource.data);
       });
     }
-    deleteTableRowPackage(element) {
-      let index = this.PacakgeList.indexOf(element);
-      if (index >= 0) {
-        this.PacakgeList.splice(index, 1);
-        this.PackageDatasource.data = [];
-        this.PackageDatasource.data = this.PacakgeList;
-      }
-      Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
-  
-    }
+ 
     //add charge Table Cal
    
     getQtytable(element,Qty) {
@@ -1346,7 +1340,7 @@ CalculateAdminCharge(){
         this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
           if (response) {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
-              if (contact.IsPackage == '1' && contact.ServiceId) {
+              if (contact.IsPackageMaster == '1' && contact.ServiceId) {
                 this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== contact.ServiceId)
                 console.log(this.PacakgeList)
                 this.PackageDatasource.data = this.PacakgeList;
@@ -1364,7 +1358,110 @@ CalculateAdminCharge(){
       }
     });
   }
-
+   EditedPackageService:any=[];
+   OriginalPackageService:any = [];
+   TotalPrice:any = 0; 
+   
+ getPacakgeDetail(contact){
+   let deleteservice;
+   deleteservice = this.PackageDatasource.data
+   this.PackageDatasource.data.forEach(element => {
+     deleteservice = deleteservice.filter(item => item.ServiceId !== element.ServiceId)
+     console.log(deleteservice)   
+     this.PackageDatasource.data =  deleteservice
+  
+     this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+     this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+     console.log(this.OriginalPackageService)
+     console.log(this.EditedPackageService)
+   });
+ 
+   const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
+     {
+       maxWidth: "100%",
+       height: '75%',
+       width: '70%' ,
+       data: {
+         Obj:contact
+       }
+     });
+   dialogRef.afterClosed().subscribe(result => {
+     debugger
+     console.log('The dialog was closed - Insert Action', result);
+     if (result) {
+ 
+       this.PackageDatasource.data = result
+       console.log( this.PackageDatasource.data)   
+       this.PackageDatasource.data.forEach(element => {
+         this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== element.ServiceId)
+         console.log(this.PacakgeList)   
+         if(element.BillwiseTotalAmt > 0){
+           this.TotalPrice = element.BillwiseTotalAmt;  
+           console.log(this.TotalPrice) 
+         }else{
+           this.TotalPrice = parseInt(this.TotalPrice) + parseInt(element.Price);  
+           console.log(this.TotalPrice) 
+         }
+      
+         this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+         this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+         console.log(this.OriginalPackageService)
+         console.log(this.EditedPackageService)
+       });
+ 
+       this.PackageDatasource.data.forEach(element => {
+         this.PacakgeList.push(
+           {
+             ServiceId: element.ServiceId,
+             ServiceName: element.ServiceName,
+             Price: element.Price || 0,
+             Qty: element.Qty || 1,
+             TotalAmt: element.TotalAmt || 0,
+             ConcessionPercentage: element.DiscPer || 0,
+             DiscAmt: element.DiscAmt || 0,
+             NetAmount: element.NetAmount || 0,
+             IsPathology: element.IsPathology || 0,
+             IsRadiology: element.IsRadiology || 0,
+             PackageId: element.PackageId || 0,
+             PackageServiceId: element.PackageServiceId || 0, 
+             PacakgeServiceName:element.PacakgeServiceName || '',
+           });
+         this.PackageDatasource.data = this.PacakgeList;
+       });
+  
+         if(this.EditedPackageService.length){
+           this.EditedPackageService.forEach(element => {
+             this.OriginalPackageService.push(
+               {  
+                 ChargesId: 0,// this.serviceId,
+                 ServiceId:  element.ServiceId,
+                 ServiceName: element.ServiceName,
+                 Price: this.TotalPrice || 0,
+                 Qty:  element.Qty || 0,
+                 TotalAmt: (parseFloat(element.Qty) *  parseFloat(this.TotalPrice)) || 0,
+                 DiscPer: element.DiscPer || 0, 
+                 DiscAmt: element.DiscAmt || 0,
+                 NetAmount: (parseFloat(element.Qty) *  parseFloat(this.TotalPrice))  || 0,
+                 ClassId: 1, 
+                 DoctorId: element.DoctornewId, 
+                 DoctorName: element.DoctorName,
+                 ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+                 IsPathology: element.IsPathology,
+                 IsRadiology: element.IsRadiology,
+                 IsPackage: element.IsPackage,
+                 ClassName: element.ClassName, 
+                 ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
+               });
+           
+             this.dataSource.data = this.OriginalPackageService;
+            this.chargeslist = this.dataSource.data 
+           });
+         } 
+         
+         this.TotalPrice = 0;
+     }
+   })
+ }
   showAllFilter(event) {
     console.log(event);
     if (event.checked == true)

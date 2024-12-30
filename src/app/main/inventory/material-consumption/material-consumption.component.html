@@ -88,51 +88,42 @@
 
                                     <ng-container matColumnDef="ConsumptionNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            ConsumptionNo </mat-header-cell>
+                                            Con.No </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ConsumptionNo}}
+                                            {{contact.ConsumptionNo || '-'}}
                                         </mat-cell>
-                                    </ng-container>
-
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="ConsumptionDate">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            ConsumptionDate</mat-header-cell>
+                                            DateTime</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ConsumptionDate}}
+                                            {{contact.ConsumptionDate}}-{{contact.ConsumptionTime | date: 'shortTime'}}
                                         </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ConsumptionTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            ConsumptionTime </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.ConsumptionTime | date: 'shortTime'}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="MaterialConsumptionId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            MaterialConsumptionId </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.MaterialConsumptionId}}
-                                        </mat-cell>
-                                    </ng-container>
+                                    </ng-container>  
 
                                     <ng-container matColumnDef="LandedTotalAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            LandedTotalAmount </mat-header-cell>
+                                            LandedTotalAmt </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.LandedTotalAmount | number:'1.2-2'}}
+                                            {{contact.LandedTotalAmount | currency:'INR'}}
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="StoreName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            StoreName </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.StoreName}}
+                                        </mat-cell>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="Remark">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                             Remark </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.Remark}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                                        matTooltip="{{contact.Remark}}">
+                                            {{contact.Remark || '-'}}
                                         </mat-cell>
                                     </ng-container>
 

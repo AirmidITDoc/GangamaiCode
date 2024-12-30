@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class MaterialConsumptionService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _loaderService : LoaderService
   ) { 
     this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
@@ -40,6 +42,7 @@ export class MaterialConsumptionService {
       ItemID:[''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      Departmentwise:['']
     });
   }
   createfinalform() {
@@ -59,21 +62,36 @@ export class MaterialConsumptionService {
   //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
   // }
 
-  public MaterialconsSave(Param){
+  public MaterialconsSave(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("InventoryTransaction/MaterialConsumptionSave",Param);
   }
 
-  public getLoggedStoreList(Param){
+  public getLoggedStoreList(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
-  public getMaterialConList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_MaterialConsumption_ByName",Param);
+  public getMaterialConList(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_MaterialConsumption_ByName",Param);
   }
-  public getItemlist(Param){
+  public getItemlist(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemName_BalQty_M",Param)
   }
-  public getMaterialconsumptionview(MaterialConsumptionId){
+  public getMaterialconsumptionview(MaterialConsumptionId,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.get("InPatient/view-MaterialConsumption?MaterialConsumptionId=" + MaterialConsumptionId);
   }
 

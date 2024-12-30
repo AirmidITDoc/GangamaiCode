@@ -240,10 +240,13 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.vBalQty = 0;
     this.vUsedQty = 0;
     this.vRemark = " ";
-    this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue('');
+    this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue(''); 
+  }
+  vDepartmentWise:any;
+  getdepartmentwise(event){
+    
 
   }
-
   QtyCondition(){
     
     if(this.vBalQty < this.vUsedQty){
