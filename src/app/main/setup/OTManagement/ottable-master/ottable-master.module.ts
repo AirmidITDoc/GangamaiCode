@@ -33,28 +33,29 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
-import { MatChipsModule } from '@angular/material/chips';  
-import { SurgeryMasterComponent } from './surgery-master.component';
-import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { OttableMasterComponent } from './ottable-master.component';
+import { NewOttableMasterComponent } from './new-ottable-master/new-ottable-master.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SurgeryMasterComponent 
+  {
+    path: '**',
+    component: OttableMasterComponent
   },
 ];
 
 @NgModule({
   declarations: [
-    SurgeryMasterComponent,
-    NewSurgeryMasterComponent 
+    OttableMasterComponent,
+    NewOttableMasterComponent
   ],
+
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     CommonModule,
     MatExpansionModule,
-    MatSlideToggleModule ,
+    MatSlideToggleModule,
     MatListModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -88,18 +89,13 @@ const routes: Routes = [
     MatSelectModule,
     MatSelectModule,
     MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
-        
   ],
   providers: [
-    
     DatePipe,
-],
-entryComponents: [
-  SurgeryMasterComponent,
-]
+  ],
+  entryComponents: [
+    OttableMasterComponent,
+  ]
 })
-export class SurgeryMasterModule { }
-
-
+export class OttableMasterModule { }

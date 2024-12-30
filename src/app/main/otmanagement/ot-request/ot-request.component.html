@@ -133,10 +133,10 @@
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-60">
                                                 <mat-icon
-                                                    *ngIf="!contact.IsCancelled=='0'" matTooltip="IsCancelled"
+                                                    *ngIf="contact.IsCancelled=='1'" matTooltip="IsCancelled"
                                                     class=" pill red-600 s-16 ">circle</mat-icon>
                                                 <mat-icon
-                                                    *ngIf="!contact.IsCancelled=='1'" matTooltip="IsNotCancelled"
+                                                    *ngIf="contact.IsCancelled!='1'" matTooltip="IsNotCancelled"
                                                     class="pill green-600 s-16 ">circle</mat-icon>
                                             </mat-cell>
                                         </ng-container>
@@ -283,13 +283,21 @@
                                                     <mat-icon style="color: black;">edit</mat-icon>
                                                 </button>
 
-                                                <button mat-icon-button (click)="CancleOTBooking(contact)" matTooltip="Cancle" *ngIf="contact.IsCancelled=='0'">
+                                                <!-- <button mat-icon-button (click)="CancleOTBooking(contact)" matTooltip="Cancle" *ngIf="contact.IsCancelled=='0'">
                                                     <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==1"
                                                         [disabled]="contact.disabled" class="disabled-icon">
                                                         cancel</mat-icon>
                                                     <mat-icon title="Edit Menu" *ngIf="contact.IsCancelled==0" (click)="CancleOTBooking(contact)">
                                                         cancel</mat-icon>
+                                                </button> -->
+
+                                                <button mat-icon-button (click)="CancleOTBooking(contact)" matTooltip="Cancel" 
+                                                    *ngIf="contact.IsCancelled!= 1">
+                                                    <mat-icon title="Cancel Menu" style="color: black;">
+                                                        cancel
+                                                    </mat-icon>
                                                 </button>
+
 
                                                 <!-- <button mat-icon-button (click)="CancleOTBooking(contact)" 
                                                 *ngIf="contact.IsCancelled==0" matTooltip="Cancle">
