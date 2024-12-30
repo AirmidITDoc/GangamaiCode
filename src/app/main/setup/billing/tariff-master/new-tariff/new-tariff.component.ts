@@ -35,7 +35,7 @@ export class NewTariffComponent implements OnInit {
 
     onSubmit(){
         debugger
-      if(!this.tariffForm.invalid){
+        if(!this.tariffForm.invalid){
             this.saveflag = true;
         
             console.log("insert tariff:", this.tariffForm.value);
@@ -46,8 +46,8 @@ export class NewTariffComponent implements OnInit {
             }, (error)=>{
             this.toastr.error(error.message);
             });
-      } 
-      else
+        } 
+        else
         {
             this.toastr.warning('please check from is invalid', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',

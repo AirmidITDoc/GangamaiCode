@@ -34,16 +34,16 @@ export class MaterialConsumptionComponent implements OnInit {
     gridConfig: gridModel = {
     apiUrl: "MaterialConsumption/MaterialConsumptionList",
     columnsList: [
-        { heading: "MaterialConsumptionId", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA',width :180 },
-        { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA',width :110 },
-        { heading: "ConsumptionDate", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA',width :130 },
-        { heading: "ConsumptionTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA',width :130 },
-        { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "Code", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA',width :120 },
+        // { heading: "ConsumptionDate", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "Consumption Date & Time", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA',width :250 },
+        { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA',width :100 },
+        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA',width :200 },
         { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        // { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "IsActive", key: "isActive",width :100 , type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -99,6 +99,7 @@ export class MaterialConsumptionComponent implements OnInit {
     ngOnInit(): void { 
         this.getMaterialConList();
     }
+
     onSave(row: any = null) {
         let that = this;
         // const dialogRef = this._matDialog.open(,
@@ -114,37 +115,39 @@ export class MaterialConsumptionComponent implements OnInit {
         //     }
         // });
     }
+
     NewMatrialCon(){
-            const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
-              {
-                maxWidth: "100%",
-                height: '95%',
-                width: '95%',
-              });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed - Insert Action', result);
-              this.getMaterialConList();
+        const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
+            {
+            maxWidth: "100%",
+            height: '95%',
+            width: '98%',
             });
-          }
-          getMaterialConList() {
-                this.sIsLoading = 'loading-data';
-                var vdata = {
-                  "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
-                   "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-                   "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-                }
-                console.log(vdata);
-                  this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
-                  this.dsMaterialConLList.data = data as MaterialConList[];
-                  this.dsMaterialConLList.sort = this.sort;
-                  this.dsMaterialConLList.paginator = this.paginator;
-                  this.sIsLoading = '';
-                  console.log(this.dsMaterialConLList.data)
-                },
-                error => {
-                  this.sIsLoading = '';
-                });
-              }
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getMaterialConList();
+        });
+    }
+
+    getMaterialConList() {
+        this.sIsLoading = 'loading-data';
+        var vdata = {
+            "ToStoreId":this._loggedService.currentUserValue.storeId || 0,
+            "From_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "To_Dt":this.datePipe.transform(this._MaterialConsumptionService.SearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        }
+        console.log(vdata);
+            this._MaterialConsumptionService.getMaterialConList(vdata).subscribe(data => {
+            this.dsMaterialConLList.data = data as MaterialConList[];
+            this.dsMaterialConLList.sort = this.sort;
+            this.dsMaterialConLList.paginator = this.paginator;
+            this.sIsLoading = '';
+            console.log(this.dsMaterialConLList.data)
+        },
+        error => {
+            this.sIsLoading = '';
+        });
+    }
     
 
 //   displayedColumns = [
@@ -324,6 +327,8 @@ export class MaterialConsumptionComponent implements OnInit {
  
 //     }
 //   }
+
+
 }
 export class MaterialConList {
     ConsumptionNo:any;

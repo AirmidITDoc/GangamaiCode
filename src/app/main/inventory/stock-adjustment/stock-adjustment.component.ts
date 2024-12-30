@@ -45,7 +45,7 @@ export class StockAdjustmentComponent implements OnInit {
         { heading: "StockId", key: "stockId", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "ItemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width :100 },
+        { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
         { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "LandedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "PurUnitRateWF", key: "purUnitRateWF", sort: true, align: 'left', emptySign: 'NA',width :50 },
@@ -54,8 +54,8 @@ export class StockAdjustmentComponent implements OnInit {
         { heading: "BarCodeSeqNo", key: "barCodeSeqNo", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "BatchEdit", key: "batchEdit", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "ExpDateEdit", key: "expDateEdit", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA',width :120 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {

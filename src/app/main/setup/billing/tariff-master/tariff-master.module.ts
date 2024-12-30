@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule, DatePipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { TariffMasterComponent } from "./tariff-master.component";
 import { TariffMasterService } from "./tariff-master.service";
@@ -35,7 +35,6 @@ const routes: Routes = [
     declarations: [TariffMasterComponent, NewTariffComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

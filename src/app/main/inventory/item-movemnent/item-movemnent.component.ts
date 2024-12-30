@@ -1,20 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { ItemMovemnentService } from './item-movemnent.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -42,19 +29,19 @@ export class ItemMovemnentComponent implements OnInit {
     columnsList: [
         { heading: "movementId", key: "movementId", sort: true, align: 'left', emptySign: 'NA',width :100 },
         { heading: "itemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "fromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "fromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA',width :200 },
         { heading: "batchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "documentNo", key: "documentNo", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "transactionType", key: "transactionType", sort: true, align: 'left', emptySign: 'NA',width :50 },        
-        { heading: "transactionDate", key: "transactionDate", sort: true, align: 'left', emptySign: 'NA',width :50 },
+        { heading: "transactionType", key: "transactionType", sort: true, align: 'left', emptySign: 'NA',width :150 },        
+        { heading: "transactionDate", key: "transactionDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
         { heading: "tranDate", key: "tranDate", sort: true, align: 'left', emptySign: 'NA',width :50 },
         { heading: "receiptQty", key: "receiptQty", sort: true, align: 'left', emptySign: 'NA',width :100 },
         { heading: "issueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA',width :100 },
         { heading: "movementNo", key: "movementNo", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        { heading: "transactionTime", key: "transactionTime", sort: true, align: 'left', emptySign: 'NA',width :100 },
-        { heading: "toStoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "batchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width :50 },
-        { heading: "supplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width :100 },
+        { heading: "transactionTime", key: "transactionTime", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "toStoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "batchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',width :150 },
+        { heading: "supplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width :250 },
         { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

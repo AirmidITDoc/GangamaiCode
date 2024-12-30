@@ -25,7 +25,7 @@ export class TariffMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width:150 },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     

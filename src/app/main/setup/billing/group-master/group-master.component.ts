@@ -26,9 +26,9 @@ export class GroupMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:150 },
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:400 },
-            { heading: "Isconsolidated", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA',width:200 },
+            { heading: "IsConsolidated", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA',width:200 },
             { heading: "IsConsolidatedDr", key: "isConsolidatedDr", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
                     {

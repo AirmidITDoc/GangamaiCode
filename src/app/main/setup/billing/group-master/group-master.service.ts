@@ -25,12 +25,9 @@ export class GroupMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // printSeqNo: ["", Validators.pattern("[0-9]+")],
             // isconsolidated: ["false"],
             // isConsolidatedDR: ["false"],
             isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {
