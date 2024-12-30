@@ -5,42 +5,32 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class SurgeryMasterService {
+export class CertificatemasterService {
 
   myform: FormGroup;
   myformSearch: FormGroup;
 
   constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
-    this.myform=this.createSurgeryForm();
+    this.myform=this.createCertificatetemplateForm();
     this.myformSearch=this.createSearchForm();
   }
 
-  createSurgeryForm(): FormGroup {
+  createCertificatetemplateForm(): FormGroup {
     return this._formBuilder.group({
-      SurgeryId:[''],
-      Site:[''],
-      ProcedureName:[''],
-      CategoryName:[''],
-      SystemName:[''],
+      TemplateId:[''],
       TemplateName:[''],
-      DepartmentName:[''],
-      Amount:[''],
-      Departmentid:[''],
-      Systemid:[''],
-      Siteid:[''],
+      TemplateDesc:[''],
       IsDeleted:['true']
-    });
+        });
   }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
-      SurgeryNameSearch: [""],
+        TemplateNameSearch: [""],
     });
 }
 
-   //Deartment Combobox List
-   public getDepartmentCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+public getCertificatelist(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CertificateMaster_List",employee)
 }
-
 }

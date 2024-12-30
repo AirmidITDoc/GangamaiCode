@@ -12,9 +12,9 @@
         New OT Booking Request
       </span>
     </div>
-    <div fxLayout="row" fxLayoutALign="end start" style="color: white;">
+    <div fxLayout="row" fxLayoutALign="end start">
 
-      <app-common-date [screenFrom]="screenFromString" style="color: white;" (dateTimeEventEmitter)="getDateTime($event)">
+      <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
       </app-common-date>
 
       <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">

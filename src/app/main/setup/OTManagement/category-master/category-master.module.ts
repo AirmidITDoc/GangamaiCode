@@ -33,25 +33,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
-import { MatChipsModule } from '@angular/material/chips';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { OTTableMasterComponent } from './ottable-master.component';
-import { OtTableMasterService } from './ot-table-master.service';
+import { MatChipsModule } from '@angular/material/chips';  
+import { CategoryMasterComponent } from './category-master.component';
+import { NewCategoryMasterComponent } from './new-category-master/new-category-master.component';
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: OTTableMasterComponent
+      component: CategoryMasterComponent 
   },
 ];
 
 @NgModule({
   declarations: [
-    OTTableMasterComponent
+    CategoryMasterComponent,
+    NewCategoryMasterComponent
   ],
 
   imports: [
+    CommonModule,
     RouterModule.forChild(routes),
     CommonModule,
     MatExpansionModule,
@@ -91,13 +91,14 @@ const routes: Routes = [
     MatChipsModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule
+        
   ],
-  providers: [DatePipe,
-      OtTableMasterService
-  ],
-  entryComponents: [
-    OTTableMasterComponent,
-  ]
+  providers: [
+    
+    DatePipe,
+],
+entryComponents: [
+  CategoryMasterComponent,
+]
 })
-export class OtTableMasterModule { }
-
+export class CategoryMasterModule { }

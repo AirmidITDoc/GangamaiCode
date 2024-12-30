@@ -10,30 +10,28 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Row } from 'jspdf-autotable';
-import { OttableMasterService } from './ottable-master.service';
-import { NewOttableMasterComponent } from './new-ottable-master/new-ottable-master.component';
+import { CategoryMasterService } from './category-master.service';
+import { NewCategoryMasterComponent } from './new-category-master/new-category-master.component';
 
 @Component({
-  selector: 'app-ottable-master',
-  templateUrl: './ottable-master.component.html',
-  styleUrls: ['./ottable-master.component.scss']
+  selector: 'app-category-master',
+  templateUrl: './category-master.component.html',
+  styleUrls: ['./category-master.component.scss']
 })
-export class OttableMasterComponent implements OnInit {
-
+export class CategoryMasterComponent implements OnInit {
   sIsLoading: string = '';
   hasSelectedContacts: boolean;
-  dataSource = new MatTableDataSource<OtTableMasterList>();
+  dataSource = new MatTableDataSource<CategoryMasterList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns = [
-    'OtTableId',
-    'OtRoomName',
-    'Floor',
+    'SystemId',
+    'SystemName',
     'IsActive',
   ];
 
-  constructor(public _otTableMasterService: OttableMasterService,
+  constructor(public _categoryMasterService: CategoryMasterService,
     private accountService: AuthenticationService,
     public notification: NotificationServiceService,
     public _matDialog: MatDialog,
@@ -44,7 +42,7 @@ export class OttableMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getotTableList();
+    this.getCategoryList();
   }
 
   // toggle sidebar
@@ -53,23 +51,22 @@ export class OttableMasterComponent implements OnInit {
   }
 
   // field validation 
-  get f() { return this._otTableMasterService.myformSearch.controls; }
+  get f() { return this._categoryMasterService.myformSearch.controls; }
 
-
-  getotTableList(){
+  getCategoryList(){
 
   }
 
-  newOtTable(){
-    const dialogRef = this._matDialog.open(NewOttableMasterComponent,
+  newCategory(){
+    const dialogRef = this._matDialog.open(NewCategoryMasterComponent,
       {
         maxWidth: "60%",
         width: "45%",
-        height: "40%",
+        height: "35%",
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getotTableList();
+      this.getCategoryList();
     });
   }
   
@@ -78,31 +75,27 @@ export class OttableMasterComponent implements OnInit {
   }
 
   onClear() {
-    this._otTableMasterService.myformSearch.reset({
+    this._categoryMasterService.myformSearch.reset({
       TemplateNameSearch: "",
     });
-    this.getotTableList();
+    this.getCategoryList();
   }
 
 }
-
-export class OtTableMasterList {
-  OtTableId:number;
-  OtRoomName:string;
-  Floor:any;
+export class CategoryMasterList {
+  SystemId:number;
+  SystemName:string;
   IsDeleted:String;
-  
   /**
    * Constructor
    *
    * @param contact
    */
-  constructor(OtTableMasterList) {
+  constructor(CategoryMasterList) {
     {
-      this.OtTableId = OtTableMasterList.OtTableId || '';
-      this.OtRoomName = OtTableMasterList.OtRoomName || '';
-      this.Floor = OtTableMasterList.Floor || '';
-      this.IsDeleted = OtTableMasterList.IsDeleted;
+      this.SystemId = CategoryMasterList.SystemId || '';
+      this.SystemName = CategoryMasterList.SystemName || '';
+      this.IsDeleted = CategoryMasterList.IsDeleted;
     }
   }
 }
