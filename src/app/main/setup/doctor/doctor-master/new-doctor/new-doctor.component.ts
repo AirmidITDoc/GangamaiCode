@@ -517,10 +517,7 @@ export class NewDoctorComponent implements OnInit {
         return option && option.departmentName ? option.departmentName : '';
     }
 
-
-    onSubmit() {
-
-
+    onSave(){
         if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
             this.toastr.warning('Please select valid City ', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -577,6 +574,24 @@ export class NewDoctorComponent implements OnInit {
             return;
         }
 
+        Swal.fire({
+            title: 'Do you want to Save the Doctor Master ',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Save it!" ,
+            cancelButtonText: "No, Cancel"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                this.onSubmit();
+            }
+          });
+
+    }
+
+    onSubmit() {
 
         // if (this._doctorService.myform.valid) {
             var data2 = [];

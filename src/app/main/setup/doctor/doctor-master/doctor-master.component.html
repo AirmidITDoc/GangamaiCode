@@ -107,7 +107,7 @@
                                         <ng-container matColumnDef="DoctorId">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.DoctorId}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.DoctorId ? element.DoctorId : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -134,7 +134,7 @@
                                      
                                         <ng-container matColumnDef="DoctorName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-300"> DoctorName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-300"> {{element.DoctorName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm  class="w-300"> {{element.DoctorName ? element.DoctorName : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -148,32 +148,32 @@
     
                                         <ng-container matColumnDef="Address">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300"> Address </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-300"> {{element.Address}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-300"> {{element.Address ? element.Address : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
     
                                         <ng-container matColumnDef="City">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> City </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.City}} </mat-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.City ? element.City : '-'}} </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="Pin">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> Pin </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Pin}} </mat-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.Pin ? element.Pin : '-' }}</mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="Phone">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Phone}} </mat-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Phone ? element.Phone : '-'}} </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="Mobile">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> Mobile </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Mobile}} </mat-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Mobile ? element.Mobile : '-'}} </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="Education"> 
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200"> Education </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.Education}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200"> {{element.Education ? element.Education : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -182,14 +182,14 @@
                                         <ng-container matColumnDef="RefDocHospitalName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> RefDocHName
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RefDocHospitalName}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RefDocHospitalName ? element.RefDocHospitalName : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="DoctorType">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                 fxShow.gt-sm class="w-300" >DoctorType </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-300"> {{element.DoctorType}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-300"> {{element.DoctorType ? element.DoctorType : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
@@ -197,42 +197,42 @@
                                         <ng-container matColumnDef="PassportNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> PassportNo
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.passportNo}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.passportNo ? element.passportNo : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="ESINO">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> ESINO </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ESINO}} </mat-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ESINO ? element.ESINO : '-'}} </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="RegNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>RegNo
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.REGNO}}
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.REGNO ? element.REGNO : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="RegDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> RegDate </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegDate | date:'shortDate'}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.RegDate ? (element.RegDate | date:'shortDate') : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="MahRegNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> MahRegNo </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MahRegNo}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MahRegNo ? element.MahRegNo : '-'}}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="MahRegDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> MahRegDate
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MahRegDate | date:'shortDate'}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MahRegDate ? (element.MahRegDate | date:'shortDate') : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
                                         <ng-container matColumnDef="AddedBy">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header> UserName </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby}}
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby ? element.Addedby : '-'}}
                                             </mat-cell>
                                         </ng-container>
     
