@@ -51,13 +51,13 @@ export class PrefixMasterService {
     }
 
     // Gender Master Combobox List
-    public getGenderMasterCombo() {
-        debugger
-        return this._httpClient1.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
-            {}
-        );
-    }
+    // public getGenderMasterCombo() {
+    //     debugger
+    //     return this._httpClient1.post(
+    //         "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
+    //         {}
+    //     );
+    // }
 
     public prefixMasterSave(Param: any, showLoader = true) {
         if (Param.prefixId) {

@@ -43,7 +43,7 @@ export class IndentComponent implements OnInit {
       { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
       { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
       { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-        //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    //   { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
           {
               heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
                   {
