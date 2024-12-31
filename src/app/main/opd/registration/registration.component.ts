@@ -27,6 +27,7 @@ import { NewRegistrationComponent } from './new-registration/new-registration.co
 })
 export class RegistrationComponent implements OnInit {
 
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     nowdate = new Date();
@@ -58,30 +59,6 @@ export class RegistrationComponent implements OnInit {
             // { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 let that = this;
-            //                 const dialogRef = this._matDialog.open(NewRegistrationComponent,
-            //                     {
-            //                         maxWidth: "95vw",
-            //                         height: '75%',
-            //                         width: '70%',
-            //                         data:data
-            //                     });
-            //                 dialogRef.afterClosed().subscribe(result => {
-            //                     if (result) {
-            //                         that.grid.bindGridData();
-            //                     }
-            //                 });
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 debugger
-            //             }
-            //         }]
-            // } //
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
                     {
