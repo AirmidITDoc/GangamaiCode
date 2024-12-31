@@ -90,72 +90,52 @@ export class DoctorMasterComponent implements OnInit {
         this._doctorService.initializeFormGroup();
     }
 
-    onSearch() {
+    onSearch() { 
         this.getDoctorMasterList();
     }
     resultsLength = 0;
-    getDoctorMasterList() {
-        debugger
-        let Refstatus
-        // if (this.currentStatus1 == 1)
-        //     Refstatus = 0
-        // if (this.currentStatus1 == 0)
-        //     Refstatus = 1
+    getDoctorMasterList() { 
+        let ConsultantDoc,ReferDoc
+        if(this._doctorService.myformSearch.get('IsConsultant').value == 2){
+            ConsultantDoc = 0;
+            ReferDoc = 0;
+        }else if(this._doctorService.myformSearch.get('IsConsultant').value == 1){
+            ConsultantDoc = 1;
+            ReferDoc = 0; 
+        }else if(this._doctorService.myformSearch.get('IsConsultant').value == 0){
+            ConsultantDoc = 0;
+            ReferDoc = 1;  
+        } 
 
-        if (this.currentStatus1 == 2) {
-            
-            this.currentStatus1 = 0;
-            Refstatus = 0;       
-        } else if (this.currentStatus1 == 1) {
-            Refstatus = 0;
-        } else if (this.currentStatus1 == 0) {
-            Refstatus = 1;
-        }
+        let IsActiveStatus
+        if(this._doctorService.myformSearch.get('IsDeletedSearch').value == 2){
+            IsActiveStatus = 2; 
+        }else if(this._doctorService.myformSearch.get('IsDeletedSearch').value == 1){
+            IsActiveStatus = 1; 
+        }else if(this._doctorService.myformSearch.get('IsDeletedSearch').value == 0){
+            IsActiveStatus = 0; 
+        } 
 
         var vdata = {
             "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
             "L_Name": this._doctorService.myform.get('LastName').value || "%",
-            "FlagActive": this.currentStatus,
-            "ConsultantDoc_All": this.currentStatus1,
-            "ReferDoc_All": Refstatus,
-            Start:(this.paginator?.pageIndex??1),
+            "FlagActive": IsActiveStatus,
+            "ConsultantDoc_All": ConsultantDoc,
+            "ReferDoc_All": ReferDoc,
+            Start:(this.paginator?.pageIndex??0),
             Length:(this.paginator?.pageSize??30),
         }
         console.log(vdata)
         this._doctorService.getDoctorMasterList(vdata).subscribe((data) => {
             this.DSDoctorMasterList.data = data["Table1"]??[] as DoctorMaster[];
             //  this.DSDoctorMasterList.sort = this.sort;
+            console.log(this.DSDoctorMasterList.data)
              this.resultsLength= data["Table"][0]["total_row"];
              this.sIsLoading = '';
         },
             (error) => (this.isLoading = false)
         );
-    }
-
-    currentStatus = 1;
-    toggle(val: any) {
-        if (val == "2") {
-            this.currentStatus = 2;
-        } else if (val == "1") {
-            this.currentStatus = 1;
-        }
-        else {
-            this.currentStatus = 0;
-
-        }
-    }
-    currentStatus1 = 0;
-    toggle1(val: any) {
-        if (val == "2") {
-            this.currentStatus1 = 2;
-        } else if (val == "1") {
-            this.currentStatus1 = 1;
-        }
-        else {
-            this.currentStatus1 = 0;
-
-        }
-    }
+    } 
 
     onEdit(row) {
         console.log(row)
@@ -228,8 +208,8 @@ export class DoctorMasterComponent implements OnInit {
     }
     OnDocMerge(element) {
         const dialogRef = this._matDialog.open(DoctorMergeComponent, {
-            maxWidth: "90vw",
-            maxHeight: "75vh",
+            maxWidth: "60vw",
+            maxHeight: "65vh",
             width: "100%",
             height: "100%",
             data: {

@@ -22,15 +22,11 @@ import { Admission } from "app/main/ipd/Admission/admission/admission.component"
 export class ItemMasterComponent implements OnInit {
     isLoading = true;
     msg: any;
-    step = 0;
-
-    setStep(index: number) {
-        this.step = index;
-    }
+ 
     SearchName: string;
     sIsLoading: string = ''; 
     @ViewChild(MatSort) sort: MatSort;
-    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = [
         "ItemID",
@@ -59,7 +55,7 @@ export class ItemMasterComponent implements OnInit {
         "Isdeleted",
         "action",
     ];
-
+ 
     DSItemMasterList = new MatTableDataSource<ItemMaster>();
 
     constructor(
@@ -91,18 +87,17 @@ export class ItemMasterComponent implements OnInit {
     }
     chargeslist:any=[];
     resultsLength=0;
-    getItemMasterList() {
-        this.sIsLoading = '';
+    getItemMasterList() { 
         var m_data = {
             ItemName:this._itemService.myformSearch.get("ItemNameSearch").value + "%" || "%",
             StoreID: this._loggedService.currentUserValue.user.storeId,
             Start:(this.paginator?.pageIndex ?? 0),
-            Length:(this.paginator?.pageSize ?? 35),                  
+            Length:(this.paginator?.pageSize ?? 30),                  
         };
                 console.log(m_data)
                 this._itemService.getItemMasterList(m_data).subscribe((data) => {
-                this.DSItemMasterList.data = data["Table1"] ?? [] as ItemMaster[];
-                this.DSItemMasterList.sort = this.sort;
+                this.DSItemMasterList.data = data["Table1"]??[] as ItemMaster[];
+                // this.DSItemMasterList.sort = this.sort;
                 this.resultsLength = data["Table"][0]["total_row"];
                 this.sIsLoading = '';
                 console.log(this.DSItemMasterList.data)
@@ -110,7 +105,8 @@ export class ItemMasterComponent implements OnInit {
             (error) => (this.isLoading = false)
         );
     }
-
+   
+    
     onEdit(row) {
         var m_data = {
             ItemID: row.ItemID,

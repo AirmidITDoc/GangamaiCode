@@ -1,4 +1,4 @@
-<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+<div  class="simple page-layout inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
     <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -20,9 +20,8 @@
     </mat-toolbar>
 
     <div class="content">
-        <div class="center p-12 pb-56" >
-            <div class="content-card">
-
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card"> 
                 <div fxLayout="row" fxLayout="column" fxLayoutGap="10px">
                     <form [formGroup]="MyDocMergeForm">
                         <mat-form-field appearance="outline" fxFlex>
@@ -32,12 +31,12 @@
                         </mat-form-field>
                     </form>
 
-                    <div fxLayout="row" fxFlex="100%" fxLayoutGap="10px">
+                    <div   fxLayout="row" fxLayout.xs="column" fxFlex="100%" fxLayoutGap="6px">
 
-                        <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
+                        <div class="table-left" fxFlex="100%" >
                             <mat-card style="padding: 5px;"> 
                                 <mat-table #table matSort [dataSource]="dsDocNameList" [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;">
+                                    style="overflow: auto;height: 250px;" class="mat-elevation-z8"  >
 
                                     <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -80,18 +79,17 @@
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dsDocNameList!=null && dsDocNameList.data.length==0)}">
                                     </mat-footer-row>
-                                </mat-table>
-                                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                                    showFirstLastButtons>
-                                </mat-paginator>  
+                                </mat-table>  
+                                <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
+                                showFirstLastButtons (page)="getDoctorMasterList()">
+                                </mat-paginator>
                             </mat-card> 
                         </div>
 
-                        <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="50%">
-                            <mat-card style="padding: 5px;"> 
-
+                        <div class="table-left" fxFlex="100%">
+                            <mat-card style="padding: 5px;">  
                                 <mat-table #table matSort [dataSource]="dsDocMergeList" [@animateStagger]="{value:'50'}"
-                                    style="overflow: auto;">
+                                    style="overflow: auto; height: 250px;" class="mat-elevation-z8"  >
 
                                     <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -138,8 +136,7 @@
                                 <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                     showFirstLastButtons>
                                 </mat-paginator>
-                            </mat-card>
-
+                            </mat-card> 
                         </div>
                     </div>
 
