@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
+import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 
 @Component({
     selector: 'app-new-registration',
@@ -40,7 +41,6 @@ export class NewRegistrationComponent implements OnInit {
     RegID: number = 0;
 
     // New Api
-    autocompleteModeprefix: string = "Prefix";
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
     autocompleteModecity: string = "City";
@@ -48,6 +48,7 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModecountry: string = "Country";
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
+    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
 
 
     constructor(public _registerService: RegistrationService,
@@ -77,24 +78,16 @@ export class NewRegistrationComponent implements OnInit {
     get f() {
         return this.personalFormGroup.controls;
     }
-
+    onChangePrefix(e) {
+        this.ddlGender.SetSelection(e.sexId);
+    }
     OnSubmit() {
-
-        console.log(this.personalFormGroup.value)
-        // if (this.personalFormGroup.valid) {
-            this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        // } 
-        // else {
-        //     this.toastr.warning('Please Check Form Invalid', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
+        this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
     }
 
     onClose() {
@@ -104,7 +97,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.reset();
         this.dialogRef.close(val);
     }
-   
+
     // Change Registered or New Registration
     onChangeReg(event) {
         if (event.value == 'registration') {
