@@ -95,11 +95,23 @@ export class DoctorMasterComponent implements OnInit {
     }
     resultsLength = 0;
     getDoctorMasterList() {
+        debugger
         let Refstatus
-        if (this.currentStatus1 == 1)
-            Refstatus = 0
-        if (this.currentStatus1 == 0)
-            Refstatus = 1
+        // if (this.currentStatus1 == 1)
+        //     Refstatus = 0
+        // if (this.currentStatus1 == 0)
+        //     Refstatus = 1
+
+        if (this.currentStatus1 == 2) {
+            
+            this.currentStatus1 = 0;
+            Refstatus = 0;       
+        } else if (this.currentStatus1 == 1) {
+            Refstatus = 0;
+        } else if (this.currentStatus1 == 0) {
+            Refstatus = 1;
+        }
+
         var vdata = {
             "F_Name": this._doctorService.myformSearch.get('DoctorNameSearch').value.trim() + "%" || "%",
             "L_Name": this._doctorService.myform.get('LastName').value || "%",
