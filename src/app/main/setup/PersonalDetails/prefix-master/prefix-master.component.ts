@@ -25,33 +25,21 @@ export class PrefixMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
         columnsList: [
-            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width:450 },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width:300 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" , width:170},
-            { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 170 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                        action: gridActions.delete, message: 'Are you sure want to delete this prefix?', callback: (data: any) => {
+                            this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -93,7 +81,7 @@ export class PrefixMasterComponent implements OnInit {
             }
         });
     }
-   
+
 }
 
 export class PrefixMaster {
@@ -101,7 +89,7 @@ export class PrefixMaster {
     PrefixName: string;
     SexID: number;
     IsActive: boolean;
-   
+
     /**
      * Constructor
      *
@@ -113,7 +101,7 @@ export class PrefixMaster {
             this.PrefixName = PrefixMaster.PrefixName || "";
             this.SexID = PrefixMaster.SexID || 0;
             this.IsActive = PrefixMaster.IsActive || "false";
-          
+
         }
     }
 }

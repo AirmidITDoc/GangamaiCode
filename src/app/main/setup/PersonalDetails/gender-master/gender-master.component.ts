@@ -20,39 +20,25 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
-    options:any[]=[{Text:'Text-1',Id:1},{Text:'Text-2',Id:2},{Text:'Text-3',Id:3}];
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "Gender/List",
         columnsList: [
             { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width:700 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" , width:200},
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 200 },
             {
-                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -68,25 +54,25 @@ export class GenderMasterComponent implements OnInit {
     }
     autocompleteMode: string = "Gender";
     public autocompleteOptions: any[] = [
-        {text: 'Bank A (Switzerland)', value: 'A'},
-        {text: 'Bank B (Switzerland)', value: 'B'},
-        {text: 'Bank C (France)', value: 'C'},
-        {text: 'Bank D (France)', value: 'D'},
-        {text: 'Bank E (France)', value: 'E'},
-        {text: 'Bank F (Italy)', value: 'F'},
-        {text: 'Bank G (Italy)', value: 'G'},
-        {text: 'Bank H (Italy)', value: 'H'},
-        {text: 'Bank I (Italy)', value: 'I'},
-        {text: 'Bank J (Italy)', value: 'J'},
-        {text: 'Bank Kolombia (United States of America)', value: 'K'},
-        {text: 'Bank L (Germany)', value: 'L'},
-        {text: 'Bank M (Germany)', value: 'M'},
-        {text: 'Bank N (Germany)', value: 'N'},
-        {text: 'Bank O (Germany)', value: 'O'},
-        {text: 'Bank P (Germany)', value: 'P'},
-        {text: 'Bank Q (Germany)', value: 'Q'},
-        {text: 'Bank R (Germany)', value: 'R'}
-      ];
+        { text: 'Bank A (Switzerland)', value: 'A' },
+        { text: 'Bank B (Switzerland)', value: 'B' },
+        { text: 'Bank C (France)', value: 'C' },
+        { text: 'Bank D (France)', value: 'D' },
+        { text: 'Bank E (France)', value: 'E' },
+        { text: 'Bank F (Italy)', value: 'F' },
+        { text: 'Bank G (Italy)', value: 'G' },
+        { text: 'Bank H (Italy)', value: 'H' },
+        { text: 'Bank I (Italy)', value: 'I' },
+        { text: 'Bank J (Italy)', value: 'J' },
+        { text: 'Bank Kolombia (United States of America)', value: 'K' },
+        { text: 'Bank L (Germany)', value: 'L' },
+        { text: 'Bank M (Germany)', value: 'M' },
+        { text: 'Bank N (Germany)', value: 'N' },
+        { text: 'Bank O (Germany)', value: 'O' },
+        { text: 'Bank P (Germany)', value: 'P' },
+        { text: 'Bank Q (Germany)', value: 'Q' },
+        { text: 'Bank R (Germany)', value: 'R' }
+    ];
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
@@ -108,7 +94,7 @@ export class GenderMasterComponent implements OnInit {
             }
         });
     }
-    selectChange(obj: any){
+    selectChange(obj: any) {
         console.log(obj);
     }
 

@@ -6,7 +6,7 @@ import { CompanyMasterListComponent } from "./company-master-list/company-master
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import {  MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 
@@ -18,45 +18,31 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
     animations: fuseAnimations,
 })
 export class CompanyMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
 
     gridConfig: gridModel = {
         apiUrl: "CompanyMaster/List",
         columnsList: [
-            { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width:150 },
-            { heading: "CompTypeId", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA',width:150 },
-            { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA',width:150 },
-           { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CompTypeId", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -77,10 +63,10 @@ export class CompanyMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        
+
     }
 
-  onSave(row: any = null) {
+    onSave(row: any = null) {
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,

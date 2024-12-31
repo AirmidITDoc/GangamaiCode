@@ -19,40 +19,26 @@ import { NewCategoryComponent } from "./new-category/new-category.component";
     animations: fuseAnimations,
 })
 export class CategoryMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
 
     gridConfig: gridModel = {
         apiUrl: "PathCategoryMaster/List",
         columnsList: [
-            { heading: "Code", key: "categoryId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "categoryName",width: 800, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "categoryId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "categoryName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._categorymasterService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._categorymasterService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -73,10 +59,10 @@ export class CategoryMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        
+
     }
 
-  onSave(row: any = null) {
+    onSave(row: any = null) {
         debugger
         let that = this;
         const dialogRef = this._matDialog.open(NewCategoryComponent,

@@ -71,17 +71,18 @@ export class DoctorMasterComponent implements OnInit {
                                     maxWidth: "95vw",
                                     height: '95%',
                                     width: '70%',
-                                    data:{doctorId: data.doctorId}
+                                    data: { doctorId: data.doctorId }
                                 });
                             dialogRef.afterClosed().subscribe(result => {
-                                if (result) {
-                                    that.grid.bindGridData();
-                                }
+                                that.grid.bindGridData();
                             });
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            this._doctorService.deactivateTheStatus(data.doctorId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -283,7 +284,7 @@ export class DoctorMaster {
     ESINO: any;
     signature: string;
     isOnCallDoctor: any;
-    mDoctorDepartmentDets:any[];
+    mDoctorDepartmentDets: any[];
     /**
      * Constructor
      *
@@ -334,7 +335,7 @@ export class DoctorMaster {
             this.ESINO = DoctorMaster.ESINO || "";
             this.signature = DoctorMaster.Signature || "";
             this.isOnCallDoctor = DoctorMaster.isOnCallDoctor || 0;
-            this.mDoctorDepartmentDets=DoctorMaster.mDoctorDepartmentDets||[];
+            this.mDoctorDepartmentDets = DoctorMaster.mDoctorDepartmentDets || [];
         }
     }
 }

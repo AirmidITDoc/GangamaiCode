@@ -17,57 +17,41 @@ import { NewCurrencyComponent } from "./new-currency/new-currency.component";
     animations: fuseAnimations,
 })
 export class CurrencyMasterComponent implements OnInit {
+    constructor(public _CurrencymasterService: CurrencymasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    
-    constructor(public _CurrencymasterService: CurrencymasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
-        
-        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        gridConfig: gridModel = {
-            apiUrl: "CurrencyMaster/List",
-            columnsList: [
-                { heading: "Code", key: "currencyId", sort: true, width:150, align: 'left', emptySign: 'NA' },
-                { heading: "Currency Name", key: "currencyName", sort: true, width:800, align: 'left', emptySign: 'NA' },
-                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:100, align: "center" },
-                {
-                    heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this.confirmDialogRef = this._matDialog.open(
-                                    FuseConfirmDialogComponent,
-                                    {
-                                        disableClose: false,
-                                    }
-                                );
-                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                                this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                    if (result) {
-                                        let that = this;
-                                        this._CurrencymasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
-                                            this.toastr.success(response.message);
-                                            that.grid.bindGridData();
-                                        });
-                                    }
-                                    this.confirmDialogRef = null;
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "currencyId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "currencyName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
-        }
-    
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "CurrencyMaster/List",
+        columnsList: [
+            { heading: "Code", key: "currencyId", sort: true, width: 150, align: 'left', emptySign: 'NA' },
+            { heading: "Currency Name", key: "currencyName", sort: true, width: 800, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width: 100, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._CurrencymasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "currencyId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "currencyName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
     ngOnInit(): void { }
     onSave(row: any = null) {
         let that = this;
@@ -84,5 +68,5 @@ export class CurrencyMasterComponent implements OnInit {
             }
         });
     }
-    
+
 }

@@ -25,20 +25,20 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-current-stock',
-  templateUrl: './current-stock.component.html',
-  styleUrls: ['./current-stock.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
-  
+    selector: 'app-current-stock',
+    templateUrl: './current-stock.component.html',
+    styleUrls: ['./current-stock.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
+
 })
 export class CurrentStockComponent implements OnInit {
-EditRefund() {
-throw new Error('Method not implemented.');
-}
-EditOPBill() {
-throw new Error('Method not implemented.');
-}
+    EditRefund() {
+        throw new Error('Method not implemented.');
+    }
+    EditOPBill() {
+        throw new Error('Method not implemented.');
+    }
 
 
     getWhatsappsharePaymentReceipt(data: any) {
@@ -50,719 +50,704 @@ throw new Error('Method not implemented.');
     onSave(data: any) {
         throw new Error('Method not implemented.');
     }
-  isStoreSelected: boolean = false;
-  filteredOptionsStorename: Observable<string[]>;
+    isStoreSelected: boolean = false;
+    filteredOptionsStorename: Observable<string[]>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    hasSelectedContacts: boolean;
 
-  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  hasSelectedContacts: boolean;
-  
-  displayedColumns = [
-    // 'action',
-  
-    //'ToStoreName',
-    'ItemName',
-    'ReceivedQty',
-    'IssueQty',
-    'BalanceQty',
-    'ReturnQty'
-  ];
+    displayedColumns = [
+        // 'action',
 
- 
-  gridConfig: gridModel = {
-    apiUrl: "StockReportDayWise/StockReportDayWiseList",
-    columnsList: [
-        { heading: "stockId", key: "stockId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "itemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "storeId", key: "storeId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "itemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "openingBalance", key: "openingBalance", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "receivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "issueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "balanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "unitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "purchaseRate", key: "purchaseRate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "landedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "vatPercentage", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "batchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA',width:150 },
-        { heading: "batchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "purUnitRate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "purUnitRateWF", key: "purUnitRateWF", sort: true, align: "center" ,width:50},
-        { heading: "cgstPer", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "sgstPer", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "igstPer", key: "igstPer",sort: true, align: "center" ,width:50},
-        { heading: "barCodeSeqNo", key: "barCodeSeqNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        { heading: "iStkId", key: "iStkId", sort: true,align: "center" ,width:50},
-        { heading: "grnRetQty", key: "grnRetQty", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        {
-            heading: "Action", key: "action", align: "right",width:200, type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                },
-                {
-                    action: gridActions.print, callback: (data: any) => {
-                        this.viewgetOPPaymentReportPdf(data);
-                    }
-                },
-                {
-                    action: gridActions.view, callback: (data: any) => {
-                        this.getWhatsappsharePaymentReceipt(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this.confirmDialogRef = this._matDialog.open(
-                            FuseConfirmDialogComponent,
-                            {
-                                disableClose: false,
-                            }
-                        );
-                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                        this.confirmDialogRef.afterClosed().subscribe((result) => {
-                            if (result) {
-                                let that = this;
-                                // this._CurrentStockService.deactivateTheStatuspayment(data.visitId) .subscribe((response: any) => {
-                                //     this.toastr.success(response.message);
-                                //     that.grid.bindGridData();
-                                // });
-                            }
-                            this.confirmDialogRef = null;
-                        });
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "itemId",
-    sortOrder: 0,
-    filters: [
-        { fieldName: "LedgerDate", fieldValue: "2023/10/17", opType: OperatorComparer.Contains },
-        { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Contains },
-        { fieldName: "ItemId", fieldValue: "580", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-    ],
-    row: 25
-}
-
-// DAY WISE REPORT
-//   displayedColumnsDayWise = [
-//     'LedgerDate',
-//     'ItemName',
-//     'BatchNo',
-//     'BatchExpDate',
-//     'UnitMRP',
-//     'PurUnitRate',
-//     'LandedRate',
-//     'ReceivedQty',
-//     'IssueQty',
-//     'BalanceQty',
-//   ];
-  displayedColumnsItemWise = [
-  //  'action',
-    'ItemName',
-    'ConversionFactor',
-    'Current_BalQty',
-    'Received_Qty',
-    'Sales_Qty',
-    
-  ];
-
-  displayedColumnsIssueWiseItem = [
-    //  'action',
-      'ItemName',
-      'ConversionFactor',
-      'Current_BalQty',
-      'Received_Qty',
-      'Sales_Qty',
-      
+        //'ToStoreName',
+        'ItemName',
+        'ReceivedQty',
+        'IssueQty',
+        'BalanceQty',
+        'ReturnQty'
     ];
 
 
-  isLoadingStr: string = '';
-  isLoading: String = '';
-  sIsLoading: string = "";
-  // isLoading = true;
-  Store1List:any=[];
-  screenFromString = 'admission-form';
-  FromDate:any;
-  Todate:any;
-  SpinLoading:boolean=false;
-  isItemSelected:boolean=false;
-
-  dsCurrentStock= new MatTableDataSource<CurrentStockList>();
-  dsDaywiseStock= new MatTableDataSource<DayWiseStockList>();
-  dsItemwiseStock= new MatTableDataSource<ItemWiseStockList>();
-  dsIssuewissueItemStock= new MatTableDataSource<ItemWiseStockList>();
-  printflag:boolean=false;
-  
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
-  @ViewChild('thirdPaginator', { static: true }) public thirdPaginator: MatPaginator;
-
-  constructor(
-    public _CurrentStockService: CurrentStockService,
-    public _matDialog: MatDialog,
-    private reportDownloadService: ExcelDownloadService,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    private _loggedService: AuthenticationService,
-    private accountService: AuthenticationService,
-    public toastr : ToastrService,
-    
-  ) { }
-
-  ngOnInit(): void {
-    this.gePharStoreList();
-    //this.getCrrentStkItemSearchList();
-    
-  }
-  
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
- 
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-  gePharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
+    gridConfig: gridModel = {
+        apiUrl: "StockReportDayWise/StockReportDayWiseList",
+        columnsList: [
+            { heading: "stockId", key: "stockId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "itemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "storeId", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "itemId", key: "itemId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "openingBalance", key: "openingBalance", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "receivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "issueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "balanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "unitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "purchaseRate", key: "purchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "landedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "vatPercentage", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "batchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "batchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "purUnitRate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "purUnitRateWF", key: "purUnitRateWF", sort: true, align: "center", width: 50 },
+            { heading: "cgstPer", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "sgstPer", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "igstPer", key: "igstPer", sort: true, align: "center", width: 50 },
+            { heading: "barCodeSeqNo", key: "barCodeSeqNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "iStkId", key: "iStkId", sort: true, align: "center", width: 50 },
+            { heading: "grnRetQty", key: "grnRetQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            {
+                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    },
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.viewgetOPPaymentReportPdf(data);
+                        }
+                    },
+                    {
+                        action: gridActions.view, callback: (data: any) => {
+                            this.getWhatsappsharePaymentReceipt(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            // this._CurrentStockService.deactivateTheStatuspayment(data.visitId) .subscribe((response: any) => {
+                            //     this.toastr.success(response.message);
+                            //     that.grid.bindGridData();
+                            // });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "itemId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "LedgerDate", fieldValue: "2023/10/17", opType: OperatorComparer.Contains },
+            { fieldName: "StoreId", fieldValue: "2", opType: OperatorComparer.Contains },
+            { fieldName: "ItemId", fieldValue: "580", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
-    // console.log(vdata);
-    this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
-      this.Store1List = data;
-     // console.log(this.Store1List);
-     this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
-     this._CurrentStockService.userFormGroup.get('StoreId').setValue(this.Store1List[0]);
-     this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(this.Store1List[0]);
-     this._CurrentStockService.PurchaseItem.get('StoreId').setValue(this.Store1List[0]);
-    });
-  }
+
+    // DAY WISE REPORT
+    //   displayedColumnsDayWise = [
+    //     'LedgerDate',
+    //     'ItemName',
+    //     'BatchNo',
+    //     'BatchExpDate',
+    //     'UnitMRP',
+    //     'PurUnitRate',
+    //     'LandedRate',
+    //     'ReceivedQty',
+    //     'IssueQty',
+    //     'BalanceQty',
+    //   ];
+    displayedColumnsItemWise = [
+        //  'action',
+        'ItemName',
+        'ConversionFactor',
+        'Current_BalQty',
+        'Received_Qty',
+        'Sales_Qty',
+
+    ];
+
+    displayedColumnsIssueWiseItem = [
+        //  'action',
+        'ItemName',
+        'ConversionFactor',
+        'Current_BalQty',
+        'Received_Qty',
+        'Sales_Qty',
+
+    ];
 
 
-  StoreId:any;
-  gePharStoreList1() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    } 
-  this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
-    this.Store1List = data;
-    // if (this.data) {
-      const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
-      this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(ddValue[0]);
-    this._CurrentStockService.ItemWiseFrom.updateValueAndValidity();
-      return;
-    // } 
-  });
-  
-}
+    isLoadingStr: string = '';
+    isLoading: String = '';
+    sIsLoading: string = "";
+    // isLoading = true;
+    Store1List: any = [];
+    screenFromString = 'admission-form';
+    FromDate: any;
+    Todate: any;
+    SpinLoading: boolean = false;
+    isItemSelected: boolean = false;
 
+    dsCurrentStock = new MatTableDataSource<CurrentStockList>();
+    dsDaywiseStock = new MatTableDataSource<DayWiseStockList>();
+    dsItemwiseStock = new MatTableDataSource<ItemWiseStockList>();
+    dsIssuewissueItemStock = new MatTableDataSource<ItemWiseStockList>();
+    printflag: boolean = false;
 
-private _filterStore(value: any): string[] {
-  if (value) {
-    const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
+    @ViewChild('thirdPaginator', { static: true }) public thirdPaginator: MatPaginator;
 
-    return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-  }
-}
-getOptionTextStoreName(option) {
-  return option && option.StoreName ? option.StoreName : '';
-}
-filteredOptions:any;
-ItemListfilteredOptions:any;
-noOptionFound:boolean=false;
-DaywiseItemListfilteredOptions:any;
-ItemwiseItemListfilteredOptions:any;
-IssuewiseItemListfilteredOptions:any;
+    constructor(
+        public _CurrentStockService: CurrentStockService,
+        public _matDialog: MatDialog,
+        private reportDownloadService: ExcelDownloadService,
+        private _fuseSidebarService: FuseSidebarService,
+        public datePipe: DatePipe,
+        private _loggedService: AuthenticationService,
+        private accountService: AuthenticationService,
+        public toastr: ToastrService,
 
-getStockItemList() {
-  var m_data = {
-    "ItemName": `${this._CurrentStockService.SearchGroup.get('ItemCategory').value}%` 
-  }
-  if (this._CurrentStockService.SearchGroup.get('ItemCategory').value.length >= 1) {
-    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
-      this.filteredOptions = resData;
-      this.ItemListfilteredOptions = resData;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-}
-getDaywiseStockItemList() {
-  var m_data = {
-    "ItemName": `${this._CurrentStockService.userFormGroup.get('ItemCategory').value}%` 
-  }
-  if (this._CurrentStockService.userFormGroup.get('ItemCategory').value.length >= 1) {
-    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
-      this.filteredOptions = resData;
-      this.DaywiseItemListfilteredOptions = resData;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-}
-getitemwiseStockItemList() {
-  var m_data = {
-    "ItemName": `${this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value}%` 
-  }
-  if (this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.length >= 1) {
-    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
-      this.filteredOptions = resData;
-      this.ItemwiseItemListfilteredOptions = resData;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-}
-getissuwiseStockItemList() {
-  var m_data = {
-    "ItemName": `${this._CurrentStockService.PurchaseItem.get('ItemCategory').value}%` 
-  }
-  if (this._CurrentStockService.PurchaseItem.get('ItemCategory').value.length >= 1) {
-    this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
-      this.filteredOptions = resData;
-      this.IssuewiseItemListfilteredOptions = resData;
-      if (this.filteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-}
-getOptionTextItemList(option) {
-  if (!option) return '';
-  return option.ItemName;
-}
-getOptionTextDaywiseItemList(option) {
-  if (!option) return '';
-  return option.ItemName;
-}
-getOptionTextItemwiseItemList(option) {
-  if (!option) return '';
-  return option.ItemName;
-}
-getOptionTextPurchaseItemList(option) {
-  if (!option) return '';
-  return option.ItemName;
-}
+    ) { }
 
+    ngOnInit(): void {
+        this.gePharStoreList();
+        //this.getCrrentStkItemSearchList();
 
-  getCurrentStockList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-      "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
-      "StoreId": this._loggedService.currentUserValue.storeId || 0,
     }
-    console.log(vdata)
-      this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
-      this.dsCurrentStock.data = data as CurrentStockList[];
-      console.log(this.dsCurrentStock.data)
-      this.dsCurrentStock.sort = this.sort;
-      this.dsCurrentStock.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
+
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        // console.log('dateTimeObj==', dateTimeObj);
+        this.dateTimeObj = dateTimeObj;
+    }
+    gePharStoreList() {
+        var vdata = {
+            Id: this._loggedService.currentUserValue.storeId
+        }
+        // console.log(vdata);
+        this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+            this.Store1List = data;
+            // console.log(this.Store1List);
+            this._CurrentStockService.SearchGroup.get('StoreId').setValue(this.Store1List[0]);
+            this._CurrentStockService.userFormGroup.get('StoreId').setValue(this.Store1List[0]);
+            this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(this.Store1List[0]);
+            this._CurrentStockService.PurchaseItem.get('StoreId').setValue(this.Store1List[0]);
+        });
+    }
+
+
+    StoreId: any;
+    gePharStoreList1() {
+        var vdata = {
+            Id: this._loggedService.currentUserValue.storeId
+        }
+        this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+            this.Store1List = data;
+            // if (this.data) {
+            const ddValue = this.Store1List.filter(c => c.StoreId == this.StoreId);
+            this._CurrentStockService.ItemWiseFrom.get('StoreId').setValue(ddValue[0]);
+            this._CurrentStockService.ItemWiseFrom.updateValueAndValidity();
+            return;
+            // } 
+        });
+
+    }
+
+
+    private _filterStore(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+
+            return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextStoreName(option) {
+        return option && option.StoreName ? option.StoreName : '';
+    }
+    filteredOptions: any;
+    ItemListfilteredOptions: any;
+    noOptionFound: boolean = false;
+    DaywiseItemListfilteredOptions: any;
+    ItemwiseItemListfilteredOptions: any;
+    IssuewiseItemListfilteredOptions: any;
+
+    getStockItemList() {
+        var m_data = {
+            "ItemName": `${this._CurrentStockService.SearchGroup.get('ItemCategory').value}%`
+        }
+        if (this._CurrentStockService.SearchGroup.get('ItemCategory').value.length >= 1) {
+            this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+                this.filteredOptions = resData;
+                this.ItemListfilteredOptions = resData;
+                if (this.filteredOptions.length == 0) {
+                    this.noOptionFound = true;
+                } else {
+                    this.noOptionFound = false;
+                }
+            });
+        }
+    }
+    getDaywiseStockItemList() {
+        var m_data = {
+            "ItemName": `${this._CurrentStockService.userFormGroup.get('ItemCategory').value}%`
+        }
+        if (this._CurrentStockService.userFormGroup.get('ItemCategory').value.length >= 1) {
+            this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+                this.filteredOptions = resData;
+                this.DaywiseItemListfilteredOptions = resData;
+                if (this.filteredOptions.length == 0) {
+                    this.noOptionFound = true;
+                } else {
+                    this.noOptionFound = false;
+                }
+            });
+        }
+    }
+    getitemwiseStockItemList() {
+        var m_data = {
+            "ItemName": `${this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value}%`
+        }
+        if (this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.length >= 1) {
+            this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+                this.filteredOptions = resData;
+                this.ItemwiseItemListfilteredOptions = resData;
+                if (this.filteredOptions.length == 0) {
+                    this.noOptionFound = true;
+                } else {
+                    this.noOptionFound = false;
+                }
+            });
+        }
+    }
+    getissuwiseStockItemList() {
+        var m_data = {
+            "ItemName": `${this._CurrentStockService.PurchaseItem.get('ItemCategory').value}%`
+        }
+        if (this._CurrentStockService.PurchaseItem.get('ItemCategory').value.length >= 1) {
+            this._CurrentStockService.getItemFormList(m_data).subscribe(resData => {
+                this.filteredOptions = resData;
+                this.IssuewiseItemListfilteredOptions = resData;
+                if (this.filteredOptions.length == 0) {
+                    this.noOptionFound = true;
+                } else {
+                    this.noOptionFound = false;
+                }
+            });
+        }
+    }
+    getOptionTextItemList(option) {
+        if (!option) return '';
+        return option.ItemName;
+    }
+    getOptionTextDaywiseItemList(option) {
+        if (!option) return '';
+        return option.ItemName;
+    }
+    getOptionTextItemwiseItemList(option) {
+        if (!option) return '';
+        return option.ItemName;
+    }
+    getOptionTextPurchaseItemList(option) {
+        if (!option) return '';
+        return option.ItemName;
+    }
+
+
+    getCurrentStockList() {
+        this.sIsLoading = 'loading-data';
+        var vdata = {
+            "ItemName": this._CurrentStockService.SearchGroup.get('ItemCategory').value.ItemName || '%',
+            "StoreId": this._loggedService.currentUserValue.storeId || 0,
+        }
+        console.log(vdata)
+        this._CurrentStockService.getCurrentStockList(vdata).subscribe(data => {
+            this.dsCurrentStock.data = data as CurrentStockList[];
+            console.log(this.dsCurrentStock.data)
+            this.dsCurrentStock.sort = this.sort;
+            this.dsCurrentStock.paginator = this.paginator;
+            this.sIsLoading = '';
+        },
+            error => {
+                this.sIsLoading = '';
+            });
+    }
+
+    onClear() {
+
+        this._CurrentStockService.SearchGroup.get('start').reset();
+        this._CurrentStockService.SearchGroup.get('end').reset();
+        this._CurrentStockService.SearchGroup.get('StoreId').reset();
+        this._CurrentStockService.SearchGroup.get('IsDeleted').reset();
+        this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
+
+    }
+
+    getDayWiseStockList() {
+        this.sIsLoading = 'loading-data';
+        var vdata = {
+            "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "StoreId": this._loggedService.currentUserValue.storeId || 0,
+            "ItemId": this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID || 0,
+        }
+        setTimeout(() => {
+            this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
+                (Visit) => {
+                    this.dsDaywiseStock.data = Visit as DayWiseStockList[];
+                    console.log(this.dsDaywiseStock.data)
+                    this.dsDaywiseStock.sort = this.sort;
+                    this.dsDaywiseStock.paginator = this.thirdPaginator;
+                    this.sIsLoading = '';
+                    this.isLoadingStr = this.dsDaywiseStock.data.length == 0 ? 'no-data' : '';
+                },
+                (error) => {
+                    this.isLoadingStr = 'no-data';
+                }
+            );
+        }, 1000);
+
+    }
+
+    getItemWiseStockList() {
+        this.sIsLoading = 'loading-data';
+        var vdata = {
+            "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "StoreId": this._loggedService.currentUserValue.storeId || 0,
+            "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0
+        }
+        setTimeout(() => {
+            // this.isLoadingStr = 'loading';
+            this._CurrentStockService.getItemWiseStockList(vdata).subscribe(
+                (Visit) => {
+                    this.dsItemwiseStock.data = Visit as ItemWiseStockList[];
+                    this.dsItemwiseStock.sort = this.sort;
+                    this.dsItemwiseStock.paginator = this.secondPaginator;
+                    this.sIsLoading = '';
+                    this.isLoadingStr = this.dsItemwiseStock.data.length == 0 ? 'no-data' : '';
+                },
+                (error) => {
+                    this.isLoadingStr = 'no-data';
+                }
+            );
+        }, 1000);
+
+
+    }
+
+    getIssueWiseItemStockList() {
+        this.sIsLoading = 'loading-data';
+        var vdata = {
+            "FromDate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "StoreId": this._loggedService.currentUserValue.storeId || 0,
+            "ItemId": this._CurrentStockService.PurchaseItem.get('ItemCategory').value.ItemID || 0
+        }
+        setTimeout(() => {
+            this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
+                (Visit) => {
+                    this.dsIssuewissueItemStock.data = Visit as ItemWiseStockList[];
+                    this.dsIssuewissueItemStock.sort = this.sort;
+                    this.dsIssuewissueItemStock.paginator = this.secondPaginator;
+                    this.sIsLoading = '';
+                    this.isLoadingStr = this.dsIssuewissueItemStock.data.length == 0 ? 'no-data' : '';
+                },
+                (error) => {
+                    this.isLoadingStr = 'no-data';
+                }
+            );
+        }, 1000);
+
+
+    }
+    getItemdetails(contact) {
+        //console.log(contact)
+        const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
+            {
+                maxWidth: "100%",
+                height: '85%',
+                width: '85%',
+                data: {
+                    Obj: contact
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getCurrentStockList();
+        });
+    }
+    getIssueSummery(contact) {
+        //console.log(contact)
+        const dialogRef = this._matDialog.open(IssueSummeryComponent,
+            {
+                maxWidth: "100%",
+                height: '85%',
+                width: '85%',
+                data: {
+                    Obj: contact
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getCurrentStockList();
+        });
+    }
+    getSalesSummery(contact) {
+        //console.log(contact)
+        const dialogRef = this._matDialog.open(SalesSummeryComponent,
+            {
+                maxWidth: "100%",
+                height: '85%',
+                width: '85%',
+                data: {
+                    Obj: contact
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getCurrentStockList();
+        });
+    }
+    getSalesReturnSummery(contact) {
+        //console.log(contact)
+        const dialogRef = this._matDialog.open(SalesReturnSummeryComponent,
+            {
+                maxWidth: "100%",
+                height: '85%',
+                width: '85%',
+                data: {
+                    Obj: contact
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getCurrentStockList();
+        });
+    }
+
+    @ViewChild('ItemWiseStockTemplate') ItemWiseStockTemplate: ElementRef;
+    reportPrintObjList: ItemWiseStockList[] = [];
+    printTemplate: any;
+    reportPrintObj: ItemWiseStockList;
+    reportPrintObjTax: ItemWiseStockList;
+    subscriptionArr: Subscription[] = [];
+
+
+    _loaderShow: boolean = true;
+    exportItemReportExcel() {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
+        this.reportDownloadService.getExportJsonData(this.dsItemwiseStock.data, exportHeaders, 'ItemWise Report');
+
+        this.dsItemwiseStock.data = [];
         this.sIsLoading = '';
-      });
-  }  
- 
-  onClear(){
-
-    this._CurrentStockService.SearchGroup.get('start').reset();
-    this._CurrentStockService.SearchGroup.get('end').reset();
-    this._CurrentStockService.SearchGroup.get('StoreId').reset();
-    this._CurrentStockService.SearchGroup.get('IsDeleted').reset();
-    this._CurrentStockService.SearchGroup.get('ItemCategory').reset();
-    
-  }  
-
-  getDayWiseStockList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-     "LedgerDate": this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.storeId || 0   ,
-     "ItemId":this._CurrentStockService.userFormGroup.get('ItemCategory').value.ItemID || 0,   
     }
-    setTimeout(() => {
-      this._CurrentStockService.getDayWiseStockList(vdata).subscribe(
-        (Visit) => {
-          this.dsDaywiseStock.data = Visit as DayWiseStockList[];
-          console.log(this.dsDaywiseStock.data)
-          this.dsDaywiseStock.sort = this.sort;
-          this.dsDaywiseStock.paginator = this.thirdPaginator;
-          this.sIsLoading = '';
-          this.isLoadingStr = this.dsDaywiseStock.data.length == 0 ? 'no-data' : '';
-        },
-        (error) => {
-         this.isLoadingStr = 'no-data';
-        }
-      );
-    }, 1000);
 
-  } 
-      
-  getItemWiseStockList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-     "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.storeId || 0,
-     "ItemId": this._CurrentStockService.ItemWiseFrom.get('ItemCategory').value.ItemID || 0 
+
+    exportDayReportExcel() {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['LedgerDate', 'ItemName', 'BatchNo', 'BalanceQty', 'ReceivedQty', 'IssueQty', 'UnitMRP', 'PurUnitRate', 'LandedRate', 'VatPercentage'];
+        this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
+        this.dsDaywiseStock.data = [];
+        this.sIsLoading = '';
     }
-    setTimeout(() => {
-      // this.isLoadingStr = 'loading';
-      this._CurrentStockService.getItemWiseStockList(vdata).subscribe(
-        (Visit) => {
-          this.dsItemwiseStock.data = Visit as ItemWiseStockList[];
-          this.dsItemwiseStock.sort = this.sort;
-          this.dsItemwiseStock.paginator = this.secondPaginator;
-          this.sIsLoading = '';
-          this.isLoadingStr = this.dsItemwiseStock.data.length == 0 ? 'no-data' : '';
-        },
-        (error) => {
-           this.isLoadingStr = 'no-data';
-        }
-      );
-    }, 1000);
-   
-   
-  }
-   
-  getIssueWiseItemStockList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {
-     "FromDate":this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "todate": this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-     "StoreId": this._loggedService.currentUserValue.storeId || 0,
-      "ItemId": this._CurrentStockService.PurchaseItem.get('ItemCategory').value.ItemID || 0
+
+    exportCurrentStockReportExcel() {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty', 'ReturnQty'];
+        this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
+        console.log(this.dsCurrentStock.data)
+        this.dsCurrentStock.data = [];
+        this.sIsLoading = '';
     }
-    setTimeout(() => {
-      this._CurrentStockService.getIssueWiseItemStockList(vdata).subscribe(
-        (Visit) => {
-          this.dsIssuewissueItemStock.data = Visit as ItemWiseStockList[];
-          this.dsIssuewissueItemStock.sort = this.sort;
-          this.dsIssuewissueItemStock.paginator = this.secondPaginator;
-          this.sIsLoading = '';
-          this.isLoadingStr = this.dsIssuewissueItemStock.data.length == 0 ? 'no-data' : '';
-        },
-        (error) => {
-           this.isLoadingStr = 'no-data';
-        }
-      );
-    }, 1000);
-   
-   
-  }
-  getItemdetails(contact){
-    //console.log(contact)
-    const dialogRef = this._matDialog.open(ItemMovementSummeryComponent,
-      {
-        maxWidth: "100%",
-        height: '85%',
-        width: '85%',
-        data: {
-          Obj: contact
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getCurrentStockList();
-    });
-  }
-  getIssueSummery(contact){
-    //console.log(contact)
-    const dialogRef = this._matDialog.open(IssueSummeryComponent,
-      {
-        maxWidth: "100%",
-        height: '85%',
-        width: '85%',
-        data: {
-          Obj: contact
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getCurrentStockList();
-    });
-  }
-  getSalesSummery(contact){
-    //console.log(contact)
-    const dialogRef = this._matDialog.open(SalesSummeryComponent,
-      {
-        maxWidth: "100%",
-        height: '85%',
-        width: '85%',
-        data: {
-          Obj: contact
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getCurrentStockList();
-    });
-  }
-  getSalesReturnSummery(contact){
-    //console.log(contact)
-    const dialogRef = this._matDialog.open(SalesReturnSummeryComponent,
-      {
-        maxWidth: "100%",
-        height: '85%',
-        width: '85%',
-        data: {
-          Obj: contact
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getCurrentStockList();
-    });
-  }
-
-  @ViewChild('ItemWiseStockTemplate') ItemWiseStockTemplate: ElementRef;
-  reportPrintObjList: ItemWiseStockList[] = [];
-  printTemplate: any;
-  reportPrintObj: ItemWiseStockList;
-  reportPrintObjTax: ItemWiseStockList;
-  subscriptionArr: Subscription[] = [];
- 
-
-  _loaderShow:boolean = true;
-  exportItemReportExcel() {
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
-    this.reportDownloadService.getExportJsonData(this.dsItemwiseStock.data, exportHeaders, 'ItemWise Report');
- 
-    this.dsItemwiseStock.data=[];
-    this.sIsLoading = '';
-  }
-
-    
-  exportDayReportExcel() {
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['LedgerDate','ItemName','BatchNo','BalanceQty','ReceivedQty', 'IssueQty','UnitMRP','PurUnitRate','LandedRate','VatPercentage'];
-    this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
-    this.dsDaywiseStock.data=[];
-    this.sIsLoading = '';
-  }
-
-  exportCurrentStockReportExcel() {
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty','ReturnQty'];
-    this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
-    console.log(this.dsCurrentStock.data)
-    this.dsCurrentStock.data=[];
-    this.sIsLoading = '';
-  }
 
 
-  exportIssuewiseItemReportExcel() {
-    this.sIsLoading == 'loading-data'
-    let exportHeaders = ['StoreName', 'ItemName', 'Received_Qty', 'Sales_Qty', 'Current_BalQty'];
-    this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
-    this.dsCurrentStock.data=[];
-    this.sIsLoading = '';
-  }
+    exportIssuewiseItemReportExcel() {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['StoreName', 'ItemName', 'Received_Qty', 'Sales_Qty', 'Current_BalQty'];
+        this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
+        this.dsCurrentStock.data = [];
+        this.sIsLoading = '';
+    }
 
-  viewgetDaywisestockReportPdf() {
-    this.sIsLoading == 'loading-data'
-    let LedgerDate =  this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let StoreId =this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
-    setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._CurrentStockService.getDaywisestockview(
-      LedgerDate,StoreId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Day Wise Stock Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-     
-    });
-   
-    },100);
-  }
+    viewgetDaywisestockReportPdf() {
+        this.sIsLoading == 'loading-data'
+        let LedgerDate = this.datePipe.transform(this._CurrentStockService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+        setTimeout(() => {
+            this.SpinLoading = true;
+            //  this.AdList=true;
+            this._CurrentStockService.getDaywisestockview(
+                LedgerDate, StoreId
+            ).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "95vw",
+                        height: '850px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Day Wise Stock Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.sIsLoading = '';
+                });
 
-  
-  viewgetCurrentstockReportPdf() {
-    this.sIsLoading == 'loading-data'
-    let ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
-    let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
-    setTimeout(() => {
-      this.SpinLoading =true;
-   this._CurrentStockService.getCurrentstockview(
-    StoreId, ItemName
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Current Stock Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-       
-    });
-   
-    },100);
-  }
+            });
 
-  
-  viewgetItemwisestockReportPdf() {
-    this.sIsLoading == 'loading-data'
-    let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
-    setTimeout(() => {
-    this.SpinLoading =true;
-    //  this.AdList=true;
-    this._CurrentStockService.getItemwisestockview(FromDate,todate,StoreId).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Item Wise Current Stock Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-    });
-    },1000);
-  }
+        }, 100);
+    }
 
 
-  viewgetItemWisePurchaseReportPdf() {
-    this.sIsLoading == 'loading-data'
-    let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let todate =this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let StoreId =this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
-    setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._CurrentStockService.ItemWisePurchaseView(
-      FromDate,todate,StoreId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Day Wise Stock Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-     
-    });
-   
-    },100);
-  }
+    viewgetCurrentstockReportPdf() {
+        this.sIsLoading == 'loading-data'
+        let ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
+        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
+        setTimeout(() => {
+            this.SpinLoading = true;
+            this._CurrentStockService.getCurrentstockview(
+                StoreId, ItemName
+            ).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "95vw",
+                        height: '850px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Current Stock Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.sIsLoading = '';
+                });
+
+            });
+
+        }, 100);
+    }
+
+
+    viewgetItemwisestockReportPdf() {
+        this.sIsLoading == 'loading-data'
+        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
+        setTimeout(() => {
+            this.SpinLoading = true;
+            //  this.AdList=true;
+            this._CurrentStockService.getItemwisestockview(FromDate, todate, StoreId).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "95vw",
+                        height: '850px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Item Wise Current Stock Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.sIsLoading = '';
+                });
+            });
+        }, 1000);
+    }
+
+
+    viewgetItemWisePurchaseReportPdf() {
+        this.sIsLoading == 'loading-data'
+        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end1").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.userFormGroup.get("StoreId").value.StoreId || 0
+        setTimeout(() => {
+            this.SpinLoading = true;
+            //  this.AdList=true;
+            this._CurrentStockService.ItemWisePurchaseView(
+                FromDate, todate, StoreId
+            ).subscribe(res => {
+                const dialogRef = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "95vw",
+                        height: '850px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Day Wise Stock Viewer"
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.sIsLoading = '';
+                });
+
+            });
+
+        }, 100);
+    }
 }
- 
+
 export class CurrentStockList {
-  IssueQty: Number;
-  ReceivedQty: number;
-  ItemName:string;
-  ToStoreName:string;
-  BalanceQty:number;
-  GenericName: string;
-  
-  constructor(CurrentStockList) {
-    {
-      this.IssueQty = CurrentStockList.IssueQty || 0;
-      this.ReceivedQty = CurrentStockList.ReceivedQty || 0;
-      this.ItemName = CurrentStockList.ItemName || "";
-      this.ToStoreName = CurrentStockList.ToStoreName || "";
-      this.BalanceQty = CurrentStockList.BalanceQty || 0;
-      this.GenericName = CurrentStockList.GenericName || "";
-       
+    IssueQty: Number;
+    ReceivedQty: number;
+    ItemName: string;
+    ToStoreName: string;
+    BalanceQty: number;
+    GenericName: string;
+
+    constructor(CurrentStockList) {
+        {
+            this.IssueQty = CurrentStockList.IssueQty || 0;
+            this.ReceivedQty = CurrentStockList.ReceivedQty || 0;
+            this.ItemName = CurrentStockList.ItemName || "";
+            this.ToStoreName = CurrentStockList.ToStoreName || "";
+            this.BalanceQty = CurrentStockList.BalanceQty || 0;
+            this.GenericName = CurrentStockList.GenericName || "";
+
+        }
     }
-  }
 }
- 
+
 export class DayWiseStockList {
- 
-  ItemName:string;
-  ToStoreName:string;
-  IssueQty: Number;
-  BalanceQty:number;
-  ReceivedQty: number;
-  BatchNo: Number;
-  BatchExpDate:number;
-  UnitMRP: number;
-  LedgerDate:any;
-  constructor(DayWiseStockList) {
-    {
-      this.IssueQty = DayWiseStockList.IssueQty || 0;
-      this.ReceivedQty = DayWiseStockList.ReceivedQty || 0;
-      this.ItemName = DayWiseStockList.ItemName || "";
-      this.ToStoreName = DayWiseStockList.ToStoreName || "";
-      this.BalanceQty = DayWiseStockList.BalanceQty || 0;
-      this.BatchNo = DayWiseStockList.BatchNo || 0;
-      this.BatchExpDate = DayWiseStockList.BatchExpDate || 0;
-      this.UnitMRP = DayWiseStockList.UnitMRP || 0;
-      this.LedgerDate = DayWiseStockList.LedgerDate || 0;  
+
+    ItemName: string;
+    ToStoreName: string;
+    IssueQty: Number;
+    BalanceQty: number;
+    ReceivedQty: number;
+    BatchNo: Number;
+    BatchExpDate: number;
+    UnitMRP: number;
+    LedgerDate: any;
+    constructor(DayWiseStockList) {
+        {
+            this.IssueQty = DayWiseStockList.IssueQty || 0;
+            this.ReceivedQty = DayWiseStockList.ReceivedQty || 0;
+            this.ItemName = DayWiseStockList.ItemName || "";
+            this.ToStoreName = DayWiseStockList.ToStoreName || "";
+            this.BalanceQty = DayWiseStockList.BalanceQty || 0;
+            this.BatchNo = DayWiseStockList.BatchNo || 0;
+            this.BatchExpDate = DayWiseStockList.BatchExpDate || 0;
+            this.UnitMRP = DayWiseStockList.UnitMRP || 0;
+            this.LedgerDate = DayWiseStockList.LedgerDate || 0;
+        }
     }
-  }
 }
 export class ItemWiseStockList {
- 
-  ItemName:string;
-  ToStoreName:string;
-  IssueQty: Number;
-  BalanceQty:number;
-  ReceivedQty: number;
-  BatchNo: Number;
-  BatchExpDate:number;
-  UnitMRP: number;
-  LedgerDate:any;
-  constructor(ItemWiseStockList) {
-    {
-      this.IssueQty = ItemWiseStockList.IssueQty || 0;
-      this.ReceivedQty = ItemWiseStockList.ReceivedQty || 0;
-      this.ItemName = ItemWiseStockList.ItemName || "";
-      this.ToStoreName = ItemWiseStockList.ToStoreName || "";
-      this.BalanceQty = ItemWiseStockList.BalanceQty || 0;
-      this.BatchNo = ItemWiseStockList.BatchNo || 0;
-      this.BatchExpDate = ItemWiseStockList.BatchExpDate || 0;
-      this.UnitMRP = ItemWiseStockList.UnitMRP || 0;
-      this.LedgerDate = ItemWiseStockList.LedgerDate || 0; 
+
+    ItemName: string;
+    ToStoreName: string;
+    IssueQty: Number;
+    BalanceQty: number;
+    ReceivedQty: number;
+    BatchNo: Number;
+    BatchExpDate: number;
+    UnitMRP: number;
+    LedgerDate: any;
+    constructor(ItemWiseStockList) {
+        {
+            this.IssueQty = ItemWiseStockList.IssueQty || 0;
+            this.ReceivedQty = ItemWiseStockList.ReceivedQty || 0;
+            this.ItemName = ItemWiseStockList.ItemName || "";
+            this.ToStoreName = ItemWiseStockList.ToStoreName || "";
+            this.BalanceQty = ItemWiseStockList.BalanceQty || 0;
+            this.BatchNo = ItemWiseStockList.BatchNo || 0;
+            this.BatchExpDate = ItemWiseStockList.BatchExpDate || 0;
+            this.UnitMRP = ItemWiseStockList.UnitMRP || 0;
+            this.LedgerDate = ItemWiseStockList.LedgerDate || 0;
+        }
     }
-  }
 }
 

@@ -18,40 +18,26 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class ReligionMasterComponent implements OnInit {
     msg: any;
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
-   
+
+
     gridConfig: gridModel = {
         apiUrl: "ReligionMaster/List",
         columnsList: [
-            { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Religion Name", key: "religionName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Religion Name", key: "religionName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right",  width:100 , type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._religionService.deactivateTheStatus(data.religionId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._religionService.deactivateTheStatus(data.religionId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -65,11 +51,11 @@ export class ReligionMasterComponent implements OnInit {
         ],
         row: 25
     }
-    constructor(public _religionService: ReligionMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
-    ngOnInit(): void {}
-          
+    ngOnInit(): void { }
+
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewReligionMasterComponent,
@@ -86,7 +72,7 @@ export class ReligionMasterComponent implements OnInit {
         });
     }
 
-    
+
 }
 
 

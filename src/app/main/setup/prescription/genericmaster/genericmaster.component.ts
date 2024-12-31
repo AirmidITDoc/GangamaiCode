@@ -18,41 +18,25 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class GenericmasterComponent implements OnInit {
-
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:150  },
-            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:100  },
+            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                debugger
-                                if (result) {
-                                    let that = this;
-                                    this._GenericService.deactivateTheStatus(data.genericId).subscribe((data: any) => {
-                                    this.toastr.success(data.message)
-                                    that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._GenericService.deactivateTheStatus(data.genericId).subscribe((data: any) => {
+                                this.toastr.success(data.message)
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -64,11 +48,11 @@ export class GenericmasterComponent implements OnInit {
             { fieldName: "genericName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row:25
+        row: 25
     }
 
-    constructor(public _GenericService: GenericmasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _GenericService: GenericmasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
 
@@ -87,7 +71,7 @@ export class GenericmasterComponent implements OnInit {
                 break;
         }
     }
-    
+
     onSave(row: any = null) {
         debugger
         let that = this;
@@ -96,16 +80,16 @@ export class GenericmasterComponent implements OnInit {
                 maxWidth: "45vw",
                 height: '30%',
                 width: '70%',
-                data:row
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if(result){
+            if (result) {
                 that.grid.bindGridData();
             }
 
         });
     }
-  
+
 }
 
 

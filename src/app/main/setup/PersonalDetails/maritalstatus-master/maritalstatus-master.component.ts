@@ -17,38 +17,24 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class MaritalstatusMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "MaritalStatus/List",
         columnsList: [
-            { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:105 },
+            { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 105 },
             {
-                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._maritalService.deactivateTheStatus(data.maritalStatusId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._maritalService.deactivateTheStatus(data.maritalStatusId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -63,11 +49,11 @@ export class MaritalstatusMasterComponent implements OnInit {
         row: 25
     }
 
-    constructor(public _maritalService: MaritalstatusMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _maritalService: MaritalstatusMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-        
+
     }
 
     onSave(row: any = null) {

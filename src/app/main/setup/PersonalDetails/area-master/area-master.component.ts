@@ -18,15 +18,15 @@ import { NewAreaComponent } from "./new-area/new-area.component";
 })
 
 export class AreaMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "AreaMaster/List",
         columnsList: [
-            { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
-            { heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -34,22 +34,9 @@ export class AreaMasterComponent implements OnInit {
                     },
                     {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._AreaMasterService.deactivateTheStatus(data.areaId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._AreaMasterService.deactivateTheStatus(data.areaId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]

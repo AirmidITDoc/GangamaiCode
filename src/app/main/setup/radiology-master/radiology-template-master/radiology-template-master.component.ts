@@ -12,87 +12,73 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 
 
 @Component({
-  selector: 'app-radiology-template-master',
-  templateUrl: './radiology-template-master.component.html',
-  styleUrls: ['./radiology-template-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+    selector: 'app-radiology-template-master',
+    templateUrl: './radiology-template-master.component.html',
+    styleUrls: ['./radiology-template-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 
 export class RadiologyTemplateMasterComponent implements OnInit {
-  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  
-  
-  gridConfig: gridModel = {
-      apiUrl: "RadiologyTemplate/List",
-      columnsList: [
-          { heading: "Code", key: "templateId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Name", key: "templateName",width: 400, sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Template Desc", key: "templateDesc",width: 400, sort: true, align: 'left', emptySign: 'NA' },
-          
-          { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
-          {
-            heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this.confirmDialogRef = this._matDialog.open(
-                            FuseConfirmDialogComponent,
-                            {
-                                disableClose: false,
-                            }
-                        );
-                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                        this.confirmDialogRef.afterClosed().subscribe((result) => {
-                            if (result) {
-                                let that = this;
-                                this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    that.grid.bindGridData();
-                                });
-                            }
-                            this.confirmDialogRef = null;
-                        });
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "templateId",
-    sortOrder: 0,
-    filters: [
-        { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-    ],
-    row: 25
-}
-  constructor(
-    public _TemplateServieService: RadiologyTemplateMasterService,
-    public _matDialog: MatDialog,
-    public toastr: ToastrService,
-   
-  ) { }
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-  ngOnInit(): void {
-   
-  }
-  onSave(row: any = null) {
-    debugger
-    let that = this;
-    const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-        {
-            maxWidth: "85vw",
-            height: '75%',
-            width: '90%',
-            data: row
+
+    gridConfig: gridModel = {
+        apiUrl: "RadiologyTemplate/List",
+        columnsList: [
+            { heading: "Code", key: "templateId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Name", key: "templateName", width: 400, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Desc", key: "templateDesc", width: 400, sort: true, align: 'left', emptySign: 'NA' },
+
+            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "templateId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+    constructor(
+        public _TemplateServieService: RadiologyTemplateMasterService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+
+    ) { }
+
+    ngOnInit(): void {
+
+    }
+    onSave(row: any = null) {
+        debugger
+        let that = this;
+        const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
+            {
+                maxWidth: "85vw",
+                height: '75%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
         });
-    dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            that.grid.bindGridData();
-        }
-    });
-}
+    }
 }

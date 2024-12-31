@@ -19,145 +19,118 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-requestforlabtest',
-  templateUrl: './requestforlabtest.component.html',
-  styleUrls: ['./requestforlabtest.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+    selector: 'app-requestforlabtest',
+    templateUrl: './requestforlabtest.component.html',
+    styleUrls: ['./requestforlabtest.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class RequestforlabtestComponent implements OnInit {
-  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  hasSelectedContacts: boolean;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    hasSelectedContacts: boolean;
 
-  
-  gridConfig: gridModel = {
-      apiUrl: "Nursing/LabRequestList",
-      columnsList: [
-          { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-          { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "OP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-          { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA',width:100 },
-          { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-          
-          {
-              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                  {
-                      action: gridActions.edit, callback: (data: any) => {
-                          this.onSave(data);
-                      }
-                  }, {
-                      action: gridActions.delete, callback: (data: any) => {
-                          this.confirmDialogRef = this._matDialog.open(
-                              FuseConfirmDialogComponent,
-                              {
-                                  disableClose: false,
-                              }
-                          );
-                          this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                          this.confirmDialogRef.afterClosed().subscribe((result) => {
-                              if (result) {
-                                  let that = this;
-                                  this._RequestforlabtestService.deactivateTheStatus(data.requestId).subscribe((response: any) => {
-                                      this.toastr.success(response.message);
-                                      that.grid.bindGridData();
-                                  });
-                              }
-                              this.confirmDialogRef = null;
-                          });
-                      }
-                  }]
-          } //Action 1-view, 2-Edit,3-delete
-      ],
-      sortField: "requestId",
-      sortOrder: 0,
-      filters: [
-          { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-          { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
-          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
-      row: 25
-  }
-  gridConfig1: gridModel = {
-    apiUrl: "Nursing/LabRequestDetailsList",
-    columnsList: [
-        { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        // { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-        // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
-        // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-        // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-        // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-        
-        {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this.confirmDialogRef = this._matDialog.open(
-                            FuseConfirmDialogComponent,
-                            {
-                                disableClose: false,
-                            }
-                        );
-                        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                        this.confirmDialogRef.afterClosed().subscribe((result) => {
-                            if (result) {
-                                let that = this;
-                                this._RequestforlabtestService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    that.grid.bindGridData();
-                                });
-                            }
-                            this.confirmDialogRef = null;
-                        });
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "RequestId",
-    sortOrder: 0,
-    filters: [
-        { fieldName: "RequestId", fieldValue: "29475", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-       // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-    ],
-    row: 25
-}
 
-  constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
-      public toastr : ToastrService,) {}
-  ngOnInit(): void {
-  }
+    gridConfig: gridModel = {
+        apiUrl: "Nursing/LabRequestList",
+        columnsList: [
+            { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "OP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 50 },
 
-  onSave(row: any = null) {
-    let that = this;
-    const dialogRef = this._matDialog.open(NewRequestforlabComponent,
-        {
-            maxWidth: "95vw",
-            height: '95%',
-            width: '80%',
-            data: row
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._RequestforlabtestService.deactivateTheStatus(data.requestId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "requestId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+    gridConfig1: gridModel = {
+        apiUrl: "Nursing/LabRequestDetailsList",
+        columnsList: [
+            { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
+            // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
+            // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
+            // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._RequestforlabtestService.deactivateTheStatus(data.RequestId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "RequestId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "RequestId", fieldValue: "29475", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+    ngOnInit(): void {
+    }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewRequestforlabComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '80%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
         });
-    dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            that.grid.bindGridData();
-        }
-    });
-  }
+    }
 
 }
