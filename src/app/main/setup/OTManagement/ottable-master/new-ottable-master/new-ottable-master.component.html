@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar" fxFlex.xs="100%" fxFlex.sm="50%">
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -52,7 +52,7 @@
                                                 <mat-label>Location</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
                                                     placeholder="Select Location" matInput formControlName="Locationid"
-                                                    required [(ngModel)]="vLocationid">
+                                                    required [(ngModel)]="vLocationid" [matAutocomplete]="autolocation">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
                                                         (click)="_otTableMasterService.myform.get('Locationid').setValue(''); isLocationSelected = false;">close</mat-icon>
@@ -60,12 +60,12 @@
                                                         (click)="_otTableMasterService.myform.get('Locationid').setValue(''); isLocationSelected = false;">search</mat-icon>
                                                 </span>
 
-                                                <!-- <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                          <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                            (onSelectionChange)="OnChangeDoctorList(option)">
-                                            {{option.LocationName}}
-                                          </mat-option>
-                                        </mat-autocomplete> -->
+                                                <mat-autocomplete #autolocation="matAutocomplete" [displayWith]="getOptionTextLoc">
+                                                    <mat-option *ngFor="let option of filteredOptionsLocation | async" 
+                                                    [value]="option">
+                                                        {{option.LocationName}} || {{option.LocationId}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
 
@@ -74,7 +74,7 @@
 
                                 <div class="footer-navigation-container">
 
-                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
+                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" [(ngModel)]="vIsDeleted"
                                         (checked)=true>IsActive
                                     </mat-checkbox>
 

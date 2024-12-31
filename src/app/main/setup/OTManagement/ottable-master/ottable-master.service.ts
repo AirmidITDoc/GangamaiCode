@@ -29,4 +29,26 @@ export class OttableMasterService {
       OtRoomNameSearch: [""],
     });
 }
+public getLocationMasterCombo() {
+  debugger
+  return this._httpClient.post(
+      "Generic/GetByProc?procName=RetrieveLocationMasterForCombo",
+      {}
+  );
+}
+public getOTTableListlist(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTTableMasterList",employee)
+}
+public OtTableInsert(employee)
+{    
+  return this._httpClient.post("OT/SaveOTTableMaster",employee);
+}
+public OtTableUpdate(employee)
+{    
+  return this._httpClient.post("OT/UpdateOTTableMaster",employee);
+}
+public OtTableCancle(employee)
+{
+  return this._httpClient.post("OT/CancelOTTableMaster", employee);
+}
 }
