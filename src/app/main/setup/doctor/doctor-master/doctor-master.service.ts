@@ -130,7 +130,10 @@ export class DoctorMasterService {
         this.createdDoctormasterForm();
     }
 
-    public getDoctorMasterList(Param) {
+    public getDoctorMasterList(Param, loader = true) {
+        if(loader){
+            this._loaderService.show()
+        }
         return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
     }
 

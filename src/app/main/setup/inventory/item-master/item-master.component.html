@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+  <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -9,305 +9,293 @@
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Item Master
             </span>
-            <!-- <button mat-raised-button color="pine" (click)="onAdd()" fxLayoutAlign="center center"
-            style="margin-left: 1250px;">Add
-            <mat-icon color="Primary" title=" Add New Item ">add_to_photos</mat-icon>
-        </button> -->
         </div>
-
-        <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button (click)="onAdd()" fxLayoutAlign="center center" class="py-8">
-                <mat-icon color="Primary" title=" Add New Item ">add</mat-icon>
-                <span>New Item</span>
+        <div fxLayout="row">
+            <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">
+                <mat-icon>add</mat-icon> New Item
             </button>
         </div>
+    </mat-toolbar> 
 
-    </mat-toolbar>
-
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
+    <div class="content" >
+        <div class="center p-12 pb-56"  >
             <div class="content-card">
-                <div fxLayout="column" class="gap-12">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
 
-                    <mat-card>
-                        <form [formGroup]="_itemService.myformSearch">
-                            <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="4px"
-                                style="padding-bottom: 10px;">
+                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
+                            <form [formGroup]="_itemService.myformSearch">
+                                <div class="dialog-content-wrapper">
 
-                                <mat-form-field class="mr-sm-12" fxFlex>
-                                    <input matInput placeholder="Search --> Item Name" autocomplete="off"
-                                        name="ItemNameSearch" formControlName="ItemNameSearch" (keyup)="onSearch()" />
-                                    <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="onSearchClear()">
-                                        <mat-icon>close</mat-icon>
+                                    <mat-form-field class="mr-sm-12" fxFlex>
+                                        <input matInput placeholder="Search   Item Name" autocomplete="off"
+                                            name="ItemNameSearch" formControlName="ItemNameSearch"
+                                            (keyup)="onSearch()" />
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="onSearchClear()">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                                        fxLayoutAlign="center center">
+                                        <mat-radio-button value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
+                                        <mat-icon>search</mat-icon>
+                                        Search
                                     </button>
-                                </mat-form-field>
-
-                                <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                    fxLayoutAlign="center center">
-                                    <mat-radio-button value="2">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                </mat-radio-group>
-
-                                <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                    <mat-icon>search</mat-icon>
-                                    Search
-                                </button>
-                            </div>
-                        </form>
-                    </mat-card>
-                    <!-- <div fxLayout="column"> -->
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex.gt-sm="100%" fxFlex>
-                            <div fxlayout="row">
-                                <div style="width: 100%;">
-                                    <mat-table #table matSort [dataSource]="DSItemMasterList" [@animateStagger]="{value:'50'}">
-
-                                        <ng-container matColumnDef="ItemID" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-80">Code
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
-                                                {{element.ItemID}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ItemShortName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
-                                                IShortName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-250">
-                                                {{element.ItemShortName || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ItemName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
-                                                Item Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-250">
-                                                {{element.ItemName || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ItemTypeName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                                class="w-150">Item Type
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
-                                                {{element.ItemTypeName || '-'}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ItemCategoryName" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
-                                                Category
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
-                                                {{element.ItemCategoryName || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ItemGenericName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230">
-                                                Generic Name
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
-                                                {{element.ItemGenericName || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="ItemClassName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                fxShow.gt-sm>ItemClass
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.ItemClassName || '-'}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="UnitofMeasurementName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> UOM
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                {{element.PuchaseUOM || '-'}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="StockUOMId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> Stock UOM
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.StockUOM
-                                                || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="ConversionFactor">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ConversionFactor
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                {{element.ConversionFactor || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="CurrencyName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> Currency
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CurrencyName
-                                                || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="MinQty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                fxShow.gt-sm>MinQty
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.MinQty || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="MaxQty">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> MaxQty
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MaxQty ||
-                                                '-'}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ReOrder">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ReOrder
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ReOrder ||
-                                                '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="HSNcode">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> HSNcode
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.HSNcodev ||
-                                                '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="CGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> CGST
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CGST ||
-                                                '-'}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="SGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> SGST
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SGST ||
-                                                '-'}} </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> IGST
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IGST ||
-                                                '-'}} </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="ManufName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ManufName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ManufId ||
-                                                '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ProdLocation">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> ProdLocation
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ProdLocation
-                                                || '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="AddedByName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header> User Name
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby ||
-                                                '-'}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsNursingFlag">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                IsNursingFlag </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.IsNursingFlag"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="element.IsNursingFlag"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsBatchRequired">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                IsBatchRequired </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="!element.IsDeleted"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="element.IsDeleted"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="Isdeleted">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                IsActive
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <mat-icon *ngIf="element.Isdeleted"
-                                                    class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!element.Isdeleted"
-                                                    class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-
-                                        <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef class="table-actions"
-                                                style="color: white;">
-                                                Action
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
-                                                        title="Edit Menu">edit</mat-icon></button>
-                                                <button mat-icon-button (click)="onDeactive(row.ItemID)"
-                                                    color="warn"><mat-icon>delete_outline</mat-icon></button>
-
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent min-width-2900"
-                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                            class="element min-width-2900"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':DSItemMasterList!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(DSItemMasterList!=null && DSItemMasterList.data.length==0)}"></mat-footer-row>
-
-                                    </mat-table>
-
-                                    <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="35"
-                                        [length]="resultsLength" showFirstLastButtons (page)="getItemMasterList()">
-                                    </mat-paginator>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+
+
+                        <div style="width: 100%;" dynamicTableHeight>
+                            <mat-table  #table matSort [dataSource]="DSItemMasterList"
+                                [@animateStagger]="{value:'50'}" style="overflow: auto;height: 500px !important;">
+
+                                <ng-container matColumnDef="ItemID" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        class="w-80">Code
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
+                                        {{element.ItemID}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ItemShortName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
+                                        IShortName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-250">
+                                        {{element.ItemShortName || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ItemName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
+                                        Item Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-250">
+                                        {{element.ItemName || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ItemTypeName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        class="w-150">Item Type
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
+                                        {{element.ItemTypeName || '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ItemCategoryName" sticky>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
+                                        Category
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                                        {{element.ItemCategoryName || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ItemGenericName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-230">
+                                        Generic Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-230">
+                                        {{element.ItemGenericName || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="ItemClassName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>ItemClass
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.ItemClassName || '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="UnitofMeasurementName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> UOM
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        {{element.PuchaseUOM || '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="StockUOMId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Stock UOM
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.StockUOM
+                                        || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="ConversionFactor">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ConversionFactor
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        {{element.ConversionFactor || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="CurrencyName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Currency
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CurrencyName
+                                        || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="MinQty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>MinQty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        {{element.MinQty || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="MaxQty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> MaxQty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.MaxQty ||
+                                        '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReOrder">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ReOrder
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ReOrder ||
+                                        '-'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="HSNcode">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> HSNcode
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.HSNcodev ||
+                                        '-'}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="CGST">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> CGST
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.CGST ||
+                                        '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="SGST">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> SGST
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.SGST ||
+                                        '-'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IGST">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> IGST
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.IGST ||
+                                        '-'}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="ManufName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ManufName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ManufId ||
+                                        '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ProdLocation">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> ProdLocation
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ProdLocation
+                                        || '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="AddedByName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> User Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.Addedby ||
+                                        '-'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IsNursingFlag">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        IsNursingFlag </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-icon *ngIf="!element.IsNursingFlag"
+                                            class="active-icon green-600 s-16">check_circle</mat-icon>
+                                        <mat-icon *ngIf="element.IsNursingFlag"
+                                            class="active-icon red-500 s-16">close</mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IsBatchRequired">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        IsBatchRequired </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-icon *ngIf="!element.IsDeleted"
+                                            class="active-icon green-600 s-16">check_circle</mat-icon>
+                                        <mat-icon *ngIf="element.IsDeleted"
+                                            class="active-icon red-500 s-16">close</mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Isdeleted">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        IsActive
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-icon *ngIf="element.Isdeleted"
+                                            class="active-icon green-600 s-16">check_circle</mat-icon>
+                                        <mat-icon *ngIf="!element.Isdeleted"
+                                            class="active-icon red-500 s-16">close</mat-icon>
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                        Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                                title="Edit Menu">edit</mat-icon></button>
+                                        <button mat-icon-button (click)="onDeactive(row.ItemID)"
+                                            color="warn"><mat-icon>delete_outline</mat-icon></button>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        loading data...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent min-width-2900"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-2900"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':DSItemMasterList!=null}"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(DSItemMasterList!=null && DSItemMasterList.data.length==0)}"></mat-footer-row>
+
+                            </mat-table> 
+
+                            <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
+                            [length]="resultsLength" showFirstLastButtons (page)="getItemMasterList()">
+                           </mat-paginator>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div>  
