@@ -82,7 +82,7 @@ export class IPSearchListComponent implements OnInit {
                         action: gridActions.delete, callback: (data: any) => {
                             this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
-                                that.grid.bindGridData();
+                                this.grid.bindGridData();
                             });
                         }
                     }]

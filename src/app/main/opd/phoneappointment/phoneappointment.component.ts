@@ -50,7 +50,7 @@ export class PhoneappointmentComponent implements OnInit {
                         action: gridActions.delete, callback: (data: any) => {
                             this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
-                                that.grid.bindGridData();
+                                this.grid.bindGridData();
                             });
                         }
                     }]
