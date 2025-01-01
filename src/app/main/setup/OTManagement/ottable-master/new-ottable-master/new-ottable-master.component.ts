@@ -47,8 +47,15 @@ export class NewOttableMasterComponent implements OnInit {
       console.log("RegisterObj:",this.registerObj)
       this.vOtRoomName = this.registerObj.OTTableName;
       this.vLocationid = this.registerObj.LocationName;
-      this.vIsDeleted=JSON.stringify(this.registerObj.IsActive)
+      // this.vIsDeleted=JSON.stringify(this.registerObj.IsActive)
       this.vOtTableId=this.registerObj.OTTableId;
+      if(this.registerObj.IsActive==true){
+        this._otTableMasterService.myform.get("IsDeleted").setValue('true')
+        this.vIsDeleted=true;
+      }else{
+        this._otTableMasterService.myform.get("IsDeleted").setValue('false')
+        this.vIsDeleted=false;
+      }
     }
   }
 
@@ -66,6 +73,14 @@ export class NewOttableMasterComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filtersearchlocation(value) : this.LocationcmbList.slice()),
       );
+      if (this.data) {
+        debugger
+        const DValue = this.LocationcmbList.filter(item => item.LocationId == this.registerObj.LocationId);
+        console.log("LocationName:",DValue)
+        this._otTableMasterService.myform.get('Locationid').setValue(DValue[0]);
+        this._otTableMasterService.myform.updateValueAndValidity();
+        return;
+      }
     });
   }
 
@@ -82,12 +97,23 @@ export class NewOttableMasterComponent implements OnInit {
       this.toastr.warning('Please enter RoomName  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-    } else
+      return;
+    } 
     if (this.vLocationid == '' || this.vLocationid == null || this.vLocationid == undefined) {
       this.toastr.warning('Please enter select location ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-    } 
+      return;
+    }
+    if (this._otTableMasterService.myform.get('Locationid').value) {
+      if(!this.LocationcmbList.find(item => item.LocationName == this._otTableMasterService.myform.get('Locationid').value.LocationName))
+     {
+      this.toastr.warning('Please select Valid Location Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+     }
+    }
 
     Swal.fire({
       title: 'Do you want to Save the OtRoom Recode ',
@@ -100,7 +126,7 @@ export class NewOttableMasterComponent implements OnInit {
       cancelButtonText: "No, Cancel"
     }).then((result) => {
       if (result.isConfirmed) {
-          // this.onSubmit();
+          this.onSubmit();
       }
     });
   }

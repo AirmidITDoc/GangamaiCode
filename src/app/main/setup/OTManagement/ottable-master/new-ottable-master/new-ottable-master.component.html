@@ -36,7 +36,7 @@
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>OTRoom Name</mat-label>
-                                                <input name="OtRoomName" formControlName="OtRoomName"
+                                                <input name="OtRoomName" formControlName="OtRoomName" required
                                                     placeholder="OT Room Name" matInput type="text"
                                                     oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
                                                     [(ngModel)]="vOtRoomName ">
@@ -51,7 +51,7 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Location</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Location" matInput formControlName="Locationid"
+                                                    placeholder="Select Location" matInput formControlName="Locationid" required
                                                     required [(ngModel)]="vLocationid" [matAutocomplete]="autolocation">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
@@ -81,8 +81,7 @@
                                     <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
                                         style="margin-right: 10px;">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_otTableMasterService.myform.invalid">Save</button>
+                                        <button class="btn btn-primary" (click)="onSave()">Save</button>
                                     </div>
                                 </div>
                             </form>

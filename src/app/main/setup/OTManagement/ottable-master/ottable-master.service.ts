@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,13 @@ export class OttableMasterService {
   createOtTableForm(): FormGroup {
     return this._formBuilder.group({
       OtTableId:[''],
-      OtRoomName:[''],
-      Locationid:[''],
+      OtRoomName:['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+   ]],
+      Locationid:['',
+        Validators.required
+      ],
       IsDeleted:['true']
     });
   }

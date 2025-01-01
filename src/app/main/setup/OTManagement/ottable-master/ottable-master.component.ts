@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,11 +14,14 @@ import { OttableMasterService } from './ottable-master.service';
 import { NewOttableMasterComponent } from './new-ottable-master/new-ottable-master.component';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-ottable-master',
   templateUrl: './ottable-master.component.html',
-  styleUrls: ['./ottable-master.component.scss']
+  styleUrls: ['./ottable-master.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class OttableMasterComponent implements OnInit {
 
@@ -32,7 +35,7 @@ export class OttableMasterComponent implements OnInit {
     'IsCancelled',
     'OtTableId',
     'OtRoomName',
-    // 'Floor',
+    'LocationName',
     'IsActive',
     'action'
   ];

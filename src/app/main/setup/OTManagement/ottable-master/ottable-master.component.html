@@ -108,9 +108,9 @@
 
                                     <ng-container matColumnDef="OtTableId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-100">Code
+                                            class="w-130">Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                             {{contact.OTTableId}}
                                         </mat-cell>
                                     </ng-container>
@@ -123,13 +123,14 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="Floor">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-300">Floor
+                                    <ng-container matColumnDef="LocationName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-300">
+                                            Location Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-300">
-                                            {{contact.Floor}}
+                                            {{contact.LocationName}}
                                         </mat-cell>
-                                    </ng-container> -->
+                                    </ng-container>
 
                                     <ng-container matColumnDef="IsActive" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
@@ -144,9 +145,9 @@
                                     </ng-container> 
                                     
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-170">Action
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-150">Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-170">
+                                        <mat-cell *matCellDef="let contact" class="w-150">
 
                                               <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
                                                 <mat-icon style="color: black;">edit</mat-icon>
@@ -174,12 +175,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1500"
+                                    <mat-header-row class="accent min-width-1000"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1300" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"
