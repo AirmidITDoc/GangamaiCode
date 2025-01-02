@@ -344,7 +344,7 @@ export class AppointmentComponent implements OnInit {
     filterMaritalstatus: any;
     filterArea: any;
     filterHospital: any;
-    UserLoginDOctorID:any;
+    UserLoginDOctorID: any;
 
     public height: string;
     sanitizeImagePreview;
@@ -368,13 +368,13 @@ export class AppointmentComponent implements OnInit {
         private changeDetectorRefs: ChangeDetectorRef,
         public _WhatsAppEmailService: WhatsAppEmailService
     ) {
-       /// this.UserLoginDOctorID = this.accountService.currentUserValue.user.doctorID 
-        this.getVisitList1();  
+        /// this.UserLoginDOctorID = this.accountService.currentUserValue.user.doctorID 
+        this.getVisitList1();
     }
 
 
     ngOnInit(): void {
-        this.getVisitList1(); 
+        this.getVisitList1();
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
@@ -387,11 +387,11 @@ export class AppointmentComponent implements OnInit {
             // this.menuActions.push("Update Registration");
             this.menuActions.push("Update Consultant Doctor");
             this.menuActions.push("Update Referred Doctor");
-            this.menuActions.push("Medial Record");
+            this.menuActions.push("Medical Record");
         }
 
         // this.getVisitList();
-       // this.getDoctorNameCombobox();
+        // this.getDoctorNameCombobox();
 
         this.getHospitalList1();
         this.getHospitalList();
@@ -447,7 +447,7 @@ export class AppointmentComponent implements OnInit {
         );
         this.CalcDOB('', null);
         this.getDoctorNameCombobox()
-       
+
     }
 
 
@@ -768,7 +768,7 @@ export class AppointmentComponent implements OnInit {
             Days: '',
             HealthcardDate: [new Date().toISOString()],
             HealthCardNo: '',
-          
+
         });
 
     }
@@ -809,7 +809,7 @@ export class AppointmentComponent implements OnInit {
             // RefDocName: '',
             // ClassId: '',
             PurposeId: '',
-            template:''
+            template: ''
 
         });
     }
@@ -1167,7 +1167,7 @@ export class AppointmentComponent implements OnInit {
 
 
     getDepartmentList() {
-        
+
         this._opappointmentService.getDepartmentCombo().subscribe(data => {
             this.DepartmentList = data;
             console.log(data)
@@ -1268,7 +1268,7 @@ export class AppointmentComponent implements OnInit {
 
 
     getVisitList1() {
-        
+
 
         console.log(this._AppointmentSreviceService.myFilterform.get("DoctorId").value)
         var D_data = {
@@ -1306,7 +1306,7 @@ export class AppointmentComponent implements OnInit {
         }, 1000);
 
         console.log(this.dataSource.data)
-        
+
     }
 
     Vtotalcount = 0;
@@ -1345,35 +1345,35 @@ export class AppointmentComponent implements OnInit {
 
 
 
-   // getVisitDetails() {
+    // getVisitDetails() {
 
-        // const dialogRef = this._matDialog.open(VisitDetailsComponent,
-        //     {
-        //         maxWidth: "800px",
-        //         minWidth: '800px',
-        //         width: '800px',
-        //         height: '380px',
-        //         disableClose: true,
-        //         data: {
-        //             "VisitId": this.VisitId// 159641
+    // const dialogRef = this._matDialog.open(VisitDetailsComponent,
+    //     {
+    //         maxWidth: "800px",
+    //         minWidth: '800px',
+    //         width: '800px',
+    //         height: '380px',
+    //         disableClose: true,
+    //         data: {
+    //             "VisitId": this.VisitId// 159641
 
-        //         }
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
+    //         }
+    //     });
+    // dialogRef.afterClosed().subscribe(result => {
 
-        //     this.VisitFlag = 1;
-        //     this.DoctorId = result.DoctorId;
+    //     this.VisitFlag = 1;
+    //     this.DoctorId = result.DoctorId;
 
-        //     const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
-        //     this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
+    //     const toSelectDept = this.DepartmentList.find(c => c.Departmentid == result.DepartmentId);
+    //     this.VisitFormGroup.get('Departmentid').setValue(toSelectDept);
 
-        //     this.OnChangeDoctorList(result);
-        //     this.dept.nativeElement.focus();
-        // });
+    //     this.OnChangeDoctorList(result);
+    //     this.dept.nativeElement.focus();
+    // });
 
 
-        // this.isLoading = '';
-        // this.Quantity.nativeElement.focus();
+    // this.isLoading = '';
+    // this.Quantity.nativeElement.focus();
     // }
 
 
@@ -1448,22 +1448,22 @@ export class AppointmentComponent implements OnInit {
     filteredOptionsPrefix: Observable<string[]>;
     filteredOptionsCity: Observable<string[]>;
     filteredOptionsPurpose: Observable<string[]>;
-    filteredOptionsDoctorsearch:any;  
-    getDoctorNameCombobox() { 
-        var vdata={
-            "@Keywords":`${this._AppointmentSreviceService.myFilterform.get('DoctorId').value}%`
+    filteredOptionsDoctorsearch: any;
+    getDoctorNameCombobox() {
+        var vdata = {
+            "@Keywords": `${this._AppointmentSreviceService.myFilterform.get('DoctorId').value}%`
         }
         console.log(vdata)
         this._AppointmentSreviceService.getDoctorMasterComboList(vdata).subscribe(data => {
-            this.filteredOptionsDoctorsearch = data; 
-            console.log(this.filteredOptionsDoctorsearch) 
+            this.filteredOptionsDoctorsearch = data;
+            console.log(this.filteredOptionsDoctorsearch)
             if (this.filteredOptionsDoctorsearch.length == 0) {
                 this.noOptionFound = true;
-              } else {
+            } else {
                 this.noOptionFound = false;
-              } 
-        }); 
-    }  
+            }
+        });
+    }
     getOptionTextDoctor(option) {
         return option && option.Doctorname ? option.Doctorname : '';
     }
@@ -1722,12 +1722,12 @@ export class AppointmentComponent implements OnInit {
             });
         }
     }
-    Istemplate=false;
-    chkTemplate(event){
-        if (event.checked) 
-        this.Istemplate=true
-    else
-    this.Istemplate=true
+    Istemplate = false;
+    chkTemplate(event) {
+        if (event.checked)
+            this.Istemplate = true
+        else
+            this.Istemplate = true
     }
 
     onNewSave() {
@@ -1863,7 +1863,7 @@ export class AppointmentComponent implements OnInit {
         } else {
             Swal.fire("Enter Age Properly ..")
         }
-       
+
     }
 
     // onSave() {
@@ -1955,7 +1955,7 @@ export class AppointmentComponent implements OnInit {
             registrationSave['address'] = this.registerObj.Address || '';
             registrationSave['City'] = this.personalFormGroup.get('CityId').value.CityName || '';
             registrationSave['pinNo'] = '123';
-            
+
             registrationSave['dateOfBirth'] = this.datePipe.transform(this.registerObj.DateofBirth, "MM-dd-yyyy"), //this.personalFormGroup.get('DateofBirth').value.DateofBirth;
                 registrationSave['age'] = this.registerObj.AgeYear;
             registrationSave['genderID'] = this.personalFormGroup.get('GenderId').value.GenderId;
@@ -2024,8 +2024,8 @@ export class AppointmentComponent implements OnInit {
 
                         // this.viewgetPatientAppointmentReportPdf(response, false);
                         debugger
-                       
-                          this.viewgetPatientAppointmentTemplateReportPdf(response, false);
+
+                        this.viewgetPatientAppointmentTemplateReportPdf(response, false);
                     }
                 } else {
                     Swal.fire('Error !', 'Appoinment not saved', 'error');
@@ -2148,7 +2148,7 @@ export class AppointmentComponent implements OnInit {
                         // if(!this.Istemplate)
                         //     this.viewgetPatientAppointmentReportPdf(response, false);
                         //   else
-                          this.viewgetPatientAppointmentTemplateReportPdf(response, false);
+                        this.viewgetPatientAppointmentTemplateReportPdf(response, false);
                     }
                     this.getVisitList1();
                 });
@@ -2219,9 +2219,9 @@ export class AppointmentComponent implements OnInit {
     getRecord(contact, m): void {
         ;
         // this.VisitID = contact.VisitId;
-        if (m == "CasePaper Print") {
-            this.getPrint(contact);
-        }
+        // if (m == "CasePaper Print") {
+        //     this.getPrint(contact);
+        // }
         if (m == "Update Registration") {
             var D_data = {
                 RegId: contact.RegId,
@@ -2336,7 +2336,7 @@ export class AppointmentComponent implements OnInit {
                 console.log("The dialog was closed - Insert Action", result);
                 this.getVisitList1();
             });
-        } else if (m == "Medial Record") {
+        } else if (m == "Medical Record") {
             var m_data3 = {
                 RegId: contact.RegId,
                 PatientName: contact.PatientName,
@@ -2348,10 +2348,10 @@ export class AppointmentComponent implements OnInit {
             this._registrationService.populateFormpersonal(contact);
             const dialogRef = this._matDialog.open(NewCasepaperComponent, {
                 maxWidth: "90vw",
-                height: "990px",
+                height: "90vw",
                 width: "90%",
                 data: {
-                    registerObj: contact,
+                    Obj: contact,
                     FormName: "Medical Record"
                 },
             });
@@ -2359,10 +2359,11 @@ export class AppointmentComponent implements OnInit {
                 console.log("The dialog was closed - Insert Action", result);
                 this.getVisitList1();
             });
-        } else if (m == "Cancle Appointment") {
-            // console.log(contact)
-            this.AppointmentCancle(contact.VisitId);
         }
+        // else if (m == "Cancle Appointment") {
+        //     // console.log(contact)
+        //     this.AppointmentCancle(contact.VisitId);
+        // }
         this.getVisitList1();
     }
 
@@ -2480,7 +2481,7 @@ export class AppointmentComponent implements OnInit {
 
 
     viewgetPatientAppointmentReportPdf(obj, Pflag) {
-        
+
         this.chkprint = true;
         let VisitId;
         if (Pflag) {
@@ -2515,7 +2516,7 @@ export class AppointmentComponent implements OnInit {
 
 
     viewgetPatientAppointmentTemplateReportPdf(obj, Pflag) {
-        
+
         this.chkprint = true;
         let VisitId;
         if (Pflag) {
@@ -2795,28 +2796,28 @@ export class AppointmentComponent implements OnInit {
 
     // }
 
-    OnChangeDoctorList(departmentObj) { 
+    OnChangeDoctorList(departmentObj) {
         this.isDepartmentSelected = true;
-        var vdata={
-            "Id":departmentObj.DepartmentId
+        var vdata = {
+            "Id": departmentObj.DepartmentId
         }
         this._opappointmentService.getDoctorMasterCombo(vdata).subscribe(data => {
-                this.DoctorList = data;
-                console.log(data)
-                this.optionsDoc = this.DoctorList.slice();
-                this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
-                    startWith(''),
-                    map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
-                );
-            })
+            this.DoctorList = data;
+            console.log(data)
+            this.optionsDoc = this.DoctorList.slice();
+            this.filteredOptionsDoc = this.VisitFormGroup.get('DoctorID').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterDoc(value) : this.DoctorList.slice()),
+            );
+        })
 
-       /// if (this.configService.configParams.DoctorId) {
+        /// if (this.configService.configParams.DoctorId) {
 
-            // this.configService.configParams.DoctorId = 269;
-            // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
-            // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
-            //this.doctorset();
-       // }
+        // this.configService.configParams.DoctorId = 269;
+        // const toSelectDoc = this.DoctorList.find(c => c.DoctorId == this.configService.configParams.DoctorId);
+        // this.VisitFormGroup.get('DoctorID').setValue(toSelectDoc);
+        //this.doctorset();
+        // }
     }
 
     // doctorset() {
@@ -3359,20 +3360,20 @@ export class AppointmentComponent implements OnInit {
 
         });
     }
-    updateRegisteredPatientInfo(obj) {  
+    updateRegisteredPatientInfo(obj) {
         const dialogRef = this._matDialog.open(UpdateRegisteredPatientInfoComponent,
             {
                 maxWidth: "100%",
                 height: '95%',
-                width: '95%' ,
+                width: '95%',
                 data: {
-                    obj:obj
-                 }
+                    obj: obj
+                }
             });
-          dialogRef.afterClosed().subscribe(result => {
-            this.getVisitList1(); 
+        dialogRef.afterClosed().subscribe(result => {
+            this.getVisitList1();
             this.searchFormGroup.get('RegId').setValue('');
-          });
+        });
     }
 
     getNewPatient(element1) {
@@ -3390,28 +3391,28 @@ export class AppointmentComponent implements OnInit {
         return Newcount;
     }
     getEditCompany(row) {
-    
+
         this.advanceDataStored.storage = new VisitMaster(row);
         console.log(row)
         this._registrationService.populateFormpersonal(row);
-        this.registerObj["RegId"]=row.RegID;
-        this.registerObj["RegID"]=row.RegID;
-        
+        this.registerObj["RegId"] = row.RegID;
+        this.registerObj["RegID"] = row.RegID;
+
         const dialogRef = this._matDialog.open(CompanyInformationComponent,
-          {
-            maxWidth: "70vw",
-            height: '730px',
-            width: '100%',
-            data: {
-              registerObj: row,
-              Submitflag: true
-            }
-          });
-          dialogRef.afterClosed().subscribe(result => {
+            {
+                maxWidth: "70vw",
+                height: '730px',
+                width: '100%',
+                data: {
+                    registerObj: row,
+                    Submitflag: true
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
-            this.getVisitList1(); 
-          });
-      }
+            this.getVisitList1();
+        });
+    }
 }
 
 export class DocumentUpload {

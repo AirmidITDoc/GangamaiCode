@@ -95,7 +95,7 @@ export class PrePresciptionListComponent implements OnInit {
   // }
 
   onClose(){
-    this._matDialog.closeAll()
+    this.dialogRef.close;
   }
  
 }

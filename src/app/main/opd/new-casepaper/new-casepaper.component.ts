@@ -15,7 +15,7 @@ import { DatePipe } from '@angular/common';
 import { debounceTime, exhaustMap, filter, map, scan, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PrescriptionList } from 'app/main/nursingstation/prescription/prescription.component';
 import { PrecriptionItemList } from 'app/main/nursingstation/prescription/new-prescription/new-prescription.component';
 import { ToastrService } from 'ngx-toastr';
@@ -179,13 +179,49 @@ export class NewCasepaperComponent implements OnInit {
     public datePipe: DatePipe,
     public _WhatsAppEmailService: WhatsAppEmailService,
     private configService: ConfigService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<NewCasepaperComponent>,
   ) { }
-
-  ngOnInit(): void {
-
+  registerObj1:any;
+  ngOnInit(): void { 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
-    this.MedicineItemform();
+    this.MedicineItemForm = this.MedicineItemform();
+    if(this.data.Obj){
+      this.registerObj1 = this.data.Obj
+      console.log(this.registerObj1)
+      this.PatientName = this.registerObj1.FirstName + " " + this.registerObj1.LastName;
+      this.RegId = this.registerObj1.RegId;
+      this.Doctorname = this.registerObj1.Doctorname;
+      this.VisitDate = this.datePipe.transform(this.registerObj1.VisitDate, 'dd/MM/yyyy hh:mm a');
+      this.CompanyName = this.registerObj1.CompanyName;
+      this.Tarrifname = this.registerObj1.TariffName;
+      this.DepartmentName = this.registerObj1.DepartmentName;
+      this.RegNo = this.registerObj1.RegNoWithPrefix;
+      this.vOPIPId = this.registerObj1.VisitId;
+      this.VisitId = this.registerObj1.VisitId;
+      this.vOPDNo = this.registerObj1.OPDNo;
+      this.vTariffId = this.registerObj1.TariffId;
+      this.vClassId = this.registerObj1.ClassId;
+      this.AgeYear = this.registerObj1.AgeYear;
+      this.AgeMonth = this.registerObj1.AgeMonth;
+      this.vClassName = this.registerObj1.ClassName;
+      this.AgeDay = this.registerObj1.AgeDay;
+      this.GenderName = this.registerObj1.GenderName;
+      this.RefDocName = this.registerObj1.RefDocName
+      this.BedName = this.registerObj1.BedName;
+      this.PatientType = this.registerObj1.PatientType;
+      this.vMobileNo = this.registerObj1.MobileNo;
+      this.ConsultantDocId = this.registerObj1.DoctorId;
+      this.getVitalInfo(this.registerObj1); 
+      this.getpreviousVisitData(this.registerObj1);
+      this.getnewVisistList(this.registerObj1);
+      this.getServiceList();
+      this.getVisistList();
+      this.getRtrvTestService();
+      this.getAdmittedDoctorCombo();
+      this.getRtrvCheifComplaintList(this.registerObj1)
+    }
     this.getDoseList();
     this.specificDate = new Date();
     this.dateStyle = 'Day'
@@ -234,10 +270,8 @@ export class NewCasepaperComponent implements OnInit {
        this.specificDate = new Date();
     }
   }
-  dateStyle: string;
-
-  selectedOption: string = 'Day';
-
+  dateStyle: string; 
+  selectedOption: string = 'Day'; 
   OnChangeDobType(e) {
     this.dateStyle = e.value;
     this.onDaysChange();
@@ -273,7 +307,7 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
   MedicineItemform() {
-    this.MedicineItemForm = this._formBuilder.group({
+    return this._formBuilder.group({
       ItemId: '',
       DoseId: '',
       Day: '',
@@ -960,6 +994,9 @@ onTemplDetAdd(){
     this.getExaminList();
     this.getCheifComplaintList();
   }
+  onClose(){
+    this.dialogRef.close()
+  }
   SpinLoading: any = ""
   viewgetOpprescriptionReportwithheaderPdf(VisitId) {
     debugger
@@ -1187,7 +1224,7 @@ onTemplDetAdd(){
   getnewVisistList(obj) {
     this.sIsLoading = 'loading';
     var D_data = {
-      "RegId": obj.RegID,
+      "RegId": this.RegId,
     }
     console.log(D_data);
     this.sIsLoading = 'loading-data';

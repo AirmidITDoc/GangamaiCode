@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { debug } from 'console';
 import { element } from 'protractor';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-material-consumption',
@@ -77,8 +78,12 @@ export class NewMaterialConsumptionComponent implements OnInit {
   vbatchExpDate:any;
   sIsLoading: string = '';
   SpinLoading: boolean = false;
+  isRegIdSelected: boolean = false;
   dsNewmaterialList = new MatTableDataSource<ItemList>();
   dsTempItemNameList = new MatTableDataSource<ItemList>();
+  PatientListfilteredOptionsOP:any;
+  PatientListfilteredOptionsIP:any;
+  vIsPatientWiseConsumption:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -109,7 +114,61 @@ export class NewMaterialConsumptionComponent implements OnInit {
       this._MaterialConsumptionService.userFormGroup.get('FromStoreId').setValue(this.StoreList[0]);
     });
   }
-
+getSearchListIP() {
+    var m_data = {
+      "Keyword": `${this._MaterialConsumptionService.userFormGroup.get('RegID').value}%`
+    }
+    if (this._MaterialConsumptionService.userFormGroup.get('PatientType').value == 'OP'){
+      if (this._MaterialConsumptionService.userFormGroup.get('RegID').value.length >= 1) {
+        this._MaterialConsumptionService.getPatientVisitedListSearch(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          this.PatientListfilteredOptionsOP = resData;
+           console.log(resData);
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          } 
+        });
+      }
+    }else if (this._MaterialConsumptionService.userFormGroup.get('PatientType').value == 'IP') {
+      if (this._MaterialConsumptionService.userFormGroup.get('RegID').value.length >= 1) {
+        this._MaterialConsumptionService.getAdmittedPatientList(m_data).subscribe(resData => {
+          this.filteredOptions = resData;
+          // console.log(resData);
+          this.PatientListfilteredOptionsIP = resData;
+          if (this.filteredOptions.length == 0) {
+            this.noOptionFound = true;
+          } else {
+            this.noOptionFound = false;
+          }
+        });
+      }
+    }  
+  } 
+  registerObjOP:any;
+  registerObjIP:any;
+  getSelectedObjRegIP(obj) {
+    let IsDischarged = 0;
+    IsDischarged = obj.IsDischarged 
+    if(IsDischarged == 1){
+      Swal.fire('Selected Patient is already discharged');  
+    }
+    else{
+      console.log(obj) 
+      this.registerObjIP = obj; 
+    }  
+  } 
+  getSelectedObjOP(obj) { 
+      console.log(obj) 
+      this.registerObjOP = obj; 
+  }
+  getOptionTextIPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
+  getOptionTextOPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
   getSearchItemList() {
     var m_data = {
       "ItemName": `${this._MaterialConsumptionService.userFormGroup.get('ItemID').value}%`,
@@ -180,8 +239,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-   
+    } 
     const isDuplicate = this.dsNewmaterialList.data.some(item => item.ItemId === this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId);
     if (!isDuplicate) {
 
@@ -205,22 +263,16 @@ export class NewMaterialConsumptionComponent implements OnInit {
           PurTotalAmt:  this.vUsedQty * this.vPurchaseRate || 0,
           Remark: this.vRemark ||  " ",
           StockId:this.vStockId || 0,
-          StoreId:this.vStoreId ,
+          StoreId:this.vStoreId , 
           
-          
-        });
-      //console.log(this.chargeslist);
-      
+        }); 
       this.dsNewmaterialList.data = this.chargeslist
     } else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
-      });
-      // this.ItemReset();
-    
+      }); 
     }
-    this.ItemReset();
-    //this.vadd=false;
+    this.ItemReset(); 
     this.itemid.nativeElement.focus();
   }
   deleteTableRow(element) {
@@ -241,12 +293,15 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.vUsedQty = 0;
     this.vRemark = " ";
     this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue(''); 
-  }
-  vDepartmentWise:any;
-  getdepartmentwise(event){
-    
-
-  }
+  } 
+  onChange() {  
+     if (this._MaterialConsumptionService.userFormGroup.get('IsPatientWiseConsumption').value == true) {
+      
+     }else{
+       
+     } 
+   }
+ 
   QtyCondition(){
     
     if(this.vBalQty < this.vUsedQty){

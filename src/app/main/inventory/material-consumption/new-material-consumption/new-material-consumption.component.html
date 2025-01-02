@@ -24,8 +24,17 @@
 
                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
                     <form [formGroup]="_MaterialConsumptionService.userFormGroup">
+                        <div class="slide-toggle mb-2">
+                            <mat-slide-toggle name="IsPatientWiseConsumption"  
+                            formControlName="IsPatientWiseConsumption" [(ngModel)]="vIsPatientWiseConsumption">
+                                IsPatientWiseConsumption
+                            </mat-slide-toggle>
+                        </div>
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="20px">
-                            <mat-form-field appearance="outline" fxFlex="25%" style="margin-right: 50px;">
+
+                            
+
+                            <mat-form-field appearance="outline" fxFlex="20%" >
                                 <mat-label>From Store</mat-label>
                                 <mat-select formControlName="FromStoreId" name="FromStoreId">
                                     <mat-option></mat-option>
@@ -33,13 +42,59 @@
                                         {{m.StoreName}}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                            </mat-form-field> 
 
-                            <div style="padding: 15px">
-                                <mat-checkbox fxFlex="15%" [(ngModel)]="vDepartmentWise" [checked]
-                                    formControlName="Departmentwise" (change)="getdepartmentwise($event)">IsDepartmentwise
-                                </mat-checkbox>
+                            <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" *ngIf="vIsPatientWiseConsumption">
+                                <mat-radio-group aria-label="Select an option" formControlName="PatientType" fxLayout="row">
+                                    <mat-radio-button value="OP">OP</mat-radio-button>
+                                    <mat-radio-button value="IP">IP</mat-radio-button> 
+                                </mat-radio-group>
+                            
+                                <div>
+                                    <mat-form-field appearance="outline" style="width: 500px;"
+                                        *ngIf="_MaterialConsumptionService.userFormGroup.get('PatientType').value != 'IP'">
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="OP-RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto1"
+                                            (input)="getSearchListIP()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_MaterialConsumptionService.userFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_MaterialConsumptionService.userFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextOPObj"
+                                            (optionSelected)='getSelectedObjOP($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptionsOP" [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}}
+                                                {{option.LastName}} | {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete> 
+                                    </mat-form-field> 
+                            
+                                    <mat-form-field appearance="outline" style="width: 500px;" 
+                                        *ngIf="_MaterialConsumptionService.userFormGroup.get('PatientType').value != 'OP' ">
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="IP RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto2"
+                                            (input)="getSearchListIP()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_MaterialConsumptionService.userFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_MaterialConsumptionService.userFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextIPObj"
+                                            (optionSelected)='getSelectedObjRegIP($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptionsIP" [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}}
+                                                {{option.LastName}} | {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>  
                             </div>
+
                         </div>
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
 
@@ -249,10 +304,10 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1650"
+                            <mat-header-row class="accent min-width-1750"
                                 *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1650"
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1750"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
@@ -263,21 +318,7 @@
                         </mat-table>
                         <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="15"
                             showFirstLastButtons>
-                        </mat-paginator> 
-                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start">
-                            <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No. Of
-                                Items:
-                            </span>&nbsp;
-                            <span class="net-amt-value" style="margin-left:10px;font-weight:bolder;color: blue;">
-                                {{dsNewmaterialList.data.length}}</span>&nbsp;&nbsp;&nbsp;
-    
-                            <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
-                                Amount:
-                            </span>&nbsp;
-                            <span class="net-amt-value text-primary"
-                                style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalamt(dsNewmaterialList.data)
-                                | currency:'INR' }}</span>&nbsp;&nbsp;&nbsp;
-                        </div> 
+                        </mat-paginator>  
                     </mat-card>
                   
 

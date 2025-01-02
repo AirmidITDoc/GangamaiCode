@@ -54,6 +54,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
 import { UpdateRegisteredPatientInfoComponent } from './update-registered-patient-info/update-registered-patient-info.component';
 import { PreviousDepartmentListComponent } from './update-registered-patient-info/previous-department-list/previous-department-list.component';
+import { MatChipsModule } from "@angular/material/chips";
 
 const routes: Routes = [
     {
@@ -119,7 +120,8 @@ const routes: Routes = [
         MatSidenavModule,
         NgxQRCodeModule,
         NgxPrintModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatChipsModule
     ],
     providers: [DatePipe],
     entryComponents: [AppointmentComponent],

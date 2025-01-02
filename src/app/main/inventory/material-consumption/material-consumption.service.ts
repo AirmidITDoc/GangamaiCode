@@ -42,7 +42,9 @@ export class MaterialConsumptionService {
       ItemID:[''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      Departmentwise:['']
+      IsPatientWiseConsumption:[true],
+      RegID:[''],
+      PatientType:['IP']
     });
   }
   createfinalform() {
@@ -61,7 +63,14 @@ export class MaterialConsumptionService {
   // public getIndentList(Param){
   //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
   // }
+  
+  public getAdmittedPatientList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch", employee)
+  }
 
+  public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
   public MaterialconsSave(Param,loader = true){
     if(loader){
       this._loaderService.show()
