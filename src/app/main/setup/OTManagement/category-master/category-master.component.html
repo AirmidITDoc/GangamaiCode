@@ -87,20 +87,41 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="SystemId" sticky>
+                                    <ng-container matColumnDef="IsCancelled" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-60">
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
+                                            {{contact.SystemId}}
+                                        
+                                        <div class="pill-icon">
+                                            <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled==1"
+                                                matTooltip="Cancelled"
+                                                class="red-600 s-16">circle
+                                            </mat-icon>
+    
+                                            <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled==0"
+                                                matTooltip="Approve"
+                                                class="green-600 s-16">circle
+                                            </mat-icon>
+                                        </div>
+                                    </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SurgeryCategoryId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-100">Code
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            {{contact.SystemId}}
+                                            {{contact.SurgeryCategoryId}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="SystemName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-600">
+                                    <ng-container matColumnDef="SurgeryCategoryName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-650">
                                             SystemName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-600">
-                                            {{contact.SystemName}} - {{contact.RegNo}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-650">
+                                            {{contact.SurgeryCategoryName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -116,6 +137,30 @@
                                         </mat-cell>
                                     </ng-container> 
 
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-170">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-170">
+
+                                              <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)"
+                                              *ngIf="contact.IsCancelled == '0'">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="CancleCategory(contact)" matTooltip="Cancel"
+                                            *ngIf="contact.IsCancelled == '0'">
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="onDeactive(contact.SurgeryCategoryId)"
+                                            *ngIf="contact.IsCancelled == '0'">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
+
+                                        </mat-cell>
+                                        
+                                    </ng-container>
+
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
@@ -127,12 +172,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1500"
+                                    <mat-header-row class="accent min-width-1000"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1300" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"

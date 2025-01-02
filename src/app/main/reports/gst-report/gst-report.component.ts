@@ -1082,6 +1082,7 @@ export class GSTReportComponent implements OnInit {
 
   clearField(){
     this._GstReportService.userForm.get('startdate').setValue(new Date());
+    this._GstReportService.userForm.get('enddate').setValue(new Date());
     this._GstReportService.userForm.get('DoctorId').setValue('');
     this._GstReportService.userForm.get('StoreId').setValue('');
   }

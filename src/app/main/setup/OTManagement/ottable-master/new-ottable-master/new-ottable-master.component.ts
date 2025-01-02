@@ -208,7 +208,7 @@ export class OtTableMasterList {
   OTTableName:string;
   IsActive:string;
   OTTableId:string;
-  IsCancelled: any;
+  IsCancelled: boolean;
   
   /**
    * Constructor
