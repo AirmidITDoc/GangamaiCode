@@ -43,11 +43,11 @@ import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmi
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { AirmidSliderComponent } from './componets/airmid-slider/airmid-slider.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { AirmidTrialdropdownComponent } from './componets/airmid-trialdropdown/airmid-trialdropdown.component';
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent],
+        AirmidTrialdropdownComponent,AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidTrialdropdownComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -94,7 +94,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         AirmidTable1Component,
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,
-        AirmidSliderComponent
+        AirmidSliderComponent,
+        AirmidTrialdropdownComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     entryComponents: []
