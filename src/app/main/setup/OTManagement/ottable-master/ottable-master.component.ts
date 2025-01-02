@@ -63,23 +63,51 @@ export class OttableMasterComponent implements OnInit {
   get f() { return this._otTableMasterService.myformSearch.controls; }
 
 
-  getotTableList(){
-    debugger
+  // getotTableList(){
+  //   debugger
+  //   this.sIsLoading = 'loading-data';
+  //   var D_data = {
+  //     "OTTableName": this._otTableMasterService.myformSearch.get("OtRoomNameSearch").value + '%' || '%',
+  //   }
+  //   console.log("TableList:",D_data)
+  //   this._otTableMasterService.getOTTableListlist(D_data).subscribe(Visit => {
+  //   this.dataSource.data = Visit as OtTableMasterList[];
+  //   this.dataSource.sort = this.sort;
+  //   this.dataSource.paginator = this.paginator;
+  //   this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
+
+  getotTableList() {
+    debugger;
     this.sIsLoading = 'loading-data';
-    var D_data = {
-      "OTTableName": this._otTableMasterService.myformSearch.get("OtRoomNameSearch").value + '%' || '%',
-    }
-    console.log("TableList:",D_data)
-    this._otTableMasterService.getOTTableListlist(D_data).subscribe(Visit => {
-    this.dataSource.data = Visit as OtTableMasterList[];
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.sIsLoading = '';
-    },
-      error => {
+  
+    // Check if there is a valid search term
+    const otRoomNameSearch = this._otTableMasterService.myformSearch.get("OtRoomNameSearch").value || '';
+  
+    const D_data = {
+      "OTTableName": otRoomNameSearch.trim() ? otRoomNameSearch + '%' : '%', // Use '%' if search is empty
+    };
+  
+    console.log("TableList:", D_data);
+  
+    this._otTableMasterService.getOTTableListlist(D_data).subscribe(
+      Visit => {
+        this.dataSource.data = Visit as OtTableMasterList[];
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
         this.sIsLoading = '';
-      });
+      },
+      error => {
+        console.error("Error loading table data:", error);
+        this.sIsLoading = '';
+      }
+    );
   }
+  
 
   newOtTable(){
     const dialogRef = this._matDialog.open(NewOttableMasterComponent,
@@ -181,6 +209,47 @@ export class OttableMasterComponent implements OnInit {
     this.getotTableList();
   }
 
+  onDeactive(OTTableId){
+    debugger
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+    debugger
+
+      if (result.isConfirmed) {
+        let Query;
+        const tableItem = this.dataSource.data.find(item => item.OTTableId === OTTableId);
+        console.log("table:",tableItem)
+    
+        if (tableItem.IsActive) {
+            Query = "Update M_OT_TableMaster set IsActive=0 where OTTableId=" + OTTableId;
+        } else {
+            Query = "Update M_OT_TableMaster set IsActive=1 where OTTableId=" + OTTableId;
+        }
+    
+        console.log("query:", Query);
+    
+        this._otTableMasterService.deactivateTheStatus(Query)
+            .subscribe(
+                (data) => {
+                    Swal.fire('Changed!', 'OTTable Status has been Changed.', 'success');
+                    this.getotTableList();
+                },
+                (error) => {
+                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                }
+            );
+    }
+    
+  });
+  }
+
 }
 export class OtTableMasterList {
   OtTableId:number;
@@ -191,7 +260,7 @@ export class OtTableMasterList {
   OTTableName:string;
   IsActive:string;
   OTTableId:string;
-  IsCancelled: any;
+  IsCancelled: boolean;
   
   /**
    * Constructor

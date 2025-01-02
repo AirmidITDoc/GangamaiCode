@@ -56,4 +56,9 @@ public OtTableCancle(employee)
 {
   return this._httpClient.post("OT/CancelOTTableMaster", employee);
 }
+public deactivateTheStatus(m_data) {
+  return this._httpClient.post(
+      "Generic/ExecByQueryStatement?query=" + m_data,{}
+  );
+}
 }

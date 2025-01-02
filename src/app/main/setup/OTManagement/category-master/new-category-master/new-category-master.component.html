@@ -52,14 +52,14 @@
 
                                 <div class="footer-navigation-container">
 
-                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
+                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" [(ngModel)]="vIsDeleted"
                                         (checked)=true>IsActive
                                     </mat-checkbox>
 
                                     <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
                                         style="margin-right: 10px;">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                        <button class="btn btn-primary" (click)="onSave()"
                                             [disabled]="_categoryMasterService.myform.invalid">Save</button>
                                     </div>
                                 </div>

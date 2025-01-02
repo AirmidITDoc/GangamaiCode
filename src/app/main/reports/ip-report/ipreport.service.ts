@@ -472,11 +472,12 @@ public getConDoctorSharesReportView(FromDate,ToDate,DoctorId,OPD_IPD_Type,loader
   
 }
 
-public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type, loader = true) {
+    debugger
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id + "&GroupId=" + GroupId + "&FromDate=" + From_Dt + "&Todate=" + To_Dt + "&OP_IP_Type=" + OP_IP_Type);
   }
 
   public getAdmittedPatientList(employee) {

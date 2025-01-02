@@ -207,7 +207,7 @@ export class IpReportComponent implements OnInit {
 
     }
     else if (this.ReportName == 'IPD Current Admitted List') {
-      // debugger
+  
       this.FlagAdmissionIdSelected = false
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = true;
@@ -510,7 +510,6 @@ export class IpReportComponent implements OnInit {
       this.clearField();
     } else if(this.ReportName == 'DoctorShare List WithCharges') {
       
-      debugger
       this.FlagDoctorSelected = true;
       this.FlagUserSelected = false;
       this.FlagGroupSelected = true;
@@ -667,7 +666,7 @@ export class IpReportComponent implements OnInit {
   }
 
   getDoctorList() {
-    debugger
+   
     var m_data = {
       "Keywords": `${this._IPReportService.userForm.get('DoctorId').value}%`
     }
@@ -786,7 +785,6 @@ export class IpReportComponent implements OnInit {
     else if (this.ReportName == ' IPD Discharge Type Wise') {
       this.viewgetDischaregTypewisePdf();
     }
-    // debugger
 
     //IPMIS
     if (this.ReportName == 'Date wise Admission Count') {
@@ -878,7 +876,7 @@ export class IpReportComponent implements OnInit {
         this.viewgetDoctorWiseSummaryReportReportPdf();
       }
       else if(this.ReportName == 'DoctorShare List WithCharges') {
-        debugger
+        
         this.viewgetDoctorShareListwithchargesReportPdf();
       }
   }
@@ -2673,7 +2671,7 @@ export class IpReportComponent implements OnInit {
   //Doc share
 
   viewgetDoctorShareReportPdf() {
-    debugger
+    
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
@@ -2716,14 +2714,14 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetConsultantDoctorShareDetailsPdf() {
-    debugger
+    
     let DoctorId = 0;
-    debugger
+    
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
 
     setTimeout(() => {
-      debugger
+      
       this._IPReportService.getConDoctorSharesReportView(
         this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
@@ -2752,7 +2750,7 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetDoctorWiseSummaryReportReportPdf() {
-    debugger
+    
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
@@ -2789,7 +2787,7 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetDoctorShareListwithchargesReportPdf() {
-    debugger
+  
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
@@ -2833,6 +2831,7 @@ export class IpReportComponent implements OnInit {
 
   clearField(){
     this._IPReportService.userForm.get('startdate').setValue(new Date());
+    this._IPReportService.userForm.get('enddate').setValue(new Date());
     this._IPReportService.userForm.get('DoctorId').setValue('');
     this._IPReportService.userForm.get('GroupId').setValue('');
   }

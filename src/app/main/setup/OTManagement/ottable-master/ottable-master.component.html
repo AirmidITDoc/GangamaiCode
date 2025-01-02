@@ -87,19 +87,20 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
+                                
                                     <ng-container matColumnDef="IsCancelled" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
                                             
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
                                             <div class="pill-icon">
-                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled=='1'"
-                                                    matTooltip="IsCancelled"
+                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled == '1'"
+                                                    matTooltip="Cancelled"
                                                     class="red-600 s-16">circle
                                                 </mat-icon>
-
-                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled!='1'"
-                                                    matTooltip="IsNotCancelled"
+        
+                                                <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled == '0'"
+                                                    matTooltip="Approve"
                                                     class="green-600 s-16">circle
                                                 </mat-icon>
                                             </div>
@@ -149,15 +150,21 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-150">
 
-                                              <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
+                                              <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)"
+                                              *ngIf="contact.IsCancelled == '0'">
                                                 <mat-icon style="color: black;">edit</mat-icon>
                                             </button>
 
                                             <button mat-icon-button (click)="CancleOTBooking(contact)" matTooltip="Cancel" 
-                                                *ngIf="contact.IsCancelled!= 1">
+                                            *ngIf="contact.IsCancelled == '0'">
                                                 <mat-icon title="Cancel Menu" style="color: black;">
                                                     cancel
                                                 </mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="onDeactive(contact.OTTableId)"
+                                                color="warn" *ngIf="contact.IsCancelled == '0'" >
+                                                <mat-icon>delete_outline</mat-icon>
                                             </button>
 
                                         </mat-cell>
@@ -175,12 +182,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1000"
+                                    <mat-header-row class="accent min-width-1100"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"
