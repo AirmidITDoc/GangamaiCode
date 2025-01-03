@@ -158,6 +158,7 @@ export class NewCasepaperComponent implements OnInit {
   isServiceIdSelected: boolean = false;
   vFollowUpDays: any = 0;
   PatientReferDocId:any;
+  AdvanceStorage:any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -179,17 +180,23 @@ export class NewCasepaperComponent implements OnInit {
     public datePipe: DatePipe,
     public _WhatsAppEmailService: WhatsAppEmailService,
     private configService: ConfigService,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<NewCasepaperComponent>,
-  ) { }
+       // @Inject(MAT_DIALOG_DATA) public data: any,
+        //public dialogRef: MatDialogRef<NewCasepaperComponent>,
+  ) { 
+    if (this.advanceDataStored.storage) { 
+      this.selectedAdvanceObj = this.advanceDataStored.storage; 
+      //console.log( this.selectedAdvanceObj)
+    } 
+  }
   registerObj1:any;
   ngOnInit(): void { 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
     this.MedicineItemForm = this.MedicineItemform();
-    if(this.data.Obj){
-      this.registerObj1 = this.data.Obj
+    if(this.selectedAdvanceObj){
+      this.registerObj1 = this.selectedAdvanceObj
       console.log(this.registerObj1)
+      this.AdvanceStorage = ''
       this.PatientName = this.registerObj1.FirstName + " " + this.registerObj1.LastName;
       this.RegId = this.registerObj1.RegId;
       this.Doctorname = this.registerObj1.Doctorname;
@@ -221,6 +228,8 @@ export class NewCasepaperComponent implements OnInit {
       this.getRtrvTestService();
       this.getAdmittedDoctorCombo();
       this.getRtrvCheifComplaintList(this.registerObj1)
+      this.selectedAdvanceObj = this.AdvanceStorage;
+      console.log(this.selectedAdvanceObj)
     }
     this.getDoseList();
     this.specificDate = new Date();
@@ -947,6 +956,7 @@ onTemplDetAdd(){
             } 
             this.getWhatsappshareSales()
             this.onClear();
+            this.onClose();
           }
         });
       } else {
@@ -995,7 +1005,7 @@ onTemplDetAdd(){
     this.getCheifComplaintList();
   }
   onClose(){
-    this.dialogRef.close()
+   this._matDialog.closeAll();
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportwithheaderPdf(VisitId) {

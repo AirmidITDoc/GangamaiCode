@@ -423,14 +423,13 @@
                                                         </button> -->
 
                                                         <!-- [disabled]="chkprint" -->
-                                                        <button mat-icon-button matTooltip="print"
+                                                        <!-- <button mat-icon-button matTooltip="print"
                                                             (click)="viewgetPatientAppointmentReportPdf(contact,true)"
                                                             *ngIf="contact.IsCancelled==0">
                                                             <mat-icon title="Print Menu"
                                                                 [disabled]="contact.IsCancelled" class="disabled-icon">
-                                                                print</mat-icon>
-                                                            <!-- <mat-icon>print</mat-icon> -->
-                                                        </button>
+                                                                print</mat-icon> 
+                                                        </button> -->
 
                                                         <button mat-icon-button matTooltip="print"
                                                             (click)="viewgetPatientAppointmentTemplateReportPdf(contact,true)"
@@ -1391,7 +1390,7 @@
             </div>
         </mat-tab>
 
-        <mat-tab>
+        <!-- <mat-tab>
             <ng-template mat-tab-label>
                 Document Upload
             </ng-template>
@@ -1513,7 +1512,7 @@
                     </div>
                 </form>
             </div>
-            <!-- </div> -->
-        </mat-tab>
+         
+        </mat-tab> -->
     </mat-tab-group>
 </div>

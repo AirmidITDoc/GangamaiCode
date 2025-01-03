@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NewCasepaperComponent } from './new-casepaper/new-casepaper.component';
 
 const appRoutes: Routes = [
   {
@@ -44,7 +43,8 @@ const appRoutes: Routes = [
 },
 {
     path: "medicalrecords",
-    loadChildren: () => import("./new-casepaper/casepaper.module").then((m) => m.CasepaperModule),
+    //loadChildren: () => import("./new-casepaper/casepaper.module").then((m) => m.CasepaperModule),
+    loadChildren: () => import("./appointment-list/appointment-list.module").then((m) => m.AppointmentListModule),
 },
 {
     path: "bill",

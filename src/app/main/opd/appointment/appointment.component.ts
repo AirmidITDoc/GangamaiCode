@@ -52,6 +52,7 @@ import { PatientVitalInformationComponent } from "./patient-vital-information/pa
 import { CompanyInformationComponent } from "app/main/ipd/company-information/company-information.component";
 import { UpdateRegisteredPatientInfoComponent } from "./update-registered-patient-info/update-registered-patient-info.component";
 import { NewCasepaperComponent } from "../new-casepaper/new-casepaper.component";
+import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
 
 export class DocData {
     doc: any;
@@ -2336,7 +2337,8 @@ export class AppointmentComponent implements OnInit {
                 console.log("The dialog was closed - Insert Action", result);
                 this.getVisitList1();
             });
-        } else if (m == "Medical Record") {
+         } 
+        else if (m == "Medical Record") {
             var m_data3 = {
                 RegId: contact.RegId,
                 PatientName: contact.PatientName,
@@ -2345,15 +2347,16 @@ export class AppointmentComponent implements OnInit {
                 RefDoctorId: contact.RefDocId,
                 RefDocName: contact.RefDocName,
             };
-            this._registrationService.populateFormpersonal(contact);
+           // this._registrationService.populateFormpersonal(contact);
+            this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
             const dialogRef = this._matDialog.open(NewCasepaperComponent, {
                 maxWidth: "90vw",
                 height: "90vw",
                 width: "90%",
-                data: {
-                    Obj: contact,
-                    FormName: "Medical Record"
-                },
+                // data: {
+                //     Obj: contact,
+                //     FormName: "Medical Record"
+                // },
             });
             dialogRef.afterClosed().subscribe((result) => {
                 console.log("The dialog was closed - Insert Action", result);

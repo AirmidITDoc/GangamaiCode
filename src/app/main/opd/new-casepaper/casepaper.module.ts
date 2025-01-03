@@ -57,10 +57,10 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      NewCasepaperComponent,
-      PrescriptionTemplateComponent,
-      PrePresciptionListComponent,
-      AddItemComponent
+      // NewCasepaperComponent,
+      // PrescriptionTemplateComponent,
+      // PrePresciptionListComponent,
+      // AddItemComponent
     ],
     imports: [
         RouterModule.forChild(routes),

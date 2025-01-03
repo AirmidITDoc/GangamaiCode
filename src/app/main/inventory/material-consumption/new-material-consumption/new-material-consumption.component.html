@@ -45,7 +45,8 @@
                             </mat-form-field> 
 
                             <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" *ngIf="vIsPatientWiseConsumption">
-                                <mat-radio-group aria-label="Select an option" formControlName="PatientType" fxLayout="row">
+                                <mat-radio-group aria-label="Select an option" formControlName="PatientType" fxLayout="row"
+                                    (change)="onChange()">
                                     <mat-radio-button value="OP">OP</mat-radio-button>
                                     <mat-radio-button value="IP">IP</mat-radio-button> 
                                 </mat-radio-group>
@@ -172,70 +173,70 @@
                             </ng-container>
 
                             <ng-container matColumnDef="BatchNo" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     BatchNo </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.BatchNo}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                    {{contact.BatchNo || '-'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="ExpDate" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     BatchExpDate </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.BatchExpDate | date:'dd/MM/YYYY'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BalQty" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     BalQty </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.BalQty}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="UsedQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     UsedQty </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.UsedQty}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="LandedRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     LandedRate </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.LandedRate | number:'1.2-2'}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                    {{contact.LandedRate | currency:'INR'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PurchaseRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     PurchaseRate </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PurchaseRate | number:'1.2-2'}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                    {{contact.PurchaseRate | currency:'INR'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="UnitMRP">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
                                     UnitMRP </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.UnitMRP | number:'1.2-2'}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                    {{contact.UnitMRP | currency:'INR'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="MRPTotalAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     MRPTotalAmt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.MRPTotalAmt | number:'1.2-2'}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                    {{contact.MRPTotalAmt | currency:'INR'}}
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="LandedTotalAmt">
+                            <!-- <ng-container matColumnDef="LandedTotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     LandedTotalAmt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -249,20 +250,20 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.PurTotalAmt | number:'1.2-2'}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="StartDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     StartDate </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.StartDate}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="EndDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     EndDate </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.EndDate}}
                                 </mat-cell>
                             </ng-container>
@@ -271,17 +272,17 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Remark </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.Remark}}
+                                    {{contact.Remark || '-'}}
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="StockId">
+                            <!-- <ng-container matColumnDef="StockId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     StockId </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.StockId}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-70">Action
@@ -321,24 +322,44 @@
                         </mat-paginator>  
                     </mat-card>
                   
+                    <div class="amt-container py-4">
+                        <div class="amount-box w-100-p gap-28" fxLayout="row">
 
+                            <div class="net-amount" fxLayout="row" fxLayoutGap="20px" fxLayoutALign="start center">
+
+                                <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
+                                    Item:
+                                </span>&nbsp;
+                                <span class="net-amt-value"
+                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{dsNewmaterialList.data.length}}</span>
+
+
+                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total MRPAmount
+                                    Amount :
+                                </span>&nbsp;
+                                <span class="net-amt-value text-primary"
+                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalamt(dsNewmaterialList.data)
+                                    | currency:'INR' }}</span> 
+                            </div>
+                        </div>
+                    </div>
 
                     <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
                         <form [formGroup]="_MaterialConsumptionService.FinalMaterialForm">
                             <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start">
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline" fxFlex="100%">
                                     <mat-label>Remark</mat-label>
                                     <textarea rows="1" matInput placeholder="Remark" formControlName="Remark"
                                         #Remark></textarea>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-form-field appearance="outline" fxFlex="60%">
                                     <mat-label>MRPTotalAmount</mat-label>
                                     <input matInput placeholder="TotalAmount" [(ngModel)]="vMRPTotalAmount"
                                         formControlName="MRPTotalAmount">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="20%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>PurTotalAmount</mat-label>
                                     <input matInput placeholder="PurTotalAmount" [(ngModel)]="vPurTotalAmount"
                                         formControlName="PurTotalAmount">
@@ -348,7 +369,7 @@
                                     <mat-label>LandedTotalAmount</mat-label>
                                     <input matInput placeholder="LandedTotalAmount" [(ngModel)]="vLandedTotalAmount"
                                         formControlName="LandedTotalAmount">
-                                </mat-form-field>
+                                </mat-form-field> -->
                             </div>
                         </form>
                         <div>

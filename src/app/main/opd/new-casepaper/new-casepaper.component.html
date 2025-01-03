@@ -13,8 +13,7 @@
         </div>
         <div class="close-icon">
            
-            <!-- <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+           
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -47,9 +46,7 @@
                                         {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
                                     </mat-option>
                                 </mat-autocomplete>
-                                <!-- <mat-error *ngIf="searchFormGroup.get('ItemId').hasError('required')">
-                                                                                              Required field cannot be left blank
-                                                                                             </mat-error> -->
+                               
                             </mat-form-field>
 
                             <span style="margin-right: 40px;">
@@ -156,7 +153,7 @@
                                                 <div fxLayout="row" fxLayoutGap="4px">
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>Height</mat-label>
-                                                        <!-- <span matTextPrefix>cm</span> -->
+                                                        
                                                         <input name="Height" formControlName="Height" placeholder="Height in m" [(ngModel)]="vHeight" matInput
                                                             #EHeight (keydown)="onEnterHeight($event)" type="text" OnlyNumber (keyup)="getBMIcalculation()"
                                                             (keypress)="keyPressCharater($event)">
@@ -175,21 +172,21 @@
                                                         <mat-label>BMI</mat-label>
                                                         <input name="BMI" formControlName="BMI" placeholder="BMI" matInput [(ngModel)]="vBMI" #EBMI
                                                             (keydown)="onEnterBMI($event)" type="text" OnlyNumber readonly>
-                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                       
                                                     </mat-form-field>
                                             
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>BSL</mat-label>
                                                         <input name="BSL" formControlName="BSL" placeholder="BSL" matInput [(ngModel)]="vBSL" #EBSL
                                                             (keydown)="onEnterBSL($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
-                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                       
                                                     </mat-form-field>
                                             
                                                     <mat-form-field appearance="outline" fxFlex="10%">
                                                         <mat-label>SpO2</mat-label>
                                                         <input name="SpO2" formControlName="SpO2" placeholder="SpO2" [(ngModel)]="vSpO2" matInput #ESpO2
                                                             (keydown)="onEnterSpO2($event)" type="text" OnlyNumber (keypress)="keyPressCharater($event)">
-                                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                                       
                                                     </mat-form-field>
                                             
                                                     <mat-form-field appearance="outline" fxFlex="10%">
@@ -215,24 +212,7 @@
                                                 </div>
                                             
                                                 <div fxLayout="row" class="gap-8">
-                                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>ChiefComplaint</mat-label>
-                                                        <textarea rows="6" name="ChiefComplaint" formControlName="ChiefComplaint" placeholder="ChiefComplaint"
-                                                            [(ngModel)]="vChiefComplaint" matInput #ChiefComp (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field>
                                                     
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Diagnosis</mat-label>
-                                                        <textarea rows="6" name="Diagnosis" formControlName="Diagnosis" placeholder="Diagnosis" [(ngModel)]="vDiagnosis"
-                                                            matInput #ChiefComp (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field>
-                                                    
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Examination</mat-label>
-                                                        <textarea rows="6" name="Examination" formControlName="Examination" placeholder="Examination"
-                                                            [(ngModel)]="vExamination" matInput #ChiefComp (keydown)="onEnterChiefComplaint($event)"></textarea>
-                                                    </mat-form-field> -->
-                                            
                                                     <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>ChiefComplaint</mat-label>
                                                         <mat-chip-list #chipList aria-label="ChiefComplaint selection">
@@ -385,7 +365,7 @@
                                                                 formControlName="Day" matInput required #Day (keypress)="keyPressAlphanumeric($event)">
                                                         </mat-form-field>
                                             
-                                                        <!-- (keydown)="onEnterremark($event)" -->
+                                                       
                                                         <mat-form-field appearance="outline" fxFlex="20%">
                                                             <mat-label>Instruction</mat-label>
                                                             <input type="text" name="Instruction" [(ngModel)]="vInstruction" formControlName="Instruction" matInput
@@ -459,14 +439,7 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <!-- <ng-container matColumnDef="Days">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>
-                                                                Days</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span> {{element.Days}}</span>
-                                                            </mat-cell>
-                                                        </ng-container>  -->
+                                                      
                                                         
                                                         <ng-container matColumnDef="Days">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -492,64 +465,9 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <!-- <ng-container matColumnDef="Remark">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                Instruction</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <mat-form-field appearance="legacy">
-                                                                    <input matInput [(ngModel)]="element.Instruction" type="text">
-                                                                </mat-form-field>
-                                                                <span> {{element.Instruction}}</span>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="DoseName1">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                                DoseName1
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                         
-                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue1(element,$event.value)">
-                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName1" [value]="Result.DoseName">
-                                                                        {{ Result.DoseName }}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="Day1">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
-                                                            </mat-header-cell>
-                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
-                                                                <mat-form-field appearance="legacy">
-                                                                    <input matInput [(ngModel)]="element.Day1" (keypress)="keyPressAlphanumeric($event)">
-                                                                </mat-form-field>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="DoseName2">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                                DoseName2
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+ 
                                                         
-                                                                <mat-select placeholder="DoseName1" (selectionChange)="getdoseDetailValue2(element,$event.value)">
-                                                                    <mat-option *ngFor="let Result of doseresults" [(ngModel)]="element.DoseName2" [value]="Result.DoseName">
-                                                                        {{ Result.DoseName }}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-                                                        <!-- <ng-container matColumnDef="Day2">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Days
-                                                            </mat-header-cell>
-                                                            <mat-cell class="w-80" *matCellDef="let element" fxShow.gt-sm>
-                                                                <mat-form-field appearance="legacy">
-                                                                    <input matInput [(ngModel)]="element.Day2" (keypress)="keyPressAlphanumeric($event)">
-                                                                </mat-form-field>
-                                                            </mat-cell>
-                                                        </ng-container> -->
 
                                                         <ng-container matColumnDef="Action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef
@@ -586,13 +504,7 @@
                                             <hr>
                                             <div fxLayout="row" fxLayoutGap="6px">
                                                 <div fxLayout="column" fxLayoutGap="6px" fxFlex="35%">
-                                                    <!-- <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
-                                                        (change)="getServiceList()" fxLayoutGap="10px">
-                                                        <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;
-                                                        <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;
-                                                        <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;
-                                                    </mat-radio-group> -->
-
+                                                   
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Service list</mat-label>
                                                         <input matAutocompletePosition="below" type="text"
@@ -639,25 +551,7 @@
                                             </div>
                                             <hr>
                                             <div fxLayout="row" fxLayoutGap="6px">
-                                                <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                                                                                                <mat-label>Department</mat-label>
-                                                                                                                <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput #dept
-                                                                                                                   (keydown)="onEnterdept($event)" formControlName="Departmentid"
-                                                                                                                    [matAutocomplete]="autoDep" required>
-                                                                                                                <span matSuffix style="display: flex;">
-                                                                                                                    <mat-icon class="mat-icon-close"
-                                                                                                                        (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                                                                                    <mat-icon class="mat-icon-close"
-                                                                                                                        (click)="MedicineItemForm.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                                                                                </span>
-                                                                                            
-                                                                                                                <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                                                                                    <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                                                                                                        (onSelectionChange)="OnChangeDoctorList(option)">
-                                                                                                                        {{option.DepartmentName}}
-                                                                                                                    </mat-option>
-                                                                                                                </mat-autocomplete>
-                                                                                                            </mat-form-field> -->
+                                              
 
 
                                                 <mat-form-field appearance="outline" fxFlex="30%">
@@ -679,9 +573,7 @@
                                                             [value]="option"
                                                             (onSelectionChange)="isDoctorSelected = true;">
                                                             {{option.Doctorname }}
-                                                            <!-- <b>|</b> {{option.DepartmentName }}
-                                                            <b>|</b> {{option.DoctorId
-                                                            }} -->
+                                                            
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                 </mat-form-field>
@@ -704,7 +596,7 @@
                                                     <mat-button-toggle-group [(ngModel)]="dateStyle"
                                                         (change)="OnChangeDobType($event)" aria-label="Font Style"
                                                         formControlName="dateStylebtn"  >
-                                                        <!-- <mat-button-toggle value="Date">Date</mat-button-toggle> -->
+                                                     
                                                         <mat-button-toggle value="Day">Day</mat-button-toggle>
                                                         <mat-button-toggle value="Month">Month</mat-button-toggle>
                                                         <mat-button-toggle value="Year">Year</mat-button-toggle>
@@ -719,20 +611,7 @@
                                                     <input name="Days" formControlName="Days" placeholder="Days"
                                                         matInput [(ngModel)]="vDays" (keyup)="onDaysChange()">
                                                 </mat-form-field>
-
-                                                <!-- <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Month'">
-                                                    <mat-label>Follow Up Month</mat-label>
-                                                    <input name="FollowupMonths" formControlName="FollowupMonths" placeholder="Months"
-                                                     matInput [(ngModel)]="vMonths"
-                                                        (keyup)="onDaysChange()">
-                                                </mat-form-field>
-
-                                                <mat-form-field appearance="outline" fxFlex="10%" *ngIf="dateStyle=='Year'">
-                                                    <mat-label>Follow Up Year</mat-label>
-                                                    <input name="FollowupYears" formControlName="FollowupYears" placeholder="Years" 
-                                                    matInput [(ngModel)]="vYears"
-                                                        (keyup)="onDaysChange()">
-                                                </mat-form-field> -->
+ 
 
                                                 <mat-form-field appearance="outline" fxFlex="20%">
                                                     <mat-label>Follow Up Date</mat-label>
@@ -793,7 +672,7 @@
                         </mat-tab>
  
 
-                        <!-- new visit info -->
+                       
                         <mat-tab label="Previous Visit Info">
                             <ng-template mat-tab-label>
                                 Previous Visit Info
@@ -814,9 +693,9 @@
                                                 <div>
                                                     <div class="visit-info-title" fxLayoutAlign="space-between">
                                                         <span style="font-weight: 900;color: blueviolet;">
-                                                            <!-- Visit Date : {{ date | date: 'dd/MM/YYYY' }} -->
+                                                            
                                                             Visit ID :- {{visitId}}
-                                                            <!-- {{ date | date:' fullDate'}}  -->
+                                                            
                                                         </span>
                                                         <span style="font-weight: 900;color: blueviolet;">
                                                             Visit Information

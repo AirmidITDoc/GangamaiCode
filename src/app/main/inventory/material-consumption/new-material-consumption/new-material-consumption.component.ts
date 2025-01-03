@@ -34,12 +34,12 @@ export class NewMaterialConsumptionComponent implements OnInit {
     'PurchaseRate',
     'UnitMRP',
     'MRPTotalAmt',
-    'LandedTotalAmt',
-    'PurTotalAmt',
+    // 'LandedTotalAmt',
+    // 'PurTotalAmt',
     'StartDate',
     'EndDate',
     'Remark',
-    'StockId',
+    //'StockId',
     'action'
   ];
   dateTimeObj: any;
@@ -113,6 +113,11 @@ export class NewMaterialConsumptionComponent implements OnInit {
       this.StoreList = data;
       this._MaterialConsumptionService.userFormGroup.get('FromStoreId').setValue(this.StoreList[0]);
     });
+  }
+  onChange() {  
+    this._MaterialConsumptionService.userFormGroup.get('RegID').setValue('')
+    this.PatientListfilteredOptionsOP = [];
+    this.PatientListfilteredOptionsIP = [];
   }
 getSearchListIP() {
     var m_data = {
@@ -294,13 +299,7 @@ getSearchListIP() {
     this.vRemark = " ";
     this._MaterialConsumptionService.userFormGroup.get('ItemID').setValue(''); 
   } 
-  onChange() {  
-     if (this._MaterialConsumptionService.userFormGroup.get('IsPatientWiseConsumption').value == true) {
-      
-     }else{
-       
-     } 
-   }
+
  
   QtyCondition(){
     
@@ -320,9 +319,7 @@ getSearchListIP() {
 
   getTotalamt(element) {
     this.vMRPTotalAmount = (element.reduce((sum, { MRPTotalAmt }) => sum += +(MRPTotalAmt || 0), 0)).toFixed(2);
-    this.vPurTotalAmount = (element.reduce((sum, { PurTotalAmt }) => sum += +(PurTotalAmt || 0), 0)).toFixed(2);
-    this.vLandedTotalAmount = (element.reduce((sum, { LandedTotalAmt }) => sum += +(LandedTotalAmt || 0), 0)).toFixed(2);
-    return this.vLandedTotalAmount;
+    return this.vMRPTotalAmount;
   }
   OnSave(){
     const currentDate = new Date();
