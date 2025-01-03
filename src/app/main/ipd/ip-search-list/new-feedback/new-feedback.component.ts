@@ -96,7 +96,7 @@ export class NewFeedbackComponent implements OnInit {
     Imgstatus4=0
     Imgstatus5=0
 
-
+i=0
     selectedOption:any;
     questionlength:any;
   constructor(private fb: FormBuilder,public _FeedbackService:FeedbackService,

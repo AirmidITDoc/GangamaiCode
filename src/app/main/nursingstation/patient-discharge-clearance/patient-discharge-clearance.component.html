@@ -172,8 +172,7 @@
                                         <div class="step-content">
                                             <div class="step-title">{{ department.DepartmentName }}</div> 
                                             <div>Department Name : {{ department.DepartmentName }} </div>
-                                            <div [ngClass]="{'red-row ': department.ApprovedByName !== ''}"
-                                            >ApprovedBy Name : {{ department.ApprovedByName }}</div>
+                                            <div [ngClass]="{'red-row ': department.ApprovedByName !== ''}" >ApprovedBy Name : {{ department.ApprovedByName }}</div>
                                         </div>
                                         <div class="step-line" *ngIf="i < DepartmentList.length - 1"></div>
                                     </div>

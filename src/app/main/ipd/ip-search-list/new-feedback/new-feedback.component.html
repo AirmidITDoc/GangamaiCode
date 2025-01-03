@@ -199,7 +199,7 @@
                                 <form [formGroup]="feedbackForm">
 
 
-                                    <div *ngFor="let data of feedbackquest">
+                                    <div *ngFor="let data of feedbackquest let i = index">
                                         <!-- <label>
                                                        
                                                     </label> -->
@@ -273,7 +273,9 @@
                                                     <div fxLayout="row" fxLayoutAlign="space-between"
                                                         style="margin-right: 10px;height: 50px;padding-left: 100px;"
                                                         fxFlex>
-
+                                                        <mat-form-field style="width: 100%;">
+                                                            <input matInput formControlName="firstCtrl" required [ngmodel]="selectedanswer" value="selectedanswer">
+                                                         
                                                         <lable value="1">Excellent <img width="45" height="15px"
                                                                 src="assets/images/logos/61.png"
                                                                 (click)="fetchresult(data,1)"
@@ -304,7 +306,7 @@
                                                                 [ngClass]="{'row-yellow': Imgstatus5 == 1}"
                                                                 src="assets/images/logos/1.jpeg"
                                                                 style="padding-top: 0px;" matTooltip="Worst"></lable>
-
+                                                        </mat-form-field>
 
                                                     </div>
                                                 </div>

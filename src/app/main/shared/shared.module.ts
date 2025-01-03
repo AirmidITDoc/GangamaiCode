@@ -26,27 +26,46 @@ import { EmailSendComponent } from './componets/email-send/email-send.component'
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicTableHeight.directive';
+import { AirmidAutocompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { FuseSidebarModule } from '@fuse/components';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
-  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective],
+  declarations: [TrimPipe, CommonDateComponent,SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent,DyanmicTableHeightDirective, AirmidAutocompleteComponent],
   imports: [
     CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatTimepickerModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTabsModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    ImageCropperModule,
-    MatSliderModule,
-    MatIconModule,
-    MatToolbarModule
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatTimepickerModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTabsModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        ImageCropperModule,
+        MatSliderModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        FuseSidebarModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        NgxMatSelectSearchModule,
+        MatButtonToggleModule,
+        MatSlideToggleModule
   ],
   providers: [
     ExcelDownloadService,
@@ -59,7 +78,9 @@ import { DyanmicTableHeightDirective } from './directives/dynamic-table/dynamicT
     CommonDateComponent,
     HeaderComponent,
     PaymentModeComponent,
-    DyanmicTableHeightDirective
+    DyanmicTableHeightDirective,
+    AirmidAutocompleteComponent
+
   ],
   entryComponents: []
 })

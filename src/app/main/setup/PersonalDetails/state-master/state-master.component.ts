@@ -21,7 +21,7 @@ export class StateMasterComponent implements OnInit {
     StateMasterList: any;
     CountrycmbList: any = [];
     msg: any;
-
+    autocompleteModecountry: string = "Country";
     //country filter
     public countryFilterCtrl: FormControl = new FormControl();
     public filteredCountry: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -225,6 +225,15 @@ export class StateMasterComponent implements OnInit {
             UpdatedBy: row.UpdatedBy,
         };
         this._stateService.populateForm(m_data);
+    }
+
+
+    getValidationMessages() {
+        return {
+            CountryId: [
+                { name: "required", Message: "CountryId  is required" }
+            ],
+        };
     }
 }
 
