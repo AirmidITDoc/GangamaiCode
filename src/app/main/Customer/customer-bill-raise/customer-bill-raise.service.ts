@@ -48,4 +48,10 @@ export class CustomerBillRaiseService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerBillRaiseList",{});
   }
+
+  //added by raksha
+  public getPaymentAmtViewList(emp) {
+    debugger
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPaidPaymentInfo",emp);
+  }
 }

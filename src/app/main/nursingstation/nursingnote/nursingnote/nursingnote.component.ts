@@ -50,6 +50,7 @@ export class NursingnoteComponent implements OnInit {
   vIPDNo:any;
   vAgeyear:any;
   vAgeMonth:any;
+  vRegId:any;
   vAgeDay:any;
   vWardName:any;
   vBedName:any;
@@ -58,6 +59,14 @@ export class NursingnoteComponent implements OnInit {
   vTariffName:any;
   vDoctorname:any;
   vDepartmentName:any;
+  vTariffId:any;
+  vClassId:any;
+  vClassName:any;
+  vGenderName:any;
+  vCompanyId:any;
+  vVisitDate:any;
+  PatientListfilteredOptionsIP: any; 
+  registerObj:any;
   NoteList:any=[]; 
    selectedAdvanceObj: AdmissionPersonlModel;
   dsNursingNoteList = new MatTableDataSource<DocNote>();
@@ -103,38 +112,48 @@ export class NursingnoteComponent implements OnInit {
     this.getNoteList(); 
     this.getDoctorList(); 
   }
-  getSearchList() {
+  getSearchList(){
+    debugger
     var m_data = {
       "Keyword": `${this._NursingStationService.myform.get('RegID').value}%`
     }
-    if (this._NursingStationService.myform.get('RegID').value.length >= 1) {
-      this._NursingStationService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
-      });
-    } 
-  } 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegID + ')';
+    this._NursingStationService.getAdmittedPatientList(m_data).subscribe(data => {
+      this.PatientListfilteredOptionsIP = data;
+      if (this.PatientListfilteredOptionsIP.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    }); 
   }
-  getSelectedObj(obj){
+  
+  getOptionTextIPObj(option) { 
+    return option && option.FirstName + " " + option.LastName; 
+  }
+  
+  getSelectedObjRegIP(obj){
     console.log(obj)
-   this.vRegNo = obj.RegNo;
-   this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-   this.vWardName = obj.RoomName;
-   this.vBedName = obj.BedName;
-   this.vGender = obj.GenderName;
-  //  this.vAge = obj.Age
-   this.vAdmissionID = obj.AdmissionID;
-   this.vIPDNo = obj.IPDNo 
-   this.getNoteTablelist(obj);
+    this.registerObj = obj;
+    this.vPatienName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+    this.vRegId = obj.RegId;
+    this.vDoctorname = obj.DoctorName;
+    this.vVisitDate = this.datePipe.transform(obj.VisitDate, 'dd/MM/yyyy hh:mm a');
+    this.vCompanyName = obj.CompanyName;
+    this.vTariffName = obj.TariffName;
+    this.vDepartmentName = obj.DepartmentName;
+    this.vRegNo = obj.RegNo;
+    this.vIPDNo = obj.IPDNo;
+    this.vTariffId = obj.TariffId;
+    this.vClassId = obj.ClassId;
+    this.vAgeyear = obj.AgeYear;
+    this.vAgeMonth = obj.AgeMonth;
+    this.vClassName = obj.ClassName;
+    this.vAgeDay = obj.AgeDay;
+    this.vGenderName = obj.GenderName;
+    this.vRefDocName = obj.RefDoctorName
+    this.vBedName = obj.BedName;
+    this.vPatientType = obj.PatientType;
+    this.vCompanyId = obj.CompanyId;
   }
  getNoteList(){
   this._NursingStationService.getNoteList().subscribe(data =>{

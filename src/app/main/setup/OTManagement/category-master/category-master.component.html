@@ -87,7 +87,7 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="IsCancelled" sticky>
+                                    <!-- <ng-container matColumnDef="IsCancelled" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-60">
                                         </mat-header-cell>
@@ -106,7 +106,7 @@
                                             </mat-icon>
                                         </div>
                                     </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <ng-container matColumnDef="SurgeryCategoryId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -147,10 +147,10 @@
                                                 <mat-icon>edit</mat-icon>
                                             </button>
 
-                                            <button mat-icon-button (click)="CancleCategory(contact)" matTooltip="Cancel"
+                                            <!-- <button mat-icon-button (click)="CancleCategory(contact)" matTooltip="Cancel"
                                             *ngIf="contact.IsCancelled == '0'">
                                                 <mat-icon>cancel</mat-icon>
-                                            </button>
+                                            </button> -->
 
                                             <button mat-icon-button (click)="onDeactive(contact.SurgeryCategoryId)"
                                             *ngIf="contact.IsCancelled == '0'">

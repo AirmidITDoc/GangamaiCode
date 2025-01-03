@@ -222,7 +222,8 @@ export class AMCDetailsComponent implements OnInit {
         width: '100%',
         data: { 
           Obj: this.registerObj,
-          FormName: this.NewAMC
+          FormName: this.NewAMC,
+          isDate: false 
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -239,7 +240,8 @@ export class AMCDetailsComponent implements OnInit {
         width: '100%',
         data: {
           Obj: contact,
-          FormName: this.NewAMC
+          FormName: this.NewAMC,
+          isDate: true 
         }
       });
     dialogRef.afterClosed().subscribe(result => {

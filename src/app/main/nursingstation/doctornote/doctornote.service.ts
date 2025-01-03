@@ -17,7 +17,8 @@ export class DoctornoteService {
       Note: [''], 
       Description:[''],
       WardName:[''],
-      HandOverType:['0']
+      HandOverType:['0'],
+      RegID:['']
       });
     }
   
@@ -30,5 +31,9 @@ export class DoctornoteService {
   }
   public getWardNameList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_WardClassMasterForCombo", {})
+  }
+  // ip
+  public getAdmittedPatientList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
 }
