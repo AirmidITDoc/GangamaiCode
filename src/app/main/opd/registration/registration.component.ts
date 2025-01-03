@@ -16,6 +16,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
+import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
 
 
 @Component({
@@ -59,69 +60,69 @@ export class RegistrationComponent implements OnInit {
             // { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 let that = this;
-            //                 const dialogRef = this._matDialog.open(NewRegistrationComponent,
-            //                     {
-            //                         maxWidth: "95vw",
-            //                         height: '75%',
-            //                         width: '70%',
-            //                         data:data
-            //                     });
-            //                 dialogRef.afterClosed().subscribe(result => {
-            //                     if (result) {
-            //                         that.grid.bindGridData();
-            //                     }
-            //                 });
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 debugger
-            //             }
-            //         }]
-            // } //
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onEdit(data);
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            // Set the view record logic.
-                        }
-                    },
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.getAdmittedPatientCasepaperview(data);
-                        }
-                    },
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
+                            let that = this;
+                            const dialogRef = this._matDialog.open(EditRegistrationComponent,
                                 {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
+                                    maxWidth: "95vw",
+                                    height: '75%',
+                                    width: '70%',
+                                    data:data
+                                });
+                            dialogRef.afterClosed().subscribe(result => {
                                 if (result) {
-                                    let that = this;
-                                    this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
+                                    that.grid.bindGridData();
                                 }
-                                this.confirmDialogRef = null;
                             });
                         }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            debugger
+                        }
                     }]
-            } 
+            } //
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onEdit(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.view, callback: (data: any) => {
+            //                 // Set the view record logic.
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.getAdmittedPatientCasepaperview(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this.confirmDialogRef = this._matDialog.open(
+            //                     FuseConfirmDialogComponent,
+            //                     {
+            //                         disableClose: false,
+            //                     }
+            //                 );
+            //                 this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
+            //                 this.confirmDialogRef.afterClosed().subscribe((result) => {
+            //                     if (result) {
+            //                         let that = this;
+            //                         this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
+            //                             this.toastr.success(response.message);
+            //                             that.grid.bindGridData();
+            //                         });
+            //                     }
+            //                     this.confirmDialogRef = null;
+            //                 });
+            //             }
+            //         }]
+            // } 
         ],
         sortField: "RegId",
         sortOrder: 1,
@@ -130,7 +131,7 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "01/12/2024", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "12/27/2024", opType: OperatorComparer.Equals },
             // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             // { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -150,7 +151,7 @@ export class RegistrationComponent implements OnInit {
     onNewregistration(row: any = null) {
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewRegistrationComponent,
+        const dialogRef = this._matDialog.open(EditRegistrationComponent,
             {
                 maxWidth: "95vw",
                 height: '70%',
@@ -185,7 +186,7 @@ export class RegistrationComponent implements OnInit {
         this._RegistrationService.populateForm(row);
         debugger
         const dialogRef = this._matDialog.open(
-            NewRegistrationComponent,
+            EditRegistrationComponent,
             {
                 maxWidth: "95vw",
                 height: '70%',
@@ -240,6 +241,7 @@ export class RegInsert {
     regId: Number;
     RegID: Number;
     RegDate: Date;
+    regDate: Date;
     PatientName: string;
     RegTime: Time;
     prefixId: number;
@@ -315,6 +317,9 @@ export class RegInsert {
             this.regId = RegInsert.regId || 0;
             this.RegID = RegInsert.RegID || 0;
             this.RegDate = RegInsert.RegDate || this.currentDate;
+            this.regDate = RegInsert.regDate || this.currentDate;
+
+            
             this.RegTime = RegInsert.RegTime || this.currentDate;
 
             this.prefixId = RegInsert.prefixId || 0;
@@ -357,6 +362,8 @@ export class RegInsert {
             this.IsCharity = RegInsert.IsCharity || false;
             this.ReligionId = RegInsert.ReligionId || 0;
             this.AreaId = RegInsert.AreaId || 0;
+            
+            this.areaId = RegInsert.areaId || 0;
             this.VillageId = RegInsert.VillageId || '';
             this.TalukaId = RegInsert.TalukaId || '';
             this.PatientWeight = RegInsert.PatientWeight || '';

@@ -272,6 +272,7 @@ modeofPayment: Number;
     Branch: any;
     VenderType: any;
     OpeningBalance: any;
+    supplierTime:any;
     mAssignSupplierToStores: any[];
     /**
      * Constructor
@@ -333,6 +334,7 @@ modeofPayment: Number;
             this.Branch = SupplierMaster.Branch || 0;
             this.VenderType = SupplierMaster.VenderType || 0;
             this.OpeningBalance = SupplierMaster.OpeningBalance || 0;
+            this.supplierTime=SupplierMaster.supplierTime || this.currentDate;
             this.mAssignSupplierToStores = SupplierMaster.mAssignSupplierToStores || [];
 
         }

@@ -1,0 +1,20 @@
+<!-- <mat-form-field [appearance]="appearance" class="mr-sm-12" fxFlex [style.width.%]="width">
+    <mat-label>{{ label }}</mat-label>
+    <input matInput [formControl]="control" [maxlength]="maxLength" (blur)="onTouched()" ngDefaultControl [type]="type"
+        [value]="value" [placeholder]="placeholder" (keyup)="keyup" [readonly]="readonly"/>
+    <div *ngIf="formGroup?.controls[formControlName]?.invalid && control?.touched && validations.length>0">
+        <div *ngFor="let item of validations">
+            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
+                {{item.Message}}
+            </mat-error>
+        </div>
+    </div>
+</mat-form-field> -->
+
+<mat-form-field appearance="outline" fxFlex >
+    <mat-label>{{ label }}</mat-label>
+    <input matInput [matDatepicker]="picker1" [min]="minDate" style="background-color: rgb(95, 214, 241);"
+        placeholder="Choose a Date" name="Date" [formControl]="control">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>

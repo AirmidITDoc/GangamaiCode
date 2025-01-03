@@ -36,6 +36,16 @@
                         [mode]="autocompleteModeSupplierType"
                         (selectDdlObject)="selectChangeSupplierType($event)">
                     </airmid-autocomplete> -->
+                    <!-- <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>supplier date</mat-label>
+                                <input name="supplierTime" matInput [matDatepicker]="picker1" formControllName="supplierTime"
+                                    [value]="registerObj.supplierTime">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -326,12 +336,12 @@
                     <!-- </form> -->
                 </div>
             </mat-card>
-            <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+            <!-- <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
                 <input matInput [matDatepicker]="picker2" placeholder="Choose a Date" name="Date"
                     formControlName="supplierTime">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
+            </mat-form-field> -->
         </form>
 
 
@@ -350,7 +360,7 @@
                         <mat-card>
                             <form [formGroup]="supplierForm">
                                 <div fxLayout="row">
-                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete label="Store" formControlName="mAssignSupplierToStores"
                                             [formGroup]="supplierForm" [IsMultiPle]="true"
                                             [value]="registerObj.mAssignSupplierToStores"

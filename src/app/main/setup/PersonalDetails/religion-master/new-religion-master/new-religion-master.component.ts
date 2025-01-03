@@ -1,14 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ReligionMasterService } from '../religion-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-religion-master',
   templateUrl: './new-religion-master.component.html',
   styleUrls: ['./new-religion-master.component.scss'],
-  
+   encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewReligionMasterComponent implements OnInit {
   religionForm: FormGroup;
@@ -22,11 +24,11 @@ export class NewReligionMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.religionForm = this._ReligionMasterService.CreateReligionForm();
-    if(this.data)
-      this.isActive=this.data.isActive
+    if(this.data){
+    this.isActive=this.data.isActive
     this.religionForm.patchValue(this.data);
   }
-
+  }
  
   onSubmit() {
     debugger

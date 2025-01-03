@@ -146,10 +146,12 @@ export class ItemMaster {
     itemShortName: string;
     itemName: string;
     itemTypeID: number;
+    itemTypeId: number;
     itemCategoryId: number;
+    itemCategaryId: number;
     itemGenericNameId: number;
     itemClassId: number;
-    purchaseUOMId: number;
+    purchaseUomid: number;
     stockUOM: number;
     conversionFactor: string;
     currencyId: number;
@@ -200,12 +202,18 @@ export class ItemMaster {
             
                this.itemShortName = ItemMaster.itemShortName || "";
             this.itemName = ItemMaster.itemName || "";
-            this.itemTypeID = ItemMaster.itemTypeID || "";
-            this.itemCategoryId = ItemMaster.itemCategoryId || "";
-            this.itemGenericNameId = ItemMaster.itemGenericNameId || "";
-            this.itemClassId = ItemMaster.itemClassId || "";
-            this.purchaseUOMId = ItemMaster.purchaseUOMId || "";
-            this.stockUOM = ItemMaster.stockUOM || "";
+            this.itemTypeID = ItemMaster.itemTypeID || 0;
+            this.itemTypeId = ItemMaster.itemTypeId || 0;
+           
+           
+            this.itemCategoryId = ItemMaster.itemCategoryId || 0;
+            this.itemCategaryId = ItemMaster.itemCategaryId || 0;
+
+            
+            this.itemGenericNameId = ItemMaster.itemGenericNameId || 0;
+            this.itemClassId = ItemMaster.itemClassId || 0;
+            this.purchaseUomid = ItemMaster.purchaseUomid || 0;
+            this.stockUOM = ItemMaster.stockUOM || 0;
             this.conversionFactor = ItemMaster.conversionFactor || "";
             this.currencyId = ItemMaster.currencyId || "";
             this.taxPer = ItemMaster.taxPer || "";

@@ -2,7 +2,7 @@
 <div style="padding: 10px;">
 
 
-<mat-slide-toggle formControlName="control" [(ngModel)]="value">
+<mat-slide-toggle [formControl]="control" [(ngModel)]="value" style="background-color: rgb(241, 148, 248);">
   {{label}}
 </mat-slide-toggle>
 </div>

@@ -315,7 +315,8 @@ export class NewAppointmentComponent implements OnInit {
             IsHealthCard: '',
             Days: '',
             HealthcardDate: [new Date().toISOString()],
-            HealthCardNo: ''
+            HealthCardNo: '',
+            Visit:[]
 
         });
 
@@ -804,7 +805,11 @@ export class NewAppointmentComponent implements OnInit {
 
 
         console.log(m_data);
-
+        console.log(this.personalFormGroup.value);
+        console.log(this.VisitFormGroup.value);
+        this.personalFormGroup.get("Visit").setValue(this.VisitFormGroup.value);
+        console.log(this.personalFormGroup.value);
+        // this._AppointmentlistService.NewappointmentSave(this.personalFormGroup.value).subscribe((response) => {
         this._AppointmentlistService.NewappointmentSave(m_data).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

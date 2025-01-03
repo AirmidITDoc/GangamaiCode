@@ -36,7 +36,8 @@ export class AirmidSliderComponent implements
     @Input() label: string = "";
     @Input() type:string="text";
     @Input() keyup:Event;
-   
+    @Input() ValueField: string = "value";
+    
     @Input() width:number=100;
   empty: any;
     @Input()

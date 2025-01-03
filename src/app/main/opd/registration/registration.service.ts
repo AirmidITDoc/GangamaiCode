@@ -46,36 +46,36 @@ export class RegistrationService {
     return this._formBuilder.group({
       regId: [0],
       RegNo: '1',
-      PrefixId: ['', [Validators.required]],
-      FirstName:[""],
+      prefixId: ['', [Validators.required]],
+      firstName:[""],
       //  ['', [
       //   Validators.required,
       //   Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       // ]],
-      MiddleName: ['', [
+      middleName: ['', [
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
-      LastName: ['', [
+      lastName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
       ]],
-      GenderID: new FormControl('', [Validators.required]),
-      Address: '',
-      DateOfBirth: [(new Date()).toISOString()],
+      genderId: new FormControl('', [Validators.required]),
+      address: '',
+      dateOfBirth: [(new Date()).toISOString()],
       age: ['2'],
-      AgeYear: ['12', [
+      ageYear: ['12', [
         // Validators.required,
         Validators.maxLength(3),
         Validators.pattern("^[0-9]*$")]],
-      AgeMonth: ['2', [
+      ageMonth: ['2', [
         Validators.pattern("^[0-9]*$")]],
-      AgeDay: ['21', [
+      ageDay: ['21', [
         Validators.pattern("^[0-9]*$")]],
-      PhoneNo: ['', [Validators.minLength(10),
+      phoneNo: ['', [Validators.minLength(10),
       Validators.maxLength(10),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
-      MobileNo: ['', [Validators.required,
+      mobileNo: ['', [Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -84,14 +84,14 @@ export class RegistrationService {
       aadharCardNo: ['', Validators.compose([Validators.minLength(12),
       Validators.maxLength(12)
       ])],
-      PanCardNo: 'ds',
-      MaritalStatusId: '',
-      ReligionId: '',
-      AreaId: '',
-      CityId: '',
+      panCardNo: 'ds',
+      maritalStatusId: '',
+      religionId: '',
+      areaId: '',
+      cityId: '',
       city: ['d'],
-      StateId: '',
-      CountryId: '',
+      stateId: '',
+      countryId: '',
       isCharity: false,
       isSeniorCitizen: false,
       addedBy: 1,
@@ -99,7 +99,8 @@ export class RegistrationService {
       regDate: [(new Date()).toISOString()],
       regTime: [(new Date()).toISOString()],
       Photo: [''],
-      PinNo: ['']
+      PinNo: [''],
+      isActive:[]
     });
 
   }
@@ -116,8 +117,8 @@ export class RegistrationService {
 
  
   public RegstrationtSaveData(Param: any, showLoader = true) {
-    if (Param.regID) {
-      return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
+    if (Param.regId) {
+      return this._httpClient1.PostData("OutPatient/RegistrationUpdate"+ Param.regId, Param, showLoader);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
   }
 
@@ -153,5 +154,9 @@ export class RegistrationService {
     this.personalFormGroup.patchValue(param);
   }
   populateFormpersonal(param) { }
+
+  public getRegistraionById(Id) {
+    return this._httpClient1.GetData("OutPatient/" + Id);
+}
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

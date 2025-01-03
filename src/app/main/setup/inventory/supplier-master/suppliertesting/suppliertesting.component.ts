@@ -22,7 +22,7 @@ export class SuppliertestingComponent implements OnInit {
   msmflag: boolean = false;
   CityId: any;
   SupplierId: any = 0;
-
+  screenFromString = 'OP-billing';
   // new API
 
   autocompleteModecity: string = "City";
@@ -244,6 +244,10 @@ export class SuppliertestingComponent implements OnInit {
 
   onChangeMode(event) {
 
+  }
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
   }
 
 
