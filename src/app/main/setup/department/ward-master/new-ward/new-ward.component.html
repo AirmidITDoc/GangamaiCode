@@ -18,18 +18,18 @@
         <div class="modal-body-container">
             <form [formGroup]="roomForm">
                 <input type="hidden" name="roomId" formControlName="roomId">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="Room Name " 
-                        formControlName="roomName" 
-                        [value]="data?.roomName" 
-                        [formGroup]="roomForm"
-                        [validations]="getValidationMessages().roomName" 
-                        [maxLength]="50">
-                    </airmid-textbox>    
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Room Name " 
+                            formControlName="roomName" 
+                            [value]="data?.roomName" 
+                            [formGroup]="roomForm"
+                            [validations]="getValidationMessages().roomName" 
+                            [maxLength]="50">
+                        </airmid-textbox>    
+                        </div>
                     </div>
-                </div>
                 
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">

@@ -9,7 +9,6 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
-
 @Component({
     selector: "app-dischargetype-master",
     templateUrl: "./dischargetype-master.component.html",

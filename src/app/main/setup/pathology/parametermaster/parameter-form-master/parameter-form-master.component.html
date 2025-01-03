@@ -23,7 +23,7 @@
         <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
-                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Parameter Master</span>
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Parameter Master</span>
                 </div>
                 <div class="modal-header-right">
                     <div class="close-icon">
@@ -47,6 +47,81 @@
 
                                 <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
                                     <input type="hidden" name="ParameterID" formControlName="parameterId">
+
+                                // new created  -------------------------------------------------
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Parameter Short Name" 
+                                                formControlName="parameterShortName" 
+                                                [value]="data?.parameterShortName"
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationMessages().parameterShortName"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div> 
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Parameter Name" 
+                                                formControlName="parameterName" 
+                                                [value]="data?.parameterName"
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationMessages().parameterName"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div> 
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Print Parameter Name" 
+                                                formControlName="printParameterName" 
+                                                [value]="data?.printParameterName"
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationMessages().printParameterName"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div> 
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Method Name" 
+                                                formControlName="MethodName" 
+                                                [value]="data?.MethodName"
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationMessages().MethodName"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div> 
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox 
+                                                label="Formula" 
+                                                formControlName="Formula" 
+                                                [value]="data?.Formula"
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationMessages().Formula"
+                                                [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div> 
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-autocomplete 
+                                                label="UnitId" 
+                                                formControlName="unitId"
+                                                [value]="data?.unitId" 
+                                                [formGroup]="parameterForm"
+                                                [validations]="getValidationMessages().unitId"
+                                                [mode]="autocompleteModeUnitId"
+                                                (selectDdlObject)="selectChangeUnitId($event)">
+                                            </airmid-autocomplete>
+                                        </div> 
+                                    </div>
+
 
                                     <div>
                                         <!-- <mat-form-field appearance="outline" fxFlex="65%">
@@ -246,24 +321,94 @@
                                         <form [formGroup]="parameterForm">
                                             <mat-card-content>
                                                 <div>
+                                                    // new created ----------------------------------------------
+                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-autocomplete 
+                                                                label="SexID" 
+                                                                formControlName="sexId"
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().sexId"
+                                                                [mode]="autocompleteModeGender"
+                                                                (selectDdlObject)="selectChangeGender($event)">
+                                                            </airmid-autocomplete>
+                                                        </div>
+                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-textbox 
+                                                                label="Min Age" 
+                                                                formControlName="MinAge" 
+                                                                [value]="data?.MinAge" 
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().MinAge" 
+                                                                [maxLength]="3">
+                                                            </airmid-textbox>    
+                                                        </div>
+                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-textbox 
+                                                                label="Max Age" 
+                                                                formControlName="MaxAge" 
+                                                                [value]="data?.MaxAge" 
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().MaxAge" 
+                                                                [maxLength]="3">
+                                                            </airmid-textbox>    
+                                                        </div>
+                                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-autocomplete 
+                                                                label="Select Age Type" 
+                                                                formControlName="AgeType"
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().AgeType"
+                                                                [mode]="autocompleteModeGender"
+                                                                (selectDdlObject)="selectChangeGender($event)">
+                                                            </airmid-autocomplete>
+                                                        </div>
+                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-textbox 
+                                                                label="Min Value" 
+                                                                formControlName="minValue" 
+                                                                [value]="data?.minValue" 
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().minValue" 
+                                                                [maxLength]="3">
+                                                            </airmid-textbox>    
+                                                        </div>
+                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-textbox 
+                                                                label="Max Value" 
+                                                                formControlName="maxvalue" 
+                                                                [value]="data?.maxvalue" 
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().maxvalue" 
+                                                                [maxLength]="3">
+                                                            </airmid-textbox>    
+                                                        </div>
+                                                        <div matTooltip="Select All Value to enable this button!!">
+                                                            <button mat-raised-button class="custom_add_button"
+                                                                (click)="checkFields($event)">
+                                                                Add <mat-icon> add_to_photos </mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
                                                     <div fxLayoutAlign="space-between" style="padding:5px">
                                                        
                                                         <airmid-autocomplete label="SexID" formControlName="SexID"
-                                                    [formGroup]="parameterForm"
-                                                    [validations]="getValidationGenderMessages().SexID"
-                                                    [mode]="autocompleteModeGender"
-                                                    (selectDdlObject)="selectChangeGender($event)">
-                                                </airmid-autocomplete>
+                                                            [formGroup]="parameterForm"
+                                                            [validations]="getValidationGenderMessages().SexID"
+                                                            [mode]="autocompleteModeGender"
+                                                            (selectDdlObject)="selectChangeGender($event)">
+                                                        </airmid-autocomplete>
 
 
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                                     <--  <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Min Age</mat-label>
                                                             <input name="MinAge" placeholder="MinAge" maxlength="3"
                                                                 (keyup)="ageyearcheck(vMinAge)" #minage
                                                                 [(ngModel)]="vMinAge" formControlName="MinAge" matInput
                                                                 (keydown)="onEnteragey($event,vMinAge)"
                                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
 
                                                         <mat-form-field appearance="outline" fxFlex="10%">
                                                             <mat-label>Max Age</mat-label>
@@ -419,7 +564,37 @@
                                             </mat-card-content>
                                             <form [formGroup]="_ParameterService.descform">
                                                 <mat-card-content>
+                                                    // new created --------------------------------------
+                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                        <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-textbox 
+                                                                label="Parameter" 
+                                                                formControlName="paraId" 
+                                                                [value]="data?.paraId" 
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().paraId" 
+                                                                [maxLength]="50">
+                                                            </airmid-textbox>    
+                                                        </div>
+                                                        <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-textbox 
+                                                                label="DefaultValue" 
+                                                                formControlName="defaultValue" 
+                                                                [value]="data?.defaultValue" 
+                                                                [formGroup]="parameterForm"
+                                                                [validations]="getValidationMessages().defaultValue" 
+                                                                [maxLength]="50">
+                                                            </airmid-textbox>    
+                                                        </div>
+                                                        <div matTooltip="Select All Value to enable this button!!">
+                                                                <button mat-raised-button class="custom_add_button"
+                                                                    (click)="AddData(ParaId)"> Add
+                                                                    <mat-icon> add_to_photos </mat-icon>
+                                                                </button>
+                                                            </div>
+                                                    </div>
 
+                                                    // old code ---------------------------------------
                                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
                                                         <div flex="100%">
 
@@ -537,7 +712,7 @@
 
                     <div class="footer-navigation-container">
                         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                             <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                         </div>
                     </div>

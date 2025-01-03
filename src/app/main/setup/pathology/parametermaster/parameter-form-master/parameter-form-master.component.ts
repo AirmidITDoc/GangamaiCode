@@ -184,6 +184,36 @@ export class ParameterFormMasterComponent implements OnInit {
     //     this.dialogRef.close();
     // }
 
+    /**
+     * {
+  "parameterId": 0,
+  "parameterShortName": "abc",
+  "parameterName": "xyz",
+  "printParameterName": "shilpa",
+  "unitId": 123,
+  "isNumeric": 0,
+  "isPrintDisSummary": true,
+  "mParameterDescriptiveMasters": [
+    {
+      "descriptiveId": 0,
+      "parameterId": 0,
+      "parameterValues": "xyz",
+      "isDefaultValue": true,
+      "defaultValue": "string"
+    }
+  ],
+  "mPathParaRangeMasters": [
+    {
+      "pathparaRangeId": 0,
+      "paraId": 0,
+      "sexId": 1234,
+      "minValue": "string",
+      "maxvalue": "string"
+    }
+  ]
+}
+     */
+
     saveflag : boolean = false;
     onSubmit() {
         this.saveflag = true;
@@ -329,7 +359,56 @@ export class ParameterFormMasterComponent implements OnInit {
         this.onClose()
     }
 
+    getValidationMessages() {
+        return {
+            parameterShortName: [
+                { name: "required", Message: "Parameter Short Name is required" },
+                { name: "maxlength", Message: "Parameter Short Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            parameterName:[
+                { name: "required", Message: "Parameter Name is required" },
+                { name: "maxlength", Message: "Parameter Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            printParameterName:[
+                { name: "required", Message: "Print Parameter Name is required" },
+                { name: "maxlength", Message: "Print Parameter Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            MethodName:[
+                { name: "required", Message: "Method Name is required" },
+            ],
+            Formula:[
+                { name: "required", Message: "Formula is required" },
+            ],
+            unitId:[
+                { name: "required", Message: "Unit Id is required" },
+            ],
+            sexId:[
+                { name: "required", Message: "Sex Id is required" },
+            ],
+            MinAge:[
+                { name: "required", Message: "Min Age is required" },
+            ],
+            MaxAge:[
+                { name: "required", Message: "Max Age is required" },
+            ],
+            AgeType:[
+                { name: "required", Message: "Age Type is required" },
+            ],
+            minValue:[
+                { name: "required", Message: "Min Value is required" },
+            ],
+            maxvalue:[
+                { name: "required", Message: "Max Value is required" },
+            ],
+            paraId:[],
+            defaultValue:[],
 
+
+        };
+    }
 
 
 

@@ -1,20 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { TestmasterService } from "./testmaster.service";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatAccordion } from "@angular/material/expansion";
-import { FormControl } from "@angular/forms";
-import { ReplaySubject, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { MatDialog } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
-import { MatTabGroup } from "@angular/material/tabs";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 

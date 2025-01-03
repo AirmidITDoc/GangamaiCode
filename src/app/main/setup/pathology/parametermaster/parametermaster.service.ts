@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
@@ -28,48 +28,99 @@ export class ParametermasterService {
         this.formulaform=this.createformulaForm();
         
     }
+    /**
+     * {
+        "parameterId": 0,
+        "parameterShortName": "abc",
+        "parameterName": "xyz",
+        "printParameterName": "shilpa",
+        "unitId": 123,
+        "isNumeric": 0,
+        "isPrintDisSummary": true,
+        "mParameterDescriptiveMasters": [
+            {
+            "descriptiveId": 0,
+            "parameterId": 0,
+            "parameterValues": "xyz",
+            "isDefaultValue": true,
+            "defaultValue": "string"
+            }
+        ],
+        "mPathParaRangeMasters": [
+            {
+            "pathparaRangeId": 0,
+            "paraId": 0,
+            "sexId": 1234,
+            "minValue": "string",
+            "maxvalue": "string"
+            }
+        ]
+        }
+     */
 
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
-            parameterId: [""],
-            ParameterName: [
+            parameterId: [0],
+            parameterShortName: [
                 "",
                 [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
             ],
-            ParameterShortName: [
+            parameterName: [
                 "",
                 [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
             ],
-            PrintParameterName: [
+            
+            printParameterName: [
                 "",
                 [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
             ],
-            MethodName: ["",
-             [Validators.pattern("^[A-Za-z ]*$")],
+            unitId: ["",
+                Validators.required
             ],
-            UnitId: [""],
-            UnitName: [""],
-            IsNumeric: ["1"],
-            IsDeleted: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            IsPrintDisSummary: [],
-            ParaMultipleRange: [""],
-            PathparaRangeId: [""],
-            ParaId: [""],
-            SexId: [""],
-            IsDescriptive: [""],
-            DefaultValue: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-            parameterValues: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-            IsDefaultValue: [""],
-            SexID:[""],
-            MinAge:["",Validators.required],
-            MaxAge: [""],
-            MinValue: [""],
-            MaxValue: [""],
-            AgeType: [""],
-            Formula:[""],
-            IsBold:['0']
+            isNumeric: ["1"],
+            isPrintDisSummary: true,
+            mParameterDescriptiveMasters: [
+                {
+                    descriptiveId: 0,
+                    parameterId: 0,
+                    parameterValues: "String",
+                    isDefaultValue: true,
+                    defaultValue: "string"
+                }
+            ],
+            mPathParaRangeMasters: [
+                {
+                    pathparaRangeId: 0,
+                    paraId: 0,
+                    sexId: ["", Validators.required],
+                    minValue: "string",
+                    maxvalue: "string"
+                }
+            ],
+
+            // MethodName: ["",
+            //     [Validators.pattern("^[A-Za-z ]*$")],
+            // ],
+            // UnitName: [""],
+            // IsDeleted: ["true"],
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // ParaMultipleRange: [""],
+            // PathparaRangeId: [""],
+            // ParaId: [""],
+            // SexId: [""],
+            // IsDescriptive: [""],
+            // DefaultValue: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+            // parameterValues: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+            // IsDefaultValue: [""],
+            // SexID:[""],
+            // MinAge:["",Validators.required],
+            // MaxAge: [""],
+            // MinValue: [""],
+            // MaxValue: [""],
+            // AgeType: [""],
+            // Formula:[""],
+            // IsBold:['0']
         });
     }
 
