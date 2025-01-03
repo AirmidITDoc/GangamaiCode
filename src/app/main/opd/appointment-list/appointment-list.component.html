@@ -104,11 +104,9 @@
 
                     <airmid-autocomplete label="Doctor Name"  formControlName="DoctorId"
                         [formGroup]="_AppointmentlistService.myformSearch"
-                        [(ngModel)]="gridConfig.filters[3].fieldValue"
-                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
-                        (selectDdlObject)="selectChangedeptdoc($event)">
+                        (selectionChange)="gridConfig.filters[3].fieldValue=_AppointmentlistService.myformSearch.controls['DoctorId'].value"
+                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc">
                     </airmid-autocomplete>
-
                     <!-- <mat-form-field appearance="outline" >
                         <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
                             (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[4].fieldValue"
