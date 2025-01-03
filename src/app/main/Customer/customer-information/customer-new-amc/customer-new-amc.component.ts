@@ -35,6 +35,8 @@ export class CustomerNewAMCComponent implements OnInit {
   vCustomerName: any; 
   NewAMCForm:FormGroup
   vDuration:any;
+  vAMCStartDate:any;
+  isDate: boolean;
 
   constructor(
         public _CustomerInfo: CustomerInformationService,
@@ -48,34 +50,105 @@ export class CustomerNewAMCComponent implements OnInit {
         private _formbuilder : FormBuilder
   ) { }
 
-  ngOnInit(): void {
-    this.NewAMCForm = this.createAMCform();
-    this.getCustomerSearch();
-    if (this.data) {
-      console.log(this.data)
-      if(this.data.FormName == 0){
-        this.registerObj = this.data.Obj;
-        console.log(this.registerObj)
-        this.AMCId = this.registerObj.TranId
-        this.vAmount= this.registerObj.AMCAmount
-        this.vDescription = this.registerObj.Comments
-        this.vDuration = this.registerObj.AMCDuration  
-        this.getCustomerSearch();
+    /////////////////// new code ///////////////////////
+
+    ngOnInit(): void {
+      this.NewAMCForm = this.createAMCform();
+    
+      this.getCustomerSearch();
+    
+      if (this.data) {
+        console.log(this.data);
+        if (this.data.FormName == 0) {
+          this.registerObj = this.data.Obj;
+          console.log(this.registerObj);
+          this.AMCId = this.registerObj.TranId;
+          this.vAmount = this.registerObj.AMCAmount;
+          this.vDescription = this.registerObj.Comments;
+          this.vDuration = this.registerObj.AMCDuration;
+          this.vAMCStartDate = this.registerObj.AMCStartDate;
+          this.isDate = this.data.isDate;
+          this.getCustomerSearch();
+    
+          // when data is editing
+          this.NewAMCForm.patchValue({
+            Duration: this.vDuration,
+            startdate: this.vAMCStartDate,
+            enddate: new Date().toISOString()
+          });
+        }
+        else if (this.data.FormName == 1) {
+          this.registerObj = this.data.Obj;
+          console.log('new', this.registerObj);
+          this.getCustomerSearch();
+        }
       }
-      else if(this.data.FormName == 1){
-        this.registerObj = this.data.Obj;
-        console.log('new',this.registerObj) 
-        this.getCustomerSearch();
-      } 
+    
+      // Subscribe to form value changes to handle duration and startdate
+      this.NewAMCForm.valueChanges.subscribe((formValues) => {
+        debugger
+        const { Duration, startdate } = formValues;
+    
+        if (Duration && startdate) {
+          const startDate = new Date(startdate);
+          const durationDays = parseInt(Duration, 10);
+    
+          // Ensure valid duration and start date
+          if (!isNaN(durationDays) && startDate instanceof Date) {
+            const endDate = this.calculateEndDate(startDate, durationDays);
+    
+            // Update the end date field without triggering additional events
+            this.NewAMCForm.patchValue({
+              enddate: endDate
+            }, { emitEvent: false });
+          }
+        }
+      });
+    
+      // Watch for changes to the 'Duration' and 'startdate' fields using ngModel
+      this.NewAMCForm.get('Duration')?.valueChanges.subscribe((durationValue) => {
+        const startDateValue = this.NewAMCForm.get('startdate')?.value;
+        if (startDateValue && durationValue) {
+          this.updateEndDate(startDateValue, durationValue);
+        }
+      });
+    
+      this.NewAMCForm.get('startdate')?.valueChanges.subscribe((startDateValue) => {
+        const durationValue = this.NewAMCForm.get('Duration')?.value;
+        if (startDateValue && durationValue) {
+          this.updateEndDate(startDateValue, durationValue);
+        }
+      });
     }
-  
-  }
+    
+    // method to calculate the enddate based on startdate and duration
+    calculateEndDate(startDate: string | Date, durationMonths: number): string {
+      const start = new Date(startDate);
+      start.setMonth(start.getMonth() + durationMonths); // Add duration months to the start date
+      return start.toISOString().substring(0, 10); // Return the end date formatted as YYYY-MM-DD
+    }
+    
+    // method to update enddate when duration or startdate changes
+    updateEndDate(startDate: string, duration: number): void {
+      const endDate = this.calculateEndDate(startDate, duration);
+    
+      // Update enddate form control
+      this.NewAMCForm.patchValue({
+        enddate: endDate
+      }, { emitEvent: false }); // Prevent infinite loop of value changes
+    }
+        
+    ///////////////////// code end /////////////////
+
   createAMCform(){
     return this._formbuilder.group({
       CustomerId:[''],
       Amount:[''],
       Duration:[''], 
-      Description:['']
+      Description:[''],
+      startdate: [(new Date()).toISOString()],
+      // startdate: [(this.registerObj?.AMCStartDate) ? new Date(this.registerObj.AMCStartDate) : null],
+      enddate: [(new Date()).toISOString()],
     })
   }
   PopulateForm(param){
@@ -175,8 +248,10 @@ export class CustomerNewAMCComponent implements OnInit {
       let customerAmcUpdateObj = {};
       customerAmcUpdateObj['amcId'] = this.registerObj.TranId;
       customerAmcUpdateObj['customerId'] = this.NewAMCForm.get('CustomerId').value.CustomerId || 0;
-      customerAmcUpdateObj['amcStartDate'] = formattedDate;
-      customerAmcUpdateObj['amcEndDate'] = formattedDate;
+      // customerAmcUpdateObj['amcStartDate'] = formattedDate;
+      // customerAmcUpdateObj['amcEndDate'] = formattedDate;
+      customerAmcUpdateObj['amcStartDate'] = this.NewAMCForm.get('startdate')?.value || null;
+      customerAmcUpdateObj['amcEndDate'] = this.NewAMCForm.get('enddate')?.value || null;
       customerAmcUpdateObj['amcDuration'] = this.NewAMCForm.get('Duration').value || 0;
       customerAmcUpdateObj['amcAmount'] = this.NewAMCForm.get('Amount').value || 0;
       customerAmcUpdateObj['comments'] = this._loggedService.currentUserValue.user.id || 0; 

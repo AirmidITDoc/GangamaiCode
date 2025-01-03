@@ -32,7 +32,24 @@
                         <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
         
                             <div fxFlex.gt-sm="100%" fxFlex>
-        
+                                <div fxLayout="column" class="gap-12">
+                                    <div class="info-badge-top pb-2 border-bottom">
+                                        <!-- "pill" class is used for rounded border -->
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                                <span class="blue-600-fg">Bill</span>
+                                            </div>
+                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                <span class="green-600-fg">AMC</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
                                 <div fxlayout="row">
                                     <div style="width:100%;">
                                         <div matColumnDef="loading" style="height: 400px;"
@@ -44,10 +61,23 @@
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;"> 
 
                                             <ng-container matColumnDef="Type">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Type </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.lbl}}
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
+                                                    <span class="material-icons" (click)="getCustomerPayDueList()">
+                                                        cached
+                                                    </span>
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-50">
+                                                    <div class="pill-icon">
+                                                        <mat-icon style="border-radius:100% ;" *ngIf="contact.lbl == 'Bill'"
+                                                            matTooltip="Bill"
+                                                            class="blue s-16">circle
+                                                        </mat-icon>
+                
+                                                        <mat-icon style="border-radius:100% ;" *ngIf="contact.lbl == 'AMC'"
+                                                            matTooltip="AMC"
+                                                            class="green-600 s-16">circle
+                                                        </mat-icon>
+                                                    </div>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -98,6 +128,9 @@
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     PayAmount </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <button mat-icon-button matTooltip="View" (click)="OnView(contact)">
+                                                        <mat-icon>remove_red_eye</mat-icon>
+                                                    </button>
                                                     {{contact.PaymentAmount | currency:'INR'}}
                                                 </mat-cell>
                                             </ng-container>
@@ -139,6 +172,7 @@
                                         </mat-paginator>
                                     </div>
                                 </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,7 +189,25 @@
                         <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
         
                             <div fxFlex.gt-sm="100%" fxFlex>
-        
+
+                                <div fxLayout="column" class="gap-12">
+                                    <div class="info-badge-top pb-2 border-bottom">
+                                        <!-- "pill" class is used for rounded border -->
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                                <span class="blue-600-fg">Bill</span>
+                                            </div>
+                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                <span class="green-600-fg">AMC</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
                                 <div fxlayout="row">
                                     <div style="width:100%;">
                                         <div matColumnDef="loading" style="height: 400px;"
@@ -166,6 +218,27 @@
                                         <mat-table #table matSort [dataSource]="dsAMCPayList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">  
         
+                                            <ng-container matColumnDef="Type">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
+                                                    <span class="material-icons" (click)="getCustomerAMCPayList()">
+                                                        cached
+                                                    </span>
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-50">
+                                                    <div class="pill-icon">
+                                                        <mat-icon style="border-radius:100% ;" *ngIf="contact.Lbl == 'Bill'"
+                                                            matTooltip="Bill"
+                                                            class="blue s-16">circle
+                                                        </mat-icon>
+                
+                                                        <mat-icon style="border-radius:100% ;" *ngIf="contact.Lbl == 'AMC'"
+                                                            matTooltip="AMC"
+                                                            class="green-600 s-16">circle
+                                                        </mat-icon>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="CustomerName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     CustomerName
@@ -247,6 +320,7 @@
                                             showFirstLastButtons>
                                         </mat-paginator>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

@@ -38,4 +38,8 @@ export class NursingnoteService {
   public getNursingNotelist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesList ", employee)
   }
+  // ip
+  public getAdmittedPatientList(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
 }

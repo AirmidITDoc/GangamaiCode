@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { CustomerPaymentComponent } from '../customer-information/customer-payment/customer-payment.component';
+import { CustomerPaymentAmtViewComponent } from './customer-payment-amt-view/customer-payment-amt-view.component';
 
 @Component({
   selector: 'app-customer-bill-raise',
@@ -31,6 +32,7 @@ export class CustomerBillRaiseComponent implements OnInit {
     'PaymentDue'
   ];
   displayedColumns: string[] = [
+    'Type',
     'CustomerName',
     'ContactPersonName',
     'ContactPersonMobileNo',
@@ -122,6 +124,19 @@ export class CustomerBillRaiseComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.getCustomerPayDueList();
+    });
+  }
+  OnView(contact){
+    console.log(contact)
+    const dialogRef = this._matDialog.open(CustomerPaymentAmtViewComponent,
+      {
+        maxWidth: "50vw",
+        height: '50%',
+        width: '100%'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - View Action', result);
       this.getCustomerPayDueList();
     });
   }

@@ -32,7 +32,7 @@ export class OttableMasterComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns = [
-    'IsCancelled',
+    // 'IsCancelled',
     'OtTableId',
     'OtRoomName',
     'LocationName',

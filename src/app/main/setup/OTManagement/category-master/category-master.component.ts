@@ -31,7 +31,7 @@ export class CategoryMasterComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns = [
-    'IsCancelled',
+    // 'IsCancelled',
     'SurgeryCategoryId',
     'SurgeryCategoryName',
     'IsActive',

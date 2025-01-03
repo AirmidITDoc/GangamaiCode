@@ -55,6 +55,7 @@ export class DoctornoteComponent implements OnInit {
   NoteList:any=[];
   vCompanyName:any;
   vRegNo:any;
+  vRegId:any;
   vDescription:any;
   vPatienName:any;
   vGender:any;
@@ -71,6 +72,16 @@ export class DoctornoteComponent implements OnInit {
   vTariffName:any;
   vDoctorname:any;
   vDepartmentName:any;
+  vTariffId:any;
+  vClassId:any;
+  vClassName:any;
+  vGenderName:any;
+  vCompanyId:any;
+  vVisitDate:any;
+  PatientListfilteredOptionsIP: any;  
+  isRegIdSelected: boolean = false;
+  noOptionFound: boolean = false;
+  registerObj:any;
 
   selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
@@ -140,7 +151,49 @@ OnAdd(){
   this._NursingStationService.myform.get('Note').setValue('');
 }
 
+getSearchList(){
+  debugger
+  var m_data = {
+    "Keyword": `${this._NursingStationService.myform.get('RegID').value}%`
+  }
+  this._NursingStationService.getAdmittedPatientList(m_data).subscribe(data => {
+    this.PatientListfilteredOptionsIP = data;
+    if (this.PatientListfilteredOptionsIP.length == 0) {
+      this.noOptionFound = true;
+    } else {
+      this.noOptionFound = false;
+    }
+  }); 
+}
 
+getOptionTextIPObj(option) { 
+  return option && option.FirstName + " " + option.LastName; 
+}
+
+getSelectedObjRegIP(obj){
+  console.log(obj)
+  this.registerObj = obj;
+  this.vPatienName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+  this.vRegId = obj.RegId;
+  this.vDoctorname = obj.DoctorName;
+  this.vVisitDate = this.datePipe.transform(obj.VisitDate, 'dd/MM/yyyy hh:mm a');
+  this.vCompanyName = obj.CompanyName;
+  this.vTariffName = obj.TariffName;
+  this.vDepartmentName = obj.DepartmentName;
+  this.vRegNo = obj.RegNo;
+  this.vIPDNo = obj.IPDNo;
+  this.vTariffId = obj.TariffId;
+  this.vClassId = obj.ClassId;
+  this.vAgeyear = obj.AgeYear;
+  this.vAgeMonth = obj.AgeMonth;
+  this.vClassName = obj.ClassName;
+  this.vAgeDay = obj.AgeDay;
+  this.vGenderName = obj.GenderName;
+  this.vRefDocName = obj.RefDoctorName
+  this.vBedName = obj.BedName;
+  this.vPatientType = obj.PatientType;
+  this.vCompanyId = obj.CompanyId;
+}
 
   onSubmit() { 
  
@@ -228,6 +281,7 @@ OnAdd(){
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
+    this.vVisitDate= '';
   }
 }  
 export class DocNote {
