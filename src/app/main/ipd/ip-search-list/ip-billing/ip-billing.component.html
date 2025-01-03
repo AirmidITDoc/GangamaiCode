@@ -441,15 +441,16 @@
                             </ng-container>
 
                             <ng-container matColumnDef="IsCheck" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-50">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-60">
                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
                                         <img width="15px" height="9px" src="assets/images/logos/pathology.png">
                                     </mat-icon>
-                                    <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="IsPackage">
+                                    <mat-icon *ngIf="contact.IsPackageMaster == 1" matTooltip="IsPackage"
+                                    (click)="getPacakgeDetail(contact)">
                                         <img width="15px" height="9px" src="assets/images/logos/package.png">
                                     </mat-icon>
 
@@ -645,8 +646,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-
+                                <mat-footer-cell *matFooterCellDef colspan="6"> 
                                     <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                     </mat-spinner>
                                     <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
@@ -657,7 +657,7 @@
                                 *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1600"
-                                [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                [ngClass]="{'red-row': contact.IsPathTestCompleted == '1' ||  contact.IsRadTestCompleted == '1' }"
                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
                             </mat-footer-row>
@@ -832,8 +832,8 @@
                             class="table3 mt-8" style="height: calc(100vh - 500px);">
 
                             <ng-container matColumnDef="IsCheck" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Status</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-50">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-60">
                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>
@@ -843,12 +843,14 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="ChargesDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <span> {{contact.BDate}}</span>
+                            <ng-container matColumnDef="ServiceNamePackage">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    Package Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    <span> {{contact.PacakgeServiceName}}</span>
                                 </mat-cell>
-                            </ng-container>  -->
+                            </ng-container> 
 
                             <ng-container matColumnDef="ServiceName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Service Name
@@ -862,11 +864,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
-                                            (keyup)="gettablecalculation(contact,contact.Price)"
-                                            (keypress)="keyPressCharater($event)">
-                                    </mat-form-field>
+                                    <span> {{contact.Price}}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -874,14 +872,9 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
-                                        <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber
-                                            (keyup)="gettablecalculation(contact,contact.Qty)"
-                                            (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field>
+                                    <span> {{contact.Qty}}</span>
                                 </mat-cell>
-                            </ng-container>
-
+                            </ng-container> 
 
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
@@ -895,7 +888,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ConcessionAmt}}</span>
+                                    <span> {{contact.ConcessionAmt || '-' }}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -905,38 +898,25 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.NetAmount | currency:'INR' }}</span>
                                 </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button (click)="deleteTableRowPackage(contact)" color="warn">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
-                                </mat-cell>
-                            </ng-container>
-
+                            </ng-container>  
+                           
                             <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    loading data...
+                                </mat-footer-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="noData">
                                 <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                    <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                    </mat-spinner>
-                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                    <span>No Data Found</span>
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-1100"
+                            <mat-header-row class="accent"
                                 *matHeaderRowDef="PackageBillColumns; sticky: true">
-                            </mat-header-row>
-
-                            <mat-row class="min-width-1100" *matRowDef="let contact; columns: PackageBillColumns;"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-
+                            </mat-header-row> 
+                            <mat-row  *matRowDef="let contact; columns: PackageBillColumns;"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row> 
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide':PackageBillColumns!=null}">
                             </mat-footer-row>

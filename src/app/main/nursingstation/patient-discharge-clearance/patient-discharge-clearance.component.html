@@ -47,7 +47,7 @@
                                         {{element.IPDNo}} </mat-cell>
                                 </ng-container>
     
-                                <ng-container matColumnDef="Action">
+                                <!-- <ng-container matColumnDef="Action">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Action </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> 
@@ -56,7 +56,7 @@
                                     </button>
                                     
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
     
                                 <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -170,9 +170,21 @@
                                     <div class="step" *ngFor="let department of DepartmentList; let i = index">
                                         <div class="step-number">{{ i + 1 }}</div>
                                         <div class="step-content">
-                                            <div class="step-title">{{ department.DepartmentName }}</div> 
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                                <span class="step-title">
+                                                    {{ department.DepartmentName }}
+                                                </span> 
+                                                <span class="step-icon">
+                                                    <button mat-icon-button matTooltip="Give Approval"  (click)="PatietnClearanceOption(department)"
+                                                    *ngIf="department.ApprovedByName === '' && department.DepartmentID === accountService.currentUserValue.user.id">
+                                                    <mat-icon>edit</mat-icon></button>
+                                                </span>
+                                             
+                                            </div> 
                                             <div>Department Name : {{ department.DepartmentName }} </div>
-                                            <div [ngClass]="{'red-row ': department.ApprovedByName !== ''}" >ApprovedBy Name : {{ department.ApprovedByName }}</div>
+                                            <div [ngClass]="{'green-row ': department.ApprovedByName !== '' ,
+                                                             'red-row ': department.ApprovedByName === ''  }"
+                                            >ApprovedBy Name : {{ department.ApprovedByName || 'Pending' }}</div>
                                         </div>
                                         <div class="step-line" *ngIf="i < DepartmentList.length - 1"></div>
                                     </div>

@@ -942,7 +942,7 @@ export class ChargesList {
   ChargesId: number;
   ServiceId: number;
   ServiceName: String;
-  Price: number;
+  Price: any;
   Qty: number;
   TotalAmt: number;
   DiscPer: number;
@@ -970,6 +970,10 @@ export class ChargesList {
   C_Price:any;
   IsComServ:any;
   CompanyServiceName:any;
+  BillwiseTotalAmt:any;
+  PackageId:any;
+  PackageServiceId:any;
+  PacakgeServiceName:any;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -993,6 +997,9 @@ export class ChargesList {
     this.IsStatus = ChargesList.IsStatus || 0;
     this.extMobileNo = ChargesList.extMobileNo || ''
     this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
+    this.PackageServiceId = ChargesList.PackageServiceId || 0;
+    this.PackageId = ChargesList.PackageId || 0
+    this.PacakgeServiceName = ChargesList.PacakgeServiceName || ''
   }
 }
 export class AdvanceHeader {

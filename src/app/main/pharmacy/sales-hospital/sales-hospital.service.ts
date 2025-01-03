@@ -98,7 +98,7 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
     }
     
     public getItemList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
+      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BalanceQty",Param);
     }
   
     public getBatchList(Param){

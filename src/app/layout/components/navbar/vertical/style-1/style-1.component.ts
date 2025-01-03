@@ -144,7 +144,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     toggleSidebarOpened(): void {
         this._fuseSidebarService.getSidebar("navbar").toggleOpen();
     }
-
+    navigateToHomePage() {
+        this._router.navigate(['/dashboard']);
+    }
     /**
      * Toggle sidebar folded status
      */

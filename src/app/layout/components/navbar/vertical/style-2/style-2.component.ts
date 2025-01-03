@@ -150,4 +150,7 @@ export class NavbarVerticalStyle2Component implements OnInit, OnDestroy
     {
         this._fuseSidebarService.getSidebar('navbar').toggleFold();
     }
+    navigateToHomePage() {
+        this._router.navigate(['/dashboard']);
+    }
 }

@@ -45,6 +45,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
+import { HomePageComponent } from './home-page/home-page.component';
 // import { Component } from '@angular/core';
 
  
@@ -56,7 +57,8 @@ import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-
     DailyDashboardComponent,
     BedOccupancyComponent,
     PharmacyDashboardComponent,
-    SalesSummaryComponent
+    SalesSummaryComponent,
+    HomePageComponent
   ],
   imports: [
     CommonModule,

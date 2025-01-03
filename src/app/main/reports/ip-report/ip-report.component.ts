@@ -45,7 +45,7 @@ export class IpReportComponent implements OnInit {
   isgroupSelected: boolean = false;
   isUserSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
-
+  CurrentUser:boolean=true;
   FlagUserSelected: boolean = false;
   FlagDoctorSelected: boolean = false;
   FlagAdmissionIdSelected: boolean = false;
@@ -154,6 +154,7 @@ export class IpReportComponent implements OnInit {
 
   ReportSelection(el) {
     this._IPReportService.userForm.get('DoctorId').reset;
+    console.log(el)
     this._IPReportService.userForm.get('CompanyId').reset;
     this._IPReportService.userForm.get('RoomId').reset;
 
@@ -206,7 +207,7 @@ export class IpReportComponent implements OnInit {
 
     }
     else if (this.ReportName == 'IPD Current Admitted List') {
-      // debugger
+  
       this.FlagAdmissionIdSelected = false
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = true;
@@ -484,30 +485,39 @@ export class IpReportComponent implements OnInit {
       this.FlagUserSelected = false;
 
     }
-    debugger
+   
     // Doctor share?
     if (this.ReportName == 'DoctorShareReport') {
       this.FlagDoctorSelected = true;
       this.FlagUserSelected = false;
       this.FlagGroupSelected = true;
       this.FlaOPIPTypeSelected = true;
-    } else if (this.ReportName == 'DoctorWiseSummaryReport') {
+      this.CurrentUser= false;
+      this.clearField();
+    } else if(this.ReportName == 'DoctorWiseSummaryReport') {
       this.FlagDoctorSelected = true;
       this.FlagUserSelected = false;
       this.FlagGroupSelected = false;
       this.FlaOPIPTypeSelected = true;
-    } else if (this.ReportName == 'Consultant Doctor ShareDetails') {
+      this.CurrentUser= false;
+      this.clearField();
+    } else if(this.ReportName == 'Consultant Doctor ShareDetails') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = true;
       this.FlagGroupSelected = false;
       this.FlaOPIPTypeSelected = true;
-    }
-    else if (this.ReportName == 'DoctorShareListWithCharges') {
+      this.CurrentUser= false;
+      this.clearField();
+    } else if(this.ReportName == 'DoctorShare List WithCharges') {
+      
       this.FlagDoctorSelected = true;
       this.FlagUserSelected = false;
       this.FlagGroupSelected = true;
       this.FlaOPIPTypeSelected = true;
+      this.CurrentUser= false;
+      this.clearField();
     }
+    console.log("sfg:",this.ReportName)
 
 
     //IpBilling
@@ -656,7 +666,13 @@ export class IpReportComponent implements OnInit {
   }
 
   getDoctorList() {
-    this._IPReportService.getDoctorList().subscribe(data => {
+   
+    var m_data = {
+      "Keywords": `${this._IPReportService.userForm.get('DoctorId').value}%`
+    }
+    console.log("ggggg:", m_data)
+
+    this._IPReportService.getDoctorMaster(m_data).subscribe(data => {
       this.DoctorList = data;
       this.optionsSearchDoc = this.DoctorList.slice();
       this.filteredOptionsDoctorMode = this._IPReportService.userForm.get('DoctorId').valueChanges.pipe(
@@ -769,7 +785,6 @@ export class IpReportComponent implements OnInit {
     else if (this.ReportName == ' IPD Discharge Type Wise') {
       this.viewgetDischaregTypewisePdf();
     }
-    // debugger
 
     //IPMIS
     if (this.ReportName == 'Date wise Admission Count') {
@@ -852,16 +867,16 @@ export class IpReportComponent implements OnInit {
       this.ViewgetIpbillgenepaymentdueview();
     } else
     // doctor share
-      if (this.ReportName == 'DoctorShareReport') {
+      if(this.ReportName == 'DoctorShareReport') {
         this.viewgetDoctorShareReportPdf();
       }
-      else if (this.ReportName == 'Consultant Doctor ShareDetails') {
+      else if(this.ReportName == 'Consultant Doctor ShareDetails') {
         this.viewgetConsultantDoctorShareDetailsPdf();
-      } else if (this.ReportName == 'DoctorWiseSummaryReport') {
+      } else if(this.ReportName == 'DoctorWiseSummaryReport') {
         this.viewgetDoctorWiseSummaryReportReportPdf();
       }
-      else if (this.ReportName == 'DoctorShareListWithCharges') {
-        debugger
+      else if(this.ReportName == 'DoctorShare List WithCharges') {
+        
         this.viewgetDoctorShareListwithchargesReportPdf();
       }
   }
@@ -2656,7 +2671,7 @@ export class IpReportComponent implements OnInit {
   //Doc share
 
   viewgetDoctorShareReportPdf() {
-    debugger
+    
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
@@ -2690,9 +2705,7 @@ export class IpReportComponent implements OnInit {
         matDialog.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
-          this._IPReportService.userForm.get('startdate').setValue(new Date());
-          this._IPReportService.userForm.get('DoctorId').setValue('');
-          this._IPReportService.userForm.get('GroupId').setValue('');
+          this.clearField();
 
         });
       });
@@ -2701,17 +2714,14 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetConsultantDoctorShareDetailsPdf() {
-    debugger
+    
     let DoctorId = 0;
-    debugger
+    
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
 
-    // this.OPIPType = parseInt(this._IPReportService.userForm.get('OPIPType').value)
-
-
     setTimeout(() => {
-      debugger
+      
       this._IPReportService.getConDoctorSharesReportView(
         this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
@@ -2732,8 +2742,7 @@ export class IpReportComponent implements OnInit {
         matDialog.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
-          this._IPReportService.userForm.get('startdate').setValue(new Date());
-          this._IPReportService.userForm.get('DoctorId').setValue('');
+          this.clearField();
         });
       });
 
@@ -2741,14 +2750,12 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetDoctorWiseSummaryReportReportPdf() {
-    debugger
+    
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
 
-
     this.OPIPType = parseInt(this._IPReportService.userForm.get('OPIPType').value)
-
 
     setTimeout(() => {
       this.SpinLoading = true;
@@ -2772,8 +2779,7 @@ export class IpReportComponent implements OnInit {
         matDialog.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
-          this._IPReportService.userForm.get('startdate').setValue(new Date());
-          this._IPReportService.userForm.get('DoctorId').setValue('');
+          this.clearField();
         });
       });
 
@@ -2781,7 +2787,7 @@ export class IpReportComponent implements OnInit {
   }
 
   viewgetDoctorShareListwithchargesReportPdf() {
-    debugger
+  
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
@@ -2790,6 +2796,7 @@ export class IpReportComponent implements OnInit {
     if (this._IPReportService.userForm.get('GroupId').value)
       GroupId = this._IPReportService.userForm.get('GroupId').value.GroupId
 
+    this.OPIPType = parseInt(this._IPReportService.userForm.get('OPIPType').value)
 
     setTimeout(() => {
 
@@ -2797,8 +2804,8 @@ export class IpReportComponent implements OnInit {
       this.AdList = true;
       this._IPReportService.getDoctorShareListWithChargesview(DoctorId, GroupId,
         this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
-        this._IPReportService.userForm.get("OPIPType").value
+        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.OPIPType
 
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -2815,59 +2822,19 @@ export class IpReportComponent implements OnInit {
         matDialog.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
-          this._IPReportService.userForm.get('startdate').setValue(new Date());
-          this._IPReportService.userForm.get('DoctorId').setValue('');
-          this._IPReportService.userForm.get('GroupId').setValue('');
-
+          this.clearField();
         });
       });
 
     }, 100);
   }
 
-  // viewgetDoctorShareListwithchargesReportPdf() {
-  //   debugger
-  //   let DoctorId = 0;
-  //   if (this._IPReportService.userForm.get('DoctorId').value)
-  //     DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
-
-  //   let GroupId = 0;
-  //   if (this._IPReportService.userForm.get('GroupId').value)
-  //     GroupId = this._IPReportService.userForm.get('GroupId').value.GroupId
-
-  //   setTimeout(() => {
-  //     debugger
-  //     this.SpinLoading = true;
-  //     this.AdList = true;
-  //     this._IPReportService.getDoctorShareListWithChargesview(DoctorId, GroupId,
-  //       this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-  //       this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
-  //       this._IPReportService.userForm.get("OPIPType").value
-
-  //     ).subscribe(res => {
-  //       const matDialog = this._matDialog.open(PdfviewerComponent,
-  //         {
-  //           maxWidth: "85vw",
-  //           height: '750px',
-  //           width: '100%',
-  //           data: {
-  //             base64: res["base64"] as string,
-  //             title: "DoctorShare List WithCharges"
-  //           }
-  //         });
-
-  //       matDialog.afterClosed().subscribe(result => {
-  //         this.AdList = false;
-  //         this.sIsLoading = ' ';
-  //         this._IPReportService.userForm.get('startdate').setValue(new Date());
-  //         this._IPReportService.userForm.get('DoctorId').setValue('');
-  //         this._IPReportService.userForm.get('GroupId').setValue('');
-  //       });
-  //     });
-
-  //   }, 100);
-  // }
-
+  clearField(){
+    this._IPReportService.userForm.get('startdate').setValue(new Date());
+    this._IPReportService.userForm.get('enddate').setValue(new Date());
+    this._IPReportService.userForm.get('DoctorId').setValue('');
+    this._IPReportService.userForm.get('GroupId').setValue('');
+  }
 
   optionsDischargeType: any[] = [];
   getDischargetypelist() {

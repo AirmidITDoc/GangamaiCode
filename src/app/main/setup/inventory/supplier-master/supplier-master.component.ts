@@ -21,6 +21,7 @@ export class SupplierMasterComponent implements OnInit {
     isLoading = true;
     msg: any;
     step = 0;
+    sIsLoading: string = ''; 
     SearchName: string;
      currentStatus = 2;
      
@@ -83,6 +84,7 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     getSupplierMasterList() {
+        this.sIsLoading='';
         var m_data = {
             SupplierName:this._supplierService.myformSearch.get("SupplierNameSearch").value + "%" || "%",
             StoreID: 0,
@@ -95,6 +97,7 @@ export class SupplierMasterComponent implements OnInit {
                 this.isLoading = false;
                 this.DSSupplierMaster.sort = this.sort;
                 this.DSSupplierMaster.paginator = this.paginator;
+                this.sIsLoading='';
                 console.log(this.DSSupplierMaster);
             },
             (error) => (this.isLoading = false)

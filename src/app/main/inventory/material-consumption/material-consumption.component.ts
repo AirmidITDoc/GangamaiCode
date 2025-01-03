@@ -23,10 +23,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class MaterialConsumptionComponent implements OnInit {
   displayedColumns = [
     'ConsumptionNo',
-    'ConsumptionDate',
-    'ConsumptionTime',
-    'MaterialConsumptionId',
+    'ConsumptionDate', 
     'LandedTotalAmount',
+    'StoreName',
     'Remark',
     'AddedBy',
     'action',
@@ -114,7 +113,7 @@ export class MaterialConsumptionComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
       {
         maxWidth: "100%",
-        height: '95%',
+        height: '92%',
         width: '95%',
       });
     dialogRef.afterClosed().subscribe(result => {

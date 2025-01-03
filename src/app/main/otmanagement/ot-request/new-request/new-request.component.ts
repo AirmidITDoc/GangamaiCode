@@ -129,7 +129,7 @@ export class NewRequestComponent implements OnInit {
   // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
 
-  screenFromString = 'registration';
+  screenFromString = 'otBooking-form';
   selectedPrefixId: any;
 
   // @Input() childName: string[];
@@ -603,6 +603,7 @@ export class NewRequestComponent implements OnInit {
   }
   // System end
 
+  // Procedure start
   getSurgeryList() {
     
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
@@ -634,30 +635,10 @@ export class NewRequestComponent implements OnInit {
   getOptionTextautoSurgery(option) {
     return option && option.SurgeryName ? option.SurgeryName : '';
   }
+  // Procedure end
 
   // site star
-  // getSiteList() {
-        
-  //   this._OtManagementService.getSiteCombo().subscribe(data => {
-  //     this.Sitelist = data;
-  //     this.optionsSite = this.Sitelist.slice();
-  //     this.filteredOptionsSite = this._OtManagementService.otreservationFormGroup.get('SiteDescId').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterSite(value) : this.Sitelist.slice()),
-  //     );
-
-  //     if (this.data) {
-        
-  //       const SValue = this.Sitelist.filter(item => item.SiteDescId == this.registerObj1.SiteDescId);
-  //       console.log("SiteDescId:",SValue)
-  //       this._OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(SValue[0]);
-  //       this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
-  //       return;
-  //     }
-
-  //   });
-
-  // }
+ 
   private _filterSite(value: any): string[] {
     if (value) {
       const filterValue = value && value.SiteDescriptionName ? value.SiteDescriptionName.toLowerCase() : value.toLowerCase();

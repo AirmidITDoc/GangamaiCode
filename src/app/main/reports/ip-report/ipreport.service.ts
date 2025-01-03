@@ -27,7 +27,7 @@ export class IPReportService {
         CompanyId:'',
         DischargeTypeId:'',
         GroupId:'',
-        OPIPType:["1"],
+        OPIPType:["2"],
         RegId:[""]
         // Radio:['1']
 
@@ -41,8 +41,8 @@ export class IPReportService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_loginManagerUserForCombo",data)
   }
 
-  public getDoctorList(){
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo",{})
+  public getDoctorMaster(param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo", param) //m_Rtrv_DoctorListMasterForCombo
   }
   
   public getgroupList(){
@@ -463,19 +463,21 @@ public getDoctorSharesummaryReportView(FromDate,ToDate,DoctorId,OPD_IPD_Type,loa
 }
   return this._httpClient.get("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OPD_IPD_Type="+OPD_IPD_Type);
 }
-public getConDoctorSharesReportView(FromDate,ToDate,DoctorId,OP_IP_Type,loader = true){
+public getConDoctorSharesReportView(FromDate,ToDate,DoctorId,OPD_IPD_Type,loader = true){
+  debugger
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OP_IP_Type="+OP_IP_Type);
+  return this._httpClient.get("DoctorShareReports/ViewConDoctorShareDetails?FromDate=" + FromDate+"&ToDate="+ToDate+"&DoctorId="+DoctorId+"&OPD_IPD_Type="+OPD_IPD_Type);
   
 }
 
-public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type,loader = true){
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id+"&GroupId="+GroupId+"&From_Dt="+From_Dt+"&To_Dt="+To_Dt+"&OP_IP_Type="+OP_IP_Type);
+  public getDoctorShareListWithChargesview(Doctor_Id, GroupId, From_Dt, To_Dt, OP_IP_Type, loader = true) {
+    debugger
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.get("DoctorShareReports/ViewDoctorShareListWithCharges?Doctor_Id=" + Doctor_Id + "&GroupId=" + GroupId + "&FromDate=" + From_Dt + "&Todate=" + To_Dt + "&OP_IP_Type=" + OP_IP_Type);
   }
 
   public getAdmittedPatientList(employee) {
