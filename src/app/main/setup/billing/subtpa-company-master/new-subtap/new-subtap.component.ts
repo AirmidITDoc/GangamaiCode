@@ -40,17 +40,7 @@ export class NewSubtapComponent implements OnInit {
         debugger
         if(!this.subTpaForm.invalid){
         this.saveflag = true;
-        // var mdata={
-        //     "subCompanyId": 0,
-        //     "compTypeId": this.typeId || 0,
-        //     "companyName": this.subTpaForm.get('CompanyName').value || "",
-        //     "address": this.subTpaForm.get('Address').value || "",
-        //     "city": this.subTpaForm.get('City').value || "0",
-        //     "pinNo": this.subTpaForm.get('PinNo').value || "",
-        //     "phoneNo": this.subTpaForm.get('Phone').value.toString() || "",
-        //     "mobileNo": this.subTpaForm.get('Mobile').value.toString() || "",
-        //     "faxNo": this.subTpaForm.get('FaxNo').value || ""        
-        // }
+     
         console.log("SubTpa Json:", this.subTpaForm.value);
   
         this._subTpaServiceMaster.subTpaCompanyMasterInsert(this.subTpaForm.value).subscribe((response)=>{
@@ -96,14 +86,35 @@ export class NewSubtapComponent implements OnInit {
     getValidationMessages()
     {
         return{
-            companyName:[],
-            compTypeId:[],
-            city:[],
-            address:[],
-            pinNo:[],
-            phoneNo:[],
-            mobileNo:[]
-
+            companyName:[
+                { name: "required", Message: "Company Name is required" },
+                { name: "maxlength", Message: "Company Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ],
+            compTypeId:[
+                { name: "required", Message: "Company Type Name is required" },
+            ],
+            city:[
+                { name: "required", Message: "City Name is required" },
+            ],
+            address:[
+                { name: "required", Message: "Address is required" },
+                { name: "maxlength", Message: "Address must be between 1 and 100 characters." },
+                { name: "pattern", Message: "Secial Char allowed." }
+            ],
+            pinNo:[
+                { name: "required", Message: "PinCode is required" },
+                { name: "maxlength", Message: "Pincode must be greater than 3 digits" },
+                { name: "pattern", Message: "Only Digits allowed." }
+            ],
+            phoneNo:[
+                { name: "required", Message: "Phone Number is required" },
+                { name: "pattern", Message: "Only Digits allowed." }
+            ],
+            mobileNo:[
+                { name: "required", Message: "Mobile Number is required" },
+                { name: "pattern", Message: "Only Digits allowed." }
+            ]
         }
     }
 

@@ -13,6 +13,7 @@ export class NewTermofpaymentComponent implements OnInit {
 
     termsofpaymentForm: FormGroup;
     isActive:boolean=true;
+    saveflag : boolean = false;
 
     constructor(
       public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
@@ -29,10 +30,10 @@ export class NewTermofpaymentComponent implements OnInit {
       }
     }
     
-    saveflag : boolean = false;
+    
     onSubmit() {
         debugger
-        if(!this.termsofpaymentForm.value)
+        if(!this.termsofpaymentForm.invalid)
         {
             this.saveflag = true;
         // var m_data =

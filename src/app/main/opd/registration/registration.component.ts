@@ -61,68 +61,31 @@ export class RegistrationComponent implements OnInit {
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            let that = this;
-                            const dialogRef = this._matDialog.open(EditRegistrationComponent,
-                                {
-                                    maxWidth: "95vw",
-                                    height: '75%',
-                                    width: '70%',
-                                    data:data
-                                });
-                            dialogRef.afterClosed().subscribe(result => {
-                                if (result) {
-                                    that.grid.bindGridData();
-                                }
+                            this.onEdit(data);
+                        }
+                    },
+                    {
+                        action: gridActions.view, callback: (data: any) => {
+                            // Set the view record logic.
+                        }
+                    },
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.getAdmittedPatientCasepaperview(data);
+                        }
+                    },
+                    {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                        }
                     }]
-            } //
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onEdit(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.view, callback: (data: any) => {
-            //                 // Set the view record logic.
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.getAdmittedPatientCasepaperview(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this.confirmDialogRef = this._matDialog.open(
-            //                     FuseConfirmDialogComponent,
-            //                     {
-            //                         disableClose: false,
-            //                     }
-            //                 );
-            //                 this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-            //                 this.confirmDialogRef.afterClosed().subscribe((result) => {
-            //                     if (result) {
-            //                         let that = this;
-            //                         this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
-            //                             this.toastr.success(response.message);
-            //                             that.grid.bindGridData();
-            //                         });
-            //                     }
-            //                     this.confirmDialogRef = null;
-            //                 });
-            //             }
-            //         }]
-            // } 
+            }
         ],
         sortField: "RegId",
         sortOrder: 1,
@@ -304,7 +267,7 @@ export class RegInsert {
     // addedBy:any;
     // updatedBy:any;
 
-    
+
     /**
      * Constructor
      *
@@ -376,7 +339,7 @@ export class RegInsert {
             this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
             // this.addedBy = RegInsert.addedBy || 0 ;
             // this.updatedBy = RegInsert.updatedBy || 0 ;
-            
+
         }
     }
 }

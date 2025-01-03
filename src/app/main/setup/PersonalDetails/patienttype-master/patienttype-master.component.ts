@@ -19,38 +19,24 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class PatienttypeMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "PatientType/List",
         columnsList: [
-            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._PatienttypeMasterService.deactivateTheStatus(data.patientTypeId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._PatienttypeMasterService.deactivateTheStatus(data.patientTypeId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]

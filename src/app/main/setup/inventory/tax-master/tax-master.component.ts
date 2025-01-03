@@ -17,47 +17,31 @@ import { NewTaxComponent } from "./new-tax/new-tax.component";
     animations: fuseAnimations,
 })
 export class TaxMasterComponent implements OnInit {
-
-    confirmDialogRef: any;
-    // MatDialogRef<FuseConfirmDialogComponent>
-
     constructor(
         public _TaxMasterService: TaxMasterService,
-        public toastr: ToastrService, 
+        public toastr: ToastrService,
         public _matDialog: MatDialog
     ) { }
-   
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-    apiUrl: "TaxMaster/List",
-    columnsList: [
-        { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA',width :150 },
-        { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA',width :800 },
-        // { heading: "CreatedDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',width :400 },
-        { heading: "IsActive", key: "isActive",width :100, type: gridColumnTypes.status, align: "center" },
-        { heading: "Action", key: "action",width :100, align: "right", type: gridColumnTypes.action, actions: [
+        apiUrl: "TaxMaster/List",
+        columnsList: [
+            { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            // { heading: "CreatedDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',width :400 },
+            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._TaxMasterService.deactivateTheStatus(data.materialConsumptionId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._TaxMasterService.deactivateTheStatus(data.materialConsumptionId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]

@@ -22,8 +22,8 @@
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Company Name" 
-                        formControlName="CompanyName" 
-                        [value]="data?.CompanyName" 
+                        formControlName="companyName" 
+                        [value]="data?.companyName" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().companyName" 
                         [maxLength]="50">
@@ -49,10 +49,20 @@
                         [value]="data?.address" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().address" 
-                        [maxLength]="50">
+                        [maxLength]="100">
                     </airmid-textbox>       
                 </div>
-                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="Pin Code" 
+                        formControlName="pinNo" 
+                        [value]="data?.pinNo" 
+                        [formGroup]="companyForm"
+                        [validations]="getValidationMessages().pinNo" 
+                        [maxLength]="10">
+                    </airmid-textbox> 
+                </div>
+                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete 
                         label="City" 
                         formControlName="city" 
@@ -62,16 +72,7 @@
                         [mode]="autocompleteModecity">
                     </airmid-autocomplete> 
                 </div>
-                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="Pin Code" 
-                        formControlName="pinNo" 
-                        [value]="data?.pinNo" 
-                        [formGroup]="companyForm"
-                        [validations]="getValidationMessages().pinNo" 
-                        [maxLength]="50">
-                    </airmid-textbox> 
-                </div>
+                
             </div>
 
             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -82,7 +83,7 @@
                         [value]="data?.phoneNo" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().phoneNo" 
-                        [maxLength]="11">
+                        [maxLength]="10">
                     </airmid-textbox>       
                 </div>
                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -92,10 +93,10 @@
                         [value]="data?.mobileNo" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().mobileNo" 
-                        [maxLength]="11">
+                        [maxLength]="10">
                     </airmid-textbox> 
                 </div>
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="36%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete 
                         label="Tariff Id" 
                         formControlName="traiffId" 

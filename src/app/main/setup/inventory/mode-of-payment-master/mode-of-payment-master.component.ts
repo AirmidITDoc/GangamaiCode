@@ -17,7 +17,6 @@ import { MatDialog } from "@angular/material/dialog";
     animations: fuseAnimations,
 })
 export class ModeOfPaymentMasterComponent implements OnInit {
-    confirmDialogRef: any;
     constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,public _matDialog: MatDialog,
     public toastr : ToastrService,) {}
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -34,23 +33,10 @@ export class ModeOfPaymentMasterComponent implements OnInit {
                             }
                         }, {
                             action: gridActions.delete, callback: (data: any) => {
-                                this.confirmDialogRef = this._matDialog.open(
-                                    FuseConfirmDialogComponent,
-                                    {
-                                        disableClose: false,
-                                    }
-                                );
-                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                                this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                    if (result) {
-                                        let that = this;
-                                        this._ModeOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
+                                this._ModeOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
                                             this.toastr.success(response.message);
-                                            that.grid.bindGridData();
+                                            this.grid.bindGridData();
                                         });
-                                    }
-                                    this.confirmDialogRef = null;
-                                });
                             }
                         }]
                 } //Action 1-view, 2-Edit,3-delete

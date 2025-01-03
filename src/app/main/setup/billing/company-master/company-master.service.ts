@@ -19,20 +19,6 @@ export class CompanyMasterService {
 
     createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
-            /* swagger :- JSON insert
-            {
-  "companyId": 0,
-  "compTypeId": 0,
-  "companyName": "string",
-  "address": "string",
-  "city": "string",
-  "pinNo": "string",
-  "phoneNo": "string",
-  "mobileNo": "string",
-  "faxNo": "string",
-  "traiffId": 0
-}
-            */
             companyId: [0],
             companyName: ["",
                 [
@@ -43,9 +29,9 @@ export class CompanyMasterService {
             compTypeId: ["",
                 Validators.required
             ],
-            // TypeName: [""],
             address: ["",
-                 Validators.required
+                 Validators.required,Validators.maxLength(100),
+                 Validators.pattern("^[a-zA-Z0-9\s,.'-]+$")
             ],
             city: ["",
                 [
@@ -55,23 +41,23 @@ export class CompanyMasterService {
             pinNo: ["", 
                 [
                     Validators.required,
-                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    // Validators.maxLength(6)
+                    Validators.required,Validators.maxLength(10),
+                    Validators.pattern("^[0-9\s\-]{3,10}$")
                 ]
             ],
             phoneNo: ["",
                 [
                     Validators.required,
-                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    // Validators.maxLength(10),
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.maxLength(10),
                 ],
             ],
             mobileNo: [
                 "",
                 [
                     Validators.required,
-                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    // Validators.maxLength(10),
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.maxLength(10),
                 ],
             ],
             faxNo: ["0"],

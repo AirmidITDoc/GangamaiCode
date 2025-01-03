@@ -18,8 +18,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     //@Input() selectedValue: string;
     @Input() options: any[] = [];
     @Input() mode: string;
-    @Output() selectDdlObject = new EventEmitter<any>();
-
+    @Output() selectionChange = new EventEmitter<any>();
     control = new FormControl();
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
@@ -168,8 +167,8 @@ export class AirmidAutocompleteComponent implements OnInit {
 
     }
     public onDdlChange($event) {
-        this.formGroup.controls[this.formControlName].setValue($event.value);
-        this.selectDdlObject.emit($event.value);
+        this.formGroup.controls[this.formControlName].setValue($event.value[this.ValueField]);
+        this.selectionChange.emit($event.value);
     }
     SetSelection(value) {
         if (this.IsMultiPle) {
@@ -177,7 +176,7 @@ export class AirmidAutocompleteComponent implements OnInit {
             this.formGroup.get(this.formControlName).setValue(this.ddls.filter(x => value.indexOf(x[this.ValueField]) >= 0));
         }
         else {
-            this.control.setValue(value.toString());
+            this.control.setValue(this.ddls.find(x=>x[this.ValueField]== value.toString()));
             this.formGroup.get(this.formControlName).setValue(value.toString());
         }
         this.stateChanges.next();

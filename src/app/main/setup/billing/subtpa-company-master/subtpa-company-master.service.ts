@@ -32,68 +32,51 @@ export class SubtpaCompanyMasterService {
             }
              */
             subCompanyId: [0],
-            compTypeId: [""],
-            // TypeName: [""],
+            compTypeId: ["",
+                Validators.required
+            ],
             companyName: ["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z0-9]+$")
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             address: ["", 
-                // Validators.required
+                Validators.required,Validators.maxLength(100),
+                Validators.pattern("^[a-zA-Z0-9\s,.'-]+$")
             ],
             city: [
                 "",
                 [
-                    // Validators.required
+                    Validators.required
                 ],
             ],
             pinNo: ["", 
                 [
-                    // Validators.required,
-                    // Validators.minLength(6), 
-                    // Validators.maxLength(6),
-                    // Validators.pattern("^[0-9]*$")
+                    Validators.required,Validators.maxLength(10),
+                    Validators.pattern("^[0-9\s\-]{3,10}$")
                 ]
             ],
             phoneNo: [
                 "",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    // Validators.minLength(10),
-                    // Validators.maxLength(15),
+                    Validators.required,
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.maxLength(10),
                 ],
             ],
             mobileNo: [
                 "",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[0-9]*$"),
-                    // Validators.minLength(10),
-                    // Validators.maxLength(10),
+                    Validators.required,
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.maxLength(10),
                 ],
             ],
-            faxNo: [
-                "0",
-                // [
-                //     Validators.required,
-                //     // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                //     Validators.pattern("^[+]?[0-9]*[- ()0-9]*$"),
-                //     Validators.minLength(10),
-                //     Validators.maxLength(15),
-                // ],
-            ],
-            // IsDeleted: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // IsCancelled: ["false"],
-            // IsCancelledBy: [""],
-            // IsCancelledDate: [""],
-            // AddedByName: [""],
+            faxNo: ["0"],
         });
     }
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],

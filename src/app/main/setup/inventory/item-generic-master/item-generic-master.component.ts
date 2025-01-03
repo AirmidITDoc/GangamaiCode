@@ -18,83 +18,69 @@ import { FormGroup } from "@angular/forms";
     animations: fuseAnimations,
 })
 export class ItemGenericMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     genericForm: FormGroup;
- 
+
     constructor(public _ItemGenericMasterService: ItemGenericMasterService,
         public _matDialog: MatDialog,
-        public toastr : ToastrService, 
+        public toastr: ToastrService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) {}
+        public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) { }
 
-        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        gridConfig: gridModel = {
-            apiUrl: "GenericMaster/List",
-            columnsList: [
-                { heading: "Code", key: "genericId", sort: true, width:150, align: 'left', emptySign: 'NA' },
-                { heading: "Generic Name", key: "genericName", sort: true, width:750, align: 'left', emptySign: 'NA' },
-                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:150, align: "center" },
-                {
-                    heading: "Action", key: "action", align: "right", width:150, type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this.confirmDialogRef = this._matDialog.open(
-                                    FuseConfirmDialogComponent,
-                                    {
-                                        disableClose: false,
-                                    }
-                                );
-                                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                                this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                    if (result) {
-                                        let that = this;
-                                        this._ItemGenericMasterService.deactivateTheStatus(data.itemGenericNameId).subscribe((response: any) => {
-                                            this.toastr.success(response.message);
-                                            that.grid.bindGridData();
-                                        });
-                                    }
-                                    this.confirmDialogRef = null;
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "genericId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "GenericName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
-        }
-    
-     
-        ngOnInit(): void { }
-       
-        onClear(val: boolean) {
-            this.genericForm.reset();
-            this.dialogRef.close(val);
-        }
-
-        onSave(row: any = null) {
-            let that = this;
-            const dialogRef = this._matDialog.open(NewGenericComponent,
-                {
-                    maxWidth: "35vw",
-                    height: '35%',
-                    width: '90%',
-                    data: row
-                });
-
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
-        }
-    
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "GenericMaster/List",
+        columnsList: [
+            { heading: "Code", key: "genericId", sort: true, width: 150, align: 'left', emptySign: 'NA' },
+            { heading: "Generic Name", key: "genericName", sort: true, width: 750, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width: 150, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", width: 150, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._ItemGenericMasterService.deactivateTheStatus(data.itemGenericNameId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "genericId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "GenericName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
     }
+
+
+    ngOnInit(): void { }
+
+    onClear(val: boolean) {
+        this.genericForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(NewGenericComponent,
+            {
+                maxWidth: "35vw",
+                height: '35%',
+                width: '90%',
+                data: row
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+}

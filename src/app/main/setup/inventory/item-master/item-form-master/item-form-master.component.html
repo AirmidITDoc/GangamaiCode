@@ -27,7 +27,7 @@
                             <div>
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                     
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="HSN Code"
                                             formControlName="hsNcode"
@@ -38,7 +38,7 @@
                                         </airmid-textbox> 
                                     </div>
                                     
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox 
                                             label="Item Short Name"
                                             formControlName="itemShortName"
@@ -49,7 +49,7 @@
                                         </airmid-textbox> 
                                     </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                                       <airmid-textbox 
                                           label="Item Name"
                                           formControlName="itemName"
@@ -68,7 +68,7 @@
                                         <airmid-autocomplete 
                                             label="Item Type Name"
                                             formControlName="itemTypeId"
-                                            [value]="registerObj?.itemTypeId"
+                                            [value]="registerObj?.itemTypeID"
                                             [formGroup]="itemForm"
                                             [validations]="getValidationMessages().itemTypeId"
                                             [mode]="autocompleteModeItemType"
@@ -80,7 +80,7 @@
                                         <airmid-autocomplete 
                                             label="Item Category Name"
                                             formControlName="itemCategaryId"
-                                            [value]="registerObj?.itemCategaryId"
+                                            [value]="registerObj?.itemCategoryId"
                                             [formGroup]="itemForm"
                                             [validations]="getValidationMessages().itemCategaryId"
                                             [mode]="autocompleteModeItemCategory"
@@ -132,7 +132,7 @@
                                         <airmid-autocomplete 
                                             label="Unit Of Measurement ID"
                                             formControlName="purchaseUomid"
-                                            [value]="registerObj?.purchaseUomid"
+                                            [value]="registerObj?.purchaseUOMId"
                                             [formGroup]="itemForm"
                                             [validations]="getValidationMessages().purchaseUomid"
                                             [mode]="autocompleteModePurchaseUOM"
@@ -252,7 +252,7 @@
 
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
  
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete 
                                             label="Drug Type"
                                             formControlName="drugType"
@@ -264,7 +264,7 @@
                                         </airmid-autocomplete> 
                                     </div>
                                     
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete 
                                             label="Manufacture Name"
                                             formControlName="manufId"
@@ -276,7 +276,7 @@
                                         </airmid-autocomplete> 
                                     </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete 
                                             label="Company Name"
                                             formControlName="itemCompnayId"
@@ -287,8 +287,10 @@
                                             (selectDdlObject)="selectChangeCompany($event)">
                                         </airmid-autocomplete> 
                                     </div>
-
-                                    <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                </div>
+                                
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <form [formGroup]="itemForm">
                                             <div fxLayout="row">
                                                 <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -310,8 +312,8 @@
                                             </div>
                                         </form>
                                     </div>
-
                                 </div>
+                                
 
                                 <div>
                                     <mat-checkbox aria-label="Mode" formControlName="IsDeleted" [(ngModel)]="vchkactive"

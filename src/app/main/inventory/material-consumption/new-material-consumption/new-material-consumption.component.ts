@@ -9,9 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { debug } from 'console';
-import { element } from 'protractor';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-material-consumption',
@@ -206,8 +203,6 @@ export class NewMaterialConsumptionComponent implements OnInit {
           Remark: this.vRemark ||  " ",
           StockId:this.vStockId || 0,
           StoreId:this.vStoreId ,
-          
-          
         });
       //console.log(this.chargeslist);
       

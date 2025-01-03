@@ -78,7 +78,7 @@
                                                     <mat-icon title="Edit Menu">launch</mat-icon>
                                                 </button>
                                                 <button mat-icon-button *ngIf="sta.action == GridAction.delete"
-                                                    (click)="sta.callback(element)" color="warn">
+                                                    (click)="onDelete(sta,element)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
                                                 <button mat-icon-button *ngIf="sta.action == GridAction.print"

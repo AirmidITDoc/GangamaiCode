@@ -32,42 +32,28 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
     animations: fuseAnimations,
 })
 export class IssueToDepartmentComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
-   
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "IssueToDepartment/IssueToDepttList",
-    columnsList: [
-        { heading: "Code", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
-        { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-        { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-        { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width:700 },
-          //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        columnsList: [
+            { heading: "Code", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", width:50, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._IssueToDepartmentService.deactivateTheStatus(data.IssueId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._IssueToDepartmentService.deactivateTheStatus(data.IssueId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -89,12 +75,12 @@ export class IssueToDepartmentComponent implements OnInit {
 
     gridConfig1: gridModel = {
         apiUrl: "IssueToDepartment/IssueToDepttList",
-    columnsList: [
-        { heading: "Code", key: "issueNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
-          //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        columnsList: [
+            { heading: "Code", key: "issueNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "From StoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "To StoreId", key: "toStoreId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
+            //  { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -103,23 +89,11 @@ export class IssueToDepartmentComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._IssueToDepartmentService.deactivateTheStatus(data.IssueId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._IssueToDepartmentService.deactivateTheStatus(data.IssueId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
+
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -129,14 +103,14 @@ export class IssueToDepartmentComponent implements OnInit {
         filters: [
             { fieldName: "FromStoreId", fieldValue: "10003", opType: OperatorComparer.Equals },
             { fieldName: "ToStoreId", fieldValue: "1009", opType: OperatorComparer.Equals },
-           { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "11/11/2024", opType: OperatorComparer.Equals },
             { fieldName: "IsVerify ", fieldValue: "0", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
-   
+
     constructor(
         public _IssueToDepartmentService: IssueToDepartmentService,
         public toastr: ToastrService, public _matDialog: MatDialog

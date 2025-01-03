@@ -33,14 +33,15 @@
                         <div class="modal-card-container">
 
                             <div class="form-container mat-form-field-auto">
-                               
+
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete label="Prefix" formControlName="PrefixId"
                                             [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
                                             [validations]="getValidationMessages().prefixId"
-                                            [mode]="autocompleteModeprefix">
+                                            ValueField="prefixId" TextField="prefixName"
+                                            (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
                                         </airmid-autocomplete>
                                     </div>
 
@@ -105,7 +106,7 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete label="Gender" formControlName="GenderID"
                                             [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
-                                            [validations]="getValidationMessages().genderId"
+                                            [validations]="getValidationMessages().genderId" #ddlGender [disabled]="true"
                                             [mode]="autocompleteModegender">
                                         </airmid-autocomplete>
 
@@ -113,7 +114,7 @@
 
                                     <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                             <input matInput [matDatepicker]="validFromPicker"
                                                 [value]="registerObj?.dateofBirth" formControlName="DateOfBirth" #bday
                                                 (keydown)="onEnterbday($event)"
@@ -123,10 +124,11 @@
                                                 [for]="validFromPicker"></mat-datepicker-toggle>
                                             <mat-datepicker #validFromPicker></mat-datepicker>
                                         </mat-form-field> -->
-                                       
+
                                     <!-- </div> -->
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth"
+                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                                            formControlName="DateOfBirth"
                                             [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                     </div>
 
@@ -161,8 +163,9 @@
                                         </airmid-textbox> -->
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Address</mat-label>
-                                            <input name="Address" formControlName="Address" placeholder="Address"  [(ngModel)]="registerObj.address" 
-                                                matInput #address (keydown)="onEnteraddress($event)">
+                                            <input name="Address" formControlName="Address" placeholder="Address"
+                                                [(ngModel)]="registerObj.address" matInput #address
+                                                (keydown)="onEnteraddress($event)">
                                             <mat-error
                                                 *ngIf="personalFormGroup.get('Address').invalid && personalFormGroup.get('Address').touched">Please
                                                 enter Address </mat-error>
@@ -268,14 +271,14 @@
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>
-        
+
                                         <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
                                             <input matInput [matDatepicker]="picker2" [min]="minDate"
                                                 placeholder="Choose a Date" name="Date" formControlName="appTime">
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                             <mat-datepicker #picker2></mat-datepicker>
                                         </mat-form-field>
-                                        </div>
+                                    </div>
                                 </div>
                                 <!-- Photo capture -->
 

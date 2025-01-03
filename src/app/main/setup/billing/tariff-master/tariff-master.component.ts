@@ -17,40 +17,26 @@ import { NewTariffComponent } from "./new-tariff/new-tariff.component";
     animations: fuseAnimations,
 })
 export class TariffMasterComponent implements OnInit {
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
     gridConfig: gridModel = {
         apiUrl: "TarrifMaster/List",
         columnsList: [
-            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width:800 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
-                    
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data) // EDIT Records
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._TariffMasterService.deactivateTheStatus(data.tariffId).subscribe((response: any) => {
-                                        this.toastr.success(response.Message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._TariffMasterService.deactivateTheStatus(data.tariffId).subscribe((response: any) => {
+                                this.toastr.success(response.Message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]

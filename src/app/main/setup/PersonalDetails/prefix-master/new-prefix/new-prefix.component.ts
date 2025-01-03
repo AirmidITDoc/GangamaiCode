@@ -28,21 +28,23 @@ export class NewPrefixComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.prefixForm = this._PrefixMasterService.createPrefixForm();
         debugger
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
-        if(this.data)
-      this.isActive=this.data.isActive
-        this.prefixForm.patchValue(this.data);
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.prefixForm.patchValue(this.data);
+            // this.getGenderNameCombobox();
+        }
     }
 
  
     onSubmit() {
         debugger
-        if(!this.prefixForm.invalid){
-        this.saveflag = true;
+        if(!this.prefixForm.invalid)
+        {
+            this.saveflag = true;
 
-        console.log("JSON :- ", this.prefixForm.value);
+            console.log("JSON :- ", this.prefixForm.value);
 
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
@@ -52,12 +54,12 @@ export class NewPrefixComponent implements OnInit {
             });
         }
         else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
+        {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
     }
     genderId = 0;
@@ -80,6 +82,17 @@ export class NewPrefixComponent implements OnInit {
             ]
         };
     }
+
+    // GendercmbList: any = [];
+    // getGenderNameCombobox() {
+    //     debugger
+    //         this._PrefixMasterService.getGenderMasterCombo().subscribe(data => {
+    //             this.GendercmbList = data;
+    //             console.log(this.GendercmbList);
+    //         });
+             
+    //     }
+     
 
     onClear(val: boolean) {
         this.prefixForm.reset();

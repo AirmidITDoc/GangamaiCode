@@ -18,57 +18,42 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
-    
-    autocompleteModetariff: string = "Tariff";
-    autocompleteModegroupName:string="GroupName";
-    tariffId="0";
-    groupId="0";
 
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    autocompleteModetariff: string = "Tariff";
+    autocompleteModegroupName: string = "GroupName";
+    tariffId = "0";
+    groupId = "0";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
         columnsList: [
-            { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA',width:100 },
+            { heading: "Code", key: "serviceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "GroupId", key: "groupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             // { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "IsEditable", key: "isEditable", sort: true,type: gridColumnTypes.status, align: 'left',width:100 },
-            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true,align: 'left',width:100,type:21 },
-            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA',width:100,type:19 },
-            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA',width:100,type:20 },
-            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-            { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA',width:100 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center",width:100 },
+            { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
+            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 100, type: 21 },
+            { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 19 },
+            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 20 },
+            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._serviceMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._serviceMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -83,21 +68,21 @@ export class ServiceMasterComponent implements OnInit {
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
-        row:125
+        row: 125
     }
 
     constructor(
         public _serviceMasterService: ServiceMasterService,
-        public toastr : ToastrService,
+        public toastr: ToastrService,
 
         public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
-       
+
     }
     onSearch() {
-      
+
     }
 
     getValidationtariffMessages() {
@@ -107,7 +92,7 @@ export class ServiceMasterComponent implements OnInit {
             ]
         };
     }
-    
+
     getValidationgroupMessages() {
         return {
             GroupId: [
@@ -132,36 +117,36 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.initializeFormGroup();
     }
 
- 
-    selectChangegroup(obj:any){
-      this.groupId=String(obj);
-      this.gridConfig.filters = [   { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+
+    selectChangegroup(obj: any) {
+        this.groupId = String(obj);
+        this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
         { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
     }
 
-    
-    selectChangetariff(obj: any){
+
+    selectChangetariff(obj: any) {
         console.log(obj);
-        this.tariffId=String(obj)
-        this.gridConfig.filters = [   { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        this.tariffId = String(obj)
+        this.gridConfig.filters = [{ fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+        { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
     }
-   
-    onSave(row:any = null) {
+
+    onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
-        {
-            maxWidth: "95vw",
-            height: '95%',
-            width: '70%',
-            data: row
-        });
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '70%',
+                data: row
+            });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 that.grid.bindGridData();
@@ -170,7 +155,7 @@ export class ServiceMasterComponent implements OnInit {
         });
     }
 
-  
+
 }
 
 export class ServiceMaster {
@@ -195,8 +180,8 @@ export class ServiceMaster {
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
-    IsDeleted:any;
-    
+    IsDeleted: any;
+
     /**
      * Constructor
      *
@@ -238,7 +223,7 @@ export class Servicedetail {
     ClassRate: any;
     EffectiveDate: Date;
     ClassName: any;
- 
+
     constructor(Servicedetail) {
         {
             this.ServiceDetailId = Servicedetail.ServiceDetailId || "";

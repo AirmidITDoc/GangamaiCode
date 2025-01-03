@@ -28,7 +28,7 @@ export class DrugmasterService {
             drugId: [0],
             drugName: ["", 
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
@@ -36,7 +36,7 @@ export class DrugmasterService {
                 Validators.required
             ],
             // GenericName: [""],
-            classId: ["",
+            classId: [0,
                 // Validators.required
             ],
             // ClassName: [""],

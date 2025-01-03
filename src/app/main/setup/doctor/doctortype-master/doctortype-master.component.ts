@@ -21,41 +21,26 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class DoctortypeMasterComponent implements OnInit {
-    
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+
 
     gridConfig: gridModel = {
         apiUrl: "DoctorTypeMaster/List",
         columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width:200 },
-            { heading: "Doctor Type Name", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width:580},
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width:200 },
+            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Doctor Type Name", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width: 580 },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 200 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:200, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 200, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                if (result) {
-                                    let that = this;
-                                    this._doctortypeService.deactivateTheStatus(data.id).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
+                            this._doctortypeService.deactivateTheStatus(data.id).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
                             });
                         }
                     }]
@@ -71,11 +56,11 @@ export class DoctortypeMasterComponent implements OnInit {
     }
 
 
-    constructor(public _doctortypeService: DoctortypeMasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _doctortypeService: DoctortypeMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-       
+
     }
     onSave(row: any = null) {
         debugger

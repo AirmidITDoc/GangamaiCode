@@ -41,7 +41,7 @@ export class AirmidDateofbirthComponent implements OnInit {
         }
         this.formGroup.controls[this.formControlName].setValue(d);
     }
-    onChangeDateofBirth(DateOfBirth) {
+    onChangeDateofBirth(DateOfBirth:Date) {
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);

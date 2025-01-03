@@ -40,40 +40,26 @@ export class CompanyMasterListComponent implements OnInit {
     
     onSubmit() {  
         debugger       
-        // if(!this.companyForm.invalid)
-        // {
+        if(!this.companyForm.invalid)
+        {
             this.saveflag = true;
-            // debugger
-            // var m_data =
-            //     {
-            //         "companyId": 0,
-            //         "compTypeId": this.typeId || 0,
-            //         "companyName":this.companyForm.get("CompanyName").value || " ",
-            //         "address": this.companyForm.get("Address").value || " ",
-            //         "city": this.companyForm.get("City").value || "ABC",
-            //         "pinNo": this.companyForm.get("PinNo").value || "",
-            //         "phoneNo": this.companyForm.get("PhoneNo").value.toString() || "0",
-            //         "mobileNo": this.companyForm.get("MobileNo").value.toString() || "0",
-            //         "faxNo": this.companyForm.get("FaxNo").value || "0",
-            //         "traiffId": this.companyForm.get("TariffId").value
-            //       }
 
             console.log("Company Insert:-",this.companyForm.value);
 
             this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
             this.toastr.success(response.message);
-            // this.onClear(true);
+            this.onClear(true);
             }, (error) => {
             this.toastr.error(error.message);
             });
-        // }
-        // else
-        // {
-        //     this.toastr.warning('please check form is invalid', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
+        }
+        else
+        {
+            this.toastr.warning('please check form is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
     }
   
     onClear(val: boolean) {
@@ -89,9 +75,6 @@ export class CompanyMasterListComponent implements OnInit {
     cityId=0;
     cityName='';
 
-    
-    // onChangeMsm(event){}
-    // onChangeMode(event){}
     
     selectChangetypeName(obj:any){
         this.typeId=obj;
@@ -114,49 +97,10 @@ export class CompanyMasterListComponent implements OnInit {
         this.dialogRef.close();
       }
 
-    // @ViewChild('pin') pin: ElementRef;
-    // @ViewChild('phone') phone: ElementRef;
-    // @ViewChild('address') address: ElementRef;
-    // @ViewChild('mobile') mobile: ElementRef;
-    // @ViewChild('fax') fax: ElementRef;
-    // @ViewChild('companyN') companyN:ElementRef;
-
-    // public onEnterCompany(event): void {
-    //   if (event.which === 13) {
-    //      this.address.nativeElement.focus();
-    //   }
-    // }
-    // public onEnterAddress(event): void {
-    //     if (event.which === 13) {
-    //        this.pin.nativeElement.focus();
-    //     }
-    //   }
-  
-    //   public onEnterPin(event): void {
-    //     if (event.which === 13) {
-    //        this.phone.nativeElement.focus();
-    //     }
-    //   }
-  
-    //   public onEnterPhone(event): void {
-    //     if (event.which === 13) {
-    //        this.mobile.nativeElement.focus();
-    //     }
-    //   }
-    //   public onEntermobile(event): void{
-    //     if (event.which === 13) {
-    //       this.fax.nativeElement.focus();
-    //    }
-    //   }
-    //   public onEnterfax(event): void{
-    //     if (event.which === 13) {
-    //       this.phone.nativeElement.focus();
-    //    }
-    //   }
 
     getValidationMessages() {
         return {
-            companyName: [
+                companyName: [
                     { name: "required", Message: "Company Name is required" },
                     { name: "maxlength", Message: "Company name should not be greater than 50 char." },
                     { name: "pattern", Message: "Special char not allowed." }
@@ -168,16 +112,24 @@ export class CompanyMasterListComponent implements OnInit {
                     { name: "required", Message: "City Name is required" }
                 ],
                 mobileNo:[
-                    { name: "required", Message: "Mobile Number is required" }
+                    { name: "required", Message: "Mobile Number is required" },
+                    { name: "maxlength", Message: "Number be not be greater than 10 digits" },
+                    { name: "pattern", Message: "Only Digits allowed." }
                 ],
                 phoneNo:[
-                    { name: "required", Message: "Phone Number is required" }
+                    { name: "required", Message: "Phone Number is required" },
+                    { name: "maxlength", Message: "Number be not be greater than 10 digits" },
+                    { name: "pattern", Message: "Only Digits allowed." }
                 ],
                 pinNo:[
-                    { name: "required", Message: "Pin Code is required" }
+                    { name: "required", Message: "Pin Code is required" },
+                    { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
+                    { name: "pattern", Message: "Only Digits allowed." }
                 ],
                 address:[
-                    { name: "required", Message: "Address is required" }
+                    { name: "required", Message: "Address is required" },
+                    { name: "maxlength", Message: "Address must be between 1 and 100 characters." },
+                    { name: "pattern", Message: "Secial Char allowed." }
                 ],
                 compTypeId:[
                     { name: "required", Message: "Company Type Name is required" }
