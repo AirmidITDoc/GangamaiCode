@@ -19,6 +19,7 @@ export class NewCertificatemasterComponent implements OnInit {
   vTemplateDesc: any;
   registerObj: any;
   vTemplateId: any;
+  vIsDeleted:any;
 
   editorConfig: AngularEditorConfig = {
     // color:true,
@@ -31,7 +32,7 @@ export class NewCertificatemasterComponent implements OnInit {
     enableToolbar: true,
     showToolbar: true,
   };
-  
+
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
   }
@@ -43,6 +44,7 @@ export class NewCertificatemasterComponent implements OnInit {
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
+    private _loggedService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -51,12 +53,69 @@ export class NewCertificatemasterComponent implements OnInit {
       this.vTemplateId = this.registerObj.CertificateId;
       this.vTemplateName = this.registerObj.CertificateName;
       this.vTemplateDesc = this.registerObj.CertificateDesc;
+      if(this.registerObj.IsActive==true){
+        this._certificatetemplateService.myform.get("IsDeleted").setValue('true')
+        this.vIsDeleted=true;
+      }else{
+        this._certificatetemplateService.myform.get("IsDeleted").setValue('false')
+        this.vIsDeleted=false;
+      }
       console.log("RegObj:", this.registerObj)
     }
   }
 
   onSubmit() {
+    debugger
+    if (!this.vTemplateId) {
+      var m_dataInsert = {
+        "saveCertificateMasterParam": {
+          "certificateId": 0,
+          "certificateName": this._certificatetemplateService.myform.get("TemplateName").value || '',
+          "certificateDesc": this._certificatetemplateService.myform.get("TemplateDesc").value || '',
+          "isActive": Boolean(JSON.parse(this._certificatetemplateService.myform.get("IsDeleted").value) || 0),
+          "createdBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+      console.log("insertJson:", m_dataInsert);
 
+      this._certificatetemplateService.CertificateInsert(m_dataInsert).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    } else {
+      debugger
+      var m_dataUpdate = {
+        "updateCertificateMasterParam": {
+          "certificateId": this.vTemplateId,
+          "certificateName": this._certificatetemplateService.myform.get("TemplateName").value || '',
+          "certificateDesc": this._certificatetemplateService.myform.get("TemplateDesc").value || '',
+          "isActive": Boolean(JSON.parse(this._certificatetemplateService.myform.get("IsDeleted").value) || 0),
+          "modifiedBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+      console.log("UpdateJson:", m_dataUpdate);
+
+      this._certificatetemplateService.CertificateUpdate(m_dataUpdate).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
 
   onClear() {
@@ -71,11 +130,11 @@ export class NewCertificatemasterComponent implements OnInit {
 }
 
 export class CertificateList {
-  CertificateId:number;
-  CertificateName:string;
-  CertificateDesc:string;
-  IsDeleted:String;
-  
+  CertificateId: number;
+  CertificateName: string;
+  CertificateDesc: string;
+  IsDeleted: String;
+
   /**
    * Constructor
    *

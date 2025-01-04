@@ -53,8 +53,8 @@
 
                             <div class="footer-navigation-container">
                             
-                                <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" (checked)=true
-                                >IsActive
+                                <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" [(ngModel)]="vIsDeleted"
+                                 (checked)=true>IsActive
                             </mat-checkbox>
 
                                 <!-- <mat-radio-button value='true' [checked]="true" name="IsDeleted"
