@@ -199,7 +199,7 @@
                                                 (click)="_PharmacyreportService.userForm.get('RegID').setValue(''); isPatientSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
-                                            (optionSelected)='getSelectedObj1($event.option.value)'>
+                                        (optionSelected)='getSelectedObj1($event.option.value)'>
                                             <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
                                                 {{option.RegNo}} |{{option.FirstName}} | {{option.MiddleName}} |
                                                 {{option.LastName}} | {{option.Address}} |

@@ -47,7 +47,7 @@ export class GSTReportComponent implements OnInit {
   PatientListfilteredOptions: any;
   isPatientSelected: boolean = false;
   FlagPatientSelected:boolean=false;
-
+  RegId:any;
   optionsSearchstore: any[] = [];
 
   displayedColumns = [
@@ -381,8 +381,9 @@ export class GSTReportComponent implements OnInit {
         storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
 
       let regId =0;
-      if (this._GstReportService.userForm.get('RegID').value)
-        regId = this._GstReportService.userForm.get('RegID').value.RegID
+      if (this.RegId){
+        regId = this.RegId
+      }
   
   
       setTimeout(() => {
@@ -1111,6 +1112,7 @@ export class GSTReportComponent implements OnInit {
     this._GstReportService.userForm.get('enddate').setValue(new Date());
     this._GstReportService.userForm.get('DoctorId').setValue('');
     this._GstReportService.userForm.get('StoreId').setValue('');
+    this._GstReportService.userForm.get('RegID').setValue('')
   }
 
   getDoctorList() {
@@ -1139,6 +1141,7 @@ export class GSTReportComponent implements OnInit {
     }
 
   }
+  
   getSearchList() {
     debugger
     var m_data = {
@@ -1153,6 +1156,11 @@ export class GSTReportComponent implements OnInit {
         this.noOptionFound = false;
       }
     }); 
+  } 
+
+  getSelectedObj1(obj) {
+    console.log("djfhfka:",obj)
+    this.RegId=obj.RegId
   } 
 
   getOptionText1(option) {

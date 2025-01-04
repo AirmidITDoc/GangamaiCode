@@ -113,6 +113,7 @@ export class PharmacyReportComponent implements OnInit {
   UserName: any;
   IsLoading: boolean = false;
   FlagDoctorIDSelected: boolean = false;
+  RegId:any;
 
   displayedColumns = [
     'ReportName'
@@ -188,6 +189,11 @@ export class PharmacyReportComponent implements OnInit {
         this.noOptionFound = false;
       }
     }); 
+  } 
+
+  getSelectedObj1(obj) {
+    console.log("djfhfka:",obj)
+    this.RegId=obj.RegId
   } 
 
   getOptionText1(option) {
@@ -790,6 +796,11 @@ var data={
   }
   viewgetSalesPatientWiseReportPdf() {
     debugger
+    let regId =0;
+      if (this.RegId){
+        regId = this.RegId
+      }
+
     this.AdList = true;
     let AddUserId = 0;
     if (this._PharmacyreportService.userForm.get('UserId').value)
@@ -801,10 +812,7 @@ var data={
       let Frdate=this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =  this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
 
-      let regId =0;
-      if (this._PharmacyreportService.userForm.get('RegID').value)
-        regId = this._PharmacyreportService.userForm.get('RegID').value.RegID
-  
+      
       
       this._PharmacyreportService.getSalesDetail_Patientwise(Frdate,Todate,    
         0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId,regId
