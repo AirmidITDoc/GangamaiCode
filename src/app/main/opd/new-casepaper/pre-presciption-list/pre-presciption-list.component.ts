@@ -21,6 +21,7 @@ export class PrePresciptionListComponent implements OnInit {
 
  displayedItemColumn: string[] = [
     'ItemName',
+    'GenericName',
     'DoseName',
     'Days',
     'Remark' 

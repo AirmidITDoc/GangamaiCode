@@ -136,13 +136,21 @@ public getServiceList(param,loader = true){
   }
     return this._httpClient.get("OutPatient/view-OP_PrescriptionwithoutHeader?VisitId=" + VisitId);
   }
-
+  public UpdateDoseName(data) {
+    return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {});
+  }
 
   public getRtrvVisitedList(param, loader = true) {
     if (loader) {
       this._loaderService.show();
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_GetVisitInfo",param)
+  } 
+  public getitemgenericMasterCombo( loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemGenericNameMasterForCombo",{})
   } 
   public getcheifcomplaintList(param ) { 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OPCasepaperDignosisMaster",param)

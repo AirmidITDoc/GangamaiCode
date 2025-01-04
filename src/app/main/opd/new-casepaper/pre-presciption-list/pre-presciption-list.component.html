@@ -98,6 +98,14 @@
                                                     <span> {{patient.DrugName}}</span>
                                                 </mat-cell>
                                             </ng-container>
+
+                                            <ng-container matColumnDef="GenericName">
+                                                <mat-header-cell *matHeaderCellDef>GenericName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let patient">
+                                                    <span> {{patient.GenericName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
                             
                                             <ng-container matColumnDef="DoseName">
                                                 <mat-header-cell *matHeaderCellDef>DoseName
