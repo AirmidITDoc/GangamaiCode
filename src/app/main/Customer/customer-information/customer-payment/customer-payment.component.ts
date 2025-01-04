@@ -45,12 +45,12 @@ export class CustomerPaymentComponent implements OnInit {
       console.log(this.registerObj)
       this.vCustomerName = this.registerObj.CustomerName; 
       this.vCustomerId = this.registerObj.CustomerId;
-      if(this.registerObj.AMCAmount){
+      if(this.registerObj.Lbl == 'AMC'){
         this.vamcAmount = this.registerObj.AMCAmount
         this.TransId= this.registerObj.TranId
         this.tranType = 'AMC'
       }else{
-        this.vamcAmount = this.registerObj.Amount;
+        this.vamcAmount = this.registerObj.AMCAmount;
         this.TransId= this.registerObj.TranId
         this.tranType = 'Bill'
       }
@@ -67,6 +67,7 @@ export class CustomerPaymentComponent implements OnInit {
     }
   } 
   onSubmit() {
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');

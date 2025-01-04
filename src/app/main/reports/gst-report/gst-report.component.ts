@@ -44,7 +44,10 @@ export class GSTReportComponent implements OnInit {
   searchFormGroup: FormGroup;  
   DoctoreListfilteredOptions: any;  
   noOptionFound: boolean = false;
-
+  PatientListfilteredOptions: any;
+  isPatientSelected: boolean = false;
+  FlagPatientSelected:boolean=false;
+  RegId:any;
   optionsSearchstore: any[] = [];
 
   displayedColumns = [
@@ -101,6 +104,7 @@ export class GSTReportComponent implements OnInit {
        this.FlagUserSelected = false;
        this.FlagReportTypeSelected= false;
        this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=true;
        this.clearField();
      }
      else if (this.ReportName == 'Sales Profit Item Wise Summary Report') {
@@ -108,6 +112,7 @@ export class GSTReportComponent implements OnInit {
        this.FlagStoreSelected = true;
        this.FlagReportTypeSelected= false;
        this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
        this.clearField();
      } 
    
@@ -116,7 +121,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
-      
+      this.FlagPatientSelected=false;
              this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Report Supplier Wise-Without GST%') {
@@ -124,30 +129,31 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
-      
+      this.FlagPatientSelected=false;
              this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Report Date Wise') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
-      this.FlagDoctorIDSelected=false;
-      
-             this.clearField();
+      this.FlagDoctorIDSelected=false;      
+      this.FlagPatientSelected=false;
+      this.clearField();
     } 
     else if (this.ReportName == 'Purchase GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
-      
-             this.clearField();
+      this.FlagPatientSelected=false;
+      this.clearField();
     } 
     else if (this.ReportName == 'Purchase Retum GST Report Date Wise Purchase Return GST Report - Summary') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       
              this.clearField();
     } 
@@ -156,6 +162,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
              this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Report') {
@@ -163,6 +170,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
              this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Date Wise Report') {
@@ -170,6 +178,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
              this.clearField();
     } 
     else if (this.ReportName == 'Sales Return GST Report') {
@@ -177,13 +186,15 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
              this.clearField();
     } 
     else if (this.ReportName == 'Sales Return GST Date Wise Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= true;
-      this.FlagDoctorIDSelected=false;      
+      this.FlagDoctorIDSelected=false;   
+      this.FlagPatientSelected=false;   
       this.clearField();
     } 
     else if (this.ReportName == 'Sales GST Summary Consolidated') {
@@ -191,6 +202,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       this.clearField();
       
     } 
@@ -199,6 +211,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       this.clearField();
     } 
     else if (this.ReportName == 'GST B2CS Report') {
@@ -206,6 +219,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       this.clearField();
     } 
     else if (this.ReportName == 'GST B2GS Report Consolidated') {
@@ -213,12 +227,14 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       this.clearField();
     }   else if (this.ReportName == 'GSTR2A Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       this.clearField();
     } 
     else if (this.ReportName == 'GSTR2A Supplier Wise Purchase Report') {
@@ -226,6 +242,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = true;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=false;
+      this.FlagPatientSelected=false;
       this.clearField();
     }
     else if(this.ReportName == "Dr Wise Profit Detail Report"){
@@ -233,6 +250,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = false;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=true;
+      this.FlagPatientSelected=false;
       this.clearField();
     } 
     else if(this.ReportName == "Dr Wise Profit Summary Report"){
@@ -240,6 +258,7 @@ export class GSTReportComponent implements OnInit {
       this.FlagStoreSelected = false;
       this.FlagReportTypeSelected= false;
       this.FlagDoctorIDSelected=true;
+      this.FlagPatientSelected=false;
       this.clearField();
     } 
     }
@@ -356,15 +375,23 @@ export class GSTReportComponent implements OnInit {
     viewsalesprofitbillPdf() {
       debugger
       this.sIsLoading = 'loading-data';
+
       let storeId =this._loggedUser.currentUserValue.user.storeId;
       if (this._GstReportService.userForm.get('StoreId').value.StoreId)
         storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+
+      let regId =0;
+      if (this.RegId){
+        regId = this.RegId
+      }
+  
   
       setTimeout(() => {
      
       this._GstReportService.getSalesprofitbillReport(
         this.datePipe.transform(this._GstReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",storeId
+        this.datePipe.transform(this._GstReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        storeId,regId
         ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -1085,6 +1112,7 @@ export class GSTReportComponent implements OnInit {
     this._GstReportService.userForm.get('enddate').setValue(new Date());
     this._GstReportService.userForm.get('DoctorId').setValue('');
     this._GstReportService.userForm.get('StoreId').setValue('');
+    this._GstReportService.userForm.get('RegID').setValue('')
   }
 
   getDoctorList() {
@@ -1113,7 +1141,34 @@ export class GSTReportComponent implements OnInit {
     }
 
   }
+  
+  getSearchList() {
+    debugger
+    var m_data = {
+      "Keyword": `${this._GstReportService.userForm.get('RegID').value}%`
+    }
+    console.log(m_data)
+    this._GstReportService.getPatientRegisterListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    }); 
+  } 
 
+  getSelectedObj1(obj) {
+    console.log("djfhfka:",obj)
+    this.RegId=obj.RegId
+  } 
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName + "-" + option.RegNo ;
+ 
+  }
   private _filterSearchstore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();

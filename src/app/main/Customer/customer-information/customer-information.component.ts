@@ -76,24 +76,60 @@ export class CustomerInformationComponent implements OnInit {
      }
      this.getCustomerList(); 
    }
-  getCustomerList(){
-    this.sIsLoading = 'loading-data';
-    var vdata={
-      "CustomerName":this._CustomerInfo.SearchForm.get('CustomerName').value + '%' || '%',
-      "IsActive": this.IsActive
-    }
-    console.log(vdata)
-    this._CustomerInfo.getCustomerList(vdata).subscribe(data =>{
-      this.dsCustomerInfo.data = data as CustomerInfoList[];
-      console.log(this.dsCustomerInfo.data)
-      this.dsCustomerInfo.sort = this.sort;
-      this.dsCustomerInfo.paginator = this.paginator
-      this.sIsLoading = '';
-    },
-    error => {
-      this.sIsLoading = '';
-    });
+   
+   resultsLength=0;
+  // getCustomerList(){
+  //   this.sIsLoading = 'loading-data';
+  //   var vdata={
+  //     "CustomerName":this._CustomerInfo.SearchForm.get('CustomerName').value + '%' || '%',
+  //     "IsActive": this.IsActive,
+  //     "Start":(this.paginator?.pageIndex ?? 0),
+  //     "Length":(this.paginator?.pageSize ?? 100)  
+  //   }
+  //   console.log(vdata)
+  //   this._CustomerInfo.getCustomerList(vdata).subscribe(data =>{
+  //     this.dsCustomerInfo.data = data["Table1"]??[] as CustomerInfoList[];
+  //     // this.dsCustomerInfo.sort = this.sort;
+  //     this.resultsLength = data["Table"][0]["total_row"];
+  //     // this.dsCustomerInfo.paginator = this.paginator
+  //     this.sIsLoading = '';
+  //     console.log(this.dsCustomerInfo.data)
+  //   },
+  //   error => {
+  //     this.sIsLoading = '';
+  //   });
+  // }
+
+  getCustomerList() {
+    // this.sIsLoading = 'loading-data';
+  
+    const vdata = {
+      "CustomerName": this._CustomerInfo.SearchForm.get('CustomerName').value + '%' || '%',
+      "IsActive": this.IsActive,
+      "Start": (this.paginator?.pageIndex ?? 0),
+      "Length": (this.paginator?.pageSize ?? 100),
+    };
+  
+    console.log('Request Data:', vdata);
+  
+    this._CustomerInfo.getCustomerList(vdata).subscribe(
+      (data) => {
+        console.log('API Response:', data);
+  
+        this.dsCustomerInfo.data = data["Table1"] ?? [] as CustomerInfoList[];
+  
+        this.resultsLength = data["Table"][0]["total_row"];
+  
+        this.sIsLoading = '';
+        console.log('Customer Info Data:', this.dsCustomerInfo.data);
+      },
+      (error) => {
+        console.error('API Error:', error);
+        this.isLoading = false;
+      }
+    );
   }
+  
   onClear(){
     this._CustomerInfo.SearchForm.reset();
   }

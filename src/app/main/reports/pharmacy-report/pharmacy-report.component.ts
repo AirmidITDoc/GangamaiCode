@@ -61,9 +61,11 @@ export class PharmacyReportComponent implements OnInit {
   filteredOptionsItem:any;
   filteredOptionsDrugtype: Observable<string[]>;
   filteredOptionsStore: Observable<string[]>;
+  PatientListfilteredOptions: any;
   filteredOptionssearchDoctor: Observable<string[]>;
   isUserSelected: boolean = false;
-  isPaymentSelected: boolean = false;
+  isPaymentSelected: boolean = false;  
+  isPatientSelected: boolean = false;
   isItemIdSelected: boolean = false;
   isDugtypeSelected: boolean = false;
   isSearchdoctorSelected: boolean = false;
@@ -74,6 +76,7 @@ export class PharmacyReportComponent implements OnInit {
   FlagDrugTypeIdSelected: boolean = false;
   FlaOPIPTypeSelected: boolean = false;
   FlagItemSelected: boolean = false;
+  FlagPatientSelected:boolean=false;
   optionsUser: any[] = [];
   optionsSearchDoc: any[] = [];
   optionsPaymentMode: any[] = [];
@@ -99,7 +102,7 @@ export class PharmacyReportComponent implements OnInit {
   OPIPType:any;
   SalesCashAmount: any = 0;
   SalesReturnCashAmount: any = 0;
-
+  noOptionFound: boolean = false;
   TotalBalAmount: any = 0;
   TotalCashAmount: any = 0;
   SpinLoading: boolean = false;
@@ -110,6 +113,7 @@ export class PharmacyReportComponent implements OnInit {
   UserName: any;
   IsLoading: boolean = false;
   FlagDoctorIDSelected: boolean = false;
+  RegId:any;
 
   displayedColumns = [
     'ReportName'
@@ -169,6 +173,34 @@ export class PharmacyReportComponent implements OnInit {
 
   getOptionstoreText(option) {
     return option && option.StoreName ? option.StoreName : '';
+  }
+
+  getSearchList() {
+    debugger
+    var m_data = {
+      "Keyword": `${this._PharmacyreportService.userForm.get('RegID').value}%`
+    }
+    console.log(m_data)
+    this._PharmacyreportService.getPatientRegisterListSearch(m_data).subscribe(data => {
+      this.PatientListfilteredOptions = data;
+      if (this.PatientListfilteredOptions.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    }); 
+  } 
+
+  getSelectedObj1(obj) {
+    console.log("djfhfka:",obj)
+    this.RegId=obj.RegId
+  } 
+
+  getOptionText1(option) {
+    if (!option)
+      return '';
+    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName + "-" + option.RegNo ;
+ 
   }
 
   getOptionDrugtypeText(option) {
@@ -250,6 +282,8 @@ var data={
       this.FlagDoctorIDSelected=false;
       this.FlagStoreSelected=true;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -259,6 +293,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Sales Summary Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -268,6 +304,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Sales Patient Wise Report') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -277,6 +315,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=true;
+      this.clearField();
     } else if (this.ReportName == 'Sales Return Summary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -286,6 +326,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Sales Return PatientWise Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -295,6 +337,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Sales Credit Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -304,6 +348,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
       this.FlagUserSelected = true;
       this.FlagPaymentSelected = false;
@@ -313,6 +359,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     }
     else if (this.ReportName == 'Sales Cash Book Report') {
       this.FlagPaymentSelected = true;
@@ -323,6 +371,8 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'Sales SCHEDULEH1 Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -332,6 +382,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
           } else if (this.ReportName == 'SCHEDULEH1 SalesSummary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -341,6 +393,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     } else if (this.ReportName == 'SalesH1 DrugCount Report') {
       this.FlagUserSelected = false;
       this.FlagPaymentSelected = false;
@@ -350,6 +404,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     }
     else if (this.ReportName == 'ItemWise DailySales Report') {
       this.FlagPaymentSelected = false;
@@ -360,6 +416,8 @@ var data={
       this.FlagItemSelected=true;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     }
     else if (this.ReportName == 'WardWise HighRisk Drug Report') {
       this.FlagUserSelected = false;
@@ -370,6 +428,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+      this.clearField();
     }
     else if (this.ReportName == 'Purchase Re-Order List Report') {
       this.FlagPaymentSelected = false;
@@ -380,6 +440,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+          this.clearField();
     }else if (this.ReportName == 'Pharmacy BillSummary Report') {
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -389,6 +451,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=false;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+          this.clearField();
     }else if(this.ReportName == 'Doctor Wise Profit Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -398,6 +462,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+          this.clearField();
     }else if(this.ReportName == 'Dr Wise Sales Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -407,6 +473,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
       this.FlaOPIPTypeSelected=false;
+      this.FlagPatientSelected=false;
+          this.clearField();
     }else if(this.ReportName == 'Dr Wise Profit Detail Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -416,6 +484,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
       this.FlaOPIPTypeSelected=true;
+      this.FlagPatientSelected=false;
+          this.clearField();
     }else if(this.ReportName == 'Dr Wise Profit Summary Report'){
       this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -425,6 +495,8 @@ var data={
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
       this.FlaOPIPTypeSelected=true;
+      this.FlagPatientSelected=false;
+          this.clearField();
     }
   }
 
@@ -592,6 +664,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -633,6 +706,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -672,6 +746,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
+          this.clearField();
         });
 
       });
@@ -713,12 +788,19 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
     }, 100);
   }
   viewgetSalesPatientWiseReportPdf() {
+    debugger
+    let regId =0;
+      if (this.RegId){
+        regId = this.RegId
+      }
+
     this.AdList = true;
     let AddUserId = 0;
     if (this._PharmacyreportService.userForm.get('UserId').value)
@@ -729,9 +811,11 @@ var data={
     
       let Frdate=this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =  this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+
+      
       
       this._PharmacyreportService.getSalesDetail_Patientwise(Frdate,Todate,    
-        0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId
+        0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId,regId
       ).subscribe(res => {
         
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -747,6 +831,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
+          this.clearField();
         });
       });
 
@@ -776,6 +861,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -803,6 +889,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -831,6 +918,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -862,6 +950,7 @@ var data={
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -901,6 +990,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -938,6 +1028,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -970,6 +1061,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1014,6 +1106,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1046,6 +1139,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1078,6 +1172,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1110,6 +1205,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1144,6 +1240,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1186,6 +1283,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1228,6 +1326,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1264,6 +1363,7 @@ debugger
         dialogRef.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = '';
+          this.clearField();
         });
       });
 
@@ -1277,7 +1377,14 @@ debugger
   PaymentModeChk(option) {
     this.PaymentMode = option.PaymentMode;
   }
-
+  clearField(){
+    this._PharmacyreportService.userForm.get('startdate').setValue(new Date());
+    this._PharmacyreportService.userForm.get('enddate').setValue(new Date());
+    this._PharmacyreportService.userForm.get('StoreId').setValue('');
+    this._PharmacyreportService.userForm.get('ItemId').setValue('');
+    this._PharmacyreportService.userForm.get('RegID').setValue('');
+    this._PharmacyreportService.userForm.get("UserId").setValue('');
+  }
   onClose() { }
 
 

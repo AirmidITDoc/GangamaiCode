@@ -78,7 +78,7 @@ export class CustomerInformationService {
     if(loader){
       this._loaderService.show()
     }
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerInformation_List",param);
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_CustomerInformation_List",param);
   }
    public SaveCustomer(Param, loader = true) {
     if(loader){

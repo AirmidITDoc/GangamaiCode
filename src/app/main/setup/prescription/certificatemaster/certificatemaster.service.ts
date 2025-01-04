@@ -33,4 +33,17 @@ export class CertificatemasterService {
 public getCertificatelist(employee) {
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CertificateMaster_List",employee)
 }
+public CertificateInsert(employee)
+{    
+  return this._httpClient.post("Prescription/SaveCertificateMaster",employee);
+}
+public CertificateUpdate(employee)
+{    
+  return this._httpClient.post("Prescription/UpdateCertificateMaster",employee);
+}
+public deactivateTheStatus(m_data) {
+  return this._httpClient.post(
+      "Generic/ExecByQueryStatement?query=" + m_data,{}
+  );
+}
 }

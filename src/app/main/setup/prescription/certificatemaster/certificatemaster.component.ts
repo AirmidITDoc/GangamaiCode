@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CertificatemasterService } from './certificatemaster.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -12,11 +12,15 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { NewCertificatemasterComponent } from './new-certificatemaster/new-certificatemaster/new-certificatemaster.component';
 import { Row } from 'jspdf-autotable';
+import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-certificatemaster',
   templateUrl: './certificatemaster.component.html',
-  styleUrls: ['./certificatemaster.component.scss']
+  styleUrls: ['./certificatemaster.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class CertificatemasterComponent implements OnInit {
 
@@ -111,13 +115,54 @@ export class CertificatemasterComponent implements OnInit {
       this.getCertificateTempletList();
     });
   }
+
+  onDeactive(CertificateId){
+    debugger
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+    debugger
+
+      if (result.isConfirmed) {
+        let Query;
+        const tableItem = this.dataSource.data.find(item => item.CertificateId === CertificateId);
+        console.log("table:",tableItem)
+    
+        if (tableItem.IsActive) {
+            Query = "Update M_CertificateMaster set IsActive=0 where CertificateId=" + CertificateId;
+        } else {
+            Query = "Update M_CertificateMaster set IsActive=1 where CertificateId=" + CertificateId;
+        }
+    
+        console.log("query:", Query);
+    
+        this._certificatetemplateService.deactivateTheStatus(Query)
+            .subscribe(
+                (data) => {
+                    Swal.fire('Changed!', 'Certificate Status has been Changed.', 'success');
+                    this.getCertificateTempletList();
+                },
+                (error) => {
+                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                }
+            );
+    }
+    
+  });
+  }
 }
 
 export class CertificateList {
   CertificateId:number;
   CertificateName:string;
   CertificateDesc:string;
-  IsDeleted:String;
+  IsActive:String;
   
   /**
    * Constructor
@@ -129,7 +174,7 @@ export class CertificateList {
       this.CertificateId = CertificateList.CertificateId || '';
       this.CertificateName = CertificateList.CertificateName || '';
       this.CertificateDesc = CertificateList.CertificateDesc || '';
-      this.IsDeleted = CertificateList.IsDeleted;
+      this.IsActive = CertificateList.IsActive || '';
     }
   }
 }
