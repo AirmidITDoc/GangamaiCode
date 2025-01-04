@@ -27,6 +27,7 @@ export class PharmacyreportService {
         ItemId:[''],
         DoctorID:[''],
         OPIPType:["1"],
+        RegID:['']
       })
     }
   public getDataByQuery(emp) {
@@ -71,11 +72,12 @@ export class PharmacyreportService {
     return this._httpClient.get("Sales/view-PharCollectionSummaryDayanduserwise_Report?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
   }
 
-  public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId,loader = true){
+  public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,AddedBy,StoreId,RegId,loader = true){
+    debugger
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("Sales/view-Sales_Report_PatientWiseNew?FromDate=" + FromDate + "&ToDate="+ToDate + "&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId);
+    return this._httpClient.get("PharmacyReport/view-SalesPatientWiseReport?FromDate=" + FromDate + "&ToDate="+ToDate + "&SalesFromNumber="+SalesFromNumber+"&SalesToNumber="+SalesToNumber+"&AddedBy="+AddedBy+"&StoreId="+StoreId+"&RegId="+RegId);
   }
 
   public getSalesReturnsummary(FromDate,ToDate,SalesFromNumber,SalesToNumber,StoreId,loader = true){
@@ -204,6 +206,10 @@ export class PharmacyreportService {
 
   getStoreList(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{})
+  }
+
+  public getPatientRegisterListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 }
 

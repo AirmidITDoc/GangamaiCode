@@ -22,7 +22,8 @@ export class GstReportService {
           UserId:'',
           DoctorId:'',
           StoreId:'',
-          ReportType:['1']
+          ReportType:['1'],
+          RegID:['']
           // VisitId:'',
           // PaymentId:'',
           // RefundId:'',
@@ -50,12 +51,13 @@ export class GstReportService {
     return this._httpClient.get("GSTReport/view-SalesProfitSummaryReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
   }
 
-  public getSalesprofitbillReport(FromDate,ToDate,StoreId,loader = true){
+  public getSalesprofitbillReport(FromDate,ToDate,StoreId,RegId,loader = true){
+    debugger
     if (loader) {
       this._loaderService.show();
   }
   
-    return this._httpClient.get("GSTReport/view-SalesProfitBillReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId);
+    return this._httpClient.get("GSTReport/view-SalesProfitBillReport?FromDate="+FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&RegId="+RegId);
   }
 
   public getProfititemwisesummaryReport(FromDate,ToDate,StoreId,loader = true){
@@ -191,5 +193,8 @@ export class GstReportService {
 
   public getDoctorMaster(param) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo", param)
+  }
+  public getPatientRegisterListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 }
