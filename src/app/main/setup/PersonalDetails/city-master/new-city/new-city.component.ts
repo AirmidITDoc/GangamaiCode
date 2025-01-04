@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { CityMasterService } from '../city-master.service';
 import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -49,11 +49,13 @@ export class NewCityComponent implements OnInit {
 
     saveflag: boolean = false;
     onSubmit() {
-        
-        
-        if (this.cityForm.valid) {
+        debugger
+        if(this.cityForm.valid) 
+        {
             this.saveflag = true;
-            console.log(this.cityForm.value)
+
+            console.log(this.cityForm.value);
+
             this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
@@ -66,6 +68,7 @@ export class NewCityComponent implements OnInit {
             });
         }
     }
+
     getValidationMessages() {
         return {
             stateId: [

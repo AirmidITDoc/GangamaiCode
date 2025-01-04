@@ -2,14 +2,11 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ItemCategoryMasterService } from "./item-category-master.service";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
-import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { NewItemcategoryComponent } from "./new-itemcategory/new-itemcategory.component";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 
 @Component({
     selector: "app-item-category-master",

@@ -1,18 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CategorymasterService } from '../categorymaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-category',
   templateUrl: './new-category.component.html',
-  styleUrls: ['./new-category.component.scss']
+  styleUrls: ['./new-category.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewCategoryComponent implements OnInit {
   
     categoryForm: FormGroup;
     isActive:boolean=true;
+    saveflag : boolean = false;
 
 
   constructor(
@@ -30,7 +34,7 @@ export class NewCategoryComponent implements OnInit {
     }
   }
 
-   saveflag : boolean = false;
+   
    onSubmit() {
     debugger
       if (!this.categoryForm.invalid) {

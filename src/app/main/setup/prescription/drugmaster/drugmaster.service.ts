@@ -18,13 +18,6 @@ export class DrugmasterService {
 
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
-            //as per payload :-
-            //{
-//   "drugId": 0,
-//   "drugName": "string",
-//   "genericId": 0,
-//   "classId": 0
-// }
             drugId: [0],
             drugName: ["", 
                 [
@@ -35,15 +28,9 @@ export class DrugmasterService {
             genericId: ["",
                 Validators.required
             ],
-            // GenericName: [""],
             classId: [0,
                 // Validators.required
             ],
-            // ClassName: [""],
-            // isActive: true,
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
 

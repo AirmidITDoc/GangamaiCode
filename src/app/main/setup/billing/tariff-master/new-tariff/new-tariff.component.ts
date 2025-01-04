@@ -35,7 +35,8 @@ export class NewTariffComponent implements OnInit {
 
     onSubmit(){
         debugger
-        if(!this.tariffForm.invalid){
+        if(!this.tariffForm.invalid)
+        {
             this.saveflag = true;
         
             console.log("insert tariff:", this.tariffForm.value);

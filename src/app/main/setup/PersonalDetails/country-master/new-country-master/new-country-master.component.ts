@@ -32,9 +32,11 @@ export class NewCountryMasterComponent implements OnInit {
 
   onSubmit() {
     if(!this.countryForm.invalid)
-        {
-    this.saveflag = true;
+    {
+            this.saveflag = true;
    
+            console.log("Country json :-",this.countryForm.value);
+
         this._CountryMasterService.countryMasterSave(this.countryForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { ReligionMasterService } from "./religion-master.service";
 import { ToastrService } from "ngx-toastr";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { NewReligionMasterComponent } from "./new-religion-master/new-religion-master.component";
@@ -19,7 +18,6 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class ReligionMasterComponent implements OnInit {
     msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
 
     gridConfig: gridModel = {
         apiUrl: "ReligionMaster/List",

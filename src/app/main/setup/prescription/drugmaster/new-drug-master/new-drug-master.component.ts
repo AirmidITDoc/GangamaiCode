@@ -11,8 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewDrugMasterComponent implements OnInit {
 
-  drugForm:FormGroup;
-  isActive:boolean=true;
+    drugForm:FormGroup;
+    isActive:boolean=true;
+    saveflag : boolean = false;
 
   autocompleteModeClass: string = "Class";  
   autocompleteModeGenericName: string = "GenericName";
@@ -32,20 +33,13 @@ export class NewDrugMasterComponent implements OnInit {
     }
   }
 
-  saveflag : boolean = false;
-  onSubmit() {
-    
-    debugger
-      if(!this.drugForm.invalid){
+  
+    onSubmit() {
+        debugger
+      if(!this.drugForm.invalid)
+      {
         this.saveflag = true    
-        // var mdata=
-        // {
-        //   "drugId": 0,
-        //   "drugName": this.drugForm.get("DrugName").value || "",
-        //   "genericId": parseInt(this.drugForm.get("GenericId").value) || 0,
-        //   "classId": parseInt(this.drugForm.get("ClassId").value) || 0,
-        //   "isActive": true
-        // }
+      
         console.log("drug json:", this.drugForm.value);
   
         this._durgMasterService.drugMasterSave(this.drugForm.value).subscribe((response)=>{
@@ -62,8 +56,7 @@ export class NewDrugMasterComponent implements OnInit {
           });
           return;
       }
-    
-  }
+    }
 
     onClear(val: boolean) {
         this.drugForm.reset();

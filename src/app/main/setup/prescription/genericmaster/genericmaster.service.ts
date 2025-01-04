@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -43,10 +42,6 @@ export class GenericmasterService {
         this.createGenericForm();
     }
 
-    // public getgenericMasterList(param: gridRequest, showLoader = true) {
-    //     return this._httpClient.PostData("generic/List", param, showLoader);
-    // }
-
     public genericMasterInsert(Param: any, showLoader = true) {
         if (Param.GenericId) {
             return this._httpClient.PutData("GenericMaster/" + Param.GenericId, Param, showLoader);
@@ -54,7 +49,6 @@ export class GenericmasterService {
     }
 
     public genericMasterUpdate(id: number , Param: any, showLoader = true) {
-        //return this._httpClient.put("generic/" + id , Param, showLoader);
         return this._httpClient.PostData("generic", Param, showLoader);
     }
 
@@ -62,7 +56,4 @@ export class GenericmasterService {
         return this._httpClient.DeleteData("generic?Id=" + m_data.toString());
     }
 
-    // populateForm(param) {
-    //     this.genericForm.patchValue(param);
-    // }
 }

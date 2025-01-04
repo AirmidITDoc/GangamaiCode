@@ -13,6 +13,7 @@ export class NewItemcategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
   isActive:boolean=true;
+  Saveflag: boolean= false;
 
   autocompleteModeItem: string = "Item";
 
@@ -31,24 +32,18 @@ export class NewItemcategoryComponent implements OnInit {
     }
   }
 
-    Saveflag: boolean= false;
+    
     onSubmit() {
         if(!this.categoryForm.invalid)
         {
-        this.Saveflag=true
-        // var m_data =
-        // {
-        //     "itemCategoryId": 0,
-        //     "itemCategoryName": this.categoryForm.get("itemCategoryName").value,
-        //     "itemTypeId": this.categoryForm.get("itemTypeId").value,  
-        // }
+            this.Saveflag=true
 
-        console.log("ItemCategoryMaster Insert:",this.categoryForm.value)
+            console.log("ItemCategoryMaster Insert:",this.categoryForm.value)
         
             this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);}, 
-        (error) => {
+            (error) => {
             this.toastr.error(error.message);
             });
         }

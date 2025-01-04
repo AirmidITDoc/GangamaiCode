@@ -4,8 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { NewSubgroupComponent } from "./new-subgroup/new-subgroup.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
@@ -23,7 +22,7 @@ export class SubGroupMasterComponent implements OnInit {
         apiUrl: "SubGroupMaster/List",
         columnsList: [
             { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Sub Group  Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
@@ -50,13 +49,6 @@ export class SubGroupMasterComponent implements OnInit {
         ],
         row: 25
     }
-
-
-    //groupname filter
-    // public groupnameFilterCtrl: FormControl = new FormControl();
-    // public filteredGroupname: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    // private _onDestroy = new Subject<void>();
 
     constructor(public _subgroupService: SubGroupMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }

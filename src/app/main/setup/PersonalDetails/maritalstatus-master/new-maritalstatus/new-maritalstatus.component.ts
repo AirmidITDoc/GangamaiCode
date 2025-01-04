@@ -50,7 +50,8 @@ export class NewMaritalstatusComponent implements OnInit {
     getValidationMessages() {
       return {
           maritalStatusName: [
-              { name: "required", Message: "MaritalStatusName  is required" },
+              { name: "required", Message: "Marital Status Name  is required" },
+              { name: "maxlength", Message: "Marital Status Name should not be greater than 50 char." },
               { name: "pattern", Message: "Special char not allowed." }
           ]
       };

@@ -4,8 +4,7 @@ import { LocationMasterService } from "./location-master.service";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 import { NewLocationComponent } from "./new-location/new-location.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 

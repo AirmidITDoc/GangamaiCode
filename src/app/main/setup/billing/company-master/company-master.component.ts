@@ -5,8 +5,6 @@ import { fuseAnimations } from "@fuse/animations";
 import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialogRef } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 

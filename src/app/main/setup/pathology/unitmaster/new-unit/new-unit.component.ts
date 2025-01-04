@@ -1,18 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UnitmasterService } from '../unitmaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-unit',
   templateUrl: './new-unit.component.html',
-  styleUrls: ['./new-unit.component.scss']
+  styleUrls: ['./new-unit.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewUnitComponent implements OnInit {
   
     unitForm: FormGroup;
     isActive:boolean=true;
+    saveflag : boolean = false;
 
     constructor(
         public _UnitmasterService: UnitmasterService,
@@ -29,7 +33,7 @@ export class NewUnitComponent implements OnInit {
         }
     }
 
-    saveflag : boolean = false;
+    
     onSubmit() {
         debugger
     if (!this.unitForm.invalid){

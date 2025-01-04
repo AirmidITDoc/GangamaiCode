@@ -7,7 +7,6 @@ import { NewTermofpaymentComponent } from "./new-termofpayment/new-termofpayment
 import { MatDialog } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-terms-of-payment-master",

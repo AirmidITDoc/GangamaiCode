@@ -1,18 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { UomMasterService } from '../uom-master.service';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-umo',
-  templateUrl: './new-umo.component.html',
-  styleUrls: ['./new-umo.component.scss']
+    selector: 'app-new-umo',
+    templateUrl: './new-umo.component.html',
+    styleUrls: ['./new-umo.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewUMOComponent implements OnInit {
 
   unitForm: FormGroup;
   isActive:boolean=true;
+  Saveflag: boolean= false;
 
   constructor(
     public _UomMasterService: UomMasterService,
@@ -29,20 +33,21 @@ export class NewUMOComponent implements OnInit {
     }
   }
 
-  Saveflag: boolean= false;
+  
   onSubmit() {
+    debugger
     if(!this.unitForm.invalid)
     {
-    this.Saveflag=true
+        this.Saveflag=true;
+
+        console.log("UMO JSON :-",this.unitForm.value);
    
-    if (this.unitForm.valid) {
         this._UomMasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
         }, (error) => {
             this.toastr.error(error.message);
         });
-    }
     }
     else
     {

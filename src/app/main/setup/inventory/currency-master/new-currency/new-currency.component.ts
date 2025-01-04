@@ -11,9 +11,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewCurrencyComponent implements OnInit {
 
-    Saveflag: boolean= false;
     currencyForm: FormGroup;
     isActive:boolean=true;
+    Saveflag: boolean= false;
 
     constructor(
         public _CurrencymasterService: CurrencymasterService,
@@ -31,13 +31,17 @@ export class NewCurrencyComponent implements OnInit {
     }
 
     onSubmit() {
-      if (!this.currencyForm.invalid) {
-        this.Saveflag=true
+      if (!this.currencyForm.invalid) 
+      {
+        this.Saveflag=true;
+
+        console.log("Currency JSON :-",this.currencyForm.value);
+
         this._CurrencymasterService.currencyMasterSave(this.currencyForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
+            this.toastr.success(response.message);
+            this.onClear(true);
           }, (error) => {
-              this.toastr.error(error.message);
+            this.toastr.error(error.message);
           });
       }
       else

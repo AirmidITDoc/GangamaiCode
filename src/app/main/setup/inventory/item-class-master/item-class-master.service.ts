@@ -43,16 +43,6 @@ export class ItemClassMasterService {
         this.createItemclassForm();
     }
 
-    // getValidationMessages() {
-    //     return {
-    //         itemClassName: [
-    //             { name: "required", Message: "itemClassName  is required" },
-    //             { name: "maxlength", Message: "itemClassName  should not be greater than 50 char." },
-    //             { name: "pattern", Message: "Special char not allowed." }
-    //         ]
-    //     };
-    // }
-
     public itemclassMasterSave(Param: any, showLoader = true) {
         if (Param.itemClassId) {
             return this._httpClient.PutData("ItemClassMaster/" + Param.itemClassId, Param, showLoader);

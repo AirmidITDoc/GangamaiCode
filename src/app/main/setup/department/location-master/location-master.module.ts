@@ -1,5 +1,4 @@
 import { NgModule } from "@angular/core";
-
 import { LocationMasterComponent } from "./location-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { LocationMasterService } from "./location-master.service";

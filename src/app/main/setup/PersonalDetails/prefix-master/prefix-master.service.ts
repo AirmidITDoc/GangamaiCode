@@ -1,5 +1,3 @@
-
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -11,14 +9,12 @@ export class PrefixMasterService {
     myformSearch: FormGroup;
 
     constructor(
-     
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder,
-        private _httpClient1: HttpClient
-    ) {
+        private _formBuilder: FormBuilder   ) 
+        {
         this.myform = this.createPrefixForm();
         this.myformSearch = this.createSearchForm();
-    }
+       }
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -29,17 +25,14 @@ export class PrefixMasterService {
 
     createPrefixForm(): FormGroup {
         return this._formBuilder.group({
-           
             prefixId: 0,
             prefixName: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            sexId:["",
-                Validators.required
-            ] ,
+            sexId:["", Validators.required] ,
         });
     }
     initializeFormGroup() {
@@ -49,15 +42,6 @@ export class PrefixMasterService {
     public getPrefixMasterList(param: gridRequest, showLoader = true) {
         return this._httpClient.PostData("PrefixMaster/List", param, showLoader);
     }
-
-    // Gender Master Combobox List
-    // public getGenderMasterCombo() {
-    //     debugger
-    //     return this._httpClient1.post(
-    //         "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",
-    //         {}
-    //     );
-    // }
 
     public prefixMasterSave(Param: any, showLoader = true) {
         if (Param.prefixId) {

@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -17,11 +16,6 @@ export class InstructionmasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    // {
-    //     "instructionId": 0,
-    //     "instructionDescription": "string",
-    //     "instructioninMarathi": "string"
-    //   }
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
             instructionId: [0],
@@ -32,10 +26,6 @@ export class InstructionmasterService {
                 ]
             ],
             instructioninMarathi: "string",
-            // IsDeleted: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
     

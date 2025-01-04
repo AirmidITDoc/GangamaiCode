@@ -34,41 +34,40 @@ export class NewCreditReasonComponent implements OnInit {
     }
   }
   onSubmit() {
-    
-        if(!this.creditreasonForm.invalid)
-             {
-                this.saveflag = true;
+    if(!this.creditreasonForm.invalid)
+            {
+            this.saveflag = true;
 
-                console.log("JSON: ", this.creditreasonForm.value);
+            console.log("JSON: ", this.creditreasonForm.value);
 
-            this._CreditreasonService.creditreasonMasterSave(this.creditreasonForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        } 
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }   
+        this._CreditreasonService.creditreasonMasterSave(this.creditreasonForm.value).subscribe((response) => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    } 
+    else
+    {
+        this.toastr.warning('please check from is invalid', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+    }   
   }
 
-  onClear(val: boolean) {
-      this.creditreasonForm.reset();
-      this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.creditreasonForm.reset();
+        this.dialogRef.close(val);
+    }
 
-  getValidationMessages() {
-    return {
-      creditReason: [
-            { name: "required", Message: "Credit Reason is required" },
-            { name: "maxlength", Message: "Credit Reason should not be greater than 50 char." },
-            { name: "pattern", Message: "Special char not allowed." }
-        ]
-    };
-}
+    getValidationMessages() {
+        return {
+        creditReason: [
+                { name: "required", Message: "Credit Reason is required" },
+                { name: "maxlength", Message: "Credit Reason should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 }

@@ -1,17 +1,14 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class CityMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;
-    constructor(   private _httpClient1: HttpClient,
-        private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
-    ) {
+    constructor(   private _httpClient: ApiCaller,
+                   private _formBuilder: FormBuilder) 
+    {
         this.myform = this.createCityForm();
         this.myformSearch = this.createSearchForm();
     }
