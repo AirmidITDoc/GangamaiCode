@@ -51,13 +51,7 @@ export class RegistrationComponent implements OnInit {
             { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            // { heading: "AreaId", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 30  },
-            // { heading: "CityId", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "StateId", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            // { heading: "CountryId", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            // { heading: "ReligionId", key: "religionId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            // { heading: "MaritalStatusId", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             {
@@ -69,7 +63,7 @@ export class RegistrationComponent implements OnInit {
                     },
                     {
                         action: gridActions.view, callback: (data: any) => {
-                            // Set the view record logic.
+                            
                         }
                     },
                     {
@@ -94,13 +88,13 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "01/12/2024", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "12/27/2024", opType: OperatorComparer.Equals },
+            // { fieldName: "To_Dt", fieldValue: "12/27/2024", opType: OperatorComparer.Equals },
             // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            // { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            //  { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            
         ],
         row: 25
     }
@@ -114,10 +108,10 @@ export class RegistrationComponent implements OnInit {
     onNewregistration(row: any = null) {
 
         let that = this;
-        const dialogRef = this._matDialog.open(EditRegistrationComponent,
+        const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '70%',
+                height: '75%',
                 width: '90%',
 
             });
@@ -149,12 +143,15 @@ export class RegistrationComponent implements OnInit {
         this._RegistrationService.populateForm(row);
         debugger
         const dialogRef = this._matDialog.open(
-            EditRegistrationComponent,
+            NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '70%',
+                height: '75%',
                 width: '90%',
-                data: row
+                data: {
+                    data1: row,
+                    Submitflag: false
+                },
             }
         );
 
@@ -188,7 +185,7 @@ export class RegistrationComponent implements OnInit {
                                     "tostr-tost custom-toast-success",
                             }
                         );
-                        // this.getGenderMasterList();
+                        
                     }
                 });
             }
@@ -223,8 +220,9 @@ export class RegInsert {
     PinNo: string;
     regNo: string;
     RegNo: string;
-    DateofBirth: Date;
+    dateOfBirth: Date;
     dateofBirth: Date;
+    DateofBirth: Date;
     Age: any;
     age: any;
     GenderId: Number;
@@ -299,8 +297,9 @@ export class RegInsert {
             this.RegNo = RegInsert.RegNo || '';
             this.City = RegInsert.City || 'SS';
             this.PinNo = RegInsert.PinNo || '';
-            this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
+            this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
             this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
+            this.DateofBirth= RegInsert.DateofBirth || this.currentDate;
             this.Age = RegInsert.Age || '';
             this.GenderId = RegInsert.GenderId || 0;
             this.genderId = RegInsert.genderId || 0;
@@ -324,8 +323,8 @@ export class RegInsert {
             this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
             this.IsCharity = RegInsert.IsCharity || false;
             this.ReligionId = RegInsert.ReligionId || 0;
+            this.religionId = RegInsert.religionId || 0;
             this.AreaId = RegInsert.AreaId || 0;
-            
             this.areaId = RegInsert.areaId || 0;
             this.VillageId = RegInsert.VillageId || '';
             this.TalukaId = RegInsert.TalukaId || '';

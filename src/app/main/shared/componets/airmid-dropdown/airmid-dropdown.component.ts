@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, OnInit, Optional, Output, Self, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -15,15 +15,16 @@ export class AirmidDropdownComponent implements OnInit {
 
     @Input() options: any[] = [];
     @Input() mode: string;
-    @Output() selectDdlObject = new EventEmitter<any>();
-    apiUrl: string = "Dropdown/GetBindDropDown?mode=";
-
-    control: FormControl = new FormControl();
+    @Output() selectionChange = new EventEmitter<any>();
+    control = new FormControl();
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() IsMultiPle: boolean;
+    @Input() TextField: string = "text";
+    @Input() ValueField: string = "value";
+    @Input() ApiUrl: string = "";
 
     private _disabled: boolean = false;
     private _focused: boolean = false;
@@ -58,17 +59,25 @@ export class AirmidDropdownComponent implements OnInit {
         return this.ngControl.control !== null ? !!this.ngControl.control : false;
     }
 
+    @Input()
+    get value(): (string | []) {
+        return this.control.value;
+    }
+    set value(value: (string | [])) {
+        this.control.setValue(value);
+        this.stateChanges.next();
+    }
 
 
     constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null) {
         if (ngControl) {
         }
     }
-    filteredDdls: Observable<string[]>;
+    filteredDdls1: Observable<string[]>;
     protected ddls: any[] = [];
     isSelected: boolean = false;
 
-    public filteredDdls1: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+    // public filteredDdls1: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
     static nextId: number = 0;
 
 
@@ -77,32 +86,38 @@ export class AirmidDropdownComponent implements OnInit {
     ngOnInit() {
         this.bindGridAutoComplete();
 
-        this.filteredDdls = this.formGroup.get(this.formControlName).valueChanges.pipe(
+        // this.filteredDdls = this.formGroup.get(this.formControlName).valueChanges.pipe(
+        //     startWith(''),
+        //     map((value) => this._filter(value || ''))
+        // );
+
+        this.filteredDdls1 = this.formGroup.get(this.formControlName).valueChanges.pipe(
             startWith(''),
-            map((value) => this._filter(value || ''))
+            map(value => this._filter(value)),
+
         );
     }
     options1: any[] = [];
 
-    bindGridAutoComplete() {
+    bindGridAutoComplete1() {
         debugger
         if (this.options?.length > 0) {
             this.ddls = this.options as [];
 
-            this.filteredDdls = this.formGroup.get(this.formControlName).valueChanges.pipe(
+            this.filteredDdls1 = this.formGroup.get(this.formControlName).valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filter(value) : this.ddls.slice()),
             );
         } else {
             this._httpClient
-                .GetData(this.apiUrl + this.mode)
+                .GetData(this.ApiUrl + this.mode)
                 .subscribe((data: any) => {
                     console.log(data)
                     this.ddls = data as [];
                     this.options1 = this.ddls.slice();
-                    this.filteredDdls1.next(this.ddls.slice());
+                    // this.filteredDdls1.next(this.ddls.slice());
 
-                    this.filteredDdls = this.formGroup.get(this.formControlName).valueChanges.pipe(
+                    this.filteredDdls1 = this.formGroup.get(this.formControlName).valueChanges.pipe(
                         startWith(''),
                         map(value => value ? this._filter(value) : this.ddls.slice()),
                     );
@@ -119,7 +134,55 @@ export class AirmidDropdownComponent implements OnInit {
 
     }
 
+    bindGridAutoComplete() {
+        let control=this.formControlName
+        console.log(control)
+        if (this.options?.length > 0) {
+            this.ddls = this.options as [];
+            // this.filteredDdls1.next(this.ddls.slice());
+            this.filteredDdls1 = this.formGroup.get(this.formControlName).valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filter(value) : this.ddls.slice()),
+            );
+        } else {
+            if (this.ApiUrl == "")
+                this._httpClient
+                    .GetData('Dropdown/GetBindDropDown?mode=' + this.mode)
+                    .subscribe((data: any) => {
+                        this.ddls = data as [];
+                        // this.filteredDdls1.next(this.ddls.slice());
+                        this.options1 = this.ddls.slice();
+                        this.filteredDdls1 = this.formGroup.get(this.formControlName).valueChanges.pipe(
+                            startWith(''),
+                            map(value => value ? this._filter(value) : this.ddls.slice()),
+                        );
+                        if (this.value) {
+                            this.SetSelection(this.value);
+                        }
+                    });
+            else
+                this._httpClient
+                    .GetData(this.ApiUrl)
+                    .subscribe((data: any) => {
+                        this.ddls = data as [];
+                        // this.filteredDdls1.next(this.ddls.slice());
+                        this.options1 = this.ddls.slice();
+                        this.filteredDdls1 = this.formGroup.get(this.formControlName).valueChanges.pipe(
+                            startWith(''),
+                            map(value => value ? this._filter(value) : this.ddls.slice()),
+                        );
+                        if (this.value) {
+                            if (this.IsMultiPle) {
+                                if (this.value instanceof Array) {
+                                    this.value = this.value.map(x => x[this.ValueField] ?? x) as [];
+                                }
+                            }
+                            this.SetSelection(this.value);
+                        }
+                    });
+        }
 
+    }
 
     private _filter(value: any): string[] {
         if (value) {
@@ -128,7 +191,19 @@ export class AirmidDropdownComponent implements OnInit {
         }
 
     }
-
+    SetSelection(value) {
+        if (this.IsMultiPle) {
+            this.control.setValue(value);
+            this.formGroup.get(this.formControlName).setValue(this.ddls.filter(x => value.indexOf(x[this.ValueField]) >= 0));
+        }
+        else {
+            this.control.setValue(this.ddls.find(x => x[this.ValueField] == value.toString()));
+            this.formGroup.get(this.formControlName).setValue(value.toString());
+        }
+        this.stateChanges.next();
+        this.changeDetectorRefs.detectChanges();
+        // this.selectDdlObject.emit(value);
+    }
     getOptionText(option) {
         return option && option.text ? option.text : '';
     }
@@ -153,19 +228,16 @@ export class AirmidDropdownComponent implements OnInit {
         this.control.setValue(value);
     }
 
-    @Input()
-    get value(): string {
-        return this.control.value;
-    }
-    set value(value: string) {
-        this.control.setValue(value);
-        this.stateChanges.next();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes.value?.firstChange && changes.value?.currentValue) {
+            this.SetSelection(changes.value.currentValue);
+        }
     }
     @HostBinding()
     id = `input-control-${++AirmidDropdownComponent.nextId}`;
 
     public onDdlChange($event) {
         this.formGroup.controls[this.formControlName].setValue($event.value);
-        this.selectDdlObject.emit($event.value);
+        this.selectionChange.emit($event.value);
     }
 }

@@ -1,8 +1,8 @@
 
-  <mat-form-field class="example-full-width" appearance="outline">
+  <mat-form-field class="example-full-width" appearance="outline" style="width: 300px;padding: 10px;">
     <mat-label>{{label}}</mat-label>
     <input matInput [matAutocomplete]="auto" [formControl]="control" value="value" placeholder="Search..." matAutocompletePosition="below"/>
-    <span matSuffix style="display: flex;">
+    <span matSuffix style="display: flex;" >
         <mat-icon class="mat-icon-close"
             (click)="formGroup.controls[formControlName].setValue('');  isSelected = false;">close</mat-icon>
         <mat-icon class="mat-icon-close"
@@ -40,3 +40,23 @@
     </mat-autocomplete>
 </mat-form-field> -->
 
+<!-- <mat-form-field appearance="outline" fxFlex *ngIf="!IsMultiPle">
+  <mat-label>{{label}}</mat-label>
+  <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled"
+      [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" msInfiniteScroll >
+      <mat-option>
+          <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
+              noEntriesFoundLabel="No results found"></ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
+          {{ddl[TextField]}}
+      </mat-option>
+  </mat-select>
+  <div *ngIf="formGroup.controls[formControlName]?.invalid&& control?.touched && validations?.length>0">
+      <div *ngFor="let item of validations">
+          <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
+              {{item.Message}}
+          </mat-error>
+      </div>
+  </div>
+</mat-form-field> -->

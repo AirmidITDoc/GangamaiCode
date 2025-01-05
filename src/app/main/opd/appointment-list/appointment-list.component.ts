@@ -43,14 +43,17 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 })
 export class AppointmentListComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    myformSearch:FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     fromDate = "01/01/2022"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-    toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+    toDate = this.datePipe.transform(new Date(), "MM/dd/yyyy")
+  
     DoctorId="0";
     autocompleteModedeptdoc: string = "ConDoctor";
-    currentdate = new Date().toISOString();
+  
     doctorID = "0";
+    
     allfilters= [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -71,7 +74,6 @@ export class AppointmentListComponent implements OnInit {
             { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 50, type:15 },
             { heading: "PhoneAppId", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 100, type:13 },
             { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type:8 },
-            // { heading: "PrefixId", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
             { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width: 50, type: 22 },
@@ -80,6 +82,7 @@ export class AppointmentListComponent implements OnInit {
             { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+            { heading: "DoctorId", key: "doctorId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
             {
                 heading: "Action", key: "action", align: "right", width: 300 ,sticky:true, type: gridColumnTypes.action, actions: [
@@ -145,7 +148,7 @@ export class AppointmentListComponent implements OnInit {
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) {
-            
+           
          }
 
     onChangeDate(selectDate) {
@@ -169,7 +172,7 @@ export class AppointmentListComponent implements OnInit {
     }
     onChangeDate1(selectDate) {
         if (selectDate) {
-debugger
+
             this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.toDate);
             this.gridConfig.filters[5].fieldValue = this.toDate
@@ -187,8 +190,11 @@ debugger
     }
 
     ngOnInit(): void {
-        
-        this.getVisitList();
+        // this.gridConfig.filters[4].fieldValue= this.datePipe.transform(new Date(), "MM/dd/yyyy")
+        // this.gridConfig.filters[5].fieldValue= this.datePipe.transform(new Date(), "MM/dd/yyyy")
+        this.myformSearch=this._AppointmentlistService.createSearchForm();
+        this.myformSearch.get("fromDate").setValue(this.datePipe.transform(new Date(), "MM/dd/yyyy"))
+        // this.getVisitList();
       
     }
     onSave(row: any = null) {
@@ -216,9 +222,13 @@ debugger
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '65%',
+                height: '75%',
                 width: '90%',
-                data: row
+                data: {
+                    data1: row,
+                    Submitflag: true
+                },
+                
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -505,6 +515,7 @@ debugger
     }
   
     selectChangedeptdoc(obj: any) {
+        debugger
         console.log(obj);
         this.DoctorId = String(obj)
         console.log(this.gridConfig.filters)
@@ -566,3 +577,53 @@ debugger
     }
 
 }
+
+
+export class VisitMaster1 {
+    visitId: Number;
+   
+    visitDate: any;
+    visitTime: any;
+    unitId: number;
+    patientTypeId: number;
+    companyId: number;
+    OPDNo: string;
+    tariffId: number;
+    consultantDocId: number;
+    refDocId: number;
+    departmentId: number;
+    appPurposeId: number;
+    patientOldNew: Boolean;
+    phoneAppId: any;
+    IsCancelled: any;
+    classId: any;
+    firstFollowupVisit:any;
+    addedBy:any;
+    updatedBy:any;
+    /**
+     * Constructor
+     *
+     * @param VisitMaster1
+     */
+    constructor(VisitMaster1) {
+        {
+            this.visitId = VisitMaster1.visitId || 0;
+            this.visitDate = VisitMaster1.visitDate || "";
+            this.visitTime = VisitMaster1.visitTime || "";
+            this.unitId = VisitMaster1.unitId || 0;
+            this.patientTypeId = VisitMaster1.patientTypeId || 0;
+            this.companyId = VisitMaster1.companyId || 0;
+            this.tariffId = VisitMaster1.tariffId || 0;
+            this.consultantDocId = VisitMaster1.consultantDocId || 0;
+            this.refDocId = VisitMaster1.refDocId || 0;
+            this.departmentId = VisitMaster1.departmentId || 0;
+            this.patientOldNew = VisitMaster1.patientOldNew || 0;
+            this.phoneAppId = VisitMaster1.phoneAppId || 0
+            this.IsCancelled = VisitMaster1.IsCancelled || 0
+            this.classId = VisitMaster1.classId || 0
+            this.firstFollowupVisit = VisitMaster1.firstFollowupVisit || "";
+            this.addedBy = VisitMaster1.addedBy || 0
+            this.updatedBy = VisitMaster1.updatedBy || 0;
+        }
+    }
+  }

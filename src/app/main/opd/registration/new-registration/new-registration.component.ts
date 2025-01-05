@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-new-registration',
@@ -39,6 +40,9 @@ export class NewRegistrationComponent implements OnInit {
     screenFromString = 'registration';
     matDialogRef: any;
     RegID: number = 0;
+    ApiUrl1 = 'Prefix/get-prefixs'
+    // prefixId=0;
+    // prefixName='';
 
     // New Api
     autocompleteModegender: string = "Gender";
@@ -49,7 +53,8 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
     @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
-
+    @ViewChild('ddlState') ddlState: AirmidAutocompleteComponent;
+    @ViewChild('ddlCountry') ddlCountry: AirmidAutocompleteComponent;
 
     constructor(public _registerService: RegistrationService,
         private accountService: AuthenticationService,
@@ -59,35 +64,61 @@ export class NewRegistrationComponent implements OnInit {
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
         public datePipe: DatePipe
     ) {
-        this.personalFormGroup = this._registerService.createPesonalForm();
+
     }
 
 
     ngOnInit(): void {
-
+        this.personalFormGroup = this._registerService.createPesonalForm1();
         this.minDate = new Date();
-
         console.log(this.data)
-        if (this.data.regId > 0) {
-            this.registerObj = this.data;
-            // this.personalFormGroup.patchValue(this.registerObj);
-        } else {
+        
+        if(this.data.Submitflag==true)
+            this.registerObj.regId=this.data.data1.RegID
+debugger
+        if (this.data.data1.regId > 0) {
+            setTimeout(() => {
+                this._registerService.getRegistraionById(this.data.data1.regId).subscribe((response) => {
+                    this.registerObj = response;
+                   
+                   });
+            }, 500);
+        }
+        else {
             this.personalFormGroup.reset();
+
         }
     }
     get f() {
         return this.personalFormGroup.controls;
     }
     onChangePrefix(e) {
+        debugger
         this.ddlGender.SetSelection(e.sexId);
     }
+
+    onChangestate(e) {
+        this.ddlCountry.SetSelection(e.stateId);
+    }
+
+    onChangecity(e) {
+        this.ddlState.SetSelection(e.cityId);
+        this.ddlCountry.SetSelection(e.stateId);
+    }
+
+    
     OnSubmit() {
-        this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+        console.log(this.personalFormGroup.value)
+        // if (this.personalFormGroup.valid) {
+            this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        // } else {
+        //     this.toastr.warning("Form Is Invalid !...");
+        // }
     }
 
     onClose() {
@@ -183,7 +214,7 @@ export class NewRegistrationComponent implements OnInit {
 
     getValidationMessages() {
         return {
-            FirstName: [
+            firstName: [
                 { name: "required", Message: "First Name is required" },
                 { name: "maxLength", Message: "Enter only upto 50 chars" },
                 { name: "pattern", Message: "only char allowed." }
@@ -233,11 +264,19 @@ export class NewRegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
             ],
+            phoneNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                // { name: "required", Message: "phoneNo No is required" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+            ],
             aadharCardNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "AadharCard No is required" },
+                { name: "required", Message: "AAdharcard No is required" },
                 { name: "minLength", Message: "12 digit required." },
                 { name: "maxLength", Message: "More than 12 digits not allowed." }
+
             ],
         };
     }

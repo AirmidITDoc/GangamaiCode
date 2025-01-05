@@ -20,7 +20,7 @@ export class RegistrationService {
     private _loaderService: LoaderService
   ) {
     this.myFilterform = this.filterForm();
-    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup = this.createPesonalForm1();
   }
 
   filterForm(): FormGroup {
@@ -104,9 +104,75 @@ export class RegistrationService {
     });
 
   }
+
+  createPesonalForm1() {
+    return this._formBuilder.group({
+      RegId: [0],
+      RegNo: '1',
+      PrefixId: ['', [Validators.required]],
+      FirstName:['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+      ]],
+      MiddleName: ['', [
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+      ]],
+      LastName: ['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+      ]],
+      GenderId: new FormControl('', [Validators.required]),
+      Address: '',
+      DateOfBirth: [(new Date()).toISOString()],
+      Age: ['0'],
+      AgeYear: ['0', [
+        // Validators.required,
+        Validators.maxLength(3),
+        Validators.pattern("^[0-9]*$")]],
+      AgeMonth: ['0', [
+        Validators.pattern("^[0-9]*$")]],
+      AgeDay: ['0', [
+        Validators.pattern("^[0-9]*$")]],
+      PhoneNo: ['', [Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
+      MobileNo: ['', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
+      aadharCardNo: ['', [Validators.required,
+        Validators.minLength(12),
+        Validators.maxLength(12),
+        Validators.pattern("^[0-9]*$")
+        ]],
+      // aadharCardNo: ['', Validators.compose([Validators.minLength(12),
+      // Validators.maxLength(12), Validators.pattern("^[0-9]*$")
+      // ])],
+      panCardNo: 'ds',
+      MaritalStatusId: '',
+      ReligionId: 0,
+      AreaId: '',
+      CityId: '',
+      City: ['d'],
+      StateId: '',
+      CountryId: '',
+      IsCharity: false,
+      IsSeniorCitizen: false,
+      AddedBy: 1,
+      updatedBy: 1,
+      RegDate: [],
+      RegTime: [(new Date()).toISOString()],
+      Photo: [''],
+      PinNo: [''],
+      // isActive:[]
+    });
+
+  }
  // new Api
  initializeFormGroup() {
-  this.createPesonalForm();
+  this.createPesonalForm1();
 }
 
 
@@ -117,22 +183,23 @@ export class RegistrationService {
 
  
   public RegstrationtSaveData(Param: any, showLoader = true) {
-    if (Param.regId) {
-      return this._httpClient1.PostData("OutPatient/RegistrationUpdate"+ Param.regId, Param, showLoader);
+    debugger
+    if (Param.RegId) {
+      return this._httpClient1.PostData("OutPatient/RegistrationUpdate",Param, showLoader);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
   }
 
-  public RegstrationtSave(Param: any, showLoader = true) {
-    if (Param.regID) {
-      return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regID, Param, showLoader);
-    } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
-  }
+  // public RegstrationtSave(Param: any, showLoader = true) {
+  //   if (Param.regID) {
+  //     return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regID, Param, showLoader);
+  //   } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
+  // }
 
-  public Regstrationtupdate(Param: any, showLoader = true) {
-    if (Param.regId) {
-      return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regId, Param, showLoader);
-    } else return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
-  }
+  // public Regstrationtupdate(Param: any, showLoader = true) {
+  //   if (Param.regId) {
+  //     return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regId, Param, showLoader);
+  //   } else return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
+  // }
 
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
@@ -155,8 +222,12 @@ export class RegistrationService {
   }
   populateFormpersonal(param) { }
 
-  public getRegistraionById(Id) {
-    return this._httpClient1.GetData("OutPatient/" + Id);
+  public getRegistraionById(Id,showLoader = true) {
+    return this._httpClient1.GetData("OutPatient/" + Id,showLoader);
+}
+
+public getcitylist(version){
+  return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
 }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

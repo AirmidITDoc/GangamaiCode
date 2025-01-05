@@ -135,8 +135,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     // }
     // console.log(m_data);
     console.log(this.phoneappForm.value);
-    // this._phoneAppointListService.phoneMasterSave(m_data).subscribe((response) => {
-    this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
+   this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {

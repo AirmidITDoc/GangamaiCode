@@ -17,7 +17,7 @@ export class AppointmentlistService {
     public _httpClient: HttpClient,
   ) {  
     this.myformSearch=this.filterForm();
-    // this.VisitFormGroup = this.createVisitdetailForm(); 
+    this.myCrossConsulteForm = this.createConsultatDrForm(); 
     }
 
   
@@ -49,8 +49,8 @@ createSearchForm(): FormGroup {
 
 createConsultatDrForm() {
   return this._formBuilder.group({
-    DoctorID: '',
-    Departmentid: ''
+    consultantDocId: '',
+    departmentId: ''
   });
 }
 
@@ -154,7 +154,9 @@ public getdoctorList(employee) {
   return this._httpClient1.PostData("DoctoreMaster/List",employee)
 }  
 
-
+public getVisitById(Id,showLoader = true) {
+  return this._httpClient1.GetData("VisitDetail/" + Id,showLoader);
+}
 }
 
 

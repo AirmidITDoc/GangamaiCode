@@ -43,11 +43,12 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Prefix" formControlName="prefixId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj.prefixId"
-                                            [validations]="getValidationMessages().prefixId"
-                                            [mode]="autocompleteModeprefix">
-                                        </airmid-autocomplete>
+                                        <airmid-autocomplete label="Prefix" formControlName="PrefixId"
+                                        [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
+                                        [validations]="getValidationMessages().prefixId" ValueField="prefixId"
+                                        TextField="prefixName" (selectionChange)="onChangePrefix($event)"
+                                        ApiUrl="Prefix/get-prefixs">
+                                    </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -131,8 +132,8 @@
                                             <mat-datepicker #validFromPicker></mat-datepicker>
                                         </mat-form-field> -->
                                         <app-airmid-dateofbirth [formGroup]="personalFormGroup"
-                                            formControlName="dateOfBirth"
-                                            [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                            formControlName="dateofBirth"
+                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -247,19 +248,19 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="State" formControlName="stateId"
-                                            [value]="registerObj.stateId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().stateId"
-                                            [mode]="autocompleteModestate">
-                                        </airmid-autocomplete>
+                                        <airmid-autocomplete label="State" formControlName="StateId"
+                                        [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
+                                        [validations]="getValidationMessages().stateId" #ddlState
+                                        [mode]="autocompleteModestate" (selectionChange)="onChangestate($event)">
+                                    </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Country" formControlName="countryId"
-                                            [value]="registerObj.countryId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().countryId"
-                                            [mode]="autocompleteModecountry">
-                                        </airmid-autocomplete>
+                                        <airmid-autocomplete label="Country" formControlName="CountryId"
+                                        [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
+                                        [validations]="getValidationMessages().countryId" #ddlCountry
+                                        [mode]="autocompleteModecountry">
+                                    </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
