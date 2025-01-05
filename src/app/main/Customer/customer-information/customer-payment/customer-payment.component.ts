@@ -91,7 +91,7 @@ export class CustomerPaymentComponent implements OnInit {
         "createdBy":this._loggedService.currentUserValue.user.id || 0,
         "createdByDateTime": formattedTime,
          "tranId": this.TransId || 0,
-         "tranType":   this.tranType || ''
+         "tranType": this.tranType || ''
       }  
       let submitData = {
         "customerPaymentInsert": customerPaymentInsertObj

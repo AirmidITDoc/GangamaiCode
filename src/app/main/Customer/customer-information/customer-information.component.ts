@@ -101,25 +101,18 @@ export class CustomerInformationComponent implements OnInit {
   // }
 
   getCustomerList() {
-    // this.sIsLoading = 'loading-data';
-  
     const vdata = {
       "CustomerName": this._CustomerInfo.SearchForm.get('CustomerName').value + '%' || '%',
       "IsActive": this.IsActive,
       "Start": (this.paginator?.pageIndex ?? 0),
       "Length": (this.paginator?.pageSize ?? 100),
     };
-  
     console.log('Request Data:', vdata);
-  
     this._CustomerInfo.getCustomerList(vdata).subscribe(
       (data) => {
         console.log('API Response:', data);
-  
         this.dsCustomerInfo.data = data["Table1"] ?? [] as CustomerInfoList[];
-  
         this.resultsLength = data["Table"][0]["total_row"];
-  
         this.sIsLoading = '';
         console.log('Customer Info Data:', this.dsCustomerInfo.data);
       },

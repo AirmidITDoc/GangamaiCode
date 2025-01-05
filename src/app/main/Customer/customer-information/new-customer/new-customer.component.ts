@@ -123,7 +123,6 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
       customerInformationInsertObj['amcDate'] = this._CustomerInfo.myform.get('InstallationDate').value;
       customerInformationInsertObj['createdBy'] = this._loggedService.currentUserValue.user.id || 0;
 
-
       let submitData = {
         "customerInformationInsert": customerInformationInsertObj,
       };
