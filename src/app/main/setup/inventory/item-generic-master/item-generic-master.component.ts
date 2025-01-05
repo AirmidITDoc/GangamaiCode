@@ -4,7 +4,6 @@ import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewGenericComponent } from "./new-generic/new-generic.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";

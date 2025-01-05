@@ -5,7 +5,6 @@ import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { NewModeofpaymentComponent } from "./new-modeofpayment/new-modeofpayment.component";
 import { MatDialog } from "@angular/material/dialog";
 

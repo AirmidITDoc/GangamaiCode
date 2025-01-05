@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -18,19 +17,7 @@ export class SubtpaCompanyMasterService {
     }
     createsubtpacompanyForm(): FormGroup {
         return this._formBuilder.group({
-            /**
-             * { swagger JSON insert :-
-            "subCompanyId": 0,
-            "compTypeId": 0,
-            "companyName": "string",
-            "address": "string",
-            "city": "string",
-            "pinNo": "string",
-            "phoneNo": "string",
-            "mobileNo": "string",
-            "faxNo": "string"
-            }
-             */
+           
             subCompanyId: [0],
             compTypeId: ["",
                 Validators.required

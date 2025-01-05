@@ -1,17 +1,22 @@
 import { FormGroup } from '@angular/forms';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { InstructionmasterService } from '../instructionmaster.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-instruction-master',
-  templateUrl: './new-instruction-master.component.html',
-  styleUrls: ['./new-instruction-master.component.scss']
+    selector: 'app-new-instruction-master',
+    templateUrl: './new-instruction-master.component.html',
+    styleUrls: ['./new-instruction-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewInstructionMasterComponent implements OnInit {
-  instructionForm:FormGroup;
-  isActive:boolean=true;
+  
+    instructionForm:FormGroup;
+    isActive:boolean=true;
+    saveflag : boolean = false;
 
   constructor(
     public _InstructionMasterService: InstructionmasterService,
@@ -19,26 +24,21 @@ export class NewInstructionMasterComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService) { }
 
-  ngOnInit(): void {
-    this.instructionForm=this._InstructionMasterService.createInstructionForm();
-    if(this.data){
-        this.isActive=this.data.isActive
-        this.instructionForm.patchValue(this.data);
+    ngOnInit(): void {
+        this.instructionForm=this._InstructionMasterService.createInstructionForm();
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.instructionForm.patchValue(this.data);
+        }
     }
-  }
 
-    saveflag : boolean = false;
+    
     onSubmit() {
         debugger
-      if(!this.instructionForm.invalid){
+      if(!this.instructionForm.invalid)
+      {
         this.saveflag = true;
-        
-        // var mdata=
-        // {
-        //   "InstructionId": 0,
-        //   "instructionDescription": this.instructionForm.get("InstructionName").value || "",
-        //   "instructioninMarathi": "ABC"
-        // }
+      
         console.log("Instruction json:", this.instructionForm.value);
   
         this._InstructionMasterService.instructionMasterInsert(this.instructionForm.value).subscribe((response)=>{

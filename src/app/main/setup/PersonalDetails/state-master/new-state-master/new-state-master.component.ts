@@ -1,38 +1,41 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { StateMasterService } from '../state-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-state-master',
-  templateUrl: './new-state-master.component.html',
-  styleUrls: ['./new-state-master.component.scss']
+    selector: 'app-new-state-master',
+    templateUrl: './new-state-master.component.html',
+    styleUrls: ['./new-state-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
-
-
 export class NewStateMasterComponent implements OnInit {
 
-  stateForm: FormGroup;
-  isActive:boolean=true;
-  constructor(
+    stateForm: FormGroup;
+    isActive:boolean=true;
+    saveflag : boolean = false;
+
+    constructor(
       public _StateMasterService: StateMasterService,
       public dialogRef: MatDialogRef<NewStateMasterComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
-  ) { }
+    ) { }
 
   autocompleteModecountry: string = "State";
 
   countryId = 0;
 
-  ngOnInit(): void {
+    ngOnInit(): void {
       this.stateForm = this._StateMasterService.createStateForm();
       console.log(this.data)
     if(this.data.stateId > 0){
       this.isActive=this.data.isActive;
       this.stateForm.patchValue(this.data);
-}
+    }
     else{
       this.stateForm.reset();
       this.stateForm.get('isActive').setValue(1);
@@ -40,12 +43,12 @@ export class NewStateMasterComponent implements OnInit {
     }
   }
 
-  saveflag : boolean = false;
-  onSubmit() {
+  
+    onSubmit() {
     if(!this.stateForm.invalid)
         {
         this.saveflag = true;
-        console.log(this.stateForm.value)
+        console.log(this.stateForm.value);
           this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);
@@ -63,9 +66,7 @@ export class NewStateMasterComponent implements OnInit {
 
     }
       
-  
-
-  getValidationMessages() {
+    getValidationMessages() {
     return {
       countryId: [
             { name: "required", Message: "Country Name is required" }
@@ -76,16 +77,16 @@ export class NewStateMasterComponent implements OnInit {
           { name: "pattern", Message: "Only char allowed." }
       ]
     };
-}
+    }
 
 
-  selectChangecountry(obj: any){
-    console.log(obj);
-    this.countryId=obj.value
-  }
+    selectChangecountry(obj: any){
+        console.log(obj);
+        this.countryId=obj.value
+    }
 
-  onClear(val: boolean) {
+    onClear(val: boolean) {
       this.stateForm.reset();
       this.dialogRef.close(val);
-  }
+    }
 }

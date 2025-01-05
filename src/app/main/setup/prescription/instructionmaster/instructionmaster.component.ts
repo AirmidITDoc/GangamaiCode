@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { InstructionmasterService } from "./instructionmaster.service";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
-import { MatDialogRef, MatDialog } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { NewInstructionMasterComponent } from "./new-instruction-master/new-instruction-master.component";
@@ -19,8 +16,8 @@ import { NewInstructionMasterComponent } from "./new-instruction-master/new-inst
     animations: fuseAnimations,
 })
 export class InstructionmasterComponent implements OnInit {
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     constructor(public _InstructionService: InstructionmasterService, public _matDialog: MatDialog,
         public toastr: ToastrService) { }
@@ -74,177 +71,12 @@ export class InstructionmasterComponent implements OnInit {
         });
     }
 
-    // InstructionMasterList: any;
-    // sIsLoading:string= '';
-    // msg: any;
-
-    // displayedColumns: string[] = [
-    //     "InstructionId",
-    //     "InstructionName",
-    //     "IsDeleted",
-    //     "action",
-    // ];
-
     ngOnInit(): void {
     }
-
-
-    // getInstructionMasterList() {
-    //     this.sIsLoading = 'loading-data';
-    //     var param = {
-    //         InstructionName:this._InstructionService.myformSearch.get("InstructionNameSearch")
-    //                 .value.trim() + "%" || "%",
-    //     };
-    //     this._InstructionService.getInstructionMasterList(param).subscribe((Menu) => {
-    //         this.DSInstructionMasterList.data = Menu as InstructionMaster[];
-    //         this.DSInstructionMasterList.sort = this.sort;
-    //         this.DSInstructionMasterList.paginator = this.paginator;
-    //         this.sIsLoading = '';
-    //     },
-    //     error => {
-    //       this.sIsLoading = '';
-    //     });
-
-
-    // }
 
     onClear() {
         this._InstructionService.myForm.reset({ IsDeleted: "false" });
         this._InstructionService.initializeFormGroup();
     }
 
-    // onSubmit() {
-    //     if (this._InstructionService.myForm.valid) {
-    //         if (!this._InstructionService.myForm.get("InstructionId").value) {
-    //             var m_data = {
-    //                 insertInstructionMaster: {
-    //                     instructionName: this._InstructionService.myForm
-    //                         .get("InstructionName")
-    //                         .value.trim(),
-
-    //                     isActive: Boolean(
-    //                         JSON.parse(
-    //                             this._InstructionService.myForm.get("IsDeleted")
-    //                                 .value
-    //                         )
-    //                     ),
-    //                     // addedBy: 1,
-    //                 },
-    //             };
-    //             this._InstructionService
-    //                 .insertInstructionMaster(m_data)
-    //                 .subscribe((data) => {
-    //                     this.msg = m_data;
-    //                     if (data) {
-    //                         this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                         this.getInstructionMasterList();
-    //                         // Swal.fire(
-    //                         //     "Saved !",
-    //                         //     "Record saved Successfully !",
-    //                         //     "success"
-    //                         // ).then((result) => {
-    //                         //     if (result.isConfirmed) {
-    //                         //         this.getInstructionMasterList();
-    //                         //     }
-    //                         // });
-    //                     } else {
-    //                         this.toastr.error('Instruction Master Data not saved !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.getInstructionMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Instruction Class Data not saved !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //         } else {
-    //             var m_dataUpdate = {
-    //                 updateInstructionMaster: {
-    //                     instructionId:
-    //                         this._InstructionService.myForm.get("InstructionId")
-    //                             .value,
-    //                     instructionName: this._InstructionService.myForm
-    //                         .get("InstructionName")
-    //                         .value.trim(),
-
-    //                     isActive: Boolean(
-    //                         JSON.parse(
-    //                             this._InstructionService.myForm.get("IsDeleted")
-    //                                 .value
-    //                         )
-    //                     ),
-    //                     // updatedBy: 1,
-    //                 },
-    //             };
-    //             this._InstructionService
-    //                 .updateInstructionMaster(m_dataUpdate)
-    //                 .subscribe((data) => {
-    //                     this.msg = m_dataUpdate;
-    //                     if (data) {
-    //                         this.toastr.success('Record updated Successfully.', 'updated !', {
-    //                             toastClass: 'tostr-tost custom-toast-success',
-    //                           });
-    //                         this.getInstructionMasterList();
-    //                         // Swal.fire(
-    //                         //     "Updated !",
-    //                         //     "Record updated Successfully !",
-    //                         //     "success"
-    //                         // ).then((result) => {
-    //                         //     if (result.isConfirmed) {
-    //                         //         this.getInstructionMasterList();
-    //                         //     }
-    //                         // });
-    //                     } else {
-    //                         this.toastr.error('Instruction Master Data not updated !, Please check API error..', 'Error !', {
-    //                             toastClass: 'tostr-tost custom-toast-error',
-    //                           });
-    //                     }
-    //                     this.getInstructionMasterList();
-    //                 },error => {
-    //                     this.toastr.error('Instruction Class Data not updated !, Please check API error..', 'Error !', {
-    //                      toastClass: 'tostr-tost custom-toast-error',
-    //                    });
-    //                  });
-    //         }
-    //         this.onClear();
-    //     }
-    // }
-
-    // onEdit(row) {
-    //     var m_data1 = {
-    //         InstructionId: row.InstructionId,
-    //         InstructionName: row.InstructionName.trim(),
-    //         IsDeleted: JSON.stringify(row.IsActive),
-    //         UpdatedBy: row.UpdatedBy,
-    //     };
-    //     console.log(m_data1);
-    //     this._InstructionService.populateForm(m_data1);
-    // }
 }
-// export class InstructionMaster {
-//     InstructionId: number;
-//     InstructionName: string;
-
-//     IsDeleted: boolean;
-//     AddedBy: number;
-//     UpdatedBy: number;
-
-//     /**
-//      * Constructor
-//      *
-//      * @param InstructionMaster
-//      */
-//     constructor(InstructionMaster) {
-//         {
-//             this.InstructionId = InstructionMaster.InstructionId || "";
-//             this.InstructionName = InstructionMaster.InstructionName || "";
-
-//             this.IsDeleted = InstructionMaster.IsDeleted || "false";
-//             this.AddedBy = InstructionMaster.AddedBy || "";
-//             this.UpdatedBy = InstructionMaster.UpdatedBy || "";
-//         }
-//     }
-// }

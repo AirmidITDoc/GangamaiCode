@@ -22,11 +22,9 @@ export class GenderMasterService {
         return this._formBuilder.group({
             genderId: [0],
             genderName: ['', [
-                Validators.required,
-                Validators.maxLength(50),
+                Validators.required, Validators.maxLength(50),
                 Validators.pattern('^[a-zA-Z () ]*$')
             ]],
-            // isActive: ["true"],
         });
     }
   

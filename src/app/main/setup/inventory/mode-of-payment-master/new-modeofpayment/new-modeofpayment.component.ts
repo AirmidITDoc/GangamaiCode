@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModeOfPaymentMasterService } from '../mode-of-payment-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-modeofpayment',
-  templateUrl: './new-modeofpayment.component.html',
-  styleUrls: ['./new-modeofpayment.component.scss']
+    selector: 'app-new-modeofpayment',
+    templateUrl: './new-modeofpayment.component.html',
+    styleUrls: ['./new-modeofpayment.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewModeofpaymentComponent implements OnInit {
 

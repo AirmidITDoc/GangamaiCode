@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 import { DischargetypeMasterService } from "./dischargetype-master.service";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
@@ -8,7 +7,6 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-
 
 @Component({
     selector: "app-dischargetype-master",
@@ -29,8 +27,8 @@ export class DischargetypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DischargeType/List",
         columnsList: [
-            { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Discharge Type Name", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA', width: 850 },
+            { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Discharge Type Name", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [

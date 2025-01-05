@@ -6,33 +6,35 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-religion-master',
-  templateUrl: './new-religion-master.component.html',
-  styleUrls: ['./new-religion-master.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-religion-master',
+    templateUrl: './new-religion-master.component.html',
+    styleUrls: ['./new-religion-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewReligionMasterComponent implements OnInit {
-  religionForm: FormGroup;
-  isActive:boolean=true;
-  saveflag : boolean = false ;
+    religionForm: FormGroup;
+    isActive:boolean=true;
+    saveflag : boolean = false ;
 
-  constructor(   public _ReligionMasterService: ReligionMasterService,
-    public dialogRef: MatDialogRef<NewReligionMasterComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService) { }
+    constructor(   public _ReligionMasterService: ReligionMasterService,
+        public dialogRef: MatDialogRef<NewReligionMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService)
+    { }
 
-  ngOnInit(): void {
-    this.religionForm = this._ReligionMasterService.CreateReligionForm();
-    if(this.data){
-    this.isActive=this.data.isActive
-    this.religionForm.patchValue(this.data);
-  }
-  }
+    ngOnInit(): void {
+        this.religionForm = this._ReligionMasterService.CreateReligionForm();
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.religionForm.patchValue(this.data);
+        }
+    }
  
   onSubmit() {
     debugger
-    if (this.religionForm.valid) {
+    if(this.religionForm.valid) 
+    {
         this.saveflag = true;
         
         console.log("JSON :-",this.religionForm.value);
@@ -54,19 +56,19 @@ export class NewReligionMasterComponent implements OnInit {
 
   }
 
-getValidationMessages() {
-  return {
-      religionName: [
-          { name: "required", Message: "Religion Name is required" },
-          { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
-          { name: "pattern", Message: "Only Characters Allowed." }
-      ]
-  };
-}
+    getValidationMessages() {
+        return {
+            religionName: [
+                { name: "required", Message: "Religion Name is required" },
+                { name: "maxlength", Message: "Religion name should not be greater than 50 char." },
+                { name: "pattern", Message: "Only Characters Allowed." }
+            ]
+        };
+    }
 
-onClear(val: boolean) {
-    this.religionForm.reset();
-    this.dialogRef.close(val);
-}
+    onClear(val: boolean) {
+        this.religionForm.reset();
+        this.dialogRef.close(val);
+    }
 
 }

@@ -1,24 +1,16 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { map, startWith, takeUntil } from "rxjs/operators";
-import {  TemplatedetailList, TestList, TestMaster, TestmasterComponent } from "../testmaster.component";
+import {  TemplatedetailList, TestList, TestMaster } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { Observable, ReplaySubject, Subject } from "rxjs";
 import { FormControl, FormGroup } from "@angular/forms";
-import Swal from "sweetalert2";
 import { MatTableDataSource } from "@angular/material/table";
-import { element } from "protractor";
 import { ToastrService } from "ngx-toastr";
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { PainAssesList } from "app/main/nursingstation/clinical-care-chart/clinical-care-chart.component";
 import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatAutocomplete } from "@angular/material/autocomplete";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { ConsentModule } from "app/main/nursingstation/consent/consent.module";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 

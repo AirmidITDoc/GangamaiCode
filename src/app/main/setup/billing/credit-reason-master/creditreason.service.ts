@@ -26,10 +26,6 @@ export class CreditreasonService {
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]
         ],
-        //   isActive: ["true"],
-        //   AddedBy: ["0"],
-        //   UpdatedBy: ["0"],
-        //   AddedByName: [""],
       });
   }
   createSearchForm(): FormGroup {

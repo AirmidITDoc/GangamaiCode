@@ -1,15 +1,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 import { ParametermasterService } from "./parametermaster.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatAccordion } from "@angular/material/expansion";
 import { fuseAnimations } from "@fuse/animations";
 import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-form-master.component";
-import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
-import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { AddformulaComponent } from "./addformula/addformula.component";

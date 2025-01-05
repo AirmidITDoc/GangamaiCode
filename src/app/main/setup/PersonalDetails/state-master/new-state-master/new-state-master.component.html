@@ -25,20 +25,21 @@
                             formControlName="stateName" 
                             [value]="data?.stateName" 
                             [formGroup]="stateForm"
-                            [validations]="getValidationMessages().stateName" [maxLength]="50">
+                            [validations]="getValidationMessages().stateName" 
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
-            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-autocomplete 
-                    label="CountryId"  [value]="data?.countryId" 
-                    formControlName="countryId"
-                    [formGroup]="stateForm"
-                    [validations]="getValidationMessages().countryId"
-                    [mode]="autocompleteModecountry">
-                </airmid-autocomplete>
-            </div>
-
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete 
+                            label="CountryId"  
+                            [value]="data?.countryId" 
+                            formControlName="countryId"
+                            [formGroup]="stateForm"
+                            [validations]="getValidationMessages().countryId"
+                            [mode]="autocompleteModecountry">
+                        </airmid-autocomplete>
+                    </div>
             </div>
         </form>
             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

@@ -36,7 +36,10 @@
                                         <div fxLayout="row" fxLayoutGap="5px">
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="Test name" formControlName="TestName" [value]=""
+                                                <airmid-textbox 
+                                                    label="Test name" 
+                                                    formControlName="TestName" 
+                                                    [value]=""
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().TestName"
                                                     [maxLength]="50">
@@ -44,7 +47,10 @@
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="PrintTestName" formControlName="PrintTestName" [value]=""
+                                                <airmid-textbox 
+                                                    label="PrintTestName" 
+                                                    formControlName="PrintTestName" 
+                                                    [value]=""
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().PrintTestName"
                                                     [maxLength]="50">
@@ -52,7 +58,9 @@
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete label="CategoryName" formControlName="CategoryId"
+                                                <airmid-autocomplete 
+                                                    label="CategoryName" 
+                                                    formControlName="CategoryId"
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationCategoryMessages().CategoryId"
                                                     [mode]="autocompleteModeCategoryId" 
@@ -62,13 +70,14 @@
                                             </div>
                         
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete label="ServiceName" formControlName="ServiceID"
+                                                <airmid-autocomplete 
+                                                    label="ServiceName" 
+                                                    formControlName="ServiceID"
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationServiceMessages().ServiceID"
                                                     [mode]="autocompleteModeServiceID" 
                                                     (selectDdlObject)="selectChangeServiceID($event)"
                                                     *ngIf="serviceflag">
-                                                    
                                                 </airmid-autocomplete>
                                             </div>
 

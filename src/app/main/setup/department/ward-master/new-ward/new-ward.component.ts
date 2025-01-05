@@ -48,10 +48,10 @@ export class NewWardComponent implements OnInit {
 
             this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
             this.toastr.success(response.message);
-        this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+            this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
         }
         else
         {

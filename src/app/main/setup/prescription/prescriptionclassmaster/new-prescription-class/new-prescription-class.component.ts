@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PrescriptionclassmasterService } from '../prescriptionclassmaster.service';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-prescription-class',
-  templateUrl: './new-prescription-class.component.html',
-  styleUrls: ['./new-prescription-class.component.scss']
+    selector: 'app-new-prescription-class',
+    templateUrl: './new-prescription-class.component.html',
+    styleUrls: ['./new-prescription-class.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewPrescriptionClassComponent implements OnInit {
 
@@ -31,14 +34,11 @@ export class NewPrescriptionClassComponent implements OnInit {
 
   Saveflag: boolean= false;
   onSubmit() {
-
+        debugger
       if(!this.prescriptionForm.invalid)
         {
             this.Saveflag=true
-        // var mdata={
-        //   "classId": 0,
-        //   "className": this.prescriptionForm.get("ClassName").value || ""
-        // }
+       
         console.log("class json:", this.prescriptionForm.value);
   
         this._PrescriptionclassService.prescriptionClassMasterSave(this.prescriptionForm.value).subscribe((response)=>{

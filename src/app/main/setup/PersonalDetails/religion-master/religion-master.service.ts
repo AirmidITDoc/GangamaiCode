@@ -27,7 +27,7 @@ export class ReligionMasterService {
             religionId: [0],
             religionName: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

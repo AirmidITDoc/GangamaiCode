@@ -41,11 +41,8 @@ export class NewSubgroupComponent implements OnInit {
       debugger
         if(!this.subgroupForm.invalid)
         {
-        //   var mdata={
-        //       "subGroupId": 0,
-        //       "groupId": this.subgroupForm.get("groupId").value || 0,
-        //       "subGroupName": this.subgroupForm.get("subGroupName").value || "",
-        //   }
+            this.saveflag = true;
+            
             console.log("sub group:", this.subgroupForm.value);
   
             this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response)=>{

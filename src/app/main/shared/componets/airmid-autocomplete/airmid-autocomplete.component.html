@@ -1,7 +1,7 @@
 <mat-form-field appearance="outline" fxFlex *ngIf="!IsMultiPle">
     <mat-label>{{label}}</mat-label>
     <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled"
-        [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" msInfiniteScroll >
+        [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll >
         <mat-option>
             <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
                 noEntriesFoundLabel="No results found"></ngx-mat-select-search>

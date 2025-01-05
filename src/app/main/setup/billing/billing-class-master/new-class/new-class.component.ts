@@ -35,6 +35,10 @@ export class NewClassComponent implements OnInit {
   onSubmit() {
    
       if (this.classForm.valid) {
+
+        this.saveflag = true;
+        
+        console.log("JSON :-",this.classForm.value)
         
           this._BillingClassMasterService.classMasterSave(this.classForm.value).subscribe((response) => {
               this.toastr.success(response.message);

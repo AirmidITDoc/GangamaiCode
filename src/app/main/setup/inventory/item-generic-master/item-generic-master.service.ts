@@ -1,4 +1,3 @@
-
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -23,7 +22,7 @@ export class ItemGenericMasterService {
                 genericId: [0],
                 genericName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -37,19 +36,11 @@ export class ItemGenericMasterService {
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createItemgenericForm();
     }
-    getValidationMessages() {
-        return {
-            itemGenericName: [
-                { name: "required", Message: "ItemGeneric Name is required" },
-                { name: "maxlength", Message: "ItemGeneric name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
+ 
     public genericMasterSave(Param: any, showLoader = true) {
         if (Param.genericId) {
             return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param, showLoader);
