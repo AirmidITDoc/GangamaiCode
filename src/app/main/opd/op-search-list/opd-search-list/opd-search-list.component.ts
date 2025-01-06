@@ -11,7 +11,7 @@ import { OPBillingComponent } from '../op-billing/op-billing.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith, takeUntil } from 'rxjs/operators';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
@@ -43,7 +43,7 @@ export class OpdSearchListComponent implements OnInit {
   currentDate = new Date();
   FinalAmt: any;
   balanceamt: any;  
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   registerObj:any;
   filteredOptions: any;
   noOptionFound: boolean = false;  

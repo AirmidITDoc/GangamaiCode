@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-airmid-dateofbirth',
@@ -8,7 +8,7 @@ import { UntypedFormGroup } from '@angular/forms';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AirmidDateofbirthComponent implements OnInit {
-    @Input() formGroup: UntypedFormGroup;
+    @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() value: Date;
     dateStyle?: string = 'Date';

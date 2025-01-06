@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -55,7 +55,7 @@ export class InPatientIssueComponent implements OnInit {
   @ViewChild('discAmount') discAmount: ElementRef;
   @ViewChild('ConseId') ConseId: ElementRef;
 
-  ItemSubform: UntypedFormGroup;
+  ItemSubform: FormGroup;
   sIsLoading: string = '';
   isLoading = true;
   Store1List: any = [];
@@ -173,7 +173,7 @@ export class InPatientIssueComponent implements OnInit {
   roundoffAmt: any;
   Functionflag = 0;
 
-  patientDetailsFormGrp: UntypedFormGroup;  
+  patientDetailsFormGrp: FormGroup;  
   dateTimeObj: any;
   screenFromString = 'payment-form';
   // Paymentobj = {};

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -58,7 +58,7 @@ export class NursingBedtransferComponent implements OnInit {
   BedNo:any=0;
   noOptionFound: boolean = false;
   isRegIdSelected: boolean = false;
-  myForm: UntypedFormGroup;
+  myForm: FormGroup;
   BedId:any=0;
   
   @ViewChild(MatSort) sort: MatSort;

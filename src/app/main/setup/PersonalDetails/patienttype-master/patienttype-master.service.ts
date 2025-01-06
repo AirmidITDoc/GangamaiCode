@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class PatienttypeMasterService {
-    myForm: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myForm: FormGroup;
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
@@ -15,14 +15,14 @@ export class PatienttypeMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             PatientTypeSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
 
-    createPatientTypeForm(): UntypedFormGroup {
+    createPatientTypeForm(): FormGroup {
         return this._formBuilder.group({
             patientTypeId: [0],
             patientType: ["",

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -10,9 +10,9 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class RegistrationService {
 
-  myFilterform: UntypedFormGroup;
-  mySaveForm: UntypedFormGroup;
-  personalFormGroup: UntypedFormGroup;
+  myFilterform: FormGroup;
+  mySaveForm: FormGroup;
+  personalFormGroup: FormGroup;
  
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
@@ -23,7 +23,7 @@ export class RegistrationService {
     this.personalFormGroup = this.createPesonalForm1();
   }
 
-  filterForm(): UntypedFormGroup {
+  filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
       FirstName: ['', [

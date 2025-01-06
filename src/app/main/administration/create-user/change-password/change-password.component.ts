@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserList } from '../create-user.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { AdministrationService } from '../../administration.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
   fname: String;
   lname: String;
   Uname: String;
-  changePasswordFormGroup: UntypedFormGroup;
+  changePasswordFormGroup: FormGroup;
   hide = true;
   UserId:any;
   passrule:boolean=false;

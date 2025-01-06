@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -8,9 +8,9 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class IndentService {
  
-  IndentSearchGroup :UntypedFormGroup;
-  newIndentFrom: UntypedFormGroup;
-  StoreFrom:UntypedFormGroup;
+  IndentSearchGroup :FormGroup;
+  newIndentFrom: FormGroup;
+  StoreFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,   public _httpClient1: ApiCaller,

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { UntypedFormGroup } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { DoctorMaster } from "../doctor-master.component";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -17,7 +17,7 @@ import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-au
 })
 export class NewDoctorComponent implements OnInit {
 
-    myForm: UntypedFormGroup
+    myForm: FormGroup
     @ViewChild('ddlDepartment') ddlDepartment: AirmidAutocompleteComponent;
     registerObj = new DoctorMaster({});
     signature: any;

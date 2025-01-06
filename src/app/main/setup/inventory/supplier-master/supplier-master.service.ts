@@ -1,14 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SupplierMaster } from "./supplier-master.component";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class SupplierMasterService {
-    supplierForm: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    supplierForm: FormGroup;
+    myformSearch: FormGroup;
     // registerObj = new SupplierMaster({});
     constructor(
         private _httpClient: ApiCaller,
@@ -18,7 +18,7 @@ export class SupplierMasterService {
         this.supplierForm = this.createSuppliermasterForm();
     }
 
-    createSuppliermasterForm(): UntypedFormGroup {
+    createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
             supplierId: [0],
             supplierName:["", [
@@ -150,7 +150,7 @@ export class SupplierMasterService {
         this.createSuppliermasterForm();
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             SupplierNameSearch: [""],
             IsDeletedSearch: ["2"],

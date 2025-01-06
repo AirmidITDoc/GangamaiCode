@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -7,8 +7,8 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class DepartmentMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -18,7 +18,7 @@ export class DepartmentMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createDepartmentForm(): UntypedFormGroup {
+    createDepartmentForm(): FormGroup {
         return this._formBuilder.group({
             departmentId: [0],
             departmentName: ["",
@@ -32,7 +32,7 @@ export class DepartmentMasterService {
             UpdatedBy: ["0"],
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DepartmentNameSearch: [""],
             IsDeletedSearch: ["2"],

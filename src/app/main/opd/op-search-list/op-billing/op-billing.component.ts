@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -139,9 +139,9 @@ export class OPBillingComponent implements OnInit {
 
   IPBillingInfor: any = [];
 
-  registeredForm: UntypedFormGroup;
-  BillingForm: UntypedFormGroup;
-  myShowAdvanceForm: UntypedFormGroup;
+  registeredForm: FormGroup;
+  BillingForm: FormGroup;
+  myShowAdvanceForm: FormGroup;
 
   netPaybleAmt: any;
   netPaybleAmt1: any;
@@ -158,7 +158,7 @@ export class OPBillingComponent implements OnInit {
   registerObj = new RegInsert({});
   PatientName: any = "";
   RegId: any;
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   Regflag: boolean = false;
   RegDate: any;
   City: any;

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
@@ -14,8 +14,8 @@ export class AdmissionService {
     throw new Error('Method not implemented.');
   }
 
-  myFilterform: UntypedFormGroup;
-  mySaveForm: UntypedFormGroup;
+  myFilterform: FormGroup;
+  mySaveForm: FormGroup;
 
   counter = 0;
 
@@ -26,7 +26,7 @@ export class AdmissionService {
     this.mySaveForm = this.saveForm();
   }
 
-  filterForm(): UntypedFormGroup {
+  filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
       IPDNo: '',
@@ -48,7 +48,7 @@ export class AdmissionService {
     });
   }
 
-  saveForm(): UntypedFormGroup {
+  saveForm(): FormGroup {
     return this._formBuilder.group({
 
       AdmissionID: '',

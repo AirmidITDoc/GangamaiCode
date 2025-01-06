@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CountryMasterService } from '../country-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +13,7 @@ import { fuseAnimations } from '@fuse/animations';
       animations: fuseAnimations,
 })
 export class NewCountryMasterComponent implements OnInit {
-  countryForm: UntypedFormGroup;
+  countryForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -59,7 +59,7 @@ export class ResultEntryComponent implements OnInit {
     MouseEvent = true;
     screenFromString = 'opd-casepaper';
     PatientTypeList: any = [];
-    myformSearch: UntypedFormGroup;
+    myformSearch: FormGroup;
     isLoading = true;
     msg: any;
     step = 0;

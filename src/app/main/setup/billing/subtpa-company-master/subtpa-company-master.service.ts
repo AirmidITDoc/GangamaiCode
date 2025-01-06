@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class SubtpaCompanyMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
@@ -15,7 +15,7 @@ export class SubtpaCompanyMasterService {
         this.myform = this.createsubtpacompanyForm();
         this.myformSearch = this.createSearchForm();
     }
-    createsubtpacompanyForm(): UntypedFormGroup {
+    createsubtpacompanyForm(): FormGroup {
         return this._formBuilder.group({
            
             subCompanyId: [0],
@@ -64,7 +64,7 @@ export class SubtpaCompanyMasterService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
             IsDeletedSearch: ["2"],

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +23,7 @@ export class EndoscopyComponent implements OnInit {
 
  
   sIsLoading: string = '';
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   click: boolean = false;
   MouseEvent = true;
   AnesthType:any=''

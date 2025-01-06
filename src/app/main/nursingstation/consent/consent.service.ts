@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, FormGroupName } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, FormGroupName } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsentService {
-  myform:UntypedFormGroup;
+  myform:FormGroup;
 
   constructor(
     public _frombuilder : UntypedFormBuilder,

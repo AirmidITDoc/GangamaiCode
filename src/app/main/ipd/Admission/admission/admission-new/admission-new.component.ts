@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulat
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatStepper } from '@angular/material/stepper';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -74,11 +74,11 @@ export class AdmissionNewComponent implements OnInit {
   selectedGenderID: any;
   capturedImage: any;
   isLinear = true;
-  personalFormGroup: UntypedFormGroup;
-  hospitalFormGroup: UntypedFormGroup;
-  wardFormGroup: UntypedFormGroup;
-  otherFormGroup: UntypedFormGroup;
-  searchFormGroup: UntypedFormGroup;
+  personalFormGroup: FormGroup;
+  hospitalFormGroup: FormGroup;
+  wardFormGroup: FormGroup;
+  otherFormGroup: FormGroup;
+  searchFormGroup: FormGroup;
   registration: any;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';

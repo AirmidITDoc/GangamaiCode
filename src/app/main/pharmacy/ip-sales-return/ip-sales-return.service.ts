@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IpSalesReturnService {
 
-  userFormGroup: UntypedFormGroup;
-  IPFinalform :UntypedFormGroup;
+  userFormGroup: FormGroup;
+  IPFinalform :FormGroup;
 
 
   constructor(

@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PharAdvanceService {
-  SearchGroupForm : UntypedFormGroup;
-  NewAdvanceForm : UntypedFormGroup;
-  SearchRefundForm : UntypedFormGroup;
-  NewRefundForm : UntypedFormGroup
+  SearchGroupForm : FormGroup;
+  NewAdvanceForm : FormGroup;
+  SearchRefundForm : FormGroup;
+  NewRefundForm : FormGroup
 
   constructor(
     public _formbuilder:UntypedFormBuilder,

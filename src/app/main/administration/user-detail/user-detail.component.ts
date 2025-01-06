@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AdministrationService } from '../administration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -26,7 +26,7 @@ export class UserDetailComponent implements OnInit {
   StoreList: any = [];
   RoleList: any = [];
   DoctortypecmbList: any = [];
-  UserForm: UntypedFormGroup;
+  UserForm: FormGroup;
   filteredOptionsRole: Observable<string[]>;
   filteredOptionsDoctorName: Observable<string[]>;
   filteredOptionsStorename: Observable<string[]>;

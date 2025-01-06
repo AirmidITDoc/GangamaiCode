@@ -2,7 +2,8 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ItemGenericMasterService } from '../item-generic-master.service';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-new-generic',
@@ -12,8 +13,9 @@ import { UntypedFormGroup } from '@angular/forms';
     animations: fuseAnimations,
 })
 export class NewGenericComponent implements OnInit {
-  genericForm: UntypedFormGroup;
+  genericForm: FormGroup;
   isActive:boolean=true;
+  Saveflag:boolean=false;
 
     constructor(
       public _ItemGenericMasterService: ItemGenericMasterService,

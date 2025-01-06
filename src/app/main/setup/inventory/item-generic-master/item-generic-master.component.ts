@@ -7,7 +7,7 @@ import { NewGenericComponent } from "./new-generic/new-generic.component";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { UntypedFormGroup } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-item-generic-master",
@@ -17,7 +17,7 @@ import { UntypedFormGroup } from "@angular/forms";
     animations: fuseAnimations,
 })
 export class ItemGenericMasterComponent implements OnInit {
-    genericForm: UntypedFormGroup;
+    genericForm: FormGroup;
 
     constructor(public _ItemGenericMasterService: ItemGenericMasterService,
         public _matDialog: MatDialog,

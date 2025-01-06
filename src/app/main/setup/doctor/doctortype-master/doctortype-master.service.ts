@@ -1,12 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class DoctortypeMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -16,7 +16,7 @@ export class DoctortypeMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createDoctortypeForm(): UntypedFormGroup {
+    createDoctortypeForm(): FormGroup {
         return this._formBuilder.group({
             id: [""],
             doctorType: ["",
@@ -28,7 +28,7 @@ export class DoctortypeMasterService {
             isDeleted: ['1'],
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DoctorTypeSearch: [""],
             IsDeletedSearch: ["2"],

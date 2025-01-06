@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +8,11 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 export class GrnReturnService {
 
 
-  NewGRNRetFinalFrom: UntypedFormGroup;
-  GRNReturnSearchFrom :UntypedFormGroup;
-  NewGRNReturnFrom :UntypedFormGroup;
-  GRNListFrom:UntypedFormGroup;
-  GRNReturnStoreFrom:UntypedFormGroup;
+  NewGRNRetFinalFrom: FormGroup;
+  GRNReturnSearchFrom :FormGroup;
+  NewGRNReturnFrom :FormGroup;
+  GRNListFrom:FormGroup;
+  GRNReturnStoreFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,

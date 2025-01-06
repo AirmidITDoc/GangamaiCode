@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ResultEntryService } from '../result-entry.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -55,7 +55,7 @@ export class ResultEntrytwoComponent implements OnInit {
  filteredOptionsisTemplate: Observable<string[]>;
  filteredresultdr: Observable<string[]>;
  TemplateDesc:any;
-  otherForm: UntypedFormGroup;
+  otherForm: FormGroup;
   reportIdData:any;
   TemplateId:any=0;
   vTemplateDesc:any="";

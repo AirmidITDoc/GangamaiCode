@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { RequestforlabtestService } from '../requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -64,8 +64,8 @@ export class NewRequestforlabComponent implements OnInit {
     'buttons'
   ]
 
-  searchFormGroup: UntypedFormGroup;
-  myFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
+  myFormGroup: FormGroup;
 
   dstable1 = new MatTableDataSource<LabRequest>();
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
@@ -98,7 +98,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.myFormGroup = this.createMyForm(); 
   }
 
-  createMyForm():UntypedFormGroup {
+  createMyForm():FormGroup {
     return this._FormBuilder.group({
       IsPathRad: ['3'],
       ServiceName1: '',
@@ -113,7 +113,7 @@ export class NewRequestforlabComponent implements OnInit {
       IsOnFileTest:''
     })
   }
-  createSearchForm():UntypedFormGroup{
+  createSearchForm():FormGroup{
     return this._FormBuilder.group({
       RegID:[''],
       radioIp:['1'] 

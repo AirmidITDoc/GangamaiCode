@@ -1,20 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResultEntryService {
-  myformSearch: UntypedFormGroup;
+  myformSearch: FormGroup;
 
-  myform: UntypedFormGroup;
+  myform: FormGroup;
   constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) { 
     this.myformSearch = this.createSearchForm();
     this.myform = this.createtemplateForm();
   }
 
-  createSearchForm(): UntypedFormGroup {
+  createSearchForm(): FormGroup {
     return this._formBuilder.group({
       RegNoSearch: [],
       FirstNameSearch:  ['', [
@@ -38,7 +38,7 @@ export class ResultEntryService {
     });
   }
 
-  createtemplateForm(): UntypedFormGroup {
+  createtemplateForm(): FormGroup {
     return this._formBuilder.group({
       TemplateId: [''],
       TemplateName: [''],

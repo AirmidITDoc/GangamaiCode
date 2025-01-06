@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,8 +23,8 @@ import { fuseAnimations } from '@fuse/animations';
 export class CathLabComponent implements OnInit {
 
   hasSelectedContacts: boolean;
-  personalFormGroup: UntypedFormGroup;
-  searchFormGroup : UntypedFormGroup;
+  personalFormGroup: FormGroup;
+  searchFormGroup : FormGroup;
   registerObj = new CathLabBookingDetail({});
   options = [];
   filteredOptions: any;

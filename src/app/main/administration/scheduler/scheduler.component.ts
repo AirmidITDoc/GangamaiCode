@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
   animations: fuseAnimations,
 })
 export class SchdulerComponent implements OnInit {
-  myformSearch: UntypedFormGroup;
+  myformSearch: FormGroup;
   constructor(private formBuilder: UntypedFormBuilder,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
@@ -115,7 +115,7 @@ export class SchdulerComponent implements OnInit {
     this.ScheduleName=this.myformSearch.get("ScheduleName").value;
     this.getSchedulerList();
   }
-  createSearchForm(): UntypedFormGroup {
+  createSearchForm(): FormGroup {
     return this.formBuilder.group({
       ScheduleName: ['']
     });

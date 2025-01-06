@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdmissionService } from '../Admission/admission/admission.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations
 })
 export class CompanyInformationComponent implements OnInit {
-  companyFormGroup: UntypedFormGroup;
+  companyFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'discharge';
   selectedAdvanceObj: AdmissionPersonlModel;

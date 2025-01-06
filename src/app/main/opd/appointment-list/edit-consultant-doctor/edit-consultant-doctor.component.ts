@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class EditConsultantDoctorComponent implements OnInit {
 
-  ConsdrForm: UntypedFormGroup;
+  ConsdrForm: FormGroup;
 
   VisitId:any=0;
   RegId:any=0;

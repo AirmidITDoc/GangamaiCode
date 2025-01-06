@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { CategorymasterService } from '../categorymaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewCategoryComponent implements OnInit {
   
-    categoryForm: UntypedFormGroup;
+    categoryForm: FormGroup;
     isActive:boolean=true;
     saveflag : boolean = false;
 

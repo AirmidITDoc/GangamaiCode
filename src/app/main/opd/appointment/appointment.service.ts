@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -10,8 +10,8 @@ export class AppointmentService {
 
   public afterMethodFileSelect: Subject<any> = new Subject();
   
-  myFilterform: UntypedFormGroup;
-  mySaveForm: UntypedFormGroup;
+  myFilterform: FormGroup;
+  mySaveForm: FormGroup;
   now = Date.now();
   sIsLoading: string = '';
   getRegistrationSearchList: any;
@@ -21,7 +21,7 @@ export class AppointmentService {
     this.myFilterform = this.filterForm();
       }
 
-  filterForm(): UntypedFormGroup {
+  filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo:'',
       FirstName:['', [

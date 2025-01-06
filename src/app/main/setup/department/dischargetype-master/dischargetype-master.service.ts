@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class DischargetypeMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -16,7 +16,7 @@ export class DischargetypeMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createDischargetypeForm(): UntypedFormGroup {
+    createDischargetypeForm(): FormGroup {
         return this._formBuilder.group({
             dischargeTypeId: [0],
             dischargeTypeName: ["",
@@ -32,7 +32,7 @@ export class DischargetypeMasterService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DischargeTypeNameSearch: [""],
             IsDeletedSearch: ["2"],

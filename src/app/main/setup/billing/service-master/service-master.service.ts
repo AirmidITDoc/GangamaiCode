@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -9,8 +9,8 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class ServiceMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
     edit_data = {};
     constructor(
         private _httpClient: ApiCaller,
@@ -21,7 +21,7 @@ export class ServiceMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createServicemasterForm(): UntypedFormGroup {
+    createServicemasterForm(): FormGroup {
         return this._formBuilder.group({
             ServiceId: [""],
             GroupId: [""],
@@ -67,7 +67,7 @@ export class ServiceMasterService {
             EffectiveDate: [""],
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TariffId:[""],
             GroupId:[""],

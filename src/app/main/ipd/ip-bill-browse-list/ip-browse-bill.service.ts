@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -8,9 +8,9 @@ import { ApiCaller } from 'app/core/services/apiCaller';
   providedIn: 'root'
 })
 export class IPBrowseBillService {
-  myFilterIpbillbrowseform: UntypedFormGroup;
-  myFilterIppaymentbrowseform: UntypedFormGroup;
-  myFilterIprefundbrowseform: UntypedFormGroup;
+  myFilterIpbillbrowseform: FormGroup;
+  myFilterIppaymentbrowseform: FormGroup;
+  myFilterIprefundbrowseform: FormGroup;
 
   constructor(public _httpClient:HttpClient,  private _loaderService: LoaderService,public _httpClient1:ApiCaller,
     private _formBuilder: UntypedFormBuilder) { 
@@ -22,7 +22,7 @@ export class IPBrowseBillService {
     }
 
 
-    filterForm_IpdBrowse(): UntypedFormGroup {
+    filterForm_IpdBrowse(): FormGroup {
   return this._formBuilder.group({
     PBillNo: [''],
     RegNo: [''],
@@ -38,7 +38,7 @@ export class IPBrowseBillService {
 }
 
 
-filterForm_IpdpaymentBrowse(): UntypedFormGroup {
+filterForm_IpdpaymentBrowse(): FormGroup {
   return this._formBuilder.group({
     PBillNo: [''],
     RegNo: [''],
@@ -53,7 +53,7 @@ filterForm_IpdpaymentBrowse(): UntypedFormGroup {
   });
 }
 
-filterForm_IpdrefundBrowse(): UntypedFormGroup {
+filterForm_IpdrefundBrowse(): FormGroup {
   return this._formBuilder.group({
     PBillNo: [''],
     RegNo: [''],

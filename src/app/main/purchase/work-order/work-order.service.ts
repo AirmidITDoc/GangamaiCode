@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkOrderService {
-  myFormGroup:UntypedFormGroup;
-  NewWorkForm:UntypedFormGroup
-  WorkorderItemForm:UntypedFormGroup
-  WorkorderFinalForm:UntypedFormGroup;
-  WorkOrderStoreForm:UntypedFormGroup;
+  myFormGroup:FormGroup;
+  NewWorkForm:FormGroup
+  WorkorderItemForm:FormGroup
+  WorkorderFinalForm:FormGroup;
+  WorkOrderStoreForm:FormGroup;
 
 
   constructor(

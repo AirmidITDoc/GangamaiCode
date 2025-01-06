@@ -1,6 +1,6 @@
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -19,9 +19,9 @@ export class RequestforlabtestService {
     private handler: HttpBackend
   ) { this.mySearchForm = this.SearchFilterForm();}
 
-  mySearchForm:UntypedFormGroup;
+  mySearchForm:FormGroup;
 
-  SearchFilterForm():UntypedFormGroup{
+  SearchFilterForm():FormGroup{
     return this._FormBuilder.group({
       startdate :[(new Date()).toISOString()],
       enddate :[(new Date()).toISOString()],

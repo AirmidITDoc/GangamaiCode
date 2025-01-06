@@ -1,6 +1,6 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef, Optional, Self, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, NgControl } from '@angular/forms';
+import { UntypedFormControl, FormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -20,7 +20,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() mode: string;
     @Output() selectionChange = new EventEmitter<any>();
     control = new UntypedFormControl();
-    @Input() formGroup: UntypedFormGroup;
+    @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";

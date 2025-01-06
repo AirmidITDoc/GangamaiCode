@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -8,11 +8,11 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class IssueToDepartmentService {
 
-  NewIssueGroup: UntypedFormGroup;
-  IssueSearchGroup :UntypedFormGroup;
-  StoreFrom:UntypedFormGroup;
-  IndentFrom:UntypedFormGroup;
-  IssueFinalForm:UntypedFormGroup;
+  NewIssueGroup: FormGroup;
+  IssueSearchGroup :FormGroup;
+  StoreFrom:FormGroup;
+  IndentFrom:FormGroup;
+  IssueFinalForm:FormGroup;
   
 
   constructor(

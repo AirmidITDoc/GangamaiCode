@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +22,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class CertificateComponent implements OnInit {
 
-  searchFormGroup : UntypedFormGroup;
+  searchFormGroup : FormGroup;
   registerObj = new CharityPatientdetail({});
   options = [];
   filteredOptions: any;

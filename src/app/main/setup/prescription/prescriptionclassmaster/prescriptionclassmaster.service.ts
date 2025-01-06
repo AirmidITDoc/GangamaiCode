@@ -1,13 +1,13 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class PrescriptionclassmasterService {
-    prescriptionForm: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    prescriptionForm: FormGroup;
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
@@ -16,7 +16,7 @@ export class PrescriptionclassmasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createPrescriptionclassForm(): UntypedFormGroup {
+    createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
             ClassId: [0],
             ClassName: ["",
@@ -28,7 +28,7 @@ export class PrescriptionclassmasterService {
             isActive: ["true"]
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
           TemplateNameSearch: [""],
             IsDeletedSearch: ["2"],

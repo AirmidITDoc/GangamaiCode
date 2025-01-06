@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
@@ -8,8 +8,8 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class BrowsSalesBillService {
 
-  userForm: UntypedFormGroup;
-  formReturn: UntypedFormGroup;
+  userForm: FormGroup;
+  formReturn: FormGroup;
 
 
   constructor(
@@ -21,7 +21,7 @@ export class BrowsSalesBillService {
     this.formReturn = this.SearchFilterReturn();
   }
 
-  SearchFilter(): UntypedFormGroup {
+  SearchFilter(): FormGroup {
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
@@ -37,7 +37,7 @@ export class BrowsSalesBillService {
 
     })
   }
-  SearchFilterReturn(): UntypedFormGroup {
+  SearchFilterReturn(): FormGroup {
     return this._formBuilder.group({
       startdate1: [(new Date()).toISOString()],
       enddate1: [(new Date()).toISOString()],

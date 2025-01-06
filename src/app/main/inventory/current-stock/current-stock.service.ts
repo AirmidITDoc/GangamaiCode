@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CurrentStockService {
 
-  userFormGroup: UntypedFormGroup;
-  SearchGroup :UntypedFormGroup;
-  ItemWiseFrom:UntypedFormGroup;
-  PurchaseItem:UntypedFormGroup;
-  ItemSummeryFrom:UntypedFormGroup;
-  BatchExpWiseFrom:UntypedFormGroup;
+  userFormGroup: FormGroup;
+  SearchGroup :FormGroup;
+  ItemWiseFrom:FormGroup;
+  PurchaseItem:FormGroup;
+  ItemSummeryFrom:FormGroup;
+  BatchExpWiseFrom:FormGroup;
 
   constructor(
     public _httpClient: HttpClient,

@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import Swal from 'sweetalert2';
 import { AdvanceDetailObj } from '../appointment.component';
 import { Observable } from 'rxjs';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -26,7 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CrossConsultationComponent implements OnInit {
 
 
-  InfoFormGroup: UntypedFormGroup;
+  InfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'admission-form';
   selectedAdvanceObj: AdmissionPersonlModel;

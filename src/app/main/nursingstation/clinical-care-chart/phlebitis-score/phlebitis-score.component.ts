@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { ClinicalCareChartService } from '../clinical-care-chart.service';
 import { DatePipe } from '@angular/common';
@@ -24,7 +24,7 @@ export class PhlebitisScoreComponent implements OnInit {
     'MobileNo',
     'PatientName' 
   ]
-  MyForm:UntypedFormGroup;
+  MyForm:FormGroup;
   PatientType:any;
   RefDocName:any;
   DepartmentName:any;

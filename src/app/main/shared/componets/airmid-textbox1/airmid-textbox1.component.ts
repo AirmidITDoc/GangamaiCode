@@ -3,7 +3,7 @@ import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self, forwa
 import {
     ControlValueAccessor,
     UntypedFormControl,
-    UntypedFormGroup,
+    FormGroup,
     NG_VALUE_ACCESSOR,
     NgControl,
     Validators
@@ -41,7 +41,7 @@ export class AirmidTextbox1Component implements
 
   control = new UntypedFormControl();
   stateChanges: Subject<void> = new Subject();
-  @Input() formGroup: UntypedFormGroup;
+  @Input() formGroup: FormGroup;
   @Input() formControlName:string;
   // @Input() maxLength: number = 10;
   // @Input() minLength: number = 10;

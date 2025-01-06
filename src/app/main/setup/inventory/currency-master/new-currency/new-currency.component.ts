@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CurrencymasterService } from '../currencymaster.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,9 +12,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NewCurrencyComponent implements OnInit {
 
     Saveflag: boolean= false;
-    currencyForm: UntypedFormGroup;
+    currencyForm: FormGroup;
     isActive:boolean=true;
-    Saveflag: boolean= false;
 
     constructor(
         public _CurrencymasterService: CurrencymasterService,

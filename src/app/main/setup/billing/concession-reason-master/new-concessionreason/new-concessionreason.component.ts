@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConcessionReasonMasterService } from '../concession-reason-master.service';
@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewConcessionreasonComponent implements OnInit {
 
-  concessionForm: UntypedFormGroup;
+  concessionForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

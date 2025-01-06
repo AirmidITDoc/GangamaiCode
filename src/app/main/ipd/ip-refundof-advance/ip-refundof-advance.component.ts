@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -39,7 +39,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   icon_disable = false;
   screenFromString = 'refund-of-advance';
-  RefundOfAdvanceFormGroup: UntypedFormGroup;
+  RefundOfAdvanceFormGroup: FormGroup;
   dateTimeObj: any;
   BillNo: number;
   NetBillAmount: number;
@@ -104,7 +104,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   @Input() dataArray: any;
   currentDate = new Date();
   selectedAdvanceObj: AdvanceDetailObj;
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   City: any;
   CompanyName: any;
   Tarrifname: any;

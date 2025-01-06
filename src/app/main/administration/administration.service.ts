@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdministrationService {
-  myDocShrformSearch: UntypedFormGroup;
+  myDocShrformSearch: FormGroup;
   constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder,
     ) {
       this.myDocShrformSearch = this.BillListForDocShr();
@@ -14,7 +14,7 @@ export class AdministrationService {
 
 
      
-  BillListForDocShr(): UntypedFormGroup {
+  BillListForDocShr(): FormGroup {
     return this._formBuilder.group({
 
       start: [(new Date()).toISOString()],

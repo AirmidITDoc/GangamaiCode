@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -11,10 +11,10 @@ export class TestmasterService {
     is_Test = true;
     is_subtest = false;
     is_templatetest= false;
-    myformSearch: UntypedFormGroup;
-    myform: UntypedFormGroup;
-    AddParameterFrom: UntypedFormGroup;
-    mytemplateform: UntypedFormGroup;
+    myformSearch: FormGroup;
+    myform: FormGroup;
+    AddParameterFrom: FormGroup;
+    mytemplateform: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _loaderService: LoaderService,
@@ -26,7 +26,7 @@ export class TestmasterService {
         this.mytemplateform = this.createTemplateForm();
     }
 
-    createPathtestForm(): UntypedFormGroup {
+    createPathtestForm(): FormGroup {
         return this._formBuilder.group({
 
             TestId: [""],
@@ -77,20 +77,20 @@ export class TestmasterService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TestNameSearch: [""],
             IsDeletedSearch: ["2"],
             IsSubTest: [" "],
         });
     }
-    createAddparaFrom(): UntypedFormGroup {
+    createAddparaFrom(): FormGroup {
         return this._formBuilder.group({
             ParameterName: [""],
             NewIsSubTest: [" "],
         });
     }
-    createTemplateForm(): UntypedFormGroup {
+    createTemplateForm(): FormGroup {
         return this._formBuilder.group({
             TemplateId:[""],
             TemplateName:[""],

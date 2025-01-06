@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -44,10 +44,10 @@ type NewType = Observable<any[]>;
 export class NewOPRefundofbillComponent implements OnInit {
 
     screenFromString = 'app-op-refund-bill';
-    RefundOfBillFormGroup: UntypedFormGroup;
-    searchFormGroup: UntypedFormGroup;
-    myRefundBillForm: UntypedFormGroup;
-    myserviceForm: UntypedFormGroup;
+    RefundOfBillFormGroup: FormGroup;
+    searchFormGroup: FormGroup;
+    myRefundBillForm: FormGroup;
+    myserviceForm: FormGroup;
     isLoading: String = '';
     selectedAdvanceObj: AdvanceDetailObj;
     filteredOptions: NewType;
@@ -293,7 +293,7 @@ export class NewOPRefundofbillComponent implements OnInit {
 
 
 
-    refundForm(): UntypedFormGroup {
+    refundForm(): FormGroup {
         return this._formBuilder.group({
             advanceAmt: [Validators.pattern("^[0-9]*$")],
             BillNo: [''],

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AreaMasterService } from '../area-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -14,8 +14,9 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewAreaComponent implements OnInit {
 
-  areaForm: UntypedFormGroup;
+  areaForm: FormGroup;
   isActive:boolean=true
+  saveflag:boolean=false;
   constructor(
       public _AreaMasterService: AreaMasterService,
       public dialogRef: MatDialogRef<NewAreaComponent>,

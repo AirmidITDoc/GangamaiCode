@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CancellationService {
-  UserFormGroup: UntypedFormGroup;
-  MyForm: UntypedFormGroup;
+  UserFormGroup: FormGroup;
+  MyForm: FormGroup;
   constructor(
     public _formBuilder: UntypedFormBuilder,
     public _httpClient: HttpClient

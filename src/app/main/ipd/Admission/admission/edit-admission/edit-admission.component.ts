@@ -1,7 +1,7 @@
 ///
 import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -36,9 +36,9 @@ import { Console } from 'console';
 export class EditAdmissionComponent implements OnInit {
   currentDate = new Date();
 
-  searchFormGroup: UntypedFormGroup;
-  hospitalFormGroup: UntypedFormGroup;
-  otherFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
+  hospitalFormGroup: FormGroup;
+  otherFormGroup: FormGroup;
 
   subscriptionArr: Subscription[] = [];
   screenFromString = 'admission-form';

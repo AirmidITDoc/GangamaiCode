@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IPBrowseRefundofBillService {
 
-  myFilterform: UntypedFormGroup;
+  myFilterform: FormGroup;
   
   
   constructor(public _httpClient:HttpClient,
@@ -16,7 +16,7 @@ export class IPBrowseRefundofBillService {
         this.myFilterform=this.filterForm();
        }
   
-    filterForm(): UntypedFormGroup {
+    filterForm(): FormGroup {
       return this._formBuilder.group({
         PBillNo: '',
         RegNo: '',

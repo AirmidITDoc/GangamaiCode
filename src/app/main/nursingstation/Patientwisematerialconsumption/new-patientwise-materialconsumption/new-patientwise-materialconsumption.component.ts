@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -103,8 +103,8 @@ screenFromString = 'admission-form';
   
   BillingClassCmbList: any = [];
   IPBillingInfor: any = [];
-  registeredForm: UntypedFormGroup;
-  myShowAdvanceForm: UntypedFormGroup;
+  registeredForm: FormGroup;
+  myShowAdvanceForm: FormGroup;
   concessionAmtOfNetAmt: any = 0;
   netPaybleAmt: any;
   TotalnetPaybleAmt:any;

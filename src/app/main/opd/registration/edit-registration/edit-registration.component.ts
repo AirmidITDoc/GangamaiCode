@@ -9,7 +9,7 @@ import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -30,13 +30,13 @@ import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-au
 export class EditRegistrationComponent implements OnInit {
 
 
-    personalFormGroup: UntypedFormGroup;
+    personalFormGroup: FormGroup;
     registerObj = new RegInsert({});
     isActive: boolean = true;
 
     submitted = false;
     now = Date.now();
-    searchFormGroup: UntypedFormGroup;
+    searchFormGroup: FormGroup;
     isRegSearchDisabled: boolean = true;
     newRegSelected: any = 'registration';
     minDate: Date;

@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
 import { validateBasis } from "@angular/flex-layout";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class ItemCategoryMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -18,7 +18,7 @@ export class ItemCategoryMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createItemCategoryForm(): UntypedFormGroup {
+    createItemCategoryForm(): FormGroup {
         return this._formBuilder.group({
             itemCategoryId: [0],
             itemCategoryName: ["",
@@ -33,7 +33,7 @@ export class ItemCategoryMasterService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemCategoryNameSearch: [""],
             IsDeletedSearch: ["2"],

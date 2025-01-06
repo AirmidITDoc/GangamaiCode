@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { DoctortypeMasterService } from '../doctortype-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewDoctorTypeComponent implements OnInit {
 
-  doctortypeForm: UntypedFormGroup;
+  doctortypeForm: FormGroup;
   constructor(
       public _DoctortypeMasterService: DoctortypeMasterService,
       public dialogRef: MatDialogRef<NewDoctorTypeComponent>,

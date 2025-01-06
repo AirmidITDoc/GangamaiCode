@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-    registerForm: UntypedFormGroup;
+    registerForm: FormGroup;
 
     // Private
     private _unsubscribeAll: Subject<any>;

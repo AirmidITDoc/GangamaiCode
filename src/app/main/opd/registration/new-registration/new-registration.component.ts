@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -21,13 +21,13 @@ import Swal from 'sweetalert2';
 export class NewRegistrationComponent implements OnInit {
 
 
-    personalFormGroup: UntypedFormGroup;
+    personalFormGroup: FormGroup;
     registerObj = new RegInsert({});
 
 
     submitted = false;
     now = Date.now();
-    searchFormGroup: UntypedFormGroup;
+    searchFormGroup: FormGroup;
     isRegSearchDisabled: boolean = true;
     newRegSelected: any = 'registration';
     minDate: Date;

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -8,10 +8,10 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class StockAdjustmentService {
 
-  userFormGroup: UntypedFormGroup;
-  StoreFrom:UntypedFormGroup;
-  MRPAdjform:UntypedFormGroup;
-  GSTAdjustment : UntypedFormGroup;
+  userFormGroup: FormGroup;
+  StoreFrom:FormGroup;
+  MRPAdjform:FormGroup;
+  GSTAdjustment : FormGroup;
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,

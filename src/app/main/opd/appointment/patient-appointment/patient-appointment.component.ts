@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { RegInsert, VisitMaster } from '../appointment.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
@@ -76,9 +76,9 @@ export class PatientAppointmentComponent implements OnInit {
   selectedGenderID: any;
   capturedImage: any;
   isLinear = true;
-  personalFormGroup: UntypedFormGroup;
-  VisitFormGroup: UntypedFormGroup;
-  searchFormGroup: UntypedFormGroup;
+  personalFormGroup: FormGroup;
+  VisitFormGroup: FormGroup;
+  searchFormGroup: FormGroup;
   registration: any;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';

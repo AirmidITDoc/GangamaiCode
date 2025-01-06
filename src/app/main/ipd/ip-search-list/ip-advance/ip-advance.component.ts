@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -68,7 +68,7 @@ export class IPAdvanceComponent implements OnInit {
   menuActions: Array<string> = [];
   advanceAmount: any;
   isLoadingStr: string = '';
-  AdvFormGroup: UntypedFormGroup;
+  AdvFormGroup: FormGroup;
   isLoading: string = '';
   selectedAdvanceObj: AdmissionPersonlModel;
   screenFromString = 'advance';

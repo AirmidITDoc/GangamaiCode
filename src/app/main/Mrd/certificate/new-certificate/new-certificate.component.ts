@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -48,7 +48,7 @@ export class NewCertificateComponent implements OnInit {
   DoctorList: any = [];
   Doctor1List: any = [];
   Doctor2List: any = [];
-  createMrdcertificate: UntypedFormGroup;
+  createMrdcertificate: FormGroup;
 
   // registerObj1 = new DischargePatientDetail({});
   options = [];
@@ -79,7 +79,7 @@ export class NewCertificateComponent implements OnInit {
   PatientHeaderObj: any;
   // dataSource = new MatTableDataSource<PhoneschlistMaster>();
   isChecked = true;
-  myForm:UntypedFormGroup;
+  myForm:FormGroup;
   PatientListfilteredOptions: any;
   RegId:any;
   vAdmissionID:any;

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../../appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
@@ -29,9 +29,9 @@ type NewType = Observable<any[]>;
 export class OPRefundofBillComponent implements OnInit {
 
   screenFromString = 'app-op-refund-bill';
-  RefundOfBillFormGroup: UntypedFormGroup;
-  myRefundBillForm: UntypedFormGroup;
-  myserviceForm: UntypedFormGroup;
+  RefundOfBillFormGroup: FormGroup;
+  myRefundBillForm: FormGroup;
+  myserviceForm: FormGroup;
   isLoading: String = '';
   selectedAdvanceObj: AdvanceDetailObj;
   filteredOptions: NewType;
@@ -153,7 +153,7 @@ export class OPRefundofBillComponent implements OnInit {
   }
 
 
-  refundForm(): UntypedFormGroup {
+  refundForm(): FormGroup {
     return this._formBuilder.group({
       advanceAmt: [Validators.pattern("^[0-9]*$")],
       BillNo: [''],

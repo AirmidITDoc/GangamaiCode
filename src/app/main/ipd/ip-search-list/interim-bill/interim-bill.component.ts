@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -38,7 +38,7 @@ export class InterimBillComponent implements OnInit {
   interimArray: any = [];
   isLoading: String = '';
   dateTimeObj: any;
-  InterimFormGroup: UntypedFormGroup;
+  InterimFormGroup: FormGroup;
   BillNo: number;
   NetBillAmount: number;
   TotalRefundAmount: number;
@@ -148,7 +148,7 @@ export class InterimBillComponent implements OnInit {
     this.getConcessionReasonList();
   }
 
-  InterimForm(): UntypedFormGroup {
+  InterimForm(): FormGroup {
     return this.formBuilder.group({
       NetpayAmount: [Validators.pattern("^[0-9]*$")],
       TotalRefundAmount: [Validators.pattern("^[0-9]*$")],

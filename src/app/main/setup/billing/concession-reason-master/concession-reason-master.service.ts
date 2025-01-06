@@ -1,14 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class ConcessionReasonMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -18,7 +18,7 @@ export class ConcessionReasonMasterService {
         this.myformSearch = this.createSearchForm();
     }
     
-    createConcessionreasonForm(): UntypedFormGroup {
+    createConcessionreasonForm(): FormGroup {
         return this._formBuilder.group({
             concessionId: [0],
             concessionReason: ["", 
@@ -33,7 +33,7 @@ export class ConcessionReasonMasterService {
             // AddedByName: [""],
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ConcessionReasonNameSearch: [""],
             IsDeletedSearch: ["2"],

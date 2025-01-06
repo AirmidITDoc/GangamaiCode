@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from '../../dashboard.service';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -49,7 +49,7 @@ export class SalesSummaryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
-  rangeFormGroup: UntypedFormGroup;
+  rangeFormGroup: FormGroup;
   FromStoreList:any=[];
   PharmStoreList: any = [];
 

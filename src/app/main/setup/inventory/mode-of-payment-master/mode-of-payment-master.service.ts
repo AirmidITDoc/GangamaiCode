@@ -1,14 +1,14 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class ModeOfPaymentMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -18,7 +18,7 @@ export class ModeOfPaymentMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createModeofpaymentForm(): UntypedFormGroup {
+    createModeofpaymentForm(): FormGroup {
         return this._formBuilder.group({
             id: [0],
             modeOfPayment: ["",
@@ -34,7 +34,7 @@ export class ModeOfPaymentMasterService {
         });
     }
     
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ModeOfPaymentSearch: [""],
             IsDeletedSearch: ["2"],

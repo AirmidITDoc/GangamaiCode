@@ -3,7 +3,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { AppointmentSreviceService } from "../appointment-srevice.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { fuseAnimations } from "@fuse/animations";
 import { HttpClient } from "@angular/common/http";
@@ -23,7 +23,7 @@ export class FeedbackComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    feedbackFormGroup: UntypedFormGroup;
+    feedbackFormGroup: FormGroup;
     msg: any;
     PrefixList: any;
     bankFilterCtrl: any;

@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@an
 import { PrescriptionReturnService } from '../prescription-return.service';
 import { DatePipe } from '@angular/common';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,7 +31,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   filteredOptions:any;
   noOptionFound: boolean = false;
   isItemIdSelected: boolean = false;
-  ItemSubform: UntypedFormGroup;
+  ItemSubform: FormGroup;
   registerObj = new RegInsert({});
   RegId: any;
   PatientListfilteredOptions: any;

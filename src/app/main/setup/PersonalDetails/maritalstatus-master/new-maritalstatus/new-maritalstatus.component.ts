@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MaritalstatusMasterService } from '../maritalstatus-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./new-maritalstatus.component.scss']
 })
 export class NewMaritalstatusComponent implements OnInit {
-  maritalForm: UntypedFormGroup;
+  maritalForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
   

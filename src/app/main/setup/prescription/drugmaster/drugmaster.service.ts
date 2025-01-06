@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class DrugmasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -16,7 +16,7 @@ export class DrugmasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createDrugForm(): UntypedFormGroup {
+    createDrugForm(): FormGroup {
         return this._formBuilder.group({
             drugId: [0],
             drugName: ["", 
@@ -34,7 +34,7 @@ export class DrugmasterService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DrugNameSearch: [""],
             IsDeletedSearch: ["2"],

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
@@ -124,12 +124,12 @@ export class NewAppointmentComponent implements OnInit {
 
     @ViewChild('attachments') attachment: any;
 
-    imageForm = new UntypedFormGroup({
+    imageForm = new FormGroup({
         imageFile: new UntypedFormControl('', [Validators.required]),
         imgFileSource: new UntypedFormControl('', [Validators.required])
     });
 
-    docsForm = new UntypedFormGroup({
+    docsForm = new FormGroup({
         docFile: new UntypedFormControl('', [Validators.required]),
         docFileSource: new UntypedFormControl('', [Validators.required])
     });

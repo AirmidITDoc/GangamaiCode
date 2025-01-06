@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OPListService {
-  myFilterbillform:UntypedFormGroup
-  myFilterpayform:UntypedFormGroup
-  myFilterrefundform:UntypedFormGroup
+  myFilterbillform:FormGroup
+  myFilterpayform:FormGroup
+  myFilterrefundform:FormGroup
   constructor(public _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder) {
     this.myFilterbillform=this.myFilterbillbrowseform();
     this.myFilterpayform=this.myFilterpaymentbrowseform();
@@ -17,7 +17,7 @@ export class OPListService {
 
 
   
-  myFilterbillbrowseform(): UntypedFormGroup {
+  myFilterbillbrowseform(): FormGroup {
     return this._formBuilder.group({
      
     //   FirstName: ['', [
@@ -33,7 +33,7 @@ export class OPListService {
      ReceiptNo: '',
     });
   }
-  myFilterpaymentbrowseform(): UntypedFormGroup {
+  myFilterpaymentbrowseform(): FormGroup {
     return this._formBuilder.group({
      
     //   FirstName: ['', [
@@ -49,7 +49,7 @@ export class OPListService {
      ReceiptNo: '',
     });
   }
-  myFilterrefundbrowseform(): UntypedFormGroup {
+  myFilterrefundbrowseform(): FormGroup {
     return this._formBuilder.group({
      
     //   FirstName: ['', [

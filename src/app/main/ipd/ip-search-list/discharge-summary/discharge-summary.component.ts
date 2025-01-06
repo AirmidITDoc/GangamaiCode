@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -34,8 +34,8 @@ export class DischargeSummaryComponent implements OnInit {
     'Action'
   ]
 
-  DischargesumForm:UntypedFormGroup;
-  MedicineItemForm:UntypedFormGroup;
+  DischargesumForm:FormGroup;
+  MedicineItemForm:FormGroup;
   submitted = false;
   msg: any;
   Id: any;
@@ -165,7 +165,7 @@ export class DischargeSummaryComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   isItemIdSelected:boolean=false;
-  MedicineItemform(): UntypedFormGroup {
+  MedicineItemform(): FormGroup {
     return this._formBuilder.group({
       ItemId:'',             
       DoseId:'',
@@ -173,7 +173,7 @@ export class DischargeSummaryComponent implements OnInit {
       Instruction:'',
     });
   }
-  showDischargeSummaryForm(): UntypedFormGroup {
+  showDischargeSummaryForm(): FormGroup {
     return this._formBuilder.group({
     
  AdmissionId:'',             

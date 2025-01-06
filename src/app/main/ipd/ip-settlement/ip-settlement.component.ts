@@ -5,7 +5,7 @@ import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import { Subscription } from 'rxjs';
 
 import { MatTableDataSource } from '@angular/material/table';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from '../advance';
@@ -43,7 +43,7 @@ export class IPSettlementComponent implements OnInit {
     currentDate = new Date();
     FinalAmt: any;
     balanceamt: any;
-    searchFormGroup: UntypedFormGroup;
+    searchFormGroup: FormGroup;
     registerObj: any;
     filteredOptions: any;
     noOptionFound: boolean = false;

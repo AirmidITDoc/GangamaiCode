@@ -11,7 +11,7 @@ import { AdmissionService } from './admission.service';
 import Swal from 'sweetalert2';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
@@ -53,7 +53,7 @@ export class AdmissionComponent implements OnInit {
 
   currentDate = new Date();
   // reportPrintObj: Admission;
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
 
   screenFromString = 'admission-form';
   selectedAdvanceObj: AdmissionPersonlModel;

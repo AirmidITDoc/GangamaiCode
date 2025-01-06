@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { StateMasterService } from '../state-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -14,8 +14,9 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewStateMasterComponent implements OnInit {
 
-  stateForm: UntypedFormGroup;
+  stateForm: FormGroup;
   isActive:boolean=true;
+  saveflag:boolean=false;
   constructor(
       public _StateMasterService: StateMasterService,
       public dialogRef: MatDialogRef<NewStateMasterComponent>,

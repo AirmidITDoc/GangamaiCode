@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RegInsert } from './appointment.component';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { LoaderService } from 'app/core/components/loader/loader.service';
@@ -11,8 +11,8 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 export class AppointmentSreviceService {
 
   public afterMethodFileSelect: Subject<any> = new Subject();
-   myFilterform: UntypedFormGroup;
-   mySaveForm:UntypedFormGroup;
+   myFilterform: FormGroup;
+   mySaveForm:FormGroup;
 
   now = Date.now();
   sIsLoading: string = '';
@@ -24,7 +24,7 @@ export class AppointmentSreviceService {
    
   }
 
-  filterForm(): UntypedFormGroup {
+  filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo:'',
       FirstName:['', [

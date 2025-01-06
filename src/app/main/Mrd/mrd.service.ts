@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,8 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 export class MrdService {
 
   
-  Otserachform:UntypedFormGroup;
-  otreservationFormGroup:UntypedFormGroup;
+  Otserachform:FormGroup;
+  otreservationFormGroup:FormGroup;
   
   constructor(private _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder) {
@@ -19,7 +19,7 @@ export class MrdService {
      }
  
 
-    filterForm(): UntypedFormGroup {
+    filterForm(): FormGroup {
       return this._formBuilder.group({
   
         OTTableID:'',

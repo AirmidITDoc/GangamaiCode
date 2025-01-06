@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { difference, forEach, parseInt } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2'; 
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ConditionalExpr } from '@angular/compiler';
 import { Observable, Subscription } from 'rxjs';
@@ -53,7 +53,7 @@ export class SalesHospitalComponent implements OnInit {
   @ViewChild('discAmount') discAmount: ElementRef;
   @ViewChild('ConseId') ConseId: ElementRef;
 
-  ItemSubform: UntypedFormGroup;
+  ItemSubform: FormGroup;
   sIsLoading: string = '';
   isLoading = true;
   Store1List: any = [];
@@ -173,7 +173,7 @@ export class SalesHospitalComponent implements OnInit {
 
  
 
-  patientDetailsFormGrp: UntypedFormGroup;
+  patientDetailsFormGrp: FormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
   paymentArr2: any[] = this.opService.getPaymentArr();
   paymentArr3: any[] = this.opService.getPaymentArr();

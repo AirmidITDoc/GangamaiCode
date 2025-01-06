@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DashboardService {
-  UseFrom: UntypedFormGroup;
-  DayWiseFrom:UntypedFormGroup;
-  MonthWiseFrom:UntypedFormGroup;
-  DailyUseFrom:UntypedFormGroup;
+  UseFrom: FormGroup;
+  DayWiseFrom:FormGroup;
+  MonthWiseFrom:FormGroup;
+  DailyUseFrom:FormGroup;
   constructor(public _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder
   ) { this.UseFrom = this.createUseFrom();

@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NursingnoteService {
-  myform: UntypedFormGroup;
+  myform: FormGroup;
   constructor(public _httpClient: HttpClient,
     public _formBuilder: UntypedFormBuilder) {
       this.myform = this.createtemplateForm();
      }
 
      
-  createtemplateForm(): UntypedFormGroup {
+  createtemplateForm(): FormGroup {
     return this._formBuilder.group({
       Note: [''], 
       Description:[''],

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import Swal from 'sweetalert2';
 import { OTReservationDetail } from '../ot-reservation/ot-reservation.component';
@@ -18,11 +18,11 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class OTNoteComponent implements OnInit {
 
-  personalFormGroup: UntypedFormGroup;
+  personalFormGroup: FormGroup;
 
   submitted = false;
   now = Date.now();
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   selectedAdvanceObj: OPIPPatientModel;

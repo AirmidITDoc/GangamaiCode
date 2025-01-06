@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../ip-search-list.component'; 
 import { Observable, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -34,10 +34,10 @@ type NewType = Observable<any[]>;
 })
 export class IPRefundofBillComponent implements OnInit {
 
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   screenFromString = 'app-op-refund-bill';
-  RefundOfBillFormGroup: UntypedFormGroup; 
-  myserviceForm: UntypedFormGroup;
+  RefundOfBillFormGroup: FormGroup; 
+  myserviceForm: FormGroup;
   isLoading: String = '';
   selectedAdvanceObj: AdvanceDetailObj;
   filteredOptions: NewType;
@@ -200,7 +200,7 @@ createSearchForm() {
   CashCounterID:['']
   });
 }
-refundForm(): UntypedFormGroup {
+refundForm(): FormGroup {
   return this._formBuilder.group({  
     TotalRefundAmount: [ ],
     Remark: [''],   

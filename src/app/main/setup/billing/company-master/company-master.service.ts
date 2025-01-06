@@ -1,14 +1,14 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class CompanyMasterService {
-    companyForm: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    companyForm: FormGroup;
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
@@ -17,7 +17,7 @@ export class CompanyMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createCompanymasterForm(): UntypedFormGroup {
+    createCompanymasterForm(): FormGroup {
         return this._formBuilder.group({
             companyId: [0],
             companyName: ["",
@@ -70,7 +70,7 @@ export class CompanyMasterService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
             IsDeletedSearch: ["2"],

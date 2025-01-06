@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -63,7 +63,7 @@ export class OPCasepaperComponent implements OnInit {
     { value: 'fracture', viewValue: 'Fracture' }
   ];
   currentDate = new Date();
-  caseFormGroup: UntypedFormGroup;
+  caseFormGroup: FormGroup;
   drugList: any = [];
   complaintList: any = [];
   examinationList: any = [];

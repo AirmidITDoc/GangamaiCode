@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ItemTypeMasterService } from '../item-type-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewItemtypeComponent implements OnInit {
 
-  itemtypeForm: UntypedFormGroup;
+  itemtypeForm: FormGroup;
   isActive:boolean=true;
   Saveflag: boolean= false;
 

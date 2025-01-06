@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -8,8 +8,8 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class RadioloyOrderlistService {
 
-  myformSearch: UntypedFormGroup;
-  myform: UntypedFormGroup;
+  myformSearch: FormGroup;
+  myform: FormGroup;
   
   
   
@@ -20,7 +20,7 @@ export class RadioloyOrderlistService {
         this.myform=this.createRadiologytemplateForm();
        }
   
-    filterForm(): UntypedFormGroup {
+    filterForm(): FormGroup {
       return this._formBuilder.group({
       RegNoSearch:[],
       FirstNameSearch:[''],
@@ -34,7 +34,7 @@ export class RadioloyOrderlistService {
       });
     }
    
-    createRadiologytemplateForm(): UntypedFormGroup {
+    createRadiologytemplateForm(): FormGroup {
       return this._formBuilder.group({
         TemplateId: [''],
         TemplateName: [''],

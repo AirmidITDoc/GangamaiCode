@@ -10,7 +10,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
@@ -43,7 +43,7 @@ export class PharmItemSummaryComponent implements OnInit {
     'BalanceQty',    
   ];
   Itemflag:boolean=false;
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   dateTimeObj: any;
   isLoadingStr: string = '';
   isLoading: String = '';
@@ -76,7 +76,7 @@ export class PharmItemSummaryComponent implements OnInit {
   ) { 
    
   }
-  UIForm:UntypedFormGroup;
+  UIForm:FormGroup;
   ngOnInit(): void {
     this.gePharStoreList();
 

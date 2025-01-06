@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SubtpaCompanyMasterService } from '../subtpa-company-master.service';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewSubtapComponent implements OnInit {
 
-  subTpaForm: UntypedFormGroup;
+  subTpaForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

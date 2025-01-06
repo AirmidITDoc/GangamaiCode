@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SampleDetailObj } from '../result-entry.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -46,7 +46,7 @@ export class ResultEntryOneComponent implements OnInit {
     PathologyDoctorList: any = [];
     DoctorList: any = [];
     Doctor1List: any = [];
-    otherForm: UntypedFormGroup;
+    otherForm: FormGroup;
     msg: any;
 
     selectedAdvanceObj1: SampleDetailObj;

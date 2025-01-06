@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { LocationMasterService } from '../location-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
@@ -13,7 +13,7 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewLocationComponent implements OnInit {
-  locationForm: UntypedFormGroup;
+  locationForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

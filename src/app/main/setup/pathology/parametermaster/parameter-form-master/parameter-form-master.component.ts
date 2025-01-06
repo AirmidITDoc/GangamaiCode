@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { Router } from "@angular/router";
-import { UntypedFormBuilder, FormControl, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ParametermasterService } from "../parametermaster.service";
 import { MatTableDataSource } from "@angular/material/table";
@@ -23,7 +23,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 })
 
 export class ParameterFormMasterComponent implements OnInit {
-    parameterForm:UntypedFormGroup;
+    parameterForm:FormGroup;
 
     isPrintDisSummaryChecked: boolean = false;
     autocompleteModeUnitId:string = "Unit";

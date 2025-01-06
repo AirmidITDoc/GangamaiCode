@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { PrefixMasterService } from '../prefix-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 
 
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewPrefixComponent implements OnInit {
-    prefixForm: UntypedFormGroup;
+    prefixForm: FormGroup;
     isActive:boolean=false;
     saveflag: boolean = false;
     autocompleteModegender: string = "Gender";

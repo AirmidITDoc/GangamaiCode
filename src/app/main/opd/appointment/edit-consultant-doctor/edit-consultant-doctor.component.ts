@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -32,7 +32,7 @@ export class EditConsultantDoctorComponent implements OnInit {
   PatientHeaderObj: SearchInforObj;
   AdmittedDoc1: any;
   PatientName: any;
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   VisitId: any;
   VisitDate: any;
   RegID: any = 0;

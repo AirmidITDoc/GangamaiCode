@@ -1,13 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
 })
 export class TalukaMasterService {
-    myForm: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myForm: FormGroup;
+    myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
         private _formBuilder: UntypedFormBuilder
@@ -16,7 +16,7 @@ export class TalukaMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createTalukaForm(): UntypedFormGroup {
+    createTalukaForm(): FormGroup {
         return this._formBuilder.group({
             TalukaId: [""],
             TalukaName: [""],
@@ -27,7 +27,7 @@ export class TalukaMasterService {
             UpdatedBy: ["0"],
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TalukaNameSearch: [""],
             IsDeletedSearch: ["2"],

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -82,10 +82,10 @@ export class NewCasepaperComponent implements OnInit {
   sIsLoading: string = '';
   noOptionFound: boolean = false;
   currentDate = new Date();
-  caseFormGroup: UntypedFormGroup;
-  searchFormGroup: UntypedFormGroup;
-  MedicineItemForm: UntypedFormGroup;
-  ItemForm: UntypedFormGroup;
+  caseFormGroup: FormGroup;
+  searchFormGroup: FormGroup;
+  MedicineItemForm: FormGroup;
+  ItemForm: FormGroup;
   CompanyName: any;
   Tarrifname: any;
   Doctorname: any;

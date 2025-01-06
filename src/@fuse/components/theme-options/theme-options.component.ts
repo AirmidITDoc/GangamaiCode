@@ -1,5 +1,5 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 export class FuseThemeOptionsComponent implements OnInit, OnDestroy
 {
     fuseConfig: any;
-    form: UntypedFormGroup;
+    form: FormGroup;
 
     @HostBinding('class.bar-closed')
     barClosed: boolean;

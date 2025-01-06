@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { TermsOfPaymentMasterService } from '../terms-of-payment-master.service';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-termofpayment',
@@ -11,7 +11,7 @@ import { UntypedFormGroup } from '@angular/forms';
 })
 export class NewTermofpaymentComponent implements OnInit {
 
-    termsofpaymentForm: UntypedFormGroup;
+    termsofpaymentForm: FormGroup;
     isActive:boolean=true;
     saveflag : boolean = false;
 

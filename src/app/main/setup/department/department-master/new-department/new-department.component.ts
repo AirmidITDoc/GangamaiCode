@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { DepartmentMasterService } from '../department-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewDepartmentComponent implements OnInit {
 
-  departmentForm: UntypedFormGroup;
+  departmentForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ export class OPSettlementComponent implements OnInit {
 
   
   currentDate = new Date();
-  patientDetailsFormGrp: UntypedFormGroup;
+  patientDetailsFormGrp: FormGroup;
   selectedPaymnet1: string = '';
   paymentArr1: any[] = this.opService.getPaymentArr();
   BindPaymentTypes() {

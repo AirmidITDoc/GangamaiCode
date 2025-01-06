@@ -1,13 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
 })
 export class RoleTemplateService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: HttpClient,
@@ -17,13 +17,13 @@ export class RoleTemplateService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             RoleNameSearch: [""]
         });
     }
 
-    createRoleForm(): UntypedFormGroup {
+    createRoleForm(): FormGroup {
         return this._formBuilder.group({
             RoleId: [""],
             RoleName: [""]

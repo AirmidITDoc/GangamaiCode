@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { CreditreasonService } from '../creditreason.service';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewCreditReasonComponent implements OnInit {
 
-  creditreasonForm: UntypedFormGroup;
+  creditreasonForm: FormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

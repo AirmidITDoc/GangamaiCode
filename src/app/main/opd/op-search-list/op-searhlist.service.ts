@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs';
@@ -17,12 +17,12 @@ export class OPSearhlistService {
     throw new Error('Method not implemented.');
   }
 
-  myFilterform: UntypedFormGroup;
-  casepaperform: UntypedFormGroup;
-  prescrtionform: UntypedFormGroup;
-  myRefundBillForm: UntypedFormGroup;
-  myShowAdvanceForm: UntypedFormGroup;
-   paymentForm: UntypedFormGroup;
+  myFilterform: FormGroup;
+  casepaperform: FormGroup;
+  prescrtionform: FormGroup;
+  myRefundBillForm: FormGroup;
+  myShowAdvanceForm: FormGroup;
+   paymentForm: FormGroup;
 
 
   constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
@@ -36,7 +36,7 @@ export class OPSearhlistService {
     
   }
 
-  filterForm(): UntypedFormGroup {
+  filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
       FirstName:['', [
@@ -63,7 +63,7 @@ export class OPSearhlistService {
     });
   }
 
-  createCasepaperForm(): UntypedFormGroup{
+  createCasepaperForm(): FormGroup{
     return this._formBuilder.group({
 
 
@@ -109,7 +109,7 @@ export class OPSearhlistService {
     });
   }
 
-  showAdvanceForm(): UntypedFormGroup {
+  showAdvanceForm(): FormGroup {
     return this._formBuilder.group({
       AdmissionID: '',
       AdvanceId: '',
@@ -178,7 +178,7 @@ export class OPSearhlistService {
   });
   }
   
-  showPaymentForm(): UntypedFormGroup{
+  showPaymentForm(): FormGroup{
     return this._formBuilder.group({
       PaymentId : '0',
       BillNo : '0',

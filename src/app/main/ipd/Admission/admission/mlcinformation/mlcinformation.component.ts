@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AdmissionService } from '../admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -22,7 +22,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class MLCInformationComponent implements OnInit {
 
-  MlcInfoFormGroup: UntypedFormGroup;
+  MlcInfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
   selectedAdvanceObj: AdmissionPersonlModel;

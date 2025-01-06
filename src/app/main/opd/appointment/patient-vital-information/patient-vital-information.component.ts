@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -33,7 +33,7 @@ export class PatientVitalInformationComponent implements OnInit {
   CompanyName: any;
   RefDocName: any;
   advanceObj:any;
-  MyFormGroup:UntypedFormGroup
+  MyFormGroup:FormGroup
 
   vHeight: any;
   vWeight: any;

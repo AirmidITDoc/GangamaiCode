@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +8,15 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 export class CreateUserService {
 
  
-  createuserform: UntypedFormGroup;
-  myformSearch: UntypedFormGroup;
+  createuserform: FormGroup;
+  myformSearch: FormGroup;
 
  constructor(private _httpClient: HttpClient,private _formBuilder: UntypedFormBuilder) {
    this.createuserform=this.createuserForm();
     this.myformSearch=this.createSearchForm();
  }
 
- createuserForm(): UntypedFormGroup {
+ createuserForm(): FormGroup {
    return this._formBuilder.group({
      UserId:[''],
      FirstName:['', [
@@ -43,7 +43,7 @@ export class CreateUserService {
    });
  }
 
- createSearchForm(): UntypedFormGroup {
+ createSearchForm(): FormGroup {
    return this._formBuilder.group({
      DoctorNameSearch: [''],
      IsDeletedSearch: ['2'],

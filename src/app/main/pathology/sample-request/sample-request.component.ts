@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,7 +25,7 @@ export class SampleRequestComponent implements OnInit {
   click: boolean = false;
   MouseEvent = true;
 
-  myformSearch: UntypedFormGroup;
+  myformSearch: FormGroup;
   isLoading = true;
   msg: any;
   step = 0;

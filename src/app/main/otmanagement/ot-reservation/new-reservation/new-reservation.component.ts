@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { OTReservationDetail } from '../ot-reservation.component';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -23,11 +23,11 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewReservationComponent implements OnInit {
 
  
-  personalFormGroup: UntypedFormGroup;
+  personalFormGroup: FormGroup;
   isRegIdSelected:Boolean=false;
   submitted = false;
   now = Date.now();
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   selectedAdvanceObj: OPIPPatientModel;
@@ -60,7 +60,7 @@ export class NewReservationComponent implements OnInit {
   Adm_Vit_ID: any = 0;
   public dateValue: Date = new Date();
   options = [];
-  myForm:UntypedFormGroup;
+  myForm:FormGroup;
   filteredOptions: any;
   noOptionFound: boolean = false;
   RegId:any;

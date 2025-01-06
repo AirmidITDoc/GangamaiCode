@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalesReturnService {
 
-  userFormGroup: UntypedFormGroup;
-  IndentSearchGroup :UntypedFormGroup;
-  IndentlistSearchGroup :UntypedFormGroup;
+  userFormGroup: FormGroup;
+  IndentSearchGroup :FormGroup;
+  IndentlistSearchGroup :FormGroup;
 
   constructor(
     public _httpClient: HttpClient,

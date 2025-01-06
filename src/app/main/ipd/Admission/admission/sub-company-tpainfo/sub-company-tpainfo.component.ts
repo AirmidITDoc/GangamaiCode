@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -20,7 +20,7 @@ import { Admission } from '../admission.component';
 })
 export class SubCompanyTPAInfoComponent implements OnInit {
 
-  SubcompanyFormGroup: UntypedFormGroup;
+  SubcompanyFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
   selectedAdvanceObj: Admission;

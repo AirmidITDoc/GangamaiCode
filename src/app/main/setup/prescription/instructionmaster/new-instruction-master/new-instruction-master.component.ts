@@ -1,5 +1,5 @@
-import { UntypedFormGroup } from '@angular/forms';
-import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { InstructionmasterService } from '../instructionmaster.service';
@@ -13,9 +13,9 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewInstructionMasterComponent implements OnInit {
-  instructionForm:UntypedFormGroup;
+  instructionForm:FormGroup;
   isActive:boolean=true;
-
+  saveflag:boolean=false;
   constructor(
     public _InstructionMasterService: InstructionmasterService,
     public dialogRef: MatDialogRef<NewInstructionMasterComponent>,

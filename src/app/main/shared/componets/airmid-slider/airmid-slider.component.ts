@@ -3,7 +3,7 @@ import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self, forwa
 import {
     ControlValueAccessor,
     UntypedFormControl,
-    UntypedFormGroup,
+    FormGroup,
     NG_VALUE_ACCESSOR,
     NgControl,
     Validators
@@ -29,7 +29,7 @@ export class AirmidSliderComponent implements
     color = 'accent';
     control = new UntypedFormControl();
     stateChanges: Subject<void> = new Subject();
-    @Input() formGroup: UntypedFormGroup;
+    @Input() formGroup: FormGroup;
     @Input() formControlName:string;
     @Input() maxLength: number = 50;
     @Input() validations: [] = [];

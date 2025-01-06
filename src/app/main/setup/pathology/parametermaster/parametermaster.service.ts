@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -8,10 +8,10 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class ParametermasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
-    descform: UntypedFormGroup;
-    formulaform: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
+    descform: FormGroup;
+    formulaform: FormGroup;
     is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
@@ -58,7 +58,7 @@ export class ParametermasterService {
         }
      */
 
-    createParameterForm(): UntypedFormGroup {
+    createParameterForm(): FormGroup {
         return this._formBuilder.group({
             parameterId: [0],
             parameterShortName: [
@@ -124,7 +124,7 @@ export class ParametermasterService {
         });
     }
 
-    getmydescform():UntypedFormGroup{
+    getmydescform():FormGroup{
         return this._formBuilder.group({
             DefaultValue: [""],
             ParaId: [""],
@@ -132,14 +132,14 @@ export class ParametermasterService {
         });
     }
 
-    createSearchForm():UntypedFormGroup{
+    createSearchForm():FormGroup{
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             IsDeletedSearch: ["1"],
         });
     }
 
-    createformulaForm():UntypedFormGroup{
+    createformulaForm():FormGroup{
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             Formula: [""],

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ItemClassMasterService } from '../item-class-master.service';
@@ -11,7 +11,7 @@ import { ItemClassMasterService } from '../item-class-master.service';
 })
 export class NewItemClassComponent implements OnInit {
 
-  classForm: UntypedFormGroup;
+  classForm: FormGroup;
   isActive:boolean=true;
   Saveflag: boolean= false;
 

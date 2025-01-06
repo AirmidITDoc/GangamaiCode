@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
@@ -208,8 +208,8 @@ export class CompanyBillComponent implements OnInit {
     doctorNameCmbList: any = [];
     BillingClassCmbList: any = [];
     IPBillingInfor: any = [];
-    Ipbillform: UntypedFormGroup;
-    Serviceform: UntypedFormGroup;
+    Ipbillform: FormGroup;
+    Serviceform: FormGroup;
     AdmissionId: any;
     MenuMasterid: any;
     reportPrintObj: any;

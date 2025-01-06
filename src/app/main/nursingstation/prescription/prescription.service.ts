@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -9,8 +9,8 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class PrescriptionService {
 
-  mysearchform: UntypedFormGroup;
-  mypreretunForm: UntypedFormGroup;
+  mysearchform: FormGroup;
+  mypreretunForm: FormGroup;
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
     private _formBuilder: UntypedFormBuilder
@@ -19,7 +19,7 @@ export class PrescriptionService {
     this.mypreretunForm=this.PrescriptionReturnFilterForm();
   }
 
-  SearchFilterFrom(): UntypedFormGroup{
+  SearchFilterFrom(): FormGroup{
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
@@ -28,7 +28,7 @@ export class PrescriptionService {
     })  
   }
 
-  PrescriptionReturnFilterForm():UntypedFormGroup{
+  PrescriptionReturnFilterForm():FormGroup{
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -31,7 +31,7 @@ export class IPAdvancePaymentComponent implements OnInit {
   paidamt: any;
   balanceamt: any;
 
-  paymentForm: UntypedFormGroup;
+  paymentForm: FormGroup;
   billNo: number;
   advanceData: any = {};
   now: Date;

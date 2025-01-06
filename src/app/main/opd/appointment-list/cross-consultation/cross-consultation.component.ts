@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AppointmentlistService } from '../appointmentlist.service';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
@@ -17,7 +17,7 @@ import { OperatorComparer } from 'app/core/models/gridRequest';
   animations: fuseAnimations,
 })
 export class CrossConsultationComponent implements OnInit {
-  crossconForm: UntypedFormGroup;
+  crossconForm: FormGroup;
   date = new Date().toISOString();
   screenFromString = 'admission-form';
   Departmentid = 0;

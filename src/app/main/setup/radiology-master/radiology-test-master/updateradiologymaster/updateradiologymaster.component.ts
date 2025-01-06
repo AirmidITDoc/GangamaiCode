@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
   animations: fuseAnimations
 })
 export class UpdateradiologymasterComponent implements OnInit {
-  testForm:UntypedFormGroup;
+  testForm:FormGroup;
 
   autocompleteModeService:string="ServiceName";
   autocompleteModeCategory:string="CategoryName";

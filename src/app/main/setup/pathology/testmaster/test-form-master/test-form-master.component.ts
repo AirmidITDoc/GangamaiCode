@@ -4,7 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import {  TemplatedetailList, TestList, TestMaster } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { Observable, ReplaySubject, Subject } from "rxjs";
-import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormControl, FormGroup } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { ToastrService } from "ngx-toastr";
 import { MatSort } from "@angular/material/sort";
@@ -22,7 +22,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
-    testForm: UntypedFormGroup;    
+    testForm: FormGroup;    
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     // DSTestdetailList = new MatTableDataSource<TestDetail>();

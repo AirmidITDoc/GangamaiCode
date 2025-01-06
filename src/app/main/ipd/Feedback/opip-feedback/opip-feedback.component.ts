@@ -14,7 +14,7 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { MatSliderChange } from '@angular/material/slider';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
@@ -27,14 +27,14 @@ import { MatStepperModule } from '@angular/material/stepper';
 })
 export class OPIPFeedbackComponent implements OnInit {
 
-  Feedbackpatientform: UntypedFormGroup;
-  firstFormGroup: UntypedFormGroup;
-  secondFormGroup: UntypedFormGroup;
-  thirdFormGroup: UntypedFormGroup;
-  fourthFormGroup: UntypedFormGroup;
-  fiveFormGroup: UntypedFormGroup;
-  sixFormGroup: UntypedFormGroup;
-  Feedbackform: UntypedFormGroup;
+  Feedbackpatientform: FormGroup;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  fiveFormGroup: FormGroup;
+  sixFormGroup: FormGroup;
+  Feedbackform: FormGroup;
 
 
   isLoading: String = '';

@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class CityMasterService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
-    constructor(   private _httpClient1: HttpClient,
+    myform: FormGroup;
+    myformSearch: FormGroup;
+    constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
@@ -15,7 +15,7 @@ export class CityMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    createCityForm(): UntypedFormGroup {
+    createCityForm(): FormGroup {
         return this._formBuilder.group({
             cityId: [0],
             cityName: ["",
@@ -29,7 +29,7 @@ export class CityMasterService {
             ],
         });
     }
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CityNameSearch: [""],
             IsDeletedSearch: ["2"],

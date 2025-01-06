@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -9,8 +9,8 @@ import { ApiCaller } from "app/core/services/apiCaller";
 
 export class ItemMasterService {
 
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -24,7 +24,7 @@ export class ItemMasterService {
         this.createItemmasterForm();
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemNameSearch: [""],
             IsDeletedSearch: ["2"],
@@ -32,7 +32,7 @@ export class ItemMasterService {
     }
 
     
-    createItemmasterForm(): UntypedFormGroup {
+    createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
              
             // as per payload list (insert)

@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HospitalService {
-HospitalForm:UntypedFormGroup;
-myformSearch:UntypedFormGroup;
+HospitalForm:FormGroup;
+myformSearch:FormGroup;
   constructor(  private _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder) {
       this.HospitalForm = this.createHospitalForm();
@@ -15,7 +15,7 @@ myformSearch:UntypedFormGroup;
      }
 
 
-  createHospitalForm():UntypedFormGroup{
+  createHospitalForm():FormGroup{
     return this._formBuilder.group({
       HospitalName: [""],
       HospitalAddress: [""],
@@ -31,7 +31,7 @@ myformSearch:UntypedFormGroup;
 }
 
 
-createSearchForm():UntypedFormGroup{
+createSearchForm():FormGroup{
   return this._formBuilder.group({
     NameSearch:[""],
       IsDeletedSearch: ["1"],

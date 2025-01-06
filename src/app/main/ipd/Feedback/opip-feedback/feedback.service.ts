@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FeedbackService {
-  MyForm:UntypedFormGroup;
-  MyfeedbackForm:UntypedFormGroup;
+  MyForm:FormGroup;
+  MyfeedbackForm:FormGroup;
   constructor(   public _formbuilder:UntypedFormBuilder,
     public _httpClient:HttpClient) {
     

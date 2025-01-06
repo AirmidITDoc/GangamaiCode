@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-sales-bill.component';
 import { Subscription } from 'rxjs';
 import { IndentList, Printsal } from '../sales/sales.component';
@@ -153,8 +153,8 @@ export class SalesReturnComponent implements OnInit {
     // 'IsPurRate',
     // 'StkID'
   ]
-  SearchForm: UntypedFormGroup;
-  FinalReturnform: UntypedFormGroup;
+  SearchForm: FormGroup;
+  FinalReturnform: FormGroup;
   dssaleList = new MatTableDataSource<SaleBillList>();
   dssaleDetailList = new MatTableDataSource<SalesDetailList>();
   selectedssaleDetailList = new MatTableDataSource<SalesDetailList>();
@@ -180,7 +180,7 @@ export class SalesReturnComponent implements OnInit {
     this.getPharStoreList()
   }
 
-  SearchFilter(): UntypedFormGroup {
+  SearchFilter(): FormGroup {
     return this._formBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],

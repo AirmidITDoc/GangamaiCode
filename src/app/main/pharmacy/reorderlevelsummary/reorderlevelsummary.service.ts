@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReorderlevelsummaryService {
-  SearchFrom:UntypedFormGroup;
-  RaisedIndentFrom:UntypedFormGroup;
+  SearchFrom:FormGroup;
+  RaisedIndentFrom:FormGroup;
   constructor(
     public _httpClient: HttpClient,
     private _formBuilder: UntypedFormBuilder

@@ -1,15 +1,15 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
 })
 export class ParamteragewiseService {
-    myform: UntypedFormGroup;
-    myformSearch: UntypedFormGroup;
-    myIsNumericform:UntypedFormGroup;
-    myIsDescriptiveform:UntypedFormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
+    myIsNumericform:FormGroup;
+    myIsDescriptiveform:FormGroup;
     is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
@@ -24,7 +24,7 @@ export class ParamteragewiseService {
         this.myIsDescriptiveform = this.createDescriptiveForm();
     }
 
-    createParameterForm(): UntypedFormGroup {
+    createParameterForm(): FormGroup {
         return this._formBuilder.group({
             ParameterID: [""],
             ParameterName: [
@@ -61,7 +61,7 @@ export class ParamteragewiseService {
         });
     }
 
-    createSearchForm(): UntypedFormGroup {
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             IsDeletedSearch: ["2"],
@@ -77,7 +77,7 @@ export class ParamteragewiseService {
             AgeType:[""],
         });  
     }
-    createDescriptiveForm(): UntypedFormGroup {
+    createDescriptiveForm(): FormGroup {
         return this._formBuilder.group({
             ParaId:[""],
             Value:[""],

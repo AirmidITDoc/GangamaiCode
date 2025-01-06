@@ -8,7 +8,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetail, AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { DatePipe } from '@angular/common';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
@@ -50,7 +50,7 @@ export class OPAdvanceComponent implements OnInit {
   menuActions: Array<string> = [];
   advanceAmount: any;
   isLoadingStr: string = '';
-  AdvFormGroup: UntypedFormGroup;
+  AdvFormGroup: FormGroup;
   isLoading: string = '';
   // screenNameString = 'advance';
   screenFromString = 'advance';

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { CathLabBookingDetail } from '../cath-lab.component';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
@@ -26,11 +26,11 @@ import { MatSelect } from '@angular/material/select';
 export class NewCathLabComponent implements OnInit {
 
   
-  personalFormGroup: UntypedFormGroup;
+  personalFormGroup: FormGroup;
 
   submitted = false;
   now = Date.now();
-  searchFormGroup: UntypedFormGroup;
+  searchFormGroup: FormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   selectedAdvanceObj: OPIPPatientModel;
@@ -64,7 +64,7 @@ export class NewCathLabComponent implements OnInit {
   Adm_Vit_ID: any = 0;
   OPDate:any;
   options = [];
-  myForm:UntypedFormGroup;
+  myForm:FormGroup;
   filteredOptions: any;
   noOptionFound: boolean = false;
   RegId:any;

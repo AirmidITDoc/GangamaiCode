@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,10 @@ export class PatientrefvisitService {
       this.myFilterform = this.filterForm();
     }
 
-    myFilterform: UntypedFormGroup;
+    myFilterform: FormGroup;
 
     
-  filterForm(): UntypedFormGroup {
+  filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
       // IPDNo: '',
