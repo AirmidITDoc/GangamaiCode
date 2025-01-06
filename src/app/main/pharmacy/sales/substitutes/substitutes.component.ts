@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { SalesService } from '../sales.service';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -19,7 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class SubstitutesComponent implements OnInit {
   
-  IssueSearchGroup :FormGroup;
+  IssueSearchGroup :UntypedFormGroup;
   isStoreSelected:boolean = false;
   isItemIdSelected:boolean = false;
 
@@ -44,7 +44,7 @@ export class SubstitutesComponent implements OnInit {
     public dialogRef: MatDialogRef<SubstitutesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _SalesService: SalesService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.IssueSearchGroup= this.IssueSearchFrom();
    }

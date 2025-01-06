@@ -1,22 +1,22 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
 })
 export class VillageMasterService {
-    myForm: FormGroup;
-    myformSearch: FormGroup;
+    myForm: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createVillageForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createVillageForm(): FormGroup {
+    createVillageForm(): UntypedFormGroup {
         return this._formBuilder.group({
             VillageId: [""],
             VillageName: [""],
@@ -28,7 +28,7 @@ export class VillageMasterService {
             AddedByName: [""],
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             VillageNameSearch: [""],
             IsDeletedSearch: ["2"],

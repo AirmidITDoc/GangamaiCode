@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../../appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
@@ -29,13 +29,13 @@ type NewType = Observable<any[]>;
 export class OPRefundofBillComponent implements OnInit {
 
   screenFromString = 'app-op-refund-bill';
-  RefundOfBillFormGroup: FormGroup;
-  myRefundBillForm: FormGroup;
-  myserviceForm: FormGroup;
+  RefundOfBillFormGroup: UntypedFormGroup;
+  myRefundBillForm: UntypedFormGroup;
+  myserviceForm: UntypedFormGroup;
   isLoading: String = '';
   selectedAdvanceObj: AdvanceDetailObj;
   filteredOptions: NewType;
-  myControl = new FormControl();
+  myControl = new UntypedFormControl();
   dateTimeObj: any;
   billNo: number;
   BillNo: number;
@@ -126,11 +126,11 @@ export class OPRefundofBillComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
 
     private changeDetectorRefs: ChangeDetectorRef,
     private dialogRef: MatDialogRef<OPRefundofBillComponent>,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
     ) {
      
     }
@@ -153,7 +153,7 @@ export class OPRefundofBillComponent implements OnInit {
   }
 
 
-  refundForm(): FormGroup {
+  refundForm(): UntypedFormGroup {
     return this._formBuilder.group({
       advanceAmt: [Validators.pattern("^[0-9]*$")],
       BillNo: [''],

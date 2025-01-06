@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PrescriptionclassmasterService } from '../prescriptionclassmaster.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewPrescriptionClassComponent implements OnInit {
 
-  prescriptionForm:FormGroup;
+  prescriptionForm:UntypedFormGroup;
   isActive:boolean=true;
 
   constructor(

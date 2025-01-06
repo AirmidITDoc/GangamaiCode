@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -30,28 +30,27 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [NewMenuComponent, MenuMasterComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),            
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseSidebarModule,
-    MatDialogModule,SharedModule,
-  ],
-    providers: [MenuMasterService,DatePipe],
-    entryComponents: [MenuMasterComponent],
+    declarations: [NewMenuComponent, MenuMasterComponent],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule, SharedModule,
+    ],
+    providers: [MenuMasterService, DatePipe]
 })
 export class MenuMasterModule { }

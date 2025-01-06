@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class IPSettlementService {
 
   constructor(public _httpClient:HttpClient,
     private _loaderService: LoaderService,
-    private _formBuilder: FormBuilder) { }
+    private _formBuilder: UntypedFormBuilder) { }
 
   //Adv paymnet
    

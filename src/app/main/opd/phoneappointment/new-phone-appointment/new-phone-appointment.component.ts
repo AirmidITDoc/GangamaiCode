@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -22,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class NewPhoneAppointmentComponent implements OnInit {
-  phoneappForm: FormGroup
+  phoneappForm: UntypedFormGroup
   hasSelectedContacts: boolean;
 
   DepartmentList: any = [];
@@ -30,7 +30,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   Doctor1List: any = [];
 
 
-  hospitalFormGroup: FormGroup;
+  hospitalFormGroup: UntypedFormGroup;
   // registerObj = new AdmissionPersonlModel({});
   options = [];
   filteredOptions: any;
@@ -56,7 +56,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _phoneAppointListService: PhoneAppointListService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any, private accountService: AuthenticationService,

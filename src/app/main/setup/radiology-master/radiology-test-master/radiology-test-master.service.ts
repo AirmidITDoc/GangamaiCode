@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -8,17 +8,17 @@ import { ApiCaller } from 'app/core/services/apiCaller';
   providedIn: 'root'
 })
 export class RadiologyTestMasterService {
-  myform: FormGroup;
-  myformSearch: FormGroup;
-  AddParameterFrom: FormGroup;
+  myform: UntypedFormGroup;
+  myformSearch: UntypedFormGroup;
+  AddParameterFrom: UntypedFormGroup;
 
-  constructor( private _httpClient: ApiCaller, private _formBuilder: FormBuilder) {
+  constructor( private _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder) {
     this.myform = this.createRadiologytestForm();
     this.myformSearch = this.createSearchForm();
     this.AddParameterFrom = this.createAddparaFrom();
   }
 
-  createRadiologytestForm(): FormGroup {
+  createRadiologytestForm(): UntypedFormGroup {
     return this._formBuilder.group({
       TestId: [''],
       TestName: ['',
@@ -40,13 +40,13 @@ export class RadiologyTestMasterService {
 
     });
   }
-  createSearchForm(): FormGroup {
+  createSearchForm(): UntypedFormGroup {
     return this._formBuilder.group({
       TestNameSearch: [""],
       IsDeletedSearch: ["2"],
     });
   }
-  createAddparaFrom(): FormGroup {
+  createAddparaFrom(): UntypedFormGroup {
     return this._formBuilder.group({
       TestId: [''],
       TemplateName: [""]

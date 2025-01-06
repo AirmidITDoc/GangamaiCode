@@ -165,12 +165,12 @@
     <div class="payment-container" style="padding: 10px 15px 5px 15px;" fusePerfectScrollbar>
         <form [formGroup]="paymentForm">
             <div class="chips-container">
-                <mat-chip-list aria-label="Fish selection" selectable multiple>
+                <mat-chip-listbox aria-label="Fish selection" selectable multiple>
                     <mat-chip *ngFor="let chip of chipsElements" [selected]="chip.state"
                         (click)="chipsSelectionChanged(chip)">
                         <span class="chips-name">{{chip.name}}</span>
                     </mat-chip>
-                </mat-chip-list>
+                </mat-chip-listbox>
             </div>
 
             <div style="padding: 20px 0px 100px 0px;

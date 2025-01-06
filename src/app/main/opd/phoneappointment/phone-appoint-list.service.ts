@@ -1,25 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup , Validators} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup , Validators} from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhoneAppointListService {
-  myFilterform: FormGroup;
-  mysearchform: FormGroup;
+  myFilterform: UntypedFormGroup;
+  mysearchform: UntypedFormGroup;
 
   constructor(
     private _httpClient: ApiCaller,
     private _httpClient1: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.myFilterform=this.filterForms();
     this.mysearchform=this.filterForm();
   }
 
-  filterForm(): FormGroup {
+  filterForm(): UntypedFormGroup {
     return this._formBuilder.group({
      
       FirstNameSearch:['', [
@@ -38,7 +38,7 @@ export class PhoneAppointListService {
   }
 
 
-  filterForms(): FormGroup {
+  filterForms(): UntypedFormGroup {
     return this._formBuilder.group({
      
       hospitalId:'0',
@@ -55,7 +55,7 @@ export class PhoneAppointListService {
     });
   }
 
-  createphoneForm(): FormGroup {
+  createphoneForm(): UntypedFormGroup {
     return this._formBuilder.group({
       phoneAppId: [1],
       appDate:  [(new Date()).toISOString()],

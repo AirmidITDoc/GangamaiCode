@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ import { SalesReturnBillSettlementService } from '../sales-return-bill-settlemen
 })
 export class DiscountAfterFinalBillComponent implements OnInit {
 
-  MyFrom:FormGroup;
+  MyFrom:UntypedFormGroup;
   selectedAdvanceObj:any
   vNetamount:any;
   vTotalAmount:any;
@@ -34,7 +34,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   registerObj:any;
 
   constructor(
-    public _formbuilder:FormBuilder,  
+    public _formbuilder:UntypedFormBuilder,  
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog, 
     public datePipe: DatePipe,

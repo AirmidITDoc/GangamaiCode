@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmergencyListService {
 
-  MySearchGroup:FormGroup;
-  MyForm:FormGroup;
+  MySearchGroup:UntypedFormGroup;
+  MyForm:UntypedFormGroup;
 
   constructor(
-    public _frombuilder:FormBuilder,
+    public _frombuilder:UntypedFormBuilder,
     public _httpClient: HttpClient
   ) 
   {

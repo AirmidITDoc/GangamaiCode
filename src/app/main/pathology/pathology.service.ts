@@ -1,6 +1,6 @@
 import { HttpClient, HttpBackend, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { throwError, Observable } from "rxjs";
 import { catchError } from 'rxjs/operators';
 
@@ -9,13 +9,13 @@ import { catchError } from 'rxjs/operators';
 })
 export class PathologyService {
 
-  myformSearch: FormGroup;
-  myform: FormGroup;
+  myformSearch: UntypedFormGroup;
+  myform: UntypedFormGroup;
 
-  mysamplerequstform: FormGroup;
+  mysamplerequstform: UntypedFormGroup;
 
-  myShowPathologyResultForm: FormGroup;
-  constructor(private handler: HttpBackend, private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
+  myShowPathologyResultForm: UntypedFormGroup;
+  constructor(private handler: HttpBackend, private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) {
     this.myform = this.createtemplateForm();
     this.myformSearch = this.createSearchForm();
 
@@ -25,7 +25,7 @@ export class PathologyService {
 
   sampldetailform
 
-  createtemplateForm(): FormGroup {
+  createtemplateForm(): UntypedFormGroup {
     return this._formBuilder.group({
       TemplateId: [''],
       TemplateName: [''],
@@ -38,7 +38,7 @@ export class PathologyService {
   }
 
 
-  createSearchForm(): FormGroup {
+  createSearchForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNoSearch: [],
       FirstNameSearch: ['', [

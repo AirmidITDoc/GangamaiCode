@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ClinicalCareChartService } from '../clinical-care-chart.service';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
@@ -33,8 +33,8 @@ export class MedicationErrorComponent implements OnInit {
      'Errors'
   ]
 
-  MyForm:FormGroup;
-  SearchMyForm:FormGroup;
+  MyForm:UntypedFormGroup;
+  SearchMyForm:UntypedFormGroup;
   PatientType:any;
   RefDocName:any;
   DepartmentName:any;
@@ -64,7 +64,7 @@ export class MedicationErrorComponent implements OnInit {
 
   
   constructor(
-    public _formbuilder:FormBuilder,
+    public _formbuilder:UntypedFormBuilder,
     public  _ClinicalcareService: ClinicalCareChartService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,

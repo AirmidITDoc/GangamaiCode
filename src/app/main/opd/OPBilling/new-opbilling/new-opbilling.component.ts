@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, Vi
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { ChargesList, SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPSearhlistService } from '../../op-search-list/op-searhlist.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -65,9 +65,9 @@ export class NewOPBillingComponent implements OnInit {
   ];
 
 
-  searchFormGroup: FormGroup;
-  registeredForm: FormGroup;
-  BillingForm: FormGroup;
+  searchFormGroup: UntypedFormGroup;
+  registeredForm: UntypedFormGroup;
+  BillingForm: UntypedFormGroup;
   isRegIdSelected: boolean = false;
   isCashCounterSelected: boolean = false;
   PatientListfilteredOptions: any;
@@ -166,7 +166,7 @@ export class NewOPBillingComponent implements OnInit {
   currentDate = new Date();
   doctorNameCmbList: any = [];
   IPBillingInfor: any = [];
-  myShowAdvanceForm: FormGroup;
+  myShowAdvanceForm: UntypedFormGroup;
   netPaybleAmt: any;
   netPaybleAmt1: any;
 
@@ -195,7 +195,7 @@ autocompleteModecashcounter: string = "CashCounter";
     private accountService: AuthenticationService,
     public _httpClient: HttpClient,
     public toastr: ToastrService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public _WhatsAppEmailService: WhatsAppEmailService,
     public _ConfigService: ConfigService
   ) { }
@@ -433,7 +433,7 @@ autocompleteModecashcounter: string = "CashCounter";
   }
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next();
+    this.nextPage$.next(true);
   }
   //Doctor list 
   getAdmittedDoctorCombo() {

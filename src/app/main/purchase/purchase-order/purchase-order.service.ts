@@ -1,22 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PurchaseOrderService {
 
-  userFormGroup: FormGroup;
-  PurchaseSearchGroup: FormGroup;
-  FinalPurchaseform: FormGroup;
-  StoreFormGroup:FormGroup;
-  POEmailFrom : FormGroup;
+  userFormGroup: UntypedFormGroup;
+  PurchaseSearchGroup: UntypedFormGroup;
+  FinalPurchaseform: UntypedFormGroup;
+  StoreFormGroup:UntypedFormGroup;
+  POEmailFrom : UntypedFormGroup;
   //PurchaseOrderHeader:FormGroup;
   
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.userFormGroup = this.getPurchaseOrderForm();
     this.PurchaseSearchGroup = this.PurchaseSearchFrom();

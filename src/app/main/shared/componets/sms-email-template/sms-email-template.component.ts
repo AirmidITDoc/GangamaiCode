@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -22,7 +22,7 @@ declare var Email :any;
 export class SmsEmailTemplateComponent implements OnInit {
   
   templateName: string;
-  templateFormGroup: FormGroup;
+  templateFormGroup: UntypedFormGroup;
   toPattern: string = '';
   attachedFile: any;
   dateTimeObj: any;
@@ -38,7 +38,7 @@ export class SmsEmailTemplateComponent implements OnInit {
   
   constructor(
     @Inject(MAT_DIALOG_DATA) templateFor: any,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     // public _BrowseOPDBillsService: OpSearchListService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,

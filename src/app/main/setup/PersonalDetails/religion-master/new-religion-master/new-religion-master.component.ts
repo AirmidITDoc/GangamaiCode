@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ReligionMasterService } from '../religion-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import { fuseAnimations } from '@fuse/animations';
       animations: fuseAnimations,
 })
 export class NewReligionMasterComponent implements OnInit {
-  religionForm: FormGroup;
+  religionForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false ;
 

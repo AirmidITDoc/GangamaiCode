@@ -8,7 +8,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from "@angular/material/icon";
@@ -51,8 +51,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [CountryMasterService,DatePipe],
-
-    entryComponents: [CountryMasterComponent],
+    providers: [CountryMasterService, DatePipe]
 })
 export class CountryMasterModule {}

@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentmodechangesforpharmacyService {
 
-  userFormGroup:FormGroup;
-  paymentform:FormGroup;
+  userFormGroup:UntypedFormGroup;
+  paymentform:UntypedFormGroup;
   constructor(
     public _httpClient:HttpClient,
-    public _formBuilder:FormBuilder
+    public _formBuilder:UntypedFormBuilder
     ) 
     { 
       

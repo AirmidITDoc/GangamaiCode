@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -23,7 +23,7 @@ import { IPSettlementService } from 'app/main/ipd/ip-settlement/ip-settlement.se
 export class OpPaymentVimalComponent implements OnInit {
 
     currentDate = new Date();
-    patientDetailsFormGrp: FormGroup;
+    patientDetailsFormGrp: UntypedFormGroup;
     selectedPaymnet1: string = '';
     paymentArr1: any[] = this.opService.getPaymentArr();
     IsAdv: boolean = false;
@@ -203,7 +203,7 @@ export class OpPaymentVimalComponent implements OnInit {
     ];
     dataSource = new MatTableDataSource<any>();
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private dialogRef: MatDialogRef<OpPaymentVimalComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private opService: OPSearhlistService,

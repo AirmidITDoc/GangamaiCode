@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -8,16 +8,16 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class BrowseIPAdvanceService {
 
-  myFilterform: FormGroup;
-  myFilterrefundform: FormGroup;
+  myFilterform: UntypedFormGroup;
+  myFilterrefundform: UntypedFormGroup;
 
   constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
-        private _formBuilder: FormBuilder) { 
+        private _formBuilder: UntypedFormBuilder) { 
           this.myFilterform=this.filterForm_IpdAdvance();
           this.myFilterrefundform=this.filterForm_IpRefunddAdvance();
         }
 
-  filterForm_IpdAdvance(): FormGroup {
+  filterForm_IpdAdvance(): UntypedFormGroup {
     return this._formBuilder.group({
       PBillNo: '',
       RegNo: '',
@@ -28,7 +28,7 @@ export class BrowseIPAdvanceService {
     });
   }
 
-  filterForm_IpRefunddAdvance(): FormGroup {
+  filterForm_IpRefunddAdvance(): UntypedFormGroup {
     return this._formBuilder.group({
       PBillNo: '',
       RegNo: '',

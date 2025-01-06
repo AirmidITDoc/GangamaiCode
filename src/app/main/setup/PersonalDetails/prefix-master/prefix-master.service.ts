@@ -1,33 +1,33 @@
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class PrefixMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
      
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder,
+        private _formBuilder: UntypedFormBuilder,
         private _httpClient1: HttpClient
     ) {
         this.myform = this.createPrefixForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             PrefixNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
 
-    createPrefixForm(): FormGroup {
+    createPrefixForm(): UntypedFormGroup {
         return this._formBuilder.group({
            
             prefixId: 0,

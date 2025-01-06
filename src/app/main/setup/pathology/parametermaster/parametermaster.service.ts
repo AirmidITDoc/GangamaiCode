@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -8,10 +8,10 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class ParametermasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
-    descform: FormGroup;
-    formulaform: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
+    descform: UntypedFormGroup;
+    formulaform: UntypedFormGroup;
     is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
@@ -19,7 +19,7 @@ export class ParametermasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder,
+        private _formBuilder: UntypedFormBuilder,
         private _loaderService: LoaderService,
     ) {
         this.myformSearch = this.createSearchForm();
@@ -58,7 +58,7 @@ export class ParametermasterService {
         }
      */
 
-    createParameterForm(): FormGroup {
+    createParameterForm(): UntypedFormGroup {
         return this._formBuilder.group({
             parameterId: [0],
             parameterShortName: [
@@ -124,7 +124,7 @@ export class ParametermasterService {
         });
     }
 
-    getmydescform():FormGroup{
+    getmydescform():UntypedFormGroup{
         return this._formBuilder.group({
             DefaultValue: [""],
             ParaId: [""],
@@ -132,14 +132,14 @@ export class ParametermasterService {
         });
     }
 
-    createSearchForm():FormGroup{
+    createSearchForm():UntypedFormGroup{
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             IsDeletedSearch: ["1"],
         });
     }
 
-    createformulaForm():FormGroup{
+    createformulaForm():UntypedFormGroup{
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             Formula: [""],

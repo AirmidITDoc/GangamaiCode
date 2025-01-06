@@ -1,22 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeliverychallanService {
-  DeliveryStoreForm: FormGroup;
-  userFormGroup: FormGroup;
-  DeliverySearchGroup :FormGroup;
-  DeliveryFinalForm:FormGroup;
-  DeliveryEmailFrom:FormGroup;
-  POFrom:FormGroup;
+  DeliveryStoreForm: UntypedFormGroup;
+  userFormGroup: UntypedFormGroup;
+  DeliverySearchGroup :UntypedFormGroup;
+  DeliveryFinalForm:UntypedFormGroup;
+  DeliveryEmailFrom:UntypedFormGroup;
+  POFrom:UntypedFormGroup;
   
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.DeliverySearchGroup= this.DeliverySearchFrom();  
     this.DeliveryStoreForm = this.createStoreFrom();

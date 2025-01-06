@@ -192,7 +192,7 @@
                                         <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                             formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
                                             (keyup.enter)="setFocus('BatchNo')" (keyup)="calculateTotalamt()"
-                                            autocomplete="off" #conversionfactor
+                                            autocomplete="off"
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
 
@@ -1155,10 +1155,14 @@
                             <div class="modal-footer">
 
                                 <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">
-                                    <button mat-raised-button class="py-8"
-                                        (click)="OnAddItem()"><mat-icon>add</mat-icon>Item</button>
-                                    <button mat-raised-button class="py-8"
-                                        (click)="OnAddSupplier()"><mat-icon>add</mat-icon>Supplier</button>
+                                    <button mat-icon-button class="py-8"
+                                        (click)="OnAddItem()">
+                                        <!-- <mat-icon>add</mat-icon> -->
+                                        Item</button>
+                                    <button mat-icon-button class="py-8"
+                                        (click)="OnAddSupplier()">
+                                        <!-- <mat-icon>add</mat-icon> -->
+                                        Supplier</button>
                                     <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
                                     <button class="btn btn-primary " (click)="OnSave()"
                                         [disabled]="Savebtn">Save</button>

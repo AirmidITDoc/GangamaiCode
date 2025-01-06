@@ -11,7 +11,7 @@ import { AdmissionService } from './admission.service';
 import Swal from 'sweetalert2';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
@@ -32,7 +32,6 @@ import { NewRegistrationComponent } from 'app/main/opd/registration/new-registra
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
 import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
 import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
@@ -54,7 +53,7 @@ export class AdmissionComponent implements OnInit {
 
   currentDate = new Date();
   // reportPrintObj: Admission;
-  searchFormGroup: FormGroup;
+  searchFormGroup: UntypedFormGroup;
 
   screenFromString = 'admission-form';
   selectedAdvanceObj: AdmissionPersonlModel;
@@ -124,7 +123,7 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
   // filter for doctor
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   @Inject(MAT_DIALOG_DATA) public data: any;
@@ -204,7 +203,7 @@ export class AdmissionComponent implements OnInit {
     public datePipe: DatePipe,
     private router: Router,
     private reportDownloadService: ExcelDownloadService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) {
 

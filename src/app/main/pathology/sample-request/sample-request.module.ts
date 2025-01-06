@@ -28,7 +28,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 // import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -45,58 +45,54 @@ const routes: Routes = [
 
 ];
 @NgModule({
-  declarations: [
-    SampleRequestComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatRadioModule,
-    MatDividerModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatListModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    // NgxEditorModule,
-    MatProgressSpinnerModule,
-    // AngularEditorModule,
-    // NgxPrintModule,
-    // RichTextEditorModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatSlideToggleModule ,
-    FuseSharedModule,
-    //  NgMultiSelectDropDownModule.forRoot(),
-     MatTooltipModule,
-     MatDatepickerModule 
-    
-  ],
-  providers: [
-    PathologyService,
-    DatePipe,
-    NotificationServiceService,
-  ],
-  entryComponents: [
-    SampleRequestComponent
-        ]
-      })
+    declarations: [
+        SampleRequestComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatRadioModule,
+        MatDividerModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatListModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        // NgxEditorModule,
+        MatProgressSpinnerModule,
+        // AngularEditorModule,
+        // NgxPrintModule,
+        // RichTextEditorModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        FuseSharedModule,
+        //  NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule,
+        MatDatepickerModule
+    ],
+    providers: [
+        PathologyService,
+        DatePipe,
+        NotificationServiceService,
+    ]
+})
 export class SampleRequestModule { }

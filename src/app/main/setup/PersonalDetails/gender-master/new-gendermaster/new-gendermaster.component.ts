@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { GenderMasterService } from '../gender-master.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: "app-new-gendermaster",
@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     styleUrls: ["./new-gendermaster.component.scss"],
 })
 export class NewGendermasterComponent implements OnInit {
-    genderForm: FormGroup;
+    genderForm: UntypedFormGroup;
     isActive:boolean=true
     saveflag : boolean = false;
     constructor(

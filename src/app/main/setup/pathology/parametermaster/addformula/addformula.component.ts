@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { PathparameterMaster } from '../parametermaster.component';
 import Swal from 'sweetalert2';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 interface Result {
   value: string;
   viewValue: string;

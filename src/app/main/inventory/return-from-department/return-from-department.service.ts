@@ -1,20 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReturnFromDepartmentService {
 
-  userFormGroup: FormGroup;
-  ReturnSearchGroup :FormGroup;
-  NewReturnFinalForm:FormGroup;
+  userFormGroup: UntypedFormGroup;
+  ReturnSearchGroup :UntypedFormGroup;
+  NewReturnFinalForm:UntypedFormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.ReturnSearchGroup= this.ReturnSearchFrom();
     this.userFormGroup = this.CreateNewReturnForm();

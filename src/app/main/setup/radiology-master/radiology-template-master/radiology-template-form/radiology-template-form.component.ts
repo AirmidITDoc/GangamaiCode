@@ -4,7 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-radiology-template-form',
@@ -14,7 +14,7 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations
 })
 export class RadiologyTemplateFormComponent implements OnInit {
-  templateForm: FormGroup;
+  templateForm: UntypedFormGroup;
   vTemplateDesc:any;
   vTemplateName:any;
   editorConfig: AngularEditorConfig = {

@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { AngularEditorConfig } from "@kolkov/angular-editor";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-store-form-master",
@@ -31,7 +31,7 @@ export class StoreFormMasterComponent implements OnInit {
         this.Header = e.target.innerHTML;
     }
 
-    storeForm: FormGroup;
+    storeForm: UntypedFormGroup;
     isActive:boolean=true;
     
     autocompleteModeCashcounter: string = "CashCounter";

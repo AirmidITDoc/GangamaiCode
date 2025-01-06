@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation, } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -69,7 +69,7 @@ export class DocData {
 })
 export class AppointmentComponent implements OnInit {
     menuActions: Array<string> = [];
-    myFilterform:FormGroup;
+    myFilterform:UntypedFormGroup;
     resultsLength = 0;
     DoctorId=0;
     screenFromString = 'admission-form';
@@ -104,7 +104,7 @@ export class AppointmentComponent implements OnInit {
   
   
     constructor(
-      private formBuilder: FormBuilder,
+      private formBuilder: UntypedFormBuilder,
       public _AppointmentlistService: AppointmentlistService,
       private _ActRoute: Router,
       public _matDialog: MatDialog,
@@ -128,7 +128,7 @@ export class AppointmentComponent implements OnInit {
   
     }
   
-    filterForm(): FormGroup {
+    filterForm(): UntypedFormGroup {
       return this.formBuilder.group({
         RegNo:'',
         FirstName:['', [

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +8,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NurBedTransferService {
 
  
-  bsaveForm:FormGroup;
+  bsaveForm:UntypedFormGroup;
   constructor(public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder) { 
+    private _formBuilder: UntypedFormBuilder) { 
       this.bsaveForm=this.bedsaveForm();
  
     }
 
     
-  bedsaveForm(): FormGroup{
+  bedsaveForm(): UntypedFormGroup{
     return this._formBuilder.group({
      RegNo: '',
      RoomId: ['',Validators.required],

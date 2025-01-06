@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierPaymentStatusService {
-  SearchFormGroup:FormGroup;
-  SupplierListForm :FormGroup;
+  SearchFormGroup:UntypedFormGroup;
+  SupplierListForm :UntypedFormGroup;
   constructor(
     public _httpClient:HttpClient,
-    public _formbuilder:FormBuilder,
+    public _formbuilder:UntypedFormBuilder,
     private _loaderService:LoaderService
   )
    { 

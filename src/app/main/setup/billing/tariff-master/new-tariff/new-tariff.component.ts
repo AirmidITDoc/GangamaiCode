@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { TariffMasterService } from '../tariff-master.service';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewTariffComponent implements OnInit {
 
-    tariffForm: FormGroup;
+    tariffForm: UntypedFormGroup;
     isActive:boolean=true;
     saveflag : boolean = false;
 

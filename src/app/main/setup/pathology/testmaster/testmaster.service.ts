@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -11,14 +11,14 @@ export class TestmasterService {
     is_Test = true;
     is_subtest = false;
     is_templatetest= false;
-    myformSearch: FormGroup;
-    myform: FormGroup;
-    AddParameterFrom: FormGroup;
-    mytemplateform: FormGroup;
+    myformSearch: UntypedFormGroup;
+    myform: UntypedFormGroup;
+    AddParameterFrom: UntypedFormGroup;
+    mytemplateform: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _loaderService: LoaderService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createPathtestForm();
@@ -26,7 +26,7 @@ export class TestmasterService {
         this.mytemplateform = this.createTemplateForm();
     }
 
-    createPathtestForm(): FormGroup {
+    createPathtestForm(): UntypedFormGroup {
         return this._formBuilder.group({
 
             TestId: [""],
@@ -77,20 +77,20 @@ export class TestmasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             TestNameSearch: [""],
             IsDeletedSearch: ["2"],
             IsSubTest: [" "],
         });
     }
-    createAddparaFrom(): FormGroup {
+    createAddparaFrom(): UntypedFormGroup {
         return this._formBuilder.group({
             ParameterName: [""],
             NewIsSubTest: [" "],
         });
     }
-    createTemplateForm(): FormGroup {
+    createTemplateForm(): UntypedFormGroup {
         return this._formBuilder.group({
             TemplateId:[""],
             TemplateName:[""],

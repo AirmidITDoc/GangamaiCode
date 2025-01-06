@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angula
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, UntypedFormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,7 +29,7 @@ export class DischargeComponent implements OnInit {
 
   
   isLoading: string = '';
-  DischargeForm:FormGroup;
+  DischargeForm:UntypedFormGroup;
   currentDate = new Date();
   // screenFromString = 'discharge';
   screenFromString = 'OP-billing';

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { CityMasterService } from '../city-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewCityComponent implements OnInit {
 
-    cityForm: FormGroup;
+    cityForm: UntypedFormGroup;
     stateId = 0;
     cityId = 0;
     cityName = '';

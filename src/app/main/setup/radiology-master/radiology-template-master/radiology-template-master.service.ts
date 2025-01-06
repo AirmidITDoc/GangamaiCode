@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -7,17 +7,17 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class RadiologyTemplateMasterService {
 
-  myform: FormGroup;
-  myformSearch: FormGroup;
+  myform: UntypedFormGroup;
+  myformSearch: UntypedFormGroup;
   
-  constructor(  private _httpClient: ApiCaller,private _formBuilder: FormBuilder) {
+  constructor(  private _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder) {
     this.myform=this.createRadiologytemplateForm();
     this.myformSearch=this.createSearchForm();
   }
  
   
 
-  createRadiologytemplateForm(): FormGroup {
+  createRadiologytemplateForm(): UntypedFormGroup {
     return this._formBuilder.group({
       templateId:[0],
       templateName:['',
@@ -29,7 +29,7 @@ export class RadiologyTemplateMasterService {
       templateDesc:['', Validators.required],
         });
   }
-  createSearchForm(): FormGroup {
+  createSearchForm(): UntypedFormGroup {
     return this._formBuilder.group({
         TemplateNameSearch: [""],
         IsDeletedSearch: ["2"],

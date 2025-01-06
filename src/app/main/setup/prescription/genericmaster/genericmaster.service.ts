@@ -1,22 +1,22 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class GenericmasterService {
-    genericForm: FormGroup;
-    myformSearch: FormGroup;
+    genericForm: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.genericForm = this.createGenericForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createGenericForm(): FormGroup {
+    createGenericForm(): UntypedFormGroup {
         return this._formBuilder.group({
             GenericId: [0],
             GenericName: ["", 
@@ -32,7 +32,7 @@ export class GenericmasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             GenericNameSearch: [""],
             IsDeletedSearch: ["2"],

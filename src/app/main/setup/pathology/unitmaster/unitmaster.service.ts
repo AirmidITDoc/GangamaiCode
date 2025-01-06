@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -7,18 +7,18 @@ import { ApiCaller } from "app/core/services/apiCaller";
 })
 export class UnitmasterService {
     currentStatus = 0
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createUnitmasterForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createUnitmasterForm(): FormGroup {
+    createUnitmasterForm(): UntypedFormGroup {
         return this._formBuilder.group({
             unitId: [0],
             unitName: ["",
@@ -30,7 +30,7 @@ export class UnitmasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             UnitNameSearch: [""],
             IsDeletedSearch: ["2"],

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PrescriptionService } from '../prescription.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,9 +31,9 @@ export class NewPrescriptionComponent implements OnInit {
   vQty: any;
   vRemark: any;
   SpinLoading: boolean = false;
-  myForm: FormGroup;
-  searchFormGroup: FormGroup;
-  ItemForm: FormGroup;
+  myForm: UntypedFormGroup;
+  searchFormGroup: UntypedFormGroup;
+  ItemForm: UntypedFormGroup;
   screenFromString = 'admission-form';
   ItemId: any;
   vOpIpId: any;
@@ -103,7 +103,7 @@ export class NewPrescriptionComponent implements OnInit {
   dsiVisitList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
  
-  constructor(private _FormBuilder: FormBuilder,
+  constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
     public _PrescriptionService: PrescriptionService,
     private _loggedService: AuthenticationService,

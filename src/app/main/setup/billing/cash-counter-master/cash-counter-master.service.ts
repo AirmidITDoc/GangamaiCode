@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class CashCounterMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createcashcounterForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createcashcounterForm(): FormGroup {
+    createcashcounterForm(): UntypedFormGroup {
         return this._formBuilder.group({
             cashCounterId: [0],
             cashCounterName: ["",
@@ -41,7 +41,7 @@ export class CashCounterMasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             CashCounterNameSearch: [""],
             IsDeletedSearch: ["2"],

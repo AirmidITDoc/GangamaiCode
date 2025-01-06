@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { SampleDetailObj } from '../result-entry.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,7 +20,7 @@ import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admissio
 import { debug } from 'console';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatAccordion } from '@angular/material/expansion';
-import { MatMenuTrigger } from '@angular/material/menu';
+import {MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
     selector: 'app-result-entry-one',
@@ -46,7 +46,7 @@ export class ResultEntryOneComponent implements OnInit {
     PathologyDoctorList: any = [];
     DoctorList: any = [];
     Doctor1List: any = [];
-    otherForm: FormGroup;
+    otherForm: UntypedFormGroup;
     msg: any;
 
     selectedAdvanceObj1: SampleDetailObj;
@@ -94,7 +94,7 @@ export class ResultEntryOneComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private formBuilder: FormBuilder,
+    constructor(private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
         public datePipe: DatePipe,
         private dialogRef: MatDialogRef<ResultEntryOneComponent>,

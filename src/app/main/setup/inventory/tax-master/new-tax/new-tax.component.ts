@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TaxMasterService } from '../tax-master.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-tax',
@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class NewTaxComponent implements OnInit {
 
-  taxForm: FormGroup;
+  taxForm: UntypedFormGroup;
   isActive:boolean=true;
   
   constructor(

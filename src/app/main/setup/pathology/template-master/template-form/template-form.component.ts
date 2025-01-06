@@ -4,7 +4,7 @@ import { TemplateServieService } from '../template-servie.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-template-form',
@@ -15,7 +15,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class TemplateFormComponent implements OnInit {
     
-    templateForm: FormGroup;
+    templateForm: UntypedFormGroup;
 
     vTemplateDesc:any;
     editorConfig: AngularEditorConfig = {

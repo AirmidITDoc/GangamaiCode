@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -34,8 +34,8 @@ export class DischargeSummaryComponent implements OnInit {
     'Action'
   ]
 
-  DischargesumForm:FormGroup;
-  MedicineItemForm:FormGroup;
+  DischargesumForm:UntypedFormGroup;
+  MedicineItemForm:UntypedFormGroup;
   submitted = false;
   msg: any;
   Id: any;
@@ -113,7 +113,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _ActRoute: Router,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
@@ -165,7 +165,7 @@ export class DischargeSummaryComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   isItemIdSelected:boolean=false;
-  MedicineItemform(): FormGroup {
+  MedicineItemform(): UntypedFormGroup {
     return this._formBuilder.group({
       ItemId:'',             
       DoseId:'',
@@ -173,7 +173,7 @@ export class DischargeSummaryComponent implements OnInit {
       Instruction:'',
     });
   }
-  showDischargeSummaryForm(): FormGroup {
+  showDischargeSummaryForm(): UntypedFormGroup {
     return this._formBuilder.group({
     
  AdmissionId:'',             

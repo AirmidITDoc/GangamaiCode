@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -8,12 +8,12 @@ import { ApiCaller } from 'app/core/services/apiCaller';
   providedIn: 'root'
 })
 export class AppointmentlistService {
-  myCrossConsulteForm: FormGroup;
-  myformSearch: FormGroup;
-  personalFormGroup: FormGroup;
-  VisitFormGroup: FormGroup;
+  myCrossConsulteForm: UntypedFormGroup;
+  myformSearch: UntypedFormGroup;
+  personalFormGroup: UntypedFormGroup;
+  VisitFormGroup: UntypedFormGroup;
 
-  constructor(public _httpClient1: ApiCaller,private _formBuilder: FormBuilder,   private _loaderService: LoaderService,
+  constructor(public _httpClient1: ApiCaller,private _formBuilder: UntypedFormBuilder,   private _loaderService: LoaderService,
     public _httpClient: HttpClient,
   ) {  
     this.myformSearch=this.filterForm();
@@ -23,7 +23,7 @@ export class AppointmentlistService {
   
   // new APi
   
-  filterForm(): FormGroup {
+  filterForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNo:'',
       FirstName:['', [
@@ -39,7 +39,7 @@ export class AppointmentlistService {
       enddate: [(new Date()).toISOString()],
     });
   }
-createSearchForm(): FormGroup {
+createSearchForm(): UntypedFormGroup {
   return this._formBuilder.group({
       patientNameSearch: [""],
       IsDeletedSearch: ["2"],

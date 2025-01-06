@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { ItemMasterService } from "../item-master.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -18,7 +18,7 @@ import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-au
 export class ItemFormMasterComponent implements OnInit {
 
 
-    itemForm:FormGroup;
+    itemForm:UntypedFormGroup;
     isActive:boolean=true;
     Saveflag: boolean= false;
 

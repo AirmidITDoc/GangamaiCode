@@ -1,22 +1,22 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class SubGroupMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createSubgroupForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createSubgroupForm(): FormGroup {
+    createSubgroupForm(): UntypedFormGroup {
         return this._formBuilder.group({
             subGroupId: [0],
             subGroupName: ["", 
@@ -34,7 +34,7 @@ export class SubGroupMasterService {
             // AddedByName: [""],
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             SubGroupNameSearch: [""],
             IsDeletedSearch: ["2"],

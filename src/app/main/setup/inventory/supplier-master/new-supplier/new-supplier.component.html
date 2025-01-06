@@ -381,52 +381,6 @@
                             required</mat-error>
                     </mat-form-field> -->
 
-                <!-- </div> -->
-                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                
-                    <airmid-autocomplete label="StoreName" formControlName="StoreId"
-                        [formGroup]="supplierForm"
-                        [validations]="getValidationStoreMessages().StoreId"
-                        [mode]="autocompleteModestoreName"
-                        (selectDdlObject)="selectChangestoreName($event)">
-                    </airmid-autocomplete>
-                </div>
-                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let item of selectedItems">
-                            {{ item.StoreName }} <mat-icon (click)="remove(item)">close</mat-icon>
-                        </mat-chip>
-                    </mat-chip-list>
-                </div> -->
-                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Vender Type Name</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select VenderTypeId" matInput
-                            formControlName="VenderTypeId" [matAutocomplete]="autovender"
-                            (keydown)="onEnterVender($event)" #VenderTypeId>
-                        <span matSuffix style="display: flex;">
-                            <mat-icon class="mat-icon-close"
-                                (click)="supplierForm.get('VenderTypeId').setValue(''); isvenderselected = false;">close</mat-icon>
-                            <mat-icon class="mat-icon-close"
-                                (click)="supplierForm.get('VenderTypeId').setValue(''); isvenderselected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autovender="matAutocomplete" [displayWith]="getOptionTextVendertype">
-                            <mat-option *ngFor="let option of filteredOptionsVender | async" [value]="option">
-                                {{option.VenderTypeName}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-
-
-                </div> -->
-               
-                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                    <!-- <mat-form-field appearance="outline" *ngIf="msmflag" class="mr-sm-12" fxFlex>
-                        <input name="MSMNo" placeholder="Select MSMNo" formControlName="MSMNo" matInput>
-                        <span class="error" *ngIf="f.MSMNo.invalid && f.MSMNo.touched">MSMNo required only
-                            Digits</span>
-                    </mat-form-field> -->
-                <!-- </div> -->
 
                 <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
 
@@ -448,12 +402,12 @@
                                                 ApiUrl="StoreMaster/get-store">
                                             </airmid-autocomplete>
                                         </div>
-                                        <mat-chip-list #chipList>
+                                        <mat-chip-listbox #chipList>
                                             <mat-chip *ngFor="let item of supplierForm.value.mAssignSupplierToStores">
                                                 {{ item.storeName }} <mat-icon
                                                     (click)="removestore(item)">close</mat-icon>
                                             </mat-chip>
-                                        </mat-chip-list>
+                                        </mat-chip-listbox>
                                     </div>
                                 </form>
                             </mat-card>

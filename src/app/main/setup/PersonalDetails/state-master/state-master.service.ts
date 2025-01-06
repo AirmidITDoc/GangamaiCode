@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class StateMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createStateForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createStateForm(): FormGroup {
+    createStateForm(): UntypedFormGroup {
         return this._formBuilder.group({
             stateId: [0],
             stateName: ["",
@@ -28,7 +28,7 @@ export class StateMasterService {
           
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             StateNameSearch: [""],
             IsDeletedSearch: ["2"],

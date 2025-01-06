@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientMaterialConsumptionReturnService {
 
-  userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
+  userFormGroup: UntypedFormGroup;
+  IndentSearchGroup :UntypedFormGroup;
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.userFormGroup = this.IndentID();
     this.IndentSearchGroup= this.IndentSearchFrom();

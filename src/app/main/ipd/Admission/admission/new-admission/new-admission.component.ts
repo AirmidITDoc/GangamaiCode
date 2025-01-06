@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angula
 import { Admission, AdmissionPersonlModel, Bed } from '../admission.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -72,7 +72,7 @@ export class NewAdmissionComponent implements OnInit {
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewAdmissionComponent>,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private router: Router,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any 
@@ -81,11 +81,11 @@ export class NewAdmissionComponent implements OnInit {
   }
 
 
-  personalFormGroup: FormGroup;
-  hospitalFormGroup: FormGroup;
-  wardFormGroup: FormGroup;
-  otherFormGroup: FormGroup;
-  searchFormGroup: FormGroup;
+  personalFormGroup: UntypedFormGroup;
+  hospitalFormGroup: UntypedFormGroup;
+  wardFormGroup: UntypedFormGroup;
+  otherFormGroup: UntypedFormGroup;
+  searchFormGroup: UntypedFormGroup;
   registration: any;
   matDialogRef: any;   
 

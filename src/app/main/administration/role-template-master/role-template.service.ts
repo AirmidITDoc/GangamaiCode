@@ -1,29 +1,29 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
 })
 export class RoleTemplateService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createRoleForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             RoleNameSearch: [""]
         });
     }
 
-    createRoleForm(): FormGroup {
+    createRoleForm(): UntypedFormGroup {
         return this._formBuilder.group({
             RoleId: [""],
             RoleName: [""]

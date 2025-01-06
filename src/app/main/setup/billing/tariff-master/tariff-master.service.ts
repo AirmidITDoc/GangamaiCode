@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class TariffMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createTariffForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createTariffForm(): FormGroup {
+    createTariffForm(): UntypedFormGroup {
         return this._formBuilder.group({
             tariffId: [0],
             tariffName: ["", 
@@ -30,7 +30,7 @@ export class TariffMasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             TariffNameSearch: [""],
             IsDeletedSearch: ["2"],

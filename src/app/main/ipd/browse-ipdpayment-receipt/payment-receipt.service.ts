@@ -1,22 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentReceiptService {
 
-  myFilterform: FormGroup;
+  myFilterform: UntypedFormGroup;
   
   
   constructor(public _httpClient:HttpClient,
-      private _formBuilder: FormBuilder
+      private _formBuilder: UntypedFormBuilder
       ) {
         this.myFilterform=this.filterForm();
        }
   
-    filterForm(): FormGroup {
+    filterForm(): UntypedFormGroup {
       return this._formBuilder.group({
         PBillNo: '',
         RegNo: '',

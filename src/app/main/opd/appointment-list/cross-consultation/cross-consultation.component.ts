@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { AppointmentlistService } from '../appointmentlist.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
@@ -17,7 +17,7 @@ import { OperatorComparer } from 'app/core/models/gridRequest';
   animations: fuseAnimations,
 })
 export class CrossConsultationComponent implements OnInit {
-  crossconForm: FormGroup;
+  crossconForm: UntypedFormGroup;
   date = new Date().toISOString();
   screenFromString = 'admission-form';
   Departmentid = 0;
@@ -30,7 +30,7 @@ export class CrossConsultationComponent implements OnInit {
   filteredOptionsDoc: any;
 
 
-  constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: FormBuilder,
+  constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<CrossConsultationComponent>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog, public toastr: ToastrService
   ) {

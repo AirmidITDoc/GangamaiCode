@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import { fuseAnimations } from '@fuse/animations';
 import { CasepaperService } from '../casepaper.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { FormBuilder, FormGroup, FormGroupName } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormGroupName } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
@@ -37,7 +37,7 @@ import { element } from 'protractor';
 })
 export class PrescriptionTemplateComponent implements OnInit {
  
-  TemplateForm:FormGroup; 
+  TemplateForm:UntypedFormGroup; 
   sIsLoading: string = ''; 
   currentDate = new Date 
   vRemark: any; ; 
@@ -46,7 +46,7 @@ export class PrescriptionTemplateComponent implements OnInit {
   
   constructor( 
     private _CasepaperService: CasepaperService, 
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private advanceDataStored: AdvanceDataStored, 
     public _matDialog: MatDialog,
     public toastr: ToastrService,

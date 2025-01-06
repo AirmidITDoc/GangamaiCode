@@ -1,22 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClinicalCareChartService {
 
-  MyForm:FormGroup;
-  PainAssessForm:FormGroup;
-  VitalsForm : FormGroup;
-  SugarForm:FormGroup;
-  OxygenForm:FormGroup;
-  ApacheScoreForm:FormGroup;
-  InPutOutputForm:FormGroup;
+  MyForm:UntypedFormGroup;
+  PainAssessForm:UntypedFormGroup;
+  VitalsForm : UntypedFormGroup;
+  SugarForm:UntypedFormGroup;
+  OxygenForm:UntypedFormGroup;
+  ApacheScoreForm:UntypedFormGroup;
+  InPutOutputForm:UntypedFormGroup;
 
   constructor(
-    public _formbuilder:FormBuilder,
+    public _formbuilder:UntypedFormBuilder,
     public _httpClient:HttpClient
   )
    { this.MyForm = this.createMyForm(),

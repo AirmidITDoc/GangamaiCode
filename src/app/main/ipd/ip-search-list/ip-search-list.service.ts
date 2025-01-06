@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -9,23 +9,23 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class IPSearchListService {
 
-  myFilterform: FormGroup;
-  myShowAdvanceForm: FormGroup;
-  mySaveForm: FormGroup;
-  bsaveForm:FormGroup;
-  psaveForm:FormGroup;
-  advForm:FormGroup;
-  paymentForm: FormGroup;
-  myShowDischargeSummaryForm: FormGroup;
-  myRefundBillForm:FormGroup;
-  myRefundAdvanceForm:FormGroup;
-  RefundOfBillFormGroup: FormGroup;
+  myFilterform: UntypedFormGroup;
+  myShowAdvanceForm: UntypedFormGroup;
+  mySaveForm: UntypedFormGroup;
+  bsaveForm:UntypedFormGroup;
+  psaveForm:UntypedFormGroup;
+  advForm:UntypedFormGroup;
+  paymentForm: UntypedFormGroup;
+  myShowDischargeSummaryForm: UntypedFormGroup;
+  myRefundBillForm:UntypedFormGroup;
+  myRefundAdvanceForm:UntypedFormGroup;
+  RefundOfBillFormGroup: UntypedFormGroup;
   // IsDischarge:FormGroup;
   // getIPLitPharmsalesDateWise: any;
   
 
 constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
     ) {
       this.myFilterform=this.filterForm();
@@ -40,7 +40,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
       this.myShowDischargeSummaryForm = this.showDischargeSummaryForm();
      }
 
-  filterForm(): FormGroup {
+  filterForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNo: '',
       IPDNo: '',
@@ -60,7 +60,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  showAdvanceForm(): FormGroup {
+  showAdvanceForm(): UntypedFormGroup {
     return this._formBuilder.group({
       AdmissionID:'',
       AdvanceId:'',
@@ -135,7 +135,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
   }
 
 
-  showPaymentForm(): FormGroup{
+  showPaymentForm(): UntypedFormGroup{
     return this._formBuilder.group({
       PaymentId : '0',
       BillNo : '0',
@@ -173,7 +173,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     })
   }
 
-  showDischargeSummaryForm(): FormGroup {
+  showDischargeSummaryForm(): UntypedFormGroup {
     return this._formBuilder.group({
       AdmissionId:'',
       RegNo: '',
@@ -230,7 +230,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
- refundBillForm(): FormGroup {
+ refundBillForm(): UntypedFormGroup {
     return this._formBuilder.group({
       AdmissionId:'',
       RegNo: '',
@@ -281,7 +281,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  DischargesaveForm(): FormGroup{
+  DischargesaveForm(): UntypedFormGroup{
     return this._formBuilder.group({
      RegNo: '',
      DoctorID:'',
@@ -296,7 +296,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
      Comments:['']
     });
   }
-  refundAdvanceForm(): FormGroup {
+  refundAdvanceForm(): UntypedFormGroup {
     return this._formBuilder.group({
       AdmissionId:'',
       RegNo: '',
@@ -349,7 +349,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
 
  
 
-  bedsaveForm(): FormGroup{
+  bedsaveForm(): UntypedFormGroup{
     return this._formBuilder.group({
      RegNo: '',
      RoomId: ['',Validators.required],
@@ -362,7 +362,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  presaveForm(): FormGroup{
+  presaveForm(): UntypedFormGroup{
     return this._formBuilder.group({
      RegNo: '',
      WardId: ['',Validators.required],
@@ -386,7 +386,7 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  OPrefundForm(): FormGroup {
+  OPrefundForm(): UntypedFormGroup {
     return this._formBuilder.group({
       advanceAmt: [Validators.pattern("^[0-9]*$")],
       BillNo: [''],

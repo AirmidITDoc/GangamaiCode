@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { StateMasterService } from '../state-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 
 export class NewStateMasterComponent implements OnInit {
 
-  stateForm: FormGroup;
+  stateForm: UntypedFormGroup;
   isActive:boolean=true;
   constructor(
       public _StateMasterService: StateMasterService,

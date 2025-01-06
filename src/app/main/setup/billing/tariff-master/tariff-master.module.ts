@@ -8,7 +8,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatRippleModule } from "@angular/material/core";
@@ -56,7 +56,6 @@ const routes: Routes = [
         SharedModule,
         MatDialogModule
     ],
-    providers: [TariffMasterService,DatePipe],
-    entryComponents: [TariffMasterComponent],
+    providers: [TariffMasterService, DatePipe]
 })
 export class TariffMasterModule {}

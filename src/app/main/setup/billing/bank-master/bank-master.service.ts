@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -8,18 +8,18 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class BankMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createBankForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createBankForm(): FormGroup {
+    createBankForm(): UntypedFormGroup {
         return this._formBuilder.group({
             bankId: [0],
             bankName: ["", 
@@ -34,7 +34,7 @@ export class BankMasterService {
             // AddedByName: [""],
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             BankNameSearch: [""],
             IsDeletedSearch: ["2"],

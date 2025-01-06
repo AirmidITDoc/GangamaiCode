@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs';
@@ -17,16 +17,16 @@ export class OPSearhlistService {
     throw new Error('Method not implemented.');
   }
 
-  myFilterform: FormGroup;
-  casepaperform: FormGroup;
-  prescrtionform: FormGroup;
-  myRefundBillForm: FormGroup;
-  myShowAdvanceForm: FormGroup;
-   paymentForm: FormGroup;
+  myFilterform: UntypedFormGroup;
+  casepaperform: UntypedFormGroup;
+  prescrtionform: UntypedFormGroup;
+  myRefundBillForm: UntypedFormGroup;
+  myShowAdvanceForm: UntypedFormGroup;
+   paymentForm: UntypedFormGroup;
 
 
   constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
   ) {
     this.myFilterform = this.filterForm();
@@ -36,7 +36,7 @@ export class OPSearhlistService {
     
   }
 
-  filterForm(): FormGroup {
+  filterForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNo: '',
       FirstName:['', [
@@ -63,7 +63,7 @@ export class OPSearhlistService {
     });
   }
 
-  createCasepaperForm(): FormGroup{
+  createCasepaperForm(): UntypedFormGroup{
     return this._formBuilder.group({
 
 
@@ -109,7 +109,7 @@ export class OPSearhlistService {
     });
   }
 
-  showAdvanceForm(): FormGroup {
+  showAdvanceForm(): UntypedFormGroup {
     return this._formBuilder.group({
       AdmissionID: '',
       AdvanceId: '',
@@ -178,7 +178,7 @@ export class OPSearhlistService {
   });
   }
   
-  showPaymentForm(): FormGroup{
+  showPaymentForm(): UntypedFormGroup{
     return this._formBuilder.group({
       PaymentId : '0',
       BillNo : '0',

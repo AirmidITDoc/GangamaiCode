@@ -8,7 +8,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
 import { MatRippleModule } from "@angular/material/core";
@@ -35,7 +35,6 @@ const routes: Routes = [
     declarations: [BillingClassMasterComponent, NewClassComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -54,9 +53,8 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-        MatDialogModule,SharedModule,
+        MatDialogModule, SharedModule,
     ],
-    providers: [BillingClassMasterService,DatePipe],
-    entryComponents: [BillingClassMasterComponent],
+    providers: [BillingClassMasterService, DatePipe]
 })
 export class BillingClassMasterModule {}

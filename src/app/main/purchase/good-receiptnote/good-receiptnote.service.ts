@@ -1,24 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoodReceiptnoteService {
-  GRNStoreForm: FormGroup;
-  GRNFirstForm: FormGroup;
-  userFormGroup: FormGroup;
-  GRNSearchGroup: FormGroup;
-  GRNFinalForm: FormGroup;
-  POFrom: FormGroup;
-  GRNEmailFrom: FormGroup;
+  GRNStoreForm: UntypedFormGroup;
+  GRNFirstForm: UntypedFormGroup;
+  userFormGroup: UntypedFormGroup;
+  GRNSearchGroup: UntypedFormGroup;
+  GRNFinalForm: UntypedFormGroup;
+  POFrom: UntypedFormGroup;
+  GRNEmailFrom: UntypedFormGroup;
 
   constructor(
     public _httpClient: HttpClient,
     private _loaderService: LoaderService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.GRNStoreForm = this.createStoreFrom();
     // this.GRNFirstForm=this.getGRNfirstForm();

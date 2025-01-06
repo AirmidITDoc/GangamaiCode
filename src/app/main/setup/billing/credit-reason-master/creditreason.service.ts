@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreditreasonService {
-  myform: FormGroup;
-  myformSearch: FormGroup;
+  myform: UntypedFormGroup;
+  myformSearch: UntypedFormGroup;
 
   constructor(
       private _httpClient: ApiCaller,
-      private _formBuilder: FormBuilder
+      private _formBuilder: UntypedFormBuilder
   ) {
       this.myform = this.createCreditreasonForm();
       this.myformSearch = this.createSearchForm();
   }
   
-  createCreditreasonForm(): FormGroup {
+  createCreditreasonForm(): UntypedFormGroup {
       return this._formBuilder.group({
         creditId: [0],
         creditReason: ["", 
@@ -32,7 +32,7 @@ export class CreditreasonService {
         //   AddedByName: [""],
       });
   }
-  createSearchForm(): FormGroup {
+  createSearchForm(): UntypedFormGroup {
       return this._formBuilder.group({
           CreditReasonSearch: [""],
           IsDeletedSearch: ["2"],

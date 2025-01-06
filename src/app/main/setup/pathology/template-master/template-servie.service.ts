@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TemplateServieService {
-  myform: FormGroup;
-  myformSearch: FormGroup;
+  myform: UntypedFormGroup;
+  myformSearch: UntypedFormGroup;
 
   constructor(
     private _httpClient: ApiCaller,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.myformSearch = this.createSearchForm();
     this.myform = this.createTemplateForm();
    }
 
-   createSearchForm():FormGroup{
+   createSearchForm():UntypedFormGroup{
     return this._formBuilder.group({
       TemplateNameSearch: [""],
         IsDeletedSearch: ["2"],
     });
 }
 
-createTemplateForm(): FormGroup {
+createTemplateForm(): UntypedFormGroup {
   return this._formBuilder.group({
       templateId: [0],
       templateName: [""], 

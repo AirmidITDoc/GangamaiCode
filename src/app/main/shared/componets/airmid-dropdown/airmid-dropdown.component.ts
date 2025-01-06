@@ -1,6 +1,6 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgControl } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
@@ -18,8 +18,8 @@ export class AirmidDropdownComponent implements OnInit {
     @Output() selectDdlObject = new EventEmitter<any>();
     apiUrl: string = "Dropdown/GetBindDropDown?mode=";
 
-    control: FormControl = new FormControl();
-    @Input() formGroup: FormGroup;
+    control: UntypedFormControl = new UntypedFormControl();
+    @Input() formGroup: UntypedFormGroup;
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";

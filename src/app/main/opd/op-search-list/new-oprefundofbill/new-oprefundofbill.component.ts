@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -44,14 +44,14 @@ type NewType = Observable<any[]>;
 export class NewOPRefundofbillComponent implements OnInit {
 
     screenFromString = 'app-op-refund-bill';
-    RefundOfBillFormGroup: FormGroup;
-    searchFormGroup: FormGroup;
-    myRefundBillForm: FormGroup;
-    myserviceForm: FormGroup;
+    RefundOfBillFormGroup: UntypedFormGroup;
+    searchFormGroup: UntypedFormGroup;
+    myRefundBillForm: UntypedFormGroup;
+    myserviceForm: UntypedFormGroup;
     isLoading: String = '';
     selectedAdvanceObj: AdvanceDetailObj;
     filteredOptions: NewType;
-    myControl = new FormControl();
+    myControl = new UntypedFormControl();
     dateTimeObj: any;
     billNo: number;
     BillNo: number;
@@ -256,12 +256,12 @@ export class NewOPRefundofbillComponent implements OnInit {
         // private advanceDataStored: AdvanceDataStored,
         public datePipe: DatePipe,
         private accountService: AuthenticationService,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         public toastr: ToastrService,
         public _WhatsAppEmailService: WhatsAppEmailService,
         private changeDetectorRefs: ChangeDetectorRef,
         // private dialogRef: MatDialogRef<NewOPRefundofbillComponent>,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
 
     }
@@ -293,7 +293,7 @@ export class NewOPRefundofbillComponent implements OnInit {
 
 
 
-    refundForm(): FormGroup {
+    refundForm(): UntypedFormGroup {
         return this._formBuilder.group({
             advanceAmt: [Validators.pattern("^[0-9]*$")],
             BillNo: [''],

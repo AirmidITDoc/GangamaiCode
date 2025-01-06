@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -22,7 +22,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class OpPaymentComponent implements OnInit {
 
   currentDate = new Date();
-  patientDetailsFormGrp: FormGroup;
+  patientDetailsFormGrp: UntypedFormGroup;
   selectedPaymnet1: string = '';
   paymentArr1: any[] = this.opService.getPaymentArr();
   BindPaymentTypes() {
@@ -155,7 +155,7 @@ debugger
   OPD_IPD_Id:any;
   TariffName:any;
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<OpPaymentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,

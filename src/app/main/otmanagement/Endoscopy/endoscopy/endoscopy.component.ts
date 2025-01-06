@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +23,7 @@ export class EndoscopyComponent implements OnInit {
 
  
   sIsLoading: string = '';
-  searchFormGroup: FormGroup;
+  searchFormGroup: UntypedFormGroup;
   click: boolean = false;
   MouseEvent = true;
   AnesthType:any=''
@@ -56,7 +56,7 @@ export class EndoscopyComponent implements OnInit {
   dataSource = new MatTableDataSource<OTEndoscopydetail>();
   
   constructor( public _OtManagementService: OTManagementServiceService,
-       private formBuilder: FormBuilder,
+       private formBuilder: UntypedFormBuilder,
        private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,

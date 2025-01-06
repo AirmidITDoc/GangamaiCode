@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BankMasterService } from '../bank-master.service';
@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewBankComponent implements OnInit {
 
   
-  bankForm: FormGroup;
+  bankForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

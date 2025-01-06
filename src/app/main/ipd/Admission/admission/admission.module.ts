@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -58,70 +58,63 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AdmissionNewComponent,
-    AdmissionComponent,
-    EditAdmissionComponent,
-    MLCInformationComponent,
-    SubCompanyTPAInfoComponent,IPDSearcPatienthComponent, NewAdmissionComponent,
-    RegAdmissionComponent,
-    CompanyInformationComponent,
-    AdmissionViewComponent
-  ],
-
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CommonModule,
-      
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatProgressSpinnerModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatStepperModule,
-    // WebcamModule,
-    ReactiveFormsModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule , 
-    MatListModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatAutocompleteModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatButtonToggleModule      
-  ],
-  providers: [
-    AdmissionService,
-    DatePipe,
-    
-  
-],
-entryComponents: [
-  AdmissionComponent,
-]
+    declarations: [
+        AdmissionNewComponent,
+        AdmissionComponent,
+        EditAdmissionComponent,
+        MLCInformationComponent,
+        SubCompanyTPAInfoComponent, IPDSearcPatienthComponent, NewAdmissionComponent,
+        RegAdmissionComponent,
+        CompanyInformationComponent,
+        AdmissionViewComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatProgressSpinnerModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatStepperModule,
+        // WebcamModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatAutocompleteModule,
+        MatChipsModule,
+        MatTooltipModule,
+        MatButtonToggleModule
+    ],
+    providers: [
+        AdmissionService,
+        DatePipe,
+    ]
 })
 export class AdmissionModule { }

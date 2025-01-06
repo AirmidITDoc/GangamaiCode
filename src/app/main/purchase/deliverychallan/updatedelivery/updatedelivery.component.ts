@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ItemNameList } from '../deliverychallan.component';
 import Swal from 'sweetalert2';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import moment, { Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatTableDataSource } from '@angular/material/table';
@@ -234,7 +234,7 @@ export class UpdatedeliveryComponent implements OnInit {
     this.gePharStoreList();
     this.getGSTtypeList();
   }
-   date = new FormControl(moment());
+   date = new UntypedFormControl(moment());
    minDate = new Date();
    maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {

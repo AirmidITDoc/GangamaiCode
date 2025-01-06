@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DischargetypeMasterService } from '../dischargetype-master.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewDischargetypeComponent implements OnInit {
 
-  dischargetypeForm: FormGroup;
+  dischargetypeForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

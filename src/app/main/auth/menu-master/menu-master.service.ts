@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -12,13 +12,13 @@ export class MenuMasterService {
    
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder) 
+        private _formBuilder: UntypedFormBuilder) 
     {
         this.myform = this.createMenuForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createMenuForm(): FormGroup {
+    createMenuForm(): UntypedFormGroup {
     return this._formBuilder.group({
                 id:[""],
                 upId: ["",
@@ -39,7 +39,7 @@ export class MenuMasterService {
             });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
             return this._formBuilder.group({
                 MenuNameSearch: [""],
                 IsDeletedSearch: ["2"],

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class EditRefranceDoctorComponent implements OnInit {
 
 
-  RefrancedrForm: FormGroup;
+  RefrancedrForm: UntypedFormGroup;
 
   VisitId: any = 0;
   RegId: any = 0;

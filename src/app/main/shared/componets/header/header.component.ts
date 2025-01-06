@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
   @Input('screenFrom') screenFromString = '';
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
 
-  dateForm: FormGroup;
+  dateForm: UntypedFormGroup;
   HospitalName:any;
   HospitalAddress:any;
   Phone:any;

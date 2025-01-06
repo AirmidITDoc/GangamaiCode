@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PharmacyClearenceService {
 
-  userFormGroup: FormGroup;
-  MyFrom: FormGroup;
+  userFormGroup: UntypedFormGroup;
+  MyFrom: UntypedFormGroup;
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.userFormGroup = this.CreateUseFrom();
     this.MyFrom = this.createmyFrom(); 

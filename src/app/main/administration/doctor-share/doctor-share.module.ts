@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -53,10 +53,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DoctorShareComponent, AddDoctorShareComponent, ProcessDoctorShareComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
+    declarations: [DoctorShareComponent, AddDoctorShareComponent, ProcessDoctorShareComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -94,11 +94,10 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-         MatTooltipModule
-  ],
-  providers: [
-    DatePipe, 
-  ],
-  entryComponents: [DoctorShareComponent],
+        MatTooltipModule
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class DOctorShareModule { }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -38,7 +38,7 @@ export class InterimBillComponent implements OnInit {
   interimArray: any = [];
   isLoading: String = '';
   dateTimeObj: any;
-  InterimFormGroup: FormGroup;
+  InterimFormGroup: UntypedFormGroup;
   BillNo: number;
   NetBillAmount: number;
   TotalRefundAmount: number;
@@ -107,7 +107,7 @@ export class InterimBillComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<InterimBillComponent>,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -148,7 +148,7 @@ export class InterimBillComponent implements OnInit {
     this.getConcessionReasonList();
   }
 
-  InterimForm(): FormGroup {
+  InterimForm(): UntypedFormGroup {
     return this.formBuilder.group({
       NetpayAmount: [Validators.pattern("^[0-9]*$")],
       TotalRefundAmount: [Validators.pattern("^[0-9]*$")],

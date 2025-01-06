@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { BillingClassMasterService } from '../billing-class-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewClassComponent implements OnInit {
 
-    classForm: FormGroup;
+    classForm: UntypedFormGroup;
     isActive:boolean=true;
     saveflag : boolean = false;
 

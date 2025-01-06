@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ItemGenericMasterService } from '../item-generic-master.service';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-generic',
@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./new-generic.component.scss']
 })
 export class NewGenericComponent implements OnInit {
-  genericForm: FormGroup;
+  genericForm: UntypedFormGroup;
   isActive:boolean=true;
 
   constructor(

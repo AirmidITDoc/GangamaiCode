@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiscountAfterSalesBillService {
 
-  SearchGroupForm : FormGroup;
-  IPFinalform :FormGroup;
+  SearchGroupForm : UntypedFormGroup;
+  IPFinalform :UntypedFormGroup;
   constructor(
-    public _formbuilder: FormBuilder,
+    public _formbuilder: UntypedFormBuilder,
     public _httpClient: HttpClient
   ) {
     this.SearchGroupForm = this.CreaterSearchForm();

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -8,13 +8,13 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class ItemMovemnentService {
 
-  userFormGroup: FormGroup;
-  ItemSearchGroup :FormGroup;
+  userFormGroup: UntypedFormGroup;
+  ItemSearchGroup :UntypedFormGroup;
 
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     // this.userFormGroup = this.createUserForm();
     this.ItemSearchGroup= this.createSearchFrom();

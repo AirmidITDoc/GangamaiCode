@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../../ot-management-service.service';
@@ -23,8 +23,8 @@ import { MatSelect } from '@angular/material/select';
   animations: fuseAnimations
 })
 export class NewRequestComponent implements OnInit {
-  myForm:FormGroup;
-  personalFormGroup: FormGroup;
+  myForm:UntypedFormGroup;
+  personalFormGroup: UntypedFormGroup;
   isAlive = false;
   savedValue: number = null;
   isLoadings = false;
@@ -32,7 +32,7 @@ export class NewRequestComponent implements OnInit {
   loadID = 0;
   submitted = false;
   now = Date.now();
-  searchFormGroup: FormGroup;
+  searchFormGroup: UntypedFormGroup;
   isRegSearchDisabled: boolean = true;
   newRegSelected: any = 'registration';
   selectedAdvanceObj: OPIPPatientModel;
@@ -109,7 +109,7 @@ export class NewRequestComponent implements OnInit {
 
   constructor(
     public _OtManagementService: OTManagementServiceService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,

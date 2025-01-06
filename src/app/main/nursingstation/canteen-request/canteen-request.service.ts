@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanteenRequestService {
-  MyForm:FormGroup;
-  SearchMyForm:FormGroup;
-  ItemForm:FormGroup;
+  MyForm:UntypedFormGroup;
+  SearchMyForm:UntypedFormGroup;
+  ItemForm:UntypedFormGroup;
   
   constructor(
-    public _formbuilder:FormBuilder,
+    public _formbuilder:UntypedFormBuilder,
     public _httpClient:HttpClient, public _httpClient1:ApiCaller
   )
    { this.MyForm = this.createMyForm(),

@@ -12,7 +12,6 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [CertificatemasterComponent],
-    imports: [RouterModule.forChild(routes)],
-    entryComponents: [CertificatemasterComponent],
+    imports: [RouterModule.forChild(routes)]
 })
 export class CertificatemasterModule {}

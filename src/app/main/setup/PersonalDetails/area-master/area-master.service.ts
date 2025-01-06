@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class AreaMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createAreaForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createAreaForm(): FormGroup {
+    createAreaForm(): UntypedFormGroup {
         return this._formBuilder.group({
             areaId: [0],
             areaName: ["",
@@ -33,7 +33,7 @@ export class AreaMasterService {
             UpdatedBy: ["0"],
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             AreaNameSearch: [""],
             IsDeletedSearch: ["2"],

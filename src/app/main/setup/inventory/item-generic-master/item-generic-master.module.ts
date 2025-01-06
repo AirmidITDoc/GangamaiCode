@@ -9,7 +9,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
 import { MatMenuModule } from "@angular/material/menu";
@@ -51,7 +51,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [ItemGenericMasterService,DatePipe],
-    entryComponents: [ItemGenericMasterComponent],
+    providers: [ItemGenericMasterService, DatePipe]
 })
 export class ItemGenericMasterModule {}

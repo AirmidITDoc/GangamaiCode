@@ -1,22 +1,22 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class BedMasterService {
     
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createBedForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createBedForm(): FormGroup {
+    createBedForm(): UntypedFormGroup {
         return this._formBuilder.group({
             bedId:[0],
             bedName: ["",
@@ -32,7 +32,7 @@ export class BedMasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             BedNameSearch: [""],
             IsDeletedSearch: ["2"],

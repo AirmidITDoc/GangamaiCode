@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchdulerService {
-  myformSearch: FormGroup;
-  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
+  myformSearch: UntypedFormGroup;
+  constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) {
   }
   public getSchedulers(ScheduleName) {
     return this._httpClient.get("Schedule/get-schedulers?ScheduleName="+ScheduleName);

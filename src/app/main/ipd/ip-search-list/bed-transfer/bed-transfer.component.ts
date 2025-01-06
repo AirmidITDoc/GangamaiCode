@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,7 +23,7 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class BedTransferComponent implements OnInit {
-  Bedtransfer: FormGroup;
+  Bedtransfer: UntypedFormGroup;
   dateTimeObj: any;
   isLoading: string = '';
   screenFromString = 'admission-form';
@@ -56,7 +56,7 @@ export class BedTransferComponent implements OnInit {
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<IPSearchListComponent>,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
   
     if (this.advanceDataStored.storage) {
@@ -87,7 +87,7 @@ export class BedTransferComponent implements OnInit {
   getDateTime(dateTimeObj) { 
     this.dateTimeObj = dateTimeObj;
   }
-  bedsaveForm(): FormGroup {
+  bedsaveForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNo: '',
       RoomId: ['', Validators.required],

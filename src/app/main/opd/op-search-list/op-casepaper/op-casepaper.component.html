@@ -97,7 +97,7 @@
                                                                     appearance="outline"
                                                                     style="display:inline-flexbox; margin-bottom: 40px; width:100%;">
                                                                     <mat-label>History</mat-label>
-                                                                    <mat-chip-list #historyChipList>
+                                                                    <mat-chip-listbox #historyChipList>
                                                                         <mat-chip *ngFor="let ele of historySelected"
                                                                             [selectable]="selectable"
                                                                             [removable]="removable"
@@ -113,7 +113,7 @@
                                                                             [matChipInputFor]="historyChipList"
                                                                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                             (matChipInputTokenEnd)="addChips($event, historySelected, 'historyContoller')">
-                                                                    </mat-chip-list>
+                                                                    </mat-chip-listbox>
                                                                     <mat-autocomplete #auto1="matAutocomplete"
                                                                         (optionSelected)="selected($event, historySelected, 'historyContoller', 'historyInput')">
                                                                         <mat-option
@@ -128,7 +128,7 @@
                                                                     appearance="outline"
                                                                     style="display:inline-flexbox; margin-bottom: 40px; width:100%;">
                                                                     <mat-label>Diagnosis</mat-label>
-                                                                    <mat-chip-list #diagnosisChipList>
+                                                                    <mat-chip-listbox #diagnosisChipList>
                                                                         <mat-chip *ngFor="let ele of diagnosisSelected"
                                                                             [selectable]="selectable"
                                                                             [removable]="removable"
@@ -144,7 +144,7 @@
                                                                             [matChipInputFor]="diagnosisChipList"
                                                                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                                             (matChipInputTokenEnd)="addChips($event, diagnosisSelected, 'diagnosisContoller')">
-                                                                    </mat-chip-list>
+                                                                    </mat-chip-listbox>
                                                                     <mat-autocomplete #auto2="matAutocomplete"
                                                                         (optionSelected)="selectedD($event, diagnosisSelected, 'diagnosisContoller', 'diagnosisInput')">
                                                                         <mat-option

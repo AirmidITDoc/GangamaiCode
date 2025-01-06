@@ -45,55 +45,54 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [
-    SchdulerComponent,
-    ManageschedulerComponent
-
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    FuseSidebarModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatCardModule,
-    MatListModule,
-    MatTooltipModule,
-    MatExpansionModule,
-    MatListModule,
-    ScrollingModule,
-    MatDialogModule
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
-  providers: [
-    SchdulerService,
-    DatePipe, { provide: MatDialogRef, useValue: {} }],
-  entryComponents: [SchdulerComponent],
+    declarations: [
+        SchdulerComponent,
+        ManageschedulerComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        FuseSidebarModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatListModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatListModule,
+        ScrollingModule,
+        MatDialogModule
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ],
+    providers: [
+        SchdulerService,
+        DatePipe, { provide: MatDialogRef, useValue: {} }
+    ]
 })
 export class NewScdulerModule { }

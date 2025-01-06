@@ -1,6 +1,6 @@
 import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,17 +9,17 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SampleCollectionService {
-  myformSearch: FormGroup;
-  sampldetailform: FormGroup;
+  myformSearch: UntypedFormGroup;
+  sampldetailform: UntypedFormGroup;
 
-  constructor( private _formBuilder: FormBuilder,
+  constructor( private _formBuilder: UntypedFormBuilder,
     private handler: HttpBackend,private _httpClient: HttpClient,private _httpClient1: ApiCaller,)
    {  this.myformSearch = this.createSearchForm();
     
     this.sampldetailform = this.createSampledetailForm();
    }
 
-  createSearchForm(): FormGroup {
+  createSearchForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNoSearch: [],
       FirstNameSearch: ['', [
@@ -39,7 +39,7 @@ export class SampleCollectionService {
     });
   }
 
-  createSampledetailForm(): FormGroup {
+  createSampledetailForm(): UntypedFormGroup {
     return this._formBuilder.group({
   SampleDateTime: [''],
 

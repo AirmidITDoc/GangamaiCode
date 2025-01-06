@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -20,13 +20,13 @@ import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-au
 export class NewRegistrationComponent implements OnInit {
 
 
-    personalFormGroup: FormGroup;
+    personalFormGroup: UntypedFormGroup;
     registerObj = new RegInsert({});
 
 
     submitted = false;
     now = Date.now();
-    searchFormGroup: FormGroup;
+    searchFormGroup: UntypedFormGroup;
     isRegSearchDisabled: boolean = true;
     newRegSelected: any = 'registration';
     minDate: Date;

@@ -1,24 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OTManagementServiceService {
 
-  Otserachform:FormGroup;
-  otreservationFormGroup:FormGroup;
+  Otserachform:UntypedFormGroup;
+  otreservationFormGroup:UntypedFormGroup;
   
   constructor(private _httpClient: HttpClient,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: UntypedFormBuilder) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm1();
       this.otreservationFormGroup = this.createOtreservationForm();
      }
  
 
-    filterForm(): FormGroup {
+    filterForm(): UntypedFormGroup {
       return this._formBuilder.group({
   
         OTTableID:'',
@@ -76,7 +76,7 @@ export class OTManagementServiceService {
    }
 
 
-   filterForm1(): FormGroup {
+   filterForm1(): UntypedFormGroup {
     return this._formBuilder.group({
   
       OTTableID:'',

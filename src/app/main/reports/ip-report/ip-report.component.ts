@@ -8,7 +8,7 @@ import { IPReportService } from './ipreport.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
@@ -89,7 +89,7 @@ export class IpReportComponent implements OnInit {
     private _ActRoute: Router,
     public datePipe: DatePipe,
         private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.userId;
     this.UserName = this._loggedUser.currentUserValue.userName;

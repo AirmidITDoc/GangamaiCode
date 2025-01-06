@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ManufactureMasterService } from '../manufacture-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewManufactureComponent implements OnInit {
 
-  manufForm: FormGroup;
+  manufForm: UntypedFormGroup;
   isActive:boolean=true;
 
   constructor(

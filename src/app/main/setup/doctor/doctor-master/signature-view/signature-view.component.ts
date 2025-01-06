@@ -7,10 +7,10 @@ import { ImageViewComponent } from 'app/main/opd/appointment/image-view/image-vi
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ImageCropComponent } from 'app/main/shared/componets/image-crop/image-crop.component';
 // import { WebcamImage, WebcamInitError } from 'ngx-webcam';
-import {
-    NgxSignaturePadComponent,
-    SignaturePadOptions
-} from "@o.krucheniuk/ngx-signature-pad";
+// import {
+//     NgxSignaturePadComponent,
+//     SignaturePadOptions
+// } from "@o.krucheniuk/ngx-signature-pad";
 @Component({
     selector: 'app-signature-view',
     templateUrl: './signature-view.component.html',
@@ -39,13 +39,14 @@ export class SignatureViewComponent implements OnInit {
         );
     }
     @ViewChild("testPad", { static: true })
-    signaturePadElement: NgxSignaturePadComponent;
+    signaturePadElement: any;// NgxSignaturePadComponent;
 
-    config: SignaturePadOptions = {
-        minWidth: 1,
-        maxWidth: 10,
-        penColor: "blue"
-    };
+    // config: SignaturePadOptions = {
+    //     minWidth: 1,
+    //     maxWidth: 10,
+    //     penColor: "blue"
+    // };
+    config:any;
 
     public clear() {
         this.signaturePadElement.clear();

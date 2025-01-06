@@ -1,22 +1,22 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class RelationshipMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createRelationshipForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createRelationshipForm(): FormGroup {
+    createRelationshipForm(): UntypedFormGroup {
         return this._formBuilder.group({
             relationshipId: [0],
             relationshipName: ["",
@@ -28,7 +28,7 @@ export class RelationshipMasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             RelationshipNameSearch: [""],
             IsDeletedSearch: ["2"],

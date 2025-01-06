@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { PatienttypeMasterService } from '../patienttype-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewPatientTypeComponent implements OnInit {
 
-  patienttypeForm: FormGroup;
+  patienttypeForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

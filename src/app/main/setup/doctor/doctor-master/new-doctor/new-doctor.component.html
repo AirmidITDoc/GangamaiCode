@@ -211,12 +211,12 @@
                                     ApiUrl="DepartmentMaster/get-departments">
                                 </airmid-autocomplete>
                             </div>
-                            <mat-chip-list #chipList>
+                            <mat-chip-listbox #chipList>
                                 <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
                                     {{ item.departmentName }} <mat-icon
                                         (click)="removeDepartment(item)">close</mat-icon>
                                 </mat-chip>
-                            </mat-chip-list>
+                            </mat-chip-listbox>
                         </div>
                     </form>
                 </mat-card>

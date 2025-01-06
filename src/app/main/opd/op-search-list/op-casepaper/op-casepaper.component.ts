@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -63,7 +63,7 @@ export class OPCasepaperComponent implements OnInit {
     { value: 'fracture', viewValue: 'Fracture' }
   ];
   currentDate = new Date();
-  caseFormGroup: FormGroup;
+  caseFormGroup: UntypedFormGroup;
   drugList: any = [];
   complaintList: any = [];
   examinationList: any = [];
@@ -93,12 +93,12 @@ export class OPCasepaperComponent implements OnInit {
   public filteredExamination: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  public doseFilterCtrl: FormControl = new FormControl();
-  public drugFilterCtrl: FormControl = new FormControl();
-  public historyFilterCtrl: FormControl = new FormControl();
-  public dignosFilterCtrl: FormControl = new FormControl();
-  public complaintFilterCtrl: FormControl = new FormControl();
-  public examinationFilterCtrl: FormControl = new FormControl();
+  public doseFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public drugFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public historyFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public dignosFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public complaintFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public examinationFilterCtrl: UntypedFormControl = new UntypedFormControl();
 
   private lookups: ILookup[] = [];
   private nextPage$ = new Subject();
@@ -189,7 +189,7 @@ export class OPCasepaperComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<OPCasepaperComponent>,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _matDialog: MatDialog,
     private _opSearchListService: OPSearhlistService,
     private accountService: AuthenticationService,
@@ -701,7 +701,7 @@ export class OPCasepaperComponent implements OnInit {
 
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next();
+    this.nextPage$.next(true);
   }
 
   onAddOption(fieldName) {
@@ -822,7 +822,7 @@ export class OPCasepaperComponent implements OnInit {
     // console.log(this.dataSource.data );
     // console.log(this.prescriptionData);
     element ? this.addRow() : '';
-    this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new FormControl());
+    this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new UntypedFormControl());
     this.caseFormGroup.get(`drugController${this.prescriptionData.length - 1}`).setValidators(Validators.required);
   }
   onDelete(element) {
@@ -913,7 +913,7 @@ export class OPCasepaperComponent implements OnInit {
 
 
   ngOnDestroy() {
-    this._onDestroy.next();
+    this._onDestroy.next(true);
     this._onDestroy.complete();
   }
 

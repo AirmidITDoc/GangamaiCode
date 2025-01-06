@@ -16,7 +16,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatRippleModule } from "@angular/material/core";
@@ -41,7 +41,6 @@ const routes: Routes = [
     declarations: [SubGroupMasterComponent, NewSubgroupComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -68,10 +67,8 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
-       
         MatDialogModule,
     ],
-    providers: [SubGroupMasterService,DatePipe],
-    entryComponents: [SubGroupMasterComponent],
+    providers: [SubGroupMasterService, DatePipe]
 })
 export class SubGroupMasterModule {}

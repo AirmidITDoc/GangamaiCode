@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class DiscountAfterFinalBillComponent implements OnInit {
 
-  MyFrom:FormGroup;
+  MyFrom:UntypedFormGroup;
   selectedAdvanceObj:any
   vNetamount:any;
   vTotalAmount:any;
@@ -39,7 +39,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     public dialogRef: MatDialogRef<DiscountAfterFinalBillComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public _IpSearchListService: IPSearchListService,
   ) { }
 

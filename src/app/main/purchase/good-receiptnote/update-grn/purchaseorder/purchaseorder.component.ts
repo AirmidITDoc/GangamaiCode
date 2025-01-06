@@ -11,7 +11,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
-import { UpdateGRNComponent } from '../update-grn.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 @Component({

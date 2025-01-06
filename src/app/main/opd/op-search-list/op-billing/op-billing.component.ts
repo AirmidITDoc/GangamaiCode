@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -87,7 +87,7 @@ export class OPBillingComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<ChargesList>();
-  myControl = new FormControl();
+  myControl = new UntypedFormControl();
   filteredOptions: any;
   billingServiceList = [];
   showAutocomplete = false;
@@ -139,9 +139,9 @@ export class OPBillingComponent implements OnInit {
 
   IPBillingInfor: any = [];
 
-  registeredForm: FormGroup;
-  BillingForm: FormGroup;
-  myShowAdvanceForm: FormGroup;
+  registeredForm: UntypedFormGroup;
+  BillingForm: UntypedFormGroup;
+  myShowAdvanceForm: UntypedFormGroup;
 
   netPaybleAmt: any;
   netPaybleAmt1: any;
@@ -158,7 +158,7 @@ export class OPBillingComponent implements OnInit {
   registerObj = new RegInsert({});
   PatientName: any = "";
   RegId: any;
-  searchFormGroup: FormGroup;
+  searchFormGroup: UntypedFormGroup;
   Regflag: boolean = false;
   RegDate: any;
   City: any;
@@ -173,11 +173,11 @@ export class OPBillingComponent implements OnInit {
   filteredOptionDoctor:any;
   isDoctorSelected:boolean=false;
   //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  public serviceFilterCtrl: FormControl = new FormControl();
+  public serviceFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
@@ -200,7 +200,7 @@ export class OPBillingComponent implements OnInit {
     private dialogRef: MatDialogRef<OPBillingComponent>,
     public _httpClient: HttpClient,
     public toastr: ToastrService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -872,7 +872,7 @@ export class OPBillingComponent implements OnInit {
 
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next();
+    this.nextPage$.next(true);
   }
 
 

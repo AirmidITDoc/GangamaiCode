@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,8 +23,8 @@ import { fuseAnimations } from '@fuse/animations';
 export class CathLabComponent implements OnInit {
 
   hasSelectedContacts: boolean;
-  personalFormGroup: FormGroup;
-  searchFormGroup : FormGroup;
+  personalFormGroup: UntypedFormGroup;
+  searchFormGroup : UntypedFormGroup;
   registerObj = new CathLabBookingDetail({});
   options = [];
   filteredOptions: any;
@@ -74,7 +74,7 @@ export class CathLabComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _OtManagementService: OTManagementServiceService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
 
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
@@ -88,11 +88,11 @@ export class CathLabComponent implements OnInit {
   doctorNameCmbList: any = [];
   D_data1:any;
   dataArray = {};
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   
     //department filter
-    public departmentFilterCtrl: FormControl = new FormControl();
+    public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
     public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
   
   private _onDestroy = new Subject<void>();

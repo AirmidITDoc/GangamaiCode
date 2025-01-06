@@ -16,7 +16,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormControl } from '@angular/forms';
+import { FormsModule, UntypedFormControl } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -33,7 +33,7 @@ const moment = _rollupMoment || _moment;
     templateUrl: './update-grn.component.html',
     styleUrls: ['./update-grn.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+    animations: fuseAnimations
 })
 export class UpdateGRNComponent implements OnInit {
     vsaveflag: boolean = true;
@@ -249,7 +249,7 @@ export class UpdateGRNComponent implements OnInit {
         this.getGSTtypeList();
     }
 
-    date = new FormControl(moment());
+    date = new UntypedFormControl(moment());
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);
     setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {

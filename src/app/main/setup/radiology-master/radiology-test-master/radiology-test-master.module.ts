@@ -7,7 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -53,15 +53,11 @@ const routes: Routes = [
     declarations: [RadiologyTestMasterComponent, UpdateradiologymasterComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
-
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-
         MatTableModule,
-
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
@@ -70,29 +66,24 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
-       
         MatCheckboxModule,
         MatDatepickerModule,
         MatMenuModule,
         MatRippleModule,
-                MatToolbarModule,
+        MatToolbarModule,
         MatTabsModule,
         MatCardModule,
         MatDividerModule,
         MatProgressSpinnerModule,
-       
         MatDialogModule,
         MatStepperModule,
         // WebcamModule,
         ReactiveFormsModule,
         MatSidenavModule,
         MatExpansionModule,
-        
         MatDialogModule,
         MatGridListModule,
-        
-        MatSlideToggleModule , 
+        MatSlideToggleModule,
         MatListModule,
         SharedModule,
         NgxMatSelectSearchModule,
@@ -101,9 +92,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatTreeModule,
     ],
-    providers: [RadiologyTestMasterService,DatePipe],
-
-    entryComponents: [RadiologyTestMasterComponent],
+    providers: [RadiologyTestMasterService, DatePipe]
 })
 export class RadiologytestMasterModule {
 }

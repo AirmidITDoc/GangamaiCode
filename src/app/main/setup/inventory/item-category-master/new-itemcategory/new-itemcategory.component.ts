@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ItemCategoryMasterService } from '../item-category-master.service';
@@ -11,7 +11,7 @@ import { ItemCategoryMasterService } from '../item-category-master.service';
 })
 export class NewItemcategoryComponent implements OnInit {
 
-  categoryForm: FormGroup;
+  categoryForm: UntypedFormGroup;
   isActive:boolean=true;
 
   autocompleteModeItem: string = "Item";

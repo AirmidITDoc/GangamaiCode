@@ -12,7 +12,7 @@ import { MatRippleModule } from "@angular/material/core";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
@@ -36,10 +36,10 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { NgxPrintModule } from "ngx-print";
-import { WebcamModule } from "ngx-webcam";
+//import { NgxPrintModule } from "ngx-print";
+//import { WebcamModule } from "ngx-webcam";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
+//import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
 import { OPSettlementComponent } from './op-settlement/op-settlement.component';
 
 
@@ -72,32 +72,28 @@ const routes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         MatDialogModule,
-
         MatTabsModule,
         MatDatepickerModule,
         MatListModule,
         MatSlideToggleModule,
         MatDividerModule,
         ReactiveFormsModule,
-
         MatStepperModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
-
         NgxMatSelectSearchModule,
         MatCardModule,
         MatListModule,
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-        WebcamModule,
+        //WebcamModule,
         ScrollingModule,
         MatSidenavModule,
-        NgxQRCodeModule,
-        NgxPrintModule,
+        //NgxQRCodeModule,
+        //NgxPrintModule,
         MatButtonToggleModule
     ],
-    providers: [OPListService,DatePipe],
-    entryComponents: [NewOPListComponent],
+    providers: [OPListService, DatePipe]
 })
 export class OplistModule { }

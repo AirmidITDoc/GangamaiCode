@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
@@ -175,7 +175,7 @@ export class PurchaseOrderComponent implements OnInit {
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
     public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
@@ -267,7 +267,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
  
-  disableSelect = new FormControl(false);
+  disableSelect = new UntypedFormControl(false);
  
   highlight(contact) {
     this.selectedRowIndex = contact.ItemID;

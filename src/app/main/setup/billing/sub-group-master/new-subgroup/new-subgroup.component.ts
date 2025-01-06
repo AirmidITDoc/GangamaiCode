@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SubGroupMasterService } from '../sub-group-master.service';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -16,7 +16,7 @@ export class NewSubgroupComponent implements OnInit {
 
   autocompleteModegroupName:string="GroupName";
 
-  subgroupForm: FormGroup;
+  subgroupForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

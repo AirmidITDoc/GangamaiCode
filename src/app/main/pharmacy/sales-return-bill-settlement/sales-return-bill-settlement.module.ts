@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -45,60 +45,54 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    SalesReturnBillSettlementComponent, 
-    DiscountAfterFinalBillComponent,
-    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatExpansionModule,
-    MatSlideToggleModule ,
-    MatListModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
-        
-  ],
-  providers: [
-    
-    DatePipe,
-],
-entryComponents: [
-  SalesReturnBillSettlementComponent,
-]
+    declarations: [
+        SalesReturnBillSettlementComponent,
+        DiscountAfterFinalBillComponent,
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        MatChipsModule,
+        // NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class SalesReturnBillSettlementModule { }

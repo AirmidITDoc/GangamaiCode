@@ -1,21 +1,21 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class OpeningBalanceService {
-StoreForm:FormGroup;
-UseFormGroup:FormGroup;
-NewUseForm:FormGroup;
+StoreForm:UntypedFormGroup;
+UseFormGroup:UntypedFormGroup;
+NewUseForm:UntypedFormGroup;
 
    
   constructor(
     public _httpClient:HttpClient,
-    public _formbuilder:FormBuilder
+    public _formbuilder:UntypedFormBuilder
   ) 
   {this.UseFormGroup=this.createuseFormGroup() ,
   this.NewUseForm=this.createNewUseForm(),

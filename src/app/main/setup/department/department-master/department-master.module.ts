@@ -8,7 +8,7 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
 import { MatMenuModule } from "@angular/material/menu";
@@ -51,7 +51,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [DepartmentMasterService,DatePipe],
-    entryComponents: [DepartmentMasterComponent],
+    providers: [DepartmentMasterService, DatePipe]
 })
 export class DepartmentMasterModule {}

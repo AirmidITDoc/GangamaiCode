@@ -1,23 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyListService {
  
-  myFilterform: FormGroup;
+  myFilterform: UntypedFormGroup;
 
   constructor(
     public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
     ) 
     {
       this.myFilterform=this.filterForm(); 
      }
 
-  filterForm(): FormGroup {
+  filterForm(): UntypedFormGroup {
     return this._formBuilder.group({
       RegNo: '',
       IPDNo: '',

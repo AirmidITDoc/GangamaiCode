@@ -13,7 +13,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -42,42 +42,39 @@ const routes: Routes = [
 @NgModule({
     declarations: [ItemMasterComponent, ItemFormMasterComponent],
     imports: [
-
-    RouterModule.forChild(routes),
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    CommonModule,
-    MatExpansionModule,
-    MatCardModule,
-    MatSlideToggleModule,
-    MatListModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatAutocompleteModule,
-    MatSelectModule,
-    MatChipsModule,
-    SharedModule,
-    MatDialogModule,
-
+        RouterModule.forChild(routes),
+        FormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        CommonModule,
+        MatExpansionModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatListModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatAutocompleteModule,
+        MatSelectModule,
+        MatChipsModule,
+        SharedModule,
+        MatDialogModule,
     ],
-    providers: [ItemMasterComponent,DatePipe],
-    entryComponents: [ItemMasterComponent],
+    providers: [ItemMasterComponent, DatePipe]
 })
 export class ItemMasterModule {}

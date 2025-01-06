@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -44,14 +44,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    IPSettlementComponent,
-    IPpaymentWithadvanceComponent,
-    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
+    declarations: [
+        IPSettlementComponent,
+        IPpaymentWithadvanceComponent,
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -85,15 +84,11 @@ const routes: Routes = [
         MatSelectModule,
         // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
-         MatChipsModule,
-        
-  ],
-  providers: [
-    IPSettlementService,
-    DatePipe,
+        MatChipsModule,
     ],
-entryComponents: [
-  IPSettlementComponent
-]
+    providers: [
+        IPSettlementService,
+        DatePipe,
+    ]
 })
 export class IPSettlementModule { }

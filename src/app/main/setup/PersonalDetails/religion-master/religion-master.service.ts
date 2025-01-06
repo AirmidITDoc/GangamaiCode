@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -7,22 +7,22 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class ReligionMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.CreateReligionForm();
         this.myformSearch = this.createSearchForm();
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             ReligionNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-    CreateReligionForm(): FormGroup {
+    CreateReligionForm(): UntypedFormGroup {
         return this._formBuilder.group({
             religionId: [0],
             religionName: ["",

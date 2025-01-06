@@ -8,7 +8,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-item-generic-master",
@@ -18,7 +18,7 @@ import { FormGroup } from "@angular/forms";
     animations: fuseAnimations,
 })
 export class ItemGenericMasterComponent implements OnInit {
-    genericForm: FormGroup;
+    genericForm: UntypedFormGroup;
 
     constructor(public _ItemGenericMasterService: ItemGenericMasterService,
         public _matDialog: MatDialog,

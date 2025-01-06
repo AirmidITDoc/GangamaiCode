@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InPatientReturnService {
-  userFormGroup: FormGroup;
-  IPFinalform :FormGroup;
+  userFormGroup: UntypedFormGroup;
+  IPFinalform :UntypedFormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.userFormGroup = this.CreateusefromGroup();
     this.IPFinalform= this.CreateaIpFinalform();

@@ -1,24 +1,24 @@
 
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class ManufactureMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createManufactureForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createManufactureForm(): FormGroup {
+    createManufactureForm(): UntypedFormGroup {
         return this._formBuilder.group({
             itemManufactureId: [0],
             manufactureName: ["",
@@ -33,7 +33,7 @@ export class ManufactureMasterService {
             UpdatedBy: ["0"],
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             ManufNameSearch: [""],
             IsDeletedSearch: ["2"],

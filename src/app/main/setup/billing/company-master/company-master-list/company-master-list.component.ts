@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { CompanyMasterService } from "../company-master.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
@@ -14,7 +14,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class CompanyMasterListComponent implements OnInit {
   
-    companyForm: FormGroup;
+    companyForm: UntypedFormGroup;
     isActive:boolean=true;
     saveflag : boolean = false;
 

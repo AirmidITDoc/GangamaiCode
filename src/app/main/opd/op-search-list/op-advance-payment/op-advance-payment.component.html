@@ -122,12 +122,12 @@
     <div class="payment-container" style="margin-top: 10px;">
         <form [formGroup]="paymentForm">
             <div class="chips-container" style="margin-bottom: 20px;">
-                <mat-chip-list aria-label="Fish selection" selectable multiple>
+                <mat-chip-listbox aria-label="Fish selection" selectable multiple>
                     <mat-chip *ngFor="let chip of chipsElements" [selected]="chip.state"
                         (click)="chipsSelectionChanged(chip)">
                         <span class="chips-name">{{chip.name}}</span>
                     </mat-chip>
-                </mat-chip-list>
+                </mat-chip-listbox>
             </div>
             <hr size="50">
             <!-- *ngIf="Cashflag" -->

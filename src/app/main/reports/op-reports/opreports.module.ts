@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -44,55 +44,51 @@ const routes : Routes =[
 ];
 
 @NgModule({
-  declarations: [
-    OpReportsComponent,
-    
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatExpansionModule,
-    MatSlideToggleModule ,
-    MatListModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    MatSelectModule,
-    MatTooltipModule,
-    MatNativeDateModule,        // <----- import for date formating(optional)
-    MatMomentDateModule,
-    // MaterialModule,
-    MatTreeModule
-  ],
-  providers:[
-    DatePipe,
-  ],
-  entryComponents: [
-    OpReportsComponent
-  ]
+    declarations: [
+        OpReportsComponent,
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        MatSelectModule,
+        MatTooltipModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
+        // MaterialModule,
+        MatTreeModule
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class OPReportsModule { }

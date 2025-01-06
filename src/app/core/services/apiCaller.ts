@@ -6,13 +6,12 @@ import { apiResponse } from "../models/apiResponse";
 import { ToastrService } from 'ngx-toastr';
 import { APP_CONFIG, AppConfig } from "app/app-config.module";
 import { User } from "../models/user";
-import { AuthenticationService } from "./authentication.service";
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: "root" })
 export class ApiCaller {
     ApiUrl=environment.API_BASE_PATH;
-    constructor(@Inject(APP_CONFIG) private config: AppConfig, public _httpClient: HttpClient, public toastr: ToastrService,private authenticationService: AuthenticationService) {
+    constructor(@Inject(APP_CONFIG) private config: AppConfig, public _httpClient: HttpClient, public toastr: ToastrService) {
     }
     GetData(url: string, passToken: boolean = true): Observable<any> {
         var httpOptions = {};

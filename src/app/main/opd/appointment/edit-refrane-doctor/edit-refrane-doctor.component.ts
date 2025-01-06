@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import Swal from 'sweetalert2';
 import { AdvanceDetailObj, RegInsert } from '../appointment.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -32,7 +32,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   PatientHeaderObj = new SearchInforObj({});
   RefDoctorId:any;
   screenFromString = 'admission-form';
-  searchFormGroup: FormGroup;
+  searchFormGroup: UntypedFormGroup;
   AdmittedDoc1: any;
   PatientName: any;
   VisitDate:any;
@@ -43,7 +43,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   constructor(
   
     public _OpAppointmentService: AppointmentSreviceService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private dialogRef :MatDialogRef<EditRefraneDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,

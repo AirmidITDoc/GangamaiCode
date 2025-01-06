@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
@@ -8,12 +8,12 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class SalesReturnBillSettlementService {
 
-  userFormGroup: FormGroup;
- ItemSubform: FormGroup;
+  userFormGroup: UntypedFormGroup;
+ ItemSubform: UntypedFormGroup;
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
   ) { 
     this.userFormGroup = this.CreateUseFrom();

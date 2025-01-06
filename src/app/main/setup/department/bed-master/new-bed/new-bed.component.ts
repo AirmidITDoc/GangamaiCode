@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { BedMasterService } from '../bed-master.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -14,7 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewBedComponent implements OnInit {
 
-  bedForm: FormGroup;
+  bedForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
   

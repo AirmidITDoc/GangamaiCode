@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { InstructionmasterService } from '../instructionmaster.service';
   styleUrls: ['./new-instruction-master.component.scss']
 })
 export class NewInstructionMasterComponent implements OnInit {
-  instructionForm:FormGroup;
+  instructionForm:UntypedFormGroup;
   isActive:boolean=true;
 
   constructor(

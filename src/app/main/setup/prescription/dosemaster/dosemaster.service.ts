@@ -1,21 +1,21 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class DosemasterService {
-    myForm: FormGroup;
-    myformSearch: FormGroup;
+    myForm: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createDoseForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createDoseForm(): FormGroup {
+    createDoseForm(): UntypedFormGroup {
         return this._formBuilder.group({
             doseId: [0],
             doseName: ["", 
@@ -45,7 +45,7 @@ export class DosemasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             DoseNameSearch: [""],
             IsDeletedSearch: ["2"],

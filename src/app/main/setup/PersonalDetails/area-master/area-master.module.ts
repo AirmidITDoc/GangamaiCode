@@ -9,7 +9,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
 import { MatRadioModule } from "@angular/material/radio";
@@ -51,7 +51,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [AreaMasterService,DatePipe],
-    entryComponents: [AreaMasterComponent],
+    providers: [AreaMasterService, DatePipe]
 })
 export class AreaMasterModule {}

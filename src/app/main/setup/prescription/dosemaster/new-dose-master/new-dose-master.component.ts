@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DosemasterService } from '../dosemaster.service';
@@ -11,7 +11,7 @@ import { DosemasterService } from '../dosemaster.service';
 })
 export class NewDoseMasterComponent implements OnInit {
 
-    doseForm:FormGroup;
+    doseForm:UntypedFormGroup;
     isActive:boolean=true;
 
     constructor(

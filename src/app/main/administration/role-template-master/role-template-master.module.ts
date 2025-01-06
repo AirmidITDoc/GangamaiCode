@@ -28,32 +28,29 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [RoleTemplateMasterComponent,RolePermissionComponent],
-  imports: [
-    RouterModule.forChild(routes),
-
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseSidebarModule,
-],
-schemas: [
-  CUSTOM_ELEMENTS_SCHEMA
-],
-providers: [RoleTemplateService],
-entryComponents: [RoleTemplateMasterComponent],
-
+    declarations: [RoleTemplateMasterComponent, RolePermissionComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ],
+    providers: [RoleTemplateService]
 })
 export class RoleTemplateMasterModule { }
 

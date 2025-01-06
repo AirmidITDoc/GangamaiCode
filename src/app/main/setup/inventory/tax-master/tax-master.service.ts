@@ -1,24 +1,24 @@
 
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class TaxMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createTaxMasterForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createTaxMasterForm(): FormGroup {
+    createTaxMasterForm(): UntypedFormGroup {
         return this._formBuilder.group({
             id: [0],
             taxNature: ["",
@@ -31,7 +31,7 @@ export class TaxMasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             TaxNatureSearch: [""],
             IsDeletedSearch: ["2"],

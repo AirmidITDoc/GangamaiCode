@@ -10,7 +10,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -36,31 +36,23 @@ const routes: Routes = [
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
-
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-
         MatTableModule,
-
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
-
         MatStepperModule,
         MatRadioModule,
         FuseSharedModule,
-
         ReactiveFormsModule,
         MatSnackBarModule,
         MatAutocompleteModule,
-
         SharedModule,
         NgxMatSelectSearchModule,
     ],
-    providers: [VillageMasterService],
-
-    entryComponents: [VillageMasterComponent],
+    providers: [VillageMasterService]
 })
 export class VillageMasterModule {}

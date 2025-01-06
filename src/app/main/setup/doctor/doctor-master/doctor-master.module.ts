@@ -13,7 +13,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
@@ -32,7 +32,6 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { SharedModule } from "app/main/shared/shared.module";
 import { DoctorMasterService } from "./doctor-master.service";
 import { SignatureViewComponent } from "./signature-view/signature-view.component";
-import { NgxSignaturePadModule } from "@o.krucheniuk/ngx-signature-pad";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -48,7 +47,6 @@ const routes: Routes = [
     declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent],
     imports: [
         RouterModule.forChild(routes),
-                
         MatChipsModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -78,11 +76,8 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
-        NgxSignaturePadModule,
         MatButtonToggleModule
-        
     ],
-    providers: [DoctorMasterService,DatePipe],
-    entryComponents: [DoctorMasterComponent],
+    providers: [DoctorMasterService, DatePipe]
 })
 export class DoctorMasterModule { }

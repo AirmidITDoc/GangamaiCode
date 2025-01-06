@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { FuseConfigService } from "@fuse/services/config.service";
 import { fuseAnimations } from "@fuse/animations";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -16,7 +16,7 @@ import { setInterval, setTimeout } from "timers";
     animations: fuseAnimations,
 })
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
+    loginForm: UntypedFormGroup;
     returnUrl: string;
     submitted = false;
     errorMessage: string;
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     obj: any;
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _formBuilder: FormBuilder,
+        private _formBuilder: UntypedFormBuilder,
         private router: Router,
         private route: ActivatedRoute,
         private authenticationService: AuthenticationService,

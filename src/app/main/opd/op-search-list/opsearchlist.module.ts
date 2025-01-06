@@ -32,7 +32,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
@@ -75,8 +75,8 @@ const routes: Routes = [
         OPCasepaperComponent,
         ViewCasepaperComponent,
         OPAdvanceComponent,
-         OPAdvancePaymentComponent,
-         OPRefundofBillComponent,
+        OPAdvancePaymentComponent,
+        OPRefundofBillComponent,
         SchduleTreeComponent,
         OpPaymentNewComponent,
         OpPaymentComponent,
@@ -86,7 +86,6 @@ const routes: Routes = [
     ],
     imports: [
         RouterModule.forChild(routes),
-        
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -118,7 +117,7 @@ const routes: Routes = [
         MatDialogModule,
         MatGridListModule,
         MatSnackBarModule,
-        MatSlideToggleModule , 
+        MatSlideToggleModule,
         MatListModule,
         SharedModule,
         NgxMatSelectSearchModule,
@@ -130,13 +129,9 @@ const routes: Routes = [
     ],
     providers: [
         OPSearhlistService,
-        NotificationServiceService ,
+        NotificationServiceService,
         DatePipe,
         CurrencyPipe
-    ],
-    entryComponents: [
-        OpdSearchListComponent
-        // CasePaperComponent
     ]
 })
 export class opseachlistModule {

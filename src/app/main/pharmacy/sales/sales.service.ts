@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
@@ -8,15 +8,15 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class SalesService {
 
-  userFormGroup: FormGroup;
-  IndentSearchGroup :FormGroup;
-  PrescriptionFrom:FormGroup;
+  userFormGroup: UntypedFormGroup;
+  IndentSearchGroup :UntypedFormGroup;
+  PrescriptionFrom:UntypedFormGroup;
 
 
   constructor(
     public _httpClient: HttpClient,
     private _loaderService: LoaderService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.userFormGroup = this.IndentID();
     this.IndentSearchGroup= this.IndentSearchFrom();

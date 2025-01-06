@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
 })
 export class OpPaymentNewComponent implements OnInit {
   currentDate = new Date();
-  patientDetailsFormGrp: FormGroup;
+  patientDetailsFormGrp: UntypedFormGroup;
   paymentArr1: any[] = this.opService.getPaymentArr();
   paymentArr2: any[] = this.opService.getPaymentArr();
   paymentArr3: any[] = this.opService.getPaymentArr();
@@ -98,7 +98,7 @@ export class OpPaymentNewComponent implements OnInit {
   isSaveDisabled: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,

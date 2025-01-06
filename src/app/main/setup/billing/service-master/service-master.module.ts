@@ -14,7 +14,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSortModule } from "@angular/material/sort";
@@ -68,10 +68,8 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatCardModule,
-      
         MatDialogModule,
     ],
-    providers: [ServiceMasterService,DatePipe],
-    entryComponents: [ServiceMasterComponent],
+    providers: [ServiceMasterService, DatePipe]
 })
 export class ServiceMasterModule {}

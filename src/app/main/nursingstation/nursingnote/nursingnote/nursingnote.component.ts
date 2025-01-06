@@ -3,7 +3,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { NursingnoteService } from '../nursingnote.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
@@ -71,7 +71,7 @@ export class NursingnoteComponent implements OnInit {
     public _NursingStationService: NursingnoteService,
     private accountService: AuthenticationService, 
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder, 
+    private formBuilder: UntypedFormBuilder, 
     public datePipe: DatePipe,   
     public toastr: ToastrService,
     public _matDialog: MatDialog,  
@@ -85,7 +85,7 @@ export class NursingnoteComponent implements OnInit {
  }
 
   //doctorone filter
-  public pathodoctorFilterCtrl: FormControl = new FormControl();
+  public pathodoctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();

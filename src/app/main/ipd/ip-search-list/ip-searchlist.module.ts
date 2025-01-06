@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -36,7 +36,7 @@ import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
 import { MatList, MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { MatHorizontalStepper, MatStep, MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule, MatStep, MatStepper } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
@@ -73,21 +73,21 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      IPSearchListComponent,
-      BedTransferComponent,
-      DischargeComponent,
-      IPAdvanceComponent,
-      IPAdvancePaymentComponent,
-      //IPRefundofAdvanceComponent,
-      IPRefundofBillComponent,
-      IPBillingComponent,
-      InterimBillComponent,
-      DischargeSummaryComponent,
-      IpPaymentwithAdvanceComponent,
-      PrebillDetailsComponent,
-      DiscountAfterFinalBillComponent,
-      // OPIPFeedbackComponent,
-      CompanyBillComponent
+        IPSearchListComponent,
+        BedTransferComponent,
+        DischargeComponent,
+        IPAdvanceComponent,
+        IPAdvancePaymentComponent,
+        //IPRefundofAdvanceComponent,
+        IPRefundofBillComponent,
+        IPBillingComponent,
+        InterimBillComponent,
+        DischargeSummaryComponent,
+        IpPaymentwithAdvanceComponent,
+        PrebillDetailsComponent,
+        DiscountAfterFinalBillComponent,
+        // OPIPFeedbackComponent,
+        CompanyBillComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -131,17 +131,12 @@ const routes: Routes = [
         // MatStepper,
         //  MatStep,
         //  NgMultiSelectDropDownModule.forRoot(),
-         MatTooltipModule,
-        //  MatHorizontalStepper
-        
+        MatTooltipModule,
+        MatStepperModule
     ],
     providers: [
-      IPSearchListService,
+        IPSearchListService,
         DatePipe
-        // NotificationServiceService
-    ],
-    entryComponents: [
-      IPSearchListComponent
         // NotificationServiceService
     ]
 })

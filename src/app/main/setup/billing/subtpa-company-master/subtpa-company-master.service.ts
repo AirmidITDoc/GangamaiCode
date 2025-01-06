@@ -1,22 +1,22 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class SubtpaCompanyMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createsubtpacompanyForm();
         this.myformSearch = this.createSearchForm();
     }
-    createsubtpacompanyForm(): FormGroup {
+    createsubtpacompanyForm(): UntypedFormGroup {
         return this._formBuilder.group({
             /**
              * { swagger JSON insert :-
@@ -77,7 +77,7 @@ export class SubtpaCompanyMasterService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
             IsDeletedSearch: ["2"],

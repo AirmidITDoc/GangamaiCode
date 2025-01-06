@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
@@ -53,70 +53,63 @@ const routes: Routes = [
 
 ];
 @NgModule({
-  declarations: [
-    RadiologyOrderListComponent,
-    ResultEntryComponent,
-    RadiologyTemplateReportComponent,
-     
-  ],
-
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatButtonModule,
-      MatCheckboxModule,
-      MatDatepickerModule,
-      MatFormFieldModule,
-      MatIconModule,
-      MatInputModule,
-      MatMenuModule,
-      MatRippleModule,
-      MatTableModule,
-      MatToolbarModule,
-      MatPaginatorModule,
-      MatSortModule,
-      MatSelectModule,
-      MatRadioModule,
-      MatCardModule,
-      MatDividerModule,
-      MatDialogModule,
-      FuseSharedModule,
-      FuseConfirmDialogModule,
-      MatProgressSpinnerModule,
-      FuseSharedModule,
-      FuseConfirmDialogModule,
-      ReactiveFormsModule,
-      MatSnackBarModule,
-      MatSlideToggleModule,
-      MatListModule,
-      SharedModule,
-      FuseSidebarModule,
-      NgxMatSelectSearchModule,
-      MatBadgeModule,
-      MatSelectModule,
-      MatAutocompleteModule,
-      // NgxEditorModule ,
-      // NgxEditorModule,
-      AngularEditorModule,
-      // NgxPrintModule,
-      // RichTextEditorModule,
-      // NgMultiSelectDropDownModule.forRoot()
-    
-  ],
-  providers: [
-    RadioloyOrderlistService,
-    DatePipe,
-    // ToolbarService, 
-    // LinkService, 
-    // ImageService,
-    //  HtmlEditorService,
-    //  TableService,
-      NotificationServiceService,
-  ],
-  entryComponents: [
-    RadiologyOrderListComponent,
-      NotificationServiceService
-  ]
+    declarations: [
+        RadiologyOrderListComponent,
+        ResultEntryComponent,
+        RadiologyTemplateReportComponent,
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        MatProgressSpinnerModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        FuseSidebarModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        // NgxEditorModule ,
+        // NgxEditorModule,
+        AngularEditorModule,
+        // NgxPrintModule,
+        // RichTextEditorModule,
+        // NgMultiSelectDropDownModule.forRoot()
+    ],
+    providers: [
+        RadioloyOrderlistService,
+        DatePipe,
+        // ToolbarService, 
+        // LinkService, 
+        // ImageService,
+        //  HtmlEditorService,
+        //  TableService,
+        NotificationServiceService,
+    ]
 })
 
 export class RadioloyOrderlistModule { }

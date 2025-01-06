@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MedicineItemList } from '../new-casepaper.component'; 
 import { element } from 'protractor';
@@ -32,7 +32,7 @@ export class PrePresciptionListComponent implements OnInit {
   
   constructor(
     private _CasepaperService: CasepaperService, 
-    private _formBuilder: FormBuilder, 
+    private _formBuilder: UntypedFormBuilder, 
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,

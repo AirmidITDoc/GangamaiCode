@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { SupplierMaster } from '../supplier-master.component';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 import { SupplierMasterService } from '../supplier-master.service';
@@ -14,7 +14,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class SuppliertestingComponent implements OnInit {
 
-  supplierForm: FormGroup;
+  supplierForm: UntypedFormGroup;
   @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
   submitted = false;
   registerObj = new SupplierMaster({});

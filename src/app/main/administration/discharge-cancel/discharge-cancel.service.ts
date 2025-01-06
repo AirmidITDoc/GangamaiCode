@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DischargeCancelService {
-  DischargeForm : FormGroup;
+  DischargeForm : UntypedFormGroup;
   constructor(
-    public _formbuilder:FormBuilder,
+    public _formbuilder:UntypedFormBuilder,
     public _httpClient:HttpClient
   )
    { this.DischargeForm = this.CreateDischargeForm()}

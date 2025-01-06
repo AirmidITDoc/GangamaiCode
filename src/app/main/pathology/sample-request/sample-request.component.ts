@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,7 +25,7 @@ export class SampleRequestComponent implements OnInit {
   click: boolean = false;
   MouseEvent = true;
 
-  myformSearch: FormGroup;
+  myformSearch: UntypedFormGroup;
   isLoading = true;
   msg: any;
   step = 0;
@@ -83,7 +83,7 @@ export class SampleRequestComponent implements OnInit {
 
   hasSelectedContacts: boolean;
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _httpClient: HttpClient,
     public _PathologyService: PathologyService,
     private _ActRoute: Router,

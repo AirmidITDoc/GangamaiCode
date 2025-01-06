@@ -1,17 +1,17 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class InstructionmasterService {
-    myForm: FormGroup;
-    myformSearch: FormGroup;
+    myForm: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createInstructionForm();
         this.myformSearch = this.createSearchForm();
@@ -22,7 +22,7 @@ export class InstructionmasterService {
     //     "instructionDescription": "string",
     //     "instructioninMarathi": "string"
     //   }
-    createInstructionForm(): FormGroup {
+    createInstructionForm(): UntypedFormGroup {
         return this._formBuilder.group({
             instructionId: [0],
             instructionDescription: ["", 
@@ -39,7 +39,7 @@ export class InstructionmasterService {
         });
     }
     
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             InstructionNameSearch: [""],
             IsDeletedSearch: ["2"],

@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
 })
 export class UomMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createUnitofmeasurementForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createUnitofmeasurementForm(): FormGroup {
+    createUnitofmeasurementForm(): UntypedFormGroup {
         return this._formBuilder.group({
             unitofMeasurementId: [0],
             unitofMeasurementName: ["",
@@ -31,7 +31,7 @@ export class UomMasterService {
             UpdatedBy: ["0"],
         });
     }
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             UnitofMeasurementSearch: [""],
             IsDeletedSearch: ["2"],

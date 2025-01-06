@@ -1,22 +1,22 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
 })
 export class ParamteragewiseService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
-    myIsNumericform:FormGroup;
-    myIsDescriptiveform:FormGroup;
+    myform: UntypedFormGroup;
+    myformSearch: UntypedFormGroup;
+    myIsNumericform:UntypedFormGroup;
+    myIsDescriptiveform:UntypedFormGroup;
     is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
@@ -24,7 +24,7 @@ export class ParamteragewiseService {
         this.myIsDescriptiveform = this.createDescriptiveForm();
     }
 
-    createParameterForm(): FormGroup {
+    createParameterForm(): UntypedFormGroup {
         return this._formBuilder.group({
             ParameterID: [""],
             ParameterName: [
@@ -61,7 +61,7 @@ export class ParamteragewiseService {
         });
     }
 
-    createSearchForm(): FormGroup {
+    createSearchForm(): UntypedFormGroup {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             IsDeletedSearch: ["2"],
@@ -77,7 +77,7 @@ export class ParamteragewiseService {
             AgeType:[""],
         });  
     }
-    createDescriptiveForm(): FormGroup {
+    createDescriptiveForm(): UntypedFormGroup {
         return this._formBuilder.group({
             ParaId:[""],
             Value:[""],

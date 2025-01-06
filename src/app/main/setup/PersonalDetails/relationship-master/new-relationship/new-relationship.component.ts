@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { RelationshipMasterService } from '../relationship-master.service';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -10,7 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-relationship.component.scss']
 })
 export class NewRelationshipComponent implements OnInit {
-  relationshipForm: FormGroup;
+  relationshipForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 

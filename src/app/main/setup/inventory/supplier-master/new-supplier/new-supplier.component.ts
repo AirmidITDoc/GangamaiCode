@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SupplierMaster, SupplierMasterComponent } from '../supplier-master.component';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { SupplierMasterService } from '../supplier-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -15,7 +15,7 @@ import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-au
 })
 export class NewSupplierComponent implements OnInit {
 
-  supplierForm: FormGroup;
+  supplierForm: UntypedFormGroup;
   
     submitted = false;
   

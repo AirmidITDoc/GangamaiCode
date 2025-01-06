@@ -1,23 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrescriptionReturnService {
-  PrecReturnSearchGroup :FormGroup;
+  PrecReturnSearchGroup :UntypedFormGroup;
   constructor(
     public _httpClient:HttpClient,   public _httpClient1:ApiCaller,
-    private _FormBuilder:FormBuilder
+    private _FormBuilder:UntypedFormBuilder
   ) { this.mySearchForm=this.SearchFilterForm();
     this.PrecReturnSearchGroup= this.PrescriptionRetSearchFrom();
   }
 
-  mySearchForm:FormGroup;
+  mySearchForm:UntypedFormGroup;
 
-  SearchFilterForm():FormGroup{
+  SearchFilterForm():UntypedFormGroup{
     return this._FormBuilder.group({
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],

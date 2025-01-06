@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { SupplierMaster, SupplierMasterComponent } from "../supplier-master.component";
 import { SupplierMasterService } from "../supplier-master.service";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
@@ -18,7 +18,7 @@ import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-au
 })
 export class SupplierFormMasterComponent implements OnInit {
 
-  supplierForm: FormGroup;
+  supplierForm: UntypedFormGroup;
   @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
   submitted = false;
   registerObj = new SupplierMaster({});

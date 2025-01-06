@@ -3,7 +3,7 @@ import { PaymentmodechangesforpharmacyService } from '../paymentmodechangesfor-p
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -73,7 +73,7 @@ export class EditPaymentmodeComponent implements OnInit {
     private accountService: AuthenticationService,
     public toastr: ToastrService,
     public dialogRef: MatDialogRef<EditPaymentmodeComponent>,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
   ngOnInit(): void {

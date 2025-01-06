@@ -254,72 +254,6 @@
                                                             [(ngModel)]="vExamination" matInput #ChiefComp
                                                             (keydown)="onEnterChiefComplaint($event)"></textarea>
                                                     </mat-form-field>
-
-                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
-                                                        <mat-label>ChiefComplaint</mat-label>
-                                                        <mat-chip-list #chipList aria-label="ChiefComplaint selection">
-                                                            <mat-chip *ngFor="let item of addCheiflist" [selectable]="selectable" [removable]="removable"
-                                                                (removed)="removeCheif(item)">
-                                                                {{ item}} 
-                                                                <mat-icon *ngIf="removable" (click)="removeCheif(item)">close</mat-icon>
-                                                            </mat-chip> 
-                                                            <input   style="height: 40px;"
-                                                            placeholder="New ChiefComplaint..."
-                                                            formControlName="CheifComplaintControl"
-                                                            [matAutocomplete]="autoChips"
-                                                            [matChipInputFor]="chipList"
-                                                            (matChipInputTokenEnd)="addCheif($event)" />
-                                                        </mat-chip-list>
-                                                        <mat-autocomplete #autoChips="matAutocomplete"  (optionSelected)="selectedobjCheif($event.option.value)" >
-                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
-                                                                {{option.ChiefComplaint}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>   -->
-
-                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
-                                                        <mat-label>Diagnosis</mat-label>
-                                                        <mat-chip-list #chipListdiagno aria-label="Diagnosis selection">
-                                                            <mat-chip *ngFor="let item of addDiagnolist" [selectable]="selectable" [removable]="removable"
-                                                                (removed)="removeDiagno(item)">
-                                                                {{ item}} 
-                                                                <mat-icon *ngIf="removable" (click)="removeDiagno(item)">close</mat-icon>
-                                                            </mat-chip> 
-                                                            <input  style="height: 40px;"
-                                                            placeholder="New Diagnosis..."
-                                                            formControlName="DiagnosisControl"
-                                                            [matAutocomplete]="autoDiagnosis"
-                                                            [matChipInputFor]="chipListdiagno"
-                                                            (matChipInputTokenEnd)="addDiagnos($event)"   />
-                                                        </mat-chip-list>
-                                                        <mat-autocomplete #autoDiagnosis="matAutocomplete"  (optionSelected)="selectedobjDiagno($event.option.value)" >
-                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
-                                                                {{option.Diagnosis}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>   -->
-
-                                                    <!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
-                                                        <mat-label>Examination</mat-label>
-                                                        <mat-chip-list #chipListexamin aria-label="Examination selection">
-                                                            <mat-chip *ngFor="let item of addExaminlist" [selectable]="selectable" [removable]="removable"
-                                                                (removed)="removeExamin(item)">
-                                                                {{ item}} 
-                                                                <mat-icon *ngIf="removable" (click)="removeExamin(item)">close</mat-icon>
-                                                            </mat-chip> 
-                                                            <input  style="height: 40px;"
-                                                            placeholder="New Examination..."
-                                                            formControlName="ExaminationControl"
-                                                            [matAutocomplete]="autoExamin"
-                                                            [matChipInputFor]="chipListexamin"
-                                                            (matChipInputTokenEnd)="addExamina($event)" />
-                                                        </mat-chip-list>
-                                                        <mat-autocomplete #autoExamin="matAutocomplete"  (optionSelected)="selectedobjExamin($event.option.value)" >
-                                                            <mat-option *ngFor="let option of HistoryList" [value]="option" >
-                                                                {{option.Examination}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>  -->
                                                 </div>
                                             </div>
                                         </form>
@@ -368,12 +302,12 @@
                                                     </mat-form-field>
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="6px" fxFlex="50%">
-                                                    <mat-chip-list #chipList>
+                                                    <mat-chip-listbox #chipList>
                                                         <mat-chip *ngFor="let item of selectedItems">
                                                             {{ item.ServiceName }} <mat-icon
                                                                 (click)="remove(item)">close</mat-icon>
                                                         </mat-chip>
-                                                    </mat-chip-list>
+                                                    </mat-chip-listbox>
                                                 </div>
                                             </div>
                                         </form>

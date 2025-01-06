@@ -2,8 +2,8 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
 import {
     ControlValueAccessor,
-    FormControl,
-    FormGroup,
+    UntypedFormControl,
+    UntypedFormGroup,
     NG_VALUE_ACCESSOR,
     NgControl,
     Validators
@@ -33,9 +33,9 @@ export class AirmidDatepickerComponent implements
      private _required: boolean = false;
      private destroy: Subject<void> = new Subject();
  
-     control = new FormControl();
+     control = new UntypedFormControl();
      stateChanges: Subject<void> = new Subject();
-     @Input() formGroup: FormGroup;
+     @Input() formGroup: UntypedFormGroup;
      @Input() formControlName:string;
      @Input() maxLength: number = 50;
      @Input() validations: [] = [];

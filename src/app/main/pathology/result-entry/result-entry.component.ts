@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -59,7 +59,7 @@ export class ResultEntryComponent implements OnInit {
     MouseEvent = true;
     screenFromString = 'opd-casepaper';
     PatientTypeList: any = [];
-    myformSearch: FormGroup;
+    myformSearch: UntypedFormGroup;
     isLoading = true;
     msg: any;
     step = 0;
@@ -117,7 +117,7 @@ export class ResultEntryComponent implements OnInit {
     hasSelectedContacts: boolean;
     constructor(
 
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
         public datePipe: DatePipe,
         private reportDownloadService: ExcelDownloadService,
