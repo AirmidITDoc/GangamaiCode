@@ -41,12 +41,27 @@ export class CustomerBillRaiseComponent implements OnInit {
     'Action'
   ];
 
+  dcPayMonthSummary: string[] = [
+    'PayMonth',
+    'Amount',
+    'Action'
+  ];
+
+  dcPayReceivedList: string[] = [
+    'Type',
+    'PaymentDate',
+    'CustomerName',
+    'Amount',
+  ];
+
   dateTimeObj:any;
   sIsLoading: string = '';
   isLoading = true;
 
   dsBillPayDueList =new MatTableDataSource<BillPayDueList>();
   dsAMCPayList =new MatTableDataSource<BillPayDueList>();
+  dsPayMonthSummary =new MatTableDataSource<PayMonthSummary>();
+  dsPayReceivedList =new MatTableDataSource<PayReceivedList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -63,6 +78,7 @@ export class CustomerBillRaiseComponent implements OnInit {
   ngOnInit(): void {
     this.getCustomerPayDueList();
     this.getCustomerAMCPayList();
+    this.getCustomerPayMonthSummary();
   }
   onClose(){
     this._matDialog.closeAll();
@@ -99,10 +115,41 @@ export class CustomerBillRaiseComponent implements OnInit {
       this.sIsLoading = '';
     });
   }
+  getCustomerPayMonthSummary(){ 
+    this._CustomerBill.getCustomerPayMonthSummary().subscribe(data =>{
+      this.dsPayMonthSummary.data = data as PayMonthSummary[];
+      console.log(this.dsPayMonthSummary.data)
+      this.dsPayMonthSummary.sort = this.sort;
+      this.dsPayMonthSummary.paginator = this.paginator
+     
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+  
+  OnViewPaymentReceivedList(param){
+    this.getCustomerPayReceivedList(param);
+  }
+  getCustomerPayReceivedList(Param){ 
+    var mdata={
+      "PayMonth" : Param.PayMonthNumber
+    }
+    this._CustomerBill.getCustomerPayReceivedList(mdata).subscribe(data =>{
+      this.dsPayReceivedList.data = data as PayReceivedList[];
+      console.log(this.dsPayReceivedList.data)
+      this.dsPayReceivedList.sort = this.sort;
+      this.dsPayReceivedList.paginator = this.paginator
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
   NewCustomerBill(){
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
       {
-        maxWidth: "75vw",
+        maxWidth: "80vw",
         height: '75%',
         width: '100%',
         
@@ -133,7 +180,10 @@ export class CustomerBillRaiseComponent implements OnInit {
       {
         maxWidth: "50vw",
         height: '50%',
-        width: '100%'
+        width: '100%',
+        data:{
+          Obj:contact
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - View Action', result);
@@ -154,6 +204,34 @@ export class BillPayDueList{
       this.CustomerId = BillPayDueList.CustomerId || '';
       this.Amount = BillPayDueList.Amount || '';
       this.InvoiceRaisedId = BillPayDueList.InvoiceRaisedId || 0;
+    }
+  }
+}
+
+export class PayMonthSummary{
+  PayMonth: any;
+  Amount: string;
+  constructor(PayMonthSummary) {
+    {
+      this.PayMonth = PayMonthSummary.PayMonth;
+      this.Amount = PayMonthSummary.Amount || 0;
+    }
+  }
+}
+
+export class PayReceivedList{
+  Type:string;
+  PaymentDate: any;
+  CustomerName:string;
+  Amount: string;
+  PayMonthNumber:any;
+  constructor(PayReceivedList) {
+    {
+      this.Type = PayReceivedList.Type || '';
+      this.CustomerName = PayReceivedList.CustomerName || '';
+      this.PaymentDate = PayReceivedList.PaymentDate;
+      this.Amount = PayReceivedList.Amount || 0;
+      this.PayMonthNumber = PayReceivedList.PayMonthNumber || 0;
     }
   }
 }

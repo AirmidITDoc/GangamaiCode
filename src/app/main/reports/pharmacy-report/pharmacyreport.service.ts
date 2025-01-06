@@ -26,7 +26,7 @@ export class PharmacyreportService {
         StoreId:[''],
         ItemId:[''],
         DoctorID:[''],
-        OPIPType:["1"],
+        OPIPType:['2'],
         RegID:['']
       })
     }
@@ -43,9 +43,12 @@ export class PharmacyreportService {
     return this._httpClient.post("Generic/GetByProc?procName=M_Rtrv_PaymentModeList",{})
   }
 
-  public getDoctorMaster(loader = true) {
+  // public getDoctorMaster(loader = true) {
    
-    return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveDoctorMasterForCombo", {})
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_RetrieveDoctorMasterForCombo", {})
+  // }
+  public getDoctorMaster(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo", param)
   }
   // public getPharmacyDailyCollectionNew(FromDate,ToDate,StoreId,AddedById){
   //   return this._httpClient.get("Sales/view-pharmacy-daily-collection?FromDate=" +  FromDate + "&ToDate=" + ToDate+"&StoreId="+StoreId+"&AddedById="+AddedById);
@@ -178,11 +181,12 @@ export class PharmacyreportService {
   
   
   
-  public getDrwisesales(FromDate,ToDate,StoreId,DoctorId,loader = true){
+  public getDrwisesales(FromDate,ToDate,StoreId,DoctorId,OP_IP_Type,loader = true){
+    debugger
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("PharmacyReport/view-DoctorWiseSalesReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId);
+    return this._httpClient.get("PharmacyReport/view-DoctorWiseSalesReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&StoreId="+StoreId+"&DoctorId="+DoctorId+"&OP_IP_Type=" + OP_IP_Type);
   }
 
   public getDrwiseprofitdetail(FromDate,ToDate,StoreId,DoctorId,OP_IP_Type,loader = true){

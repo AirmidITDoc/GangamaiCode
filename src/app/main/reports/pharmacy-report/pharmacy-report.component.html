@@ -176,7 +176,7 @@
                                                 (click)="_PharmacyreportService.userForm.get('StoreId').setValue(''); isstoreSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #autoStoreName="matAutocomplete"
-                                            [displayWith]="getOptionstoreText">
+                                            [displayWith]="getOptionstoreText" (optionSelected)='getSelectedPharobjNew($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredOptionsStore | async"
                                                 [value]="option">
                                                 {{option.StoreName}}
@@ -188,26 +188,31 @@
                                 <!-- added by raksha -->
                                 <div fxLayout="row" *ngIf="FlagPatientSelected" style="margin-left: 2%; width: 300px;">
 
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Patient Name</mat-label>
-                                        <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No "
-                                            matInput [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                                    <mat-form-field class=searchRegId appearance="outline" fxFlex>
+                                        <mat-label>Registered Patient</mat-label>
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="RegisteredAuto"
+                                            (input)="getSearchList()" maxlength="10">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
-                                                (click)="_PharmacyreportService.userForm.get('RegID').setValue(''); isPatientSelected = false;">close</mat-icon>
+                                                (click)="_PharmacyreportService.userForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close"
-                                                (click)="_PharmacyreportService.userForm.get('RegID').setValue(''); isPatientSelected = false;">search</mat-icon>
+                                                (click)="_PharmacyreportService.userForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
                                         </span>
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1"
-                                        (optionSelected)='getSelectedObj1($event.option.value)'>
-                                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                                {{option.RegNo}} |{{option.FirstName}} | {{option.MiddleName}} |
-                                                {{option.LastName}} | {{option.Address}} |
-                                                {{option.MobileNo}} | {{option.DoctorName}} | {{option.DepartmentName}}
+                                        <mat-autocomplete #RegisteredAuto="matAutocomplete" [displayWith]="getOptionText"
+                                            (optionSelected)='getSelectedObjNew($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptions"
+                                                [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
+                                                {{option.RegNo}} |
+                                                {{option.MobileNo}}
                                             </mat-option>
                                         </mat-autocomplete>
+                                       
                                     </mat-form-field>
                                 </div>
+
+                                
                                 <!-- end -->
 
                                 <div fxLayout="row" *ngIf="FlagItemSelected" style="margin-left: 2%; width: 300px;">
@@ -254,7 +259,7 @@
 
                                 <div fxLayout="row" *ngIf="FlagDrugTypeIdSelected" style="margin-left: 2%; width: 300px;">
 
-                                    <mat-form-field appearance="outline" style="margin-right:10px;" fxFlex>
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Drug TYpe</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select DrugType"
                                             matInput formControlName="DrugTypeId" [matAutocomplete]="autoDrugType">
@@ -276,11 +281,11 @@
                                 <div fxLayout="row" *ngIf="FlagDoctorIDSelected" style="margin-left: 2%; width: 300px;">
 
 
-                                    <mat-form-field appearance="outline" *ngIf="FlagDoctorIDSelected"
-                                        style="margin-right:10px;" fxFlex>
+                                    <mat-form-field appearance="outline" *ngIf="FlagDoctorIDSelected" fxFlex>
                                         <mat-label>Doctor Name</mat-label>
                                         <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
-                                            matInput formControlName="DoctorID" [matAutocomplete]="autosearchDoctor">
+                                            matInput formControlName="DoctorID" (input)="getDoctorList()"
+                                             [matAutocomplete]="autosearchDoctor">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
                                                 (click)="_PharmacyreportService.userForm.get('DoctorID').setValue(''); isSearchdoctorSelected = false;">close</mat-icon>
@@ -305,7 +310,7 @@
 
                                     </mat-form-field>
                                 </div>
-                                <div fxLayout="row" *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;">
+                                <!-- <div fxLayout="row" *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;">
                                     <span *ngIf="FlaOPIPTypeSelected" style="font-weight: bold;margin-left: 2%;">Patient
                                         Type</span>
                                     <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
@@ -316,7 +321,7 @@
                                         <mat-radio-button value="0">OP
                                         </mat-radio-button>
                                         <mat-radio-button value="1">IP</mat-radio-button>
-                                    </mat-radio-group>
+                                    </mat-radio-group> -->
                                     <!-- <span *ngIf="SpinLoading" style="width:60px;height: 60px;margin-left:10px;">
                                         Processing..... <i class="fa-solid fa-spinner fa-spin loading-spinner"></i>
                                     </span> -->
@@ -332,6 +337,18 @@
                                     Print New Daily Collection Summary
                                 </button> -->
 
+                                <!-- </div> -->
+                                <div fxLayout="row" *ngIf="FlaOPIPTypeSelected" style="margin-left: 2%; margin-bottom: 3%;">
+                                    <span style="font-weight: bold;margin-left: 2%;">Patient Type</span>
+                                    <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
+                                        style="margin-left:2%;" name="OPIPType">
+                                
+                                        <mat-radio-button value="2">All
+                                        </mat-radio-button>
+                                        <mat-radio-button value="0">OP
+                                        </mat-radio-button>
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
