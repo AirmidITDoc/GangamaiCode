@@ -18,36 +18,22 @@
     <div class="modal-body" fusePerfectScrollbar>
         <form [formGroup]="bankForm">
             <div class="modal-body-container">
-
-
                 <input type="hidden" name="bankId" formControlName="bankId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="Bank Name"
-                        formControlName="bankName"
-                        [value]="data?.bankName"
-                        [formGroup]="bankForm"
-                        [validations]="getValidationMessages().bankName"
-                        [maxLength]="50">
-                    </airmid-textbox> 
+                        <airmid-textbox 
+                            label="Bank Name"
+                            formControlName="bankName"
+                            [value]="data?.bankName"
+                            [formGroup]="bankForm"
+                            [validations]="getValidationMessages().bankName"
+                            [maxLength]="50">
+                        </airmid-textbox> 
+                    </div>
                 </div>
-                </div>
-
-
             </div>
 
-            <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"> -->
-                <!-- <mat-radio-group name="isActive" formControlName="isActive" value='true'>
-                    <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                    </mat-radio-button>
-                    <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                    </mat-radio-button>
-                </mat-radio-group> -->
-              
-                <!-- <app-airmid-slider label="IsActive" formControlName="isActive" [(ngModel)]="value" ></app-airmid-slider> -->
-            <!-- </div> -->
-            <!-- <app-airmid-slider label="IsActive/Deactive" [formGroup]="bankForm" [(ngModel)]="value" ></app-airmid-slider> -->
+          
             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                 <div>
@@ -69,4 +55,3 @@
             </div>
         </form>
 </div>
-<!-- </div> -->

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { GenderMasterService } from '../gender-master.service';
@@ -8,6 +8,8 @@ import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
     selector: "app-new-gendermaster",
     templateUrl: "./new-gendermaster.component.html",
     styleUrls: ["./new-gendermaster.component.scss"],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewGendermasterComponent implements OnInit {
     genderForm: UntypedFormGroup;
@@ -30,9 +32,10 @@ export class NewGendermasterComponent implements OnInit {
 
     
     onSubmit() {
-        
+        debugger
         if (this.genderForm.valid) {
             this.saveflag = true;
+            console.log("json :- ",this.genderForm.value);
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

@@ -5,8 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { NewWardComponent } from "./new-ward/new-ward.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 @Component({
@@ -21,8 +20,8 @@ export class WardMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
-            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width: 100 },

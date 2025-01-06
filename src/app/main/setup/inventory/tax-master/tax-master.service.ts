@@ -1,4 +1,3 @@
-
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -23,9 +22,9 @@ export class TaxMasterService {
             id: [0],
             taxNature: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                ]
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                ],
             ],
             IsDeleted: ["false"],
         });
@@ -44,12 +43,11 @@ export class TaxMasterService {
 
     public taxMasterSave(Param: any, showLoader = true) {
         if (Param.id) {
-            return this._httpClient.PutData("TaxMaster/" + Param.id, Param, showLoader);
+            return this._httpClient.PutData("TaxMaster/" + Param.id,Param,showLoader);
         } else return this._httpClient.PostData("TaxMaster", Param, showLoader);
     }
-    
+
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("TaxMaster?Id=" + m_data.toString());
     }
-    
 }

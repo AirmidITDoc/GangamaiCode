@@ -22,13 +22,13 @@
         </div>
     </div>
 
-    <mat-tab-group>
+    <!-- <mat-tab-group>
 
 
         <mat-tab>
             <ng-template mat-tab-label>
                 New Appointment
-            </ng-template>
+            </ng-template> -->
             <div fxLayout="column" class="new-appointment-section">
                 <div fxLayout="row" style="width: 100%;">
                     <div fxFlex fxFlex.gt-sm fxLayout="column" style="overflow: auto ;" fusePerfectScrollbar
@@ -105,7 +105,7 @@
                                         <mat-panel-title>
                                             <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center"
                                                 fxFlex="65%" fxFlex.lt-md="100%">
-                                                <span>Personal Information :</span>
+                                                <span style="background-color: rgb(175, 175, 248);">Personal Information :</span>
                                                 <span>
                                                     {{RegOrPhoneflag}}
                                                     <mat-icon style="margin-left:10px;"
@@ -115,196 +115,152 @@
                                         </mat-panel-title>
                                     </mat-expansion-panel-header>
                                     <form [formGroup]="personalFormGroup" class="mat-form-field-100">
+                                        <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
+
                                         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
 
                                             <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
                                                 fxLayoutGap="12px grid">
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                  
-                                                 <airmid-autocomplete label="Prefix" formControlName="PrefixId"
-                                                    [formGroup]="personalFormGroup"   [value]="data?.prefixId"
-                                                   [validations]="getValidationMessages().prefixId"
-                                                   [mode]="autocompleteModeprefix" (selectDdlObject)="selectChangeprefix($event)">
-                                               </airmid-autocomplete> 
+
+                                                    <airmid-autocomplete label="Prefix" formControlName="PrefixId"
+                                                        [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
+                                                        [validations]="getValidationMessages().prefixId"
+                                                        ValueField="prefixId" TextField="prefixName"
+                                                        (selectionChange)="onChangePrefix($event)"
+                                                        ApiUrl="Prefix/get-prefixs">
+                                                    </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>First Name</mat-label>
-                                                        <input name="FirstName" formControlName="FirstName"
-                                                            [(ngModel)]="registerObj.firstName" placeholder="First Name"
-                                                            matInput required type="text" #fname
-                                                            (keydown)="onEnterfname($event)">
-                                                        <mat-error
-                                                            *ngIf="personalFormGroup.get('FirstName').invalid && personalFormGroup.get('FirstName').touched">
-                                                            First Name is required Enter only
-                                                            Alphabets</mat-error>
-                                                    </mat-form-field>
+                                                    <airmid-textbox label="First Name" formControlName="FirstName"
+                                                        [value]="registerObj.firstName" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().firstName"
+                                                        [maxLength]="50">
+                                                    </airmid-textbox>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Middle Name</mat-label>
-                                                        <input name="MiddleName" formControlName="MiddleName"
-                                                            [(ngModel)]="registerObj.middleName"
-                                                            placeholder="Middle Name" matInput type="text" #mname
-                                                            (keydown)="onEntermname($event)">
-                                                        <mat-error class="error"
-                                                            *ngIf="personalFormGroup.get('MiddleName').invalid && personalFormGroup.get('MiddleName').touched">
-                                                            Middle Name is required
-                                                            Enter
-                                                            only Alphabets</mat-error>
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Last Name</mat-label>
-                                                        <input name="LastName" formControlName="LastName"
-                                                            [(ngModel)]="registerObj.lastName" placeholder="Last Name"
-                                                            matInput required type="text" #lname
-                                                            (keydown)="onEnterlname($event)">
-                                                        <mat-error class="error"
-                                                            *ngIf="personalFormGroup.get('LastName').invalid && personalFormGroup.get('LastName').touched">Last
-                                                            Name is required Enter
-                                                            only
-                                                            Alphabets</mat-error>
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <!-- <airmid-autocomplete [mode]="autocompleteModegender"
-                                                        (selectDdlObject)="selectChangegender($event)"></airmid-autocomplete> -->
+                                                    <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                                        [value]="registerObj.middleName" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().middleName"
+                                                        [maxLength]="50">
+                                                    </airmid-textbox>
 
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth"
-                                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
-                                                    </div>
-                                                </div>
-                                           
-
-                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>AadharCard Number</mat-label>
-                                                        <input name="AadharCardNo" formControlName="AadharCardNo"
-                                                            [(ngModel)]="registerObj.aadharCardNo"
-                                                            placeholder="AadharCard Number" matInput #AadharCardNo
-                                                            (keydown)="onEnterAadharCardNo($event)" type="number"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
-                                                        <mat-error class="error"
-                                                            *ngIf="personalFormGroup.get('AadharCardNo').invalid && personalFormGroup.get('AadharCardNo').touched">Aadhar
-                                                            number is required
-                                                        </mat-error>
-                                                    </mat-form-field>
+                                                    <airmid-textbox label="Last Name" formControlName="LastName"
+                                                        [value]="registerObj.lastName" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().lastName"
+                                                        [maxLength]="50">
+                                                    </airmid-textbox>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>Address</mat-label>
-                                                        <input name="Address" formControlName="Address"
-                                                            [(ngModel)]="registerObj.address" placeholder="Address"
-                                                            matInput #address (keydown)="onEnteraddress($event)">
-                                                        <mat-error
-                                                            *ngIf="personalFormGroup.get('Address').invalid && personalFormGroup.get('Address').touched">Please
-                                                            enter Address </mat-error>
-                                                    </mat-form-field>
+                                                    <airmid-autocomplete label="Gender" formControlName="GenderId"
+                                                        [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
+                                                        [validations]="getValidationMessages().genderId" #ddlGender
+                                                        [disabled]="true" [mode]="autocompleteModegender">
+                                                    </airmid-autocomplete>
                                                 </div>
-                                               
+
+                                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                                                    formControlName="DateOfBirth"
+                                                    [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                                </div>
+
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                    <airmid-textbox label="aadharcardno" formControlName="aadharCardNo"
+                                                        [value]="registerObj.aadharCardNo"
+                                                        [formGroup]="personalFormGroup" [maxLength]="12"
+                                                        [validations]="getValidationMessages().aadharCardNo">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Address" formControlName="Address"
+                                                        [value]="registerObj.address" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().address">
+                                                    </airmid-textbox>
+                                                </div>
+
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="Area" formControlName="AreaId"
-                                                      [formGroup]="personalFormGroup" [value]="data?.areaId"
-                                                        [validations]="getValidationMessages().AreaId"
-                                                        [mode]="autocompleteModearea"
-                                                        (selectDdlObject)="selectChangearea($event)">
+                                                        [value]="registerObj?.areaId" [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().areaId"
+                                                        [mode]="autocompleteModearea">
                                                     </airmid-autocomplete>
                                                 </div>
-                                            
+
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="City" formControlName="CityId"
-                                                        [formGroup]="personalFormGroup"  [value]="data?.cityId"
-                                                        [validations]="getValidationMessages().CityId"
-                                                        [mode]="autocompleteModecity"
-                                                        (selectDdlObject)="selectChangecity($event)">
+                                                        [formGroup]="personalFormGroup" [value]="registerObj?.cityId"
+                                                        [validations]="getValidationMessages().cityId"
+                                                        ValueField="cityId" TextField="cityName"
+                                                        (selectionChange)="onChangecity($event)"
+                                                        ApiUrl="CityMaster/get-cities">
                                                     </airmid-autocomplete>
                                                 </div>
-                                               
+
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="State" formControlName="StateId"
-                                                        [formGroup]="personalFormGroup"  [value]="data?.stateId"
-                                                        [validations]="getValidationMessages().StateId"
+                                                        [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
+                                                        [disabled]="true"
+                                                        [validations]="getValidationMessages().stateId" #ddlState
                                                         [mode]="autocompleteModestate"
-                                                        (selectDdlObject)="selectChangestate($event)">
+                                                        (selectionChange)="onChangestate($event)">
                                                     </airmid-autocomplete>
                                                 </div>
-                                              
+
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="Country" formControlName="CountryId"
-                                                        [formGroup]="personalFormGroup"  [value]="data?.countryId"
-                                                        [validations]="getValidationMessages().CountryId"
-                                                        [mode]="autocompleteModecountry"
-                                                        (selectDdlObject)="selectChangecountry($event)">
+                                                        [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
+                                                        [disabled]="true"
+                                                        [validations]="getValidationMessages().countryId" #ddlCountry
+                                                        [mode]="autocompleteModecountry">
                                                     </airmid-autocomplete>
                                                 </div>
-                                               
+
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <airmid-autocomplete label="MaritalStatusId"
                                                         formControlName="MaritalStatusId"
+                                                        [value]="registerObj?.maritalStatusId"
                                                         [formGroup]="personalFormGroup"
-                                                        [validations]="getValidationMessages().MaritalStatusId"
-                                                        [mode]="autocompleteModemstatus"
-                                                        (selectDdlObject)="selectChangemstatus($event)">
+                                                        [validations]="getValidationMessages().maritalStatusId"
+                                                        [mode]="autocompleteModemstatus">
                                                     </airmid-autocomplete>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                     <div fxLayout="row" class="gap-8">
 
-                                                        <mat-form-field appearance="outline">
-                                                            <mat-label>Mobile Number</mat-label>
-                                                            <input name="MobileNo" formControlName="MobileNo" #mobile
-                                                                [(ngModel)]="registerObj.mobileNo"
-                                                                placeholder="Mobile Number" matInput required
-                                                                max="9999999999" min="1000000000" autocomplete="off"
-                                                                maxlength="10"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                                                required="required" value="9876658688"
-                                                                (keydown.enter)="onEntermobile($event)"
-                                                                (blur)="onEntermobile($event)">
-                                                            <mat-error class="error"
-                                                                *ngIf="personalFormGroup.get('MobileNo').invalid && personalFormGroup.get('MobileNo').touched">10
-                                                                digits Mobile number is
-                                                                required</mat-error>
-                                                        </mat-form-field>
+                                                        <airmid-textbox label="MobileNo" formControlName="MobileNo"
+                                                            [value]="registerObj.mobileNo"
+                                                            [formGroup]="personalFormGroup"
+                                                            [validations]="getValidationMessages().mobileNo"
+                                                            [maxLength]="10">
+                                                        </airmid-textbox>
 
-                                                        <mat-form-field appearance="outline">
-                                                            <mat-label>Phone Number</mat-label>
-                                                            <input name="PhoneNo" formControlName="PhoneNo" #phone
-                                                                [(ngModel)]="registerObj.phoneNo"
-                                                                placeholder="Phone Number" matInput max="9999999999"
-                                                                min="1000000000" autocomplete="off" maxlength="10"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                                                value="9876658688"
-                                                                (keydown.enter)="onEnterphone($event)"
-                                                                (blur)="onEnterphone($event)">
-
-                                                        </mat-form-field>
+                                                        <airmid-textbox label="PhoneNo" formControlName="PhoneNo"
+                                                            [validations]="getValidationMessages().phoneNo"
+                                                            [value]="registerObj.phoneNo"
+                                                            [formGroup]="personalFormGroup" [maxLength]="10">
+                                                        </airmid-textbox>
 
                                                     </div>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                  
                                                     <airmid-autocomplete label="ReligionId" formControlName="ReligionId"
-                                                        [formGroup]="personalFormGroup"  [value]="data?.religionId"
-                                                        [validations]="getValidationMessages().ReligionId"
-                                                        [mode]="autocompleteModereligion"
-                                                        (selectDdlObject)="selectChangereligion($event)">
+                                                        [value]="registerObj?.religionId"
+                                                        [formGroup]="personalFormGroup"
+                                                        [validations]="getValidationMessages().religionId"
+                                                        [mode]="autocompleteModereligion">
                                                     </airmid-autocomplete>
                                                 </div>
 
@@ -377,35 +333,35 @@
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <!-- [value]="PatientTypeID" -->
-                                                <airmid-autocomplete label="PatientTypeID"
-                                                    formControlName="PatientTypeID"    [value]="data?.patientTypeId"
+                                                <airmid-autocomplete label="patientTypeId"
+                                                    formControlName="PatientTypeId" [value]="data?.patientTypeId"
                                                     [formGroup]="VisitFormGroup"
                                                     [validations]="getValidationMessages().patientTypeId"
                                                     [mode]="autocompleteModepatienttype"
                                                     (selectDdlObject)="selectChangepatienttype($event)">
-                                                </airmid-autocomplete> 
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <!-- [value]="TrariffId" -->
-                                                 <airmid-autocomplete label="TariffId" formControlName="TariffId"
-                                                    [formGroup]="VisitFormGroup"    [value]="data?.tariffId"
+                                                <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                                                    [formGroup]="VisitFormGroup" [value]="data?.tariffId"
                                                     [validations]="getValidationMessages().tariffId"
                                                     [mode]="autocompleteModetariff"
                                                     (selectDdlObject)="selectChangetariff($event)">
-                                                </airmid-autocomplete> 
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                 *ngIf="isCompanySelected">
                                                 <!-- [value]="CompanyId" -->
-                                               
+
                                                 <airmid-autocomplete label="CompanyId" formControlName="CompanyId"
-                                                    [formGroup]="VisitFormGroup"  [value]="data?.companyId"
+                                                    [formGroup]="VisitFormGroup" [value]="data?.companyId"
                                                     [validations]="getValidationMessages().CompanyId"
                                                     [mode]="autocompleteModecompany"
                                                     (selectDdlObject)="selectChangecompany($event)">
-                                                </airmid-autocomplete> 
+                                                </airmid-autocomplete>
 
 
                                             </div>
@@ -413,9 +369,9 @@
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
                                                 *ngIf="isCompanySelected">
                                                 <!-- [value]="SubCompanyId" -->
-                                             
+
                                                 <airmid-autocomplete label="SubCompanyId" formControlName="SubCompanyId"
-                                                     [formGroup]="VisitFormGroup"
+                                                    [formGroup]="VisitFormGroup"
                                                     [validations]="getValidationMessages().SubCompanyId"
                                                     [mode]="autocompleteModesubcompany"
                                                     (selectDdlObject)="selectChangesubcompany($event)">
@@ -426,19 +382,19 @@
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                 <!-- [value]="Departmentid" -->
-                                                 <airmid-autocomplete label="Departmentid" formControlName="Departmentid"
-                                                   [formGroup]="VisitFormGroup"  [value]="data?.departmentId"
+                                                <airmid-autocomplete label="Departmentid" formControlName="DepartmentId"
+                                                    [formGroup]="VisitFormGroup" [value]="data?.departmentId"
                                                     [validations]="getValidationMessages().departmentId"
                                                     [mode]="autocompleteModedepartment"
                                                     (selectDdlObject)="selectChangedepartment($event)">
-                                                </airmid-autocomplete> 
+                                                </airmid-autocomplete>
                                             </div>
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                 <!-- [value]="DoctorID" -->
-                                                <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
-                                                    [formGroup]="VisitFormGroup"  [value]="data?.doctorID"
+                                                <airmid-autocomplete label="DoctorID" formControlName="ConsultantDocId"
+                                                    [formGroup]="VisitFormGroup" [value]="data?.doctorID"
                                                     [validations]="getValidationMessages().DoctorID"
                                                     [mode]="autocompleteModedeptdoc"
                                                     (selectDdlObject)="selectChangedeptdoc($event)">
@@ -447,10 +403,10 @@
 
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <!-- [value]="RefDocId" -->
-                                              <airmid-autocomplete label="RefDocId" formControlName="RefDocId"
+                                                <airmid-autocomplete label="RefDocId" formControlName="RefDocId"
                                                     [formGroup]="VisitFormGroup" [value]="data?.refDocId"
                                                     [validations]="getValidationMessages().refDocId"
-                                                    [mode]="autocompleteModerefdoc"
+                                                    [mode]="autocompleteModedeptdoc"
                                                     (selectDdlObject)="selectChangerefdoc($event)">
                                                 </airmid-autocomplete>
                                             </div>
@@ -458,7 +414,7 @@
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                 <!-- [value]="PurposeId" -->
-                                                <airmid-autocomplete label="PurposeId" formControlName="PurposeId"
+                                                <airmid-autocomplete label="PurposeId" formControlName="AppPurposeId"
                                                     [formGroup]="VisitFormGroup"
                                                     [validations]="getValidationMessages().PurposeId"
                                                     [mode]="autocompleteModepurpose"
@@ -483,8 +439,8 @@
                     </div>
                 </div>
             </div>
-        </mat-tab>
+        <!-- </mat-tab>
 
-      
-    </mat-tab-group>
+
+    </mat-tab-group> -->
 </div>

@@ -33,6 +33,9 @@ export class NewLocationComponent implements OnInit {
     if(!this.locationForm.invalid) 
     {
         this.saveflag = true;
+        
+        console.log("location JSON :-",this.locationForm.value);
+        
         this._LocationMasterService.locationMasterSave(this.locationForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
@@ -57,8 +60,8 @@ export class NewLocationComponent implements OnInit {
     getValidationMessages() {
         return {
             locationName: [
-                { name: "required", Message: "LocationName  is required" },
-                { name: "maxlength", Message: "LocationName should not be greater than 50 char." },
+                { name: "required", Message: "Location Name  is required" },
+                { name: "maxlength", Message: "Location Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         };

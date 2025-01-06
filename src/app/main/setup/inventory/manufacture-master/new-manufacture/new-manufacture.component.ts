@@ -14,12 +14,12 @@ export class NewManufactureComponent implements OnInit {
   manufForm: UntypedFormGroup;
   isActive:boolean=true;
 
-  constructor(
+    constructor(
       public _ManufactureMasterService: ManufactureMasterService,
       public dialogRef: MatDialogRef<NewManufactureComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
-  ) { }
+    ) { }
 
     ngOnInit(): void {
       this.manufForm = this._ManufactureMasterService.createManufactureForm();
@@ -29,8 +29,8 @@ export class NewManufactureComponent implements OnInit {
       }
     }
 
-  saveflag : boolean = false;
-  onSubmit() {
+  
+    onSubmit() {
       if (!this.manufForm.invalid) 
         {
         this.saveflag = true
@@ -48,13 +48,13 @@ export class NewManufactureComponent implements OnInit {
         });
         return;
       }
-  }
+    }
 
-  onClear(val: boolean) 
-  {
-    this.manufForm.reset();
-    this.dialogRef.close(val);
-  }
+    onClear(val: boolean) 
+    {
+        this.manufForm.reset();
+        this.dialogRef.close(val);
+    }
      
     getValidationMessages() {
         return {

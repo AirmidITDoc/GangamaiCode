@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Drug Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Drug Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -44,7 +44,6 @@
                                 [validations]="getValidationMessages().genericId"
                                 [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
                             </airmid-autocomplete>
-
                         </div>
                         
                         <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="33%">

@@ -34,11 +34,14 @@ export class NewAreaComponent implements OnInit {
       this.areaForm.patchValue(this.data);}
   }
 
-  saveflag : boolean = false;
+  
   onSubmit() {
-
     if (this.areaForm.valid) {
+
         this.saveflag = true;
+        
+        console.log("area json :- ",this.areaForm.value);
+
         this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

@@ -1,5 +1,4 @@
 import { NgModule } from "@angular/core";
-
 import { BedMasterComponent } from "./bed-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatSnackBarModule } from "@angular/material/snack-bar";

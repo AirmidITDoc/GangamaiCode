@@ -45,6 +45,7 @@ export class NewPatientTypeComponent implements OnInit {
     }else{
         if (this.patienttypeForm.valid) {
             this.saveflag = true;
+            console.log("json :- ",this.patienttypeForm.value);
             this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

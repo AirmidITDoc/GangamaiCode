@@ -18,6 +18,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { ToastrService } from 'ngx-toastr';
+import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 
 @Component({
     selector: 'app-edit-registration',
@@ -48,7 +49,8 @@ export class EditRegistrationComponent implements OnInit {
     screenFromString = 'registration';
     matDialogRef: any;
     RegID: number = 0;
-
+    prefixId=0;
+    prefixName='';
     // New Api
     autocompleteModeprefix: string = "Prefix";
     autocompleteModegender: string = "Gender";
@@ -58,6 +60,9 @@ export class EditRegistrationComponent implements OnInit {
     autocompleteModecountry: string = "Country";
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
+    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
+    @ViewChild('ddlState') ddlState: AirmidAutocompleteComponent;
+    @ViewChild('ddlCountry') ddlCountry:AirmidAutocompleteComponent;
 
 
     constructor(public _registerService: RegistrationService,
@@ -68,7 +73,7 @@ export class EditRegistrationComponent implements OnInit {
         public dialogRef: MatDialogRef<EditRegistrationComponent>,
         public datePipe: DatePipe
     ) {
-
+        this.personalFormGroup = this._registerService.createPesonalForm();
     }
 
 
@@ -76,11 +81,9 @@ export class EditRegistrationComponent implements OnInit {
 
 
         console.log(this.data)
-        //  setTimeout(() => {
-        this.personalFormGroup = this._registerService.createPesonalForm();
-        // }, 10)
-
-        if (this.data.regId > 0) {
+       
+        // this.personalFormGroup = this._registerService.createPesonalForm();
+        if (this.data) {
             this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                 this.registerObj = response;
             });
@@ -106,6 +109,25 @@ export class EditRegistrationComponent implements OnInit {
         });
     }
     // }
+
+    onChangePrefix(e) {
+        debugger
+        this.ddlGender.SetSelection(e.sexId);
+    }
+    onChangestate(e) {
+        this.ddlCountry.SetSelection(e.stateId);
+    }
+
+    onChangecity(e){
+        this.ddlState.SetSelection(e.cityId);
+        this.ddlCountry.SetSelection(e.stateId);
+    }
+
+// getcity(){
+//     this._registerService.getcitylist(1).subscribe((response) => {
+//         this.registerObj = response;
+//     });
+// }
     onClose() {
         this.dialogRef.close();
     }

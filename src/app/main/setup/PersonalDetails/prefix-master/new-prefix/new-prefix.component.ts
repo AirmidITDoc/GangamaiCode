@@ -33,7 +33,6 @@ export class NewPrefixComponent implements OnInit {
         if(this.data){
             this.isActive=this.data.isActive
             this.prefixForm.patchValue(this.data);
-            // this.getGenderNameCombobox();
         }
     }
 
@@ -82,17 +81,6 @@ export class NewPrefixComponent implements OnInit {
             ]
         };
     }
-
-    // GendercmbList: any = [];
-    // getGenderNameCombobox() {
-    //     debugger
-    //         this._PrefixMasterService.getGenderMasterCombo().subscribe(data => {
-    //             this.GendercmbList = data;
-    //             console.log(this.GendercmbList);
-    //         });
-             
-    //     }
-     
 
     onClear(val: boolean) {
         this.prefixForm.reset();

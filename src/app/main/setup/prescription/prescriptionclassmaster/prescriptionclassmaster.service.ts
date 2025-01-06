@@ -1,5 +1,4 @@
 
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
@@ -27,9 +26,6 @@ export class PrescriptionclassmasterService {
                 ]
             ],
             isActive: ["true"]
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
     createSearchForm(): UntypedFormGroup {

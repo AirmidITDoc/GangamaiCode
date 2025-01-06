@@ -43,17 +43,9 @@ export class DischargetypeMasterService {
         this.createDischargetypeForm();
     }
 
-   
-
-    // populateForm(Param) {
-    //     this.myform.patchValue(Param);
-    // }
-
-
-
-    // public getDischargeTypeMasterList(param: gridRequest, showLoader = true) {
-    //     return this._httpClient.PostData("DischargeType/List", param, showLoader);
-    // }
+    public getDischargeTypeMasterList(param: any, showLoader = true) {
+        return this._httpClient.PostData("DischargeType/List", param, showLoader);
+    }
 
     public dischargeTypeMasterSave(Param: any, showLoader = true) {
         if (Param.dischargeTypeId) {

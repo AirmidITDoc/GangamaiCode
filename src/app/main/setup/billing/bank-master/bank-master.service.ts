@@ -29,9 +29,6 @@ export class BankMasterService {
                 ]
             ],
             isActive: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
     createSearchForm(): UntypedFormGroup {

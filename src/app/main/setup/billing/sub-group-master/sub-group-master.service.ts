@@ -28,10 +28,7 @@ export class SubGroupMasterService {
             groupId: ["",
                 Validators.required
             ],
-            //GroupName: [""],
             isActive: ["true"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
     createSearchForm(): UntypedFormGroup {

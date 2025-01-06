@@ -6,43 +6,38 @@ import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-gneric-master',
-  templateUrl: './new-gneric-master.component.html',
-  styleUrls: ['./new-gneric-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-gneric-master',
+    templateUrl: './new-gneric-master.component.html',
+    styleUrls: ['./new-gneric-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewGnericMasterComponent implements OnInit {
 
   genericForm:UntypedFormGroup;
   isActive:boolean=true;
 
-  constructor(
-    public _GenericMasterService: GenericmasterService,
-      public dialogRef: MatDialogRef<NewGnericMasterComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    constructor(
+        public _GenericMasterService: GenericmasterService,
+        public dialogRef: MatDialogRef<NewGnericMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
-  ngOnInit(): void {
-    this.genericForm=this._GenericMasterService.createGenericForm();
-    if(this.data){
-        this.isActive=this.data.isActive
-        this.genericForm.patchValue(this.data);
+    ngOnInit(): void {
+        this.genericForm=this._GenericMasterService.createGenericForm();
+        if(this.data){
+            this.isActive=this.data.isActive
+            this.genericForm.patchValue(this.data);
+        }
     }
-  }
 
-  saveflag: boolean= false;
-  onSubmit() {
-    debugger
-      if(!this.genericForm.invalid){
-        
+    onSubmit() {
+        debugger
+      if(!this.genericForm.invalid)
+      {  
         this.saveflag=true
-        // var mdata=
-        // {
-        //   "genericId": 0,
-        //   "genericName": this.genericForm.get("GenericName").value || ""
-        // }
+       
         console.log("generic json:", this.genericForm.value);
   
         this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response)=>{

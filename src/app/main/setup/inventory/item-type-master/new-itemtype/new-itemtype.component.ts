@@ -34,8 +34,12 @@ export class NewItemtypeComponent implements OnInit {
   
   onSubmit() 
   {
-    if (!this.itemtypeForm.invalid) {
+    if (!this.itemtypeForm.invalid) 
+    {
         this.Saveflag=true
+
+        console.log("itemtype json :-",this.itemtypeForm.value);
+
         this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
@@ -61,8 +65,8 @@ export class NewItemtypeComponent implements OnInit {
     getValidationMessages() {
         return {
             itemTypeName: [
-                { name: "required", Message: "ItemType Name is required" },
-                { name: "maxlength", Message: "ItemType name should not be greater than 50 char." },
+                { name: "required", Message: "Item Type Name is required" },
+                { name: "maxlength", Message: "Item Type name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         };

@@ -52,22 +52,9 @@ export class NewBedComponent implements OnInit {
 
   
   onSubmit() {
-    if(!this.bedForm.invalid) {
+    if(!this.bedForm.invalid) 
+    {
         this.saveflag = true;
-    //     this.toastr.warning('please check from is invalid', 'Warning !', {
-    //       toastClass:'tostr-tost custom-toast-warning',
-    //   })
-    //   return;
-    // }else{
-    // if(!this.bedForm.get("bedId").value){
-    //     debugger
-    //     var m_data =
-    //     {
-    //         "bedId": 0,
-    //         "bedName": this.bedForm.get("bedName").value,
-    //         "roomId": parseInt(this.bedForm.get("roomId").value),
-    //         "isAvailible": true
-    //     }
 
         console.log("BedMaster Insert:",this.bedForm.value)
 

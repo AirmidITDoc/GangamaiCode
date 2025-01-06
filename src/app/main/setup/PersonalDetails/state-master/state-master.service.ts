@@ -24,8 +24,6 @@ export class StateMasterService {
                 ]
             ],
             countryId: ["", Validators.required],
-          
-          
         });
     }
     createSearchForm(): UntypedFormGroup {

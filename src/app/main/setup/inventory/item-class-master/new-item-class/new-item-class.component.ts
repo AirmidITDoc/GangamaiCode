@@ -13,6 +13,7 @@ export class NewItemClassComponent implements OnInit {
 
   classForm: UntypedFormGroup;
   isActive:boolean=true;
+  Saveflag: boolean= false;
 
   constructor(
       public _ItemClassMasterService: ItemClassMasterService,
@@ -30,10 +31,14 @@ export class NewItemClassComponent implements OnInit {
      }
   }
 
-  Saveflag: boolean= false;
+  
   onSubmit() {
-      if (!this.classForm.invalid) {
+      if (!this.classForm.invalid) 
+      {
             this.Saveflag=true
+
+            console.log("Item JSON :-",this.classForm.value);
+
             this._ItemClassMasterService.itemclassMasterSave(this.classForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

@@ -24,10 +24,10 @@ export class PatienttypeMasterService {
 
     createPatientTypeForm(): UntypedFormGroup {
         return this._formBuilder.group({
-            patientTypeId: [""],
+            patientTypeId: [0],
             patientType: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

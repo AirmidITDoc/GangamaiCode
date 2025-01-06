@@ -60,8 +60,10 @@
                                         </ng>
                                         <ng *ngSwitchCase="GridColumnType.StatusCrosscons" fxHide fxShow.gt-sm>
                                             <mat-icon title="CrossConsulFlag" *ngIf="!getStatus(element[row.key])"
-                                                (click)="CrossCons()" class="active-icon green-600 s-16">cached
+                                                (click)="CrossCons()" class="active-icon red-600 s-16">cached
                                                 icon</mat-icon>
+                                                <mat-icon title="CrossConsulFlag" *ngIf="getStatus(element[row.key])"
+                                                 class="active-icon green-600 s-16">cancle</mat-icon>
                                         </ng>
 
                                         <ng *ngSwitchCase="GridColumnType.StatusBillgenerate" fxHide fxShow.gt-sm>

@@ -33,6 +33,7 @@ export class StoreFormMasterComponent implements OnInit {
 
     storeForm: UntypedFormGroup;
     isActive:boolean=true;
+    saveflag : boolean = false;
     
     autocompleteModeCashcounter: string = "CashCounter";
     constructor(
@@ -50,48 +51,9 @@ export class StoreFormMasterComponent implements OnInit {
         }
     }
 
-    saveflag : boolean = false;
+    
     onSubmit() {
         debugger
-        // var mdata =
-        // {
-        //     "storeId": 0,
-        //     "storeShortName": this.storeForm.get("storeShortName").value,
-        //     "storeName": this.storeForm.get("storeName").value,
-        //     "indentPrefix": this.storeForm.get("indentPrefix").value,
-        //     "indentNo": this.storeForm.get("indentNo").value,
-        //     "purchasePrefix": this.storeForm.get("purchasePrefix").value,
-        //     "purchaseNo": this.storeForm.get("purchaseNo").value,
-        //     "grnPrefix": this.storeForm.get("grnPrefix").value,
-        //     "grnNo": this.storeForm.get("grnNo").value,
-        //     "grnreturnNoPrefix": this.storeForm.get("grnreturnNoPrefix").value,
-        //     "grnreturnNo": this.storeForm.get("grnreturnNo").value,
-        //     "issueToDeptPrefix": this.storeForm.get("issueToDeptPrefix").value,
-        //     "issueToDeptNo": this.storeForm.get("issueToDeptNo").value,
-        //     "returnFromDeptNoPrefix":  this.storeForm.get("returnFromDeptNoPrefix").value,
-        //     "returnFromDeptNo": this.storeForm.get("returnFromDeptNo").value,
-        //     "workOrderPrefix": 0,
-        //     "workOrderNo": 0,
-        //     "pharSalCountId": 0,
-        //     "pharSalRecCountId": 0,
-        //     "pharSalReturnCountId": 0,
-        //     "pharAdvId": 0,
-        //     "pharAdvReptId": 0,
-        //     "pharAdvRefId": 0,
-        //     "pharAdvRefReptId": 0,
-        //     "printStoreName": "String",
-        //     "dlNo": "String",
-        //     "gstin": "String",
-        //     "storeAddress": "String",
-        //     "hospitalMobileNo": 0,
-        //     "hospitalEmailId": "String",
-        //     "printStoreUnitName": "String",
-        //     "isPharStore": true,
-        //     "isWhatsAppMsg": true,
-        //     "whatsAppTemplateId": "String",
-        //     "isSmsmsg": true,
-        //     "smstemplateId": "String",
-        // }
         if(!this.storeForm.invalid){
             this.saveflag = true;
         console.log("StoreCategoryMaster Insert:",this.storeForm.value)

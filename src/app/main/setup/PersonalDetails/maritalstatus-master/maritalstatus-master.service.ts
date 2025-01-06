@@ -27,7 +27,7 @@ export class MaritalstatusMasterService {
             maritalStatusId: [0],
             maritalStatusName: ["",
                 [
-                    Validators.required,
+                    Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

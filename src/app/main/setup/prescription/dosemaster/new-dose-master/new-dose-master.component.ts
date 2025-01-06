@@ -3,16 +3,20 @@ import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DosemasterService } from '../dosemaster.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-dose-master',
-  templateUrl: './new-dose-master.component.html',
-  styleUrls: ['./new-dose-master.component.scss']
+    selector: 'app-new-dose-master',
+    templateUrl: './new-dose-master.component.html',
+    styleUrls: ['./new-dose-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewDoseMasterComponent implements OnInit {
 
     doseForm:UntypedFormGroup;
     isActive:boolean=true;
+    saveflag : boolean = false;
 
     constructor(
         public _doseMasterService: DosemasterService,
@@ -30,20 +34,12 @@ export class NewDoseMasterComponent implements OnInit {
     }
 
 
-    saveflag : boolean = false
+    
     onSubmit() {
- 
     debugger
     if(!this.doseForm.invalid){
         this.saveflag = true
-    //   var mdata=
-    //   {
-    //     "doseId": 0,
-    //     "doseName": this.doseForm.get("doseName").value || "",
-    //     "doseNameInEnglish": this.doseForm.get("doseNameInEnglish").value,
-    //     "doseNameInMarathi": this.doseForm.get("doseNameInMarathi").value,
-    //     "doseQtyPerDay": parseInt(this.doseForm.get("doseQtyPerDay").value )     
-    //   }
+   
       console.log("dose json:", this.doseForm.value);
 
       this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response)=>{

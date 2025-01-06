@@ -33,8 +33,12 @@ export class NewDepartmentComponent implements OnInit {
     }
   
   onSubmit() {
-    if (!this.departmentForm.invalid) {
+    if (!this.departmentForm.invalid) 
+    {
         this.saveflag = true;
+        
+        console.log("JSON :-",this.departmentForm.value);
+
         this._DepartmentMasterService.departmentMasterSave(this.departmentForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

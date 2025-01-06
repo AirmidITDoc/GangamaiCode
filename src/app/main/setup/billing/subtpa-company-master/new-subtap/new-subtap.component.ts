@@ -38,7 +38,8 @@ export class NewSubtapComponent implements OnInit {
 
     onSubmit(){
         debugger
-        if(!this.subTpaForm.invalid){
+        if(!this.subTpaForm.invalid)
+        {
         this.saveflag = true;
      
         console.log("SubTpa Json:", this.subTpaForm.value);

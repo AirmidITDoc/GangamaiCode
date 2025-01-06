@@ -34,12 +34,7 @@ export class NewGroupComponent implements OnInit {
         debugger
         if(!this.groupForm.invalid)
         {  
-                this.saveflag = true;
-            // var mdata=
-            // {
-            //   "groupId": 0,
-            //   "groupName": this.groupForm.get("groupName").value || ""
-            // }
+            this.saveflag = true;
 
             console.log("bank json:", this.groupForm.value);
 

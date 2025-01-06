@@ -1,43 +1,50 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { RelationshipMasterService } from '../relationship-master.service';
 import { UntypedFormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-relationship',
-  templateUrl: './new-relationship.component.html',
-  styleUrls: ['./new-relationship.component.scss']
+    selector: 'app-new-relationship',
+    templateUrl: './new-relationship.component.html',
+    styleUrls: ['./new-relationship.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewRelationshipComponent implements OnInit {
   relationshipForm: UntypedFormGroup;
   isActive:boolean=true;
   saveflag : boolean = false;
 
-  constructor(
+    constructor(
       public _RelationshipMasterService: RelationshipMasterService,
       public dialogRef: MatDialogRef<NewRelationshipComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
-  ) { }
+    ) { }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
       this.relationshipForm = this._RelationshipMasterService.createRelationshipForm();
-      if(this.data){
-        this.isActive=this.data.isActive
-      this.relationshipForm.patchValue(this.data);}
-  }
+        if(this.data)
+        {
+            this.isActive=this.data.isActive
+            this.relationshipForm.patchValue(this.data);
+        }
+    }
 
-  onSubmit() {
-
-      if(!this.relationshipForm.invalid) {
-        this.saveflag = true;
-          this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
+    onSubmit() {
+        debugger
+        if(!this.relationshipForm.invalid) 
+        {
+            this.saveflag = true;
+            console.log("json :-",this.relationshipForm.value);
+            this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
+                this.toastr.success(response.message);
               this.onClear(true);
-          }, (error) => {
+            }, (error) => {
               this.toastr.error(error.message);
-          });
+            });
       }
       else
       {
@@ -46,7 +53,6 @@ export class NewRelationshipComponent implements OnInit {
           });
           return;
       }
-
     }
   
     getValidationMessages() {
@@ -57,10 +63,10 @@ export class NewRelationshipComponent implements OnInit {
               { name: "pattern", Message: "Special char not allowed." }
           ]
       };
-  }
-  onClear(val: boolean) {
+    }
+    onClear(val: boolean) {
       this.relationshipForm.reset();
       this.dialogRef.close(val);
-  }
+    }
 
 }

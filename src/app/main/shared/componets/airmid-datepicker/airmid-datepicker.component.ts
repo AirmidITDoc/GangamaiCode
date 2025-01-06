@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
 import {
     ControlValueAccessor,
     UntypedFormControl,
@@ -46,6 +46,10 @@ export class AirmidDatepickerComponent implements
      @Input() readonly:boolean=false;
      @Input() width:number=100;
      @Input()
+        @Output() selectionChange = new EventEmitter<any>();
+        @Input() ValueField: string = "value";
+
+
      minDate = new Date();
      get disabled(): boolean {
          return this._disabled;
@@ -149,6 +153,11 @@ export class AirmidDatepickerComponent implements
          //   this.focusMonitor.focusVia(this.areaRef.nativeElement, 'mouse');
          // }
      }
+
+     public onDateChange($event) {
+        this.formGroup.controls[this.formControlName].setValue($event.value[this.ValueField]);
+        this.selectionChange.emit($event.value);
+    }
  
      writeValue(value: string | null): void {
          this.control.setValue(value);

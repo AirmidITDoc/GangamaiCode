@@ -36,12 +36,7 @@ export class NewTermofpaymentComponent implements OnInit {
         if(!this.termsofpaymentForm.invalid)
         {
             this.saveflag = true;
-        // var m_data =
-        //     {
-        //         "id": 0,
-        //         "TermsOfPayment": this.termsofpaymentForm.get("TermsOfPayment").value,
-        //     }
-
+            
             console.log("TermsOfPaymentMaster Insert:",this.termsofpaymentForm.value)
             
             this._TermsOfPaymentMasterService.termofpayMasterSave(this.termsofpaymentForm.value).subscribe((response) => {

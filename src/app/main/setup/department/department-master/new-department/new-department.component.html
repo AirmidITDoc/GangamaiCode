@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Department Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Department Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -19,15 +19,6 @@
             <form [formGroup]="departmentForm">
                 <input type="hidden" name="departmentId" formControlName="departmentId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                   
-                   
-                   
-                   
-                   
-                
-                
-                
-                
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="Department Name"
@@ -38,9 +29,6 @@
                             [maxLength]="50">
                         </airmid-textbox> 
                     </div>
-                
-                
-                
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
