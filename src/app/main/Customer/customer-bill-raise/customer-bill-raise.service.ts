@@ -48,10 +48,24 @@ export class CustomerBillRaiseService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerBillRaiseList",{});
   }
-
   //added by raksha
-  public getPaymentAmtViewList(emp) {
-    debugger
+  public getPaymentAmtViewList(emp,loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPaidPaymentInfo",emp);
+  }
+  //added by Subhash : 06Jan2025
+  public getCustomerPayMonthSummary(loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPayMonthSummary",{});
+  }
+  public getCustomerPayReceivedList(Param,loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPayReceivedSummary",Param);
   }
 }

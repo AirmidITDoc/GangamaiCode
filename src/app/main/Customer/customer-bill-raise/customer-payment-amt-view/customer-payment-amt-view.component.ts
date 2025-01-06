@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { CustomerBillRaiseService } from '../customer-bill-raise.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-customer-payment-amt-view',
@@ -30,13 +31,12 @@ export class CustomerPaymentAmtViewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns = [
-    'PaymentId',
     'PaymentDate',
     'PaymentTime',
     'ReceiptNumber',
+    'CustomerName',
     'Amount',
     'TranType',
-    'CustomerName',
   ];
 
   constructor(
@@ -46,33 +46,31 @@ export class CustomerPaymentAmtViewComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public dialogRef: MatDialogRef<CustomerPaymentAmtViewComponent>,
-    private _loggedService: AuthenticationService) { }
+    private _loggedService: AuthenticationService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 
+  vCustomerId:any;
   ngOnInit(): void {
-    this.getPaymentAmtViewList();
+    if(this.data){
+      this.vCustomerId =  this.data.Obj.CustomerId;
+    }
+    this.getPaymentAmtViewList(this.vCustomerId);
   }
 
-  getPaymentAmtViewList() {
-    debugger;
-    this.sIsLoading = 'loading-data';
-
+  getPaymentAmtViewList(Param) {
     const C_data = {
-      "CustomerId": this._CustomerBill.myform.get("CustomerId").value || '',
+      "CustomerId": Param,
     };
-
-    console.log("Customer Payment Data:", C_data);
-
     this._CustomerBill.getPaymentAmtViewList(C_data).subscribe(
       data => {
         this.dataSource.data = data as PaymentAmtViewList[]; 
         console.log("data:",this.dataSource.data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
       },
       error => {
         console.error("Error loading payment data:", error);
-        this.sIsLoading = '';
       }
     );
 }
