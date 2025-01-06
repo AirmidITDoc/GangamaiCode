@@ -142,7 +142,8 @@
                                                 <ng-container matColumnDef="PaymentDue">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         PaymentDue </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                        [ngClass]="{'positive-balance': contact.PaymentDue > 0 }">
                                                         {{contact.PaymentDue | currency:'INR' }}
                                                     </mat-cell>
                                                 </ng-container>
@@ -173,9 +174,11 @@
                                                 </mat-footer-row>
                                             </mat-table>
 
-                                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"
-                                                [pageSize]="10" showFirstLastButtons>
+                                            <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
+                                                showFirstLastButtons [length]="resultsLength"
+                                                (page)="getCustomerPayDueList()">
                                             </mat-paginator>
+
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +188,7 @@
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Payment List">
+        <mat-tab label="Bill and AMC Payment List">
             <div class="contact">
 
                 <div class="center p-12 pb-56" fxFlexAlign="start center">
@@ -259,7 +262,7 @@
                                                 <ng-container matColumnDef="ContactPersonName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                         fxShow.gt-sm>
-                                                        ContactPersonName
+                                                        Contact Person Name
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.ContactPersonName}}
@@ -268,26 +271,42 @@
 
                                                 <ng-container matColumnDef="ContactPersonMobileNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        ContactPersonMobileNo</mat-header-cell>
+                                                        Mobile No</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.ContactPersonMobileNo}}
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="AMCPaidDate">
+                                                <!-- <ng-container matColumnDef="AMCPaidDate">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        AMCPaidDate </mat-header-cell>
+                                                        Paid Date </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.AMCPaidDate | date: 'dd/MM/yyyy'}}
                                                     </mat-cell>
-                                                </ng-container>
+                                                </ng-container> -->
 
                                                 <ng-container matColumnDef="AMCAmount">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                        class="w-180">
-                                                        AMCAmount</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        AMC Amount</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.AMCAmount | currency:'INR'}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="PaidAmount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Paid Amount</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.PaidAmount | currency:'INR'}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="AMCDeuAmount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        AMC Amount</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                        [ngClass]="{'positive-balance': contact.AMCDueAmount > 0 }">
+                                                        {{contact.AMCDueAmount | currency:'INR'}}
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -357,7 +376,7 @@
                                     </div>
                                     <div fxlayout="row">
                                         <div style="width:100%;">
-                                            <mat-table #table matSort [dataSource]="dsPayMonthSummary"
+                                            <mat-table matSort [dataSource]="dsPayMonthSummary"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                                 <ng-container matColumnDef="PayMonth">
@@ -414,14 +433,13 @@
                                                 </mat-footer-row>
                                             </mat-table>
 
-                                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"
+                                            <!-- <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"
                                                 [pageSize]="10" showFirstLastButtons>
-                                            </mat-paginator>
+                                            </mat-paginator> -->
                                         </div>
                                         <div>
                                             <mat-table #table matSort [dataSource]="dsPayReceivedList"
                                                 [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
 
                                                 <ng-container matColumnDef="Type">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -480,11 +498,123 @@
                                                     [ngClass]="{'hide':!(dsPayMonthSummary!=null && dsPayMonthSummary.data.length==0)}">
                                                 </mat-footer-row>
                                             </mat-table>
-
+<!-- 
                                             <mat-paginator #paginator [pageSizeOptions]="[100]" [pageSize]="50"
                                                 showFirstLastButtons>
-                                            </mat-paginator>
+                                            </mat-paginator> -->
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Day Wise Payment Summary">
+            <div class="contact">
+                <div class="center p-12 pb-56" fxFlexAlign="start center">
+                    <div class="content-card" style="border-radius:4px; ">
+                        <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex.gt-sm="100%" fxFlex>
+                                <div fxLayout="column" class="gap-12">
+                                    <div fxlayout="row">
+                                        <div style="width:100%;">
+                                            <mat-table matSort [dataSource]="dsPaymentDaySummary"
+                                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
+
+                                                <ng-container matColumnDef="Type">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
+                                                        <span class="material-icons" (click)="getCustomerPaymentDaySummary()">
+                                                            cached
+                                                        </span>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-50">
+                                                        <div class="pill-icon">
+                                                            <mat-icon style="border-radius:100% ;"
+                                                                *ngIf="contact.TranType == 'Bill'" matTooltip="Bill"
+                                                                class="blue s-16">circle
+                                                            </mat-icon>
+
+                                                            <mat-icon style="border-radius:100% ;"
+                                                                *ngIf="contact.TranType == 'AMC'" matTooltip="AMC"
+                                                                class="green-600 s-16">circle
+                                                            </mat-icon>
+                                                        </div>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="PaymentDate">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        PaymentDate </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.PaymentDate | date: 'dd/MM/yyyy'}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                
+                                                <ng-container matColumnDef="ReceiptNumber">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        ReceiptNumber </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.ReceiptNumber}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                
+                                                <ng-container matColumnDef="CustomerName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        CustomerName </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.CustomerName}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Amount">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Amount</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Amount | currency:'INR'}}
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Comments">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        Comments </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Comments || '--'}}
+                                                    </mat-cell>
+                                                </ng-container>
+                                                
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-header-cell *matFooterCellDef colspan="6"
+                                                        style="display: none;">
+                                                    </mat-header-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        no data found...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <mat-header-row class="accent"
+                                                    *matHeaderRowDef="dcPaymentDaySummary; sticky: true">
+                                                </mat-header-row>
+                                                <mat-row *matRowDef="let contact; columns: dcPaymentDaySummary;"
+                                                    class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                                    appHighlight></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                                </mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{'hide':!(dsPaymentDaySummary!=null && dsPaymentDaySummary.data.length==0)}">
+                                                </mat-footer-row>
+                                            </mat-table>
+
+                                            <mat-paginator #paginator2 [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
+                                            showFirstLastButtons [length]="resultsLength2"
+                                            (page)="getCustomerPaymentDaySummary()">
+                                        </mat-paginator>
                                         </div>
                                     </div>
                                 </div>

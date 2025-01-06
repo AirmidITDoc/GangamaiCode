@@ -36,11 +36,11 @@ export class CustomerBillRaiseService {
   public getCustomerSearchCombo(param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CustomerNameCombo", param);
   }
-  public getCustomerPayDueList(loader = true) {
+  public getCustomerPayDueList(Param,loader = true) {
     if(loader){
       this._loaderService.show()
     }
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPaymentDueList",{});
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_CustomerPaymentDueList",Param);
   }
   public getCustomerAMCPayList(loader = true) {
     if(loader){
@@ -67,5 +67,11 @@ export class CustomerBillRaiseService {
       this._loaderService.show()
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPayReceivedSummary",Param);
+  }
+  public getCustomerPaymentDaySummary(Param,loader = true) {
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_CustomerPaymentDaySummary",Param);
   }
 }

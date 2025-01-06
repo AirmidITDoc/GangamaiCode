@@ -46,11 +46,11 @@ export class CustomerPaymentComponent implements OnInit {
       this.vCustomerName = this.registerObj.CustomerName; 
       this.vCustomerId = this.registerObj.CustomerId;
       if(this.registerObj.Lbl == 'AMC'){
-        this.vamcAmount = this.registerObj.AMCAmount
+        this.vamcAmount = this.registerObj.AMCDueAmount
         this.TransId= this.registerObj.TranId
         this.tranType = 'AMC'
       }else{
-        this.vamcAmount = this.registerObj.AMCAmount;
+        this.vamcAmount = this.registerObj.AMCDueAmount;
         this.TransId= this.registerObj.TranId
         this.tranType = 'Bill'
       }

@@ -36,8 +36,10 @@ export class CustomerBillRaiseComponent implements OnInit {
     'CustomerName',
     'ContactPersonName',
     'ContactPersonMobileNo',
-    'AMCPaidDate',
+    // 'AMCPaidDate',
     'AMCAmount',
+    'PaidAmount',
+    'AMCDeuAmount',
     'Action'
   ];
 
@@ -54,6 +56,14 @@ export class CustomerBillRaiseComponent implements OnInit {
     'Amount',
   ];
 
+  dcPaymentDaySummary: string[] = [
+    'Type',
+    'PaymentDate',
+    'ReceiptNumber',
+    'CustomerName',
+    'Amount',
+    'Comments'
+  ];
   dateTimeObj:any;
   sIsLoading: string = '';
   isLoading = true;
@@ -62,9 +72,11 @@ export class CustomerBillRaiseComponent implements OnInit {
   dsAMCPayList =new MatTableDataSource<BillPayDueList>();
   dsPayMonthSummary =new MatTableDataSource<PayMonthSummary>();
   dsPayReceivedList =new MatTableDataSource<PayReceivedList>();
+  dsPaymentDaySummary =new MatTableDataSource<PaymentDaySummary>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator2: MatPaginator;
   
   constructor(
     public _CustomerBill: CustomerBillRaiseService,
@@ -79,6 +91,7 @@ export class CustomerBillRaiseComponent implements OnInit {
     this.getCustomerPayDueList();
     this.getCustomerAMCPayList();
     this.getCustomerPayMonthSummary();
+    this.getCustomerPaymentDaySummary();
   }
   onClose(){
     this._matDialog.closeAll();
@@ -89,19 +102,31 @@ export class CustomerBillRaiseComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getCustomerPayDueList(){ 
-    this.sIsLoading = 'loading-data';
-    this._CustomerBill.getCustomerPayDueList().subscribe(data =>{
-      this.dsBillPayDueList.data = data as BillPayDueList[];
-      console.log(this.dsBillPayDueList.data)
-      this.dsBillPayDueList.sort = this.sort;
-      this.dsBillPayDueList.paginator = this.paginator
-      this.sIsLoading = '';
-    },
-    error => {
-      this.sIsLoading = '';
-    });
+
+
+
+  resultsLength = 0;
+  getCustomerPayDueList() {
+    var D_data = {
+      CustomerName: "%",
+      Start: (this.paginator?.pageIndex ?? 0),
+      Length: (this.paginator?.pageSize ?? 25),
+    };
+    console.log(D_data)
+    setTimeout(() => {
+      this._CustomerBill.getCustomerPayDueList(D_data).subscribe(
+        (data) => {
+          this.dsBillPayDueList.data = data["Table1"] ?? [] as BillPayDueList[];
+          console.log(this.dsBillPayDueList.data)
+          this.resultsLength = data["Table"][0]["total_row"];
+        },
+        (error) => {
+          // this.isLoading = 'list-loaded';
+        }
+      );
+    }, 1000);
   }
+
   getCustomerAMCPayList(){ 
     this.sIsLoading = 'loading-data';
     this._CustomerBill.getCustomerAMCPayList().subscribe(data =>{
@@ -118,10 +143,9 @@ export class CustomerBillRaiseComponent implements OnInit {
   getCustomerPayMonthSummary(){ 
     this._CustomerBill.getCustomerPayMonthSummary().subscribe(data =>{
       this.dsPayMonthSummary.data = data as PayMonthSummary[];
-      console.log(this.dsPayMonthSummary.data)
-      this.dsPayMonthSummary.sort = this.sort;
-      this.dsPayMonthSummary.paginator = this.paginator
-     
+      // console.log(this.dsPayMonthSummary.data)
+      // this.dsPayMonthSummary.sort = this.sort;
+      // this.dsPayMonthSummary.paginator = this.paginator
     },
     error => {
       this.sIsLoading = '';
@@ -137,14 +161,32 @@ export class CustomerBillRaiseComponent implements OnInit {
     }
     this._CustomerBill.getCustomerPayReceivedList(mdata).subscribe(data =>{
       this.dsPayReceivedList.data = data as PayReceivedList[];
-      console.log(this.dsPayReceivedList.data)
-      this.dsPayReceivedList.sort = this.sort;
-      this.dsPayReceivedList.paginator = this.paginator
+      // console.log(this.dsPayReceivedList.data)
+      // this.dsPayReceivedList.sort = this.sort;
+      // this.dsPayReceivedList.paginator = this.paginator
     },
     error => {
       this.sIsLoading = '';
     });
   }
+
+  resultsLength2=0;
+  getCustomerPaymentDaySummary(){ 
+    var D_data = {
+      CustomerName: "%",
+      Start: (this.paginator2?.pageIndex ?? 0),
+      Length: (this.paginator2?.pageSize ?? 25),
+    };
+    this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data =>{
+      this.dsPaymentDaySummary.data = data["Table1"] ?? [] as PaymentDaySummary[];
+      console.log(this.dsPaymentDaySummary.data)
+      this.resultsLength2 = data["Table"][0]["total_row"];
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+
 
   NewCustomerBill(){
     const dialogRef = this._matDialog.open(NewBillRaiseComponent,
@@ -171,7 +213,7 @@ export class CustomerBillRaiseComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getCustomerPayDueList();
+      this.getCustomerAMCPayList();
     });
   }
   OnView(contact){
@@ -187,7 +229,7 @@ export class CustomerBillRaiseComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - View Action', result);
-      this.getCustomerPayDueList();
+      this.getCustomerAMCPayList();
     });
   }
 }
@@ -215,6 +257,25 @@ export class PayMonthSummary{
     {
       this.PayMonth = PayMonthSummary.PayMonth;
       this.Amount = PayMonthSummary.Amount || 0;
+    }
+  }
+}
+
+export class PaymentDaySummary{
+  TranType:string;
+  PaymentDate: any;
+  CustomerName:string;
+  Amount: string;
+  ReceiptNumber:any;
+  Comments:any;
+  constructor(PaymentDaySummary) {
+    {
+      this.TranType = PaymentDaySummary.TranType || '';
+      this.CustomerName = PaymentDaySummary.CustomerName || '';
+      this.PaymentDate = PaymentDaySummary.PaymentDate;
+      this.Amount = PaymentDaySummary.Amount || 0;
+      this.ReceiptNumber = PaymentDaySummary.ReceiptNumber || 0;
+      this.Comments = PaymentDaySummary.Comments || '';
     }
   }
 }
