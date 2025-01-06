@@ -36,6 +36,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ConfigService } from 'app/core/services/config.service';
 import { query } from '@angular/animations';
 import { OpPackageBillInfoComponent } from 'app/main/opd/OPBilling/new-opbilling/op-package-bill-info/op-package-bill-info.component';
+import { element } from 'protractor';
 
 
 @Component({
@@ -292,6 +293,7 @@ export class IPBillingComponent implements OnInit {
     this.getBillingClasslist();
     this.getServiceListCombobox();
     this.getChargesList();
+    this.getRtrvPackageList();
     this.getRequestChargelist();
     this.getBillingClassCombo();
     this.getCashCounterComboList();
@@ -470,6 +472,7 @@ ServiceList:any=[];
       this.Serviceform.get('DoctorID').disable();
       this.isDoctor = false;
     }
+    this.getpackagedetList();
   }
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
@@ -502,6 +505,7 @@ ServiceList:any=[];
     }
 // Service Add 
   onSaveAddCharges() {
+   
     if (( this.vClassName== '' || this.vClassName == null || this.vClassName == undefined)) {
       this.toastr.warning('Please select Ward', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -562,8 +566,8 @@ ServiceList:any=[];
 
     this.isLoading = 'save';
     if ((this.SrvcName && (parseInt(this.vPrice) > 0 || this.vPrice == '0') && this.vQty) && (parseFloat(this.vServiceNetAmt) > 0)) {
-
-      var m_data = {
+      
+        var  m_data = {
         "chargeID": 0,
         "chargesDate": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         "opD_IPD_Type": 1,
@@ -587,17 +591,55 @@ ServiceList:any=[];
         "isCancelledDate": "01/01/1900",
         "isPathology": this.b_isPath,
         "isRadiology": this.b_isRad,
-        "isPackage": 0,
+        "isPackage": this.IsPackage,
         "packageMainChargeID": 0,
         "isSelfOrCompanyService": false,
-        "packageId": this.IsPackage,
+        "packageId": 0,
         "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        "classId":this.Serviceform.get('ChargeClass').value.ClassId     // this.selectedAdvanceObj.ClassId,
-      }
-      console.log(m_data);
+        "classId":this.Serviceform.get('ChargeClass').value.ClassId,    // this.selectedAdvanceObj.ClassId, 
+      } 
+ debugger
+      let PackageData =[]
+      if(this.IsPackage == '1'){ 
+       
+        this.PacakgeList.forEach(element=>{
+           var  Vdata = {
+            "chargesDate": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+            "opD_IPD_Type": 1,
+            "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
+            "serviceId": element.PackageServiceId,
+            "price": element.Price || 0,
+            "qty": element.Qty || 0,
+            "totalAmt": element.TotalAmt || 0,
+            "concessionPercentage":  0,
+            "concessionAmount": element.ConcessionAmt || 0,
+            "netAmount": element.NetAmount || 0,
+            "doctorId": 0,
+            "doctorName": '',
+            "docPercentage": 0,
+            "docAmt": 0,
+            "hospitalAmt": this.FAmount,// this.vServiceNetAmt,
+            "isGenerated": 0,
+            "addedBy": this.accountService.currentUserValue.user.id,
+            "isCancelled": 0,
+            "isCancelledBy": 0,
+            "isCancelledDate": "01/01/1900",
+            "isPathology": element.IsPathology,
+            "isRadiology": element.IsRadiology,
+            "isPackage": 1,
+            "packageMainChargeID": 0,
+            "isSelfOrCompanyService": false,
+            "packageId": element.ServiceId,  
+          }  
+          console.log(Vdata)
+          PackageData.push(Vdata)
+        })  
+    } 
       let submitData = {
-        "addCharges": m_data
+        "addCharges": m_data,
+        "chargesIPPackageInsert":PackageData
       }; 
+      console.log(submitData)
       this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         if (data) {
           this.getChargesList(); 
@@ -606,7 +648,7 @@ ServiceList:any=[];
       this.onClearServiceAddList()
       this.isLoading = '';
       this.interimArray = [];
-      this.getpackagedetList();
+     
     }
     else {
       Swal.fire("Enter Proper Values !")
@@ -630,7 +672,7 @@ ServiceList:any=[];
     getpackagedetList() {
       debugger
       var vdata = {
-        'ServiceId': this.serviceId
+        'ServiceId': this.serviceId || 0
       }
       console.log(vdata);
       this._IpSearchListService.getpackagedetList(vdata).subscribe((data) => {
@@ -783,7 +825,7 @@ ServiceList:any=[];
     this.chargeslist = [];
     this.dataSource.data = []; 
     this.isLoadingStr = 'loading';
-    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
+    let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
  
    // console.log(Query)
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
@@ -812,12 +854,27 @@ ServiceList:any=[];
         this.isLoading = 'list-loaded';
       }); 
   } 
+
+  getRtrvPackageList() {  
+     this.isLoadingStr = 'loading';
+     let Query = "Select *  from lvwAddCharges where IsGenerated=0 and PackageId !=0  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+     console.log(Query); 
+     this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
+       this.PackageDatasource.data = data as ChargesList[];
+       this.PacakgeList = data as ChargesList[];
+       console.log(this.PacakgeList)   
+     },
+       (error) => {
+         this.isLoading = 'list-loaded';
+       });  
+   }
+
   getChargesList() {
    // debugger
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
-    let Query = "Select * , '' as QtyEditable,'' as PriceEditable from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
+    let Query = "Select * , '' as QtyEditable,'' as PriceEditable from lvwAddCharges where IsGenerated=0 and PackageId =0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
     // console.log(Query);
     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
@@ -1393,7 +1450,7 @@ CalculateAdminCharge(){
        this.PackageDatasource.data = result
        console.log( this.PackageDatasource.data)   
        this.PackageDatasource.data.forEach(element => {
-         this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== element.ServiceId)
+         this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId !== element.PackageServiceId)
          console.log(this.PacakgeList)   
          if(element.BillwiseTotalAmt > 0){
            this.TotalPrice = element.BillwiseTotalAmt;  

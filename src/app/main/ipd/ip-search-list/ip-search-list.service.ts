@@ -884,6 +884,9 @@ return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   public getchargesList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
+  public getchargesPackageList(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+  }
   public getBillheaderList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }

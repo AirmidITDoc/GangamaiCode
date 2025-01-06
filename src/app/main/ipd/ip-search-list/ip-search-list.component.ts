@@ -966,6 +966,7 @@ export class ChargesList {
   OPD_IPD_Type: any;
   C_TotalAmount: any;
   ConcessionAmount: any;
+  ConcessionAmt:any;
   C_qty:any;
   C_Price:any;
   IsComServ:any;

@@ -848,7 +848,7 @@
                                     Package Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    <span> {{contact.PacakgeServiceName}}</span>
+                                    <span> {{contact.PacakgeServiceName || '-'}}</span>
                                 </mat-cell>
                             </ng-container> 
 
