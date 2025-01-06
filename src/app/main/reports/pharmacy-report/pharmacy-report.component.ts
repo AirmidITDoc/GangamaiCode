@@ -74,7 +74,6 @@ export class PharmacyReportComponent implements OnInit {
   FlagStoreSelected: boolean = false;
   FlagRegNoSelected: boolean = false;
   FlagDrugTypeIdSelected: boolean = false;
-  FlaOPIPTypeSelected: boolean = false;
   FlagItemSelected: boolean = false;
   FlagPatientSelected:boolean=false;
   optionsUser: any[] = [];
@@ -114,6 +113,9 @@ export class PharmacyReportComponent implements OnInit {
   IsLoading: boolean = false;
   FlagDoctorIDSelected: boolean = false;
   RegId:any;
+  PatientName: any = '';
+  StoreId:any;
+  FlaOPIPTypeSelected: boolean = false;
 
   displayedColumns = [
     'ReportName'
@@ -162,6 +164,10 @@ export class PharmacyReportComponent implements OnInit {
       );
     });
   }
+  getSelectedPharobjNew(obj){
+    console.log("storeId:",obj)
+    this.StoreId=obj.StoreId;
+  }
 
 
   private _filterstore(value: any): string[] {
@@ -178,7 +184,7 @@ export class PharmacyReportComponent implements OnInit {
   getSearchList() {
     debugger
     var m_data = {
-      "Keyword": `${this._PharmacyreportService.userForm.get('RegID').value}%`
+      "Keyword": `${this._PharmacyreportService.userForm.get('RegID').value}`
     }
     console.log(m_data)
     this._PharmacyreportService.getPatientRegisterListSearch(m_data).subscribe(data => {
@@ -191,17 +197,16 @@ export class PharmacyReportComponent implements OnInit {
     }); 
   } 
 
-  getSelectedObj1(obj) {
+  getSelectedObjNew(obj) {
     console.log("djfhfka:",obj)
-    this.RegId=obj.RegId
+    this.RegId=obj.RegId;
+    this.PatientName = obj.PatientName;
   } 
 
-  getOptionText1(option) {
-    if (!option)
-      return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName + "-" + option.RegNo ;
- 
-  }
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+}
 
   getOptionDrugtypeText(option) {
     return option && option.DrugTypeName ? option.DrugTypeName : '';
@@ -234,8 +239,14 @@ export class PharmacyReportComponent implements OnInit {
   }
 
   getDoctorList() {
-    this._PharmacyreportService.getDoctorMaster().subscribe(data => {
+    debugger
+    var m_data = {
+      "Keywords": `${this._PharmacyreportService.userForm.get('DoctorID').value}%`
+    }
+    console.log("ggggg:", m_data)
+    this._PharmacyreportService.getDoctorMaster(m_data).subscribe(data => {
       this.searchDoctorList = data;
+      console.log(this.searchDoctorList)
       this.optionsSearchDoc = this.searchDoctorList.slice();
       this.filteredOptionssearchDoctor = this._PharmacyreportService.userForm.get('DoctorID').valueChanges.pipe(
         startWith(''),
@@ -472,7 +483,7 @@ var data={
       this.FlagStoreSelected=true;
       this.FlagItemSelected=false;
       this.FlagDoctorIDSelected=true;
-      this.FlaOPIPTypeSelected=false;
+      this.FlaOPIPTypeSelected=true;
       this.FlagPatientSelected=false;
           this.clearField();
     }else if(this.ReportName == 'Dr Wise Profit Detail Report'){
@@ -637,10 +648,13 @@ var data={
     if (this._PharmacyreportService.userForm.get('UserId').value)
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-    let storeId =this._loggedUser.currentUserValue.user.storeId;
-    if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
-      storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
-
+    // let storeId =this._loggedUser.currentUserValue.user.storeId;
+    // if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+    //   storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -678,10 +692,13 @@ var data={
       
     AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-    let storeId =this._loggedUser.currentUserValue.user.storeId;
-    if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
-      storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
-
+    // let storeId =this._loggedUser.currentUserValue.user.storeId;
+    // if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+    //   storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -719,10 +736,13 @@ var data={
         
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-    if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
-      storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
-
+    //   let storeId =this._loggedUser.currentUserValue.user.storeId;
+    // if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+    //   storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -761,10 +781,13 @@ var data={
     if (this._PharmacyreportService.userForm.get('UserId').value)
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
 
-    let storeId =this._loggedUser.currentUserValue.user.storeId;
-    if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
-      storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
-
+    // let storeId =this._loggedUser.currentUserValue.user.storeId;
+    // if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+    //   storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
 
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
@@ -806,6 +829,14 @@ var data={
     if (this._PharmacyreportService.userForm.get('UserId').value)
       
     AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
+
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
+    // if(this._PharmacyreportService.userForm.get('StoreId').value)
+    //   storeId=this._PharmacyreportService.userForm.get('StoreId').value.storeId
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
     
@@ -815,7 +846,7 @@ var data={
       
       
       this._PharmacyreportService.getSalesDetail_Patientwise(Frdate,Todate,    
-        0, 0, AddUserId, this._loggedUser.currentUserValue.user.storeId,regId
+        0, 0, AddUserId, storeId,regId
       ).subscribe(res => {
         
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -832,6 +863,7 @@ var data={
           this.AdList = false;
           this.sIsLoading = ' ';
           this.clearField();
+          // this.resetPage();
         });
       });
 
@@ -840,13 +872,17 @@ var data={
 
 
   viewgetSalesReturnsummaryReportPdf() {
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       this._PharmacyreportService.getSalesReturnsummary(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0,
-        this._loggedUser.currentUserValue.user.storeId
+        storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -868,13 +904,18 @@ var data={
     }, 100);
   }
   viewgetSalesReturnPatientwiseReportPdf() {
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       let frdate= this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
    debugger
-      this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.user.storeId
+      this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,
+      storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -897,13 +938,17 @@ var data={
   }
 
   viewgetSalesCreditReportPdf() {
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
       this._PharmacyreportService.getSalesCredit(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', 0, 0, 0,
-        this._loggedUser.currentUserValue.user.storeId
+        storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -928,6 +973,10 @@ var data={
 
 
   viewgetSalesCashBookReportPdf() {
+    let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
@@ -935,7 +984,7 @@ var data={
       this._PharmacyreportService.getSalesCashBook(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
         this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900', this.PaymentMode,
-        this._loggedUser.currentUserValue.user.storeId
+        storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -1250,25 +1299,30 @@ debugger
      
   
 
-  viewgetDrwisesalesReportPdf(){
-    
+  viewgetDrwisesalesReportPdf() {
+
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
 
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
       debugger
-      
+
       let DoctorID = 0;
       if (this._PharmacyreportService.userForm.get('DoctorID').value)
         DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
-  
+
+      let storeId = 0;
+      if (this.StoreId) {
+        storeId = this.StoreId
+      }
+
+      this.OPIPType = parseInt(this._PharmacyreportService.userForm.get('OPIPType').value)
+
       this._PharmacyreportService.getDrwisesales(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
-        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',storeId,DoctorID
-        
+        this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd") || '01/01/1900',
+        storeId, DoctorID, this.OPIPType
+
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -1297,9 +1351,9 @@ debugger
       this.sIsLoading = 'loading-data';
       this.AdList = true;
     
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+      // let storeId =this._loggedUser.currentUserValue.user.storeId;
+      // if (this._PharmacyreportService.userForm.get('StoreId').value.StoreId)
+      //   storeId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
 
       this.OPIPType= parseInt(this._PharmacyreportService.userForm.get('OPIPType').value)
       debugger
@@ -1307,6 +1361,11 @@ debugger
       let DoctorID = 0;
       if (this._PharmacyreportService.userForm.get('DoctorID').value)
         DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
+
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
   
       this._PharmacyreportService.getDrwiseprofitdetail(
         this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd") || '01/01/1900',
@@ -1378,13 +1437,22 @@ debugger
     this.PaymentMode = option.PaymentMode;
   }
   clearField(){
+    this._PharmacyreportService.userForm.reset();
     this._PharmacyreportService.userForm.get('startdate').setValue(new Date());
     this._PharmacyreportService.userForm.get('enddate').setValue(new Date());
     this._PharmacyreportService.userForm.get('StoreId').setValue('');
     this._PharmacyreportService.userForm.get('ItemId').setValue('');
     this._PharmacyreportService.userForm.get('RegID').setValue('');
     this._PharmacyreportService.userForm.get("UserId").setValue('');
+    this.RegId='';
+    this.StoreId='';
+    this._PharmacyreportService.userForm.get("OPIPType").setValue('2');
   }
+  // resetPage() {
+  //   this._PharmacyreportService.userForm.reset();
+  //   this.AdList = false;
+  //   this.sIsLoading = '';
+  // }
   onClose() { }
 
 

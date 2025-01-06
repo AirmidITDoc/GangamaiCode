@@ -48,6 +48,8 @@ export class GSTReportComponent implements OnInit {
   isPatientSelected: boolean = false;
   FlagPatientSelected:boolean=false;
   RegId:any;
+  StoreId:any;
+  PatientName: any = '';
   optionsSearchstore: any[] = [];
 
   displayedColumns = [
@@ -338,9 +340,13 @@ export class GSTReportComponent implements OnInit {
 
     viewSalesprofitsummaryPdf() {
       debugger
+      // let storeId=0;
+      // if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+      //   storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
       let storeId=0;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
   
       this.sIsLoading = 'loading-data';
       setTimeout(() => {
@@ -376,9 +382,14 @@ export class GSTReportComponent implements OnInit {
       debugger
       this.sIsLoading = 'loading-data';
 
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+      // let storeId =this._loggedUser.currentUserValue.user.storeId;
+      // if (this._GstReportService.userForm.get('StoreId').value.StoreId)
+      //   storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
+
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
 
       let regId =0;
       if (this.RegId){
@@ -418,10 +429,10 @@ export class GSTReportComponent implements OnInit {
     viewgetprofititemwisesummaryPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getProfititemwisesummaryReport(
@@ -452,10 +463,10 @@ export class GSTReportComponent implements OnInit {
       debugger
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getpurchasesupplierwiseReport(
@@ -493,10 +504,10 @@ export class GSTReportComponent implements OnInit {
      viewgetpurchasesupplierwisewithoutgstdetailPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getpurchasesupplierwisewithoutgstReport(
@@ -526,10 +537,10 @@ export class GSTReportComponent implements OnInit {
      viewgetpurchasesupplierwisewithoutgstsummaryPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getpurchasedatewiseReport(
@@ -558,10 +569,10 @@ export class GSTReportComponent implements OnInit {
      viewgetpurchasegstdatewisePdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+      if(this.StoreId){
+        storeId=this.StoreId
+      }
        setTimeout(() => {
        
          this._GstReportService.getpurchasedatewiseReport(
@@ -591,10 +602,10 @@ export class GSTReportComponent implements OnInit {
      viewgetpurchasegstsummaryPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getpurchasegstsummaryReport(
@@ -624,10 +635,10 @@ export class GSTReportComponent implements OnInit {
      viewgetpurchasereturnsummaryPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getpurchasereturngstsummaryReport(
@@ -657,10 +668,10 @@ export class GSTReportComponent implements OnInit {
      viewgetpurchasereturngstdatewisePdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+      if(this.StoreId){
+        storeId=this.StoreId
+      }
        setTimeout(() => {
        
          this._GstReportService.getpurchasereturndatewiseReport(
@@ -699,10 +710,10 @@ export class GSTReportComponent implements OnInit {
      viewgetSalesGstreportPdf() {
       this.sIsLoading = 'loading-data';
    debugger
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+   let storeId=0;
+   if(this.StoreId){
+     storeId=this.StoreId
+   }
        setTimeout(() => {
        
          this._GstReportService.getSalesGstReport(
@@ -733,10 +744,10 @@ export class GSTReportComponent implements OnInit {
      viewgetSalesGstdatewisereportPdf() {
       this.sIsLoading = 'loading-data';
    debugger
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+   let storeId=0;
+   if(this.StoreId){
+     storeId=this.StoreId
+   }
        setTimeout(() => {
        
          this._GstReportService.getSalesGstdatewiseReport(
@@ -774,10 +785,10 @@ export class GSTReportComponent implements OnInit {
      viewgetSalesreturngstPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getSalesreturnReport(
@@ -807,10 +818,10 @@ export class GSTReportComponent implements OnInit {
      viewgetSalesreturngstdatewisePdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.getSalesreturndatewiseReport(
@@ -841,10 +852,10 @@ export class GSTReportComponent implements OnInit {
      viewgetHSMCodewisePdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+      if(this.StoreId){
+        storeId=this.StoreId
+      }
        setTimeout(() => {
        
          this._GstReportService.getHSNcodewiseReport(
@@ -876,10 +887,10 @@ export class GSTReportComponent implements OnInit {
      viewgetGSTB2CsPdf() {
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+      if(this.StoreId){
+        storeId=this.StoreId
+      }
        setTimeout(() => {
        
          this._GstReportService.geGSTB2cReport(
@@ -912,10 +923,10 @@ export class GSTReportComponent implements OnInit {
       debugger
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+    if(this.StoreId){
+      storeId=this.StoreId
+    }
        setTimeout(() => {
        
          this._GstReportService.geGSTRAZPurchaseReport(
@@ -946,10 +957,10 @@ export class GSTReportComponent implements OnInit {
       debugger
       this.sIsLoading = 'loading-data';
    
-      let storeId =this._loggedUser.currentUserValue.user.storeId;
-      if (this._GstReportService.userForm.get('StoreId').value.StoreId)
-        storeId = this._GstReportService.userForm.get('StoreId').value.StoreId
-  
+      let storeId=0;
+      if(this.StoreId){
+        storeId=this.StoreId
+      }
        setTimeout(() => {
        
          this._GstReportService.geGSTR2ASupplierwiseReport(
@@ -1106,13 +1117,20 @@ export class GSTReportComponent implements OnInit {
       );
     });
   }
+  getSelectedPharobjNew(obj){
+    console.log("storeId:",obj)
+    this.StoreId=obj.StoreId;
+  }
 
   clearField(){
+    this._GstReportService.userForm.reset();
     this._GstReportService.userForm.get('startdate').setValue(new Date());
     this._GstReportService.userForm.get('enddate').setValue(new Date());
     this._GstReportService.userForm.get('DoctorId').setValue('');
     this._GstReportService.userForm.get('StoreId').setValue('');
-    this._GstReportService.userForm.get('RegID').setValue('')
+    this._GstReportService.userForm.get('RegID').setValue('');
+    this.RegId='';
+    this.StoreId='';
   }
 
   getDoctorList() {
@@ -1158,17 +1176,16 @@ export class GSTReportComponent implements OnInit {
     }); 
   } 
 
-  getSelectedObj1(obj) {
+  getSelectedObjNew(obj) {
     console.log("djfhfka:",obj)
-    this.RegId=obj.RegId
+    this.RegId=obj.RegId;
+    this.PatientName = obj.PatientName;
   } 
 
-  getOptionText1(option) {
-    if (!option)
-      return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName + "-" + option.RegNo ;
- 
-  }
+  getOptionText(option) {
+    if (!option) return '';
+    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+}
   private _filterSearchstore(value: any): string[] {
     if (value) {
       const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();

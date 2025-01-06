@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -9,23 +9,23 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                {{_otTableMasterService.myform.controls.OtTableId.value ? "Modify OtTable Master" : "New OtTable Master"}}
+                New Consent Master
             </span>
         </div>
-        <div fxLayout="row" fxLayoutAlign="end start">
+        <div fxLayout="row" fxLayoutALign="end start">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
         </div>
     </mat-toolbar>
 
-    <div class="content">
+    <!-- <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px">
-                            <form [formGroup]="_otTableMasterService.myform" fxFlexFill>
+                        <div fxlayout="row">
+                            <form [formGroup]="_otTableMasterService.myform">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
 
@@ -90,6 +90,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 </div>

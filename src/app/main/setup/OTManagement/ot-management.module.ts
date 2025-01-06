@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { SurgeryMasterComponent } from './surgery-master/surgery-master.component';
 
 const appRoutes: Routes = [
   {
@@ -28,6 +27,11 @@ const appRoutes: Routes = [
     path: "SiteDescriptionMaster", //db linkaction name
     loadChildren: () =>
       import("./sitedescription-master/sitedescription-master.module").then((m) => m.SitedescriptionMasterModule),
+  },
+  {
+    path: "ConsentMaster", //db linkaction name
+    loadChildren: () =>
+      import("./consent-master/consent-master.module").then((m) => m.ConsentMasterModule),
   }
 ];
 
