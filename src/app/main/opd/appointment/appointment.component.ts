@@ -593,6 +593,10 @@ export class RegInsert {
     FirstName: string;
     MiddleName: string;
     LastName: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    
     Address: string;
     City: string;
     PinNo: string;
@@ -640,6 +644,9 @@ export class RegInsert {
             this.FirstName = RegInsert.FirstName || "";
             this.MiddleName = RegInsert.MiddleName || "";
             this.LastName = RegInsert.LastName || "";
+            this.firstName = RegInsert.firstName || "";
+            this.middleName = RegInsert.middleName || "";
+            this.lastName = RegInsert.lastName || "";
             this.Address = RegInsert.Address || "";
             this.City = RegInsert.City || "";
             this.PinNo = RegInsert.PinNo || "";

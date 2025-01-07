@@ -20,14 +20,11 @@ const appRoutes: Routes = [
     path: "browse-opd-bills",
     loadChildren: () => import("./new-oplist/oplist.module").then((m) => m.OplistModule),
   },
-  // {
-  //   path: "bill",
-  //   loadChildren: () => import("./op-search-list/opsearchlist.module").then((m) => m.opseachlistModule),
-  // },
+
 
   {
     path: "bill",
-    loadChildren: () => import("./OPBilling/op-billing.module").then((m) => m.OPBillingModule),
+    loadChildren: () => import("./op-search-list/op-billing/op-billing.module").then((m) => m.OpBillingModule),
   },
    
   {

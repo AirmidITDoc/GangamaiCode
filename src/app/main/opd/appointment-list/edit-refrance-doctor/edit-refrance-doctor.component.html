@@ -105,14 +105,12 @@
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                        <!-- <airmid-autocomplete [mode]="autocompleteModerefdoc" (selectDdlObject)="selectChangerefdoc($event)"></airmid-autocomplete> -->
                                         <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
-                                            [value]="DoctorID" [formGroup]="RefrancedrForm"
-                                            [validations]="getValidationDoctorMessages().DoctorID"
-                                            [mode]="autocompleteModerefdoc"
-                                            (selectDdlObject)="selectChangerefdoc($event)">
+                                            [formGroup]="RefrancedrForm" [value]="data?.Departmentid"
+                                            [validations]="getValidationMessages().DoctorID" 
+                                            [mode]="autocompleteModerefdoc">
                                         </airmid-autocomplete>
-
+                                      
                                         <!-- <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%"
                                         fxFlex.sm="40%">
                                         <mat-label>Ref Doctor Name</mat-label>

@@ -75,7 +75,7 @@ export class NewRegistrationComponent implements OnInit {
         
         if(this.data.Submitflag==true)
             this.registerObj.regId=this.data.data1.RegID
-debugger
+
         if (this.data.data1.regId > 0) {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.data1.regId).subscribe((response) => {

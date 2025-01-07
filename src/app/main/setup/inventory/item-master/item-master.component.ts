@@ -237,3 +237,14 @@ export class ItemMaster {
     }
 }
 
+export class MAssignItemToStore {
+    storeId: any;
+    itemId: any;
+
+    constructor(MAssignItemToStore) {
+        {
+            this.storeId = MAssignItemToStore.storeId || 0;
+            this.itemId = MAssignItemToStore.itemId || 0;
+        }
+    }
+}

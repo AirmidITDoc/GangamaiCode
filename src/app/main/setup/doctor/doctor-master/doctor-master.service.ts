@@ -96,6 +96,7 @@ export class DoctorMasterService {
                     Validators.required
                 ]
             ],
+            
             MDoctorDepartmentDets: ["", Validators.required],
             DepartmentName: [""],
             AddedBy: [""],

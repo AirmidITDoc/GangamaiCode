@@ -4,7 +4,8 @@ export enum gridActions{
     delete=3,
     view=4,
     print=5,
-    CossConsult=6
+    CossConsult=6,
+    OPBill=7
 }
 export enum gridColumnTypes{
     default=1,

@@ -12,7 +12,7 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
-                <div fxLayout="row" fxLayoutGap="5px" >
+                <div fxLayout="row" fxLayoutGap="5px">
                     <app-common-date [screenFrom]="screenFromString" style="float:right" hidden:true
                         (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 
@@ -23,83 +23,87 @@
 
     <!-- Modal body -->
     <mat-card>
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            <form [formGroup]="crossconForm">
-                <div fxLayout="column" class="gap-12">
-                    <div class="modal-card-container">
-                         <mat-card>
-                            <div class="patient-info-container">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                        fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.regId}}</span>
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <form [formGroup]="crossconForm">
+                    <div fxLayout="column" class="gap-12">
+                        <div class="modal-card-container">
+                            <mat-card>
+                                <div class="patient-info-container">
+                                    <div class="patient-sub">
+                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                            fxLayoutAlign="space-between">
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">UHID No
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.regId}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.patientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Doctor Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.doctorname}}</span>
+                                                </div>
                                             </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.patientName}}</span>
+                                            <div fxLayout="column" fxLayoutGap="10px">
+
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">OPD No</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.opdNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Age | Sex
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span
+                                                        class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                        D | {{data.GenderName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Department</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.departmentName}}</span>
+                                                </div>
+
+
                                             </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Doctor Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.doctorname}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="10px"> 
-                                             
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">OPD No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.opdNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Sex
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}} D | {{data.GenderName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Department</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.departmentName}}</span>
-                                            </div>
-                                          
-                                           
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
-                                          
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Type | Tarrif
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.patientType}} | {{data.tariffName}}</span>
-                                            </div> 
-                                            <div class="patient-col" >
-                                                <span class="patient-col-key">Company Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value" style="color: orange;">{{data.companyName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Ref-Doctor Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.refDocName}}</span>
+                                            <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Type | Tarrif
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.patientType}} |
+                                                        {{data.tariffName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Company Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value"
+                                                        style="color: orange;">{{data.companyName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Ref-Doctor Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{data.refDocName}}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </mat-card> 
-                    </div>
-                    <div class="modal-card-container">
-                       
+                            </mat-card>
+                        </div>
+                        <div class="modal-card-container">
+
                             <div fxLayout="column" class="gap-8">
                                 <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600">Cross Consultation Information</span>
@@ -109,75 +113,81 @@
 
                                         <mat-form-field appearance="outline" fxFlex.sm="33%">
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
-                                                formControlName="VisitDate"
+                                                formControlName="visitTime"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
-                                        <!-- [value]="data?.departmentId"  [value]="data?.DoctorID"-->
-                                     <airmid-autocomplete label="Departmentid" formControlName="Departmentid" 
-                                        [formGroup]="crossconForm"  [value]="data?.Departmentid" 
-                                        [validations]="getValidationMessages().Departmentid"
-                                        [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
-                                    </airmid-autocomplete>
-                                    <!-- (selectDdlObject)="selectChangedeptdoc($event)" -->
-                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
-                                        [formGroup]="crossconForm"  [value]="data?.DoctorID"
-                                        [validations]="getValidationMessages().DoctorID"
-                                        [mode]="autocompleteModedeptdoc" >
-                                    </airmid-autocomplete>
+                                      
+                                        <airmid-autocomplete label="Departmentid" formControlName="departmentId"
+                                            [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
+                                            [validations]="getValidationMessages().Departmentid"
+                                            [mode]="autocompleteModedepartment"
+                                            (selectDdlObject)="selectChangedepartment($event)">
+                                        </airmid-autocomplete>
+                                       
+                                        <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
+                                            [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
+                                            [validations]="getValidationMessages().DoctorID"
+                                            [mode]="autocompleteModedeptdoc">
+                                        </airmid-autocomplete>
                                     </div>
                                 </div>
                             </div>
-                       
+
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
-<div>
-
-    <!-- New dd? with old and new APi/new Component -->
-    <form [formGroup]="crossconForm">
-        <mat-form-field appearance="outline">
-            <mat-label>Doctor using Old Code</mat-label>
-            <input matAutocompletePosition="below" type="text"
-                placeholder="Select Doctor" matInput #city 
-                formControlName="DoctorID" [matAutocomplete]="auto"
-                required >
-            <span matSuffix style="display: flex;">
-                <mat-icon class="mat-icon-close"
-                    (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">close</mat-icon>
-                <mat-icon class="mat-icon-close"
-                    (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">search</mat-icon>
-            </span>
-            <mat-autocomplete #auto="matAutocomplete"
-                [displayWith]="getOptionTextDoc">
-                <mat-option
-                    *ngFor="let option of filteredOptionsdoc | async"
-                    [value]="option">
-                    {{option.doctorId}} || {{option.firstName}} {{option.lastName}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-
-        <app-airmid-dropdown label="DoctorID" formControlName="DoctorID1"  [value]="DoctorID1" 
-        [formGroup]="crossconForm" [mode]="autocompleteModedeptdoc" >
-       </app-airmid-dropdown>
-
-       <app-airmid-dropdown label="Departmentid" formControlName="Departmentid"  [value]="Departmentid" 
-       [formGroup]="crossconForm" [mode]="autocompleteModedepartment" value="Departmentid">
-      </app-airmid-dropdown>
-       
-    </form>
-</div>
-    <!-- Modal footer -->
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()">Save</button>
+                </form>
             </div>
         </div>
-    </div>
-</mat-card>
+        <div>
+
+            <!-- New dd? with old and new APi/new Component -->
+            <form [formGroup]="crossconForm">
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Doctor using Old Code</mat-label>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput #city
+                        formControlName="DoctorID" [matAutocomplete]="auto" required>
+                    <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                            (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                            (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">search</mat-icon>
+                    </span>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionTextDoc">
+                        <mat-option *ngFor="let option of filteredOptionsdoc | async" [value]="option">
+                            {{option.doctorId}} || {{option.firstName}} {{option.lastName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Doctor Name</mat-label>
+                    <mat-select formControlName="DoctorID" name="DoctorID">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let m of docList" [value]="m">
+                            {{m.doctorId}} || {{m.firstName}} {{m.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- <app-airmid-dropdown label="DoctorID" formControlName="consultantDocId" [value]="DoctorID1"
+                    [formGroup]="crossconForm" [mode]="autocompleteModedeptdoc">
+                </app-airmid-dropdown>
+
+                <app-airmid-dropdown label="Departmentid" formControlName="departmentId" [value]="Departmentid"
+                    [formGroup]="crossconForm" [mode]="autocompleteModedepartment" value="Departmentid">
+                </app-airmid-dropdown> -->
+
+            </form>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">Save</button>
+                </div>
+            </div>
+        </div>
+    </mat-card>
 </div>

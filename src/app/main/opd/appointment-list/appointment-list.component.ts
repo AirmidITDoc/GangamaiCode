@@ -31,6 +31,7 @@ import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refranc
 import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -64,7 +65,7 @@ export class AppointmentListComponent implements OnInit {
         { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-        // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        
     ]
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
@@ -107,8 +108,8 @@ export class AppointmentListComponent implements OnInit {
                         }
                     },
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.EditBedtransfer();
+                        action: gridActions.OPBill, callback: (data: any) => {
+                            this.EditOpBill(data);
                         }
                     },
                     {
@@ -154,9 +155,8 @@ export class AppointmentListComponent implements OnInit {
     onChangeDate(selectDate) {
         if (selectDate) {
             debugger
-            this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
-            console.log(this.fromDate);
-            this.gridConfig.filters[4].fieldValue = this.fromDate
+          
+            this.gridConfig.filters[4].fieldValue =this.datePipe.transform(selectDate, "MM/dd/yyyy")// this.fromDate
 
             this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -190,10 +190,11 @@ export class AppointmentListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.gridConfig.filters[4].fieldValue= this.datePipe.transform(new Date(), "MM/dd/yyyy")
-        // this.gridConfig.filters[5].fieldValue= this.datePipe.transform(new Date(), "MM/dd/yyyy")
-        this.myformSearch=this._AppointmentlistService.createSearchForm();
-        this.myformSearch.get("fromDate").setValue(this.datePipe.transform(new Date(), "MM/dd/yyyy"))
+       
+        this.myformSearch=this._AppointmentlistService.filterForm();
+             
+      
+        // this.myformSearch.get("fromDate").setValue(this.datePipe.transform(new Date(), "MM/dd/yyyy"))
         // this.getVisitList();
       
     }
@@ -412,15 +413,15 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    EditOpBill() {
+    EditOpBill(row) {
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewOPBillingComponent,
+        const dialogRef = this._matDialog.open(OPBillingComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "99vw",
                 height: '95%',
-                width: '80%',
-                // data: row
+                width: '90%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -626,4 +627,103 @@ export class VisitMaster1 {
             this.updatedBy = VisitMaster1.updatedBy || 0;
         }
     }
+  }
+
+
+  export class Regdetail {
+      RegId: Number;
+      regId: Number;
+      RegDate: Date;
+      RegTime: Date;
+      PrefixId: number;
+      PrefixID: number;
+      FirstName: string;
+      MiddleName: string;
+      LastName: string;
+      firstName: string;
+      middleName: string;
+      lastName: string;
+      
+      Address: string;
+      City: string;
+      PinNo: string;
+      RegNo: string;
+      DateofBirth: Date;
+      Age: any;
+      GenderId: Number;
+      PhoneNo: string;
+      MobileNo: string;
+      AddedBy: number;
+      AgeYear: any;
+      AgeMonth: any;
+      AgeDay: any;
+      CountryId: number;
+      StateId: number;
+      CityId: number;
+      MaritalStatusId: number;
+      IsCharity: Boolean;
+      ReligionId: number;
+      AreaId: number;
+      VillageId: number;
+      TalukaId: number;
+      PatientWeight: number;
+      AreaName: string;
+      AadharCardNo: string;
+      PanCardNo: string;
+      currentDate = new Date();
+      AdmissionID: any;
+      VisitId: any;
+      WardId: any;
+      BedId: any;
+      /**
+       * Constructor
+       *
+       * @param RegInsert
+       */
+  
+      constructor(RegInsert) {
+          {
+              this.RegId = RegInsert.RegId || 0;
+              this.regId = RegInsert.regId || 0;
+              this.RegDate = RegInsert.RegDate || "";
+              this.RegTime = RegInsert.RegTime || "";
+              this.PrefixId = RegInsert.PrefixId || "";
+              this.PrefixID = RegInsert.PrefixID || "";
+              this.FirstName = RegInsert.FirstName || "";
+              this.MiddleName = RegInsert.MiddleName || "";
+              this.LastName = RegInsert.LastName || "";
+              this.firstName = RegInsert.firstName || "";
+              this.middleName = RegInsert.middleName || "";
+              this.lastName = RegInsert.lastName || "";
+              this.Address = RegInsert.Address || "";
+              this.City = RegInsert.City || "";
+              this.PinNo = RegInsert.PinNo || "";
+              this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
+              this.Age = RegInsert.Age || "";
+              this.GenderId = RegInsert.GenderId || "";
+              this.PhoneNo = RegInsert.PhoneNo || "";
+              this.MobileNo = RegInsert.MobileNo || "";
+              this.AddedBy = RegInsert.AddedBy || "";
+              this.AgeYear = RegInsert.AgeYear || "";
+              this.AgeMonth = RegInsert.AgeMonth || "";
+              this.AgeDay = RegInsert.AgeDay || "";
+              this.CountryId = RegInsert.CountryId || "";
+              this.StateId = RegInsert.StateId || "";
+              this.CityId = RegInsert.CityId || "";
+              this.MaritalStatusId = RegInsert.MaritalStatusId || "";
+              this.IsCharity = RegInsert.IsCharity || "";
+              this.ReligionId = RegInsert.ReligionId || "";
+              this.AreaId = RegInsert.AreaId || "";
+              this.VillageId = RegInsert.VillageId || "";
+              this.TalukaId = RegInsert.TalukaId || "";
+              this.PatientWeight = RegInsert.PatientWeight || "";
+              this.AreaName = RegInsert.AreaName || "";
+              this.AadharCardNo = RegInsert.AadharCardNo || "";
+              this.PanCardNo = RegInsert.PanCardNo || '';
+              this.AdmissionID = RegInsert.AdmissionID || 0;
+              this.VisitId = RegInsert.VisitId || 0;
+              this.WardId = RegInsert.WardId || 0;
+              this.BedId = RegInsert.BedId || 0;
+          }
+      }
   }

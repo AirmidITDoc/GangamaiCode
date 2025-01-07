@@ -243,7 +243,8 @@ export class OPSearhlistService {
 
   // Get billing Service List 
   public getBillingServiceList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+    // return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+    return this._httpClient1.PostData("BillingService/BillingList",employee)
   }
 
    // Get CashCounter List 
@@ -544,6 +545,10 @@ public OpBillInsertSave(Param: any, showLoader = true) {
   // new Api?
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("VisitDetail", m_data);
+}
+// new?
+public getRegistraionById(Id,showLoader = true) {
+  return this._httpClient1.GetData("OutPatient/" + Id,showLoader);
 }
 
 }

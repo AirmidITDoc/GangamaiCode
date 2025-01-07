@@ -441,7 +441,7 @@
                                 <form [formGroup]="supplierForm">
                                     <div fxLayout="row">
                                         <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-autocomplete label="Store" formControlName="mAssignSupplierToStores"
+                                            <airmid-autocomplete label="Store" formControlName="MAssignSupplierToStores"
                                                 [formGroup]="supplierForm" [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores"
                                                 [validations]="getValidationMessages().StoreId" #ddlStore
                                                 ValueField="storeId" TextField="storeName"
@@ -449,7 +449,7 @@
                                             </airmid-autocomplete>
                                         </div>
                                         <mat-chip-list #chipList>
-                                            <mat-chip *ngFor="let item of supplierForm.value.mAssignSupplierToStores">
+                                            <mat-chip *ngFor="let item of supplierForm.value.MAssignSupplierToStores">
                                                 {{ item.storeName }} <mat-icon
                                                     (click)="removestore(item)">close</mat-icon>
                                             </mat-chip>

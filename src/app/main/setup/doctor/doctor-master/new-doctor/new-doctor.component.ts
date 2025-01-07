@@ -77,14 +77,14 @@ export class NewDoctorComponent implements OnInit {
         this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
     }
     onSubmit() {
-        if (this.myForm.valid) {
+        // if (this.myForm.valid) {
             this._doctorService.doctortMasterInsert(this.myForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose();
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        }
+        // }
     }
 
     onClear(val: boolean) {

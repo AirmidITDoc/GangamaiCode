@@ -359,7 +359,7 @@
                                                     Price
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Price | currency:'INR' }}</span>
+                                                    <span> {{contact.Price}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -376,7 +376,7 @@
                                                     Total Amt
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.TotalAmt | currency:'INR' }}</span>
+                                                    <span> {{contact.TotalAmt}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -395,7 +395,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
 
-                                                    <span> {{contact.DiscAmt | currency:'INR' }}</span>
+                                                    <span> {{contact.DiscAmt}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -404,7 +404,7 @@
                                                     NetAmt
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.NetAmount | currency:'INR' }}</span>
+                                                    <span> {{contact.NetAmount}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -483,7 +483,7 @@
                                                     </span>&nbsp;
                                                     <span class="net-amt-value text-primary"
                                                         style="margin-left:10px;font-weight:bolder;color: blue;">{{getNetAmtSum(dataSource.data)
-                                                        | currency:'INR' }}</span>
+                                                       }}</span>
 
                                                     <span class="net-amt-mat-label"
                                                         style="font-weight:bold;margin-left:20px;">Discount
@@ -491,7 +491,7 @@
                                                     </span>&nbsp;
                                                     <span class="net-amt-value text-primary"
                                                         style="margin-left:10px;font-weight:bolder;color: blue;">{{getDiscAmtSum(dataSource.data)
-                                                        | currency:'INR' }}</span>
+                                                       }}</span>
 
                                                 </div>
                                             </div>
@@ -547,7 +547,7 @@
                                                     Price
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.Price | currency:'INR' }}</span>
+                                                    <span> {{contact.Price}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -564,7 +564,7 @@
                                                     Total Amt
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.TotalAmt | currency:'INR' || '-'}}</span>
+                                                    <span> {{contact.TotalAmt|| '-'}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -583,7 +583,7 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
 
-                                                    <span> {{contact.DiscAmt | currency:'INR' || '00' }}</span>
+                                                    <span> {{contact.DiscAmt|| '00' }}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -592,7 +592,7 @@
                                                     NetAmt
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.NetAmount | currency:'INR' || '00'}}</span>
+                                                    <span> {{contact.NetAmount|| '00'}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -655,7 +655,7 @@
                                         Price
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.Price | currency:'INR' }}</span>
+                                        <span> {{contact.Price}}</span>
                                     </mat-cell>
                                 </ng-container>
 
@@ -672,7 +672,7 @@
                                         Total Amt
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-                                        <span> {{contact.TotalAmt | currency:'INR' }}</span>
+                                        <span> {{contact.TotalAmt}}</span>
                                     </mat-cell>
                                 </ng-container>
 

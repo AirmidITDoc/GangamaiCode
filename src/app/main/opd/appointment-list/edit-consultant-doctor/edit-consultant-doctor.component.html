@@ -64,8 +64,7 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{data.departmentName}}</span>
+                                                <span class="patient-col-value">{{data.departmentName}}</span>
                                             </div>
 
 
@@ -106,19 +105,19 @@
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
-                                       
-                                        <airmid-autocomplete label="Departmentid" formControlName="Departmentid" [value]="data?.Departmentid"
-                                        [formGroup]="ConsdrForm"
-                                        [validations]="getValidationMessages().Departmentid"
-                                        [mode]="autocompleteModedepartment" (selectDdlObject)="selectChangedepartment($event)">
-                                    </airmid-autocomplete>
-                                       
-                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID" [value]="data?.DoctorID"
-                                        [formGroup]="ConsdrForm"
-                                        [validations]="getValidationMessages().DoctorID"
-                                        [mode]="autocompleteModedeptdoc" (selectDdlObject)="selectChangedeptdoc($event)">
-                                    </airmid-autocomplete>
-                                    
+                                        <airmid-autocomplete label="Departmentid" formControlName="Departmentid"
+                                            [formGroup]="ConsdrForm" [value]="data?.Departmentid"
+                                            [validations]="getValidationMessages().Departmentid" 
+                                             [mode]="autocompleteModedepartment">
+                                        </airmid-autocomplete>
+
+                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
+                                            [formGroup]="ConsdrForm" [value]="data?.DoctorID"
+                                            [validations]="getValidationMessages().DoctorID"
+                                            [mode]="autocompleteModedeptdoc">
+                                        </airmid-autocomplete>
+
+
                                     </div>
                                 </div>
                             </div>

@@ -88,15 +88,13 @@ export class EditConsultantDoctorComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  departmentId:any=0;
-  deptdocId=0;
   selectChangedepartment(obj: any){
     console.log(obj);
-    this.departmentId=obj
+  
   }
   
   selectChangedeptdoc(obj: any){
     console.log(obj);
-    this.deptdocId=obj
+  
   }
 }

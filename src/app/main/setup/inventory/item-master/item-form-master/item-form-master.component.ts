@@ -29,11 +29,11 @@ export class ItemFormMasterComponent implements OnInit {
     autocompleteModeItemGenericName:string="ItemGeneric";
     autocompleteModeItemClass:string="ItemClass";
     autocompleteModeCurrency:string="Currency";
-    autocompleteModePurchaseUOM:string="UnitofMeasure";
-    autocompleteModeStockUOM:string="UnitofMeasure";
+    autocompleteModePurchaseUOM:string="UnitOfMeasurment";
+    autocompleteModeStockUOM:string="UnitOfMeasurment";
     autocompleteModeCompany:string="Company";
     autocompleteModeStore:string="Store";
-    autocompleteModeDrugType:string="DrugType";
+    autocompleteModeDrugType:string="ItemDrugType";
     autocompleteModeMenu:string="ItemManufacture";
 
     registerObj = new ItemMaster({});

@@ -303,3 +303,99 @@ export class NewOPListComponent implements OnInit {
         }
     }
 }
+export class BrowseOPDBill {
+    BillNo: Number;
+  
+    RegId: number;
+    RegNo: number;
+    PatientName: string;
+    FirstName: string;
+    Middlename: string;
+    LastName: string;
+   
+    TotalAmt: number;
+    ConcessionAmt: number;
+    NetPayableAmt: number;
+    BillDate: any;
+    IPDNo: number;
+    ServiceName: String;
+    Price: number;
+    price: number;
+    Qty: number;
+    ChargesTotalAmount: number;
+    NetAmount: number;
+    PaidAmount: number;
+    HospitalName: string;
+    HospitalAddress: string;
+    Phone: number;
+    EmailId: any;
+    ChargesDoctorName: string;
+    TotalBillAmount: number;
+    ConsultantDocName: string;
+    DepartmentName: string;
+    IsCancelled: boolean;
+    OPD_IPD_Type: number;
+    PBillNo: string;
+    BDate: Date;
+    VisitDate: Date;
+    BalanceAmt: number;
+    AddedByName: string;
+    Department: any;
+    Address: any;
+    MobileNo: any;
+    CashCounterID:number;
+    //NEFTPayAmount:number;
+    /**
+     * Constructor
+     *
+     * @param BrowseOPDBill
+     */
+    constructor(BrowseOPDBill) {
+      {
+        this.BillNo = BrowseOPDBill.BillNo || '';
+        this.RegId = BrowseOPDBill.RegId || '';
+        this.RegNo = BrowseOPDBill.RegNo || '';
+        this.PatientName = BrowseOPDBill.PatientName || '';
+        this.FirstName = BrowseOPDBill.FirstName || '';
+        this.Middlename = BrowseOPDBill.MiddleName || '';
+        this.LastName = BrowseOPDBill.LastName || '';
+     
+        this.TotalAmt = BrowseOPDBill.TotalAmt || '';
+        this.ConcessionAmt = BrowseOPDBill.ConcessionAmt || '';
+        this.NetPayableAmt = BrowseOPDBill.NetPayableAmt || '';
+        this.BillDate = BrowseOPDBill.BillDate || '';
+        this.IPDNo = BrowseOPDBill.IPDNo || '';
+        this.IsCancelled = BrowseOPDBill.IsCancelled || '';
+        this.OPD_IPD_Type = BrowseOPDBill.OPD_IPD_Type || '';
+        this.PBillNo = BrowseOPDBill.PBillNo || '';
+        this.BDate = BrowseOPDBill.BDate || '';
+        this.PaidAmount = BrowseOPDBill.PaidAmount || '';
+        this.BalanceAmt = BrowseOPDBill.BalanceAmt || '';
+        this.ServiceName = BrowseOPDBill.ServiceName || '';
+        this.Price = BrowseOPDBill.Price || '';
+        this.price = BrowseOPDBill.price || '';
+        this.Qty = BrowseOPDBill.Qty || '';
+        this.ChargesTotalAmount = BrowseOPDBill.ChargesTotalAmount || '';
+        this.NetAmount = BrowseOPDBill.NetAmount || '';
+        this.HospitalName = BrowseOPDBill.HospitalName || '';
+        this.HospitalAddress = BrowseOPDBill.HospitalAddress || '';
+        this.ChargesTotalAmount = BrowseOPDBill.ChargesTotalAmount || '';
+        this.Phone = BrowseOPDBill.Phone || '';
+        this.EmailId = BrowseOPDBill.EmailId || '';
+        this.ConsultantDocName = BrowseOPDBill.ConsultantDocName || '';
+        this.DepartmentName = BrowseOPDBill.DepartmentName || '';
+        this.TotalBillAmount = BrowseOPDBill.TotalBillAmount || '';
+        this.ChargesDoctorName = BrowseOPDBill.ChargesDoctorName || '';
+        this.VisitDate = BrowseOPDBill.VisitDate || '';
+        this.AddedByName = BrowseOPDBill.AddedByName || '';
+        this.TotalAmt = BrowseOPDBill.TotalAmt || '';
+  
+        this.Address = BrowseOPDBill.Address || '';
+        this.Department = BrowseOPDBill.Department || '';
+        this.MobileNo = BrowseOPDBill.MobileNo || '';
+        this.CashCounterID=BrowseOPDBill.CashCounterID ||0
+      }
+    }
+  
+  }
+  
