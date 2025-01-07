@@ -14,9 +14,7 @@ import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox
     templateUrl: "./new-doctor.component.html",
     styleUrls: ["./new-doctor.component.scss"],
     encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
-    standalone:true,
-    imports:[AirmidAutocompleteComponent,AirmidTextboxComponent]
+    animations: fuseAnimations
 })
 export class NewDoctorComponent implements OnInit {
 
