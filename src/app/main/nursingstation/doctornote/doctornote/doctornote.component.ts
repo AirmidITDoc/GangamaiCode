@@ -30,9 +30,9 @@ export class DoctornoteComponent implements OnInit {
     'PatienName'
   ]
   displayedDoctorNote: string[] = [
-    'VDate',
-    'Time',
+    'VDate', 
     'Note',
+    'CreatedBy',
     'Action'
   ]
   displayedHandOverNote: string[] = [
@@ -87,10 +87,10 @@ export class DoctornoteComponent implements OnInit {
   registerObj: any;
   vAdmissionTime: any;
   TemplateListfilteredOptions: Observable<string[]>;
-
+  chargelist:any=[];
   selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
-  dsDoctorNoteList = new MatTableDataSource;
+  dsDoctorNoteList = new MatTableDataSource<DocNote>();
   dsHandOverNoteList = new MatTableDataSource;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -125,8 +125,9 @@ export class DoctornoteComponent implements OnInit {
       this.vAgeDay = this.selectedAdvanceObj.AgeDay;
       this.vBedName = this.selectedAdvanceObj.BedName;
       this.vWardName = this.selectedAdvanceObj.RoomName;
-    }
-
+      this.vAdmissionID  = this.selectedAdvanceObj.AdmissionID;
+      this.getDoctorNotelist(this.vAdmissionID)
+    } 
     this.getTemplateNoteList();
     this.getWardNameList();
   }
@@ -150,6 +151,7 @@ getOptionTextIPObj(option) {
 getSelectedObjRegIP(obj) {
   console.log(obj)
   this.registerObj = obj;
+  this.vAdmissionID = obj.AdmissionID
   this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
   this.vRegId = obj.RegId;
   this.vAdmissionDate = obj.AdmissionDate;
@@ -172,6 +174,7 @@ getSelectedObjRegIP(obj) {
   this.vBedName = obj.BedName;
   this.vPatientType = obj.PatientType;
   this.vCompanyId = obj.CompanyId;
+  this.getDoctorNotelist(obj);
 }
 
 ///Template note list
@@ -221,65 +224,128 @@ getSelectedObjRegIP(obj) {
     this.vDescription = this._NursingStationService.myform.get('TemplateName').value.DocsTempName || ''; 
     this._NursingStationService.myform.get('TemplateName').setValue('');
   }
-
-
+//Doctor List
+getDoctorNotelist(obj) {
+    var vdata = {
+      'AdmId': obj.AdmissionID 
+    }
+    this._NursingStationService.getDoctorNotelist(vdata).subscribe(data => {
+      this.dsDoctorNoteList.data = data as DocNote[];
+      this.chargelist = data as DocNote[];
+      this.dsDoctorNoteList.sort = this.sort
+      this.dsDoctorNoteList.paginator = this.paginator
+      console.log(this.dsDoctorNoteList.data); 
+    });
+  }
+  deleteTableRow(element) { 
+    let index = this.chargelist.indexOf(element);
+    if (index >= 0) {
+      this.chargelist.splice(index, 1);
+      this.dsDoctorNoteList.data = [];
+      this.dsDoctorNoteList.data = this.chargelist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });  
+}
   getWardNameList() {
     this._NursingStationService.getWardNameList().subscribe(data => {
       this.wardList = data;
     })
   }
+  doctNoteId:any;
+  onSubmit() {   
+      const currentDate = new Date();
+      const datePipe = new DatePipe('en-US');
+      const formattedTime = datePipe.transform(currentDate, 'shortTime');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-  onSubmit() {
-
-    this.isLoading = 'submit';
-
-    let DocNoteTemplateInsertObj = {};
-
-    DocNoteTemplateInsertObj['AdmID'] = 11,//this.selectedAdvanceObj.PathReportID;
-    DocNoteTemplateInsertObj['TDate'] = this.dateTimeObj.date;
-    DocNoteTemplateInsertObj['TTime '] = this.dateTimeObj.time;
-    DocNoteTemplateInsertObj['DoctorsNotes'] = this._NursingStationService.myform.get("DoctorsNotes").value || '', 
-    DocNoteTemplateInsertObj['doctNoteId'] = 1,// this.accountService.currentUserValue.user.id
-    DocNoteTemplateInsertObj['IsAddedBy'] = this.accountService.currentUserValue.user.id
-
-
-    // this.dialogRef.afterClosed().subscribe(result => {
-    console.log('==============================  Advance Amount ===========');
-    let submitData = {
-
-      "doctorNoteInsert": DocNoteTemplateInsertObj
-    };
-    console.log(submitData);
-
-    this._NursingStationService.DoctorNoteInsert(submitData).subscribe(response => {
-
-      if (response) {
-        Swal.fire('Congratulations !', 'Doctor Note Template data saved Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            //  this._matDialog.closeAll();
-            debugger;
-            //  this.getPrint();
-          }
+      if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+        this.toastr.warning('Please select Patient', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
         });
-      } else {
-        Swal.fire('Error !', 'Doctor Note Template data not saved', 'error');
+        return;
+      } 
+      if (this.vDescription == '' || this.vDescription == null || this.vDescription == undefined) {
+        this.toastr.warning('Please enter Doctor Note', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
-      this.isLoading = '';
-    });
+    
+    this.isLoading = 'submit'; 
+    if(!this._NursingStationService.myform.get("DoctNoteId").value){
+      let DocNoteTemplateInsertObj = {}; 
+      DocNoteTemplateInsertObj['admID'] = this.vAdmissionID ;
+      DocNoteTemplateInsertObj['tDate'] = formattedDate;
+      DocNoteTemplateInsertObj['tTime '] = formattedTime;
+      DocNoteTemplateInsertObj['doctorsNotes'] = this._NursingStationService.myform.get("Description").value || '', 
+      DocNoteTemplateInsertObj['doctNoteId'] = 0,
+      DocNoteTemplateInsertObj['createdBy'] = this.accountService.currentUserValue.user.id  
+  
+      let submitData = {  
+        "saveTDoctorsNotesParam": DocNoteTemplateInsertObj
+      };
+      console.log(submitData); 
+      this._NursingStationService.DoctorNoteInsert(submitData).subscribe(response => { 
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          }); 
+        }
+        else {
+          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        } 
+      }, error => {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }); 
+    }
+   else{
+    let updateTDoctorsNotesParamObj = {}; 
+    updateTDoctorsNotesParamObj['admID'] = this.vAdmissionID ;
+    updateTDoctorsNotesParamObj['tDate'] = formattedDate;
+    updateTDoctorsNotesParamObj['tTime '] = formattedTime;
+    updateTDoctorsNotesParamObj['doctorsNotes'] = this._NursingStationService.myform.get("Description").value || '', 
+    updateTDoctorsNotesParamObj['doctNoteId'] = this._NursingStationService.myform.get("DoctNoteId").value || 0;
+    updateTDoctorsNotesParamObj['modifiedBy'] = this.accountService.currentUserValue.user.id  
 
-    // });
+    let submitData = {  
+      "updateTDoctorsNotesParam": updateTDoctorsNotesParamObj
+    };
+    console.log(submitData); 
+    this._NursingStationService.DoctorNoteUpdate(submitData).subscribe(response => { 
+      if (response) {
+        this.toastr.success('Record Updated Successfully.', 'Updated !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+      }
+      else {
+        this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      } 
+    }, error => {
+      this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    }); 
+   }
+  } 
+  OnEdit(row) {
+    console.log(row)
+    var m_data = {
+      "TemplateId": row.TemplateId,
+      "TemplateName": row.TemplateName,
+      "Description": row.DoctorsNotes, 
+      "UpdatedBy": row.UpdatedBy,
+      "DoctNoteId":row.DoctNoteId
+    }
+    this._NursingStationService.DoctorNotepoppulateForm(m_data);
   }
-
-  // onEdit(row) {
-  //   var m_data = {
-  //     "TemplateId": row.TemplateId,
-  //     "TemplateName": row.TemplateName.trim(),
-  //     "TemplateDesc": row.TemplateDesc.trim(),
-  //     "IsDeleted": JSON.stringify(row.IsDeleted),
-  //     "UpdatedBy": row.UpdatedBy,
-  //   }
-  //   this._SampleService.populateForm(m_data);
-  // }
 
 
 

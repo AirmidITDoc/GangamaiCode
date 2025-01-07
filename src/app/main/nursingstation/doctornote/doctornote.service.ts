@@ -17,12 +17,16 @@ export class DoctornoteService {
       TemplateName: [''], 
       Description:[''], 
       HandOverType:['0'],
-      RegID:['']
+      RegID:[''],
+      DoctNoteId:['']
       });
     }
   
   public DoctorNoteInsert(employee) {
-    return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
+    return this._httpClient.post("Nursing/SaveTDoctorsNotes", employee)
+  }
+  public DoctorNoteUpdate(employee) {
+    return this._httpClient.post("Nursing/UpdateTDoctorsNotes", employee)
   }
 
   public getDoctorNoteCombo() {
@@ -34,5 +38,12 @@ export class DoctornoteService {
   // ip
   public getAdmittedPatientList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  public getDoctorNotelist(employee){
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_DoctorsNotesList ", employee)
+  }
+
+  DoctorNotepoppulateForm(param){
+    this.myform.patchValue(param)
   }
 }

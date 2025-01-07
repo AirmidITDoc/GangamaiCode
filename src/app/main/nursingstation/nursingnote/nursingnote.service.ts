@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoadChildren } from '@angular/router';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,23 +10,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NursingnoteService {
   myform: FormGroup;
   constructor(public _httpClient: HttpClient,
-    public _formBuilder: FormBuilder) {
+    public _formBuilder: FormBuilder,
+    private _loaderService:LoaderService
+  ) {
       this.myform = this.createtemplateForm();
      }
 
      
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
-      Note: [''], 
-      Description:[''],
-      Op_ip_id:['1'],
-      RegID:['']
+      TemplateName: [''], 
+      Description:[''], 
+      RegID:[''],
+      NursingNoteId:['']
     });
   }
 
 
-  public DoctorNoteInsert(employee) {
-    return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
+  public NursingNoteInsert(employee) {
+    return this._httpClient.post("Nursing/SaveTNursingNotes", employee)
+  }
+  public NursingNoteUpdate(employee) {
+    return this._httpClient.post("Nursing/UpdateTNursingNotes", employee)
   }
   public getDoctorCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo", {})
@@ -41,5 +48,34 @@ export class NursingnoteService {
   // ip
   public getAdmittedPatientList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  public getNursingNoteCombo(){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo ", {})
+  }
+  public getItemlist(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BalanceQty",Param)
+  }
+  public getDoseList( loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
+  }
+
+
+
+
+
+
+
+
+
+
+  
+  NursingNotepoppulateForm(param){
+    this.myform.patchValue(param)
   }
 }

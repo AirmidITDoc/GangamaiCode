@@ -164,7 +164,7 @@
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                                                     <div fxLayout="row" fxLayoutGap="10px">
-                                                        <div fxFlex.gt-sm="70%" fxFlex>
+                                                        <div fxFlex.gt-sm="65%" fxFlex>
                                                             <mat-card style="padding: 5px;">
                                                                 <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
@@ -177,25 +177,26 @@
                                                                             VDate </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
                                                                             fxShow.gt-sm>
-                                                                            {{element.VDate}} </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="Time">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
-                                                                            Time </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
-                                                                            {{element.Time}} </mat-cell>
-                                                                    </ng-container>
+                                                                            {{element.VTDate}}-{{TTime | date:'shortTime'}} </mat-cell>
+                                                                    </ng-container> 
 
                                                                     <ng-container matColumnDef="Note">
                                                                         <mat-header-cell *matHeaderCellDef
                                                                             mat-sort-header fxHide fxShow.gt-sm>
                                                                             Note </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
+                                                                            fxShow.gt-sm
+                                                                            matTooltip="{{element.DoctorsNotes}}">
+                                                                            {{element.DoctorsNotes}} </mat-cell>
+                                                                    </ng-container>
+
+                                                                    <ng-container matColumnDef="CreatedBy">
+                                                                        <mat-header-cell *matHeaderCellDef
+                                                                            mat-sort-header fxHide fxShow.gt-sm>
+                                                                            CreatedBy </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide
                                                                             fxShow.gt-sm>
-                                                                            {{element.Note}} </mat-cell>
+                                                                            {{element.CreatedBy}} </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="Action">
@@ -204,7 +205,16 @@
                                                                             Action </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
                                                                             fxShow.gt-sm>
-                                                                            {{element.Action}} </mat-cell>
+                                                                            <button mat-icon-button matTooltip="Edit"
+                                                                            (click)="OnEdit(element)">
+                                                                                <mat-icon>edit</mat-icon>
+                                                                            </button>
+
+                                                                            <button mat-icon-button color="warn" matTooltip="Delete"
+                                                                            (click)="deleteTableRow(element)">
+                                                                                <mat-icon>delete</mat-icon>
+                                                                            </button> 
+                                                                            </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="loading">
@@ -236,14 +246,14 @@
                                                                 </mat-paginator>
                                                             </mat-card>
                                                         </div>
-                                                        <div fxFlex.gt-sm="30%" fxFlex>
+                                                        <div fxFlex.gt-sm="35%" fxFlex>
 
                                                             <div fxLayout="column" fxLayoutGap="10px">
                                                                 <mat-card
                                                                     style="padding: 5px;height: 310px;overflow: auto;">
                                                                     <div fxLayout="row" fxLayoutGap="20px">
 
-
+                                                                        <input type="hidden" formControlName="DoctNoteId" >
                                                                         <mat-form-field appearance="outline" fxFlex>
                                                                             <mat-label>Notes</mat-label>
                                                                             <input type="text" name="TemplateName"
@@ -301,8 +311,8 @@
                                                                     <button class="btn btn-primary-outline">New
                                                                         Template</button>
                                                                     <button
-                                                                        class="btn btn-danger-outline">Reset</button>
-                                                                    <button class="btn btn-primary">Save</button>
+                                                                        class="btn btn-danger-outline" (click)="onClose()">Reset</button>
+                                                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                                                 </div>
                                                             </div>
                                                         </div>
