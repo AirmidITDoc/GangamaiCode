@@ -14,9 +14,8 @@ export class DoctornoteService {
 
      createtemplateForm(): FormGroup {
       return this._formBuilder.group({
-      Note: [''], 
-      Description:[''],
-      WardName:[''],
+      TemplateName: [''], 
+      Description:[''], 
       HandOverType:['0'],
       RegID:['']
       });
