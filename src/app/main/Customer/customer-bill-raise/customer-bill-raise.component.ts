@@ -107,21 +107,24 @@ export class CustomerBillRaiseComponent implements OnInit {
 
   resultsLength = 0;
   getCustomerPayDueList() {
+
     var D_data = {
-      CustomerName: "%",
-      Start: (this.paginator?.pageIndex ?? 0),
-      Length: (this.paginator?.pageSize ?? 25),
+      "CustomerName": this._CustomerBill.myform.get("CustomerNameSearch").value + '%' || '%',
+      "Start":(this.paginator?.pageIndex ?? 0),
+      "Length":(this.paginator?.pageSize ?? 25),
     };
     console.log(D_data)
     setTimeout(() => {
       this._CustomerBill.getCustomerPayDueList(D_data).subscribe(
         (data) => {
           this.dsBillPayDueList.data = data["Table1"] ?? [] as BillPayDueList[];
-          console.log(this.dsBillPayDueList.data)
           this.resultsLength = data["Table"][0]["total_row"];
+          this.sIsLoading = '';
+          console.log("paymentDue Bill Data:",this.dsBillPayDueList.data)
         },
         (error) => {
-          // this.isLoading = 'list-loaded';
+          console.error('API Error:', error);
+          this.isLoading = false;
         }
       );
     }, 1000);
@@ -172,10 +175,14 @@ export class CustomerBillRaiseComponent implements OnInit {
 
   resultsLength2=0;
   getCustomerPaymentDaySummary(){ 
+
     var D_data = {
-      CustomerName: "%",
-      Start: (this.paginator2?.pageIndex ?? 0),
-      Length: (this.paginator2?.pageSize ?? 25),
+      "FromDate": this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "ToDate ": this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      "CustomerName": this._CustomerBill.myform.get("CustomerNameSearch").value + '%' || '%',
+      "TranType":this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
+      "Start":(this.paginator2?.pageIndex ?? 0),
+      "Length":(this.paginator2?.pageSize ?? 25),
     };
     this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data =>{
       this.dsPaymentDaySummary.data = data["Table1"] ?? [] as PaymentDaySummary[];

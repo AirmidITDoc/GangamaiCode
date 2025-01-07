@@ -50,11 +50,11 @@ export class NewOttableMasterComponent implements OnInit {
       // this.vIsDeleted=JSON.stringify(this.registerObj.IsActive)
       this.vOtTableId=this.registerObj.OTTableId;
       if(this.registerObj.IsActive==true){
-        this._otTableMasterService.myform.get("IsDeleted").setValue('true')
-        this.vIsDeleted=true;
+        this._otTableMasterService.myform.get("IsDeleted").setValue(true)
+        // this.vIsDeleted=true;
       }else{
-        this._otTableMasterService.myform.get("IsDeleted").setValue('false')
-        this.vIsDeleted=false;
+        this._otTableMasterService.myform.get("IsDeleted").setValue(false)
+        // this.vIsDeleted=false;
       }
     }
   }

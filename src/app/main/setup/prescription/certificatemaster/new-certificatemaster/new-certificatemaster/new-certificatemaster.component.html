@@ -53,12 +53,9 @@
 
                             <div class="footer-navigation-container">
                             
-                                <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" [(ngModel)]="vIsDeleted"
+                                <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
                                  (checked)=true>IsActive
                             </mat-checkbox>
-
-                                <!-- <mat-radio-button value='true' [checked]="true" name="IsDeleted"
-                                    formControlName="IsDeleted">IsActive</mat-radio-button> -->
 
                                 <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
                                     <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>

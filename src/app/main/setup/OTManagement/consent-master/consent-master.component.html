@@ -78,20 +78,45 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="OtConsentId" sticky>
+                                    <ng-container matColumnDef="ConsentId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                             class="w-130">Code
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-130">
-                                            {{contact.OtConsentId}}
+                                            {{contact.ConsentId}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="OtConsentName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">
+                                    <ng-container matColumnDef="ConsentName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
                                             OT Consent Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
-                                            {{contact.OtConsentName}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                            {{contact.ConsentName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ConsentDesc" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                            class="w-130">Consent Desc
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-200">
+                                            {{contact.ConsentDesc}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="DepartmentName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                            Department Name</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            {{contact.DepartmentName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CreatedBy" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">
+                                            CreatedBy</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                            {{contact.CreatedBy}}
                                         </mat-cell>
                                     </ng-container>
 

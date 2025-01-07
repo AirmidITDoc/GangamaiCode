@@ -117,19 +117,28 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="OtRoomName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-400">
                                             OT Room Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
                                             {{contact.OTTableName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="LocationName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
                                             Location Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-350">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                             {{contact.LocationName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CreatedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                                            CreatedBy
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.CreatedBy}}
                                         </mat-cell>
                                     </ng-container>
 

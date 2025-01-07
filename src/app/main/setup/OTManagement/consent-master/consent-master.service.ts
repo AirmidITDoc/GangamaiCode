@@ -18,7 +18,18 @@ export class ConsentMasterService {
 
   createOtConsentForm(): FormGroup {
     return this._formBuilder.group({
-
+      ConsentId: [''],
+      ConsentName: ['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      ConsentDesc: ['',
+        // Validators.required
+      ],
+      DepartmentId: ['', [
+        Validators.required
+      ]],
+      IsDeleted: [true]
     });
   }
 
@@ -27,4 +38,20 @@ export class ConsentMasterService {
       OtConsentNameSearch: [""],
     });
   }
+
+  public getOTConsentList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTConsentMasterList", employee)
+  }
+  public OtConsentInsert(employee)
+{    
+  return this._httpClient.post("OT/SaveConsentMaster",employee);
+}
+public OtConsentUpdate(employee)
+{    
+  return this._httpClient.post("OT/UpdateConsentMaster",employee);
+}
+  //Deartment Combobox List
+  public getDepartmentCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+}
 }

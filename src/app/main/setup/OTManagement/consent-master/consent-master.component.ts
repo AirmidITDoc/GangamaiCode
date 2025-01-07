@@ -32,8 +32,11 @@ export class ConsentMasterComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   displayedColumns = [
-    'OtConsentId',
-    'OtConsentName',
+    'ConsentId',
+    'ConsentName',
+    'ConsentDesc',
+    'DepartmentName',
+    'CreatedBy',
     'IsActive',
     'action'
   ];
@@ -60,15 +63,38 @@ export class ConsentMasterComponent implements OnInit {
   get f() { return this._otConsentService.myformSearch.controls; }
 
   getotConsentList(){
-
+    debugger;
+    this.sIsLoading = 'loading-data';
+  
+    // Check if there is a valid search term
+    const otConsentNameSearch = this._otConsentService.myformSearch.get("OtConsentNameSearch").value || '';
+  
+    const D_data = {
+      "ConsentName": otConsentNameSearch.trim() ? otConsentNameSearch + '%' : '%', // Use '%' if search is empty
+    };
+  
+    console.log("TableList:", D_data);
+  
+    this._otConsentService.getOTConsentList(D_data).subscribe(
+      Visit => {
+        this.dataSource.data = Visit as OtConsentMasterList[];
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.sIsLoading = '';
+      },
+      error => {
+        console.error("Error loading table data:", error);
+        this.sIsLoading = '';
+      }
+    );
   }
 
   newConsent(){
     const dialogRef = this._matDialog.open(NewConsentMasterComponent,
       {
-        maxWidth: "60%",
-        width: "45%",
-        height: "40%",
+        maxWidth: "55vw",
+        height: '50%',
+        width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -79,9 +105,9 @@ export class ConsentMasterComponent implements OnInit {
   OnEdit(contact){
     const dialogRef = this._matDialog.open(NewConsentMasterComponent,
       {
-        maxWidth: "60%",
-        width: "45%",
-        height: "40%",
+        maxWidth: "55vw",
+        height: '50%',
+        width: '100%',
         data: {
           Obj: contact
         }
@@ -101,9 +127,12 @@ export class ConsentMasterComponent implements OnInit {
 
 }
 export class OtConsentMasterList {
-  OtConsentId:number;
-  OtConsentName:string;
+  ConsentId:number;
+  ConsentName:string;
   IsActive:string;
+  ConsentDesc:any;
+  DepartmentName:any;
+  CreatedBy:any;
   
   /**
    * Constructor
@@ -112,9 +141,12 @@ export class OtConsentMasterList {
    */
   constructor(OtSiteDescMasterList) {
     {
-      this.OtConsentId = OtSiteDescMasterList.OtConsentId || '';
-      this.OtConsentName = OtSiteDescMasterList.OtConsentName || '';
-      this.IsActive=OtSiteDescMasterList.IsActive || '';
+      this.ConsentId = OtSiteDescMasterList.ConsentId || '';
+      this.ConsentName = OtSiteDescMasterList.ConsentName || '';
+      this.IsActive=OtSiteDescMasterList.IsActive || '';      
+      this.ConsentDesc = OtSiteDescMasterList.ConsentDesc || '';
+      this.DepartmentName = OtSiteDescMasterList.DepartmentName || '';
+      this.CreatedBy=OtSiteDescMasterList.CreatedBy || '';
     }
   }
 }

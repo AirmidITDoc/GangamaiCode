@@ -13,13 +13,15 @@ export class OttypeMasterService {
   constructor(
     private _httpClient: HttpClient,
     private _formBuilder: FormBuilder) {
-    this.myform=this.createOtTypeForm();
-    this.myformSearch=this.createSearchForm();
+    this.myform = this.createOtTypeForm();
+    this.myformSearch = this.createSearchForm();
   }
 
-  createOtTypeForm(): FormGroup{
+  createOtTypeForm(): FormGroup {
     return this._formBuilder.group({
-      
+      OTTypeId: [''],
+      TypeName: [''],
+      IsDeleted: [true]
     });
   }
 
@@ -27,5 +29,14 @@ export class OttypeMasterService {
     return this._formBuilder.group({
       OtTypeNameSearch: [""],
     });
-}
+  }
+
+  public getOTTypelist(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_TypeMaster_List", employee)
+  }
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.post(
+        "Generic/ExecByQueryStatement?query=" + m_data,{}
+    );
+  }
 }

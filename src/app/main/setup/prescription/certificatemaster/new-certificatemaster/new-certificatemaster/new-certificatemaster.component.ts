@@ -54,11 +54,11 @@ export class NewCertificatemasterComponent implements OnInit {
       this.vTemplateName = this.registerObj.CertificateName;
       this.vTemplateDesc = this.registerObj.CertificateDesc;
       if(this.registerObj.IsActive==true){
-        this._certificatetemplateService.myform.get("IsDeleted").setValue('true')
-        this.vIsDeleted=true;
+        this._certificatetemplateService.myform.get("IsDeleted").setValue(true)
+        // this.vIsDeleted=true;
       }else{
-        this._certificatetemplateService.myform.get("IsDeleted").setValue('false')
-        this.vIsDeleted=false;
+        this._certificatetemplateService.myform.get("IsDeleted").setValue(false)
+        // this.vIsDeleted=false;
       }
       console.log("RegObj:", this.registerObj)
     }

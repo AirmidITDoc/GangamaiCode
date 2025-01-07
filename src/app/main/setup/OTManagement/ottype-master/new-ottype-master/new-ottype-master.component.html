@@ -19,52 +19,30 @@
         </div>
     </mat-toolbar>
 
-    <!-- <div class="content">
+    <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
-                            <form [formGroup]="_otTableMasterService.myform">
+                            <form [formGroup]="_otTypeMasterService.myform">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
 
-                                        <input type="hidden" name="OtTableId" formControlName="OtTableId"
-                                            [(ngModel)]="vOtTableId">
+                                        <input type="hidden" name="OTTypeId" formControlName="OTTypeId"
+                                            [(ngModel)]="vOTTypeId">
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>OTRoom Name</mat-label>
-                                                <input name="OtRoomName" formControlName="OtRoomName" required
-                                                    placeholder="OT Room Name" matInput type="text"
+                                                <mat-label>Type Name</mat-label>
+                                                <input name="TypeName" formControlName="TypeName"
+                                                    placeholder="Type Name" matInput type="text"
                                                     oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vOtRoomName ">
+                                                    [(ngModel)]="vTypeName ">
                                                 <mat-error
-                                                    *ngIf="_otTableMasterService.myform.get('OtRoomName').invalid && _otTableMasterService.myform.get('OtRoomName').touched">
-                                                    OtRoom Name is required Enter only
+                                                    *ngIf="_otTypeMasterService.myform.get('TypeName').invalid && _otTypeMasterService.myform.get('TypeName').touched">
+                                                    OtType Name is required Enter only
                                                     Alphabets</mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Location</mat-label>
-                                                <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Location" matInput formControlName="Locationid" required
-                                                    required [(ngModel)]="vLocationid" [matAutocomplete]="autolocation">
-                                                <span matSuffix style="display: flex;">
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="_otTableMasterService.myform.get('Locationid').setValue(''); isLocationSelected = false;">close</mat-icon>
-                                                    <mat-icon class="mat-icon-close"
-                                                        (click)="_otTableMasterService.myform.get('Locationid').setValue(''); isLocationSelected = false;">search</mat-icon>
-                                                </span>
-
-                                                <mat-autocomplete #autolocation="matAutocomplete" [displayWith]="getOptionTextLoc">
-                                                    <mat-option *ngFor="let option of filteredOptionsLocation | async" 
-                                                    [value]="option">
-                                                        {{option.LocationName}} || {{option.LocationId}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
 
@@ -73,14 +51,14 @@
 
                                 <div class="footer-navigation-container">
 
-                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" [(ngModel)]="vIsDeleted"
+                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
                                         (checked)=true>IsActive
                                     </mat-checkbox>
 
-                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
-                                        style="margin-right: 10px;">
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSave()">Save</button>
+                                        <button class="btn btn-primary" (click)="onSave()">
+                                            Save</button>
                                     </div>
                                 </div>
                             </form>
@@ -90,6 +68,6 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 </div>

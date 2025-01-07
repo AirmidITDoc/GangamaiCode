@@ -49,6 +49,7 @@ export class OttypeMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getotTypeList();
   }
 
   
@@ -61,15 +62,38 @@ export class OttypeMasterComponent implements OnInit {
   get f() { return this._otTypeMasterService.myformSearch.controls; }
 
   getotTypeList(){
-
+    debugger;
+    this.sIsLoading = 'loading-data';
+  
+    // Check if there is a valid search term
+    const otTypeNameSearch = this._otTypeMasterService.myformSearch.get("OtTypeNameSearch").value || '';
+  
+    const D_data = {
+      "TypeName": otTypeNameSearch.trim() ? otTypeNameSearch + '%' : '%', // Use '%' if search is empty
+    };
+  
+    console.log("TypeList:", D_data);
+  
+    this._otTypeMasterService.getOTTypelist(D_data).subscribe(
+      Visit => {
+        this.dataSource.data = Visit as OtTypeMasterList[];
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.sIsLoading = '';
+      },
+      error => {
+        console.error("Error loading table data:", error);
+        this.sIsLoading = '';
+      }
+    );
   }
 
   newOtType(){
     const dialogRef = this._matDialog.open(NewOttypeMasterComponent,
       {
-        maxWidth: "60%",
-        width: "45%",
-        height: "40%",
+        maxWidth: "50%",
+        width: "40%",
+        height: "35%",
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -80,9 +104,9 @@ export class OttypeMasterComponent implements OnInit {
   OnEdit(contact){
     const dialogRef = this._matDialog.open(NewOttypeMasterComponent,
       {
-        maxWidth: "60%",
-        width: "45%",
-        height: "40%",
+        maxWidth: "50%",
+        width: "40%",
+        height: "35%",
         data: {
           Obj: contact
         }
@@ -100,10 +124,51 @@ export class OttypeMasterComponent implements OnInit {
     this.getotTypeList();
   }
 
+  onDeactive(OTTypeId){
+    debugger
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+    debugger
+
+      if (result.isConfirmed) {
+        let Query;
+        const tableItem = this.dataSource.data.find(item => item.OTTypeId === OTTypeId);
+        console.log("Type:",tableItem)
+    
+        if (tableItem.IsActive) {
+            Query = "Update M_OT_TypeMaster set IsActive=0 where OTTypeId=" + OTTypeId;
+        } else {
+            Query = "Update M_OT_TypeMaster set IsActive=1 where OTTypeId=" + OTTypeId;
+        }
+    
+        console.log("query:", Query);
+    
+        this._otTypeMasterService.deactivateTheStatus(Query)
+            .subscribe(
+                (data) => {
+                    Swal.fire('Changed!', 'OTType Status has been Changed.', 'success');
+                    this.getotTypeList();
+                },
+                (error) => {
+                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                }
+            );
+    }
+    
+  });
+  }
+
 }
 export class OtTypeMasterList {
-  OtTypeId:number;
-  OtTypeName:string;
+  OTTypeId:number;
+  TypeName:string;
   IsActive:string;
   
   /**
@@ -113,8 +178,8 @@ export class OtTypeMasterList {
    */
   constructor(OtTypeMasterList) {
     {
-      this.OtTypeId = OtTypeMasterList.OtTypeId || '';
-      this.OtTypeName = OtTypeMasterList.OtTypeName || '';
+      this.OTTypeId = OtTypeMasterList.OTTypeId || '';
+      this.TypeName = OtTypeMasterList.TypeName || '';
       this.IsActive=OtTypeMasterList.IsActive || '';
     }
   }

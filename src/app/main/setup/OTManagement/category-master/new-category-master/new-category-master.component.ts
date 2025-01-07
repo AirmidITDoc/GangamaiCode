@@ -39,11 +39,11 @@ export class NewCategoryMasterComponent implements OnInit {
       this.vCategoryName = this.registerObj.SurgeryCategoryName;
       this.vCategoryId=this.registerObj.SurgeryCategoryId;
       if(this.registerObj.IsActive==true){
-        this._categoryMasterService.myform.get("IsDeleted").setValue('true')
-        this.vIsDeleted=true;
+        this._categoryMasterService.myform.get("IsDeleted").setValue(true)
+        // this.vIsDeleted=true;
       }else{
-        this._categoryMasterService.myform.get("IsDeleted").setValue('false')
-        this.vIsDeleted=false;
+        this._categoryMasterService.myform.get("IsDeleted").setValue(false)
+        // this.vIsDeleted=false;
       }
     }
   }

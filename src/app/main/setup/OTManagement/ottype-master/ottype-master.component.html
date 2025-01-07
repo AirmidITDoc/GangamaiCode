@@ -91,15 +91,15 @@
                                             class="w-130">Code
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-130">
-                                            {{contact.OtTypeId}}
+                                            {{contact.OTTypeId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="OtTypeName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-750">
                                             OT Type Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
-                                            {{contact.OtTypeName}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-750">
+                                            {{contact.TypeName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -124,9 +124,9 @@
                                             <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
                                                 <mat-icon style="color: black;">edit</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button (click)="onDeactive(contact.OTTableId)" color="warn">
+                                            <button mat-icon-button (click)="onDeactive(contact.OTTypeId)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
-                                            </button>  -->
+                                            </button> 
                                         </mat-cell>
                                     </ng-container>
                                     
