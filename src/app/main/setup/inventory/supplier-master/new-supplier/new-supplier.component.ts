@@ -102,9 +102,9 @@ export class NewSupplierComponent implements OnInit {
     @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
   
     removestore(item) {
-      let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
-      this.supplierForm.value.mAssignSupplierToStores.splice(removedIndex, 1);
-      this.ddlStore.SetSelection(this.supplierForm.value.mAssignSupplierToStores.map(x => x.storeId));
+      let removedIndex = this.supplierForm.value.MAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
+      this.supplierForm.value.MAssignSupplierToStores.splice(removedIndex, 1);
+      this.ddlStore.SetSelection(this.supplierForm.value.MAssignSupplierToStores.map(x => x.storeId));
   }
   
   
@@ -142,44 +142,33 @@ export class NewSupplierComponent implements OnInit {
       //   if (!this.supplierForm.get("SupplierId").value) {
   
   
-          var data2 = [];
-          // this.selectedItems.forEach((element) => {
-          let deptInsertObj = {};
-          deptInsertObj['assignId'] = 0//element.StoreId
-          // deptInsertObj['storeId'] = element.StoreId
-          deptInsertObj['storeId'] = 12 //this.storeId || "0";
-          deptInsertObj['supplierId'] = 0,//!this.supplierForm.get("SupplierId").value ? "0" : this.supplierForm.get("SupplierId").value || "0";
-            data2.push(deptInsertObj);
-          // });
-          console.log("Insert data2:", data2);
-  
           debugger
-          var mdata =
-          {
+          // var mdata =
+          // {
   
-            "supplierId": 0,
-            "supplierName": this.supplierForm.get("SupplierName").value,
-            "contactPerson": "abc",// this.supplierForm.get("Mobile").value || " ",
-            "address": this.supplierForm.get("Address").value || " ",
-            "cityId": parseInt(this.supplierForm.get("CityId").value),
-            "stateId": parseInt(this.supplierForm.get("StateId").value),
-            "countryId": this.supplierForm.get("CountryId").value.value || 0,
-            "creditPeriod": this.supplierForm.get("CreditPeriod").value || "0",
-            "mobile": this.supplierForm.get("Mobile").value.toString() || "",
-            "phone": this.supplierForm.get("Phone").value.toString() || "",
-            "fax": this.supplierForm.get("Fax").value || "0",
-            "email": this.supplierForm.get("Email").value || "%",
-            "modeofPayment": parseInt(this.supplierForm.get("ModeOfPayment").value),
-            "termofPayment": parseInt(this.supplierForm.get("TermOfPayment").value),
-            "currencyId": parseInt(this.supplierForm.get("CurrencyId").value) || 0,
-            "octroi": 0,
-            "freight": parseInt(this.supplierForm.get("Freight").value),
-            "gstNo": this.supplierForm.get("GSTNo").value || 0,
-            "panNo": this.supplierForm.get("PanNo").value || 0,
-            "supplierTime": "10:00:00 AM",//this.supplierForm.get("SupplierType").value || 0,
-            "mAssignSupplierToStores": data2
-          }
-          console.log("Insert mdata:", mdata);
+          //   "supplierId": 0,
+          //   "supplierName": this.supplierForm.get("SupplierName").value,
+          //   "contactPerson": "abc",// this.supplierForm.get("Mobile").value || " ",
+          //   "address": this.supplierForm.get("Address").value || " ",
+          //   "cityId": parseInt(this.supplierForm.get("CityId").value),
+          //   "stateId": parseInt(this.supplierForm.get("StateId").value),
+          //   "countryId": this.supplierForm.get("CountryId").value.value || 0,
+          //   "creditPeriod": this.supplierForm.get("CreditPeriod").value || "0",
+          //   "mobile": this.supplierForm.get("Mobile").value.toString() || "",
+          //   "phone": this.supplierForm.get("Phone").value.toString() || "",
+          //   "fax": this.supplierForm.get("Fax").value || "0",
+          //   "email": this.supplierForm.get("Email").value || "%",
+          //   "modeofPayment": parseInt(this.supplierForm.get("ModeOfPayment").value),
+          //   "termofPayment": parseInt(this.supplierForm.get("TermOfPayment").value),
+          //   "currencyId": parseInt(this.supplierForm.get("CurrencyId").value) || 0,
+          //   "octroi": 0,
+          //   "freight": parseInt(this.supplierForm.get("Freight").value),
+          //   "gstNo": this.supplierForm.get("GSTNo").value || 0,
+          //   "panNo": this.supplierForm.get("PanNo").value || 0,
+          //   "supplierTime": "10:00:00 AM",//this.supplierForm.get("SupplierType").value || 0,
+          //   "mAssignSupplierToStores": data2
+          // }
+          // console.log("Insert mdata:", mdata);
   
   
           console.log(this.supplierForm.value);

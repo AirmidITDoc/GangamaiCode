@@ -83,3 +83,62 @@ export class StoreMasterComponent implements OnInit {
     }
 
 }
+
+
+export class StoreMaster {
+    storeId: number;
+    storeShortName: string;
+    storeName: string;
+    indentPrefix: string;
+    indentNo: string;
+    purchasePrefix: string;
+    purchaseNo: string;
+    grnPrefix: string;
+    grnNo: string;
+    grnreturnNoPrefix: string;
+    grnreturnNo: string;
+    issueToDeptPrefix: string;
+    issueToDeptNo: string;
+    returnFromDeptNoPrefix: string;
+    returnFromDeptNo: string;
+    isDeleted: boolean;
+    addedBy: number;
+    updatedBy: number;
+    header:any;
+    IsDeletedSearch: number;
+    pharSalCountId:any;
+    pharSalRecCountId:any;
+    pharSalReturnCountId:any;
+    /**
+     * Constructor
+     *
+     * @param StoreMaster
+     */
+    constructor(StoreMaster) {
+        {
+            this.storeId = StoreMaster.storeId || 0;
+            this.storeShortName = StoreMaster.storeShortName || "";
+            this.storeName = StoreMaster.storeName || "";
+            this.indentPrefix = StoreMaster.indentPrefix || "";
+            this.indentNo = StoreMaster.indentNo || "";
+            this.purchasePrefix = StoreMaster.purchasePrefix || "";
+            this.purchaseNo = StoreMaster.purchaseNo || "";
+            this.grnPrefix = StoreMaster.grnPrefix || "";
+            this.grnNo = StoreMaster.grnNo || "";
+            this.grnreturnNoPrefix = StoreMaster.grnreturnNoPrefix || "";
+            this.grnreturnNo = StoreMaster.grnreturnNo || "";
+            this.issueToDeptPrefix = StoreMaster.issueToDeptPrefix || "";
+            this.issueToDeptNo = StoreMaster.issueToDeptNo || "";
+            this.returnFromDeptNoPrefix =StoreMaster.returnFromDeptNoPrefix || "";
+            this.returnFromDeptNo = StoreMaster.returnFromDeptNo || "";
+            this.isDeleted = StoreMaster.isDeleted || "true";
+            this.addedBy = StoreMaster.addedBy || 0;
+            this.updatedBy = StoreMaster.updatedBy || 0;
+           this.header=StoreMaster.header || '';
+            this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
+            this.pharSalCountId = StoreMaster.pharSalCountId || 0;
+            this.pharSalRecCountId=StoreMaster.pharSalRecCountId || 0;
+             this.pharSalReturnCountId = StoreMaster.pharSalReturnCountId || 0;
+        }
+    }
+}

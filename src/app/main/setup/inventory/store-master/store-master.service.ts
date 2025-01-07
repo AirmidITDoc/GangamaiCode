@@ -127,8 +127,8 @@ export class StoreMasterService {
                 ]
             ],
 
-            workOrderPrefix: 0,
-            workOrderNo: 0,
+            workOrderPrefix: "0",
+            workOrderNo: "0",
             pharAdvId: 0,
             pharAdvReptId: 0,
             pharAdvRefId: 0,
@@ -137,7 +137,7 @@ export class StoreMasterService {
             dlNo: [""],
             gstin: [""],
             storeAddress:[""],
-            hospitalMobileNo: 0,
+            hospitalMobileNo: "1111111110",
             hospitalEmailId: [""],
             printStoreUnitName: [""],
             isPharStore: true,
@@ -159,12 +159,16 @@ export class StoreMasterService {
         this.createStoremasterForm();
     }
 
+    public getStoreById(Id, showLoader = true) {
+        debugger
+        return this._httpClient.GetData("StoreMaster/" + Id,showLoader);
+    }
 
     public storeMasterSave(Param: any, showLoader = true) {
         debugger
         if (Param.storeId) {
             return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param, showLoader);
-        } else return this._httpClient.PostData("StoreMaster", Param, showLoader);
+        } else return this._httpClient.PostData("StoreMaster",Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {

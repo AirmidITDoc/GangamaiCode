@@ -142,7 +142,7 @@ export class SupplierMasterService {
             //     ]
             // ],
             // CreateApproval:[true],
-            mAssignSupplierToStores: ["", Validators.required],
+            MAssignSupplierToStores: ["", Validators.required],
         });
     }
 
