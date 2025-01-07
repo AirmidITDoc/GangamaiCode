@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -459,7 +459,7 @@ export class OPBillingComponent implements OnInit {
   }
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next();
+    // this.nextPage$.next();
   }
   //Doctor list 
   getAdmittedDoctorCombo() {

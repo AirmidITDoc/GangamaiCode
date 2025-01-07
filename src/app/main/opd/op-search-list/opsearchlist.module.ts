@@ -51,6 +51,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { OpPaymentComponent } from './op-payment/op-payment.component';
 import { OpPaymentNewComponent } from './op-payment-new/op-payment-new.component';
 import { OpPaymentVimalComponent } from './op-payment-vimal/op-payment-vimal.component';
+import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.component';
 
 
 
@@ -78,8 +79,8 @@ const routes: Routes = [
         SchduleTreeComponent,
         OpPaymentNewComponent,
         OpPaymentComponent,
-        OpPaymentVimalComponent
-        // NewOPRefundofbillComponent,
+        OpPaymentVimalComponent,
+        NewOPBillingComponent
         // OutstandingPaymentComponent
     ],
     imports: [
