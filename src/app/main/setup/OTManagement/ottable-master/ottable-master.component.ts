@@ -36,6 +36,7 @@ export class OttableMasterComponent implements OnInit {
     'OtTableId',
     'OtRoomName',
     'LocationName',
+    'CreatedBy',
     'IsActive',
     'action'
   ];

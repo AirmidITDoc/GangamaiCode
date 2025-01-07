@@ -20,7 +20,7 @@ export class CertificatemasterService {
       TemplateId:[''],
       TemplateName:[''],
       TemplateDesc:[''],
-      IsDeleted:['true']
+      IsDeleted:[true]
         });
   }
 

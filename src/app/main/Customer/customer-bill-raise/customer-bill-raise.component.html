@@ -33,9 +33,21 @@
 
                             <div fxFlex.gt-sm="100%" fxFlex>
                                 <div fxLayout="column" class="gap-12">
-                                    <div class="info-badge-top pb-2 border-bottom">
+                                    <form [formGroup]="_CustomerBill.myform">
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                        <div fxLayout="row" fxLayoutAlign="start center" style="width: 300px;">
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Search Customer Name</mat-label>
+                                                <input name="CustomerNameSearch" formControlName="CustomerNameSearch" matInput
+                                                    (keyup)="getCustomerPayDueList()">
+                                            </mat-form-field>
+
+                                        </div>
                                         <!-- "pill" class is used for rounded border -->
-                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" 
+                                        style="margin-right: 10px;">
                                             <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
                                                 class="gap-4">
                                                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
@@ -49,6 +61,7 @@
 
                                         </div>
                                     </div>
+                                </form>
 
                                     <div fxlayout="row">
                                         <div style="width:100%;">
@@ -519,6 +532,65 @@
                         <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                             <div fxFlex.gt-sm="100%" fxFlex>
                                 <div fxLayout="column" class="gap-12">
+
+                                    <!-- code by raksha -->
+                                    <form [formGroup]="_CustomerBill.myform">
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+    
+                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Enter a date range</mat-label>
+                                                    <mat-date-range-input [rangePicker]="picker">
+                                                        <input matStartDate formControlName="start"
+                                                            placeholder="Start date">
+                                                        <input matEndDate formControlName="end" placeholder="End date"
+                                                            (dateChange)="getCustomerPaymentDaySummary()">
+                                                    </mat-date-range-input>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                                </mat-form-field>
+    
+                                                <mat-form-field appearance="outline" style="width: 300px;">
+                                                    <mat-label>Search Customer Name</mat-label>
+                                                    <input name="CustomerNameSearch" formControlName="CustomerNameSearch" matInput
+                                                        (keyup)="getCustomerPaymentDaySummary()">
+                                                </mat-form-field>
+
+                                                <mat-radio-group name="IsAmcOrBill" formControlName="IsAmcOrBill" 
+                                                (change)="getCustomerPaymentDaySummary()" (keydown)="getCustomerPaymentDaySummary()" 
+                                                    fxLayout="row" value="2" style="padding: 6px;" class="gap-4">
+                                                    <mat-label>Type:</mat-label>
+                                                    <div fxLayout="row">
+                                                        <mat-radio-button value="2">All
+                                                        </mat-radio-button>&nbsp;
+                                                        <mat-radio-button value="1">BILL
+                                                        </mat-radio-button>&nbsp;
+                                                        <mat-radio-button value="0">AMC
+                                                        </mat-radio-button>
+                                                    </div>
+                                                </mat-radio-group>
+    
+                                            </div>
+                                            <!-- "pill" class is used for rounded border -->
+                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" 
+                                            style="margin-right: 10px;">
+                                                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
+                                                    class="gap-4">
+                                                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                                    <span class="blue-600-fg">Bill</span>
+                                                </div>
+                                                <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
+                                                    class="gap-4">
+                                                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                    <span class="green-600-fg">AMC</span>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- end -->
+
                                     <div fxlayout="row">
                                         <div style="width:100%;">
                                             <mat-table matSort [dataSource]="dsPaymentDaySummary"

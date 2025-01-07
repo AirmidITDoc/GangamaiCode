@@ -19,7 +19,7 @@ export class CategoryMasterService {
     return this._formBuilder.group({
       CategoryId: [''],
       CategoryName: [''],
-      IsDeleted: ['true']
+      IsDeleted: [true]
     });
   }
 

@@ -25,7 +25,7 @@ export class OttableMasterService {
       Locationid:['',
         Validators.required
       ],
-      IsDeleted:['true']
+      IsDeleted:[true]
     });
   }
 

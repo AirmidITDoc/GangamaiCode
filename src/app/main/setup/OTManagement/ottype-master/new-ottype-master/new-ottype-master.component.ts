@@ -18,6 +18,10 @@ import { OttypeMasterService } from '../ottype-master.service';
 })
 export class NewOttypeMasterComponent implements OnInit {
 
+  vOTTypeId:any;
+  vTypeName:any;
+  registerObj: any;
+
   constructor(
     public _otTypeMasterService: OttypeMasterService,
     private accountService: AuthenticationService,
@@ -29,6 +33,18 @@ export class NewOttypeMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if(this.data){
+      debugger
+      this.registerObj=this.data.Obj;
+      console.log("RegisterObj:",this.registerObj)
+      this.vTypeName = this.registerObj.TypeName;
+      this.vOTTypeId=this.registerObj.OTTableId;
+      if(this.registerObj.IsActive==true){
+        this._otTypeMasterService.myform.get("IsDeleted").setValue(true)
+      }else{
+        this._otTypeMasterService.myform.get("IsDeleted").setValue(false)
+      }
+    }
   }
 
   onClose(){
@@ -36,4 +52,50 @@ export class NewOttypeMasterComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onSave(){
+    if (this.vTypeName == '' || this.vTypeName == null || this.vTypeName== undefined) {
+      this.toastr.warning('Please enter TypeName  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+
+    Swal.fire({
+      title: 'Do you want to Save the OtType Recode ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save it!" ,
+      cancelButtonText: "No, Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          this.onSubmit();
+      }
+    });
+  }
+
+  onSubmit(){
+
+  }
+
+}
+export class OtTypeMasterList {
+  OTTypeId:number;
+  TypeName:string;
+  IsActive:string;
+  
+  /**
+   * Constructor
+   *
+   * @param contact
+   */
+  constructor(OtTypeMasterList) {
+    {
+      this.OTTypeId = OtTypeMasterList.OTTypeId || '';
+      this.TypeName = OtTypeMasterList.TypeName || '';
+      this.IsActive=OtTypeMasterList.IsActive || '';
+    }
+  }
 }

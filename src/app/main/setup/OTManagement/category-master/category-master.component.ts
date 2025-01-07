@@ -88,8 +88,8 @@ export class CategoryMasterComponent implements OnInit {
   newCategory(){
     const dialogRef = this._matDialog.open(NewCategoryMasterComponent,
       {
-        maxWidth: "60%",
-        width: "45%",
+        maxWidth: "50%",
+        width: "40%",
         height: "35%",
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -101,8 +101,8 @@ export class CategoryMasterComponent implements OnInit {
   OnEdit(contact){
     const dialogRef = this._matDialog.open(NewCategoryMasterComponent,
       {
-        maxWidth: "60%",
-        width: "45%",
+        maxWidth: "50%",
+        width: "40%",
         height: "35%",
         data:{
           Obj: contact

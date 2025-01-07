@@ -18,14 +18,20 @@ export class CustomerBillRaiseService {
    }
 
    Createmyform(){
-    return this._formbuilder.group({
-      InvoiceNo:[''],
-      Description:[''],
-      Amount:[''],
-      CustomerId:[''],
-      InvoiceDate:[new Date()],
+     return this._formbuilder.group({
+       InvoiceNo: [''],
+       Description: [''],
+       Amount: [''],
+       CustomerId: [''],
+       InvoiceDate: [new Date()],
+       CustomerNameSearch: [''],
 
-    })
+       // filter of m_Rtrv_CustomerPaymentDaySummary   
+       start: [(new Date()).toISOString()],
+       end: [(new Date()).toISOString()],
+       IsAmcOrBill: ['2'],
+
+     })
    }
    public SaveCustomerBill(Param){
     return this._httpClient.post("CustomerInformation/CustomerInvoiceRaiseSave", Param)
