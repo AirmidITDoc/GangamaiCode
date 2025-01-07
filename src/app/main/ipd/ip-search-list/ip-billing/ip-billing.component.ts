@@ -591,10 +591,10 @@ ServiceList:any=[];
         "isCancelledDate": "01/01/1900",
         "isPathology": this.b_isPath,
         "isRadiology": this.b_isRad,
-        "isPackage": this.IsPackage,
+        "isPackage": 0 ,//this.IsPackage,
         "packageMainChargeID": 0,
         "isSelfOrCompanyService": false,
-        "packageId": 0,
+        "packageId": this.IsPackage,
         "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         "classId":this.Serviceform.get('ChargeClass').value.ClassId,    // this.selectedAdvanceObj.ClassId, 
       } 
@@ -856,17 +856,17 @@ ServiceList:any=[];
   } 
 
   getRtrvPackageList() {  
-     this.isLoadingStr = 'loading';
-     let Query = "Select *  from lvwAddCharges where IsGenerated=0 and PackageId !=0  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
-     console.log(Query); 
-     this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
-       this.PackageDatasource.data = data as ChargesList[];
-       this.PacakgeList = data as ChargesList[];
-       console.log(this.PacakgeList)   
-     },
-       (error) => {
-         this.isLoading = 'list-loaded';
-       });  
+    //  this.isLoadingStr = 'loading';
+    //  let Query = "Select *  from lvwAddCharges where IsGenerated=0 and PackageId !=0  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+    //  console.log(Query); 
+    //  this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
+    //    this.PackageDatasource.data = data as ChargesList[];
+    //    this.PacakgeList = data as ChargesList[];
+    //    console.log(this.PacakgeList)   
+    //  },
+    //    (error) => {
+    //      this.isLoading = 'list-loaded';
+    //    });  
    }
 
   getChargesList() {
@@ -874,9 +874,9 @@ ServiceList:any=[];
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
-    let Query = "Select * , '' as QtyEditable,'' as PriceEditable from lvwAddCharges where IsGenerated=0 and PackageId =0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
+    let Query = "Select * , '' as QtyEditable,'' as PriceEditable from lvwAddCharges where IsGenerated=0 and  IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and IsComServ= 0 Order by Chargesid"
     // console.log(Query);
-    this._IpSearchListService.getchargesList(Query).subscribe(data => {
+     this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       //console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
