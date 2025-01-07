@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -16,7 +16,7 @@ export class RegistrationService {
  
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService
   ) {
     this.myFilterform = this.filterForm();
@@ -59,7 +59,7 @@ export class RegistrationService {
         Validators.required,
         Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
       ]],
-      genderId: new FormControl('', [Validators.required]),
+      genderId: new UntypedFormControl('', [Validators.required]),
       address: '',
       dateOfBirth: [(new Date()).toISOString()],
       age: ['2'],

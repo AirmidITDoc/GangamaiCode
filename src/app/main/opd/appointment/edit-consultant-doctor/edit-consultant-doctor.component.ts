@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AppointmentSreviceService } from '../appointment-srevice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -53,7 +53,7 @@ filteredOptionsDoc: any;
   constructor(
 
     public _OpAppointmentService: AppointmentSreviceService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,

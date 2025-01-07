@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class CanteenmanagementService {
   BillListFrom:FormGroup;
 
   constructor(
-   public  _frombuilder:FormBuilder,
+   public  _frombuilder:UntypedFormBuilder,
    public  _httpClient:HttpClient
   )
    {this.userFormGroup = this.createUseFrom(),

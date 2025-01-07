@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReportDetail } from '../common-report/common-report.component';
 import { map, startWith } from 'rxjs/operators';
@@ -68,7 +68,7 @@ export class InventoryReportComponent implements OnInit {
     
     public datePipe: DatePipe,
     private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.userId;
     this.UserName = this._loggedUser.currentUserValue.userName;

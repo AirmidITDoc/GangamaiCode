@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { RequestforlabtestService } from '../requestforlabtest.service';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,7 +8,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
@@ -78,7 +77,7 @@ export class NewRequestforlabComponent implements OnInit {
   date: Date;
   
  
-  constructor(private _FormBuilder: FormBuilder,
+  constructor(private _FormBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<NewRequestforlabComponent>,
     private _matDialog:MatDialog,
     public _RequestforlabtestService: RequestforlabtestService, 

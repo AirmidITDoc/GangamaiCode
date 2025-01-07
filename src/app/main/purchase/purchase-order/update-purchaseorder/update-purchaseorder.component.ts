@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PurchaseOrderService } from '../purchase-order.service';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, UntypedFormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
@@ -104,7 +104,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   vQty: any = 1;
   IssQty: any;
   Bal: any;
-  disableSelect = new FormControl(false);
+  disableSelect = new UntypedFormControl(false);
   vGSTPer: any;
   vMRP: any;
   DiscPer: any = 0;

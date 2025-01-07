@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith } from 'rxjs/operators';
@@ -83,7 +83,7 @@ ServiceList: any = [];
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.userId;
     this.UserName = this._loggedUser.currentUserValue.userName;

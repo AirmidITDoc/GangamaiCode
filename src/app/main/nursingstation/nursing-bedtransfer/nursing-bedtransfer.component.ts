@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -66,14 +66,14 @@ export class NursingBedtransferComponent implements OnInit {
   //@Input() dataArray: any;
 
   //ward filter
-public wardFilterCtrl: FormControl = new FormControl();
+public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
 public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   ///Bed filter
-public bedFilterCtrl: FormControl = new FormControl();
+public bedFilterCtrl: UntypedFormControl = new UntypedFormControl();
 public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
    //room filter
-   public classFilterCtrl: FormControl = new FormControl();
+   public classFilterCtrl: UntypedFormControl = new UntypedFormControl();
    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
  
    private _onDestroy = new Subject<void>();
@@ -83,7 +83,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
   advanceAmount: any = 0;
   isRegSearchDisabled: boolean;
 
-  constructor(private _FormBuilder: FormBuilder,
+  constructor(private _FormBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     public _BedtransferService:NurBedTransferService,
     public _matDialog: MatDialog,

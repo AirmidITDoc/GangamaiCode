@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class OTManagementServiceService {
   otreservationFormGroup:FormGroup;
   
   constructor(private _httpClient: HttpClient,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: UntypedFormBuilder) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm1();
       this.otreservationFormGroup = this.createOtreservationForm();

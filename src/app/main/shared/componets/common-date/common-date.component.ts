@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 
 @Component({
     selector: 'app-common-date',
@@ -22,7 +22,7 @@ export class CommonDateComponent implements OnInit {
     isTimeChanged: boolean = false;
     isDatePckrDisabled: boolean = false;
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: UntypedFormBuilder
     ) {
 
         // this.currentDate = this.now.getMonth() + '/' + this.now.getDate() + '/' + this.now.getFullYear();

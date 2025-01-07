@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
@@ -34,7 +34,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   registerObj:any;
 
   constructor(
-    public _formbuilder:FormBuilder,  
+    public _formbuilder:UntypedFormBuilder,  
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog, 
     public datePipe: DatePipe,

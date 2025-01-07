@@ -27,7 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 // import { DateTimePickerModule } from '@syncfusion/ej2-angular-calendars';
 
 import { MatRadioModule } from '@angular/material/radio';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component'; 
@@ -45,52 +45,47 @@ const routes: Routes = [
 
 ];
 @NgModule({
-  declarations: [
-    SampleCollectionComponent, 
-    SampledetailtwoComponent 
-  ],
-  imports: [
-      RouterModule.forChild(routes),
-      CommonModule,
-      MatButtonModule,
-      MatCheckboxModule,
-      MatDatepickerModule,
-      MatFormFieldModule,
-      MatIconModule,
-      MatInputModule,
-      MatMenuModule,
-      MatRippleModule,
-      MatTableModule,
-      MatToolbarModule,
-      MatPaginatorModule,
-      MatSortModule,
-      MatSelectModule,
-      MatRadioModule,
-      MatCardModule,
-      MatDividerModule,
-      MatDialogModule,
-      FuseSharedModule,
-      FuseConfirmDialogModule,
-      MatProgressSpinnerModule,
-      ReactiveFormsModule,
-      MatSnackBarModule,
-      MatSlideToggleModule,
-      MatListModule,
-      SharedModule,
-      FuseSidebarModule,
-      MatDatepickerModule,
-      MatTooltipModule,
-      // NgxMatTimepickerModule
-
-  ],
-  providers: [
-    SampleCollectionService,
-    DatePipe,
-      NotificationServiceService,
-  ],
-  entryComponents: [
-    SampleCollectionComponent,
-      NotificationServiceService
-  ]
+    declarations: [
+        SampleCollectionComponent,
+        SampledetailtwoComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        FuseSidebarModule,
+        MatDatepickerModule,
+        MatTooltipModule,
+        // NgxMatTimepickerModule
+    ],
+    providers: [
+        SampleCollectionService,
+        DatePipe,
+        NotificationServiceService,
+    ]
 })
 export class SampleCollectionModule { }

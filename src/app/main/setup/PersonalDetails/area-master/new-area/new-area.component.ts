@@ -15,9 +15,8 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewAreaComponent implements OnInit {
 
   areaForm: FormGroup;
-  isActive:boolean=true;
-  saveflag : boolean = false;
-
+  isActive:boolean=true
+  saveflag:boolean=false;
   constructor(
       public _AreaMasterService: AreaMasterService,
       public dialogRef: MatDialogRef<NewAreaComponent>,

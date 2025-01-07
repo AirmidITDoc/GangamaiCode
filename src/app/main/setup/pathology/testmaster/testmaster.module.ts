@@ -13,7 +13,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
@@ -50,7 +50,6 @@ const routes: Routes = [
     imports: [
         DragDropModule,
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -87,7 +86,6 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatBadgeModule,
     ],
-    providers: [DatePipe,TestmasterService],
-    entryComponents: [TestmasterComponent],
+    providers: [DatePipe, TestmasterService]
 })
 export class TestmasterModule {}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { ChartsModule } from 'ng2-charts';
+//import { NgChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRadioModule } from '@angular/material/radio';
 
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
@@ -52,42 +52,41 @@ import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-
 
 
 @NgModule({
-  declarations: [
-    DailyDashboardComponent,
-    BedOccupancyComponent,
-    PharmacyDashboardComponent,
-    SalesSummaryComponent
-  ],
-  imports: [
-    CommonModule,
-    CommonModule,
-    MatProgressBarModule,
-    // Component,
-    DashboardRoutingModule,
-    MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatTabsModule,
-    MatIconModule,
-    FuseSharedModule,
-    ChartsModule,
-    NgxChartsModule,
-    FuseWidgetModule,
-    MatProgressSpinnerModule,
-    MatTableModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatPaginatorModule,
-    MatCardModule,
-    MatToolbarModule,
-    SharedModule
-  ],
-  providers: [
-    DatePipe
-  ],
-  entryComponents: [DailyDashboardComponent]
+    declarations: [
+        DailyDashboardComponent,
+        BedOccupancyComponent,
+        PharmacyDashboardComponent,
+        SalesSummaryComponent
+    ],
+    imports: [
+        CommonModule,
+        CommonModule,
+        MatProgressBarModule,
+        // Component,
+        DashboardRoutingModule,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatTabsModule,
+        MatIconModule,
+        FuseSharedModule,
+        //NgChartsModule,
+        NgxChartsModule,
+        FuseWidgetModule,
+        MatProgressSpinnerModule,
+        MatTableModule,
+        MatDatepickerModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatPaginatorModule,
+        MatCardModule,
+        MatToolbarModule,
+        SharedModule
+    ],
+    providers: [
+        DatePipe
+    ]
 })
 export class DashboardModule { }

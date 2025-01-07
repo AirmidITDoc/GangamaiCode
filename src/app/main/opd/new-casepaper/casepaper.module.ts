@@ -14,7 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -56,9 +56,9 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      NewCasepaperComponent,
-      PrescriptionTemplateComponent,
-      PrePresciptionListComponent
+        NewCasepaperComponent,
+        PrescriptionTemplateComponent,
+        PrePresciptionListComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -90,9 +90,9 @@ const routes: Routes = [
         MatSidenavModule,
         MatExpansionModule,
         FuseSidebarModule,
-         MatGridListModule,
+        MatGridListModule,
         MatSnackBarModule,
-        MatSlideToggleModule , 
+        MatSlideToggleModule,
         MatListModule,
         SharedModule,
         NgxMatSelectSearchModule,
@@ -104,13 +104,9 @@ const routes: Routes = [
         MatButtonToggleModule
     ],
     providers: [
-      CasepaperService,
+        CasepaperService,
         // NotificationServiceService ,
         DatePipe
-    ],
-    entryComponents: [
-      NewCasepaperComponent
-        // NotificationServiceService
     ]
 })
 export class CasepaperModule { }

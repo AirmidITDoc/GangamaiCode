@@ -26,7 +26,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatRippleModule } from '@angular/material/core';
@@ -46,53 +46,52 @@ const routes:Routes = [
 ];
 
 @NgModule({
-  declarations: [RequestforlabtestComponent, NewRequestforlabComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    // WebcamModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatListModule,
-    SharedModule,
-    MatStepperModule,
-    NgxMatSelectSearchModule,
-    MatDatepickerModule,
-    MatIconModule,
-    //  NgMultiSelectDropDownModule.forRoot(),
-     MatTooltipModule
-  ],
-  providers: [
-    DatePipe
-  ],
-  entryComponents: [RequestforlabtestComponent],
+    declarations: [RequestforlabtestComponent, NewRequestforlabComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+        // WebcamModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        MatStepperModule,
+        NgxMatSelectSearchModule,
+        MatDatepickerModule,
+        MatIconModule,
+        //  NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule
+    ],
+    providers: [
+        DatePipe
+    ]
 })
  
 

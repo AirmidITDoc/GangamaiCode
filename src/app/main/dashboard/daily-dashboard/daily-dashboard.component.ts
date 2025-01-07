@@ -3,7 +3,7 @@ import { DashboardService } from '../dashboard.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Observable, Subject } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import Chart, { ChartColor } from 'chart.js';
+import Chart, { Color } from 'chart.js/auto';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
@@ -313,7 +313,7 @@ getServicetotSum(element) {
     return subject.asObservable();
   }
 // new chart
-  getLineChartData(charId: string, backgroundColor: ChartColor, borderColor: ChartColor) {
+  getLineChartData(charId: string, backgroundColor: Color, borderColor: Color) {
 
     return new Chart(charId, {
       type: 'line',
@@ -336,17 +336,17 @@ getServicetotSum(element) {
             radius: 0
           }
         },
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            display: false
-          }],
-          yAxes: [{
-            display: false
-          }]
-        }
+        // legend: {
+        //   display: false,
+        // },
+        // scales: {
+        //   xAxes: [{
+        //     display: false
+        //   }],
+        //   yAxes: [{
+        //     display: false
+        //   }]
+        // }
       }
     });
   }
@@ -381,13 +381,13 @@ getServicetotSum(element) {
           }
         ]
       },
-      options: {
-        scales: {
-          xAxes: [{
-            display: false
-          }],
-        }
-      }
+    //   options: {
+    //     scales: {
+    //       xAxes: [{
+    //         display: false
+    //       }],
+    //     }
+    //   }
 
     });
   }
@@ -412,20 +412,20 @@ getServicetotSum(element) {
       },
       options: {
         plugins: {
-          legend: true,
+          //legend: true,
           tooltip: {
             enabled: true,
           },
-          outlabels: {
-            text: '%l %p',
-            color: 'white',
-            stretch: 35,
-            font: {
-              resizable: true,
-              minSize: 12,
-              maxSize: 18,
-            },
-          },
+        //   outlabels: {
+        //     text: '%l %p',
+        //     color: 'white',
+        //     stretch: 35,
+        //     font: {
+        //       resizable: true,
+        //       minSize: 12,
+        //       maxSize: 18,
+        //     },
+        //   },
         },
       },
     })

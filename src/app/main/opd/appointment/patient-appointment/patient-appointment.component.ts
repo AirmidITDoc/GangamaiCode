@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { RegInsert, VisitMaster } from '../appointment.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
@@ -26,9 +26,9 @@ export class PatientAppointmentComponent implements OnInit {
  
   registerObj = new RegInsert({});
   registerObj1 = new OPIPPatientModel({});
-  name = new FormControl('');
-  FirstName = new FormControl('');
-  AreaId = new FormControl('');
+  name = new UntypedFormControl('');
+  FirstName = new UntypedFormControl('');
+  AreaId = new UntypedFormControl('');
   submitted = false;
   year = 10;
   month = 5;
@@ -109,50 +109,50 @@ export class PatientAppointmentComponent implements OnInit {
   savedValue: number = null;
 
   // prefix filter
-  public bankFilterCtrl: FormControl = new FormControl();
+  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   // city filter
-  public cityFilterCtrl: FormControl = new FormControl();
+  public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //department filter
-  public departmentFilterCtrl: FormControl = new FormControl();
+  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
-  public religionFilterCtrl: FormControl = new FormControl();
+  public religionFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //maritalstatus filter
-  public maritalstatusFilterCtrl: FormControl = new FormControl();
+  public maritalstatusFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //area filter
-  public areaFilterCtrl: FormControl = new FormControl();
+  public areaFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //purpose filter
-  public purposeFilterCtrl: FormControl = new FormControl();
+  public purposeFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredPurpose: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //company filter
-  public companyFilterCtrl: FormControl = new FormControl();
+  public companyFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //hospital filter
-  public hospitalFilterCtrl: FormControl = new FormControl();
+  public hospitalFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
+  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
@@ -186,7 +186,7 @@ export class PatientAppointmentComponent implements OnInit {
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<PatientAppointmentComponent>,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private router: Router
   ) {
      dialogRef.disableClose = true;

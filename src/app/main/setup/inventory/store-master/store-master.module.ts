@@ -13,7 +13,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatMenuModule } from "@angular/material/menu";
@@ -69,7 +69,6 @@ const routes: Routes = [
         SharedModule,
         MatDialogModule
     ],
-    providers: [StoreMasterService,DatePipe],
-    entryComponents: [StoreMasterComponent],
+    providers: [StoreMasterService, DatePipe]
 })
 export class StoreMasterModule { }

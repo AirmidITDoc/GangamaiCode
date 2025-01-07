@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -131,7 +131,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     public toastr: ToastrService, 
     public _WhatsAppEmailService:WhatsAppEmailService,
     //private dialogRef: MatDialogRef<IPRefundofAdvanceComponent>,
-    private formBuilder: FormBuilder) {
+    private formBuilder: UntypedFormBuilder) {
     // dialogRef.disableClose = true;
     
   }

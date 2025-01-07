@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class GoodReceiptnoteService {
   constructor(
     public _httpClient: HttpClient,
     private _loaderService: LoaderService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.GRNStoreForm = this.createStoreFrom();
     // this.GRNFirstForm=this.getGRNfirstForm();

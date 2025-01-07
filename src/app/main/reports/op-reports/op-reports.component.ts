@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OPReportsService } from './opreports.service';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -73,7 +73,7 @@ FlagBillNoSelected: boolean = false;
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.userId;
     this.UserName = this._loggedUser.currentUserValue.userName;

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
@@ -20,7 +20,7 @@ export class AdmissionService {
   counter = 0;
 
   constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
-    public _formBuilder: FormBuilder,  private _loaderService: LoaderService,
+    public _formBuilder: UntypedFormBuilder,  private _loaderService: LoaderService,
   ) {
     this.myFilterform = this.filterForm();
     this.mySaveForm = this.saveForm();

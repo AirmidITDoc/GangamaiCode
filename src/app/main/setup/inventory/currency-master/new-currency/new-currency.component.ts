@@ -11,9 +11,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewCurrencyComponent implements OnInit {
 
+    Saveflag: boolean= false;
     currencyForm: FormGroup;
     isActive:boolean=true;
-    Saveflag: boolean= false;
 
     constructor(
         public _CurrencymasterService: CurrencymasterService,

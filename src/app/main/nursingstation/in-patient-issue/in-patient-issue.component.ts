@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -234,7 +234,7 @@ export class InPatientIssueComponent implements OnInit {
      public _InPatientIssueService: InPatientIssueService, 
     public _matDialog: MatDialog, 
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder, 
+    private formBuilder: UntypedFormBuilder, 
     private _loggedService: AuthenticationService, 
     public _BrowsSalesBillService: BrowsSalesBillService,
     // private applicationRef: ApplicationRef,

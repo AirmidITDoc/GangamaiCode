@@ -10,7 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -67,7 +67,7 @@ const routes: Routes = [
         MatRadioModule,
         MatTabsModule,
         MatCardModule,
-        MatDividerModule,  
+        MatDividerModule,
         MatProgressSpinnerModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
@@ -75,10 +75,9 @@ const routes: Routes = [
         MatDialogModule,
         MatListModule,
         MatSnackBarModule,
-        MatSlideToggleModule ,
+        MatSlideToggleModule,
         MatDividerModule,
         MatDialogModule,
-      
         MatSnackBarModule,
         MatStepperModule,
         MatAutocompleteModule,
@@ -90,14 +89,9 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-
-        
     ],
     providers: [
-        DatePipe,PhoneAppointListService,MatDatepickerInput
-    ],
-    entryComponents: [
-        PhoneappointmentComponent,
+        DatePipe, PhoneAppointListService, MatDatepickerInput
     ]
 })
 export class phoneappointmentModule {

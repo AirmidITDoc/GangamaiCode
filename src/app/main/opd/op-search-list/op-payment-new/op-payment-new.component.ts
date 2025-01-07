@@ -151,7 +151,7 @@ debugger
   OPD_IPD_Id:any;
   TariffName:any;
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<OpPaymentNewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private opService: OPSearhlistService,

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AdmissionService } from '../admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -43,7 +43,7 @@ export class MLCInformationComponent implements OnInit {
   Remark:any;
 
   constructor(public _AdmissionService: AdmissionService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,

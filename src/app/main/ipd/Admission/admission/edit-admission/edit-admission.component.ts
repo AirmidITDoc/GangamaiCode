@@ -1,7 +1,7 @@
 ///
 import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -162,7 +162,7 @@ export class EditAdmissionComponent implements OnInit {
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private reportDownloadService: ExcelDownloadService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored) {
       this.hospitalFormGroup = this.createHospitalForm();

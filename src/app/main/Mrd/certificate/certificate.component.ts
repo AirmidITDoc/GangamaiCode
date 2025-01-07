@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -74,7 +74,7 @@ export class CertificateComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _MrdService: MrdService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public _NursingStationService:MrdService,
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
@@ -88,11 +88,11 @@ export class CertificateComponent implements OnInit {
   doctorNameCmbList: any = [];
   D_data1:any;
   dataArray = {};
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   
     //department filter
-    public departmentFilterCtrl: FormControl = new FormControl();
+    public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
     public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
   
   private _onDestroy = new Subject<void>();

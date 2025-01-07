@@ -45,8 +45,7 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      NewOPBillingComponent
-        
+        NewOPBillingComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -87,12 +86,11 @@ const routes: Routes = [
         // WebcamModule,
         ScrollingModule,
         // MatSidenavModule
-        
         // MatDrawer
     ],
     providers: [
         OpBillingService,
-        DatePipe],
-    entryComponents: [NewOPBillingComponent],
+        DatePipe
+    ]
 })
 export class OPBillingModule { }

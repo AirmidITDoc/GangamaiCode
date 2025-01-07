@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -107,7 +107,7 @@ export class InterimBillComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<InterimBillComponent>,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public _ConfigService : ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any) {

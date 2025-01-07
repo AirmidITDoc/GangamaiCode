@@ -11,7 +11,7 @@ import { difference, forEach, parseInt } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ConditionalExpr } from '@angular/compiler';
 import { Observable, Subscription } from 'rxjs';
@@ -348,7 +348,7 @@ export class SalesComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private renderer: Renderer2,
     private _loggedService: AuthenticationService,
     private injector: Injector,

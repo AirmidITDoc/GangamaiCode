@@ -46,7 +46,7 @@ import { VisitDetailsComponent } from './visit-details/visit-details.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
 // import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+//import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { PatientVitalInformationComponent } from './patient-vital-information/patient-vital-information.component';
@@ -113,7 +113,7 @@ const routes: Routes = [
         WebcamModule,
         ScrollingModule,
         MatSidenavModule,
-        NgxQRCodeModule,
+        //NgxQRCodeModule,
         NgxPrintModule,
         MatButtonToggleModule
     ],

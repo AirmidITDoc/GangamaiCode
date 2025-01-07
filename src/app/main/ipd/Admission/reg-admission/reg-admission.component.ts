@@ -3,7 +3,7 @@ import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
 import { Admission, AdmissionPersonlModel, Bed } from '../admission/admission.component';
 import { fuseAnimations } from '@fuse/animations';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { AdmissionService } from '../admission/admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -167,7 +167,7 @@ DoctorId:any=0;
 
   
   //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
  
@@ -178,7 +178,7 @@ DoctorId:any=0;
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<RegAdmissionComponent>,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
     

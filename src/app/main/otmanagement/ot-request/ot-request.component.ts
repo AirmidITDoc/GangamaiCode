@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OTManagementServiceService } from '../ot-management-service.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -63,7 +63,7 @@ export class OTRequestComponent implements OnInit {
 
   // @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     // public _nursingStationService: NursingStationService,
     // private _IpSearchListService: IpSearchListService,
     private _ActRoute: Router,

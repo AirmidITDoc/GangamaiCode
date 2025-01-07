@@ -190,7 +190,7 @@
                                         <input matInput [(ngModel)]="vConversionFactor" name="ConversionFactor"
                                             formControlName="ConversionFactor" id="ConversionFactor" #conversionfactor
                                             (keyup.enter)="setFocus('BatchNo')" (keyup)="calculateTotalamt()"
-                                            autocomplete="off" #conversionfactor
+                                            autocomplete="off"
                                             [readonly]="!(vItemName&&vItemName.ItemName)">
                                     </mat-form-field>
 

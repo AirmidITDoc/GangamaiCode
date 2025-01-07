@@ -8,7 +8,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { CreateUserService } from '../create-user/create-user.service';
 import { AdministrationService } from '../administration.service';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-myprofile',
@@ -66,7 +66,7 @@ export class MyprofileComponent implements OnInit {
      
      public matDialogRef: MatDialogRef<MyprofileComponent>,
      @Inject(MAT_DIALOG_DATA) private _data: any,
-     private _formBuilder: FormBuilder
+     private _formBuilder: UntypedFormBuilder
 
   ) { 
 

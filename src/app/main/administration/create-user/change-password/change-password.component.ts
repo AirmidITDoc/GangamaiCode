@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserList } from '../create-user.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { AdministrationService } from '../../administration.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -34,7 +34,7 @@ export class ChangePasswordComponent implements OnInit {
     public _CreateUserService: CreateUserService,
     private advanceDataStored: AdvanceDataStored,
     public _matDialog: MatDialog,
-    private formBuilder: FormBuilder,) {
+    private formBuilder: UntypedFormBuilder,) {
     dialogRef.disableClose = true;
     this.UserId= this.accountService.currentUserValue.userId;
   }

@@ -1,6 +1,6 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef, Optional, Self, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, NgControl } from '@angular/forms';
+import { UntypedFormControl, FormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -19,7 +19,7 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() options: any[] = [];
     @Input() mode: string;
     @Output() selectionChange = new EventEmitter<any>();
-    control = new FormControl();
+    control = new UntypedFormControl();
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() validations: [] = [];
@@ -78,7 +78,7 @@ export class AirmidAutocompleteComponent implements OnInit {
 
     protected ddls: any[] = [];
     //public ddlCtrl: FormControl = new FormControl();
-    public ddlFilterCtrl: FormControl = new FormControl();
+    public ddlFilterCtrl: UntypedFormControl = new UntypedFormControl();
     public filteredDdls: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
     @ViewChild("singleSelect", { static: true }) singleSelect: MatSelect;
     protected _onDestroy = new Subject<void>();

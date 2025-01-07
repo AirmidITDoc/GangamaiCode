@@ -12,7 +12,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
 import { MatRippleModule } from "@angular/material/core";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
@@ -65,7 +65,6 @@ const routes: Routes = [
         MatCardModule,
         MatSlideToggleModule,
     ],
-    providers: [DoctortypeMasterService, DatePipe],
-    entryComponents: [DoctortypeMasterComponent],
+    providers: [DoctortypeMasterService, DatePipe]
 })
 export class DoctortypeMasterModule {}

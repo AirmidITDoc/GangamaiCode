@@ -2,30 +2,31 @@
     "compileOnSave": false,
   
     "compilerOptions": {
-        "baseUrl": "./src",
-        "outDir": "./dist/out-tsc",
-        "sourceMap": true,
-        "declaration": false,
-        "downlevelIteration": true,
-        "experimentalDecorators": true,
-        "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
-        "module": "es2020",
-        "moduleResolution": "node",
-        "importHelpers": true,
-        "target": "es2015",
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "lib": [
-            "es2018",
-            "dom"
-        ],
-        "paths": {
-            "@fuse": [
-                "@fuse/"
-            ]
-        }
+      "baseUrl": "./src",
+      "outDir": "./dist/out-tsc",
+      "sourceMap": true,
+      "declaration": false,
+      "downlevelIteration": true,
+      "experimentalDecorators": true,
+      "resolveJsonModule": true,
+      "allowSyntheticDefaultImports": true,
+      "module": "es2020",
+      "moduleResolution": "node",
+      "importHelpers": true,
+      "target": "ES2022",
+      "typeRoots": [
+        "node_modules/@types"
+      ],
+      "lib": [
+        "es2018",
+        "dom"
+      ],
+      "paths": {
+        "@fuse": [
+          "@fuse/"
+        ]
+      },
+      "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": false,

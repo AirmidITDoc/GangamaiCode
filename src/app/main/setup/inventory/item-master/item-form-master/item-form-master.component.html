@@ -302,13 +302,13 @@
                                                         ApiUrl="StoreMaster/get-store">
                                                     </airmid-autocomplete>
                                                 </div>
-                                                <mat-chip-list #chipList>
+                                                <mat-chip-listbox #chipList>
                                                     <mat-chip
                                                         *ngFor="let item of itemForm.value.mAssignItemToStores">
                                                         {{ item.storeName }} <mat-icon
                                                             (click)="removestore(item)">close</mat-icon>
                                                     </mat-chip>
-                                                </mat-chip-list>
+                                                </mat-chip-listbox>
                                             </div>
                                         </form>
                                     </div>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class PrescriptionReturnService {
   PrecReturnSearchGroup :FormGroup;
   constructor(
     public _httpClient:HttpClient,   public _httpClient1:ApiCaller,
-    private _FormBuilder:FormBuilder
+    private _FormBuilder:UntypedFormBuilder
   ) { this.mySearchForm=this.SearchFilterForm();
     this.PrecReturnSearchGroup= this.PrescriptionRetSearchFrom();
   }

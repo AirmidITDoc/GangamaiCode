@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -33,7 +33,6 @@ import { EditRegistrationComponent } from './edit-registration/edit-registration
 import { CharmaxLengthDirective } from './new-registration/charmax-length.directive';
 import { ChkCharlengthDirective } from './chk-charlength.directive';
 import { MatListModule } from '@angular/material/list';
-import { NgxSignaturePadModule } from '@o.krucheniuk/ngx-signature-pad';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { RegistrationService } from './registration.service';
@@ -52,49 +51,44 @@ const routes: Routes = [
         EditRegistrationComponent,
         CharmaxLengthDirective,
         ChkCharlengthDirective,
-        
     ],
     imports: [
         RouterModule.forChild(routes),
-    //  MatTableExporterModule,
+        //  MatTableExporterModule,
         MatChipsModule,
-              MatButtonModule,
-              MatCheckboxModule,
-              MatDatepickerModule,
-              MatFormFieldModule,
-              MatIconModule,
-              MatInputModule,
-              MatMenuModule,
-              MatRippleModule,
-              MatTableModule,
-              MatToolbarModule,
-              MatPaginatorModule,
-              MatSortModule,
-              MatSelectModule,
-              MatRadioModule,
-              MatSnackBarModule,
-              FuseSharedModule,
-              FuseConfirmDialogModule,
-              FuseSidebarModule,
-              CommonModule,
-              MatExpansionModule,
-              MatCardModule,
-              MatSlideToggleModule,
-              MatListModule,
-              MatStepperModule,
-              MatAutocompleteModule,
-              MatProgressSpinnerModule,
-              SharedModule,
-              NgxMatSelectSearchModule,
-              NgxSignaturePadModule,
-              MatButtonToggleModule,
-              MatDialogModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        CommonModule,
+        MatExpansionModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatButtonToggleModule,
+        MatDialogModule,
     ],
     providers: [RegistrationService,
         DatePipe
-    ],
-    entryComponents: [
-        RegistrationComponent,
     ]
 })
 export class RegistrationModule {

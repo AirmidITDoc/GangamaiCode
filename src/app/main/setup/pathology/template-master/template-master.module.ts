@@ -10,7 +10,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
@@ -40,7 +40,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [TemplateMasterComponent,TemplateFormComponent],
+    declarations: [TemplateMasterComponent, TemplateFormComponent],
     imports: [
         RouterModule.forChild(routes),
         AngularEditorModule,
@@ -88,12 +88,10 @@ const routes: Routes = [
         FuseSharedModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
-
         SharedModule,
         MatDialogModule,
         AngularEditorModule,
     ],
-    providers: [TemplateServieService,DatePipe],
-    entryComponents: [TemplateMasterComponent],
+    providers: [TemplateServieService, DatePipe]
 })
 export class TemplateMasterModule { }

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -113,7 +113,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _ActRoute: Router,
     public toastr: ToastrService,
     private accountService: AuthenticationService,

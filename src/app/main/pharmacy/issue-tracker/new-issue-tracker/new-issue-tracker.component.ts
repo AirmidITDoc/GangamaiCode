@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr'; 
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormGroup, Validators } from '@angular/forms'; 
+import { UntypedFormControl, FormGroup, Validators } from '@angular/forms'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
 import { ImageCroppedEvent } from "ngx-image-cropper";
@@ -32,8 +32,8 @@ export class NewIssueTrackerComponent implements OnInit {
 
   @ViewChild('attachments') attachment: any;
   imageForm = new FormGroup({
-    imageFile: new FormControl('', [Validators.required]),
-    imgFileSource: new FormControl('', [Validators.required])
+    imageFile: new UntypedFormControl('', [Validators.required]),
+    imgFileSource: new UntypedFormControl('', [Validators.required])
   });
 
   imgDataSource = new MatTableDataSource<any>();

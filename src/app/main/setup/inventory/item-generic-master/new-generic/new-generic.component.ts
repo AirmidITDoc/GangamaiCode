@@ -13,10 +13,9 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewGenericComponent implements OnInit {
-  
-    genericForm: FormGroup;
-    isActive:boolean=true;
-    Saveflag: boolean= false;
+  genericForm: FormGroup;
+  isActive:boolean=true;
+  Saveflag:boolean=false;
 
     constructor(
       public _ItemGenericMasterService: ItemGenericMasterService,

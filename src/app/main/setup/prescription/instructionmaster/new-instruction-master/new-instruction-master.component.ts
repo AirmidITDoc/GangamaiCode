@@ -13,11 +13,9 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewInstructionMasterComponent implements OnInit {
-  
-    instructionForm:FormGroup;
-    isActive:boolean=true;
-    saveflag : boolean = false;
-
+  instructionForm:FormGroup;
+  isActive:boolean=true;
+  saveflag:boolean=false;
   constructor(
     public _InstructionMasterService: InstructionmasterService,
     public dialogRef: MatDialogRef<NewInstructionMasterComponent>,

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, inject, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -168,7 +168,7 @@ export class NewCasepaperComponent implements OnInit {
   constructor(
     private _CasepaperService: CasepaperService,
     private _snackBar: MatSnackBar,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private advanceDataStored: AdvanceDataStored,
     private cdr: ChangeDetectorRef,
     public _matDialog: MatDialog,

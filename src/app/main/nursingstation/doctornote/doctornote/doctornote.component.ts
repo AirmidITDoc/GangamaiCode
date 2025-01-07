@@ -6,7 +6,7 @@ import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admissio
 import { DoctornoteService } from "../doctornote.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AdvanceDataStored } from "app/main/ipd/advance";
-import { FormBuilder } from "@angular/forms";
+import { UntypedFormBuilder } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -84,7 +84,7 @@ export class DoctornoteComponent implements OnInit {
     public _NursingStationService: DoctornoteService,
     private accountService: AuthenticationService, 
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder, 
+    private formBuilder: UntypedFormBuilder, 
     public datePipe: DatePipe, 
     public toastr: ToastrService, 
     public _matDialog: MatDialog,  

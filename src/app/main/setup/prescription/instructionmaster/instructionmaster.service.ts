@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -10,12 +10,17 @@ export class InstructionmasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createInstructionForm();
         this.myformSearch = this.createSearchForm();
     }
 
+    // {
+    //     "instructionId": 0,
+    //     "instructionDescription": "string",
+    //     "instructioninMarathi": "string"
+    //   }
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
             instructionId: [0],

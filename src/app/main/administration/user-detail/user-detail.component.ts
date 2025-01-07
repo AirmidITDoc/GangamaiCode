@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AdministrationService } from '../administration.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -59,7 +59,7 @@ export class UserDetailComponent implements OnInit {
     public _BatchAndExpDateAdjustmentService: BatchAndExpDateAdjustmentService,
     private _loggedService: AuthenticationService,
     public dialogRef: MatDialogRef<UserDetailComponent>,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
 
   ) { }

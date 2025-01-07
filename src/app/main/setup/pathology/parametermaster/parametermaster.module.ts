@@ -12,7 +12,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
@@ -41,7 +41,6 @@ const routes: Routes = [
     declarations: [ParametermasterComponent, ParameterFormMasterComponent, AddformulaComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -66,13 +65,9 @@ const routes: Routes = [
         MatCardModule,
         MatSlideToggleModule,
         MatTabsModule,
-
-
         SharedModule,
-      
         MatDialogModule,
     ],
-    providers: [ParametermasterService,DatePipe],
-    entryComponents: [ParametermasterComponent],
+    providers: [ParametermasterService, DatePipe]
 })
 export class ParametermasterModule {}

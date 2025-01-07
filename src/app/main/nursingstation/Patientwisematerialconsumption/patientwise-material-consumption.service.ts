@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class PatientwiseMaterialConsumptionService {
 
   constructor(public _httpClient: HttpClient,public _httpClient1: ApiCaller,
-    public _formBuilder: FormBuilder) { }
+    public _formBuilder: UntypedFormBuilder) { }
 
   
   // Get billing Service List 

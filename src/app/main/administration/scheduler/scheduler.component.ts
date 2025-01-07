@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 })
 export class SchdulerComponent implements OnInit {
   myformSearch: FormGroup;
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
     private _ActRoute: Router,
     public _matDialog: MatDialog,
     public _UserService: CreateUserService,

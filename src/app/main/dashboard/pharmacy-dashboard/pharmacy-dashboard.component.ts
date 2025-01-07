@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { DashboardService } from "../dashboard.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
-import { MatTableDataSource } from "@angular/material/table";
+import {  MatTableDataSource } from "@angular/material/table";
 import { DatePipe } from "@angular/common";
-import { Label } from "ng2-charts";
 import Chart from "chart.js";
 import { element } from "protractor";
 import { filter, map } from "rxjs/operators";
@@ -62,7 +60,7 @@ export class PharmacyDashboardComponent implements OnInit {
   constructor(
     public _DashboardService: DashboardService,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog,
   ) { }
   ngOnInit(): void {

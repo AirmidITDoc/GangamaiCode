@@ -4,14 +4,10 @@ import {  MatToolbarModule } from '@angular/material/toolbar';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 const routes: Routes = [];
 @NgModule({
-    declarations: [
-        
-    ],
+    declarations: [],
     imports: [
         RouterModule.forChild(routes),
-        MatToolbarModule,NgxExtendedPdfViewerModule
-    ],
-    entryComponents: [
+        MatToolbarModule, NgxExtendedPdfViewerModule
     ]
 })
 export class PdfViewerModule {

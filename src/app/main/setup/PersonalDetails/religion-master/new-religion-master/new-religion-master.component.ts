@@ -13,9 +13,9 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewReligionMasterComponent implements OnInit {
-    religionForm: FormGroup;
-    isActive:boolean=true;
-    saveflag : boolean = false ;
+  religionForm: FormGroup;
+  isActive:boolean=true;
+  saveflag : boolean = false ;
 
     constructor(   public _ReligionMasterService: ReligionMasterService,
         public dialogRef: MatDialogRef<NewReligionMasterComponent>,

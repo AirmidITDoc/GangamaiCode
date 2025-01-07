@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
@@ -39,7 +39,7 @@ export class AdmissionViewComponent implements OnInit {
   constructor(private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public _AdmissionService: AdmissionService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,) {

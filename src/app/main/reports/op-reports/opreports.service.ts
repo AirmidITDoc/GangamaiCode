@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OPReportsService {
   userForm:FormGroup;
-  constructor( public _formBuilder:FormBuilder,
+  constructor( public _formBuilder:UntypedFormBuilder,
     public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup()}
 
     createUserFormGroup(){

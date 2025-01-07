@@ -25,7 +25,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -45,7 +45,6 @@ const routes: Routes = [
     declarations: [ParamteragewiseComponent, ParamteragewiseformComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -84,7 +83,6 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatBadgeModule,
     ],
-    providers: [ParamteragewiseComponent],
-    entryComponents: [ParamteragewiseComponent],
+    providers: [ParamteragewiseComponent]
 })
 export class ParamteragewiseModule {}

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { CathLabBookingDetail } from '../cath-lab.component';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
@@ -115,7 +115,7 @@ export class NewCathLabComponent implements OnInit {
   constructor(
     public _OtManagementService: OTManagementServiceService,
     public _CathLabService :CathLabService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,

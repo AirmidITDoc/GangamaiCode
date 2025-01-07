@@ -5,7 +5,7 @@ import { PharmacyreportService } from './pharmacyreport.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-sales-bill.service';
 import { SalesService } from 'app/main/pharmacy/sales/sales.service';
@@ -122,7 +122,7 @@ export class PharmacyReportComponent implements OnInit {
     public datePipe: DatePipe,
     // public _PharmacyreportService: BrowsSalesBillService,
     private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.userId;
     this.UserName = this._loggedUser.currentUserValue.userName;

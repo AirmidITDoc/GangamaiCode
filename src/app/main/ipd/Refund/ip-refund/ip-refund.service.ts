@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { FormBuilder } from '@angular/forms';
 export class IPRefundService {
 
   constructor(public _httpClient:HttpClient,
-    private _formBuilder: FormBuilder) { }
+    private _formBuilder: UntypedFormBuilder) { }
 
 
   public getRefundofAdvanceList(employee)

@@ -14,9 +14,9 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewGnericMasterComponent implements OnInit {
 
-    genericForm:FormGroup;
-    isActive:boolean=true;
-    saveflag: boolean= false;
+  genericForm:FormGroup;
+  isActive:boolean=true;
+  saveflag:boolean=false;
 
     constructor(
         public _GenericMasterService: GenericmasterService,

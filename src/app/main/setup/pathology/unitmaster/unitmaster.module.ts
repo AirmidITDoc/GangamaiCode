@@ -19,7 +19,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
@@ -72,9 +72,7 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
-       
     ],
-    providers: [UnitmasterService,DatePipe],
-    entryComponents: [UnitmasterComponent],
+    providers: [UnitmasterService, DatePipe]
 })
 export class UnitmasterModule {}

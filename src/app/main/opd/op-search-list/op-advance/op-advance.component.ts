@@ -8,7 +8,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetail, AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
@@ -63,7 +63,7 @@ export class OPAdvanceComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<OPAdvanceComponent>,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,) {
       dialogRef.disableClose = true;
      }

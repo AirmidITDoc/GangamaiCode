@@ -10,7 +10,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
@@ -71,7 +71,7 @@ export class PharmItemSummaryComponent implements OnInit {
     private reportDownloadService: ExcelDownloadService,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
   ) { 
    

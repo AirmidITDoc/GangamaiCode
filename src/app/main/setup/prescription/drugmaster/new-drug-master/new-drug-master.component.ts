@@ -11,9 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewDrugMasterComponent implements OnInit {
 
-    drugForm:FormGroup;
-    isActive:boolean=true;
-    saveflag : boolean = false;
+  drugForm:FormGroup;
+  isActive:boolean=true;
+  saveflag:boolean=false;
 
   autocompleteModeClass: string = "Class";  
   autocompleteModeGenericName: string = "GenericName";

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class DoctorShareService {
   DocPrecessForm:FormGroup;
   
   constructor(
-    public _formBuilder: FormBuilder,
+    public _formBuilder: UntypedFormBuilder,
     public _httpClient: HttpClient
   ) { this.UserFormGroup = this.createUserFormGroup(),
     this.DocFormGroup = this.createDocFormGroup(),

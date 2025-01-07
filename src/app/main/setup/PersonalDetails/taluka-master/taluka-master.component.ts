@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ReplaySubject, Subject } from "rxjs";
@@ -22,7 +22,7 @@ export class TalukaMasterComponent implements OnInit {
     CitycmbList: any = [];
     msg: any;
 
-    public cityFilterCtrl: FormControl = new FormControl();
+    public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
     public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();

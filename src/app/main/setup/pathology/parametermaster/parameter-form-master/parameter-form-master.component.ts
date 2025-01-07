@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { Router } from "@angular/router";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ParametermasterService } from "../parametermaster.service";
 import { MatTableDataSource } from "@angular/material/table";
@@ -81,7 +81,7 @@ export class ParameterFormMasterComponent implements OnInit {
         private accountService: AuthenticationService,
         public dialogRef: MatDialogRef<ParametermasterComponent>,
         public _matDialog: MatDialog,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
         private router: Router

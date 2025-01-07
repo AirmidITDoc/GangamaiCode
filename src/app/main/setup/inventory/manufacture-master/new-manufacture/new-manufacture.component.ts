@@ -11,10 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewManufactureComponent implements OnInit {
 
-
-    manufForm: FormGroup;
-    isActive:boolean=true;
-    saveflag : boolean = false;
+  manufForm: FormGroup;
+  isActive:boolean=true;
+  saveflag:boolean=false;
 
     constructor(
       public _ManufactureMasterService: ManufactureMasterService,

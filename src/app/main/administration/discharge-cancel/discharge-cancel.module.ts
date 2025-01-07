@@ -10,7 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -47,52 +47,49 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [DischargeCancelComponent],
-  imports: [
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    // WebcamModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatListModule,
-    SharedModule,
-    MatStepperModule,
-    NgxMatSelectSearchModule,
-    MatDatepickerModule ,
-    MatTooltipModule,
-    MatBadgeModule,
-  MatIconModule,
-  RouterModule.forChild(routes)
-  ],
-  providers: [
-    DatePipe,
-],
-entryComponents: [
-  DischargeCancelComponent,
-]
+    declarations: [DischargeCancelComponent],
+    imports: [
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+        // WebcamModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        MatStepperModule,
+        NgxMatSelectSearchModule,
+        MatDatepickerModule,
+        MatTooltipModule,
+        MatBadgeModule,
+        MatIconModule,
+        RouterModule.forChild(routes)
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class DischargeCancelModule { }

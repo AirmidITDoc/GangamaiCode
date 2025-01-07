@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulat
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatStepper } from '@angular/material/stepper';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -100,56 +100,56 @@ export class AdmissionNewComponent implements OnInit {
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
 
-  public bankFilterCtrl: FormControl = new FormControl();
+  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public cityFilterCtrl: FormControl = new FormControl();
+  public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public departmentFilterCtrl: FormControl = new FormControl();
+  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
-  public religionFilterCtrl: FormControl = new FormControl();
+  public religionFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //maritalstatus filter
-  public maritalstatusFilterCtrl: FormControl = new FormControl();
+  public maritalstatusFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //area filter
-  public areaFilterCtrl: FormControl = new FormControl();
+  public areaFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //ward filter
-  public wardFilterCtrl: FormControl = new FormControl();
+  public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //company filter
-  public companyFilterCtrl: FormControl = new FormControl();
+  public companyFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //hospital filter
-  public hospitalFilterCtrl: FormControl = new FormControl();
+  public hospitalFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //hospital filter
-  public bedFilterCtrl: FormControl = new FormControl();
+  public bedFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
+  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
+  public doctortwoFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
@@ -161,7 +161,7 @@ export class AdmissionNewComponent implements OnInit {
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<AdmissionNewComponent>,
     public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
     //public _regIns: RegInsert

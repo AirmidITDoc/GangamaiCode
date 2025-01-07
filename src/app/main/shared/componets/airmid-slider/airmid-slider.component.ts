@@ -2,7 +2,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self, forwardRef } from "@angular/core";
 import {
     ControlValueAccessor,
-    FormControl,
+    UntypedFormControl,
     FormGroup,
     NG_VALUE_ACCESSOR,
     NgControl,
@@ -27,7 +27,7 @@ export class AirmidSliderComponent implements
     private _required: boolean = false;
     private destroy: Subject<void> = new Subject();
     color = 'accent';
-    control = new FormControl();
+    control = new UntypedFormControl();
     stateChanges: Subject<void> = new Subject();
     @Input() formGroup: FormGroup;
     @Input() formControlName:string;

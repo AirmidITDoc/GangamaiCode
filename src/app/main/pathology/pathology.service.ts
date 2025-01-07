@@ -1,6 +1,6 @@
 import { HttpClient, HttpBackend, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { throwError, Observable } from "rxjs";
 import { catchError } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ export class PathologyService {
   mysamplerequstform: FormGroup;
 
   myShowPathologyResultForm: FormGroup;
-  constructor(private handler: HttpBackend, private _httpClient: HttpClient, private _formBuilder: FormBuilder) {
+  constructor(private handler: HttpBackend, private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) {
     this.myform = this.createtemplateForm();
     this.myformSearch = this.createSearchForm();
 

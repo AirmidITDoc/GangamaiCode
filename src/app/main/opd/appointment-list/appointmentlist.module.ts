@@ -12,7 +12,7 @@ import { MatRippleModule } from "@angular/material/core";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
@@ -35,10 +35,10 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { NgxPrintModule } from "ngx-print";
+//import { NgxPrintModule } from "ngx-print";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
-import { WebcamModule } from "ngx-webcam";
+// import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
+//import { WebcamModule } from "ngx-webcam";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
@@ -92,14 +92,13 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
-        WebcamModule,
+        //WebcamModule,
         ScrollingModule,
         MatSidenavModule,
-        NgxQRCodeModule,
-        NgxPrintModule,
+        //NgxQRCodeModule,
+        //NgxPrintModule,
         MatButtonToggleModule
     ],
-    providers: [AppointmentlistService,DatePipe],
-    entryComponents: [AppointmentListComponent],
+    providers: [AppointmentlistService, DatePipe]
 })
 export class AppointmentlistModule { }

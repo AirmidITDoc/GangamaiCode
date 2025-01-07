@@ -10,7 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatRippleModule } from '@angular/material/core';
@@ -35,54 +35,40 @@ const routes: Routes = [
   { path: '**', component: IPBrowseRefundofAdvanceComponent },
 ];
 @NgModule({
-  declarations: [
-   
-   IPBrowseRefundofAdvanceComponent,
-   ViewIPRefundofAdvanceComponent,
-  
-  
-    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatExpansionModule,
-    MatTooltipModule,
-   
-
-    
-   
-    
-  ],
-  providers: [
-    IPBrowseRefundofAdvanceService,
-      DatePipe,
-     
-  ],
-  entryComponents: [
-    IPBrowseRefundofAdvanceComponent,
-    HeaderComponent
-  ]
+    declarations: [
+        IPBrowseRefundofAdvanceComponent,
+        ViewIPRefundofAdvanceComponent,
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatExpansionModule,
+        MatTooltipModule,
+    ],
+    providers: [
+        IPBrowseRefundofAdvanceService,
+        DatePipe,
+    ]
 })
 export class IPBrowseRefundofAdvanceModule { }

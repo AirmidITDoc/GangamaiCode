@@ -14,11 +14,10 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewStateMasterComponent implements OnInit {
 
-    stateForm: FormGroup;
-    isActive:boolean=true;
-    saveflag : boolean = false;
-
-    constructor(
+  stateForm: FormGroup;
+  isActive:boolean=true;
+  saveflag:boolean=false;
+  constructor(
       public _StateMasterService: StateMasterService,
       public dialogRef: MatDialogRef<NewStateMasterComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,

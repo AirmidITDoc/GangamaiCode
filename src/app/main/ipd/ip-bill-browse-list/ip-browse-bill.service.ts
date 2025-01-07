@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -13,7 +13,7 @@ export class IPBrowseBillService {
   myFilterIprefundbrowseform: FormGroup;
 
   constructor(public _httpClient:HttpClient,  private _loaderService: LoaderService,public _httpClient1:ApiCaller,
-    private _formBuilder: FormBuilder) { 
+    private _formBuilder: UntypedFormBuilder) { 
       this.myFilterIpbillbrowseform=this.filterForm_IpdBrowse();
       this.myFilterIppaymentbrowseform=this.filterForm_IpdpaymentBrowse();
       this.myFilterIprefundbrowseform=this.filterForm_IpdrefundBrowse();

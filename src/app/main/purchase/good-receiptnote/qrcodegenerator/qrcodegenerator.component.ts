@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -11,7 +11,7 @@ import { fuseAnimations } from '@fuse/animations';
   animations: fuseAnimations,
 })
 export class QrcodegeneratorComponent implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<QrcodegeneratorComponent>, private _formBuilder: FormBuilder) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<QrcodegeneratorComponent>, private _formBuilder: UntypedFormBuilder) {
   }
   Width=100;
   QrData={};

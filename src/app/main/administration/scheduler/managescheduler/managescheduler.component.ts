@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SchdulerComponent } from '../scheduler.component';
 import Swal from 'sweetalert2';
@@ -108,7 +108,7 @@ export class ManageschedulerComponent implements OnInit {
 
   searchFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private _SchdulerService: SchdulerService,
+  constructor(private formBuilder: UntypedFormBuilder, private _SchdulerService: SchdulerService,
     private dialogRef: MatDialogRef<SchdulerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,) { }
 

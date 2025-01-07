@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-sales-bill.component';
 import { Subscription } from 'rxjs';
 import { IndentList, Printsal } from '../sales/sales.component';
@@ -167,7 +167,7 @@ export class SalesReturnComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public toastr : ToastrService,
   ) {

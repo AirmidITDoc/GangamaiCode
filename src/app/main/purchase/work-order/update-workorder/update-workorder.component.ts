@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { WorkOrderService } from '../work-order.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -80,7 +80,7 @@ export class UpdateWorkorderComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UpdateWorkorderComponent>,

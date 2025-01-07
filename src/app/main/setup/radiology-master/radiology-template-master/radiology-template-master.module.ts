@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -54,56 +54,50 @@ const routes: Routes = [
         RadiologyTemplateFormComponent
     ],
     imports: [
-       
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatTabsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatRadioModule,
-    MatDividerModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatListModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    // NgxEditorModule,
-    MatProgressSpinnerModule,
-    // AngularEditorModule,
-    // NgxPrintModule,
-    // RichTextEditorModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatSlideToggleModule ,
-    FuseSharedModule,
-    // RichTextEditorModule
-    //  NgMultiSelectDropDownModule.forRoot()
-    AngularEditorModule,
-
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatTabsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatRadioModule,
+        MatDividerModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatListModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        // NgxEditorModule,
+        MatProgressSpinnerModule,
+        // AngularEditorModule,
+        // NgxPrintModule,
+        // RichTextEditorModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        FuseSharedModule,
+        // RichTextEditorModule
+        //  NgMultiSelectDropDownModule.forRoot()
+        AngularEditorModule,
     ],
     providers: [
         RadiologyTemplateMasterService,
-        DatePipe 
-    ],
-    entryComponents: [
-        RadiologyTemplateMasterComponent,
-        EditorComponent
+        DatePipe
     ]
 })
 export class RadiologytemplateMasterModule {

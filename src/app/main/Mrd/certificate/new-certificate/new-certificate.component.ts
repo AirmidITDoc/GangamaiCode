@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -91,7 +91,7 @@ export class NewCertificateComponent implements OnInit {
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _MrdService: MrdService,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     // public _PhoneAppointListService :MrdService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -107,11 +107,11 @@ export class NewCertificateComponent implements OnInit {
 
   doctorNameCmbList: any = [];
 
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //department filter
-  public departmentFilterCtrl: FormControl = new FormControl();
+  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();

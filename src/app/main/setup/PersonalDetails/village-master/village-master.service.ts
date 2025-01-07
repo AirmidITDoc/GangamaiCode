@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +10,7 @@ export class VillageMasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: FormBuilder
+        private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createVillageForm();
         this.myformSearch = this.createSearchForm();

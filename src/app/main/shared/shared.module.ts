@@ -98,7 +98,6 @@ import { AirmidDatepickerComponent } from './componets/airmid-datepicker/airmid-
         AirmidSliderComponent,
         AirmidDatepickerComponent
     ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    entryComponents: []
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }

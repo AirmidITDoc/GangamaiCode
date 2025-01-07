@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class AppointmentService {
   sIsLoading: string = '';
   getRegistrationSearchList: any;
   constructor(public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) {
     this.myFilterform = this.filterForm();
       }

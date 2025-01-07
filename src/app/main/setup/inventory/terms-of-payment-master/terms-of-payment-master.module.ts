@@ -12,7 +12,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -69,7 +69,6 @@ const routes: Routes = [
         SharedModule,
         MatDialogModule,
     ],
-    providers: [TermsOfPaymentMasterService,DatePipe],
-    entryComponents: [TermsOfPaymentMasterComponent],
+    providers: [TermsOfPaymentMasterService, DatePipe]
 })
 export class TermsOfPaymentMasterModule {}

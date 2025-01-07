@@ -236,7 +236,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.unregister(this.name);
 
         // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
+        this._unsubscribeAll.next(true);
         this._unsubscribeAll.complete();
     }
 

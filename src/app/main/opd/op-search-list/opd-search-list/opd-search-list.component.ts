@@ -11,7 +11,7 @@ import { OPBillingComponent } from '../op-billing/op-billing.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith, takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
@@ -86,7 +86,7 @@ export class OpdSearchListComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private _fuseSidebarService: FuseSidebarService, 
-    private formBuilder: FormBuilder, 
+    private formBuilder: UntypedFormBuilder, 
   ) { }
 
   ngOnInit(): void {

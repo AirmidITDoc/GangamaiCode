@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ResultEntryService } from '../result-entry.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -67,7 +67,7 @@ export class ResultEntrytwoComponent implements OnInit {
     private accountService: AuthenticationService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -38,17 +38,17 @@ export class SubCompanyTPAInfoComponent implements OnInit {
   filteredOptionsCompany: Observable<string[]>;
   
   //company filter
-  public companyFilterCtrl: FormControl = new FormControl();
+  public companyFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  public cityFilterCtrl: FormControl = new FormControl();
+  public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
 
   constructor(public _AdmissionService: AdmissionService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,

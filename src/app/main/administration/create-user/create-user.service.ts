@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class CreateUserService {
   createuserform: FormGroup;
   myformSearch: FormGroup;
 
- constructor(private _httpClient: HttpClient,private _formBuilder: FormBuilder) {
+ constructor(private _httpClient: HttpClient,private _formBuilder: UntypedFormBuilder) {
    this.createuserform=this.createuserForm();
     this.myformSearch=this.createSearchForm();
  }

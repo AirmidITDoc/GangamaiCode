@@ -7,7 +7,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
@@ -37,7 +36,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [EndoscopyComponent,NewEndoscopyComponent],
+    declarations: [EndoscopyComponent, NewEndoscopyComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -59,15 +58,12 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule
     ],
-    providers: [DatePipe,OTManagementServiceService],
-
-    entryComponents: [EndoscopyComponent],
+    providers: [DatePipe, OTManagementServiceService]
 })
 export class EndoscopyModule { }

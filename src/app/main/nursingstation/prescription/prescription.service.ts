@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -13,7 +13,7 @@ export class PrescriptionService {
   mypreretunForm: FormGroup;
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
-    private _formBuilder: FormBuilder
+    private _formBuilder: UntypedFormBuilder
   ) { 
     this.mysearchform= this.SearchFilterFrom();
     this.mypreretunForm=this.PrescriptionReturnFilterForm();

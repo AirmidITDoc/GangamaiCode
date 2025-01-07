@@ -10,7 +10,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatTableModule } from "@angular/material/table";
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
@@ -54,7 +54,6 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
     ],
-    providers: [BedMasterService],
-    entryComponents: [VendorMasterComponent],
+    providers: [BedMasterService]
 })
 export class VendorMasterModule { }

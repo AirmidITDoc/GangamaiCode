@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -97,7 +97,7 @@ export class IPAdvanceComponent implements OnInit {
     private dialogRef: MatDialogRef<IPAdvanceComponent>,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: UntypedFormBuilder) {
     dialogRef.disableClose = true;
   }
 

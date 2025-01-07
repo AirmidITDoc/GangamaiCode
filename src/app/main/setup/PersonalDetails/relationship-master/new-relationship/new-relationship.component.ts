@@ -13,10 +13,9 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class NewRelationshipComponent implements OnInit {
-    
-    relationshipForm: FormGroup;
-    isActive:boolean=true;
-    saveflag : boolean = false;
+  relationshipForm: FormGroup;
+  isActive:boolean=true;
+  saveflag : boolean = false;
 
     constructor(
       public _RelationshipMasterService: RelationshipMasterService,

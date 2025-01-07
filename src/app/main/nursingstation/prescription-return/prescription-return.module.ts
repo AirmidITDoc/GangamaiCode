@@ -12,7 +12,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
@@ -47,11 +47,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PrescriptionReturnComponent, NewPrescriptionreturnComponent, BatchpopupComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatButtonModule,
+    declarations: [PrescriptionReturnComponent, NewPrescriptionreturnComponent, BatchpopupComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
         MatFormFieldModule,
@@ -88,11 +88,10 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-         MatTooltipModule
-  ],
-  providers: [
-    DatePipe
-  ],
-  entryComponents: [PrescriptionReturnComponent],
+        MatTooltipModule
+    ],
+    providers: [
+        DatePipe
+    ]
 })
 export class PrescriptionReturnModule { }

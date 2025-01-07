@@ -14,8 +14,8 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { MatSliderChange } from '@angular/material/slider';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatHorizontalStepper } from '@angular/material/stepper';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-opip-feedback',
@@ -106,7 +106,7 @@ Imgstatus4=0
 Imgstatus5=0
 
 
-@ViewChild('stepper') stepper: MatHorizontalStepper;
+@ViewChild('stepper') stepper: MatStepperModule;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;
@@ -124,7 +124,7 @@ Imgstatus5=0
     // private dialogRef: MatDialogRef<OPIPFeedbackComponent>,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private advanceDataStored: AdvanceDataStored) {  this.getfeedbackquestionList(); }
 
   ngOnInit(): void {

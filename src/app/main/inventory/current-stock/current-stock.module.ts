@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -42,9 +42,9 @@ import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+//import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { NgxPrintModule } from 'ngx-print';
-import { WebcamModule } from 'ngx-webcam';
+//import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
   { 
@@ -54,64 +54,57 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    CurrentStockComponent,
-    ItemMovementSummeryComponent,
-    IssueSummeryComponent,
-    SalesSummeryComponent,
-    SalesReturnSummeryComponent
-    
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    SharedModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseSidebarModule,
-    MatDialogModule,
-
-    MatTabsModule,
-    MatDatepickerModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    ReactiveFormsModule,
-
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-
-    NgxMatSelectSearchModule,
-    MatCardModule,
-    MatListModule,
-    MatTooltipModule,
-    MatExpansionModule,
-    MatListModule,
-    WebcamModule,
-    ScrollingModule,
-    MatSidenavModule,
-    NgxQRCodeModule,
-    NgxPrintModule,
-    MatButtonToggleModule
-  ],
-  providers: [
-    DatePipe,
-],
-entryComponents: [
-  CurrentStockComponent,
-]
+    declarations: [
+        CurrentStockComponent,
+        ItemMovementSummeryComponent,
+        IssueSummeryComponent,
+        SalesSummeryComponent,
+        SalesReturnSummeryComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        SharedModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatTabsModule,
+        MatDatepickerModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatListModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatListModule,
+        //WebcamModule,
+        ScrollingModule,
+        MatSidenavModule,
+        //NgxQRCodeModule,
+        NgxPrintModule,
+        MatButtonToggleModule
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class CurrentStockModule { }

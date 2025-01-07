@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import Swal from 'sweetalert2';
 import { OTEndoscopydetail } from '../endoscopy.component';
@@ -81,29 +81,29 @@ public dateValue: Date = new Date();
   matDialogRef: any;
 
   //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
+  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   
   //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
+  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctortwo filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
+  public doctortwoFilterCtrl: UntypedFormControl = new UntypedFormControl();
   public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
   
 
   
   //area filter
-  public AnesthDoctFilterCtrl1: FormControl = new FormControl();
+  public AnesthDoctFilterCtrl1: UntypedFormControl = new UntypedFormControl();
   public filteredAnesthDoctor1: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   
   //area filter
-  public AnesthDoctFilterCtrl2: FormControl = new FormControl();
+  public AnesthDoctFilterCtrl2: UntypedFormControl = new UntypedFormControl();
   public filteredAnesthDoctor2: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
@@ -111,7 +111,7 @@ public dateValue: Date = new Date();
 
   constructor(
     public _OtManagementService: OTManagementServiceService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,

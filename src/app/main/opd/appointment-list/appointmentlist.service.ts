@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -13,7 +13,7 @@ export class AppointmentlistService {
   personalFormGroup: FormGroup;
   VisitFormGroup: FormGroup;
 
-  constructor(public _httpClient1: ApiCaller,private _formBuilder: FormBuilder,   private _loaderService: LoaderService,
+  constructor(public _httpClient1: ApiCaller,private _formBuilder: UntypedFormBuilder,   private _loaderService: LoaderService,
     public _httpClient: HttpClient,
   ) {  
     this.myformSearch=this.filterForm();

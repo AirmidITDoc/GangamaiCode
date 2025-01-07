@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { GstReportService } from './gst-report.service';
@@ -51,7 +51,7 @@ export class GSTReportComponent implements OnInit {
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: UntypedFormBuilder
   ) {
     this.UserId = this._loggedUser.currentUserValue.userId;
     this.UserName = this._loggedUser.currentUserValue.userName;

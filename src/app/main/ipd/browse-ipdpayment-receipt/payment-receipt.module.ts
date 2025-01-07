@@ -10,7 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {  MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatRippleModule } from '@angular/material/core';
@@ -41,7 +41,6 @@ const routes: Routes = [
         ViewBrowseIPDPaymentComponent,
         IpdPaymentreceiptComponent
     ],
-
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -73,11 +72,6 @@ const routes: Routes = [
     providers: [
         PaymentReceiptService,
         DatePipe,
-
-    ],
-    entryComponents: [
-        IpdPaymentreceiptComponent,
-
     ]
 })
 export class PaymentReceiptModule { }

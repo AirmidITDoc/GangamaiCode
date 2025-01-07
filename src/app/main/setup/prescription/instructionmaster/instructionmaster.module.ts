@@ -11,7 +11,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
@@ -34,11 +34,9 @@ const routes: Routes = [
     declarations: [InstructionmasterComponent, NewInstructionMasterComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         SharedModule,
-        MatButtonModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
@@ -56,7 +54,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [InstructionmasterService, DatePipe],
-    entryComponents: [InstructionmasterComponent],
+    providers: [InstructionmasterService, DatePipe]
 })
 export class InstructionmasterModule {}

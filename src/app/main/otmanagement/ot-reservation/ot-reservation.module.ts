@@ -10,7 +10,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
@@ -36,7 +36,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OTReservationComponent,NewReservationComponent],
+    declarations: [OTReservationComponent, NewReservationComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -58,15 +58,12 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
     ],
-    providers: [DatePipe,OTManagementServiceService],
-
-    entryComponents: [OTReservationComponent],
+    providers: [DatePipe, OTManagementServiceService]
 })
 export class OTReservationModule { }

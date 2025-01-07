@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@an
 import { PrescriptionReturnService } from '../prescription-return.service';
 import { DatePipe } from '@angular/common';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -52,7 +52,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public _httpClient: HttpClient,
     public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,) { }
 

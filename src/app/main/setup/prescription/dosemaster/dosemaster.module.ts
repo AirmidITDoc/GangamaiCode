@@ -8,7 +8,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
@@ -30,7 +30,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DosemasterComponent,NewDoseMasterComponent],
+    declarations: [DosemasterComponent, NewDoseMasterComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -51,7 +51,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [DosemasterService,DatePipe],
-    entryComponents: [DosemasterComponent],
+    providers: [DosemasterService, DatePipe]
 })
 export class DosemasterModule {}

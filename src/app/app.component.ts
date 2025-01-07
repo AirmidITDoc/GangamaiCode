@@ -26,11 +26,16 @@ import { SpinnerService } from './core/services/spinner.service';
 import { Idle } from 'idlejs/dist';
 import { Router } from '@angular/router';
 import { BandwidthService } from './core/services/bandwidth.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { LoaderModule } from './core/components/loader/loader.module';
 
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    // standalone:true,
+    // imports: [FuseProgressBarModule,FuseThemeOptionsModule,FuseSidebarModule,LoaderModule],
 })
 export class AppComponent implements OnInit, OnDestroy {
     fuseConfig: any;
@@ -227,7 +232,7 @@ export class AppComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
+        this._unsubscribeAll.next(true);
         this._unsubscribeAll.complete();
     }
 

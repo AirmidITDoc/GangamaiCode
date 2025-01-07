@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
@@ -125,13 +125,13 @@ export class NewAppointmentComponent implements OnInit {
     @ViewChild('attachments') attachment: any;
 
     imageForm = new FormGroup({
-        imageFile: new FormControl('', [Validators.required]),
-        imgFileSource: new FormControl('', [Validators.required])
+        imageFile: new UntypedFormControl('', [Validators.required]),
+        imgFileSource: new UntypedFormControl('', [Validators.required])
     });
 
     docsForm = new FormGroup({
-        docFile: new FormControl('', [Validators.required]),
-        docFileSource: new FormControl('', [Validators.required])
+        docFile: new UntypedFormControl('', [Validators.required]),
+        docFileSource: new UntypedFormControl('', [Validators.required])
     });
 
 
@@ -183,7 +183,7 @@ export class NewAppointmentComponent implements OnInit {
         private _fuseSidebarService: FuseSidebarService,
         public _WhatsAppEmailService: WhatsAppEmailService,
         public datePipe: DatePipe,
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         public matDialog: MatDialog,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 

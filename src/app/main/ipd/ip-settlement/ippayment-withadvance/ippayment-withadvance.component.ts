@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -84,17 +84,17 @@ export class IPpaymentWithadvanceComponent implements OnInit {
   BankNameList2: any = [];
 
 //bANK filter
-public bankFilterCtrl: FormControl = new FormControl();
+public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
 public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
 //cheque filter
-public chequebankFilterCtrl: FormControl = new FormControl();
+public chequebankFilterCtrl: UntypedFormControl = new UntypedFormControl();
 public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
 //Card filter
-public cardbankFilterCtrl: FormControl = new FormControl();
+public cardbankFilterCtrl: UntypedFormControl = new UntypedFormControl();
 public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 private _onDestroy = new Subject<void>();
@@ -111,7 +111,7 @@ private _onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>();
   balAmountValues: any[] = [];
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ipSearchService: IPSettlementService,
     private dialogRef: MatDialogRef<IPpaymentWithadvanceComponent>,

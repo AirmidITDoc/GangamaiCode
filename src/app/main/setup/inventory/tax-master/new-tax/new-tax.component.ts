@@ -1,9 +1,9 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { TaxMasterService } from "../tax-master.service";
-import { ToastrService } from "ngx-toastr";
-import { FormGroup } from "@angular/forms";
-import { fuseAnimations } from "@fuse/animations";
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TaxMasterService } from '../tax-master.service';
+import { ToastrService } from 'ngx-toastr';
+import { FormGroup } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: "app-new-tax",
@@ -13,16 +13,17 @@ import { fuseAnimations } from "@fuse/animations";
     animations: fuseAnimations,
 })
 export class NewTaxComponent implements OnInit {
-    taxForm: FormGroup;
-    isActive: boolean = true;
-    saveflag: boolean = false;
 
-    constructor(
-        public _TaxMasterService: TaxMasterService,
-        public dialogRef: MatDialogRef<NewTaxComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService
-    ) {}
+  taxForm: FormGroup;
+  isActive:boolean=true;
+  saveflag:boolean=false;
+  
+  constructor(
+      public _TaxMasterService: TaxMasterService,
+      public dialogRef: MatDialogRef<NewTaxComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: any,
+      public toastr: ToastrService
+  ) { }
 
     ngOnInit(): void {
         this.taxForm = this._TaxMasterService.createTaxMasterForm();

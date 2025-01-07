@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
@@ -20,14 +20,9 @@ import * as converter from 'number-to-words';
 import { InterimBillComponent } from '../interim-bill/interim-bill.component';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-
-import { analyzeAndValidateNgModules } from '@angular/compiler';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { debug } from 'console';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
 import { ToastrService } from 'ngx-toastr';
 import { forEach } from 'lodash';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import {  MatTabChangeEvent } from '@angular/material/tabs';
 import { IpPaymentwithAdvanceComponent } from '../ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
@@ -137,7 +132,7 @@ export class IPBillingComponent implements OnInit {
   advancedatasource = new MatTableDataSource<any>();
   PackageDatasource = new MatTableDataSource
 
-  myControl = new FormControl(); 
+  myControl = new UntypedFormControl(); 
   filteredOptions: any;
   billingServiceList = [];
   showAutocomplete = false;
@@ -263,7 +258,7 @@ export class IPBillingComponent implements OnInit {
     public _WhatsAppEmailService:WhatsAppEmailService,
     public toastr: ToastrService,
     public _ConfigService : ConfigService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: UntypedFormBuilder) {
     this.showTable = false; 
   }
  
@@ -281,7 +276,7 @@ export class IPBillingComponent implements OnInit {
       this.AdmissionId = this.selectedAdvanceObj.AdmissionID; 
     }
 
-    this.myControl = new FormControl();
+    this.myControl = new UntypedFormControl();
     this.getBillheaderList(); 
     this.getPharmacyAmount();
     this.getBillingClasslist();
@@ -464,7 +459,7 @@ ServiceList:any=[];
   }
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next();
+    this.nextPage$.next(true);
   }
   getOptionText(option) {
     if (!option)

@@ -14,7 +14,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSortModule } from "@angular/material/sort";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {  MatPaginatorModule } from "@angular/material/paginator";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTableModule } from "@angular/material/table";
 import { MatRippleModule } from "@angular/material/core";
@@ -39,7 +39,6 @@ const routes: Routes = [
     declarations: [SubtpaCompanyMasterComponent, NewSubtapComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -58,16 +57,13 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
         MatDialogModule,
-        
     ],
-    providers: [SubtpaCompanyMasterService, DatePipe],
-    entryComponents: [SubtpaCompanyMasterComponent],
+    providers: [SubtpaCompanyMasterService, DatePipe]
 })
 export class SubtpaCompanyMasterModule {}
