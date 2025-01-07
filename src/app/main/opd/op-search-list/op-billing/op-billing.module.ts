@@ -93,6 +93,6 @@ const routes: Routes = [
     providers: [
       OpBillingService,
         DatePipe],
-    entryComponents: [OPBillingComponent],
+    // entryComponents: [OPBillingComponent],
 })
 export class OpBillingModule { }

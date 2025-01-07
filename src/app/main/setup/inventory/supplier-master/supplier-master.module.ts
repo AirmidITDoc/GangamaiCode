@@ -79,7 +79,8 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        
     ],
     providers: [SupplierMasterService, DatePipe]
 })

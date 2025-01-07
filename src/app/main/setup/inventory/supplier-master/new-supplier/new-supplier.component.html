@@ -1,4 +1,3 @@
-
 <div class="modal-wrapper grid-container">
     <!-- Modal header -->
     <div class="modal-header accent">
@@ -19,83 +18,81 @@
             </div>
         </div>
     </div>
-<mat-card>
-    <form [formGroup]="supplierForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
-        <input type="hidden" name="SupplierId" formControlName="SupplierId">
-        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-            class="top-header accent heading-container h-40 border-radius-4">
-            <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
-                Details</span>
-        </div>
-       
-        <mat-card>
-            <div fxFlex="100" fxLayout="row wrap">
+    <mat-card>
+        <form [formGroup]="supplierForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+            <input type="hidden" name="SupplierId" formControlName="SupplierId">
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Personal
+                    Details</span>
+            </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="SupplierType" formControlName="SupplierType"
-                        [formGroup]="supplierForm"
-                        [validations]="getValidationMessages().SupplierType"
-                        [mode]="autocompleteModeSupplierType"
-                        (selectDdlObject)="selectChangeSupplierType($event)">
-                    </airmid-autocomplete>
-                </div>
+            <mat-card>
+                <div fxFlex="100" fxLayout="row wrap">
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Supplier Name</mat-label>
-                        <input name="SupplierName" placeholder="EnterSupplierName" formControlName="SupplierName"
-                            matInput required (keydown)="onEnterSuppliername($event)" #suppliername
-                            [(ngModel)]="vSupplierName">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="SupplierType" formControlName="SupplierType"
+                            [formGroup]="supplierForm" [validations]="getValidationMessages().SupplierType"
+                            [mode]="autocompleteModeSupplierType" (selectDdlObject)="selectChangeSupplierType($event)">
+                        </airmid-autocomplete>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Supplier Name</mat-label>
+                            <input name="SupplierName" placeholder="EnterSupplierName" formControlName="SupplierName"
+                                matInput required (keydown)="onEnterSuppliername($event)" #suppliername
+                                [(ngModel)]="vSupplierName">
                             <mat-error
-                            *ngIf="supplierForm.get('SupplierName').invalid && supplierForm.get('SupplierName').touched">
-                            SupplierName is required, Enter only Alphabets
+                                *ngIf="supplierForm.get('SupplierName').invalid && supplierForm.get('SupplierName').touched">
+                                SupplierName is required, Enter only Alphabets
                             </mat-error>
-                    </mat-form-field>
+                        </mat-form-field>
 
-                </div>
-                
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Mobile Number</mat-label>
-                        <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
-                            [(ngModel)]="registerObj.mobile" #mobile (keydown)="onEntermobile($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                             value="Mobile.length">
-                        <mat-error class="error"
-                            *ngIf="supplierForm.get('Mobile').invalid && supplierForm.get('Mobile').touched">10
-                            digits Mobile number is
-                            required</mat-error>
-                    </mat-form-field>
-                </div>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Phone Number</mat-label>
-                        <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
-                            [(ngModel)]="registerObj.phone" #phone (keydown)="onEnterphone($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                           value="Mobile.length">
-                        <mat-error class="error"
-                            *ngIf="supplierForm.get('Phone').invalid && supplierForm.get('Phone').touched">10
-                            digits Mobile number is
-                            required</mat-error>
-                    </mat-form-field>
-                </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Mobile Number</mat-label>
+                            <input name="Mobile" formControlName="Mobile" placeholder="Mobile Number" matInput required
+                                [(ngModel)]="registerObj.mobile" #mobile (keydown)="onEntermobile($event)"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                value="Mobile.length">
+                            <mat-error class="error"
+                                *ngIf="supplierForm.get('Mobile').invalid && supplierForm.get('Mobile').touched">10
+                                digits Mobile number is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Address</mat-label>
-                        <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
-                            (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="registerObj.address">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Phone Number</mat-label>
+                            <input name="Phone" formControlName="Phone" placeholder="Phone Number" matInput required
+                                [(ngModel)]="registerObj.phone" #phone (keydown)="onEnterphone($event)"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                value="Mobile.length">
+                            <mat-error class="error"
+                                *ngIf="supplierForm.get('Phone').invalid && supplierForm.get('Phone').touched">10
+                                digits Mobile number is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Address</mat-label>
+                            <input name="Address" placeholder="EnterAddress" formControlName="Address" matInput
+                                (keydown)="onEnterAddress($event)" #Address required [(ngModel)]="registerObj.address">
                             <mat-error
-                            *ngIf="supplierForm.get('Address').invalid && supplierForm.get('Address').touched">
-                            Address is required
+                                *ngIf="supplierForm.get('Address').invalid && supplierForm.get('Address').touched">
+                                Address is required
                             </mat-error>
-                    </mat-form-field>
-                </div>
+                        </mat-form-field>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Taluka</mat-label>
                         <input name="Taluka" placeholder="Enter Taluka" formControlName="Taluka" matInput
                             (keydown)="onEnterTaluka($event)" #Taluka>
@@ -104,98 +101,92 @@
                             Taluka is required, Enter only Alphabets
                             </mat-error>
                     </mat-form-field> -->
-                </div>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="City Name" formControlName="CityId"
-                        [formGroup]="supplierForm" [value]="registerObj.cityId"
-                        [validations]="getValidationMessages().CityId"
-                        [mode]="autocompleteModecity">
-                    </airmid-autocomplete>
-                </div>
-               
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="State" formControlName="StateId"
-                        [formGroup]="supplierForm" [value]="registerObj.stateId"
-                        [validations]="getValidationMessages().StateId"
-                        [mode]="autocompleteModestate">
-                    </airmid-autocomplete>
-                </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="City Name" formControlName="CityId" [formGroup]="supplierForm"
+                            [value]="registerObj.cityId" [validations]="getValidationMessages().CityId"
+                            [mode]="autocompleteModecity">
+                        </airmid-autocomplete>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="Country" formControlName="CountryId"
-                        [formGroup]="supplierForm" [value]="registerObj.countryId"
-                        [validations]="getValidationMessages().CountryId"
-                        [mode]="autocompleteModecountry"
-                        (selectDdlObject)="selectChangecountry($event)">
-                    </airmid-autocomplete>
-                </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="State" formControlName="StateId" [formGroup]="supplierForm"
+                            [value]="registerObj.stateId" [validations]="getValidationMessages().StateId"
+                            [mode]="autocompleteModestate">
+                        </airmid-autocomplete>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>PanNo</mat-label>
-                        <input name="PanNo" placeholder="Enter PanNo BBAAA1111A" formControlName="PanNo" matInput
-                            (keydown)="onEnterPan($event)" #Pan [(ngModel)]="registerObj.panNo">
-                            <mat-error
-                            *ngIf="supplierForm.get('PanNo').invalid && supplierForm.get('PanNo').touched">
-                            PanNo is required, Enter in Formate
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="Country" formControlName="CountryId" [formGroup]="supplierForm"
+                            [value]="registerObj.countryId" [validations]="getValidationMessages().CountryId"
+                            [mode]="autocompleteModecountry" (selectDdlObject)="selectChangecountry($event)">
+                        </airmid-autocomplete>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>PanNo</mat-label>
+                            <input name="PanNo" placeholder="Enter PanNo BBAAA1111A" formControlName="PanNo" matInput
+                                (keydown)="onEnterPan($event)" #Pan [(ngModel)]="registerObj.panNo">
+                            <mat-error *ngIf="supplierForm.get('PanNo').invalid && supplierForm.get('PanNo').touched">
+                                PanNo is required, Enter in Formate
                             </mat-error>
-                    </mat-form-field>
+                        </mat-form-field>
+
+                    </div>
 
                 </div>
 
+            </mat-card>
+        </form>
+
+
+        <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Business
+                    Details</span>
             </div>
+            <mat-card>
+                <!-- oninput="this.value = this.value.replace(/['^[a-zA-Z0-9]*$']/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" -->
+                <div fxFlex="100" fxLayout="row wrap">
 
-        </mat-card>
-    </form>
-
-
-    <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
-        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-            class="top-header accent heading-container h-40 border-radius-4">
-            <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Business
-                Details</span>
-        </div>
-        <mat-card>
-            <!-- oninput="this.value = this.value.replace(/['^[a-zA-Z0-9]*$']/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" -->
-            <div fxFlex="100" fxLayout="row wrap">
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Fax</mat-label>
-                        <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput [(ngModel)]="registerObj.fax"
-                            (keydown)="onEnterfax($event)" #Fax maxlength="10">
-                            <mat-error
-                            *ngIf="supplierForm.get('Fax').invalid && supplierForm.get('Fax').touched">
-                            FaxNo is required, Enter only Digits
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Fax</mat-label>
+                            <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
+                                [(ngModel)]="registerObj.fax" (keydown)="onEnterfax($event)" #Fax maxlength="10">
+                            <mat-error *ngIf="supplierForm.get('Fax').invalid && supplierForm.get('Fax').touched">
+                                FaxNo is required, Enter only Digits
                             </mat-error>
-                    </mat-form-field>
-                </div>
+                        </mat-form-field>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Email</mat-label>
-                        <input name="Email" placeholder="Enter Email" formControlName="Email" matInput
-                            (keydown)="onEnterEmail($event)" #Email [(ngModel)]="registerObj.email">
-                            <mat-error
-                            *ngIf="supplierForm.get('Email').invalid && supplierForm.get('Email').touched">
-                            Email required in Format
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Email</mat-label>
+                            <input name="Email" placeholder="Enter Email" formControlName="Email" matInput
+                                (keydown)="onEnterEmail($event)" #Email [(ngModel)]="registerObj.email">
+                            <mat-error *ngIf="supplierForm.get('Email').invalid && supplierForm.get('Email').touched">
+                                Email required in Format
                             </mat-error>
-                    </mat-form-field>
-                </div>
+                        </mat-form-field>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>Freight</mat-label>
-                        <input name="Freight" placeholder="Enter Freight" formControlName="Freight" matInput [(ngModel)]="registerObj.freight"
-                            (keydown)="onEnterFright($event)" #Fright maxlength="10" [(ngModel)]="vFreight">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>Freight</mat-label>
+                            <input name="Freight" placeholder="Enter Freight" formControlName="Freight" matInput
+                                [(ngModel)]="registerObj.freight" (keydown)="onEnterFright($event)" #Fright
+                                maxlength="10" [(ngModel)]="vFreight">
                             <mat-error
-                            *ngIf="supplierForm.get('Freight').invalid && supplierForm.get('Freight').touched">
-                            Freight is required, Enter only Digits
+                                *ngIf="supplierForm.get('Freight').invalid && supplierForm.get('Freight').touched">
+                                Freight is required, Enter only Digits
                             </mat-error>
-                    </mat-form-field>
+                        </mat-form-field>
 
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>OpeningBal</mat-label>
                         <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
                              [(ngModel)]="vOpeningBal" #OpeningBal (keydown)="onEnterOpeningBal($event)"
@@ -205,39 +196,37 @@
                             digits number is
                             required</mat-error>
                     </mat-form-field> -->
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>CreditPeriod</mat-label>
-                        <input name="CreditPeriod" placeholder="Enter CreditPeriod" formControlName="CreditPeriod" matInput
-                            (keydown)="onEnterCreditPeriod($event)" #creditp [(ngModel)]="vCreditPeriod">
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>CreditPeriod</mat-label>
+                            <input name="CreditPeriod" placeholder="Enter CreditPeriod" formControlName="CreditPeriod"
+                                matInput (keydown)="onEnterCreditPeriod($event)" #creditp [(ngModel)]="vCreditPeriod">
                             <mat-error
-                            *ngIf="supplierForm.get('CreditPeriod').invalid && supplierForm.get('CreditPeriod').touched">
-                            CreditPeriod is required
+                                *ngIf="supplierForm.get('CreditPeriod').invalid && supplierForm.get('CreditPeriod').touched">
+                                CreditPeriod is required
                             </mat-error>
-                    </mat-form-field>
-                </div>
+                        </mat-form-field>
+                    </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                    <airmid-autocomplete label="ModeOfPayment" formControlName="ModeOfPayment"
-                        [formGroup]="supplierForm" [value]="registerObj.modeofPayment"
-                        [validations]="getValidationMessages().ModeOfPayment"
-                        [mode]="autocompleteModeofpayment"
-                        (selectDdlObject)="selectChangemodeofpayment($event)">
-                    </airmid-autocomplete>
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete label="ModeOfPayment" formControlName="ModeOfPayment"
+                            [formGroup]="supplierForm" [value]="registerObj.modeofPayment"
+                            [validations]="getValidationMessages().ModeOfPayment" [mode]="autocompleteModeofpayment"
+                            (selectDdlObject)="selectChangemodeofpayment($event)">
+                        </airmid-autocomplete>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                    <airmid-autocomplete label="TermOfPayment" formControlName="TermOfPayment"
-                        [formGroup]="supplierForm" [value]="registerObj.termofPayment"
-                        [validations]="getValidationMessages().TermOfPayment"
-                        [mode]="autocompleteModetermofpayment"
-                        (selectDdlObject)="selectChangetermofpayment($event)">
-                    </airmid-autocomplete>
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <airmid-autocomplete label="TermOfPayment" formControlName="TermOfPayment"
+                            [formGroup]="supplierForm" [value]="registerObj.termofPayment"
+                            [validations]="getValidationMessages().TermOfPayment" [mode]="autocompleteModetermofpayment"
+                            (selectDdlObject)="selectChangetermofpayment($event)">
+                        </airmid-autocomplete>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>TaxNature</mat-label>
                         <input name="TaxNature" placeholder="Enter TaxNature" formControlName="TaxNature" matInput
                             (keydown)="onEnterTax($event)" #Tax [(ngModel)]="vTaxNature">
@@ -246,20 +235,19 @@
                             TaxNature is required
                             </mat-error>
                     </mat-form-field> -->
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <mat-label>GSTNo</mat-label>
-                        <input name="GSTNo" placeholder="Enter GSTNo 22AAAAA0000A1Z5" formControlName="GSTNo" matInput
-                            (keydown)="onEnterGst($event)" #Gst maxlength="15" [(ngModel)]="vGSTNo">
-                            <mat-error
-                            *ngIf="supplierForm.get('GSTNo').invalid && supplierForm.get('GSTNo').touched">
-                            GSTNo is required,Enter in Formate
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                            <mat-label>GSTNo</mat-label>
+                            <input name="GSTNo" placeholder="Enter GSTNo 22AAAAA0000A1Z5" formControlName="GSTNo"
+                                matInput (keydown)="onEnterGst($event)" #Gst maxlength="15" [(ngModel)]="vGSTNo">
+                            <mat-error *ngIf="supplierForm.get('GSTNo').invalid && supplierForm.get('GSTNo').touched">
+                                GSTNo is required,Enter in Formate
                             </mat-error>
-                    </mat-form-field>
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>LicNo</mat-label>
                         <input name="LicNo" placeholder="Enter LicNo" formControlName="LicNo" matInput
                             (keydown)="onEnterLicno($event)" #Licno [(ngModel)]="vLicNo">
@@ -268,9 +256,9 @@
                             LicNo is required,Enter only Digits
                             </mat-error>
                     </mat-form-field> -->
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Exp date</mat-label>
                         <input name="ExpDate" matInput [matDatepicker]="picker" formControllName="ExpDate"
                             [value]="registerObj.ExpDate" [readonly]="true" (keydown)="onEnterexpdate($event)" #Expdate>
@@ -278,9 +266,9 @@
                         <mat-datepicker #picker></mat-datepicker>
 
                     </mat-form-field> -->
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>DlNo</mat-label>
                         <input name="DlNo" placeholder="Enter DL No" formControlName="DlNo" matInput maxlength="20"
                             (keydown)="onEnterDlno($event)" #Dlno value="MH1420110062821" [(ngModel)]="vDlNo">
@@ -289,33 +277,33 @@
                             DlNo is required,Enter in Formate
                             </mat-error>
                     </mat-form-field> -->
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    </div>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                </div>
+            </mat-card>
+        </form>
+
+
+        <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
+
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Bank Details</span>
             </div>
-        </mat-card>
-    </form>
 
-
-    <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
-
-        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-            class="top-header accent heading-container h-40 border-radius-4">
-            <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Bank Details</span>
-        </div>
-
-        <mat-card>
-            <div fxFlex="100" fxLayout="row wrap">
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
-                    <!-- <airmid-autocomplete label="BankName" formControlName="BankName"
+            <mat-card>
+                <div fxFlex="100" fxLayout="row wrap">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <!-- <airmid-autocomplete label="BankName" formControlName="BankName"
                         [formGroup]="supplierForm"
                         [validations]="getValidationMessages().BankName"
                         [mode]="autocompleteModebankName"
                         (selectDdlObject)="selectChangebankName($event)">
                     </airmid-autocomplete> -->
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Bank Branch</mat-label>
                         <input name="BanlBranch" placeholder="Enter BanlBranch" formControlName="BankBranch" matInput
                             (keydown)="onEnterBankbranch($event)" #Bankbranch [(ngModel)]="vBankbranch">
@@ -325,10 +313,10 @@
                             </mat-error>
                     </mat-form-field> -->
 
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>Bank NO</mat-label>
                         <input name="BankNo" formControlName="BankNo" placeholder="Enter BankNo 9-18 digits" matInput
                             required [(ngModel)]="vBankNo" #Bankno (keydown)="onEnterBankno($event)"
@@ -338,9 +326,9 @@
                             digits Bank number is required
                         </mat-error>
                     </mat-form-field> -->
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>IFSCcode</mat-label>
                         <input name="IFSCcode" placeholder="Enter IFSCcode SBIN0005943" formControlName="IFSCcode"
                             matInput (keydown)="onEnterIfsc($event)" #IFSC [(ngModel)]="vIfsccode">
@@ -349,15 +337,15 @@
                             IFSCcode number is required, Enter in formate
                         </mat-error>
                     </mat-form-field> -->
+                    </div>
                 </div>
-            </div>
 
-        </mat-card>
+            </mat-card>
 
 
-    </form>
+        </form>
 
-    <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
+        <!-- <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;"> -->
 
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
             class="top-header accent heading-container h-40 border-radius-4">
@@ -369,7 +357,7 @@
             <div fxFlex="100" fxLayout="row wrap">
                 <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
 
-                    <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                         <mat-label>OpeningBal</mat-label>
                         <input name="BankNo" formControlName="OpeningBal" placeholder="Enter OpeningBal" matInput
                              [(ngModel)]="vOpeningBal" #OpeningBal (keydown)="onEnterOpeningBal($event)"
@@ -382,50 +370,49 @@
                     </mat-form-field> -->
 
 
-                <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
+                <!-- <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;"> -->
 
-                    <!-- <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                <!-- <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
                         class="top-header accent heading-container h-40 border-radius-4">
                         <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Details</span>
                     </div> -->
-                    <div fxLayout="row">
-            
-                        <div fxFlex>
-                            <mat-card>
-                                <form [formGroup]="supplierForm">
-                                    <div fxLayout="row">
-                                        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-autocomplete label="Store" formControlName="MAssignSupplierToStores"
-                                                [formGroup]="supplierForm" [IsMultiPle]="true" [value]="registerObj.mAssignSupplierToStores"
-                                                [validations]="getValidationMessages().StoreId" #ddlStore
-                                                ValueField="storeId" TextField="storeName"
-                                                ApiUrl="StoreMaster/get-store">
-                                            </airmid-autocomplete>
-                                        </div>
-                                        <mat-chip-list #chipList>
-                                            <mat-chip *ngFor="let item of supplierForm.value.MAssignSupplierToStores">
-                                                {{ item.storeName }} <mat-icon
-                                                    (click)="removestore(item)">close</mat-icon>
-                                            </mat-chip>
-                                        </mat-chip-listbox>
+                <div fxLayout="row">
+
+                    <div fxFlex>
+                        <mat-card>
+                            <form [formGroup]="supplierForm">
+                                <!-- <div fxLayout="row">
+                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-autocomplete label="Store" formControlName="MAssignSupplierToStores"
+                                            [formGroup]="supplierForm" [IsMultiPle]="true"
+                                            [value]="registerObj.mAssignSupplierToStores"
+                                            [validations]="getValidationMessages().StoreId" #ddlStore
+                                            ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store">
+                                        </airmid-autocomplete>
                                     </div>
-                                </form>
-                            </mat-card>
-                        </div>
+                                    <mat-chip-list #chipList>
+                                        <mat-chip *ngFor="let item of supplierForm.value.MAssignSupplierToStores">
+                                            {{ item.storeName }} <mat-icon (click)="removestore(item)">close</mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-listbox>
+                                </div> -->
+                            </form>
+                        </mat-card>
                     </div>
-                </form>
+                </div>
+                <!-- </form> -->
             </div>
         </mat-card>
 
-    </form>
+        <!-- </form> -->
 
 
 
-    <div class="row row-container" style="width: 100%;">
-        <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="row row-container" style="width: 100%;">
+            <div class="sales-radio-buttons gap-8" fxLayout="row" fxLayoutAlign="space-between center">
 
-            <form [formGroup]="supplierForm">
-                <!-- <div class="sales-radio-buttons gap-2" fxLayout="row">
+                <form [formGroup]="supplierForm">
+                    <!-- <div class="sales-radio-buttons gap-2" fxLayout="row">
                     <mat-checkbox aria-label="Msm" formControlName="MsmNo" (checked)=true (change)="onChangeMsm($event)"
                         style="font-weight: bold;margin-right: 20px;">MSME
                     </mat-checkbox>
@@ -433,17 +420,17 @@
                         (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
                     </mat-checkbox>
                 </div> -->
-            </form>
+                </form>
 
-            <div class="sales-footer-buttons gap-8" fxLayout="row">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" color="accent" (click)="onSubmit()"  [disabled]="Savebtn">
-                    <span>Save</span>
-                </button>
+                <div class="sales-footer-buttons gap-8" fxLayout="row">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary" color="accent" (click)="onSubmit()" [disabled]="Savebtn">
+                        <span>Save</span>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</mat-card>
+    </mat-card>
     <!-- Modal footer -->
 
 </div>
