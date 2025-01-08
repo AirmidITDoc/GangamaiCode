@@ -144,12 +144,11 @@ export class ItemFormMasterComponent implements OnInit {
 
     onSubmit() {
                 debugger
-                console.log("Item JSON :-", this.itemForm.value);
-
             // if (!this.itemForm.invalid) 
             // {
                 this.Saveflag = true;
 
+                console.log("Item JSON :-", this.itemForm.value);
                
                 this._itemService.insertItemMaster(this.itemForm.value).subscribe((data) => {
                

@@ -51,7 +51,7 @@ export class SuppliertestingComponent implements OnInit {
 
     if (this.data.supplierId > 0) {
 
-      this._supplierService.getstoreById(this.data.supplierId).subscribe((response) => {
+      this._supplierService.getsupplierId(this.data.supplierId).subscribe((response) => {
         this.registerObj = response;
         this.SupplierId = this.registerObj.supplierId
         console.log(this.registerObj)

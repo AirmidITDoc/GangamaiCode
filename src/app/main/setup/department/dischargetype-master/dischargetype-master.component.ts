@@ -22,7 +22,7 @@ export class DischargetypeMasterComponent implements OnInit {
 
         public _matDialog: MatDialog
     ) { }
-
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "DischargeType/List",

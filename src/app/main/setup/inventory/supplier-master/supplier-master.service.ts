@@ -22,33 +22,41 @@ export class SupplierMasterService {
         return this._formBuilder.group({
             supplierId: [0],
             supplierName:["", [
-                Validators.required,
+                // Validators.required,
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
               ]],
-            ContactPerson:["sk", [ 
+            ContactPerson:["Subhash Choughule", [ 
                 // Validators.required,
                 // Validators.pattern("^[a-zA-Z._ -]+$"),
                 // Validators.maxLength(100),
               ]],
 
-            address: ["", Validators.required],
-            cityId: ["", Validators.required],
+            address: ["", 
+                // Validators.required
+            ],
+            cityId: ["", 
+                // Validators.required
+            ],
             // CityName: [""],
-            stateId: ["", Validators.required],
+            stateId: ["", 
+                // Validators.required
+            ],
             // StateName: [""],
             countryId: [""],
             // CountryName: [""],
             CreditPeriod: ["",
-                [
-                    Validators.required
-                ]
+                // [
+                //     Validators.required
+                // ]
             ],
-          
-            mobile: ["", [Validators.required,
+            mobile: ["", 
+                [
+                    // Validators.required,
                 Validators.minLength(10),
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
+                ]
+            ],
             phone:["", 
                 [
                     Validators.minLength(10),
@@ -56,7 +64,7 @@ export class SupplierMasterService {
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
-            Fax: ['',
+            fax: ['',
                 [
                 Validators.minLength(10),
                 Validators.maxLength(10),
@@ -65,35 +73,46 @@ export class SupplierMasterService {
             ],
             email: ["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
                 ]
             ],
-            modeofPayment: ["", Validators.required],
-            termofPayment: ["", Validators.required],
+            modeofPayment: ["", 
+                // Validators.required
+            ],
+            termofPayment: ["", 
+                // Validators.required
+            ],
             // TaxNature: ["", Validators.required],
             CurrencyId: [1],// Validators.pattern("[0-9]+")
             Octroi: [0],//Validators.pattern("[0-9]+")
             Freight: [0, 
-                    [
-                        Validators.required,
-                        Validators.pattern("^[0-9]*$"),
-                        Validators.maxLength(10),
-                    ]
-                ],
-                gstNo: ["", 
                 [
-                    Validators.required,
+                    // Validators.required,
+                    Validators.pattern("^[0-9]*$"),
+                    Validators.maxLength(10),
+                ]
+            ],
+            gstNo: ["", 
+                [
+                    // Validators.required,
                     Validators.maxLength(15)
                 ]
             ], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
             panNo: ["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
                 ]
             ],
             supplierTime:  [(new Date()).toISOString()],
+            mAssignSupplierToStores: [
+                {
+                    assignId: 0,
+                    storeId: 0,
+                    supplierId: 0
+                }
+            ]
             // StoreId: [""],
             // StoreName: [""],
             // AddedBy: [""],
@@ -142,7 +161,7 @@ export class SupplierMasterService {
             //     ]
             // ],
             // CreateApproval:[true],
-            MAssignSupplierToStores: ["", Validators.required],
+            // MAssignSupplierToStores: ["", Validators.required],
         });
     }
 
@@ -184,7 +203,7 @@ export class SupplierMasterService {
         return this._httpClient.PostData("Inventory/SupplierUpdate", param);
     }
 
-    public getstoreById(Id, showLoader = true) {
+    public getsupplierId(Id, showLoader = true) {
         return this._httpClient.GetData("Supplier/" + Id,showLoader);
     }   
 

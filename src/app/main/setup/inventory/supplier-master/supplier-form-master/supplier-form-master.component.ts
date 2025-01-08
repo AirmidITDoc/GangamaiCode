@@ -65,7 +65,7 @@ export class SupplierFormMasterComponent implements OnInit {
 
       if (this.data.supplierId > 0) {
 
-        this._supplierService.getstoreById(this.data.supplierId).subscribe((response) => {
+        this._supplierService.getsupplierId(this.data.supplierId).subscribe((response) => {
           this.registerObj = response;
           console.log(this.registerObj)
           this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
