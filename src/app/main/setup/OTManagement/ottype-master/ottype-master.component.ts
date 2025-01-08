@@ -93,7 +93,7 @@ export class OttypeMasterComponent implements OnInit {
       {
         maxWidth: "50%",
         width: "40%",
-        height: "35%",
+        height: "32%",
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -106,7 +106,7 @@ export class OttypeMasterComponent implements OnInit {
       {
         maxWidth: "50%",
         width: "40%",
-        height: "35%",
+        height: "32%",
         data: {
           Obj: contact
         }

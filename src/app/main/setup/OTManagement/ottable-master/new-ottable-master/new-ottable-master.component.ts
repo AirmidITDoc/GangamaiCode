@@ -195,7 +195,7 @@ export class NewOttableMasterComponent implements OnInit {
   }
 
   onClose(){
-    this._otTableMasterService.myform.reset();
+    this._otTableMasterService.myform.reset({IsDeleted: true});
     this.dialogRef.close();
   }
 }

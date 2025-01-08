@@ -38,7 +38,7 @@ export class NewOttypeMasterComponent implements OnInit {
       this.registerObj=this.data.Obj;
       console.log("RegisterObj:",this.registerObj)
       this.vTypeName = this.registerObj.TypeName;
-      this.vOTTypeId=this.registerObj.OTTableId;
+      this.vOTTypeId=this.registerObj.OTTypeId;
       if(this.registerObj.IsActive==true){
         this._otTypeMasterService.myform.get("IsDeleted").setValue(true)
       }else{
@@ -48,7 +48,7 @@ export class NewOttypeMasterComponent implements OnInit {
   }
 
   onClose(){
-    this._otTypeMasterService.myform.reset();
+    this._otTypeMasterService.myform.reset({IsDeleted: true});
     this.dialogRef.close();
   }
 
@@ -77,7 +77,63 @@ export class NewOttypeMasterComponent implements OnInit {
   }
 
   onSubmit(){
+    debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 
+    if(!this.vOTTypeId){
+
+      var m_dataInsert={
+        "saveMOTTypeMasterParam": {
+          "typeName": this._otTypeMasterService.myform.get("TypeName").value || '',
+          "isActive": Boolean(JSON.parse(this._otTypeMasterService.myform.get("IsDeleted").value) || 0),
+          "createdBy": this._loggedService.currentUserValue.user.id,
+          "otTableId": 0
+        }
+      }
+      console.log("insertJson:", m_dataInsert);
+
+      this._otTypeMasterService.OtTypeInsert(m_dataInsert).subscribe(response =>{
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+    else{
+      debugger
+      var m_dataUpdate={
+          "updateOTTypemasterParam": {
+          "otTypeId": this.vOTTypeId,
+          "otTableName": this._otTypeMasterService.myform.get("TypeName").value || '',
+          "isActive": Boolean(JSON.parse(this._otTypeMasterService.myform.get("IsDeleted").value) || 0),
+          "createdBy": 0,
+          "modifiedBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+      console.log("UpdateJson:", m_dataUpdate);
+
+      this._otTypeMasterService.OtTypeUpdate(m_dataUpdate).subscribe(response =>{
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
 
 }

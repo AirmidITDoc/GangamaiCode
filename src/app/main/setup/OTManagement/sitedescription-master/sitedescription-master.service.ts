@@ -19,7 +19,15 @@ export class SitedescriptionMasterService {
 
   createOtTypeForm(): FormGroup {
     return this._formBuilder.group({
-
+      SiteDescId: [''],
+      SiteDescriptionName: ['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      SurgeryCategoryID: ['',
+        Validators.required
+      ],
+      IsDeleted: [true]
     });
   }
 
@@ -27,5 +35,20 @@ export class SitedescriptionMasterService {
     return this._formBuilder.group({
       OtSiteDescNameSearch: [""],
     });
+  }
+
+  public getSurgerycategoryMasterCombo() {
+    debugger
+    return this._httpClient.post(
+      "Generic/GetByProc?procName=RetrieveSurgeryCategoryForCombo",
+      {}
+    );
+  }
+
+  public OtSiteDescInsert(employee) {
+    return this._httpClient.post("OT/SaveMOTSiteDescriptionMaster", employee);
+  }
+  public OtSiteDescUpdate(employee) {
+    return this._httpClient.post("OT/UpdateMOTSiteDescriptionMaster", employee);
   }
 }

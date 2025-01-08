@@ -76,7 +76,7 @@ export class CustomerBillRaiseComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator) paginator2: MatPaginator;
+  // @ViewChild(MatPaginator) paginator2: MatPaginator;
   
   constructor(
     public _CustomerBill: CustomerBillRaiseService,
@@ -174,24 +174,29 @@ export class CustomerBillRaiseComponent implements OnInit {
   }
 
   resultsLength2=0;
-  getCustomerPaymentDaySummary(){ 
 
+  getCustomerPaymentDaySummary() {
+    debugger
     var D_data = {
       "FromDate": this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       "ToDate ": this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       "CustomerName": this._CustomerBill.myform.get("CustomerNameSearch").value + '%' || '%',
-      "TranType":this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
-      "Start":(this.paginator2?.pageIndex ?? 0),
-      "Length":(this.paginator2?.pageSize ?? 25),
+      "TranType": this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
+      "Start": (this.paginator?.pageIndex ?? 0),
+      "Length": (this.paginator?.pageSize ?? 25),
     };
-    this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data =>{
+    console.log(D_data)
+    this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data => {
+      console.log("API Response:", data);
       this.dsPaymentDaySummary.data = data["Table1"] ?? [] as PaymentDaySummary[];
-      console.log(this.dsPaymentDaySummary.data)
+      this.dsPaymentDaySummary.sort=this.sort;
       this.resultsLength2 = data["Table"][0]["total_row"];
-    },
-    error => {
       this.sIsLoading = '';
-    });
+      console.log("dsPaymentDaySummary:",this.dsPaymentDaySummary.data)
+    },
+      error => {
+        this.isLoading = false;
+      });
   }
 
 

@@ -39,4 +39,12 @@ export class OttypeMasterService {
         "Generic/ExecByQueryStatement?query=" + m_data,{}
     );
   }
+  public OtTypeInsert(employee)
+{    
+  return this._httpClient.post("OT/SaveMOTTypeMaster",employee);
+}
+public OtTypeUpdate(employee)
+{    
+  return this._httpClient.post("OT/UpdateMOTTypeMaster",employee);
+}
 }

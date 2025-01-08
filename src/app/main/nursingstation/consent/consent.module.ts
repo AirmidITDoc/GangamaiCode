@@ -37,6 +37,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ConsentComponent } from './consent.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { NewConsentComponent } from './new-consent/new-consent.component';
 
 
 const routes: Routes = [
@@ -49,7 +50,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ConsentComponent
+    ConsentComponent,
+    NewConsentComponent
   ],
   imports: [    
         RouterModule.forChild(routes),
