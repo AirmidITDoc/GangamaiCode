@@ -101,7 +101,7 @@ export class CertificateComponent implements OnInit {
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
-    debugger;
+    ;
     this.minDate = new Date();
      
       this.getCharityPatientList();
@@ -127,7 +127,7 @@ export class CertificateComponent implements OnInit {
 
    
   getCharityPatientList() {
-    debugger;
+    ;
     // this.sIsLoading = 'loading-data';
     var m_data ={
       "F_Name": (this.searchFormGroup.get("F_Name").value).trim() + '%' || '%',
@@ -155,7 +155,7 @@ export class CertificateComponent implements OnInit {
  
   addNewCertificate(){
 
-debugger;   
+;   
     // let m_data ={
     //   Regno:
     // }
@@ -212,7 +212,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 onEdit(contact){
-  debugger;
+  ;
  console.log(contact);
 
  if(contact.AnesthType)

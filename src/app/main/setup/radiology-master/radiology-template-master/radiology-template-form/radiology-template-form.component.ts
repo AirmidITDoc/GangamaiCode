@@ -54,7 +54,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
         return;
     }else{
         if (!this.templateForm.get("templateId").value) {
-            debugger
+            
             var mdata={
                   "templateId": 0,
                   "templateName": this.templateForm.get("templateName").value,

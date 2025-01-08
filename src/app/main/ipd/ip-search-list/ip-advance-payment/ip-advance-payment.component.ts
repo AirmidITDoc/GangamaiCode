@@ -565,7 +565,7 @@ export class IPAdvancePaymentComponent implements OnInit {
     console.log(paidAmtLocal)
     console.log(this.balanceAmt1)
 
-    debugger;
+    ;
 
 
     console.log(this.balanceAmt1);
@@ -573,7 +573,7 @@ export class IPAdvancePaymentComponent implements OnInit {
     console.log(this.paidAmt);
 
     // if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-    debugger;
+    ;
     // if(chipName)
     //  if( paidAmtLocal > this.balanceAmt1){
     // Swal.fire("Amount chk")
@@ -650,7 +650,7 @@ export class IPAdvancePaymentComponent implements OnInit {
   }
 
   saveClicked() {
-    debugger
+    
     if (this.balanceAmt == 0) {
       let Paymentobj = {};
       if (this.advanceData.FromName == "OP-Payment") {
@@ -861,7 +861,7 @@ export class IPAdvancePaymentComponent implements OnInit {
 
 
   onClose() {
-    debugger
+    
     let Paymentobj = {};
     // Paymentobj['PaymentId'] = 0;
       Paymentobj['BillNo'] = 0,// this.billNo;
@@ -919,7 +919,7 @@ export class IPAdvancePaymentComponent implements OnInit {
 
 
   // saveClicked() {
-  //   debugger
+  //   
   //   let Paymentobj = {};
   //   if (this.balanceAmt == 0) {
 

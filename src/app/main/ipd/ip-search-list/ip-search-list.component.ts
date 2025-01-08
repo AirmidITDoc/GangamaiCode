@@ -385,7 +385,7 @@ export class IPSearchListComponent implements OnInit {
 
             this.advanceDataStored.storage = new AdvanceDetailObj(contact);
             this._IpSearchListService.populateForm(contact);
-            //debugger
+            //
             let Advflag: boolean = false;
             if (contact.IsBillGenerated) {
                 Advflag = true;
@@ -772,7 +772,7 @@ export class IPSearchListComponent implements OnInit {
     gridename = this.gridConfig;
     List = "Admission"
     onChangeStatus(event) {
-        debugger
+        
         // this.IsDischarge = SiderOption.checked;
         if (event.value == 0)
             this.gridename = this.gridConfig

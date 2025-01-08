@@ -196,7 +196,7 @@ export class ItemMasterService {
     //insert update of item master
     public insertItemMaster(Param: any, showLoader = true) {
         if (Param.itemId) {
-            debugger
+            
             return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemId, Param, showLoader);
         } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param, showLoader);
     }

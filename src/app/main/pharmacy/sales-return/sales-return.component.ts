@@ -218,7 +218,7 @@ export class SalesReturnComponent implements OnInit {
     this.Itemselectedlist.data = [];
     this.Itemselectedlist = [];
 
-     // debugger
+     // 
     var vdata = {
       F_Name: this.SearchForm.get('F_Name').value + '%' || '%',
       L_Name: this.SearchForm.get('L_Name').value + '%' || '%',
@@ -307,7 +307,7 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getCellCalculation(contact, ReturnQty) {
-    debugger
+    
     this.RQty = parseInt(ReturnQty) ;
     if ((parseInt(this.RQty)) > (parseInt(contact.Qty))) {
       Swal.fire("Return Qty cannot be greater than Qty")
@@ -454,7 +454,7 @@ export class SalesReturnComponent implements OnInit {
 
   
   SelectedItem(contact) {
-  debugger
+  
     this.OP_IP_Type=contact.OP_IP_Type;
     this.IsPrescriptionFlag=contact.IsPrescriptionFlag;
     this.TempItemselectedlist.data=this.selectedssaleDetailList.data;
@@ -879,7 +879,7 @@ export class SalesReturnComponent implements OnInit {
   }
 
   getSalesRetPrint(el){
-    debugger
+    
     var D_data = {
       "SalesID": el,
       "OP_IP_Type": 2//this.OP_IP_Type,

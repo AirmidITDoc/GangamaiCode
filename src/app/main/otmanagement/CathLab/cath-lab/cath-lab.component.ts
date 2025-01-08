@@ -101,7 +101,7 @@ export class CathLabComponent implements OnInit {
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
-    debugger;
+    ;
     this.minDate = new Date();
     var D_data= {
      
@@ -149,7 +149,7 @@ export class CathLabComponent implements OnInit {
 
    
   getCathLabBookingList() {
-    debugger;
+    ;
     this.sIsLoading = 'loading-data';
     var m_data ={
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
@@ -173,7 +173,7 @@ export class CathLabComponent implements OnInit {
 
 
   addNewCathlabBooking(){
-debugger;   
+;   
    const dialogRef = this._matDialog.open(NewCathLabComponent,
      {
        maxWidth: "70%",
@@ -206,7 +206,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 onEdit(contact){
-  debugger;
+  ;
  console.log(contact);
 
  if(contact.AnesthType)

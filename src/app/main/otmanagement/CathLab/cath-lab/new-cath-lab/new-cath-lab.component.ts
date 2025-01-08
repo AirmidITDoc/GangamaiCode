@@ -260,7 +260,7 @@ export class NewCathLabComponent implements OnInit {
 
 
   setDropdownObjs1() {
-    debugger;
+    ;
 
     this._OtManagementService.populateFormpersonal(this.registerObj1);
 
@@ -569,7 +569,7 @@ public onEnterAnesthType(event): void {
 }
 
   onSubmit() {
-    debugger;
+    ;
     let OTCathLabBokingID = this.registerObj1.OTCathLabBokingID;
     this.isLoading = 'submit';
 
@@ -619,7 +619,7 @@ public onEnterAnesthType(event): void {
       });
     }
     else {
-      debugger;
+      ;
       var m_data1 = {
         "cathLabBookingDetailUpdate": {
           "OTCathLabBokingID": OTCathLabBokingID,

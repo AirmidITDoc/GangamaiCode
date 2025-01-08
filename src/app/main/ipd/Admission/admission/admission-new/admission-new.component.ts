@@ -336,7 +336,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   private filterCity() {
-    // debugger;
+    // ;
     if (!this.cityList) {
       return;
     }
@@ -356,7 +356,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   private filterDepartment() {
-    // debugger;
+    // ;
 
     if (!this.DepartmentList) {
       return;
@@ -379,7 +379,7 @@ export class AdmissionNewComponent implements OnInit {
 
 
   getOptionsText(option) {
-    // debugger;
+    // ;
     if (!option)
       return '';
     return option.ServiceName + ' ' + option.Price + ' (' + option.TariffId + ')';
@@ -713,7 +713,7 @@ export class AdmissionNewComponent implements OnInit {
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
+        // ;
 
         this.filteredOptions = resData;
         console.log(resData);
@@ -1055,7 +1055,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   OnChangeDoctorList(departmentObj) {
-    // debugger;
+    // ;
     console.log("departmentObj", departmentObj)
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
@@ -1078,7 +1078,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   OnChangeBedList(wardObj) {
-    debugger
+    
     console.log(wardObj);
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
@@ -1116,7 +1116,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   takePicture() {
-    // debugger;
+    // ;
     // const dialogRef = this._matDialog.open(CameraComponent, {
     //   width: '600px',
     //   height: '400px',
@@ -1151,7 +1151,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   nextClicked(formGroupName) {
-    // debugger;
+    // ;
     if (formGroupName.invalid) {
       const controls = formGroupName.controls;
       Object.keys(controls).forEach(controlsName => {
@@ -1181,7 +1181,7 @@ export class AdmissionNewComponent implements OnInit {
 
 
   submitAdmissionForm() {
-    // debugger;
+    // ;
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1304,7 +1304,7 @@ export class AdmissionNewComponent implements OnInit {
       let admissionInsert = {};
 
       //      submissionObj['regUpdate'] = RegistraionUpdate;
-      // debugger;
+      // ;
       admissionInsert['admissionID'] = 0;
       admissionInsert['regId'] = this.registerObj.RegId;
       admissionInsert['admissionDate'] = this.dateTimeObj.date;
@@ -1419,7 +1419,7 @@ export class AdmissionNewComponent implements OnInit {
 
   getPrint(el) {
     console.log(el);
-    debugger;
+    ;
     var D_data = {
       "AdmissionId": el,
       // "AdmissionId": 5,

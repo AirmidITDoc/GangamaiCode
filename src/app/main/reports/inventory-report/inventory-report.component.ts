@@ -521,7 +521,7 @@ export class InventoryReportComponent implements OnInit {
   //inventory
 
   viewItemListPdf() {
-    debugger
+    
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
    

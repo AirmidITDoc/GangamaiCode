@@ -450,7 +450,7 @@ ServiceList: any = [];
 
 
   viewgetDocwisepatientcountReportPdf() {
-    debugger
+    
 
     let DoctorID = 0;
     if (this._OPReportsService.userForm.get('DoctorID').value)
@@ -551,7 +551,7 @@ ServiceList: any = [];
 
 
   viewgetDailyCollectionReportPdf() {
-    debugger
+    
 
     let AddedById = 0;
     if (this._OPReportsService.userForm.get('UserId').value)

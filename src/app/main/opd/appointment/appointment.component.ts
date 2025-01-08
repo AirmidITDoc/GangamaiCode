@@ -118,7 +118,7 @@ export class AppointmentComponent implements OnInit {
     ngOnInit(): void {
       this.myFilterform = this.filterForm();
       this.getVisitList();
-      debugger
+      
       if (this._ActRoute.url == "/opd/appointment") {
   
         // this.menuActions.push("Update Registration");
@@ -160,7 +160,7 @@ export class AppointmentComponent implements OnInit {
   this.todate=this.myFilterform.get("enddate").value
   this.RegNo=this.myFilterform.get("RegNo").value
   this.DoctorId=this.myFilterform.get("DoctorId").value
-  debugger
+  
       var m_data = {
         "first": 0,
         "rows": 25,

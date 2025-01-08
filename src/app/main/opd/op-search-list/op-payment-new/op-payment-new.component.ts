@@ -92,7 +92,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
   onAddPayment() {
     this.submitted = true;
-debugger
+
     if (this.patientDetailsFormGrp.invalid) {
       return;
     }
@@ -278,7 +278,7 @@ debugger
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    debugger
+    
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.data = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
@@ -366,7 +366,7 @@ debugger
     // this.Paymentobj["NEFTPayAmount"] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
     // this.Paymentobj["CardPayAmount"] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
     // console.log(JSON.stringify(this.Paymentobj));
-    debugger
+    
     this.onAddPayment();
     if (this.balanceAmt != 0) {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)

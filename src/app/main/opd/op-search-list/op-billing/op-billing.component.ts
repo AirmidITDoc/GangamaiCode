@@ -333,7 +333,7 @@ export class OPBillingComponent implements OnInit {
   //Service list
 
   getServiceListCombobox() {
-    debugger
+    
     var m_data = {
 
       "first": 0,
@@ -545,7 +545,7 @@ export class OPBillingComponent implements OnInit {
   }
   chkdelte: any = [];
   deleteTableRow(element) {
-    debugger
+    
     console.log(element)
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -586,7 +586,7 @@ export class OPBillingComponent implements OnInit {
   }
   //package list 
   getpackagedetList() {
-    // debugger
+    // 
     // var vdata = {
     //   'ServiceId': this.serviceId
     // }
@@ -826,7 +826,7 @@ export class OPBillingComponent implements OnInit {
 
   SavePackageList: any = [];
   onSaveOPBill2() {
-    debugger
+    
     // if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
     //   this.toastr.warning('Please select Patient', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',
@@ -883,7 +883,7 @@ export class OPBillingComponent implements OnInit {
       let ConcessionReason = '';
       if (this.BillingForm.get('ConcessionId').value)
         ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
-      debugger
+      
       this.isLoading = 'submit';
       let InsertBillUpdateBillNoObj = {};
       InsertBillUpdateBillNoObj['BillNo'] = 0;
@@ -917,7 +917,7 @@ export class OPBillingComponent implements OnInit {
 
 
       let Billdetsarr = [];
-      debugger
+      
       this.dataSource.data.forEach((element) => {
         let BillDetailsInsertObj = {};
         BillDetailsInsertObj['BillNo'] = 0;
@@ -1581,7 +1581,7 @@ export class OPBillingComponent implements OnInit {
     //     }
     //   });
     // dialogRef.afterClosed().subscribe(result => {
-    //   debugger
+    //   
     //   console.log('The dialog was closed - Insert Action', result);
     //   if (result) {
 

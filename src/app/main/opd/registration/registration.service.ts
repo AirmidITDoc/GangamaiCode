@@ -183,7 +183,7 @@ export class RegistrationService {
 
  
   public RegstrationtSaveData(Param: any, showLoader = true) {
-    debugger
+    
     if (Param.RegId) {
       return this._httpClient1.PostData("OutPatient/RegistrationUpdate",Param, showLoader);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);

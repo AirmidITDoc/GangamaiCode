@@ -329,7 +329,7 @@ private _onDestroy = new Subject<void>();
     });
   } 
   getAdvcanceDetails(isReset?: any) {
-    debugger
+    
     // checking 
     if(this.advanceData.FromName == "IP-IntrimBIll"){
       this.chipsElements[0].state = false;
@@ -595,7 +595,7 @@ private _onDestroy = new Subject<void>();
     } else {
       this.AdvanceId = 0;
     }
-    debugger;
+    ;
     console.log(this.tdsAmt)
     let ipPaymentInsert = {};
     if(this.advanceData.FromName == "IP-IntrimBIll" || this.advanceData.FromName == "IP-Bill"){ 

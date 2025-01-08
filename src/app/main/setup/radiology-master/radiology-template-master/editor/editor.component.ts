@@ -122,7 +122,7 @@ export class EditorComponent implements OnInit {
   }
 
    onSubmit() {
-  //   debugger;
+  //   ;
   //   if (this._radiologytemplateService.myform.valid) {
   //     if (!this._radiologytemplateService.myform.get("TemplateId").value) {
   //       var m_data = {

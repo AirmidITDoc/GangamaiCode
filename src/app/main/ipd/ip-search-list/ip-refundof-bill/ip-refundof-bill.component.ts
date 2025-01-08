@@ -308,7 +308,7 @@ getServiceList(param){
 }  
 OnEdit(row) { 
   console.log(row);
-  debugger
+  
   if(row.NetPayableAmt == row.RefundAmount){
     Swal.fire('Selected Bill already Refunded.') 
     return
@@ -331,7 +331,7 @@ OnEdit(row) {
   this.RefAmt1=this.RefundBalAmount;
 }    
 gettablecalculation(element, RefundAmt) {
-  debugger 
+   
   if(RefundAmt > 0 && RefundAmt <= element.BalAmt){
     element.BalanceAmount= ((element.BalAmt) - (RefundAmt));   
     element.PrevRefAmount = RefundAmt;
@@ -572,7 +572,7 @@ viewgetRefundofbillReportPdf(RefundId) {
   },100);
 }
 getWhatsappshareIPrefundBill(el, vmono) {
-  debugger
+  
   var m_data = {
     "insertWhatsappsmsInfo": {
       "mobileNumber": vmono || 0,

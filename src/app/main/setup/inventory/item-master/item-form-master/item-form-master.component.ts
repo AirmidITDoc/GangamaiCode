@@ -143,7 +143,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     onSubmit() {
-                debugger
+                
             // if (!this.itemForm.invalid) 
             // {
                 this.Saveflag = true;

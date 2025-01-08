@@ -566,7 +566,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
-      debugger
+      
       let Qty = this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0
       this.Chargelist.push(
         { 
@@ -668,7 +668,7 @@ onTemplDetAdd(){
 
 }
   onSave() {
-    debugger
+    
     if (this.RegNo == '' || this.RegNo == undefined || this.RegNo == null) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -763,7 +763,7 @@ onTemplDetAdd(){
       if (response) {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
-            debugger
+            
             if(this.caseFormGroup.get("LetteHeadRadio").value=='LetterHead')
             this.viewgetOpprescriptionReportwithheaderPdf();
           else
@@ -815,7 +815,7 @@ onTemplDetAdd(){
   }
   SpinLoading: any = ""
   viewgetOpprescriptionReportwithheaderPdf() {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
@@ -846,7 +846,7 @@ onTemplDetAdd(){
   }
 
   viewgetOpprescriptionReportwithoutheaderPdf() {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading = true;
       //  this.AdList=true;
@@ -877,7 +877,7 @@ onTemplDetAdd(){
   }
 
   getWhatsappshareSales(el, vmono) {
-    debugger
+    
     if (vmono != '' && vmono != '0') {
       var m_data = {
         "insertWhatsappsmsInfo": {

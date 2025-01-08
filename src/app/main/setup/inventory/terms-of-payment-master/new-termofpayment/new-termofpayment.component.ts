@@ -32,7 +32,7 @@ export class NewTermofpaymentComponent implements OnInit {
     
     
     onSubmit() {
-        debugger
+        
         if(!this.termsofpaymentForm.invalid)
         {
             this.saveflag = true;

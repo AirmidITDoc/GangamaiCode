@@ -32,7 +32,7 @@ export class NewReligionMasterComponent implements OnInit {
     }
  
   onSubmit() {
-    debugger
+    
     if(this.religionForm.valid) 
     {
         this.saveflag = true;

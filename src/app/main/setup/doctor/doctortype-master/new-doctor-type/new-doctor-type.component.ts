@@ -36,7 +36,7 @@ export class NewDoctorTypeComponent implements OnInit {
     return;
     }else{
       if (this.doctortypeForm.valid) {
-        debugger
+        
           this._DoctortypeMasterService.doctortypeMasterSave(this.doctortypeForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);

@@ -184,7 +184,7 @@ export class EditAdmissionComponent implements OnInit {
     
 
     if (this.advanceDataStored.storage) {
-      debugger
+      
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.registerObj1 = this.advanceDataStored.storage;
       this.IsMLC = this.registerObj1.IsMLC
@@ -277,7 +277,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   CheckMe() {
-    debugger
+    
     if (this.IsMLC)
       return true;
     else
@@ -416,13 +416,13 @@ export class EditAdmissionComponent implements OnInit {
 
   // DocNameID
   setDropdownObjs() {
-    debugger
+    
     const toSelect = this.DepartmentList.find(c => c.DepartmentId == this.registerObj1.DepartmentId);
     this.hospitalFormGroup.get('Departmentid').setValue(toSelect);
   
     const toSelect11 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.DocNameID);
     this.hospitalFormGroup.get('DoctorId').setValue(toSelect11);
-    debugger
+    
     const toSelect1 = this.Doctor1List.find(c => c.DoctorId == this.registerObj1.AdmittedDoctor1ID);
     this.hospitalFormGroup.get('admittedDoctor1').setValue(toSelect1);
 
@@ -522,7 +522,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   getDepartmentList() {
-    debugger
+    
     this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
@@ -550,7 +550,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   getDoctorList() {
-    debugger
+    
 
     this._AdmissionService.getDoctorMasterNew().subscribe(data => {
       this.DoctorList = data;
@@ -605,7 +605,7 @@ export class EditAdmissionComponent implements OnInit {
   }
 
   getRefDoctorList() {
-    debugger
+    
     this._AdmissionService.getDoctorMaster2Combo().subscribe(data => {
       this.RefDoctorList = data;
       console.log(this.RefDoctorList);
@@ -701,7 +701,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   OnChangeDoctorList(departmentObj) {
-    debugger
+    
   
     this.hospitalFormGroup.get('DoctorId').reset();
     this.isDepartmentSelected = true;
@@ -854,7 +854,7 @@ export class EditAdmissionComponent implements OnInit {
         });
         return;
       }
-    } debugger
+    } 
     if (this.otherFormGroup.get('RelationshipId').value) {
       this.vRelationshipId = this.otherFormGroup.get('RelationshipId').value.RelationshipId;
 
@@ -887,7 +887,7 @@ export class EditAdmissionComponent implements OnInit {
         return;
       }
     }
-    debugger
+    
     var m_data = {
       "admissionNewUpdate": {
         "AdmissionId": this.AdmissionID,// this.hospitalFormGroup.get('AdmissionId').value || 0,

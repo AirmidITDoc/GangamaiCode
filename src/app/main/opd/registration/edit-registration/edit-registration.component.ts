@@ -111,7 +111,7 @@ export class EditRegistrationComponent implements OnInit {
     // }
 
     onChangePrefix(e) {
-        debugger
+        
         this.ddlGender.SetSelection(e.sexId);
     }
     onChangestate(e) {

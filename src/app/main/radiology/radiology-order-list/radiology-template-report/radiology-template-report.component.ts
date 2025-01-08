@@ -26,7 +26,7 @@ export class RadiologyTemplateReportComponent implements OnInit {
    private accountService: AuthenticationService,) { }
 
  ngOnInit(): void {
-   debugger;
+   ;
    this.Today = [(new Date()).toISOString()];
    if (this.advanceDataStored.storage) {
      this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -37,14 +37,14 @@ export class RadiologyTemplateReportComponent implements OnInit {
     
    }
 
-   debugger;
+   ;
    console.log(this.selectedAdvanceObj);
    this.getPrint(this.selectedAdvanceObj.RadReportId);
  }
 
  
  getPrint(el) {
-  debugger;
+  ;
    var D_data = {
          "RadReportId": el,
           "OP_IP_Type":this.OPIPType,     
@@ -60,7 +60,7 @@ export class RadiologyTemplateReportComponent implements OnInit {
 
  
  viewgetPathologyTemplateReportPdf(obj) {
-    debugger
+    
   this._radiologyorderListService.getRadiologyTempReport(
     1,1
     ).subscribe(res => {

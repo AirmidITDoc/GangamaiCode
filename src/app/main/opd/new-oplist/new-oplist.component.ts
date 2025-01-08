@@ -232,7 +232,7 @@ export class NewOPListComponent implements OnInit {
     getWhatsappshareRefundBill(Id) { }
 
     EditRefund() {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(NewOPRefundofbillComponent,
             {
@@ -249,7 +249,7 @@ export class NewOPListComponent implements OnInit {
     }
 
     EditOPBill() {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(NewOPBillingComponent,
             {
@@ -268,7 +268,7 @@ export class NewOPListComponent implements OnInit {
 
     onChangeDate(selectDate) {
         if (selectDate) {
-            debugger
+            
             this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.fromDate);
             this.gridConfig.filters[2].fieldValue = this.fromDate
@@ -287,7 +287,7 @@ export class NewOPListComponent implements OnInit {
     }
     onChangeDate1(selectDate) {
         if (selectDate) {
-            debugger
+            
             this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.toDate);
             this.gridConfig.filters[3].fieldValue = this.toDate

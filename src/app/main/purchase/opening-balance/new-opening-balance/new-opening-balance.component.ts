@@ -99,7 +99,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   vlastDay: string = '';
   lastDay2: string = '';
   calculateLastDay(inputDate: string) {
-    // debugger
+    // 
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -214,7 +214,7 @@ vItemName:any;
 vItemId:any; 
 vExpDate1:any='';
   OnSave() {
-    debugger
+    
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -233,7 +233,7 @@ vExpDate1:any='';
 
     let openingBalanceParamInsertdetail = [];
     this.dsItemNameList.data.forEach((element) => {
-      debugger
+      
       let openingBalanceParamInsertObj = {};
       openingBalanceParamInsertObj['storeId'] = this._loggedService.currentUserValue.storeId;
       openingBalanceParamInsertObj['openingDate'] = this.dateTimeObj.date;

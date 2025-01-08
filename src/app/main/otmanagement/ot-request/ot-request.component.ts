@@ -123,7 +123,7 @@ export class OTRequestComponent implements OnInit {
 
   getRequestList() {
 
-    debugger
+    
     this.sIsLoading = 'loading-data';
     var m_data = {
       "F_Name": this.searchFormGroup.get('F_Name').value || "%",
@@ -196,7 +196,7 @@ export class OTRequestComponent implements OnInit {
 
   }
   onEdit(contact) {
-    // debugger;
+    // ;
     console.log(contact);
     let PatInforObj = {};
     PatInforObj['RegNo'] = contact.RegNo,

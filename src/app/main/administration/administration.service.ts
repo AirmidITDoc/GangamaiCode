@@ -36,12 +36,12 @@ export class AdministrationService {
     return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
   }
   public ConfigSettingParamList() {
-    // debugger;
+    // ;
     return this._httpClient.post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {})
     // console.log(this.configSettingParam);
   };
   public SchedulerParamList() {
-    // debugger;
+    // ;
     return this._httpClient.post(`Generic/GetByProc?procName=ss_get_schedulerList`, {})
 
   };

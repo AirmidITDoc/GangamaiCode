@@ -95,7 +95,7 @@ export class IPDSearcPatienthComponent implements OnInit {
   ngOnInit(): void {
     // this.myFilterform=this.filterForm();
 
-    debugger;
+    ;
     this.sIsLoading = 'loading-data';
 
     var m_data = {
@@ -143,7 +143,7 @@ export class IPDSearcPatienthComponent implements OnInit {
   }
 
   getOPIPPatientList() {
-    debugger;
+    ;
     this.sIsLoading = 'loading-data';
     this.PatientType = this._AdmissionService.myFilterform.get("PatientType").value;
 
@@ -211,7 +211,7 @@ export class IPDSearcPatienthComponent implements OnInit {
     }
     if (this._AdmissionService.myFilterform.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
+        // ;
 
         this.filteredOptions = resData;
         console.log(resData);
@@ -253,7 +253,7 @@ export class IPDSearcPatienthComponent implements OnInit {
 
 
   onEdit(contact) {
-    debugger;
+    ;
     console.log(contact)
     var m_data = {
       "RegNo":contact.RegNo,

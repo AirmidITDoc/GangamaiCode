@@ -19,7 +19,7 @@ export class ChkCharlengthDirective {
 
   
   @HostListener("keydown", ["$event"]) onKeydown(event) {
-debugger;
+;
     console.log(this.appChkCharlength);
 
     let count = this.el.nativeElement.value.length
@@ -35,7 +35,7 @@ debugger;
   }
 
 
-// debugger;
+// ;
 //   @HostListener('keyup', ['$event']) onKeyDown(keyboardEvent: KeyboardEvent) {
 //     const target = keyboardEvent.target as
 //       | HTMLInputElement

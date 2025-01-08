@@ -55,7 +55,7 @@ export class NewMenuComponent implements OnInit {
             return;
         }else{
         if(!this.menuForm.get("id").value){
-        debugger
+        
         var m_data =
         {
             "id": 0,

@@ -232,7 +232,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
 
 }
 else{
-  debugger;
+  ;
   var m_data1 = {
     "updatesubcompanyTPA": {
       "SubCompanyId": SubCompanyId || 0,

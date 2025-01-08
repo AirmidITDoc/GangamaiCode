@@ -31,7 +31,7 @@ export class NewGroupComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
+        
         if(!this.groupForm.invalid)
         {  
             this.saveflag = true;

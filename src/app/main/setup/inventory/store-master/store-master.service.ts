@@ -160,12 +160,12 @@ export class StoreMasterService {
     }
 
     public getStoreById(Id, showLoader = true) {
-        debugger
+        
         return this._httpClient.GetData("StoreMaster/" + Id,showLoader);
     }
 
     public storeMasterSave(Param: any, showLoader = true) {
-        debugger
+        
         if (Param.storeId) {
             return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param, showLoader);
         } else return this._httpClient.PostData("StoreMaster",Param, showLoader);

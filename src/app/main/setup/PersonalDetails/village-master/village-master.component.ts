@@ -67,7 +67,7 @@ export class VillageMasterComponent implements OnInit {
         this. getVillageMasterLists()
     }
     private filterTaluka() {
-        // debugger;
+        // ;
         if (!this.TalukacmbList) {
             return;
         }

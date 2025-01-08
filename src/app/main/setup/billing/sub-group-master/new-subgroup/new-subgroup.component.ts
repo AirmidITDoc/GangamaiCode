@@ -38,7 +38,7 @@ export class NewSubgroupComponent implements OnInit {
 
 
     onSubmit() {    
-      debugger
+      
         if(!this.subgroupForm.invalid)
         {
             this.saveflag = true;

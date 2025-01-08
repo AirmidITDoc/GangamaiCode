@@ -193,7 +193,7 @@ var data={
 
     }
     else if (this.ReportName == 'IPD Current Admitted List') {
-      debugger
+      
       this.FlagAdmissionIdSelected=false
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = true;
@@ -471,7 +471,7 @@ var data={
     this.FlagUserSelected = false;
    
   } 
-  debugger
+  
   // Doctor share?
     if (this.ReportName == 'DoctorShareReport') {
     this.FlagDoctorSelected = true;
@@ -713,7 +713,7 @@ var data={
     else if (this.ReportName == ' IPD Discharge Type Wise') {
       this.viewgetDischaregTypewisePdf();
     }
-    debugger
+    
 
     //IPMIS
     if (this.ReportName == 'Date wise Admission Count') {
@@ -918,7 +918,7 @@ viewgetIPAdvanceReportPdf() {
  
   
   viewgetLabrequestReportPdf() {
-    debugger
+    
     let RequestId
     if (this._IPReportService.userForm.get('RequestId').value)
       RequestId=this._IPReportService.userForm.get('RequestId').value || 0;
@@ -1020,7 +1020,7 @@ viewgetIPAdvanceReportPdf() {
 
 
   viewgetCurrentadmittedReportPdf(){
-    debugger
+    
 
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
@@ -1214,7 +1214,7 @@ viewgetIPAdvanceReportPdf() {
     let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
-    debugger
+    
 
     this.SpinLoading =true;
     setTimeout(() => {
@@ -1468,7 +1468,7 @@ viewgetIPAdvanceReportPdf() {
      },100);
   }
   viewgetDischargetypecompanywisePdf(){
-   debugger
+   
     let DoctorId=0
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId=this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;

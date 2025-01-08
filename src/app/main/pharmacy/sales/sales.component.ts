@@ -1317,7 +1317,7 @@ export class SalesComponent implements OnInit {
   calculateTotalAmt() {
 
 
-   // debugger
+   // 
     let Qty = this._salesService.IndentSearchGroup.get('Qty').value
     if (Qty > this.BalanceQty) {
       Swal.fire("Enter Qty less than Balance");
@@ -1503,7 +1503,7 @@ export class SalesComponent implements OnInit {
 
       this.NetAmt = ((UnitMrp) * (element.Qty)).toFixed(2);
       // this.v_marginamt =Math.round(this.NetAmt);
-      // debugger
+      // 
       this.Itemchargeslist.push(
         {
           ItemId: element.ItemId,
@@ -1617,7 +1617,7 @@ export class SalesComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result1 => {
-     // debugger
+     // 
       let result = result1.selectedData
       let vescflag = result1.vEscflag
       console.log(result);
@@ -2498,7 +2498,7 @@ export class SalesComponent implements OnInit {
  
 
   getPrint3(el) {
-debugger
+
 if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
   this.type = "Credit"
   this.Creditflag = true;
@@ -2592,7 +2592,7 @@ if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
   }
 
   getDiscountCellCal(contact, DiscPer) {
-    // debugger
+    // 
 
 
     // let DiscOld=DiscPer;
@@ -2655,7 +2655,7 @@ if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
   }
 
   getCellCalculation(contact, Qty) {
-    // debugger
+    // 
     let Qtyfinal = this.Qty;
     console.log(contact)
     this.StockId = contact.StockId;
@@ -2690,7 +2690,7 @@ if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
         //   }
         // }
 
-        // debugger
+        // 
         if (this.BalChkList.length > 0) {
           let AllQty = 0;
           this.BalChkList.forEach((element) => {
@@ -2754,7 +2754,7 @@ if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
       TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
       let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
       let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-      // debugger
+      // 
       this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
       let NetAmt
       let DiscAmt
@@ -3528,7 +3528,7 @@ getSearchListIP() {
   chargeslistBarcode: any = [];
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
-   // debugger
+   // 
     this.vBarcodeflag = true;
     let i = 0;
 
@@ -3542,7 +3542,7 @@ getSearchListIP() {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-         // debugger
+         // 
 
 
           if (contact.IssueQty != null) {

@@ -186,7 +186,7 @@ export class SupplierMasterService {
 
    
     public SupplierSave(Param: any, showLoader = true) {
-        debugger
+        
         if (Param.supplierId) {
             return this._httpClient.PutData("Supplier/Edit/" + Param.supplierId,Param, showLoader);
         } else return this._httpClient.PostData("Supplier/InsertEDMX", Param, showLoader);

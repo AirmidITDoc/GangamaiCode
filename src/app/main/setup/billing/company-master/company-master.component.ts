@@ -65,7 +65,7 @@ export class CompanyMasterComponent implements OnInit {
     }
 
     onSave(row: any = null) {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {

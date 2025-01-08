@@ -202,7 +202,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   getDoctorList() {
-    debugger;
+    ;
    
     this._NursingStationService.getDoctorCombo().subscribe(data => {
       this.PathologyDoctorList = data;
@@ -215,7 +215,7 @@ export class NursingnoteComponent implements OnInit {
     }); 
   } 
   onSubmit() {
-    debugger;
+    ;
     let pathologyTemplateDeleteObj = {};
   //  pathologyTemplateDeleteObj['pathReportId'] = this.selectedAdvanceObj.PathReportID;
 
@@ -243,7 +243,7 @@ export class NursingnoteComponent implements OnInit {
               Swal.fire('Congratulations !', 'Nurse Note Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                 //  this._matDialog.closeAll();
-                 debugger;
+                 ;
                 //  this.getPrint();
                 }
               });

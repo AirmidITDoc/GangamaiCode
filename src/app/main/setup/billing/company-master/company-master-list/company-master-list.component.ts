@@ -39,7 +39,7 @@ export class CompanyMasterListComponent implements OnInit {
     }
     
     onSubmit() {  
-        debugger       
+               
         if(!this.companyForm.invalid)
         {
             this.saveflag = true;

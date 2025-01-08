@@ -348,7 +348,7 @@ export class NewRequestComponent implements OnInit {
   // }
 
   getCategoryList() {
-    debugger
+    
     this._OtManagementService.getCategoryCombo().subscribe(data => {
       this.CategoryList = data;
       this.optionsSurgeryCategory = this.CategoryList.slice();
@@ -382,7 +382,7 @@ export class NewRequestComponent implements OnInit {
   // }
 
   getSurgeryList() {
-    debugger
+    
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
       this.SurgeryList = data;
       this.optionsSurgery = this.SurgeryList.slice();
@@ -474,7 +474,7 @@ export class NewRequestComponent implements OnInit {
   // }
 
   getDoctorList() {
-    debugger
+    
     this._OtManagementService.getDoctorMaster().subscribe(data => {
       this.DoctorList = data;
       this.optionsSurgeon = this.DoctorList.slice();

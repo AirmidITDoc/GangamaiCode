@@ -36,7 +36,7 @@ export class NewCategoryComponent implements OnInit {
 
    
    onSubmit() {
-    debugger
+    
       if (!this.categoryForm.invalid) {
         this.saveflag = true;
 

@@ -20,7 +20,7 @@ export class ValidateCharlengthDirective {
 
   
   @HostListener("keydown", ["$event"]) onKeydown(event) {
-debugger;
+;
     console.log(this.appValidateCharlength);
 
     let count = this.el.nativeElement.value.length

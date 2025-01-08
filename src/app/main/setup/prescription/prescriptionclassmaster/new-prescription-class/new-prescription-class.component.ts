@@ -34,7 +34,7 @@ export class NewPrescriptionClassComponent implements OnInit {
 
   Saveflag: boolean= false;
   onSubmit() {
-        debugger
+        
       if(!this.prescriptionForm.invalid)
         {
             this.Saveflag=true

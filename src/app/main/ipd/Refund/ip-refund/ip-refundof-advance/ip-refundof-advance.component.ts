@@ -136,7 +136,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     var m_data = {
     "OPIPID":32// this.selectedAdvanceObj.AdmissionID
     }
-    debugger;
+    ;
     // this.dataSource1.data = [];
     this.isLoading = 'list-loading';
     // let Query = "Select AdvanceId from T_AdvanceHeader where  OPD_IPD_Id=" + this.AdmissionId + " ";
@@ -175,7 +175,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   calculateBal()
   {
-    debugger;
+    ;
     // this.BalanceAdvance= this.BalanceAmount-this.RefundAmount;
     this.BalanceAdvance=  this.BalanceAmount-this.NewRefundAmount;
 
@@ -216,7 +216,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   onEdit(row){
 
     console.log(row);
-    debugger;
+    ;
     this.BalanceAdvance=0;
     this.RefundAmount=0;
     this.NewRefundAmount=0;
@@ -243,7 +243,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     
   }
   onSave() {
-    // debugger;
+    // ;
     this.isLoading = 'submit';
 
     let IPRefundofAdvanceObj = {};
@@ -290,7 +290,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID,//this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     PatientHeaderObj['NetPayAmount'] =  this.NewRefundAmount;
-debugger
+
 
     const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
       {

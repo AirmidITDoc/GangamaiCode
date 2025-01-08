@@ -93,7 +93,7 @@ export class OPSettlementComponent implements OnInit {
   }
   onAddPayment() {
     this.submitted = true;
-debugger
+
     if (this.patientDetailsFormGrp.invalid) {
       return;
     }
@@ -279,7 +279,7 @@ debugger
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    debugger
+    
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.data = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;
@@ -343,7 +343,7 @@ debugger
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
    
-    debugger
+    
     this.onAddPayment();
     if (this.balanceAmt != 0) {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)

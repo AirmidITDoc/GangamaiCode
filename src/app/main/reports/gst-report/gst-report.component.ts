@@ -227,7 +227,7 @@ export class GSTReportComponent implements OnInit {
 
 
     viewSalesprofitsummaryPdf() {
-      debugger
+      
       this.sIsLoading = 'loading-data';
       setTimeout(() => {
      
@@ -258,7 +258,7 @@ export class GSTReportComponent implements OnInit {
     
     
     viewsalesprofitbillPdf() {
-      debugger
+      
       this.sIsLoading = 'loading-data';
       let storeId =this._loggedUser.currentUserValue.storeId;
       if (this._GstReportService.userForm.get('StoreId').value.StoreId)
@@ -324,7 +324,7 @@ export class GSTReportComponent implements OnInit {
      }
   
      viewgetpurchasesupplierwisegstPdf() {
-      debugger
+      
       this.sIsLoading = 'loading-data';
    
       let storeId =this._loggedUser.currentUserValue.storeId;

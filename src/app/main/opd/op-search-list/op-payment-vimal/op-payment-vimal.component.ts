@@ -132,7 +132,7 @@ export class OpPaymentVimalComponent implements OnInit {
         this.GetBalanceAmt();
     }
     setPaidAmount() {
-        debugger
+        
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
     }
     onKeyAdv(a, b) {
@@ -144,7 +144,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     AdvanceId:any;
     getAdvanceAmt(element, index) {  
-        debugger
+        
       
         if (element.UsedAmount > element.balamt){
           Swal.fire(' Amount is less than Balance Amount:' + element.balamt);

@@ -73,6 +73,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                         this.myForm.value.signature = data;
                     });
                 }
+                this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
+                this.myForm.controls["RegDate"].setValue(this.registerObj.regDate);
             }, (error) => {
                 this.toastr.error(error.message);
             });
@@ -89,9 +91,11 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
     }
     onSubmit() {
-        debugger
         if (this.myForm.valid) {
-            this._doctorService.doctortMasterInsert(this.myForm.value).subscribe((response) => {
+            let data=this.myForm.value;
+            data.RegDate=this.registerObj.regDate;
+            data.MahRegDate=this.registerObj.mahRegDate;
+            this._doctorService.doctortMasterInsert(data).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose();
             }, (error) => {

@@ -293,7 +293,7 @@ public dateValue: Date = new Date();
 
   
   setDropdownObjs1() {
-    debugger;
+    ;
     
     this._OtManagementService.populateFormpersonal(this.registerObj1);
     
@@ -551,11 +551,11 @@ public dateValue: Date = new Date();
 
 
   onSubmit() {
-    debugger;
+    ;
     let OTEndoscopyBookingID = this.registerObj1.OTEndoscopyBookingID;
 
     this.isLoading = 'submit';
-debugger;
+;
 // if(this.Adm_Vit_ID){
     if (!OTEndoscopyBookingID) {
       var m_data = {
@@ -601,7 +601,7 @@ debugger;
       });
     }
     else {
-      debugger;
+      ;
       var m_data1 = {
         "otEndoscopyUpdate": {
                  

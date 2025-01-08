@@ -242,7 +242,7 @@ export class OTNoteComponent implements OnInit {
 
 
   setDropdownObjs1() {
-    debugger;
+    ;
 
     this._OtManagementService.populateFormpersonal(this.registerObj1);
 
@@ -536,7 +536,7 @@ export class OTNoteComponent implements OnInit {
 
 
   onSubmit() {
-    debugger;
+    ;
     let otBookingID = this.registerObj1.OTBookingID;
 
     this.isLoading = 'submit';
@@ -587,7 +587,7 @@ export class OTNoteComponent implements OnInit {
         });
       }
       else {
-        debugger;
+        ;
         var m_data1 = {
           "otTableBookingDetailUpdate": {
             "OTBookingID": otBookingID,

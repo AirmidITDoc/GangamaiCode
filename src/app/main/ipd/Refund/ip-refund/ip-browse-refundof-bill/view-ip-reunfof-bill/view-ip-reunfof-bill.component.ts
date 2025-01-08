@@ -74,7 +74,7 @@ outputWords=''
        this._BrowseIPDRefundbillService.getIPRefundBILLBrowsePrint(D_data).subscribe(res => {
          if(res){
          this.reportPrintObj = res[0] as BrowseIpdreturnadvanceReceipt;
-        //  debugger;
+        //  ;
         this.convertToWord(this.reportPrintObj.RefundAmount);
          console.log(this.reportPrintObj);
         }

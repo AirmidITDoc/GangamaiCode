@@ -46,7 +46,7 @@ export class MenuMasterComponent implements OnInit {
  
    getMenuMasterList() {
     
-    debugger;
+    ;
      this._MenuService.getMenuMasterList().subscribe(Menu => {
         this.dataSource.data = Menu as MenuMaster[];
         this.dataSource.sort =this.sort;

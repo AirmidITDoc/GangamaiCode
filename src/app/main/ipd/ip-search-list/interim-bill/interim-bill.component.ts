@@ -257,7 +257,7 @@ export class InterimBillComponent implements OnInit {
   }
 
   onChangeReg(event) {
-    debugger
+    
     if (event.value == 'onlinepay') {
       this.onlineflag = true;
 
@@ -274,7 +274,7 @@ export class InterimBillComponent implements OnInit {
   vConcessionId: any = 0
   vconflag: boolean = true;
   // onSavecash() {
-  //   debugger
+  //   
   //   if (this.formDiscPersc > 0 || this.b_disAmount > 0) {
   //     if (!this.InterimFormGroup.get('ConcessionId').value) {
   //       this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -391,7 +391,7 @@ export class InterimBillComponent implements OnInit {
 
   // } 
   onSave() {
-    debugger
+    
     if (this.InterimFormGroup.get('discPer').value > 0 || this.InterimFormGroup.get('concessionAmt').value > 0) {
       if (!this.InterimFormGroup.get('ConcessionId').value) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -649,7 +649,7 @@ export class InterimBillComponent implements OnInit {
   }
 
   getWhatsappshareIPInterimBill(el, vmono) {
-    debugger
+    
     if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {
@@ -753,7 +753,7 @@ export class InterimBillComponent implements OnInit {
   //           "ipIntremPaymentInsert": result.submitDataPay.ipPaymentInsert,
   //           // "billIPInterimBillingUpdate":billIPInterimBillingUpdate
   //         };
-  //         debugger
+  //         
   //       console.log(submitData);
   //         this._IpSearchListService.InsertInterim(submitData).subscribe(response => {
   //           if (response) {
@@ -875,7 +875,7 @@ export class InterimBillComponent implements OnInit {
 
   calculatechargesDiscamt() {
     // let d = this.Ipbillform.get('discAmount').value;
-    debugger
+    
     this.disamt = this.InterimFormGroup.get('concessionAmt').value || 0;
     let Netamt = this.vNetAmount;
 

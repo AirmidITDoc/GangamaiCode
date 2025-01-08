@@ -45,7 +45,7 @@ export class CharmaxLengthDirective {
   // }
 
   @HostListener("keydown", ["$event"]) onKeydown(event) {
-    debugger;
+    ;
     // console.log(event);
     let count = this.el.nativeElement.value.length;
     console.log(this.el.nativeElement.value.length);

@@ -56,7 +56,7 @@ export class ViewCasepaperComponent implements OnInit {
            
  
      getPrint() {
-       debugger;
+       ;
        var D_data = {
         "VisitId": 221420,//this.selectedAdvanceObj.AdmissionID || 0,
         "PatientType": 0,//this.selectedAdvanceObj.PatientType || 0

@@ -735,7 +735,7 @@ private filterpathDoctor() {
 
 
 
-    debugger;
+    ;
       var m_data = {
 
         "configsettingupdate": {
@@ -798,7 +798,7 @@ private filterpathDoctor() {
 
 
 setDropdownObjs() {
-debugger;
+;
     const toSelect = this.OPDBillingList.find(c => c.CashCounterId == this.configObj.OPD_Billing_CounterId);
     this.configFormGroup.get('OPD_Billing_CounterId').setValue(toSelect);
 

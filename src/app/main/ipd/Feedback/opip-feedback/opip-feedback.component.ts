@@ -151,7 +151,7 @@ Imgstatus5=0
 
 
 onChangePatientType(event) {
-  debugger
+  
   if (event.value == 'OP') {
     this.OP_IPType = 0;
     this.vSelectedOption = 'OP';
@@ -182,7 +182,7 @@ onChangePatientType(event) {
 fetchlist: any[] = []
 Imgstatus=0
 fetchresult(event,flag){
-  debugger
+  
 console.log(event)
 // this.fetchlist.push(event)
 this.fetchlist.push(
@@ -381,7 +381,7 @@ getfeedbackquestionList(){
 }
 
 onSubmit() {
-   debugger
+   
   if (this.RegId) {
 
     console.log(this.fetchlist)

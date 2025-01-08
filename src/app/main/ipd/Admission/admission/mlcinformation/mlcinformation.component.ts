@@ -56,7 +56,7 @@ export class MLCInformationComponent implements OnInit {
    }
 
   ngOnInit(): void {
-debugger
+
     this.MlcInfoFormGroup = this.createmlcForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
@@ -101,7 +101,7 @@ debugger
     this._AdmissionService.getMLCDetail(Query).subscribe(data => {
       this.MlcObj = data[0];
       console.log(this.MlcObj);
-      debugger
+      
       if(data){
         if(this.MlcObj.MLCId)
         this.MLCId=this.MlcObj.MLCId;
@@ -230,7 +230,7 @@ public onEnterpolic(event): void {
 
 }
 else{
-  debugger
+  
   console.log(this.MlcInfoFormGroup.get("ReportingDate").value)
   var m_data1 = {
     "updateMLCInfo": {
@@ -270,7 +270,7 @@ else{
 
 getMLCdetailview(Id) {
   // this.sIsLoading = 'loading-data';
-debugger
+
   setTimeout(() => {
 
     this._AdmissionService.getMLCDetailView(Id

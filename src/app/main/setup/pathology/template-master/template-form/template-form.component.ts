@@ -51,7 +51,7 @@ export class TemplateFormComponent implements OnInit {
     onSubmit() {
 
             if (!this.templateForm.get("templateId").value) {
-                debugger
+                
                 var mdata={
                       "templateId": 0,
                       "templateName": this.templateForm.get("templateName").value,

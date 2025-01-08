@@ -287,7 +287,7 @@ export class PatientAppointmentComponent implements OnInit {
       this.FirstName.markAsTouched();
       this.AreaId.markAsTouched();
 
-      debugger;
+      ;
 
       if (this.data) {
        
@@ -310,7 +310,7 @@ export class PatientAppointmentComponent implements OnInit {
 
   
   setDropdownObjs1() {
-    debugger;
+    ;
 
   
     const toSelect = this.PrefixList.find(c => c.PrefixID == this.registerObj.PrefixID);
@@ -423,7 +423,7 @@ export class PatientAppointmentComponent implements OnInit {
     });
   }
   createSearchForm() {
-    debugger
+    
     return this.formBuilder.group({
       regRadio: ['registration'],
       RegId: [{ value: '', disabled: this.isRegSearchDisabled },]
@@ -454,7 +454,7 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   onChangePatient(value) {
-    debugger;
+    ;
     console.log(value);
 
     if (value.PatientTypeId == 2) {
@@ -831,14 +831,14 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   // OnChangeDoctorList(departmentObj) {
-  //   //debugger;
+  //   //;
   //   console.log(departmentObj);
   //   this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
   // }
 
   
   OnChangeDoctorList(departmentObj) {
-    // debugger;
+    // ;
     // console.log("departmentObj", departmentObj)
     this._opappointmentService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
@@ -860,7 +860,7 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   DocSelectdelete(){
-    debugger;
+    ;
     // this.VisitFormGroup.get('RefDocId').setValue(this.Doctor1List[-1]);
     // this.VisitFormGroup.get('RefDocId').clearValidators();
     // this.VisitFormGroup.get('RefDocId').updateValueAndValidity();
@@ -901,7 +901,7 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   searchRegList() {
-    debugger;
+    ;
     const dialogRef = this._matDialog.open(SearchPageComponent,
       {
         maxWidth: "90vw",
@@ -928,7 +928,7 @@ export class PatientAppointmentComponent implements OnInit {
 
   
   searchPatientList() {
-    debugger;
+    ;
     this.dialogRef.close();
     var m_data = {
       "RegAppoint":0
@@ -980,7 +980,7 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   getSelectedObj(obj) {
-  debugger;
+  ;
     console.log('obj==', obj);
     let a,b,c ;
 
@@ -996,7 +996,7 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   getVisitList() {
-  //  debugger;
+  //  ;
     this.sIsLoading = 'loading-data';
     var D_data = {
       "F_Name": this._opappointmentService.myFilterform.get("FirstName").value.trim() + '%' || '%',
@@ -1103,7 +1103,7 @@ export class PatientAppointmentComponent implements OnInit {
 
       visitSave['ClassId'] = 1; // this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitSave['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-      debugger;
+      ;
      console.log(this.Patientnewold);
       visitSave['PatientOldNew'] = this.Patientnewold;
       visitSave['FirstFollowupVisit'] = 0,// this.VisitFormGroup.get('RelativeAddress').value ? this.VisitFormGroup.get('RelativeAddress').value : '';
@@ -1124,7 +1124,7 @@ export class PatientAppointmentComponent implements OnInit {
           Swal.fire('Congratulations !', 'New Appoinment save Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
               this._matDialog.closeAll();
-              // debugger;
+              // ;
             this.getVisitList();
             }
            
@@ -1190,7 +1190,7 @@ export class PatientAppointmentComponent implements OnInit {
 
       visitUpdate['ClassId'] = 1; // this.VisitFormGroup.get('ClassId').value.ClassId ? this.VisitFormGroup.get('ClassId').value.ClassId : 0;
       visitUpdate['DepartmentId'] = this.VisitFormGroup.get('DoctorID').value.DepartmentId;//? this.VisitFormGroup.get('DepartmentId').value.DepartmentId : 0;
-      debugger;
+      ;
       console.log(this.Patientnewold);
       
       visitUpdate['PatientOldNew'] = this.Patientnewold;
@@ -1224,7 +1224,7 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
   onClose() {
-    debugger
+    
     //this._opappointmentService.mySaveForm.reset();
     this.dialogRef.close();
   }

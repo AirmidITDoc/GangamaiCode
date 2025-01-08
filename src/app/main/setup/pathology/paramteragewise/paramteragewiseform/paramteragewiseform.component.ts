@@ -226,7 +226,7 @@ export class ParamteragewiseformComponent implements OnInit {
 
 
     onSubmit1() {
-        debugger;
+        ;
         if (this._ParameterageService.myform.valid) {
             if (!this._ParameterageService.myform.get("ParameterID").value) {
               
@@ -751,7 +751,7 @@ insertParameterMasterRangeWise["addedby"]=0
    
 
     checkFields(event){
-        debugger
+        
         const formValues = this._ParameterageService.myIsNumericform.value
         const fieldsTobeChecked = formValues.SexID
         && formValues.MinAge

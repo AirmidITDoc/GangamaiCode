@@ -275,7 +275,7 @@ export class ParametermasterService {
     }
 
     populateForm(param) {
-        debugger;
+        ;
         this.myform.patchValue(param);
         this.myform.get("IsPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
         this.myform.get("IsNumeric").setValue(param.IsNumeric == 1? 1: 2);

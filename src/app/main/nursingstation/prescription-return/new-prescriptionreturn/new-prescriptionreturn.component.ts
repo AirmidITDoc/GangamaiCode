@@ -149,7 +149,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
   getBatch() {
     this.qty.nativeElement.focus();
-    debugger
+    
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
         maxWidth: "800px",
@@ -224,7 +224,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   public onEnterqty(event): void {
-    // debugger
+    // 
     if (event.which === 13) {
       this.add = true;
       this.addbutton.focus();
@@ -299,7 +299,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
   getSelectedObj(obj) {
-    // debugger
+    // 
     // this.registerObj = obj;
 
     this.ItemName = obj.ItemName;
@@ -313,7 +313,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
 
   getSelectedObjReg(obj) {
-// debugger
+// 
     this.registerObj = obj;
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
@@ -336,7 +336,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     let ipPrescriptionReturnD = {};
     let ipPrescriptionReturnH = {};
 
-    // debugger
+    // 
     ipPrescriptionReturnH['presDate'] = this.datePipe.transform((new Date), 'dd/MM/yyyy');//this.dateTimeObj.date;
     ipPrescriptionReturnH['presTime'] = this.datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     ipPrescriptionReturnH['toStoreId'] = this._loggedService.currentUserValue.storeId;
@@ -361,7 +361,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       ipPrescriptionReturnDArray.push(ipPrescriptionReturnD);
     });
     submissionObj['ipPrescriptionReturnD'] = ipPrescriptionReturnDArray;
-    // debugger
+    // 
     console.log(submissionObj);
 
     this._PrescriptionReturnService.presciptionreturnSave(submissionObj).subscribe(response => {
@@ -398,7 +398,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   
   viewgetIpprescriptionreturnReportPdf(row) {
-    // debugger
+    // 
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;

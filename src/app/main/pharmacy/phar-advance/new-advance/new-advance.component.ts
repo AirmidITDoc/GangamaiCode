@@ -382,7 +382,7 @@ export class NewAdvanceComponent implements OnInit {
 
    
 viewgetIPAdvanceReportPdf(contact) {
-  debugger
+  
   
   this.sIsLoading = 'loading-data';
   setTimeout(() => {

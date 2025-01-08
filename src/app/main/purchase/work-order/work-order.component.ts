@@ -161,7 +161,7 @@ export class WorkOrderComponent implements OnInit {
     return option && option.SupplierName ? option.SupplierName : '';
   }
   getWorkOrdersList() {
-    //debugger
+    //
      this.sIsLoading = 'loading-data';
     var m_data = {
       "ToStoreId": this._WorkOrderService.myFormGroup.get("StoreId").value.storeid || 0,
@@ -200,7 +200,7 @@ export class WorkOrderComponent implements OnInit {
 
   
   viewgetWorkorderReportPdf(row) {
-    debugger
+    
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       

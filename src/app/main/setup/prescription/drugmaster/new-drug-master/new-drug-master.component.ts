@@ -35,7 +35,7 @@ export class NewDrugMasterComponent implements OnInit {
 
   
     onSubmit() {
-        debugger
+        
       if(!this.drugForm.invalid)
       {
         this.saveflag = true    

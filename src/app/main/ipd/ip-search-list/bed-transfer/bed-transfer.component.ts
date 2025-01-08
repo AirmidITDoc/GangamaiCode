@@ -60,7 +60,7 @@ export class BedTransferComponent implements OnInit {
   ) {
   
     if (this.advanceDataStored.storage) {
-     // debugger
+     // 
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
     
@@ -115,7 +115,7 @@ export class BedTransferComponent implements OnInit {
     this._IpSearchListService.populateForm(m_data);
   } 
   onBedtransfer() {
-    debugger;
+    ;
     if ((this.vWardId == 0)) {
       this.toastr.warning('Please select valid Ward ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

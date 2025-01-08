@@ -185,7 +185,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
   
   private filterClass() {
-    // debugger;
+    // ;
     if (!this.ClassList) {
       return;
     }
@@ -233,7 +233,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
   getSelectedObj(obj) {
-    debugger
+    
     if(obj.IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''  
@@ -248,7 +248,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
       this.BedId = 0
     }
     else{
-      debugger
+      
       this.registerObj = obj;
       // this.PatientName = obj.FirstName + '' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
@@ -267,7 +267,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
   } 
 
   getSearchList() {
-    debugger
+    
     var m_data = {
       "Keyword": `${this._BedtransferService.bsaveForm.get('RegID').value}%`
     }
@@ -300,7 +300,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   onBedtransfer()
   {
-    debugger;
+    ;
     this.submitted = true;
   
     var m_data = {

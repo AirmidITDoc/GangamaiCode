@@ -94,7 +94,7 @@ export class SchdulerComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this._SchdulerService.deleteScheduler(id).subscribe((ddata) => {
-          debugger
+          
           Swal.fire({
             title: "Deleted!",
             text: "Scheduler has been deleted.",
@@ -111,7 +111,7 @@ export class SchdulerComponent implements OnInit {
   }
 
   onShow() {
-    debugger
+    
     this.ScheduleName=this.myformSearch.get("ScheduleName").value;
     this.getSchedulerList();
   }

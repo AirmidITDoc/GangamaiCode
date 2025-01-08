@@ -273,7 +273,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   getReturndetails() {
-    // debugger
+    // 
     // var m_data = {
     //   "AdmissionId": this.vOPIPId
     // }
@@ -549,7 +549,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   getWhatsappsRefundAdvance(el, vmono) {
-    debugger
+    
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,

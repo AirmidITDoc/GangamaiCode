@@ -34,11 +34,11 @@ export class HospitalMasterComponent implements OnInit {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                   {
                       action: gridActions.edit, callback: (data: any) => {
-                          debugger
+                          
                       }
                   }, {
                       action: gridActions.delete, callback: (data: any) => {
-                          debugger
+                          
                       }
                   }]
           } //Action 1-view, 2-Edit,3-delete

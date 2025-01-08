@@ -99,7 +99,7 @@ export class ParameterFormMasterComponent implements OnInit {
         if (this.data) {
             this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
-            debugger
+            
             // this.parameterForm.get("IsNumeric").setValue(this.registerObj.IsNumericParameter == 1? 1: 2);
         }
         console.log(this.data)
@@ -142,7 +142,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     // onSubmit(){
-    //     debugger
+    //     
     //     // if(this.parameterForm.valid){
     //         if (this.parameterForm.invalid) {
     //             this.toastr.warning('please check form is invalid', 'Warning !', {
@@ -158,7 +158,7 @@ export class ParameterFormMasterComponent implements OnInit {
                 
     //         }else{
     //             if(!this.parameterForm.get("ParameterID").value){
-    //                 debugger
+    //                 
     //                 var m_data={
     //                     "parameterId": 0,
     //                     "parameterShortName": this.parameterForm.get("ParameterShortName").value || "",
@@ -218,7 +218,7 @@ export class ParameterFormMasterComponent implements OnInit {
     onSubmit() {
         this.saveflag = true;
         
-        debugger
+        
         const invalid = [];
         const controls = this.parameterForm.controls;
         for (const name in controls) {
@@ -464,7 +464,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     getGenderNameCombobox() {
-        debugger
+        
         this._ParameterService.getGenderMasterCombo().subscribe(data => {
             this.GendercmbList = data;
             console.log(this.GendercmbList);
@@ -532,7 +532,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
     checkFields(event) {
-        debugger
+        
         const formValues = this.parameterForm.value
         const fieldsTobeChecked = formValues.SexID
             && formValues.MinAge
@@ -585,7 +585,7 @@ export class ParameterFormMasterComponent implements OnInit {
             IsDeleted:1,
             AgeType: this.parameterForm.value.AgeType,
         };
-debugger
+
         for (const row of this.dsParameterAgeList.data) {
             if (JSON.stringify(row) === JSON.stringify(newRow)) {
                 isNewRowUnique = false;
@@ -859,7 +859,7 @@ debugger
     isTxtUnique = true;
 
     AddData(txt) {
-        debugger
+        
         if (txt.replace(/\s/g, '').length !== 0) {
 
             if (!this.selectedItems.includes(txt)) {

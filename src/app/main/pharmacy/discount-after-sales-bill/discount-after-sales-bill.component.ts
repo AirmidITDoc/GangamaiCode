@@ -171,7 +171,7 @@ export class DiscountAfterSalesBillComponent implements OnInit {
       //console.log(this.SelectedArray) 
     } 
   getCellCalculation(contact, discPer) {
-    debugger 
+     
     if (parseInt(contact.discPer) >= 100 ) {
       this.toastr.warning('Discount cannot be greater than 100%', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

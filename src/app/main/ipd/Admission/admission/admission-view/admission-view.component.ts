@@ -76,7 +76,7 @@ export class AdmissionViewComponent implements OnInit {
   }
 
   setDropdownObjs() {
-    debugger
+    
     const toSelect = this.DepartmentList.find(c => c.Departmentid == this.registerObj1.DepartmentId);
     this.hospitalFormGroup.get('Departmentid').setValue(toSelect);
 
@@ -104,7 +104,7 @@ export class AdmissionViewComponent implements OnInit {
   registerObj1 = new AdmissionPersonlModel({});
   DepartmentList: any = [];
   getDepartmentList() {
-    debugger
+    
     this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
@@ -119,7 +119,7 @@ export class AdmissionViewComponent implements OnInit {
   }
 
   getDoctorList() {
-    debugger
+    
 
     this._AdmissionService.getDoctorMasterNew().subscribe(data => {
       this.DoctorList = data;
@@ -153,7 +153,7 @@ export class AdmissionViewComponent implements OnInit {
   }
 
   OnChangeDoctorList(departmentObj) {
-    debugger
+    
   //   if(flag)
   //   departmentObj.DepartmentId=departmentObj.DepartmentId
   // else

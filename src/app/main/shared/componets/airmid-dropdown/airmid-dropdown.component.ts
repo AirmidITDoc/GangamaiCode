@@ -102,7 +102,7 @@ export class AirmidDropdownComponent implements OnInit {
     options1: any[] = [];
 
     bindGridAutoComplete1() {
-        debugger
+        
         if (this.options?.length > 0) {
             this.ddls = this.options as [];
 
@@ -218,7 +218,7 @@ export class AirmidDropdownComponent implements OnInit {
         this.stateChanges.complete();
     }
     protected setInitialValue() {
-        // debugger
+        // 
         // this.filteredDdls
         //     .pipe(take(1), takeUntil(this._onDestroy))
         //     .subscribe(() => {

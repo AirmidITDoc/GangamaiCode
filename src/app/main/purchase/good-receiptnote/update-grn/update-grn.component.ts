@@ -266,7 +266,7 @@ export class UpdateGRNComponent implements OnInit {
     }
 
     calculateLastDay(inputDate: string) {
-        // debugger
+        // 
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
@@ -1040,7 +1040,7 @@ chekgstper(obj){
     }
     isDisc2Selected: boolean = false;
     onChangeDisc2(event) {
-        // debugger
+        // 
         if (event.value.Name == "GST After TwoTime Disc") {
 
             this.isDisc2Selected = true;
@@ -1289,7 +1289,7 @@ chekgstper(obj){
     }
     vTotalQty: any = 0
     OnSave() {
-        debugger
+        
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
             this._GRNList.GRNFinalForm.get('ReceivedBy').value == undefined)) {
             this.toastr.warning('Please enter a Received By', 'Warning !', {
@@ -2260,7 +2260,7 @@ chekgstper(obj){
 
             this.getSupplierSearchCombo();
 
-            //   debugger
+            //   
             // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
             //   const toSelectSUpplierId = this.SupplierList.data.find(item => item.SupplierId === result[0].SupplierID);
             //   console.log(toSelectSUpplierId)

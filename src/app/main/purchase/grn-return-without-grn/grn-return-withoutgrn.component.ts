@@ -154,7 +154,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   }
 
   viewgetgrnreturnReportPdf(row) {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading = true;
       this._GRNReturnService.getGRNreturnreportview(

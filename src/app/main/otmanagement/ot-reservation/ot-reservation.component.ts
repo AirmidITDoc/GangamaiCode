@@ -106,7 +106,7 @@ export class OTReservationComponent implements OnInit {
 
 
     this.searchFormGroup = this.createSearchForm();
-    debugger;
+    ;
     this.minDate = new Date();
     var D_data = {
 
@@ -152,7 +152,7 @@ export class OTReservationComponent implements OnInit {
 
   getOtreservationList() {
 
-    debugger
+    
     this.sIsLoading = 'loading-data';
     var m_data = {
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
@@ -177,7 +177,7 @@ export class OTReservationComponent implements OnInit {
 
   addNewReservationg() {
 
-    // debugger;
+    // ;
 
     console.log(this.dataSource.data['OTTableID'])
     //  this.advanceDataStored.storage = new OTReservationDetail(m_data);

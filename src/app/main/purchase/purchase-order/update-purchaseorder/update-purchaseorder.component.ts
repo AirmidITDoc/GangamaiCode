@@ -547,7 +547,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
       return;
     }
-    debugger
+    
     let updatePurchaseOrderHeaderObj = {};
     updatePurchaseOrderHeaderObj['purchaseDate'] = this.dateTimeObj.date /// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     updatePurchaseOrderHeaderObj['purchaseTime'] = this.dateTimeObj.time;
@@ -578,7 +578,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
     let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-      debugger
+      
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemId;
@@ -648,7 +648,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       });
       return;
     }
-    debugger
+    
     let purchaseHeaderInsertObj = {};
     purchaseHeaderInsertObj['purchaseDate'] = this.dateTimeObj.date// this.datePipe.transform(this._PurchaseOrder.userFormGroup.get('PurchaseDate').value, "yyyy-MM-dd");
     purchaseHeaderInsertObj['purchaseTime'] = this.dateTimeObj.time;
@@ -680,7 +680,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
     let InsertpurchaseDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
-      debugger
+      
       let purchaseDetailInsertObj = {};
       purchaseDetailInsertObj['purchaseId'] = 0;
       purchaseDetailInsertObj['itemId'] = element.ItemId;
@@ -736,7 +736,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   CgstPercentage:any = 0;
   SgstPercentage:any = 0;
   getCellCalculation(contact, Qty) {
-debugger
+
     if(contact.DefRate > 0){
       if (contact.Rate > contact.DefRate) {
         Swal.fire("Please Check defined Supplier Rate for product ...!!!");

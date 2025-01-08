@@ -34,7 +34,7 @@ export class NewCompanyTypeComponent implements OnInit {
   }
 
     onSubmit() {
-        debugger
+        
       if(!this.companttypeForm.invalid)
         {
             this.saveflag = true;

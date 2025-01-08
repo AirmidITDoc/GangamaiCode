@@ -362,7 +362,7 @@ export class IPBillingComponent implements OnInit {
   }
   //Service date 
   OnDateChange(){
-    // debugger
+    // 
     // if (this.selectedAdvanceObj.AdmDateTime) {
     //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
     //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
@@ -918,7 +918,7 @@ AdminStatus(event){
 }
 //Admin Charge Cal
 // CalculateAdminCharge(){
-// debugger
+// 
 // let AdminPer = this.Ipbillform.get('AdminPer').value || 0;
 //   if (AdminPer > 0 && AdminPer < 100) {
 
@@ -989,7 +989,7 @@ CalculateAdminCharge(){
 }
 // Total Bill Disc Per cal 
   CalFinalDisc() {
-    debugger
+    
     let BillDiscPer = this.Ipbillform.get('Percentage').value || 0;
 
     if (this.Ipbillform.get('AdminAmt').value > 0) {

@@ -33,7 +33,7 @@ export class NewGendermasterComponent implements OnInit {
 
     
     onSubmit() {
-        debugger
+        
         if (this.genderForm.valid) {
             this.saveflag = true;
             console.log("json :- ",this.genderForm.value);

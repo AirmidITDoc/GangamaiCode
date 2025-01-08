@@ -480,7 +480,7 @@ export class InPatientIssueComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result1 => {
-     // debugger
+     // 
       let result = result1.selectedData
       let vescflag = result1.vEscflag
       console.log(result);
@@ -612,7 +612,7 @@ export class InPatientIssueComponent implements OnInit {
     }
   }
   getDiscountCellCal(contact, DiscPer) {
-    // debugger
+    // 
 
 
     // let DiscOld=DiscPer;
@@ -674,7 +674,7 @@ export class InPatientIssueComponent implements OnInit {
 
   }
   getCellCalculation(contact, Qty) {
-    // debugger
+    // 
     let Qtyfinal = this.Qty;
     console.log(contact)
     this.StockId = contact.StockId;
@@ -750,7 +750,7 @@ export class InPatientIssueComponent implements OnInit {
       TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
       let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
       let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-      // debugger
+      // 
       this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
       let NetAmt
       let DiscAmt
@@ -1755,7 +1755,7 @@ export class InPatientIssueComponent implements OnInit {
   chargeslistBarcode: any = [];
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact)
-   // debugger
+   // 
     this.vBarcodeflag = true;
     let i = 0;
 
@@ -1769,7 +1769,7 @@ export class InPatientIssueComponent implements OnInit {
           this.toastr.warning('Selected Item already added in the list', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
-         // debugger
+         // 
 
 
           if (contact.IssueQty != null) {
@@ -1964,7 +1964,7 @@ export class InPatientIssueComponent implements OnInit {
             }
             else if (this.Itemchargeslist1.length > 0) {
               let ItemID = contact.ItemId;
-              // Debugger
+              // 
               let remaing_qty = contact.QtyPerDay;
               let bal_qnt = 0;
               this.Itemchargeslist1.forEach((element) => { 

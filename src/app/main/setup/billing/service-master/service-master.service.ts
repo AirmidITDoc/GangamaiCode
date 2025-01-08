@@ -126,7 +126,7 @@ export class ServiceMasterService {
     // }
 
     populateForm(param) {
-        debugger;
+        ;
         this.myform.patchValue(param);
         this.edit_data = param;
         this.myform.get("IsPathology").setValue(param.IsPathology == "1" ? true : false);

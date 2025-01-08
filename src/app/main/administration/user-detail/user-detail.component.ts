@@ -202,7 +202,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   getRoleNamelist1() {
-    // debugger
+    // 
     this._UserService.getRoleCombobox().subscribe(data => {
       this.RoleNameList = data;
       this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
@@ -325,7 +325,7 @@ export class UserDetailComponent implements OnInit {
   DoctorId:any=0;
   docflag: boolean = false;
   chkdoctor(event) {
-    // debugger
+    // 
     if (this.UserForm.get('IsDoctor').value  == true) {
       this.docflag = true
       this.DoctorId =this.UserForm.get('DoctorId').value.DoctorId;
@@ -349,7 +349,7 @@ export class UserDetailComponent implements OnInit {
   vRoleName:any;
   mobileno:number= 0;
   Save() {
-// debugger
+// 
 
     if (this.UserForm.get('IsDoctor').value == true) {
       this.docflag = true
@@ -400,7 +400,7 @@ export class UserDetailComponent implements OnInit {
       });
       return;
     }
-  debugger
+  
     let PharmExpOpt = 0;
     let PharmIPOpt = false;
     let PharmOPOpt = false; 

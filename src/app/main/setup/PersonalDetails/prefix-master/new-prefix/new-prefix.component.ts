@@ -28,7 +28,7 @@ export class NewPrefixComponent implements OnInit {
 
 
     ngOnInit(): void {
-        debugger
+        
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
         if(this.data){
             this.isActive=this.data.isActive
@@ -38,7 +38,7 @@ export class NewPrefixComponent implements OnInit {
 
  
     onSubmit() {
-        debugger
+        
         if(!this.prefixForm.invalid)
         {
             this.saveflag = true;

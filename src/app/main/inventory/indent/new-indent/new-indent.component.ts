@@ -234,7 +234,7 @@ registerObj:any;
 
       let InsertIndentDetObj = [];
       this.dsIndentNameList.data.forEach((element) => {
-        debugger
+        
         let IndentDetInsertObj = {};
         IndentDetInsertObj['indentId'] = 0;
         IndentDetInsertObj['itemId'] = element.ItemId;
@@ -270,7 +270,7 @@ registerObj:any;
       });
     } else {
 
-      debugger
+      
       let updateIndent = {};
       updateIndent['indentId'] = this.vIndentId;
       updateIndent['fromStoreId'] = this._loggedService.currentUserValue.storeId;
@@ -278,7 +278,7 @@ registerObj:any;
 
       let insertIndentDetail = [];
       this.dsIndentNameList.data.forEach((element) => {
-        debugger
+        
         let insertIndentDetailobj = {};
         insertIndentDetailobj['indentId'] = this.vIndentId;
         insertIndentDetailobj['itemId'] = element.ItemId;

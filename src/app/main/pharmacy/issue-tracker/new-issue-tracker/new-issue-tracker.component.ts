@@ -135,7 +135,7 @@ export class NewIssueTrackerComponent implements OnInit {
     if (!event.target.files.length) return;
     const file = event.target.files[0];
 
-    debugger
+    
     this._matDialog.open(ImageCropComponent, { data: { file } }).afterClosed().subscribe(
 
       (event: ImageCroppedEvent) => (this.sanitizeImagePreview = event.base64,
@@ -143,7 +143,7 @@ export class NewIssueTrackerComponent implements OnInit {
       )
     );
 
-    debugger
+    
 
     if (Imgflag != " ") {
       let filesAmount = event.target.files.length;

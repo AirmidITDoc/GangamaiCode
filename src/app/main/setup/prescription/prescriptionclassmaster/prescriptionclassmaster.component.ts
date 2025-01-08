@@ -35,7 +35,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            debugger
+                            
                             this.confirmDialogRef = this._matDialog.open(
                                 FuseConfirmDialogComponent,
                                 {
@@ -45,7 +45,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
                             this.confirmDialogRef.componentInstance.confirmMessage =
                                 "Are you sure you want to deactive?";
                             this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                debugger
+                                
                                 if (result) {
                                     let that=this;
                                     this._PrescriptionclassService.deactivateTheStatus(data.classId).subscribe((data: any) => {
@@ -73,7 +73,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
     ) {}
 
     onSave(row: any = null) {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionClassComponent,
             {

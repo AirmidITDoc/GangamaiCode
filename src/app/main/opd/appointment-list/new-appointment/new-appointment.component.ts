@@ -1288,7 +1288,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangeDateofBirth(DateOfBirth) {
-        debugger
+        
         console.log(DateOfBirth)
         if (DateOfBirth) {
             const todayDate = new Date();

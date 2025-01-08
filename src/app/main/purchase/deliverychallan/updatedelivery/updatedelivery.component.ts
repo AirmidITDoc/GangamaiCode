@@ -239,7 +239,7 @@ export class UpdatedeliveryComponent implements OnInit {
    maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
 
-    debugger
+    
     const ctrlValue = this.date.value;
     const currentDate = new Date();
     // ctrlValue.month(normalizedMonthAndYear.month());
@@ -253,7 +253,7 @@ export class UpdatedeliveryComponent implements OnInit {
     datepicker.close();
   }
   calculateLastDay(inputDate: string) {
-    // debugger
+    // 
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -819,7 +819,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
   isDisc2Selected: boolean = false;
   onChangeDisc2(event) {
-    // debugger
+    // 
     if (event.value.Name == "GST After TwoTime Disc") {
 
       this.isDisc2Selected = true;
@@ -1113,7 +1113,7 @@ export class UpdatedeliveryComponent implements OnInit {
 
   OnSave() {
     console.log(this.vPurchaseId)
-    debugger
+    
     if (!this.vPurchaseId) {
       if (this.data.chkNewDelivery == 1) {
         this.OnSavenew();

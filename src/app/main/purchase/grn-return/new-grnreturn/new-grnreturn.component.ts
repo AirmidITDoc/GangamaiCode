@@ -393,7 +393,7 @@ OnSave(){
 
 
 viewgetGRNreturnReportPdf(GRNReturnId) {
-  debugger
+  
   setTimeout(() => {
     this.SpinLoading = true;
     this._GRNReturnService.getGRNreturnreportview(

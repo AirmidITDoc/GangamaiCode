@@ -86,7 +86,7 @@ export class NewRequestforlabComponent implements OnInit {
     private _loggedService: AuthenticationService) { 
       this.date = new Date();
       if (this.advanceDataStored.storage) {
-        debugger
+        
          this.selectedAdvanceObj = this.advanceDataStored.storage;
          // this.PatientHeaderObj = this.advanceDataStored.storage;
          console.log( this.selectedAdvanceObj)
@@ -192,7 +192,7 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   getServiceListdata() {
-    // debugger
+    // 
     if(this.RegNo){
       this.sIsLoading = ''
       var Param = {

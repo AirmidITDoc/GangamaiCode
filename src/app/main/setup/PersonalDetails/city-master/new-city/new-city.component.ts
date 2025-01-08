@@ -49,7 +49,7 @@ export class NewCityComponent implements OnInit {
 
     saveflag: boolean = false;
     onSubmit() {
-        debugger
+        
         if(this.cityForm.valid) 
         {
             this.saveflag = true;

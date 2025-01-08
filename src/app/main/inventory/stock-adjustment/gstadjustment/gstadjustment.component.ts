@@ -70,7 +70,7 @@ export class GSTAdjustmentComponent implements OnInit {
     }
   }
   calculationAmt(){
-    debugger
+    
     let CGSTPer = (this.vNewCGSTPer) || 0;
     let SGSTPer = (this.vNewSGSTPer) || 0;
     let IGSTPer = (this.vNewIGSTPer) || 0;

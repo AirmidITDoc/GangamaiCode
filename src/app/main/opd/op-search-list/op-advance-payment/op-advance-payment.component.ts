@@ -607,7 +607,7 @@ export class OPAdvancePaymentComponent implements OnInit {
     console.log(this.balanceAmt1)
 
     // if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-    // debugger;
+    // ;
     // if(chipName)
     //  if( paidAmtLocal > this.balanceAmt1){
     // Swal.fire("Amount chk")
@@ -965,7 +965,7 @@ export class OPAdvancePaymentComponent implements OnInit {
   }
 
   onClose() {
-    debugger
+    
 
     let Paymentobj = {};
     // Paymentobj['PaymentId'] = 0;

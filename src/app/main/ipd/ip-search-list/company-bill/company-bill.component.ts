@@ -337,7 +337,7 @@ export class CompanyBillComponent implements OnInit {
     }
   //Service Date
   OnDateChange() {
-    // debugger
+    // 
     // if (this.selectedAdvanceObj.AdmDateTime) {
     //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
     //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
@@ -602,7 +602,7 @@ export class CompanyBillComponent implements OnInit {
       this.isLoadingStr = 'loading';
       let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId="+  this.selectedAdvanceObj.AdmissionID
        console.log(Query);
-       debugger
+       
       this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
         this.billheaderlist = data[0].AdminPer ;
        // console.log(this.billheaderlist)
@@ -831,7 +831,7 @@ export class CompanyBillComponent implements OnInit {
     }
     vTableClassName:any;
     setTableClassName(){
-      debugger
+      
       const dvalue = this.Tableclasslist.filter(item => item.ClassId == this.Serviceform.get('ChargeClass').value.ClassId )
       console.log(dvalue)
       this.Serviceform.get('TableClassName').setValue(dvalue);
@@ -846,7 +846,7 @@ export class CompanyBillComponent implements OnInit {
     }
   //Previouse Bill List
     getPrevBillList() {
-      debugger
+      
       var D_data = {
         "IP_Id": this.selectedAdvanceObj.AdmissionID
       }
@@ -999,7 +999,7 @@ export class CompanyBillComponent implements OnInit {
     } 
     setcashCounter:any;
     getCashCounterComboList() {
-      debugger
+      
       this._IpSearchListService.getCashcounterList().subscribe(data => {
         this.CashCounterList = data
         //console.log(this.CashCounterList)
@@ -1217,7 +1217,7 @@ export class CompanyBillComponent implements OnInit {
     }
   } 
   getDiscAmtCal1() {
-    debugger
+    
     let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
     let CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
 
@@ -1311,7 +1311,7 @@ export class CompanyBillComponent implements OnInit {
 
   gettablecalculation(element, Price) {
     console.log(element)
-    debugger 
+     
     if(element.Price > 0 && element.Qty > 0){ 
     element.TotalAmt = element.Qty * element.Price
     element.ConcessionAmount = (element.ConcessionPercentage * element.TotalAmt) / 100 ;
@@ -1653,7 +1653,7 @@ export class CompanyBillComponent implements OnInit {
     chkprint: boolean = false;
     AdList:boolean=false;
     viewgetIPAdvanceReportPdf(contact) {
-      debugger
+      
        this.chkprint=true;
       this.sIsLoading = 'loading-data';
       setTimeout(() => {
@@ -1685,7 +1685,7 @@ export class CompanyBillComponent implements OnInit {
   
   // onwhatsappbill() {
     getWhatsappshareIPFinalBill(el, vmono) {
-      debugger
+      
       
       if(vmono !='' && vmono !="0"){
       var m_data = {

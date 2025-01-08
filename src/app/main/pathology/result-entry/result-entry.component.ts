@@ -190,7 +190,7 @@ export class ResultEntryComponent implements OnInit {
 
     // for sampledetails tablemyformSearch
     onEdit(m) {
-        debugger
+        
         m["Selected"] = true;
         console.log(m)
         this.reportPrintObj = m

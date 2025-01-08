@@ -89,7 +89,7 @@ export class IPBrowseRefundofAdvanceComponent implements OnInit {
 
 onShow(event:MouseEvent)
 {   
-  //debugger;
+  //;
  
   this.click=!this.click;
    setTimeout(() => {
@@ -320,7 +320,7 @@ transform2(value: string) {
 
 getPrint(el) {
 
-  debugger;
+  ;
  console.log(el);
   var D_data = {
     "RefundId": el.RefundId,

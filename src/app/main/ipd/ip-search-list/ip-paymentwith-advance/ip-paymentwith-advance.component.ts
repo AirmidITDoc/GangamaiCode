@@ -102,7 +102,7 @@ export class IpPaymentwithAdvanceComponent implements OnInit {
       this.paidAmt = parseInt(this.advanceData.advanceObj.AdvanceAmount);
       this.getBalanceAmt();
     }
-    debugger;
+    ;
     if (this.advanceData.FromName == "IP-Payment") {
       this.netPayAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
       this.cashAmt = parseInt(this.advanceData.advanceObj.NetPayAmount);
@@ -488,7 +488,7 @@ export class IpPaymentwithAdvanceComponent implements OnInit {
     } else {
       this.AdvanceId = 0;
     }
-    debugger;
+    ;
     let Paymentobj = {};
     Paymentobj['PaymentId'] = '0';
     Paymentobj['ReceiptNo'] = '';

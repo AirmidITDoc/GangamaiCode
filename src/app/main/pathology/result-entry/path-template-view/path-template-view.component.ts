@@ -62,7 +62,7 @@ outputWords=''
     
    
   getPrint(el) {
-     debugger;
+     ;
      var OPIPType;
      if(el.PatientType=="OP")
      OPIPType =0;

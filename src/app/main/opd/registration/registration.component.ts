@@ -141,7 +141,7 @@ export class RegistrationComponent implements OnInit {
     onEdit(row) {
         console.log(row)
         this._RegistrationService.populateForm(row);
-        debugger
+        
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
             {
@@ -162,7 +162,7 @@ export class RegistrationComponent implements OnInit {
     }
 
     onDeactive(doctorId) {
-        debugger
+        
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -172,7 +172,7 @@ export class RegistrationComponent implements OnInit {
         this.confirmDialogRef.componentInstance.confirmMessage =
             "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
+            
             if (result) {
                 this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
                     //  this.msg = data

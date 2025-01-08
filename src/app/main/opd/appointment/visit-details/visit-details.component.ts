@@ -79,7 +79,7 @@ export class VisitDetailsComponent implements OnInit {
 
  
   getregisterList(){
-    debugger;
+    ;
     this.sIsLoading = 'loading';
     var D_data = {
     

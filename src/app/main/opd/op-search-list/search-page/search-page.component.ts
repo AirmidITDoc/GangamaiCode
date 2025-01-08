@@ -73,7 +73,7 @@ export class SearchPageComponent implements OnInit {
   ngOnInit(): void {
     // this.myFilterform=this.filterForm();
 
-    debugger;
+    ;
     this.sIsLoading = 'loading-data';
 
     var m_data = {
@@ -103,7 +103,7 @@ export class SearchPageComponent implements OnInit {
       });
 
     if (this.data) {
-      debugger;
+      ;
       this.registerObj = this.data.registerObj;
 
       console.log(this.registerObj);
@@ -221,7 +221,7 @@ export class SearchPageComponent implements OnInit {
    
     this._registrationService.populateFormpersonal(m_data);
     this.onClose();
-    debugger;
+    ;
     // if (this.data.registerObj.RegAppoint == 0) {
     //   const dialogRef = this._matDialog.open(NewAppointmentComponent,
     //     {

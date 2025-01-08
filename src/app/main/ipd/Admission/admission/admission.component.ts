@@ -592,7 +592,7 @@ export class AdmissionComponent implements OnInit {
 
   getAdmittedPatientCasepaperview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
-    debugger
+    
     let AdmissionID
     if (flag) {
       AdmissionID = AdmissionId
@@ -634,7 +634,7 @@ export class AdmissionComponent implements OnInit {
 
   getAdmittedPatientCasepaperTempview(AdmissionId, flag) {
     this.sIsLoading = 'loading-data';
-    debugger
+    
     let AdmissionID
     if (flag) {
       AdmissionID = AdmissionId
@@ -839,7 +839,7 @@ export class AdmissionComponent implements OnInit {
     this.registerObj["RegId"] = row.RegID;
     this.registerObj["RegID"] = row.RegID;
     this.registerObj["PrefixID"] = row.PrefixId;
-debugger
+
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "90vw",

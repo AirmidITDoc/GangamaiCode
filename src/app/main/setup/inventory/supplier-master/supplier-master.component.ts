@@ -185,7 +185,7 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     onDeactive(doctorId) {
-        debugger
+        
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -195,7 +195,7 @@ export class SupplierMasterComponent implements OnInit {
         this.confirmDialogRef.componentInstance.confirmMessage =
             "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
+            
             if (result) {
                 this._supplierService.deactivateTheStatus(doctorId).subscribe((data: any) => {
                     //  this.msg = data

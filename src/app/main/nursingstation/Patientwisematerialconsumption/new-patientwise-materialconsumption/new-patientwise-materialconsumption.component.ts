@@ -551,7 +551,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
   
   onSaveEntry() {
-    // debugger  
+    //   
     this.isLoading = 'save';
     this.dataSource.data = [];
     this.chargeslist.push(

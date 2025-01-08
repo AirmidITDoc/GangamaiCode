@@ -335,14 +335,14 @@ DoctorId:any=0;
   }
   
   getSearchList() {
-    debugger
+    
 
     var m_data={
       "Keyword":`${this.searchFormGroup.get('RegId').value}%`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
+        // ;
 
         this.filteredOptions = resData;
         console.log(resData);
@@ -928,7 +928,7 @@ DoctorId:any=0;
 
   onChangeCityList(CityObj) {
 
-    debugger
+    
     if (CityObj) {
       this._AdmissionService.getStateList(CityObj.CityId).subscribe((data: any) => {
            this.stateList = data;
@@ -1006,7 +1006,7 @@ DoctorId:any=0;
 
 
   OnChangeBedList(wardObj) {
-    debugger
+    
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
       this.optionsBed = this.BedList.slice();
@@ -1036,7 +1036,7 @@ DoctorId:any=0;
   }
 
   takePicture() {
-    // debugger;
+    // ;
     // const dialogRef = this._matDialog.open(CameraComponent, {
     //   width: '600px',
     //   height: '400px',
@@ -1070,7 +1070,7 @@ DoctorId:any=0;
   }
 
   nextClicked(formGroupName) {
-    // debugger;
+    // ;
     if (formGroupName.invalid) {
       const controls = formGroupName.controls;
       Object.keys(controls).forEach(controlsName => {
@@ -1090,7 +1090,7 @@ DoctorId:any=0;
 
 
   submitAdmissionForm() {
-    // debugger;
+    // ;
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1213,7 +1213,7 @@ DoctorId:any=0;
       let admissionInsert = {};
 
       //      submissionObj['regUpdate'] = RegistraionUpdate;
-      // debugger;
+      // ;
       admissionInsert['admissionID'] = 0;
       admissionInsert['regId'] = this.registerObj.RegId;
       admissionInsert['admissionDate'] = this.dateTimeObj.date;
@@ -1341,7 +1341,7 @@ this.getSelectedObj(row);
 
   getPrint(el) {
     console.log(el);
-    debugger;
+    ;
     var D_data = {
       "AdmissionId": el,
       // "AdmissionId": 5,
