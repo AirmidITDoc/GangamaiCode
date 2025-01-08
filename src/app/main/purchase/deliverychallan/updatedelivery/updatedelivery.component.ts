@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ItemNameList } from '../deliverychallan.component';
 import Swal from 'sweetalert2';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import moment, { Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatTableDataSource } from '@angular/material/table';
@@ -234,7 +234,7 @@ export class UpdatedeliveryComponent implements OnInit {
     this.gePharStoreList();
     this.getGSTtypeList();
   }
-   date = new UntypedFormControl(moment());
+   date = new FormControl(new Date());
    minDate = new Date();
    maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
@@ -242,8 +242,8 @@ export class UpdatedeliveryComponent implements OnInit {
     debugger
     const ctrlValue = this.date.value;
     const currentDate = new Date();
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
+    // ctrlValue.month(normalizedMonthAndYear.month());
+    // ctrlValue.year(normalizedMonthAndYear.year());
     if (ctrlValue && ctrlValue > currentDate) {
       // Swal.fire(" Please choose valid Date");
       this.date.setValue(this.date.value);

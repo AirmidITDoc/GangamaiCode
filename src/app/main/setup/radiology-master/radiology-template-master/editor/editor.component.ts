@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -25,11 +25,11 @@ export class EditorComponent implements OnInit {
   Doctorlist : any =[];
 
  //maritalstatus filter
- public templateFilterCtrl: UntypedFormControl = new UntypedFormControl();
+ public templateFilterCtrl: FormControl = new FormControl();
  public filteredtemplate: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //maritalstatus filter
-  public DoctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public DoctorFilterCtrl: FormControl = new FormControl();
   public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();

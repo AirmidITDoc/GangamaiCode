@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
@@ -132,7 +132,7 @@ export class IPBillingComponent implements OnInit {
   advancedatasource = new MatTableDataSource<any>();
   PackageDatasource = new MatTableDataSource
 
-  myControl = new UntypedFormControl(); 
+  myControl = new FormControl(); 
   filteredOptions: any;
   billingServiceList = [];
   showAutocomplete = false;
@@ -276,7 +276,7 @@ export class IPBillingComponent implements OnInit {
       this.AdmissionId = this.selectedAdvanceObj.AdmissionID; 
     }
 
-    this.myControl = new UntypedFormControl();
+    this.myControl = new FormControl();
     this.getBillheaderList(); 
     this.getPharmacyAmount();
     this.getBillingClasslist();

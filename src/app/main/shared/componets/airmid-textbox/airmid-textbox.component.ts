@@ -2,7 +2,7 @@ import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self, forwardRef } from "@angular/core";
 import {
     ControlValueAccessor,
-    UntypedFormControl,
+    FormControl,
     FormGroup,
     NG_VALUE_ACCESSOR,
     NgControl,
@@ -47,7 +47,7 @@ export class AirmidTextboxComponent implements
     private _required: boolean = false;
     private destroy: Subject<void> = new Subject();
 
-    control = new UntypedFormControl();
+    control = new FormControl();
     stateChanges: Subject<void> = new Subject();
     @Input() formGroup: FormGroup;
     @Input() formControlName:string;

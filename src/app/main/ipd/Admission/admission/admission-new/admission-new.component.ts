@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulat
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatStepper } from '@angular/material/stepper';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -100,56 +100,56 @@ export class AdmissionNewComponent implements OnInit {
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
 
-  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bankFilterCtrl: FormControl = new FormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public cityFilterCtrl: FormControl = new FormControl();
   public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public departmentFilterCtrl: FormControl = new FormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
-  public religionFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public religionFilterCtrl: FormControl = new FormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //maritalstatus filter
-  public maritalstatusFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public maritalstatusFilterCtrl: FormControl = new FormControl();
   public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //area filter
-  public areaFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public areaFilterCtrl: FormControl = new FormControl();
   public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //ward filter
-  public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public wardFilterCtrl: FormControl = new FormControl();
   public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //company filter
-  public companyFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public companyFilterCtrl: FormControl = new FormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //hospital filter
-  public hospitalFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public hospitalFilterCtrl: FormControl = new FormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //hospital filter
-  public bedFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bedFilterCtrl: FormControl = new FormControl();
   public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //doctorone filter
-  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctortwoFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctortwoFilterCtrl: FormControl = new FormControl();
   public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 

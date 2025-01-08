@@ -16,7 +16,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormsModule, UntypedFormControl } from '@angular/forms';
+import { FormsModule, FormControl } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -249,14 +249,14 @@ export class UpdateGRNComponent implements OnInit {
         this.getGSTtypeList();
     }
 
-    date = new UntypedFormControl(moment());
+    date = new FormControl(new Date());
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);
     setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
         const ctrlValue = this.date.value;
         const currentDate = new Date();
-        ctrlValue.month(normalizedMonthAndYear.month());
-        ctrlValue.year(normalizedMonthAndYear.year());
+        //ctrlValue.month(normalizedMonthAndYear.month());
+        //ctrlValue.year(normalizedMonthAndYear.year());
         if (ctrlValue && ctrlValue > currentDate) {
             this.date.setValue(this.date.value);
         }
@@ -2338,7 +2338,7 @@ chekgstper(obj){
 
     chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
         const ctrlValue = this.date.value;
-        ctrlValue.month(normalizedMonth.month());
+        //ctrlValue.month(normalizedMonth.month());
         this.date.setValue(ctrlValue);
         datepicker.close();
         this.calculateDiff(this.date.value);

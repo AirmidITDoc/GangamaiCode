@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../../appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
@@ -35,7 +35,7 @@ export class OPRefundofBillComponent implements OnInit {
   isLoading: String = '';
   selectedAdvanceObj: AdvanceDetailObj;
   filteredOptions: NewType;
-  myControl = new UntypedFormControl();
+  myControl = new FormControl();
   dateTimeObj: any;
   billNo: number;
   BillNo: number;

@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { OPIPPatientModel, SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegInsert, VisitMaster } from '../appointment.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
@@ -26,9 +26,9 @@ export class PatientAppointmentComponent implements OnInit {
  
   registerObj = new RegInsert({});
   registerObj1 = new OPIPPatientModel({});
-  name = new UntypedFormControl('');
-  FirstName = new UntypedFormControl('');
-  AreaId = new UntypedFormControl('');
+  name = new FormControl('');
+  FirstName = new FormControl('');
+  AreaId = new FormControl('');
   submitted = false;
   year = 10;
   month = 5;
@@ -109,50 +109,50 @@ export class PatientAppointmentComponent implements OnInit {
   savedValue: number = null;
 
   // prefix filter
-  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bankFilterCtrl: FormControl = new FormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   // city filter
-  public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public cityFilterCtrl: FormControl = new FormControl();
   public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //department filter
-  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public departmentFilterCtrl: FormControl = new FormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
-  public religionFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public religionFilterCtrl: FormControl = new FormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //maritalstatus filter
-  public maritalstatusFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public maritalstatusFilterCtrl: FormControl = new FormControl();
   public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //area filter
-  public areaFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public areaFilterCtrl: FormControl = new FormControl();
   public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //purpose filter
-  public purposeFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public purposeFilterCtrl: FormControl = new FormControl();
   public filteredPurpose: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //company filter
-  public companyFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public companyFilterCtrl: FormControl = new FormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //hospital filter
-  public hospitalFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public hospitalFilterCtrl: FormControl = new FormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 

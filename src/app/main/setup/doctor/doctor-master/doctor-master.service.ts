@@ -79,7 +79,7 @@ export class DoctorMasterService {
                     Validators.maxLength(10),
                 ],
             ],
-            RegDate: [new Date()],
+            RegDate: [{ value: new Date() }],
             MahRegNo: [
                 "",
                 [
@@ -89,7 +89,7 @@ export class DoctorMasterService {
                     Validators.maxLength(10),
                 ],
             ],
-            MahRegDate: [new Date()],
+            MahRegDate: [{ value: new Date() }],
             RefDocHospitalName: [
                 "",
                 [
@@ -119,7 +119,7 @@ export class DoctorMasterService {
         return this._formBuilder.group({
             DoctorNameSearch: [""],
             IsDeletedSearch: ["2"],
-            IsConsultant: ["1"]
+            IsConsultant: [true]
         });
     }
 

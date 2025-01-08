@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import Swal from 'sweetalert2';
 import { OTReservationDetail } from '../ot-reservation/ot-reservation.component';
@@ -71,34 +71,34 @@ export class OTNoteComponent implements OnInit {
   matDialogRef: any;
 
   //doctorone filter
-  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctortwo filter
-  public doctortwoFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctortwoFilterCtrl: FormControl = new FormControl();
   public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
 
   //AnesthDoct filter
-  public AnesthDoctFilterCtrl1: UntypedFormControl = new UntypedFormControl();
+  public AnesthDoctFilterCtrl1: FormControl = new FormControl();
   public filteredAnesthDoctor1: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
 
   //Category filter
-  public CategoryFilterCtrl1: UntypedFormControl = new UntypedFormControl();
+  public CategoryFilterCtrl1: FormControl = new FormControl();
   public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //AnesthDoct filter
-  public AnesthDoctFilterCtrl2: UntypedFormControl = new UntypedFormControl();
+  public AnesthDoctFilterCtrl2: FormControl = new FormControl();
   public filteredAnesthDoctor2: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 

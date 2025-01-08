@@ -11,7 +11,7 @@ import { AdmissionService } from './admission.service';
 import Swal from 'sweetalert2';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
@@ -123,7 +123,7 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
   // filter for doctor
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   @Inject(MAT_DIALOG_DATA) public data: any;

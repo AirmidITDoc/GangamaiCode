@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Optional, Output, Self, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, NgControl } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-airmid-dateofbirth',
@@ -15,7 +16,8 @@ export class AirmidDateofbirthComponent implements OnInit {
     ageYear: number = 0;
     ageMonth: number = 0;
     ageDay: number = 0;
-    constructor() { }
+    control = new FormControl();
+    private destroy: Subject<void> = new Subject();
     OnChangeDobType(e) {
         this.dateStyle = e.value;
         this.ageYear = 0;
@@ -41,7 +43,7 @@ export class AirmidDateofbirthComponent implements OnInit {
         }
         this.formGroup.controls[this.formControlName].setValue(d);
     }
-    onChangeDateofBirth(DateOfBirth:Date) {
+    onChangeDateofBirth(DateOfBirth: Date) {
         if (DateOfBirth) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
@@ -58,6 +60,24 @@ export class AirmidDateofbirthComponent implements OnInit {
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.value?.firstChange && changes.value?.currentValue) {
             this.onChangeDateofBirth(changes.value.currentValue);
+        }
+    }
+    onTouched(): void { }
+
+    registerOnChange(onChange: (value: string | null) => void): void {
+        this.control.valueChanges.pipe(takeUntil(this.destroy)).subscribe(onChange);
+    }
+
+    registerOnTouched(onTouched: () => void): void {
+        this.onTouched = onTouched;
+    }
+    writeValue(value: string | null): void {
+        this.control.setValue(value);
+    }
+    constructor( @Optional() @Self() public ngControl: NgControl | null) {
+        if (ngControl) {
+            this.ngControl.valueAccessor = this;
+            ngControl.valueAccessor = this;
         }
     }
 

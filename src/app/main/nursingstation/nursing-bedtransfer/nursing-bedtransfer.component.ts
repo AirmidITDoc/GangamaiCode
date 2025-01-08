@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -66,14 +66,14 @@ export class NursingBedtransferComponent implements OnInit {
   //@Input() dataArray: any;
 
   //ward filter
-public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
+public wardFilterCtrl: FormControl = new FormControl();
 public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   ///Bed filter
-public bedFilterCtrl: UntypedFormControl = new UntypedFormControl();
+public bedFilterCtrl: FormControl = new FormControl();
 public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
    //room filter
-   public classFilterCtrl: UntypedFormControl = new UntypedFormControl();
+   public classFilterCtrl: FormControl = new FormControl();
    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
  
    private _onDestroy = new Subject<void>();

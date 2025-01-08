@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -93,12 +93,12 @@ export class OPCasepaperComponent implements OnInit {
   public filteredExamination: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  public doseFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public drugFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public historyFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public dignosFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public complaintFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public examinationFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doseFilterCtrl: FormControl = new FormControl();
+  public drugFilterCtrl: FormControl = new FormControl();
+  public historyFilterCtrl: FormControl = new FormControl();
+  public dignosFilterCtrl: FormControl = new FormControl();
+  public complaintFilterCtrl: FormControl = new FormControl();
+  public examinationFilterCtrl: FormControl = new FormControl();
 
   private lookups: ILookup[] = [];
   private nextPage$ = new Subject();
@@ -822,7 +822,7 @@ export class OPCasepaperComponent implements OnInit {
     // console.log(this.dataSource.data );
     // console.log(this.prescriptionData);
     element ? this.addRow() : '';
-    this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new UntypedFormControl());
+    this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new FormControl());
     this.caseFormGroup.get(`drugController${this.prescriptionData.length - 1}`).setValidators(Validators.required);
   }
   onDelete(element) {

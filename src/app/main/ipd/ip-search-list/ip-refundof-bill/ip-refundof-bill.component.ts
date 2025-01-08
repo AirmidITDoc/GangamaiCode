@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../ip-search-list.component'; 
 import { Observable, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -41,7 +41,7 @@ export class IPRefundofBillComponent implements OnInit {
   isLoading: String = '';
   selectedAdvanceObj: AdvanceDetailObj;
   filteredOptions: NewType;
-  myControl = new UntypedFormControl();
+  myControl = new FormControl();
   dateTimeObj: any;
   billNo: number;
   BillNo: number;

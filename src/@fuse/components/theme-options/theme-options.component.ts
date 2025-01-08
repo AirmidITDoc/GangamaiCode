@@ -1,5 +1,5 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -65,34 +65,34 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
         // Build the config form
         // noinspection TypeScriptValidateTypes
         this.form = this._formBuilder.group({
-            colorTheme      : new UntypedFormControl(),
-            customScrollbars: new UntypedFormControl(),
+            colorTheme      : new FormControl(),
+            customScrollbars: new FormControl(),
             layout          : this._formBuilder.group({
-                style    : new UntypedFormControl(),
-                width    : new UntypedFormControl(),
+                style    : new FormControl(),
+                width    : new FormControl(),
                 navbar   : this._formBuilder.group({
-                    primaryBackground  : new UntypedFormControl(),
-                    secondaryBackground: new UntypedFormControl(),
-                    folded             : new UntypedFormControl(),
-                    hidden             : new UntypedFormControl(),
-                    position           : new UntypedFormControl(),
-                    variant            : new UntypedFormControl()
+                    primaryBackground  : new FormControl(),
+                    secondaryBackground: new FormControl(),
+                    folded             : new FormControl(),
+                    hidden             : new FormControl(),
+                    position           : new FormControl(),
+                    variant            : new FormControl()
                 }),
                 toolbar  : this._formBuilder.group({
-                    background           : new UntypedFormControl(),
-                    customBackgroundColor: new UntypedFormControl(),
-                    hidden               : new UntypedFormControl(),
-                    position             : new UntypedFormControl()
+                    background           : new FormControl(),
+                    customBackgroundColor: new FormControl(),
+                    hidden               : new FormControl(),
+                    position             : new FormControl()
                 }),
                 footer   : this._formBuilder.group({
-                    background           : new UntypedFormControl(),
-                    customBackgroundColor: new UntypedFormControl(),
-                    hidden               : new UntypedFormControl(),
-                    position             : new UntypedFormControl()
+                    background           : new FormControl(),
+                    customBackgroundColor: new FormControl(),
+                    hidden               : new FormControl(),
+                    position             : new FormControl()
                 }),
                 sidepanel: this._formBuilder.group({
-                    hidden  : new UntypedFormControl(),
-                    position: new UntypedFormControl()
+                    hidden  : new FormControl(),
+                    position: new FormControl()
                 })
             })
         });

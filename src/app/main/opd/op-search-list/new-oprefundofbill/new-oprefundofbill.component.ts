@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -51,7 +51,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     isLoading: String = '';
     selectedAdvanceObj: AdvanceDetailObj;
     filteredOptions: NewType;
-    myControl = new UntypedFormControl();
+    myControl = new FormControl();
     dateTimeObj: any;
     billNo: number;
     BillNo: number;

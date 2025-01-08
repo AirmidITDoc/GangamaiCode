@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr'; 
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
-import { UntypedFormControl, FormGroup, Validators } from '@angular/forms'; 
+import { FormControl, FormGroup, Validators } from '@angular/forms'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
 import { ImageCroppedEvent } from "ngx-image-cropper";
@@ -32,8 +32,8 @@ export class NewIssueTrackerComponent implements OnInit {
 
   @ViewChild('attachments') attachment: any;
   imageForm = new FormGroup({
-    imageFile: new UntypedFormControl('', [Validators.required]),
-    imgFileSource: new UntypedFormControl('', [Validators.required])
+    imageFile: new FormControl('', [Validators.required]),
+    imgFileSource: new FormControl('', [Validators.required])
   });
 
   imgDataSource = new MatTableDataSource<any>();
@@ -152,7 +152,7 @@ export class NewIssueTrackerComponent implements OnInit {
       this.images.push({ url: file, name: file.name, Id: 0 });
       this.imgDataSource.data = this.images;
       this.imageForm.patchValue({
-        imgFileSource: this.images
+        imgFileSource: this.images[0]
       });
       // }
       this.attachment.nativeElement.value = '';

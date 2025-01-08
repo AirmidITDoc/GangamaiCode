@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { takeUntil } from "rxjs/operators";
 import { VillageMasterService } from "./village-master.service";
-import { UntypedFormControl } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
 import { MatSort } from "@angular/material/sort";
@@ -23,7 +23,7 @@ export class VillageMasterComponent implements OnInit {
     msg: any;
 
     // taluka filter
-    public talukaFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public talukaFilterCtrl: FormControl = new FormControl();
     public filteredTaluka: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();

@@ -4,7 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import {  TemplatedetailList, TestList, TestMaster } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { Observable, ReplaySubject, Subject } from "rxjs";
-import { UntypedFormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { ToastrService } from "ngx-toastr";
 import { MatSort } from "@angular/material/sort";
@@ -84,7 +84,7 @@ export class TestFormMasterComponent implements OnInit {
     Subtest: any;
     vTemplateName:any;
 
-    public parameternameFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public parameternameFilterCtrl: FormControl = new FormControl();
     public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     isTemplateNameSelected: boolean = false;
