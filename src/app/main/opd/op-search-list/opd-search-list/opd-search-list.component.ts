@@ -484,8 +484,8 @@ export class ChargesList{
   DoctorId:number;
   ChargeDoctorName: String;
   ChargesDate: Date;
-  IsPathology:boolean;
-  IsRadiology:boolean;
+  IsPathology:Boolean;
+  IsRadiology:Boolean;
   ClassId:number;
   ClassName: string;
   ChargesAddedName: string;
@@ -503,8 +503,8 @@ export class ChargesList{
           this.DoctorId=ChargesList.DoctorId || 0;
           this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
           this.ChargesDate = ChargesList.ChargesDate || '';
-          this.IsPathology = ChargesList.IsPathology || '';
-          this.IsRadiology = ChargesList.IsRadiology || '';
+          this.IsPathology = ChargesList.IsPathology || false;
+          this.IsRadiology = ChargesList.IsRadiology || false;
           this.ClassId=ChargesList.ClassId || 0;
           this.ClassName = ChargesList.ClassName || '';
           this.ChargesAddedName = ChargesList.ChargesAddedName || '';

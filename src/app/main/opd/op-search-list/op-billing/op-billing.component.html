@@ -174,7 +174,7 @@
                                         class="mat-form-field-auto">
                                         <div fxLayout="row" fxLayoutGap="5px">
 
-                                            <mat-form-field appearance="outline" style="width:500px;" #myInput>
+                                            <mat-form-field appearance="outline" style="width:300px;" #myInput>
                                                 <input type="text" name="SrvcName" formControlName="SrvcName"
                                                     #Servicename placeholder="Service Name" matInput
                                                     [matAutocomplete]="auto" (keydown)="onEnterservice($event)"
@@ -188,10 +188,10 @@
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                                     showPanel="true" (optionsScroll)="onScroll()"
                                                     (optionSelected)='getSelectedObj($event.option.value)'
-                                                    style="width: 500px;">
+                                                    style="width: 300px;">
 
                                                     <mat-option *ngFor="let option of filteredOptionsService"
-                                                        [value]="option" style="width: 500px;">
+                                                        [value]="option" style="width: 300px;">
                                                         {{option.serviceName}} || {{option.price}} || {{option.ServiceId}}
                                                         <span fxLayoutGap="4px">
                                                             <mat-icon *ngIf="option.creditedtoDoctor == true"

@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
+    hasSelectedContacts: boolean;
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
     toDate = this.datePipe.transform(Date.now(), 'dd/MM/yyyy');
