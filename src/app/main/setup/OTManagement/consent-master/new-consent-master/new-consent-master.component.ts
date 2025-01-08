@@ -195,7 +195,7 @@ export class NewConsentMasterComponent implements OnInit {
   }
 
   onClose(){
-    this._otConsentService.myform.reset();
+    this._otConsentService.myform.reset({IsDeleted: true});
     this.dialogRef.close();
   }
 

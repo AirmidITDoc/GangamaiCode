@@ -379,6 +379,9 @@
                                                 <span class="mat-header-text">Action</span>
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-260 gap-4">
+                                                <button mat-icon-button matTooltip="Certificate" *ngIf="contact.IsCancelled==0">
+                                                    <mat-icon> insert_drive_file</mat-icon>
+                                                </button>
                                                 <button mat-icon-button matTooltip="Edit" *ngIf="contact.IsCancelled==0"
                                                     (click)="EditRegistration(contact)">
                                                     <mat-icon>edit</mat-icon>

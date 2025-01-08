@@ -683,10 +683,13 @@
                                                 </mat-footer-row>
                                             </mat-table>
 
-                                            <mat-paginator #paginator2 [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
-                                            showFirstLastButtons [length]="resultsLength2"
+                                            <!-- <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
+                                            [length]="resultsLength2" showFirstLastButtons
                                             (page)="getCustomerPaymentDaySummary()">
+                                        </mat-paginator> -->
+                                        <mat-paginator [length]="resultsLength2" [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25" (page)="getCustomerPaymentDaySummary()">
                                         </mat-paginator>
+                                        
                                         </div>
                                     </div>
                                 </div>

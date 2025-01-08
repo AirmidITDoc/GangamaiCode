@@ -134,7 +134,7 @@ export class NewCategoryMasterComponent implements OnInit {
   }
   
   onClose(){
-    this._categoryMasterService.myform.reset();
+    this._categoryMasterService.myform.reset({IsDeleted: true});
     this.dialogRef.close();
   }
 

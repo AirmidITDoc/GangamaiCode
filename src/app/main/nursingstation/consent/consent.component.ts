@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { ConsentService } from './consent.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { NewConsentComponent } from './new-consent/new-consent.component';
 
 @Component({
   selector: 'app-consent',
@@ -18,21 +19,9 @@ import { ToastrService } from 'ngx-toastr';
   animations: fuseAnimations
 })
 export class ConsentComponent implements OnInit {
-  editorConfig: AngularEditorConfig = {
-    // color:true,
-    editable: true,
-    spellcheck: true,
-    height: '7rem',
-    minHeight: '7rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
+  
+  sIsLoading: string = '';
 
-  };
-  onBlur(e:any){
-    this.vTemplateDesc=e.target.innerHTML;
-  }
   displayedColumns: string[] = [
     'patientId',
     'PatientName',
@@ -43,23 +32,8 @@ export class ConsentComponent implements OnInit {
     'date',
     'Action'
   ]
-  isRegIdSelected:boolean=false;
-  vTemplateDesc:any;
-  DepartmentList:any=[];
-  TemplateList:any=[];
-  PatientName:any;
-  vOPDNo:any;
-  Gender:any;
-  Age:any;
-  patientsource:any;
-  CompanyName:any;
-  TarrifName:any;
-  DoctorName:any;
 
-
-
-  dsConsentList = new MatTableDataSource
-  
+  dsConsentList = new MatTableDataSource<OPIPMasterList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -73,7 +47,59 @@ export class ConsentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getIPOPPatientList();
+  }
+
+  getIPOPPatientList(){
+    // debugger
+    // var m_data = {
+    //   "Keyword": this.RegId
+    // }
+    // console.log(m_data)
+    // this._ConsentService.getPatientRegisterListSearch(m_data).subscribe(visit => {
+    //   console.log("Raw API Response:", visit); 
+    //   this.dsConsentList.data=visit as OPIPMasterList[];
+    //   console.log("daaaaaataaa:", this.dsConsentList.data)
+    //   this.dsConsentList.sort = this.sort;
+    //   this.dsConsentList.paginator = this.paginator;
+    // }); 
   }
 
 
+  NewConsent() {
+    const dialogRef = this._matDialog.open(NewConsentComponent,
+      {
+        maxWidth: '85%',
+        height: '90%',
+        width: '100%',
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+     });
+  }
+
+}
+export class OPIPMasterList {
+
+  RegId: number;
+  PatientName: any;
+  Age: any;
+  MobileNo: any;
+  DoctorName: any;
+  PatienSource: any;
+  RegDate: any;
+
+  constructor(OPIPMasterList) {
+    {
+
+      this.RegId = OPIPMasterList.RegId || 0;
+      this.PatientName = OPIPMasterList.FirstName + ' ' +OPIPMasterList.MiddleName+ ' ' + OPIPMasterList.LastName || 0;
+      this.Age = OPIPMasterList.Age || 0;
+      this.MobileNo = OPIPMasterList.MobileNo || 0;      
+      this.DoctorName = OPIPMasterList.DoctorName || 0;
+      this.PatienSource = OPIPMasterList.PatienSource || 0;
+      this.RegDate = OPIPMasterList.RegDate || 0;
+
+    }
+  }
 }

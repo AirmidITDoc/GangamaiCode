@@ -19,50 +19,50 @@
         </div>
     </mat-toolbar>
 
-    <!-- <div class="content">
+    <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
-                            <form [formGroup]="_otTableMasterService.myform">
+                            <form [formGroup]="_otSiteDescMasterService.myform">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
 
-                                        <input type="hidden" name="OtTableId" formControlName="OtTableId"
-                                            [(ngModel)]="vOtTableId">
+                                        <input type="hidden" name="SiteDescId" formControlName="SiteDescId"
+                                            [(ngModel)]="vSiteDescId">
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>OTRoom Name</mat-label>
-                                                <input name="OtRoomName" formControlName="OtRoomName" required
-                                                    placeholder="OT Room Name" matInput type="text"
+                                                <mat-label>SiteDescription Name</mat-label>
+                                                <input name="SiteDescriptionName" formControlName="SiteDescriptionName" required
+                                                    placeholder="SiteDescription Name" matInput type="text"
                                                     oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vOtRoomName ">
+                                                    [(ngModel)]="vSiteDescriptionName ">
                                                 <mat-error
-                                                    *ngIf="_otTableMasterService.myform.get('OtRoomName').invalid && _otTableMasterService.myform.get('OtRoomName').touched">
-                                                    OtRoom Name is required Enter only
+                                                    *ngIf="_otSiteDescMasterService.myform.get('SiteDescriptionName').invalid && _otSiteDescMasterService.myform.get('SiteDescriptionName').touched">
+                                                    SiteDescription Name is required Enter only
                                                     Alphabets</mat-error>
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Location</mat-label>
+                                                <mat-label>Surgery Category</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Location" matInput formControlName="Locationid" required
-                                                    required [(ngModel)]="vLocationid" [matAutocomplete]="autolocation">
+                                                    placeholder="Select Location" matInput formControlName="SurgeryCategoryID" required
+                                                    required [(ngModel)]="vSurgeryCategoryID" [matAutocomplete]="autoSurgeryCat">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_otTableMasterService.myform.get('Locationid').setValue(''); isLocationSelected = false;">close</mat-icon>
+                                                        (click)="_otSiteDescMasterService.myform.get('SurgeryCategoryID').setValue(''); isSurgeryCategorySelected = false;">close</mat-icon>
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_otTableMasterService.myform.get('Locationid').setValue(''); isLocationSelected = false;">search</mat-icon>
+                                                        (click)="_otSiteDescMasterService.myform.get('SurgeryCategoryID').setValue(''); isSurgeryCategorySelected = false;">search</mat-icon>
                                                 </span>
 
-                                                <mat-autocomplete #autolocation="matAutocomplete" [displayWith]="getOptionTextLoc">
-                                                    <mat-option *ngFor="let option of filteredOptionsLocation | async" 
+                                                <mat-autocomplete #autoSurgeryCat="matAutocomplete" [displayWith]="getOptionTextLoc">
+                                                    <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" 
                                                     [value]="option">
-                                                        {{option.LocationName}} || {{option.LocationId}}
+                                                        {{option.SurgeryCategoryName}} || {{option.SurgeryCategoryId}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
@@ -73,12 +73,11 @@
 
                                 <div class="footer-navigation-container">
 
-                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" [(ngModel)]="vIsDeleted"
+                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
                                         (checked)=true>IsActive
                                     </mat-checkbox>
 
-                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
-                                        style="margin-right: 10px;">
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                                         <button class="btn btn-primary" (click)="onSave()">Save</button>
                                     </div>
@@ -90,6 +89,6 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 </div>
