@@ -9,11 +9,14 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class NursingnoteService {
   myform: FormGroup;
+  PatientHandOverForm:FormGroup
+
   constructor(public _httpClient: HttpClient,
     public _formBuilder: FormBuilder,
     private _loaderService:LoaderService
   ) {
       this.myform = this.createtemplateForm();
+      this.PatientHandOverForm = this.CreateHandOverForm();
      }
 
      
@@ -23,6 +26,12 @@ export class NursingnoteService {
       Description:[''], 
       RegID:[''],
       NursingNoteId:['']
+    });
+  }
+  CreateHandOverForm(): FormGroup {
+    return this._formBuilder.group({
+      HandOverType: ['0'], 
+      staffName:[''] 
     });
   }
 

@@ -591,10 +591,10 @@ ServiceList:any=[];
         "isCancelledDate": "01/01/1900",
         "isPathology": this.b_isPath,
         "isRadiology": this.b_isRad,
-        "isPackage": 0 ,//this.IsPackage,
+        "isPackage": this.IsPackage,
         "packageMainChargeID": 0,
         "isSelfOrCompanyService": false,
-        "packageId": this.IsPackage,
+        "packageId": 0,
         "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         "classId":this.Serviceform.get('ChargeClass').value.ClassId,    // this.selectedAdvanceObj.ClassId, 
       } 
@@ -630,6 +630,7 @@ ServiceList:any=[];
             "packageMainChargeID": 0,
             "isSelfOrCompanyService": false,
             "packageId": element.ServiceId,  
+            "ChargeTime": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
           }  
           console.log(Vdata)
           PackageData.push(Vdata)
@@ -856,17 +857,17 @@ ServiceList:any=[];
   } 
 
   getRtrvPackageList() {  
-    //  this.isLoadingStr = 'loading';
-    //  let Query = "Select *  from lvwAddCharges where IsGenerated=0 and PackageId !=0  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
-    //  console.log(Query); 
-    //  this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
-    //    this.PackageDatasource.data = data as ChargesList[];
-    //    this.PacakgeList = data as ChargesList[];
-    //    console.log(this.PacakgeList)   
-    //  },
-    //    (error) => {
-    //      this.isLoading = 'list-loaded';
-    //    });  
+     this.isLoadingStr = 'loading';
+     let Query = "Select *  from lvwAddCharges where IsGenerated=0 and IsPackage=1  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+     console.log(Query); 
+     this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
+       this.PackageDatasource.data = data as ChargesList[];
+       this.PacakgeList = data as ChargesList[];
+       console.log(this.PacakgeList)   
+     },
+       (error) => {
+         this.isLoading = 'list-loaded';
+       });  
    }
 
   getChargesList() {

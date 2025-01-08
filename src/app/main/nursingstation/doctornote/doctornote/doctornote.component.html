@@ -173,11 +173,11 @@
 
                                                                     <ng-container matColumnDef="VDate">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-180">
                                                                             VDate </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
-                                                                            {{element.VTDate}}-{{TTime | date:'shortTime'}} </mat-cell>
+                                                                            fxShow.gt-sm class="w-180">
+                                                                            {{element.VTDate}}-{{element.TTime}} </mat-cell>
                                                                     </ng-container> 
 
                                                                     <ng-container matColumnDef="Note">
@@ -192,19 +192,19 @@
 
                                                                     <ng-container matColumnDef="CreatedBy">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-140">
                                                                             CreatedBy </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
+                                                                            fxShow.gt-sm class="w-140">
                                                                             {{element.CreatedBy}} </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="Action">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-100"> 
                                                                             Action </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
+                                                                            fxShow.gt-sm class="w-100">
                                                                             <button mat-icon-button matTooltip="Edit"
                                                                             (click)="OnEdit(element)">
                                                                                 <mat-icon>edit</mat-icon>

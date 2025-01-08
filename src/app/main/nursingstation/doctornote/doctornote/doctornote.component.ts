@@ -105,8 +105,7 @@ export class DoctornoteComponent implements OnInit {
     public toastr: ToastrService,
     public _matDialog: MatDialog,
   ) {
-    if (this.advanceDataStored.storage) {
-      debugger
+    if (this.advanceDataStored.storage) { 
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
     }
@@ -115,6 +114,8 @@ export class DoctornoteComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getTemplateNoteList();
+    this.getWardNameList();
     if(this.selectedAdvanceObj){
       this.vRegNo = this.selectedAdvanceObj.RegNo;
       this.vPatienName = this.selectedAdvanceObj.PatientName;
@@ -128,8 +129,7 @@ export class DoctornoteComponent implements OnInit {
       this.vAdmissionID  = this.selectedAdvanceObj.AdmissionID;
       this.getDoctorNotelist(this.vAdmissionID)
     } 
-    this.getTemplateNoteList();
-    this.getWardNameList();
+ 
   }
 //Patient search 
 getSearchList() { 
@@ -257,8 +257,8 @@ getDoctorNotelist(obj) {
   onSubmit() {   
       const currentDate = new Date();
       const datePipe = new DatePipe('en-US');
-      const formattedTime = datePipe.transform(currentDate, 'shortTime');
-      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+      const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
 
       if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
         this.toastr.warning('Please select Patient', 'Warning !', {
@@ -339,7 +339,7 @@ getDoctorNotelist(obj) {
     console.log(row)
     var m_data = {
       "TemplateId": row.TemplateId,
-      "TemplateName": row.TemplateName,
+     // "TemplateName": row.TemplateName,
       "Description": row.DoctorsNotes, 
       "UpdatedBy": row.UpdatedBy,
       "DoctNoteId":row.DoctNoteId
