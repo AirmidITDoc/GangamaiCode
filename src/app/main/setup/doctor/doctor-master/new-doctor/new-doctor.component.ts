@@ -7,13 +7,14 @@ import { DoctorMasterService } from "../doctor-master.service";
 import { ToastrService } from "ngx-toastr";
 import { SignatureViewComponent } from "../signature-view/signature-view.component";
 import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
+import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox/airmid-textbox.component";
 
 @Component({
     selector: "app-new-doctor",
     templateUrl: "./new-doctor.component.html",
     styleUrls: ["./new-doctor.component.scss"],
     encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+    animations: fuseAnimations
 })
 export class NewDoctorComponent implements OnInit {
 
@@ -53,7 +54,7 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myForm = this._doctorService.createdDoctormasterForm();
-        if (this.data.doctorId > 0) {
+        if ((this.data?.doctorId??0) > 0) {
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
@@ -77,14 +78,15 @@ export class NewDoctorComponent implements OnInit {
         this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
     }
     onSubmit() {
-        // if (this.myForm.valid) {
+        debugger
+        if (this.myForm.valid) {
             this._doctorService.doctortMasterInsert(this.myForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose();
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        // }
+        }
     }
 
     onClear(val: boolean) {

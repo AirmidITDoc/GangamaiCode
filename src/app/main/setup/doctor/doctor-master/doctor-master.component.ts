@@ -221,11 +221,17 @@ export class DoctorMasterComponent implements OnInit {
         });
     }
     newDoctormaster() {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+
         const dialogRef = this._matDialog.open(NewDoctorComponent, {
             maxWidth: "85vw",
             maxHeight: "98vh",
             width: "100%",
             height: "100%",
+            autoFocus: false,
+            ariaModal: true,
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
