@@ -29,17 +29,29 @@ export class NursingnoteService {
     });
   }
   CreateHandOverForm(): FormGroup {
-    return this._formBuilder.group({
-      HandOverType: ['0'], 
-      staffName:[''] 
+    return this._formBuilder.group({ 
+      HandOverType:['Morning'],  
+      staffName:[''],
+      SYMPTOMS:[''],
+      Instruction:[''],
+      Stable:[''],
+      Assessment:[''],
+      docHandId:[''],
+      Comments:['']
     });
   }
 
 
-  public NursingNoteInsert(employee) {
+  public NursingNoteInsert(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("Nursing/SaveTNursingNotes", employee)
   }
-  public NursingNoteUpdate(employee) {
+  public NursingNoteUpdate(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("Nursing/UpdateTNursingNotes", employee)
   }
   public getDoctorCombo() {
@@ -74,7 +86,24 @@ export class NursingnoteService {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
   }
 
-
+  public HandOverInsert(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Nursing/SaveTNursingPatientHandover", employee)
+  }
+  public HandOverUpdate(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Nursing/UpdateTNursingPatientHandover", employee)
+  }
+  public getHandOverNotelist(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_Nursing_PatientHandoverList ", employee)
+  }
 
 
 
@@ -86,5 +115,8 @@ export class NursingnoteService {
   
   NursingNotepoppulateForm(param){
     this.myform.patchValue(param)
+  }
+  HandOverNotepoppulateForm(param){
+    this.PatientHandOverForm.patchValue(param)
   }
 }

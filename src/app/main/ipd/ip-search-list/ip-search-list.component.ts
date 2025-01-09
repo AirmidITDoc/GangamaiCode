@@ -30,6 +30,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OPIPFeedbackComponent } from '../Feedback/opip-feedback/opip-feedback.component';
 import { DischargesummaryTemplateComponent } from './dischargesummary-template/dischargesummary-template.component';
 import { NewFeedbackComponent } from './new-feedback/new-feedback.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 
@@ -104,7 +105,10 @@ export class IPSearchListComponent implements OnInit {
     private _ActRoute: Router,
     public datePipe: DatePipe,
     public toastr: ToastrService,
-    private advanceDataStored: AdvanceDataStored) { }
+    private advanceDataStored: AdvanceDataStored,
+    private _configue:ConfigService
+  ) { }
+   
 
   ngOnInit(): void {
     //this.onClear();
@@ -121,7 +125,9 @@ export class IPSearchListComponent implements OnInit {
     else if (this._ActRoute.url == '/ipd/dischargesummary') {
       this.menuActions.push('Discharge');
       this.menuActions.push('Discharge Summary');
-      this.menuActions.push('Discharge Summary Template');
+      if(this._configue.configParams.IsDischargeTemplate){
+        this.menuActions.push('Discharge Summary Template');
+      } 
     }
     else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance' || this._ActRoute.url == '/ipd/refund/iprefundofbill') {
 
