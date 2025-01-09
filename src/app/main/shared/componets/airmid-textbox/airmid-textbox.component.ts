@@ -49,6 +49,8 @@ export class AirmidTextboxComponent implements
 
     control = new FormControl();
     stateChanges: Subject<void> = new Subject();
+    @Output() keyup = new EventEmitter<any>();
+    @Output() change = new EventEmitter<any>();
     @Output() valueChange = new EventEmitter<string>();
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
@@ -56,10 +58,11 @@ export class AirmidTextboxComponent implements
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() type: string = "text";
-    @Input() keyup: Event;
     @Input() appearance: string = "outline";
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
+
+
     @Input()
     get disabled(): boolean {
         return this._disabled;
@@ -172,6 +175,14 @@ export class AirmidTextboxComponent implements
     onValueChange(event: Event): void {
         const input = event.target as HTMLInputElement;
         this.valueChange.emit(input.value);
+    }
+    onKeyUp(event:Event):void{
+        const input = event.target as HTMLInputElement;
+        this.keyup.emit(input.value);
+    }
+    onChange(event:Event):void{
+        const input = event.target as HTMLInputElement;
+        this.change.emit(input.value);
     }
 
 
