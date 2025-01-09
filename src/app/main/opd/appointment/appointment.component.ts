@@ -2338,31 +2338,31 @@ export class AppointmentComponent implements OnInit {
                 this.getVisitList1();
             });
          } 
-        else if (m == "Medical Record") {
-            var m_data3 = {
-                RegId: contact.RegId,
-                PatientName: contact.PatientName,
-                VisitId: contact.VisitId,
-                OPD_IPD_Id: contact.OPD_IPD_Id,
-                RefDoctorId: contact.RefDocId,
-                RefDocName: contact.RefDocName,
-            };
-           // this._registrationService.populateFormpersonal(contact);
-            this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
-            const dialogRef = this._matDialog.open(NewCasepaperComponent, {
-                maxWidth: "90vw",
-                height: "90vw",
-                width: "90%",
-                // data: {
-                //     Obj: contact,
-                //     FormName: "Medical Record"
-                // },
-            });
-            dialogRef.afterClosed().subscribe((result) => {
-                console.log("The dialog was closed - Insert Action", result);
-                this.getVisitList1();
-            });
-        }
+        // else if (m == "Medical Record") {
+        //     var m_data3 = {
+        //         RegId: contact.RegId,
+        //         PatientName: contact.PatientName,
+        //         VisitId: contact.VisitId,
+        //         OPD_IPD_Id: contact.OPD_IPD_Id,
+        //         RefDoctorId: contact.RefDocId,
+        //         RefDocName: contact.RefDocName,
+        //     };
+        //    // this._registrationService.populateFormpersonal(contact);
+        //     this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
+        //     const dialogRef = this._matDialog.open(NewCasepaperComponent, {
+        //         maxWidth: "90vw",
+        //         height: "90vw",
+        //         width: "90%",
+        //         // data: {
+        //         //     Obj: contact,
+        //         //     FormName: "Medical Record"
+        //         // },
+        //     });
+        //     dialogRef.afterClosed().subscribe((result) => {
+        //         console.log("The dialog was closed - Insert Action", result);
+        //         this.getVisitList1();
+        //     });
+        // }
         // else if (m == "Cancle Appointment") {
         //     // console.log(contact)
         //     this.AppointmentCancle(contact.VisitId);
