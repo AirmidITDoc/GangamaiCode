@@ -27,4 +27,5 @@ export class PdfviewerComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
 }

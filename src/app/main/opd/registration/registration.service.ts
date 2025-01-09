@@ -229,5 +229,10 @@ export class RegistrationService {
 public getcitylist(version){
   return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
 }
+
+public getPatientListView(mode){
+    return this._httpClient1.PostData("Report/ViewReport",mode);
+ 
+}
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"
