@@ -752,7 +752,7 @@ autocompleteModecashcounter: string = "CashCounter";
 
   }
   onSaveOPBill2() {
-    debugger
+    
     // if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
     //   this.toastr.warning('Please select Patient', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',

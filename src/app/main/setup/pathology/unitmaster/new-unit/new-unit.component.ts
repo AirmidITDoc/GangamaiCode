@@ -35,7 +35,7 @@ export class NewUnitComponent implements OnInit {
 
     
     onSubmit() {
-        debugger
+        
     if (!this.unitForm.invalid){
         this.saveflag = true;
     

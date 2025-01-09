@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulat
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatStepper } from '@angular/material/stepper';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionService } from '../admission.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -100,56 +100,56 @@ export class AdmissionNewComponent implements OnInit {
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
 
 
-  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bankFilterCtrl: FormControl = new FormControl();
   public filteredPrefix: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public cityFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public cityFilterCtrl: FormControl = new FormControl();
   public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public departmentFilterCtrl: FormControl = new FormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //religion filter
-  public religionFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public religionFilterCtrl: FormControl = new FormControl();
   public filteredReligion: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //maritalstatus filter
-  public maritalstatusFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public maritalstatusFilterCtrl: FormControl = new FormControl();
   public filteredMaritalstatus: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //area filter
-  public areaFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public areaFilterCtrl: FormControl = new FormControl();
   public filteredArea: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //ward filter
-  public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public wardFilterCtrl: FormControl = new FormControl();
   public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //company filter
-  public companyFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public companyFilterCtrl: FormControl = new FormControl();
   public filteredCompany: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //hospital filter
-  public hospitalFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public hospitalFilterCtrl: FormControl = new FormControl();
   public filteredHospital: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //hospital filter
-  public bedFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bedFilterCtrl: FormControl = new FormControl();
   public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //doctorone filter
-  public doctoroneFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //doctorone filter
-  public doctortwoFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctortwoFilterCtrl: FormControl = new FormControl();
   public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
@@ -336,7 +336,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   private filterCity() {
-    // debugger;
+    // ;
     if (!this.cityList) {
       return;
     }
@@ -356,7 +356,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   private filterDepartment() {
-    // debugger;
+    // ;
 
     if (!this.DepartmentList) {
       return;
@@ -379,7 +379,7 @@ export class AdmissionNewComponent implements OnInit {
 
 
   getOptionsText(option) {
-    // debugger;
+    // ;
     if (!option)
       return '';
     return option.ServiceName + ' ' + option.Price + ' (' + option.TariffId + ')';
@@ -713,7 +713,7 @@ export class AdmissionNewComponent implements OnInit {
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
       this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // debugger;
+        // ;
 
         this.filteredOptions = resData;
         console.log(resData);
@@ -1055,7 +1055,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   OnChangeDoctorList(departmentObj) {
-    // debugger;
+    // ;
     console.log("departmentObj", departmentObj)
     this._AdmissionService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(
       data => {
@@ -1078,7 +1078,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   OnChangeBedList(wardObj) {
-    debugger
+    
     console.log(wardObj);
     this._AdmissionService.getBedCombo(wardObj.RoomId).subscribe(data => {
       this.BedList = data;
@@ -1116,7 +1116,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   takePicture() {
-    // debugger;
+    // ;
     // const dialogRef = this._matDialog.open(CameraComponent, {
     //   width: '600px',
     //   height: '400px',
@@ -1151,7 +1151,7 @@ export class AdmissionNewComponent implements OnInit {
   }
 
   nextClicked(formGroupName) {
-    // debugger;
+    // ;
     if (formGroupName.invalid) {
       const controls = formGroupName.controls;
       Object.keys(controls).forEach(controlsName => {
@@ -1181,7 +1181,7 @@ export class AdmissionNewComponent implements OnInit {
 
 
   submitAdmissionForm() {
-    // debugger;
+    // ;
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
       this.isLoading = 'submit';
@@ -1304,7 +1304,7 @@ export class AdmissionNewComponent implements OnInit {
       let admissionInsert = {};
 
       //      submissionObj['regUpdate'] = RegistraionUpdate;
-      // debugger;
+      // ;
       admissionInsert['admissionID'] = 0;
       admissionInsert['regId'] = this.registerObj.RegId;
       admissionInsert['admissionDate'] = this.dateTimeObj.date;
@@ -1419,7 +1419,7 @@ export class AdmissionNewComponent implements OnInit {
 
   getPrint(el) {
     console.log(el);
-    debugger;
+    ;
     var D_data = {
       "AdmissionId": el,
       // "AdmissionId": 5,

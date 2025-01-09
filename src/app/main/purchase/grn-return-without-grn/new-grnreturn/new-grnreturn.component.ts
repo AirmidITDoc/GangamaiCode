@@ -449,7 +449,7 @@ export class NewGRNReturnComponent implements OnInit {
 
 
   viewgetgrnreturnReportPdf(GRNReturnId) {
-    debugger
+    
     setTimeout(() => {
       this.SpinLoading = true;
       this._GRNReturnService.getGRNreturnreportview(

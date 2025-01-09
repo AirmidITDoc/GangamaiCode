@@ -212,7 +212,7 @@ export class UpdateWorkorderComponent implements OnInit {
   }
 
   onAdd() {
-    //debugger
+    //
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a Qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -415,7 +415,7 @@ getTotalAmt(element) {
   return this.FinalTotalAmount;
 }
   OnSave() {
-    //debugger
+    //
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -483,7 +483,7 @@ getTotalAmt(element) {
         this.OnReset();
         this._matDialog.closeAll();
         this.Savebtn=false;
-        debugger
+        
         this.viewgetWorkorderReportPdf(response);
       } else {
         this.toastr.error('New WorkOrder Data not Saved !, Please check error..', 'Error !', {
@@ -561,7 +561,7 @@ getTotalAmt(element) {
   
   
   viewgetWorkorderReportPdf(WOId) {
-    debugger
+    
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       

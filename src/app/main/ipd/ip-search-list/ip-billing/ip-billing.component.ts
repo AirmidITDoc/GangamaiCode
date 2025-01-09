@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
@@ -132,7 +132,7 @@ export class IPBillingComponent implements OnInit {
   advancedatasource = new MatTableDataSource<any>();
   PackageDatasource = new MatTableDataSource
 
-  myControl = new UntypedFormControl(); 
+  myControl = new FormControl(); 
   filteredOptions: any;
   billingServiceList = [];
   showAutocomplete = false;
@@ -276,7 +276,7 @@ export class IPBillingComponent implements OnInit {
       this.AdmissionId = this.selectedAdvanceObj.AdmissionID; 
     }
 
-    this.myControl = new UntypedFormControl();
+    this.myControl = new FormControl();
     this.getBillheaderList(); 
     this.getPharmacyAmount();
     this.getBillingClasslist();
@@ -362,7 +362,7 @@ export class IPBillingComponent implements OnInit {
   }
   //Service date 
   OnDateChange(){
-    // debugger
+    // 
     // if (this.selectedAdvanceObj.AdmDateTime) {
     //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
     //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
@@ -918,7 +918,7 @@ AdminStatus(event){
 }
 //Admin Charge Cal
 // CalculateAdminCharge(){
-// debugger
+// 
 // let AdminPer = this.Ipbillform.get('AdminPer').value || 0;
 //   if (AdminPer > 0 && AdminPer < 100) {
 
@@ -989,7 +989,7 @@ CalculateAdminCharge(){
 }
 // Total Bill Disc Per cal 
   CalFinalDisc() {
-    debugger
+    
     let BillDiscPer = this.Ipbillform.get('Percentage').value || 0;
 
     if (this.Ipbillform.get('AdminAmt').value > 0) {

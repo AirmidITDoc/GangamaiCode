@@ -92,7 +92,7 @@ export class OpPaymentNewComponent implements OnInit {
   }
   onAddPayment() {
     this.submitted = true;
-debugger
+
     if (this.patientDetailsFormGrp.invalid) {
       return;
     }
@@ -278,7 +278,7 @@ debugger
 
   ngOnInit(): void {
     this.patientDetailsFormGrp = this.createForm();
-    debugger
+    
     if (this.data.FromName == "SalesSETTLEMENT") {
       this.data = this.data.vPatientHeaderObj;
       this.advanceData = this.data.vPatientHeaderObj;

@@ -195,7 +195,7 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger;
+        ;
         if (this.showEmg) {
             this.serviceForm.get('EmgAmt').setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('EmgPer').setValidators([Validators.required, Validators.min(0)]);
@@ -235,7 +235,7 @@ export class ServiceMasterFormComponent implements OnInit {
                     "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
                 }
                 this.DSServicedetailList.data.forEach(element => {
-                    debugger
+                    
                     let c = JSON.parse(JSON.stringify(class_det));
                     c['classId'] = element.ClassId;
                     c['classRate'] = element.ClassRate || 0;

@@ -267,7 +267,7 @@ export class ItemMovemnentComponent implements OnInit {
 
     //     setTimeout(() => {
     //         this.SpinLoading = true;
-    //       debugger
+    //       
     //         this._ItemMovemnentService.getItemmovementview(Fromdate, Todate,ItemId, FromStoreId, ToStoreId).subscribe(res => {
     //             const dialogRef = this._matDialog.open(PdfviewerComponent,
     //                 {

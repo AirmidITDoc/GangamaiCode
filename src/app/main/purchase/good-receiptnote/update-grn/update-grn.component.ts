@@ -16,7 +16,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormsModule, UntypedFormControl } from '@angular/forms';
+import { FormsModule, FormControl } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -249,14 +249,14 @@ export class UpdateGRNComponent implements OnInit {
         this.getGSTtypeList();
     }
 
-    date = new UntypedFormControl(moment());
+    date = new FormControl(new Date());
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);
     setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
         const ctrlValue = this.date.value;
         const currentDate = new Date();
-        ctrlValue.month(normalizedMonthAndYear.month());
-        ctrlValue.year(normalizedMonthAndYear.year());
+        //ctrlValue.month(normalizedMonthAndYear.month());
+        //ctrlValue.year(normalizedMonthAndYear.year());
         if (ctrlValue && ctrlValue > currentDate) {
             this.date.setValue(this.date.value);
         }
@@ -266,7 +266,7 @@ export class UpdateGRNComponent implements OnInit {
     }
 
     calculateLastDay(inputDate: string) {
-        // debugger
+        // 
         if (inputDate && inputDate.length === 6) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
@@ -1040,7 +1040,7 @@ chekgstper(obj){
     }
     isDisc2Selected: boolean = false;
     onChangeDisc2(event) {
-        // debugger
+        // 
         if (event.value.Name == "GST After TwoTime Disc") {
 
             this.isDisc2Selected = true;
@@ -1289,7 +1289,7 @@ chekgstper(obj){
     }
     vTotalQty: any = 0
     OnSave() {
-        debugger
+        
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null ||
             this._GRNList.GRNFinalForm.get('ReceivedBy').value == undefined)) {
             this.toastr.warning('Please enter a Received By', 'Warning !', {
@@ -2260,7 +2260,7 @@ chekgstper(obj){
 
             this.getSupplierSearchCombo();
 
-            //   debugger
+            //   
             // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
             //   const toSelectSUpplierId = this.SupplierList.data.find(item => item.SupplierId === result[0].SupplierID);
             //   console.log(toSelectSUpplierId)
@@ -2338,7 +2338,7 @@ chekgstper(obj){
 
     chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
         const ctrlValue = this.date.value;
-        ctrlValue.month(normalizedMonth.month());
+        //ctrlValue.month(normalizedMonth.month());
         this.date.setValue(ctrlValue);
         datepicker.close();
         this.calculateDiff(this.date.value);

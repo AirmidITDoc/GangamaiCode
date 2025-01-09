@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj } from '../../appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
@@ -35,7 +35,7 @@ export class OPRefundofBillComponent implements OnInit {
   isLoading: String = '';
   selectedAdvanceObj: AdvanceDetailObj;
   filteredOptions: NewType;
-  myControl = new UntypedFormControl();
+  myControl = new FormControl();
   dateTimeObj: any;
   billNo: number;
   BillNo: number;
@@ -176,7 +176,7 @@ export class OPRefundofBillComponent implements OnInit {
 
 
   getRefundofBillIPDList() {
-    debugger;
+    ;
     
     var m_data = {
       "RegNo": this.selectedAdvanceObj.OPD_IPD_ID
@@ -194,7 +194,7 @@ export class OPRefundofBillComponent implements OnInit {
 
 // //Give BillNumber For List
 //   getBilldetailList() {
-//     debugger;
+//     ;
 //     var m_data = {
 //       "BillNo": 1212,//this._OpSearchListService.myRefundAdvanceForm.get("BillNo").value || 0,
 //     }
@@ -322,7 +322,7 @@ export class OPRefundofBillComponent implements OnInit {
   }
 
   onSave() {
-    debugger;
+    ;
     this.isLoading = 'submit';
 
     if(this.TotalRefundAmount <= this.RefundBalAmount){
@@ -471,7 +471,7 @@ getServiceListCombobox() {
 }
 
 Serviceselect(row,event){
-debugger;
+;
 console.log(row);
 this.RefAmt=this.RefundBalAmount;
 
@@ -509,7 +509,7 @@ onEdit(row) {
 
   this.getserviceetailList();
 
-  debugger;
+  ;
   //Testing
   var m_data1 = {
     "BillId": row.BillNo
@@ -533,7 +533,7 @@ populateiprefund(employee) {
 }
 
 calculateTotalRefund() {
-    debugger
+    
   this.RefundBalAmount = this.RefundAmount - this.TotalRefundAmount;
  
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -88,11 +88,11 @@ export class CathLabComponent implements OnInit {
   doctorNameCmbList: any = [];
   D_data1:any;
   dataArray = {};
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   
     //department filter
-    public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public departmentFilterCtrl: FormControl = new FormControl();
     public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
   
   private _onDestroy = new Subject<void>();
@@ -101,7 +101,7 @@ export class CathLabComponent implements OnInit {
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
-    debugger;
+    ;
     this.minDate = new Date();
     var D_data= {
      
@@ -149,7 +149,7 @@ export class CathLabComponent implements OnInit {
 
    
   getCathLabBookingList() {
-    debugger;
+    ;
     this.sIsLoading = 'loading-data';
     var m_data ={
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
@@ -173,7 +173,7 @@ export class CathLabComponent implements OnInit {
 
 
   addNewCathlabBooking(){
-debugger;   
+;   
    const dialogRef = this._matDialog.open(NewCathLabComponent,
      {
        maxWidth: "70%",
@@ -206,7 +206,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 onEdit(contact){
-  debugger;
+  ;
  console.log(contact);
 
  if(contact.AnesthType)

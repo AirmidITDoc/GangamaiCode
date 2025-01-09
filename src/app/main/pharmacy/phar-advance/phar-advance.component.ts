@@ -158,7 +158,7 @@ export class PharAdvanceComponent implements OnInit {
 
  
 viewgetIPAdvanceReportPdf(contact) {
-  debugger
+  
   
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
@@ -218,7 +218,7 @@ viewgetRefundofAdvanceReportPdf(contact) {
 
 currentDate = new Date();
 getWhatsappsAdvance(el, vmono) {
-  debugger
+  
   if(vmono !='' && vmono !="0"){
   var m_data = {
     "insertWhatsappsmsInfo": {

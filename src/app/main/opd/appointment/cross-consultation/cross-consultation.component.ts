@@ -128,7 +128,7 @@ export class CrossConsultationComponent implements OnInit {
   }
 
   setDropdownObjs() {
-    debugger
+    
     const toSelect = this.DepartmentList.find(c => c.DepartmentId == this.registerObj1.DepartmentId);
     this.InfoFormGroup.get('Departmentid').setValue(toSelect);
 
@@ -143,7 +143,7 @@ export class CrossConsultationComponent implements OnInit {
   registerObj1 = new AdmissionPersonlModel({});
   
   getDepartmentList() {
-    debugger
+    
     this._AdmissionService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
@@ -158,7 +158,7 @@ export class CrossConsultationComponent implements OnInit {
   }
 
   getDoctorList() {
-    debugger
+    
 
     this._AdmissionService.getDoctorMasterNew().subscribe(data => {
       this.DoctorList = data;
@@ -192,7 +192,7 @@ export class CrossConsultationComponent implements OnInit {
   }
 
   OnChangeDoctorList(departmentObj) {
-    debugger
+    
   //   if(flag)
   //   departmentObj.DepartmentId=departmentObj.DepartmentId
   // else

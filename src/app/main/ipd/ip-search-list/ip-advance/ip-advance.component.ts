@@ -111,7 +111,7 @@ export class IPAdvanceComponent implements OnInit {
     });
 
     if (this.advanceDataStored.storage) {
-     debugger
+     
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.vMobileNo= this.selectedAdvanceObj.MobileNo
       console.log( this.selectedAdvanceObj)
@@ -219,7 +219,7 @@ vAdvanceDetId:any;
 
   onSave() {
 
-    debugger
+    
     if (this.vAdvanceId == 0) {
       this.isLoading = 'submit';
 
@@ -257,7 +257,7 @@ vAdvanceDetId:any;
       AdvanceDetObj['IsCancelledDate'] = '01/01/1900';
       AdvanceDetObj['Reason'] = this.AdvFormGroup.get("comment").value;
       // AdvanceDetObj['CashCounterId'] = 2;//this.AdvFormGroup.get('CashCounterId').value.CashCounterId;
-      debugger
+      
       let PatientHeaderObj = {};
       // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
       // PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
@@ -588,7 +588,7 @@ vAdvanceDetId:any;
   }
 
   getWhatsappsAdvance(el, vmono) {
-    debugger
+    
     if(vmono !='' && vmono !="0"){
     var m_data = {
       "insertWhatsappsmsInfo": {

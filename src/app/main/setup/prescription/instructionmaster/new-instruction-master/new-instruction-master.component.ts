@@ -32,7 +32,7 @@ export class NewInstructionMasterComponent implements OnInit {
 
     
     onSubmit() {
-        debugger
+        
       if(!this.instructionForm.invalid)
       {
         this.saveflag = true;

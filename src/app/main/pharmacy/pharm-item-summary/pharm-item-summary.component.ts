@@ -198,7 +198,7 @@ export class PharmItemSummaryComponent implements OnInit {
   _loaderShow:boolean = true;
 
   exportItemExpwiseReportExcel() {
-    debugger
+    
     this.sIsLoading == 'loading-data'
     let exportHeaders = ['ItemName', 'ConversionFactor', 'BalanceQty', 'ReceivedQty', 'SalesQty'];
     this.reportDownloadService.getExportJsonData(this.dsItemExpdatewiseStock.data, exportHeaders, 'ItemWise Report');
@@ -280,7 +280,7 @@ export class PharmItemSummaryComponent implements OnInit {
   // }
 
 //   viewgetExpItemListReportPdf() {
-//     debugger
+//     
 
 // let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
 // let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
@@ -312,7 +312,7 @@ export class PharmItemSummaryComponent implements OnInit {
 
 
 viewgetExpItemListReportPdf() {
-debugger
+
   let Expyear =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpYear").value) || 0
   let ExpMonth =  parseInt(this._PharmaitemsummaryService.userFormGroup.get("ExpMonth").value) || 0
   
@@ -350,7 +350,7 @@ this.VNonMovdaysflag=false
 
 VNonMovdaysflag:boolean=true
 viewgetNonMovingReportPdf() {
-    debugger
+    
 
 let FromStoreId = this.accountService.currentUserValue.storeId || this._PharmaitemsummaryService.userFormGroup.get("StoreId").value.StoreId || 0
 

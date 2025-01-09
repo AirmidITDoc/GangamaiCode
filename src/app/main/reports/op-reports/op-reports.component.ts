@@ -542,7 +542,7 @@ var data={
 
   
   viewgetRegistrationlistReportPdf() {
-    debugger
+    
     this.sIsLoading = 'loading-data';
    
      setTimeout(() => {
@@ -688,7 +688,7 @@ viewgetDoctorwisevisitReportPdf() {
 }
 
 viewgetDeptwisecountsummaryReportPdf() {
-  debugger
+  
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -1101,7 +1101,7 @@ viewgetOPBillReportPdf() {
 
 
 viewgetDeptwiseopdcountPdf() {
-  debugger
+  
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
  
@@ -1193,7 +1193,7 @@ viewgetDeptwiseopdcountsummaryReportPdf() {
 
 
 viewgetDocwiseopdcountsummaryReportPdf() {
-  debugger
+  
   this.sIsLoading = 'loading-data';
   setTimeout(() => {
   //   this.SpinLoading =true;

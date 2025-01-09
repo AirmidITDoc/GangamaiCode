@@ -43,7 +43,7 @@ outputWords=''
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       
     }
-    debugger;
+    ;
 
     this.getPrint(this.selectedAdvanceObj.BillNo);
     // this.convertToWord(this.reportPrintObj.PaidAmount);
@@ -59,7 +59,7 @@ outputWords=''
     }
 
   getPrint(el) {
-  debugger;
+  ;
       var D_data = {
         "PaymentId":el
       }

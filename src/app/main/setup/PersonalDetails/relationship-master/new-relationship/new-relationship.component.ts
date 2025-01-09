@@ -34,7 +34,7 @@ export class NewRelationshipComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
+        
         if(!this.relationshipForm.invalid) 
         {
             this.saveflag = true;

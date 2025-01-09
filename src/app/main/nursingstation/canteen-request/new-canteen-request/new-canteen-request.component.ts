@@ -188,7 +188,7 @@ export class NewCanteenRequestComponent implements OnInit {
   }
   WardId: any;
   getOptionTextWard(option) {
-    // debugger
+    // 
     return option && option.RoomName ? option.RoomName : '';
   }
   getOptionTextStore(option) {

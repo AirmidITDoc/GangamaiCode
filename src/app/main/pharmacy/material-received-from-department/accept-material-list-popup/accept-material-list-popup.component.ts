@@ -61,7 +61,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     this.dialogRef.close();
   }
   getItemList(Params) {
-   // debugger
+   // 
     var Param = {
       "IssueId": Params
     }
@@ -166,7 +166,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
         selectedchk = "0";
       }
 
-      debugger
+      
       materialAcceptIssueDetailsObj['Status'] = selectedchk;
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });

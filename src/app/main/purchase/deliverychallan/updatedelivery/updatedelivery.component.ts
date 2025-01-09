@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ItemNameList } from '../deliverychallan.component';
 import Swal from 'sweetalert2';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import moment, { Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatTableDataSource } from '@angular/material/table';
@@ -234,16 +234,16 @@ export class UpdatedeliveryComponent implements OnInit {
     this.gePharStoreList();
     this.getGSTtypeList();
   }
-   date = new UntypedFormControl(moment());
+   date = new FormControl(new Date());
    minDate = new Date();
    maxDate = new Date(2024, 4, 1);
   setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
 
-    debugger
+    
     const ctrlValue = this.date.value;
     const currentDate = new Date();
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
+    // ctrlValue.month(normalizedMonthAndYear.month());
+    // ctrlValue.year(normalizedMonthAndYear.year());
     if (ctrlValue && ctrlValue > currentDate) {
       // Swal.fire(" Please choose valid Date");
       this.date.setValue(this.date.value);
@@ -253,7 +253,7 @@ export class UpdatedeliveryComponent implements OnInit {
     datepicker.close();
   }
   calculateLastDay(inputDate: string) {
-    // debugger
+    // 
     if (inputDate && inputDate.length === 6) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -819,7 +819,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
   isDisc2Selected: boolean = false;
   onChangeDisc2(event) {
-    // debugger
+    // 
     if (event.value.Name == "GST After TwoTime Disc") {
 
       this.isDisc2Selected = true;
@@ -1113,7 +1113,7 @@ export class UpdatedeliveryComponent implements OnInit {
 
   OnSave() {
     console.log(this.vPurchaseId)
-    debugger
+    
     if (!this.vPurchaseId) {
       if (this.data.chkNewDelivery == 1) {
         this.OnSavenew();

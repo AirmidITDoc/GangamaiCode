@@ -154,7 +154,7 @@ export class AppointmentListComponent implements OnInit {
 
     onChangeDate(selectDate) {
         if (selectDate) {
-            debugger
+            
           
             this.gridConfig.filters[4].fieldValue =this.datePipe.transform(selectDate, "MM/dd/yyyy")// this.fromDate
 
@@ -563,7 +563,7 @@ let param={
     }
   
     selectChangedeptdoc(obj: any) {
-        debugger
+        
         console.log(obj);
         this.DoctorId = String(obj)
         console.log(this.gridConfig.filters)

@@ -155,9 +155,9 @@
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
                             <mat-label>Fax</mat-label>
-                            <input name="Fax" placeholder="Select Fax" formControlName="Fax" matInput
+                            <input name="Fax" placeholder="Select Fax" formControlName="fax" matInput
                                 [(ngModel)]="registerObj.fax" (keydown)="onEnterfax($event)" #Fax maxlength="10">
-                            <mat-error *ngIf="supplierForm.get('Fax').invalid && supplierForm.get('Fax').touched">
+                            <mat-error *ngIf="supplierForm.get('fax').invalid && supplierForm.get('fax').touched">
                                 FaxNo is required, Enter only Digits
                             </mat-error>
                         </mat-form-field>

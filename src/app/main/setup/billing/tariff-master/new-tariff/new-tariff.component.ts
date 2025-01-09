@@ -34,7 +34,7 @@ export class NewTariffComponent implements OnInit {
     }
 
     onSubmit(){
-        debugger
+        
         if(!this.tariffForm.invalid)
         {
             this.saveflag = true;

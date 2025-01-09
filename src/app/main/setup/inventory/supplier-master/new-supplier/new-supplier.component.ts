@@ -85,8 +85,8 @@ export class NewSupplierComponent implements OnInit {
         console.log(this.registerObj);
   
       if (this.data.supplierId > 0) {
-        debugger
-        this._supplierService.getstoreById(this.data.supplierId).subscribe((response) => {
+        
+        this._supplierService.getsupplierId(this.data.supplierId).subscribe((response) => {
             this.registerObj = response;
             console.log(this.registerObj )
             this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
@@ -132,7 +132,7 @@ export class NewSupplierComponent implements OnInit {
   
     Savebtn: boolean = false;
     onSubmit() {
-      debugger
+    //   
       // if (this.supplierForm.invalid) {
       //   this.toastr.warning('please check from is invalid', 'Warning !', {
       //     toastClass: 'tostr-tost custom-toast-warning',
@@ -142,7 +142,7 @@ export class NewSupplierComponent implements OnInit {
       //   if (!this.supplierForm.get("SupplierId").value) {
   
   
-          debugger
+         
           // var mdata =
           // {
   
@@ -170,7 +170,7 @@ export class NewSupplierComponent implements OnInit {
           // }
           // console.log("Insert mdata:", mdata);
   
-  
+            this.Savebtn = true;
           console.log(this.supplierForm.value);
   
           this._supplierService.SupplierSave(this.supplierForm.value).subscribe((response) => {
@@ -190,7 +190,7 @@ export class NewSupplierComponent implements OnInit {
   
   
     onChangeMsm(event) {
-      debugger
+      
       if (event.checked == true)
         this.msmflag = true;
       else
@@ -369,7 +369,7 @@ export class NewSupplierComponent implements OnInit {
       }
     }
     public onEnterIfsc(event): void {
-      debugger
+      
       if (event.which === 13) {
         this.OpeningBal.nativeElement.focus();
         // if (this.Store) this.Store.focus();
@@ -391,7 +391,7 @@ export class NewSupplierComponent implements OnInit {
     }
     save: boolean = false;
     public onEnterStore(event): void {
-      debugger
+      
       if (event.which === 13) {
         // this.save=true;
         this.addbutton.nativeElement.focus();

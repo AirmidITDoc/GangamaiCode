@@ -374,7 +374,7 @@ var data={
   }
 
   GetPaymentModeList() {
-    debugger
+    
     this._PharmacyreportService.getPaymentModeList().subscribe(data => {
       this.PaymentList = data;
       this.optionsPaymentMode = this.PaymentList.slice();
@@ -389,7 +389,7 @@ var data={
   }
 
   getSearchItemList() {   
-    debugger
+    
     var m_data = {
       "ItemName": '%'//`${this._OPReportsService.userForm.get('ItemId').value}%`,
     //  "StoreId": this._loggedUser.currentUserValue.storeId
@@ -456,7 +456,7 @@ var data={
 
 
   viewparmacyDailyCollectionPdf() {
-    debugger
+    
     let AddUserId = 0;
     if (this._PharmacyreportService.userForm.get('UserId').value)
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
@@ -577,7 +577,7 @@ var data={
 
   viewgetsalesSummaryReportPdf() {
 
-    debugger
+    
     let AddUserId = 0;
     if (this._PharmacyreportService.userForm.get('UserId').value)
       AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
@@ -683,7 +683,7 @@ var data={
       this.AdList = true;
       let frdate= this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       let Todate =this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-   debugger
+   
       this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
@@ -769,7 +769,7 @@ var data={
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
-debugger
+
       let DrugTypeId=0;
       if (this._PharmacyreportService.userForm.get('DrugTypeId').value)
         DrugTypeId = this._PharmacyreportService.userForm.get('DrugTypeId').value.ItemDrugTypeId

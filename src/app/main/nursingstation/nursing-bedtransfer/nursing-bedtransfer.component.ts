@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -66,14 +66,14 @@ export class NursingBedtransferComponent implements OnInit {
   //@Input() dataArray: any;
 
   //ward filter
-public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
+public wardFilterCtrl: FormControl = new FormControl();
 public filteredWard: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   ///Bed filter
-public bedFilterCtrl: UntypedFormControl = new UntypedFormControl();
+public bedFilterCtrl: FormControl = new FormControl();
 public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
    //room filter
-   public classFilterCtrl: UntypedFormControl = new UntypedFormControl();
+   public classFilterCtrl: FormControl = new FormControl();
    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
  
    private _onDestroy = new Subject<void>();
@@ -185,7 +185,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
   
   private filterClass() {
-    // debugger;
+    // ;
     if (!this.ClassList) {
       return;
     }
@@ -233,7 +233,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegID + ')';
   }
   getSelectedObj(obj) {
-    debugger
+    
     if(obj.IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''  
@@ -248,7 +248,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
       this.BedId = 0
     }
     else{
-      debugger
+      
       this.registerObj = obj;
       // this.PatientName = obj.FirstName + '' + obj.LastName;
       this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
@@ -267,7 +267,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
   } 
 
   getSearchList() {
-    debugger
+    
     var m_data = {
       "Keyword": `${this._BedtransferService.bsaveForm.get('RegID').value}%`
     }
@@ -300,7 +300,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   onBedtransfer()
   {
-    debugger;
+    ;
     this.submitted = true;
   
     var m_data = {

@@ -247,7 +247,7 @@ export class IPRefundofBillComponent implements OnInit {
 
 // //Give BillNumber For List
 //   getBilldetailList() {
-//     debugger;
+//     ;
 //     var m_data = {
 //       "BillNo": 1212,//this._IPRefundService.myRefundAdvanceForm.get("BillNo").value || 0,
 //     }
@@ -422,7 +422,7 @@ viewgetRefundofbillReportPdf(RefundId) {
   }
 
   onSave() {
-    debugger;
+    ;
     this.isLoading = 'submit';
 
     if(this.TotalRefundAmount <= this.RefundBalAmount){

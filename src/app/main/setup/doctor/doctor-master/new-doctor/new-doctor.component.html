@@ -30,7 +30,8 @@
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-autocomplete label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
                             [(value)]="registerObj.prefixId" [validations]="getValidationMessages().PrefixID"
-                            [mode]="autocompleteModeprefix" #ddlPrefix>
+                            ValueField="prefixId" TextField="prefixName" (selectionChange)="onChangePrefix($event)"
+                            ApiUrl="Prefix/get-prefixs" #ddlPrefix>
                         </airmid-autocomplete>
                     </div>
 
@@ -55,7 +56,7 @@
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-autocomplete label="Gender" formControlName="GenderId" [formGroup]="myForm"
                             [(value)]="registerObj.genderId" [validations]="getValidationMessages().GenderId"
-                            [mode]="autocompleteModegender">
+                            [mode]="autocompleteModegender" [disabled]="true" #ddlGender>
                         </airmid-autocomplete>
                     </div>
                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
@@ -208,7 +209,7 @@
                                     [formGroup]="myForm" [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                     [validations]="getValidationMessages().Departmentid" #ddlDepartment
                                     ValueField="departmentId" TextField="departmentName"
-                                    ApiUrl="DepartmentMaster/get-departments">
+                                    ApiUrl="DepartmentMaster/get-departments" [ReqFullObj]="true">
                                 </airmid-autocomplete>
                             </div>
                             <mat-chip-listbox #chipList>

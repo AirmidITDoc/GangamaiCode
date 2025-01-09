@@ -121,7 +121,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 getBrowseIPDPaymentReceiptList() {
-  debugger;
+  ;
   this.sIsLoading = 'loading-data';
   var D_data = {
     "F_Name": this._BrowseIPDPaymentReceiptService.myFilterform.get("FirstName").value + '%' || "%",
@@ -315,7 +315,7 @@ printSettlement() {
 }
 
 getSettlementTemplate(){
-  debugger
+  
   let query = 'select tempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp a where TempId=6';
 this._BrowseIPDPaymentReceiptService.getTemplate(query).subscribe((resData: any) => {
   this.printTemplate = resData[0].TempDesign;

@@ -115,7 +115,7 @@ export class NewPrescriptionComponent implements OnInit {
     public datePipe: DatePipe,
 
   ) { if (this.advanceDataStored.storage) {
-    debugger
+    
      this.selectedAdvanceObj = this.advanceDataStored.storage;
      // this.PatientHeaderObj = this.advanceDataStored.storage;
      console.log( this.selectedAdvanceObj)
@@ -190,7 +190,7 @@ export class NewPrescriptionComponent implements OnInit {
     return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
   getSelectedObj(obj) {
-    debugger
+    
     if(obj.IsDischarged == 1){
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''  
@@ -204,7 +204,7 @@ export class NewPrescriptionComponent implements OnInit {
       this.BedNo = ''
     }
     else{
-      debugger
+      
       this.registerObj = obj;
       this.selectedAdvanceObj = obj;
       this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
@@ -376,7 +376,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   WardId: any;
   getOptionTextWard(option) {
-    // debugger
+    // 
     return option && option.RoomName ? option.RoomName : '';
   }
   getOptionTextStore(option) {
@@ -408,7 +408,7 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   onAdd() {
-    debugger
+    
     if ((this.ItemForm.get('ItemId').value == '' || this.ItemForm.get('ItemId').value == null || this.ItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -570,7 +570,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.isLoading = 'submit'; 
     let insertIP_Prescriptionarray = [];
     let insertIP_MedicalRecordArray = {}; 
- debugger
+ 
 
     insertIP_MedicalRecordArray['medicalRecoredId'] = 0;
     insertIP_MedicalRecordArray['admissionId'] = this.vAdmissionID;

@@ -213,7 +213,7 @@ export class OpdSearchListComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         if (result.IsSubmitFlag == true) {
-debugger
+
           this.vpaidamt = result.PaidAmt;
           this.vbalanceamt = result.BalAmt
 
@@ -305,7 +305,7 @@ debugger
   //     });
   // }
   viewgetOPPayemntPdf(Id,value) {
-    debugger
+    
     let PaymentId=0;
 if(value)
  PaymentId=Id

@@ -37,7 +37,7 @@ export class NewSubtapComponent implements OnInit {
   }
 
     onSubmit(){
-        debugger
+        
         if(!this.subTpaForm.invalid)
         {
         this.saveflag = true;

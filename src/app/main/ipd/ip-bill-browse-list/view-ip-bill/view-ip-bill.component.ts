@@ -61,7 +61,7 @@ outputWords=''
     }
 
   getPrint(el) {
-  debugger;
+  ;
       var D_data = {
         "BillNo": el,
       }
@@ -80,7 +80,7 @@ outputWords=''
     
 
 //  getPrint(el) {
-//      debugger;
+//      ;
 //         var D_data = {
 //           "BillNo": el,
 //         }
@@ -121,7 +121,7 @@ outputWords=''
 
     
   // getPrint(el) {
-  //   // debugger;
+  //   // ;
   //       var D_data = {
   //         "BillNo": el,
   //       }

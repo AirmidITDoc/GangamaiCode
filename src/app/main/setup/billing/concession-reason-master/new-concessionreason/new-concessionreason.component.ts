@@ -36,7 +36,7 @@ export class NewConcessionreasonComponent implements OnInit {
   }
 
   onSubmit() {
-        debugger
+        
         if(!this.concessionForm.invalid) 
             {
                 this.saveflag = true;

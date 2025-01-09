@@ -1383,7 +1383,7 @@ AdList: boolean = false;
 SpinLoading: boolean = false;
 getAdmittedPatientCasepaperview(AdmissionId, flag) {
   this.sIsLoading = 'loading-data';
-  debugger
+  
   let AdmissionID
   if (flag) {
     AdmissionID = AdmissionId

@@ -93,7 +93,7 @@ export class NewRegistrationComponent implements OnInit {
         return this.personalFormGroup.controls;
     }
     onChangePrefix(e) {
-        debugger
+        
         this.ddlGender.SetSelection(e.sexId);
     }
 

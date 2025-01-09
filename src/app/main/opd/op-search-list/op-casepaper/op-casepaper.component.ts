@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, ReplaySubject, Subject, Subscription, of } from 'rxjs';
 import { SearchInforObj } from '../opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -93,12 +93,12 @@ export class OPCasepaperComponent implements OnInit {
   public filteredExamination: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  public doseFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public drugFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public historyFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public dignosFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public complaintFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public examinationFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doseFilterCtrl: FormControl = new FormControl();
+  public drugFilterCtrl: FormControl = new FormControl();
+  public historyFilterCtrl: FormControl = new FormControl();
+  public dignosFilterCtrl: FormControl = new FormControl();
+  public complaintFilterCtrl: FormControl = new FormControl();
+  public examinationFilterCtrl: FormControl = new FormControl();
 
   private lookups: ILookup[] = [];
   private nextPage$ = new Subject();
@@ -593,7 +593,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   // getHistoryList1() {
-  //   debugger;
+  //   ;
   //   this._opSearchListService.getHistoryList().subscribe((data: any) => {
   //     this.HistoryList = data;
   //     console.log(data);
@@ -603,7 +603,7 @@ export class OPCasepaperComponent implements OnInit {
   // }
 
   getDiagnosisList() {
-    // debugger;
+    // ;
     this._opSearchListService.getDiagnosisList().subscribe((data: any) => {
       this.allDiagnosis = data;
       console.log(data);
@@ -620,7 +620,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   getDrugList() {
-    debugger
+    
     this._opSearchListService.getDrugList('%').subscribe((data: ILookup[]) => {
       this.lookups = data;
       this.drugList1 = data;
@@ -713,7 +713,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   // addRow() {
-  //   debugger;
+  //   ;
   //   let addingRow = {
   //     drugName: this.lookupsObj,
   //     doseName: '',
@@ -735,7 +735,7 @@ export class OPCasepaperComponent implements OnInit {
 
 
   addRow() {
-    // debugger;
+    // ;
     let addingRow = {
       drugName: this.lookupsObj,
       doseName: '',
@@ -756,7 +756,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   // addEmptyRow(element?: PrescriptionTable) {
-  //   debugger;
+  //   ;
   //   if(this.caseFormGroup.invalid) {
   //     this.caseFormGroup.markAllAsTouched();
   //     this._snackBar.open('Please fill mandetory fields', 'Ok', {
@@ -791,7 +791,7 @@ export class OPCasepaperComponent implements OnInit {
   //   this.caseFormGroup.get(`drugController${this.prescriptionData.length - 1}`).setValidators(Validators.required);
   // }
   addEmptyRow(element?: PrescriptionTable) {
-    // debugger;
+    // ;
     if (this.caseFormGroup.invalid) {
       this.caseFormGroup.markAllAsTouched();
       this._snackBar.open('Please fill mandetory fields', 'Ok', {
@@ -822,7 +822,7 @@ export class OPCasepaperComponent implements OnInit {
     // console.log(this.dataSource.data );
     // console.log(this.prescriptionData);
     element ? this.addRow() : '';
-    this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new UntypedFormControl());
+    this.caseFormGroup.addControl(`drugController${this.prescriptionData.length - 1}`, new FormControl());
     this.caseFormGroup.get(`drugController${this.prescriptionData.length - 1}`).setValidators(Validators.required);
   }
   onDelete(element) {
@@ -839,7 +839,7 @@ export class OPCasepaperComponent implements OnInit {
 
       let insertOPPrescription = [];
 
-      debugger;
+      ;
       this.prescriptionData.splice(this.prescriptionData.length - 1, 0);
       this.prescriptionData.forEach((element: any, index) => {
         console.log(element)
@@ -919,7 +919,7 @@ export class OPCasepaperComponent implements OnInit {
 
 
   getTemplate() {
-    debugger;
+    ;
 
 
 
@@ -993,7 +993,7 @@ export class OPCasepaperComponent implements OnInit {
 
 
   getPrint() {
-    // debugger;
+    // ;
     var D_data = {
       "VisitId": 82973,//this.selectedAdvanceObj.AdmissionID || 0,
       "PatientType": 0,//this.selectedAdvanceObj.PatientType || 0
@@ -1037,7 +1037,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   onEditVisitTable(row) {
-    debugger;
+    ;
 
     console.log(row);
     //   var m_data = {
@@ -1098,7 +1098,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   getMeasures(m_data) {
-    debugger;
+    ;
     const BP = this.data.CasepaperVisitDetails.BP;
     this.caseFormGroup.get('BP').setValue(BP);
 
@@ -1128,7 +1128,7 @@ export class OPCasepaperComponent implements OnInit {
   prescriptionList: OPDPrescription = new OPDPrescription({});
 
   getPrescriptionListFill(visitId) {
-    debugger;
+    ;
     // this._opSearchListService.prescriptionDetails(visitId).subscribe((data =>{
     //     // this.prescriptionList = data ;
     //     this.dataSource3.data = data as OPDPrescription[];
@@ -1155,7 +1155,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   getregisterList() {
-    debugger;
+    ;
     this.sIsLoading = 'loading';
     var D_data = {
       // "VisitId": 70765,//this.selectedAdvanceObj.VisitId,
@@ -1205,7 +1205,7 @@ export class OPCasepaperComponent implements OnInit {
   }
 
   openCreatePrescriptionTemplate() {
-    debugger;
+    ;
     let xx = {
       RegNo: this.selectedAdvanceObj.RegNo,
       AdmissionID: this.selectedAdvanceObj.VisitId,

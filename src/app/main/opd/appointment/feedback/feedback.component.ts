@@ -95,14 +95,14 @@ export class FeedbackComponent implements OnInit {
 
     //Patient search
      getSearchList() {
-      debugger
+      
   
       var m_data={
         "Keyword":`${this.feedbackFormGroup.get('RegId').value}%`
       }
       if (this.feedbackFormGroup.get('RegId').value.length >= 1) {
         this._opappointmentService.getRegistrationList(m_data).subscribe(resData => {
-          // debugger;
+          // ;
   
           this.filteredOptions = resData;
           console.log(resData);
@@ -191,7 +191,7 @@ getDoctor2List() {
 /*API used code*/
 
   submitFeedbackForm() {
-    debugger
+    
       //  console.log(this.feedbackFormGroup.value);
       if (this.feedbackFormGroup.valid) {
           // var m_data = {

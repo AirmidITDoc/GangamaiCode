@@ -218,7 +218,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
     onChangeDate(selectDate) {
         if (selectDate) {
-            debugger
+            
             this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.fromDate);
             this.gridConfig.filters[2].fieldValue = this.fromDate
@@ -237,7 +237,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     onChangeDate1(selectDate) {
         if (selectDate) {
-            debugger
+            
             this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.toDate);
             this.gridConfig.filters[3].fieldValue = this.toDate

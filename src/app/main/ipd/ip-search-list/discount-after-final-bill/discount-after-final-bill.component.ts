@@ -76,7 +76,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   }
 
   CalcDiscPer(){
-    debugger
+    
     let DiscAmt2;
     let CompanyDiscAmt ;
     let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
@@ -176,7 +176,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     })
   }
   OnSave(){
-    debugger
+    
     if(this.vDiscAmount2 > 0 || this.vCompanyDiscAmt > 0){
       if(!this.MyFrom.get('ConcessionId').value){
         this.toastr.warning('Please select Concession Reason ', 'warning !', {

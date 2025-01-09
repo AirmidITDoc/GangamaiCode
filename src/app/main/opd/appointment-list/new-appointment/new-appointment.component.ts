@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ToastrService } from 'ngx-toastr';
@@ -125,13 +125,13 @@ export class NewAppointmentComponent implements OnInit {
     @ViewChild('attachments') attachment: any;
 
     imageForm = new FormGroup({
-        imageFile: new UntypedFormControl('', [Validators.required]),
-        imgFileSource: new UntypedFormControl('', [Validators.required])
+        imageFile: new FormControl('', [Validators.required]),
+        imgFileSource: new FormControl('', [Validators.required])
     });
 
     docsForm = new FormGroup({
-        docFile: new UntypedFormControl('', [Validators.required]),
-        docFileSource: new UntypedFormControl('', [Validators.required])
+        docFile: new FormControl('', [Validators.required]),
+        docFileSource: new FormControl('', [Validators.required])
     });
 
 
@@ -993,7 +993,7 @@ export class NewAppointmentComponent implements OnInit {
             this.images.push({ url: event.target.result, name: name, Id: 0 });
             this.imgDataSource.data = this.images;
             this.imageForm.patchValue({
-                imgFileSource: this.images
+                imgFileSource: this.images[0]
             });
         }
         reader.readAsDataURL(f);
@@ -1288,7 +1288,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangeDateofBirth(DateOfBirth) {
-        debugger
+        
         console.log(DateOfBirth)
         if (DateOfBirth) {
             const todayDate = new Date();
@@ -1307,7 +1307,6 @@ export class NewAppointmentComponent implements OnInit {
         return this.personalFormGroup.controls;
     }
     onChangePrefix(e) {
-        debugger
         this.ddlGender.SetSelection(e.sexId);
     }
 

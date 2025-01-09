@@ -175,7 +175,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onAdd(row: any = null) {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
             {
@@ -231,7 +231,7 @@ export class ParametermasterComponent implements OnInit {
     //             }
 
     //         else if(this.currentStatus==2){
-    //             debugger
+    //             
     //             this.tempList.data = []
     //             for (let item of this.DSParameterList.data) {
     //                 if(!item.Isdeleted)this.tempList.data.push(item)

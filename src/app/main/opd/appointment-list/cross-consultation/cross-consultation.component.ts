@@ -78,7 +78,7 @@ export class CrossConsultationComponent implements OnInit {
 
 
   createCrossConForm() {
-    debugger
+    
     return this.formBuilder.group({
       visitId: 0,
       regId: 0,
@@ -143,7 +143,7 @@ export class CrossConsultationComponent implements OnInit {
 
 
   // onSubmit1() {
-  //   debugger
+  //   
 
   //   var m_data = {
   //     "visitId": 0,
@@ -180,7 +180,7 @@ export class CrossConsultationComponent implements OnInit {
   //   // }
   // }
   selectChangedepartment($event) {
-    debugger
+    
     this.crossconForm.get("departmentId").setValue($event.value)
    }
 

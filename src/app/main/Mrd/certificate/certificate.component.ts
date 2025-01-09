@@ -1,5 +1,5 @@
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -88,11 +88,11 @@ export class CertificateComponent implements OnInit {
   doctorNameCmbList: any = [];
   D_data1:any;
   dataArray = {};
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   
     //department filter
-    public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public departmentFilterCtrl: FormControl = new FormControl();
     public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
   
   private _onDestroy = new Subject<void>();
@@ -101,7 +101,7 @@ export class CertificateComponent implements OnInit {
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
-    debugger;
+    ;
     this.minDate = new Date();
      
       this.getCharityPatientList();
@@ -127,7 +127,7 @@ export class CertificateComponent implements OnInit {
 
    
   getCharityPatientList() {
-    debugger;
+    ;
     // this.sIsLoading = 'loading-data';
     var m_data ={
       "F_Name": (this.searchFormGroup.get("F_Name").value).trim() + '%' || '%',
@@ -155,7 +155,7 @@ export class CertificateComponent implements OnInit {
  
   addNewCertificate(){
 
-debugger;   
+;   
     // let m_data ={
     //   Regno:
     // }
@@ -212,7 +212,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 onEdit(contact){
-  debugger;
+  ;
  console.log(contact);
 
  if(contact.AnesthType)

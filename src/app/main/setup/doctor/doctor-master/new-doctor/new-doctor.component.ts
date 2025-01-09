@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { DoctorMaster } from "../doctor-master.component";
@@ -16,10 +16,11 @@ import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class NewDoctorComponent implements OnInit {
+export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     myForm: FormGroup
     @ViewChild('ddlDepartment') ddlDepartment: AirmidAutocompleteComponent;
+    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
     registerObj = new DoctorMaster({});
     signature: any;
     autocompleteModeprefix: string = "Prefix";
@@ -32,8 +33,16 @@ export class NewDoctorComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public matDialog: MatDialog,
         public toastr: ToastrService,
-        public dialogRef: MatDialogRef<NewDoctorComponent>
+        public dialogRef: MatDialogRef<NewDoctorComponent>,
+        private readonly changeDetectorRef: ChangeDetectorRef
     ) { }
+    ngAfterViewChecked(): void {
+        this.changeDetectorRef.detectChanges();
+    }
+
+    onChangePrefix(e) {
+        this.ddlGender.SetSelection(e.sexId);
+    }
     onViewSignature() {
         const dialogRef = this.matDialog.open(SignatureViewComponent,
             {
@@ -54,22 +63,26 @@ export class NewDoctorComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myForm = this._doctorService.createdDoctormasterForm();
-        if ((this.data?.doctorId??0) > 0) {
+        if ((this.data?.doctorId ?? 0) > 0) {
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
-                this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
-                    this.sanitizeImagePreview = data;
-                    this.myForm.value.signature = data;
-                });
+                if (this.registerObj.signature) {
+                    this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
+                        this.sanitizeImagePreview = data;
+                        this.myForm.value.signature = data;
+                    });
+                }
+                this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
+                this.myForm.controls["RegDate"].setValue(this.registerObj.regDate);
             }, (error) => {
                 this.toastr.error(error.message);
             });
         }
         else {
             this.myForm.reset();
-            this.myForm.get('isActive').setValue(1);
-            this.myForm.get('IsConsultant').setValue(1);
+            this.myForm.get('isActive').setValue(true);
+            this.myForm.get('IsConsultant').setValue(true);
         }
     }
     removeDepartment(item) {
@@ -78,9 +91,11 @@ export class NewDoctorComponent implements OnInit {
         this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
     }
     onSubmit() {
-        debugger
         if (this.myForm.valid) {
-            this._doctorService.doctortMasterInsert(this.myForm.value).subscribe((response) => {
+            let data=this.myForm.value;
+            data.RegDate=this.registerObj.regDate;
+            data.MahRegDate=this.registerObj.mahRegDate;
+            this._doctorService.doctortMasterInsert(data).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose();
             }, (error) => {

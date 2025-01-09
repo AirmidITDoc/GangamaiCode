@@ -108,7 +108,7 @@ filteredOptionsDoc: any;
   }
 
   setDropdownObjs() {
-    debugger
+    
     const toSelect = this.DepartmentList.find(c => c.DepartmentId == this.registerObj1.DepartmentId);
     this.searchFormGroup.get('Departmentid').setValue(toSelect);
 
@@ -123,7 +123,7 @@ filteredOptionsDoc: any;
   registerObj1 = new AdmissionPersonlModel({});
   
   getDepartmentList() {
-    debugger
+    
     this._OpAppointmentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       if (this.registerObj1) {
@@ -138,7 +138,7 @@ filteredOptionsDoc: any;
   }
 
   getDoctorList() {
-    debugger
+    
 
     this._OpAppointmentService.getDoctorMasterNew().subscribe(data => {
       this.DoctorList = data;
@@ -172,7 +172,7 @@ filteredOptionsDoc: any;
   }
 
   OnChangeDoctorList(departmentObj) {
-    debugger
+    
   //   if(flag)
   //   departmentObj.DepartmentId=departmentObj.DepartmentId
   // else
@@ -214,7 +214,7 @@ filteredOptionsDoc: any;
   }
 
   onSubmit() {
-    debugger
+    
 
     this.DepartmentId=this.searchFormGroup.get('Departmentid').value.DepartmentId;
     this.DoctorId = this.searchFormGroup.get('DoctorID').value.DoctorId;

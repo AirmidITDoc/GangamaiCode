@@ -127,7 +127,7 @@ export class EditRefraneDoctorComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
+    
     if (this.searchFormGroup.get('refDoctorId').value) {
       if (!this.RefDoctorList.some(item => item.DoctorName === this.searchFormGroup.get('refDoctorId').value.DoctorName)) {
         this.toastr.warning('Please Select valid RefDoctorName', 'Warning !', {

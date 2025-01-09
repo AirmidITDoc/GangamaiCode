@@ -137,7 +137,7 @@ onclickrow(contact){
 Swal.fire("Row selected :" + contact)
 }
   getIndentStoreList(){
-    debugger
+    
    
         this._IndentID.getStoreFromList().subscribe(data => {
           this.Store1List = data;

@@ -53,7 +53,7 @@ export class ViewBrowseIPDPaymentComponent implements OnInit {
   //   var D_data = {
   //     "PaymentId": el,
   //   }
-  //  // debugger;
+  //  // ;
   //   this._IpdBrowsePaymentreceiptService.getBrowseIPDPaymentReceiptPrint(D_data).subscribe(res => {
   //     this.reportPrintObj = res as BrowseIpdPaymentReceipt;
   //     // this.SummaryData = res as BrowseIpdreturnadvanceReceipt;

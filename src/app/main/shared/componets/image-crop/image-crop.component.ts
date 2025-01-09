@@ -35,12 +35,12 @@ export class ImageCropComponent implements OnInit {
   }
 
   onClose() {
-    debugger
+    
     this.dialogRef.close();
   }
 
   onAccept() {
-    debugger
+    
     const event = this.imageCropper.crop();
     this.dialogRef.close(event);
   }

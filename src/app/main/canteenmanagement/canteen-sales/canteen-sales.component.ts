@@ -146,7 +146,7 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   addChargList(row) {
-   // debugger
+   // 
     
     this.chargeslist.push(
       {

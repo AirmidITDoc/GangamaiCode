@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -51,7 +51,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     isLoading: String = '';
     selectedAdvanceObj: AdvanceDetailObj;
     filteredOptions: NewType;
-    myControl = new UntypedFormControl();
+    myControl = new FormControl();
     dateTimeObj: any;
     billNo: number;
     BillNo: number;
@@ -445,7 +445,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     }
 
     gettablecalculation(element, RefundAmt) {
-        debugger
+        
         if (RefundAmt > 0 && RefundAmt <= element.BalAmt) {
             element.BalanceAmount = ((element.BalAmt) - (RefundAmt));
             element.PrevRefAmount = RefundAmt;
@@ -573,7 +573,7 @@ export class NewOPRefundofbillComponent implements OnInit {
 
                 let AddchargesRefundAmountarr = [];
                 this.dataSource2.data.forEach((element) => {
-                    debugger
+                    
                     let AddchargesRefundAmountObj = {};
                     AddchargesRefundAmountObj['ChargesId'] = element.ChargesId || 0;
                     AddchargesRefundAmountObj['RefundAmount'] = parseFloat(element.RefundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
@@ -704,7 +704,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     }
 
     getWhatsappshareRefundbill(el, vmono) {
-        debugger
+        
         var m_data = {
             "insertWhatsappsmsInfo": {
                 "mobileNumber": vmono || 0,
@@ -805,7 +805,7 @@ export class NewOPRefundofbillComponent implements OnInit {
         this.TotalRefundAmount = 0
         this.RefundBalAmount = 0
         console.log(row);
-        debugger
+        
         var datePipe = new DatePipe("en-US");
         this.BillNo = row.BillNo;
         this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');

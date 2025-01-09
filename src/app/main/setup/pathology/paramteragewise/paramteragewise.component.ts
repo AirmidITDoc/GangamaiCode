@@ -184,7 +184,7 @@ export class ParamteragewiseComponent implements OnInit {
 
       
         this._ParameterageService.getTableData(row.ParameterID).subscribe((data) => {
-                debugger;
+                ;
             if(row.IsNumericParameter==1){
                 
                 m_data['numericList'] = data;

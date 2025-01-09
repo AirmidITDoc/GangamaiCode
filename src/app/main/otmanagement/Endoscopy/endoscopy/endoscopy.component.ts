@@ -102,7 +102,7 @@ export class EndoscopyComponent implements OnInit {
  
   getOtendoscopyList() {
 
-    debugger
+    
      this.sIsLoading = 'loading-data';
      var m_data = {
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',

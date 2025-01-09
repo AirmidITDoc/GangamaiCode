@@ -4,7 +4,7 @@ import { fuseAnimations } from "@fuse/animations";
 import {  TemplatedetailList, TestList, TestMaster } from "../testmaster.component";
 import { TestmasterService } from "../testmaster.service";
 import { Observable, ReplaySubject, Subject } from "rxjs";
-import { UntypedFormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { MatTableDataSource } from "@angular/material/table";
 import { ToastrService } from "ngx-toastr";
 import { MatSort } from "@angular/material/sort";
@@ -84,7 +84,7 @@ export class TestFormMasterComponent implements OnInit {
     Subtest: any;
     vTemplateName:any;
 
-    public parameternameFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public parameternameFilterCtrl: FormControl = new FormControl();
     public filteredParametername: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     isTemplateNameSelected: boolean = false;
@@ -114,7 +114,7 @@ export class TestFormMasterComponent implements OnInit {
             console.log(this.registerObj);
             this.TestId = this.registerObj.TestId
             this.TemplateId = this.registerObj.TemplateId;
-            debugger
+            
             if (!this.registerObj.IsTemplateTest && !this.registerObj.IsSubTest) {
                 this._TestmasterService.is_subtest = false;
                 this.Statusflag = false;
@@ -194,7 +194,7 @@ export class TestFormMasterComponent implements OnInit {
         this.getParameterNameCombobox();
     }
     onSearch() {
-        debugger
+        
         if (this.testForm.get("IsSubTest").value != true)
             this.getParameterNameCombobox();
         else
@@ -338,7 +338,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterNameCombobox() {
-        debugger
+        
         var m_dat = {
             ParameterName: this.testForm.get('ParameterNameSearch').value + "%" || '%'
         }
@@ -368,7 +368,7 @@ export class TestFormMasterComponent implements OnInit {
 
       onAdd(event) {
         console.log(event)
-        debugger
+        
         if (this.testForm.get("IsSubTest").value) {
             this.addSubTest(event.TestId);
 
@@ -419,7 +419,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     addParameter(Id) {
-        debugger
+        
         this.DSTestListtemp.data = [];
         let SelectQuery = "select * from lvwPathParaFill where ParameterID = " + Id
         console.log(SelectQuery)
@@ -428,7 +428,7 @@ export class TestFormMasterComponent implements OnInit {
             this.dsTemparoryList.data = Visit as TestList[];
             console.log(this.DSTestListtemp.data)
             if (this.DSTestListtemp.data.length > 0) {
-                debugger
+                
                 this.addparameterdata();
             }
         });
@@ -453,14 +453,14 @@ export class TestFormMasterComponent implements OnInit {
 
     }
     addSubTest(Id) {
-        debugger
+        
         let SelectQuery = "select * from lvwPathSubTestFill where TestId = " + Id
         console.log(SelectQuery)
         this._TestmasterService.getquerydata(SelectQuery).subscribe(Visit => {
             this.DSsubTestListtemp.data = Visit as TestList[];
             console.log(this.DSsubTestListtemp.data)
             if (this.DSsubTestListtemp.data.length > 0) {
-                debugger
+                
                 this.addsubtestdata();
             }
         });
@@ -479,7 +479,7 @@ export class TestFormMasterComponent implements OnInit {
         this.ChargeList = this.DSTestList.data;
         this.DSsubTestListtemp.data.forEach((element) => {
 
-            debugger
+            
             this.ChargeList.push(
                 {
                     ParameterID: element.ParameterID,

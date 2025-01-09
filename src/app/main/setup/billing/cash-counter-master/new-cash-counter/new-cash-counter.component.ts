@@ -35,7 +35,7 @@ export class NewCashCounterComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
+        
         if (!this.cashcounterForm.invalid) 
         {
             this.saveflag = true;

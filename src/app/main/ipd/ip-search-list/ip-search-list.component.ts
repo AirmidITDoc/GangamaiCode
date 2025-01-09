@@ -15,7 +15,7 @@ import { DischargeComponent } from './discharge/discharge.component';
 import { BedTransferComponent } from './bed-transfer/bed-transfer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { ReplaySubject, Subject } from 'rxjs';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 // import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { Admission, AdmissionPersonlModel } from '../Admission/admission/admission.component';
@@ -175,11 +175,11 @@ export class IPSearchListComponent implements OnInit {
 
     isChecked: boolean = false;
 
-    public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public doctorFilterCtrl: FormControl = new FormControl();
     public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-    public wardFilterCtrl: UntypedFormControl = new UntypedFormControl();
+    public wardFilterCtrl: FormControl = new FormControl();
     public filteredward: ReplaySubject<any> = new ReplaySubject<any>(1);
 
     private _onDestroy = new Subject<void>();
@@ -385,7 +385,7 @@ export class IPSearchListComponent implements OnInit {
 
             this.advanceDataStored.storage = new AdvanceDetailObj(contact);
             this._IpSearchListService.populateForm(contact);
-            //debugger
+            //
             let Advflag: boolean = false;
             if (contact.IsBillGenerated) {
                 Advflag = true;
@@ -772,7 +772,7 @@ export class IPSearchListComponent implements OnInit {
     gridename = this.gridConfig;
     List = "Admission"
     onChangeStatus(event) {
-        debugger
+        
         // this.IsDischarge = SiderOption.checked;
         if (event.value == 0)
             this.gridename = this.gridConfig

@@ -34,7 +34,7 @@ export class NewGnericMasterComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
+        
       if(!this.genericForm.invalid)
       {  
         this.saveflag=true

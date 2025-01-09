@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -70,17 +70,17 @@ export class IPAdvancePaymentComponent implements OnInit {
   BillDate: any;
 
   //bANK filter
-  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bankFilterCtrl: FormControl = new FormControl();
   public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //cheque filter
-  public chequebankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public chequebankFilterCtrl: FormControl = new FormControl();
   public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //Card filter
-  public cardbankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public cardbankFilterCtrl: FormControl = new FormControl();
   public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
@@ -565,7 +565,7 @@ export class IPAdvancePaymentComponent implements OnInit {
     console.log(paidAmtLocal)
     console.log(this.balanceAmt1)
 
-    debugger;
+    ;
 
 
     console.log(this.balanceAmt1);
@@ -573,7 +573,7 @@ export class IPAdvancePaymentComponent implements OnInit {
     console.log(this.paidAmt);
 
     // if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-    debugger;
+    ;
     // if(chipName)
     //  if( paidAmtLocal > this.balanceAmt1){
     // Swal.fire("Amount chk")
@@ -650,7 +650,7 @@ export class IPAdvancePaymentComponent implements OnInit {
   }
 
   saveClicked() {
-    debugger
+    
     if (this.balanceAmt == 0) {
       let Paymentobj = {};
       if (this.advanceData.FromName == "OP-Payment") {
@@ -861,7 +861,7 @@ export class IPAdvancePaymentComponent implements OnInit {
 
 
   onClose() {
-    debugger
+    
     let Paymentobj = {};
     // Paymentobj['PaymentId'] = 0;
       Paymentobj['BillNo'] = 0,// this.billNo;
@@ -919,7 +919,7 @@ export class IPAdvancePaymentComponent implements OnInit {
 
 
   // saveClicked() {
-  //   debugger
+  //   
   //   let Paymentobj = {};
   //   if (this.balanceAmt == 0) {
 

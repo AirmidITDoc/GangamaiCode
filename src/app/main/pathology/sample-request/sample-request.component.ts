@@ -202,7 +202,7 @@ onFilterChange(){
   }, 50);
 }
   sampledetaillist(m){
-    debugger
+    
     var m_data = {
 
       "RequestId": this.RequestId,

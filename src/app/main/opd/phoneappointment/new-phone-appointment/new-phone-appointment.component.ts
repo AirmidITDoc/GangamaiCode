@@ -113,7 +113,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnSubmit() {
-    debugger
+    
 
     // var m_data = {
     //   "phoneAppId": 0,
@@ -167,7 +167,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   @ViewChild('docname') docname: ElementRef;
 
   public onEnterfname(event): void {
-    debugger
+    
     if (event.which === 13) {
       this.mname.nativeElement.focus();
     }

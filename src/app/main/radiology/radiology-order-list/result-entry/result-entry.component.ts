@@ -141,7 +141,7 @@ getUpdatetemplate() {
       this.TemplateId= this.TemplateList.RadReportId;
       this.DoctorId = this.TemplateList.RadResultDr1;
       this.RefDoctorID = this.TemplateList.RefDoctorID;
-      debugger
+      
     //   if (this.data) {
     //     const ddValue = this.TemplateList.filter(c => c.RadReportId== this.TemplateId);
         this._radiologytemplateService.myform.get('TemplateName').setValue(this.TemplateId);
@@ -268,7 +268,7 @@ getUpdatetemplate() {
 
  
   viewgetRadioloyTemplateReportPdf(obj) {
-    // debugger
+    // 
     this._radiologytemplateService.getRadiologyTempReport(
       obj,0
       ).subscribe(res => {

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -561,7 +561,7 @@ export class OPBillingComponent implements OnInit {
   }
   chkdelte: any = [];
   deleteTableRow(element) {
-    debugger
+    
     console.log(element)
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
@@ -602,7 +602,7 @@ export class OPBillingComponent implements OnInit {
   }
   //package list 
   getpackagedetList() {
-    // debugger
+    // 
     // var vdata = {
     //   'ServiceId': this.serviceId
     // }
@@ -907,7 +907,7 @@ export class OPBillingComponent implements OnInit {
 
 
       let Billdetsarr = [];
-      debugger
+      
       this.dataSource.data.forEach((element) => {
         let BillDetailsInsertObj = {};
         BillDetailsInsertObj['BillNo'] = 0;
@@ -1612,7 +1612,7 @@ export class OPBillingComponent implements OnInit {
     //     }
     //   });
     // dialogRef.afterClosed().subscribe(result => {
-    //   debugger
+    //   
     //   console.log('The dialog was closed - Insert Action', result);
     //   if (result) {
 

@@ -485,7 +485,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
 
     viewgetGRNReportPdf(row) {
-        debugger
+        
         setTimeout(() => {
             this.SpinLoading = true;
             this._GRNService.getGRNreportview(
@@ -641,7 +641,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     RowData: any = [];
     deleteRow(row) {
-        // debugger
+        // 
         // this.RowData = this.dsItemNameList.data;
         // const index = this.RowData.data.indexOf(row);
         // console.log(index);

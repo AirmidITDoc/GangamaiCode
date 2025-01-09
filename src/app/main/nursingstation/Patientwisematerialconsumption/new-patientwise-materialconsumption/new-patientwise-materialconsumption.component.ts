@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -59,11 +59,11 @@ screenFromString = 'admission-form';
   dataSource1 = new MatTableDataSource<patientinfo>();
 
   
-  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public departmentFilterCtrl: FormControl = new FormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
-  myControl = new UntypedFormControl();
+  myControl = new FormControl();
   filteredOptions: any;
   billingServiceList = [];
   showAutocomplete = false;
@@ -113,21 +113,21 @@ screenFromString = 'admission-form';
   // filteredDrugs1$: Observable<ILookup[]>;
   public filteredDose: ReplaySubject<any> = new ReplaySubject<any>(1);
   public filteredDrug: ReplaySubject<any> = new ReplaySubject<any>(1);
-  public historyFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public diagnosisFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public doseFilterCtrl: UntypedFormControl = new UntypedFormControl();
-  public drugFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public historyFilterCtrl: FormControl = new FormControl();
+  public diagnosisFilterCtrl: FormControl = new FormControl();
+  public doseFilterCtrl: FormControl = new FormControl();
+  public drugFilterCtrl: FormControl = new FormControl();
   // private lookups: ILookup[] = [];
   private nextPage$ = new Subject();
   noOptionFound: boolean = false;
   SrvcName:any;
     
 //doctorone filter
-public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+public doctorFilterCtrl: FormControl = new FormControl();
 public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
-  public serviceFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public serviceFilterCtrl: FormControl = new FormControl();
   public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
@@ -551,7 +551,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
   
   onSaveEntry() {
-    // debugger  
+    //   
     this.isLoading = 'save';
     this.dataSource.data = [];
     this.chargeslist.push(

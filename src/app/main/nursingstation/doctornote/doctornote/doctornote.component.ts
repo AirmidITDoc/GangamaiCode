@@ -90,7 +90,7 @@ export class DoctornoteComponent implements OnInit {
     public _matDialog: MatDialog,  
   ) { 
      if (this.advanceDataStored.storage) {
-    debugger
+    
      this.selectedAdvanceObj = this.advanceDataStored.storage;
      // this.PatientHeaderObj = this.advanceDataStored.storage;
      console.log( this.selectedAdvanceObj)
@@ -171,7 +171,7 @@ OnAdd(){
               Swal.fire('Congratulations !', 'Doctor Note Template data saved Successfully !', 'success').then((result) => {
                 if (result.isConfirmed) {
                 //  this._matDialog.closeAll();
-                 debugger;
+                 ;
                 //  this.getPrint();
                 }
               });

@@ -36,7 +36,7 @@ export class NewDoseMasterComponent implements OnInit {
 
     
     onSubmit() {
-    debugger
+    
     if(!this.doseForm.invalid){
         this.saveflag = true
    

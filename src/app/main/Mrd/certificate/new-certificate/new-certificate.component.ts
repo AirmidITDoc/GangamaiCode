@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -107,11 +107,11 @@ export class NewCertificateComponent implements OnInit {
 
   doctorNameCmbList: any = [];
 
-  public doctorFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   //department filter
-  public departmentFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public departmentFilterCtrl: FormControl = new FormControl();
   public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
@@ -232,7 +232,7 @@ export class NewCertificateComponent implements OnInit {
 
 
   private filterDepartment() {
-    // debugger;
+    // ;
     if (!this.DepartmentList) {
       return;
     }
@@ -296,7 +296,7 @@ export class NewCertificateComponent implements OnInit {
   }
 
   searchPatientList() {
-    debugger;
+    ;
     // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
     //   {
     //     maxWidth: "90%",
@@ -324,7 +324,7 @@ export class NewCertificateComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
+    ;
     let MLCId = 0//this.registerObj1.OTCathLabBokingID;
     this.isLoading = 'submit';
 

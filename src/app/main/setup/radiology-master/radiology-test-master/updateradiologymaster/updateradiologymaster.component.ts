@@ -200,7 +200,7 @@ getOptionTextService(option) {
   }
  
   gettemplateMasterServicewise(el){
-    debugger
+    
     var vdata={
       "Id" : el.ServiceId
     }

@@ -57,7 +57,7 @@ export class SignatureViewComponent implements OnInit {
         this.dialogRef.close();
     }
     OnSubmit(){
-        debugger
+        
         if(this.sanitizeImagePreview){
             this.dialogRef.close(this.sanitizeImagePreview)
         }

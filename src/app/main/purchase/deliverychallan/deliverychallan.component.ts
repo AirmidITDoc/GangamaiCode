@@ -236,7 +236,7 @@ export class DeliverychallanComponent implements OnInit {
 
   selection = new SelectionModel<GrnItemList>(true, []);
   printBulkQrCode(){
-    // debugger
+    // 
     setTimeout(() => {
       this.SpinLoading = true;
       let data=[];

@@ -45,7 +45,7 @@ export class DrugmasterComponent implements OnInit {
                             );
                             this.confirmDialogRef.componentInstance.confirmMessage ="Are you sure you want to deactive?";
                             this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                debugger
+                                
                                 if (result) {
                                     let that=this;
                                     this._drugService.deactivateTheStatus(data.drugId).subscribe((data: any) => {

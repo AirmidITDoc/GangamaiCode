@@ -59,7 +59,7 @@ export class ItemCategoryMasterComponent implements OnInit {
     ngOnInit(): void { }
 
     onSave(row: any = null) {
-        debugger
+        
         let that = this;
         const dialogRef = this._matDialog.open(NewItemcategoryComponent,
             {

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -85,17 +85,17 @@ export class OPAdvancePaymentComponent implements OnInit {
 
 
   //bANK filter
-  public bankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public bankFilterCtrl: FormControl = new FormControl();
   public filteredBank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //cheque filter
-  public chequebankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public chequebankFilterCtrl: FormControl = new FormControl();
   public filteredChequebank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 
   //Card filter
-  public cardbankFilterCtrl: UntypedFormControl = new UntypedFormControl();
+  public cardbankFilterCtrl: FormControl = new FormControl();
   public filteredCardbank: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
@@ -607,7 +607,7 @@ export class OPAdvancePaymentComponent implements OnInit {
     console.log(this.balanceAmt1)
 
     // if (this.cashAmt <=paidAmtLocal){*****************************first time not work
-    // debugger;
+    // ;
     // if(chipName)
     //  if( paidAmtLocal > this.balanceAmt1){
     // Swal.fire("Amount chk")
@@ -965,7 +965,7 @@ export class OPAdvancePaymentComponent implements OnInit {
   }
 
   onClose() {
-    debugger
+    
 
     let Paymentobj = {};
     // Paymentobj['PaymentId'] = 0;

@@ -324,7 +324,7 @@ export class BrowsSalesBillComponent implements OnInit {
     // this.vIsDischarg=0;
     // console.log(data)
     // this.Vtotalcount;
-    // debugger
+    // 
     // for (var i=0;i< data.length;i++){
     //   if(data[i].PatientOldNew==1){
     //       this.VNewcount=this.VNewcount+1;
@@ -639,7 +639,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   getPrint(el) {
-    //debugger
+    //
 
     var D_data = {
       "SalesID": el.SalesId,// 
@@ -659,7 +659,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    //debugger
+    //
 
 
     if (event.keyCode === 114) {
@@ -669,7 +669,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   // private selectRow($event, dataSource) {
-  //   debugger
+  //   
   //   // if ($event.checked) {
   //     console.log(dataSource.name);
   //     let id=dataSource.selectedData;
@@ -687,7 +687,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   getPrint2(el) {
-    //debugger
+    //
     if (el.PaidType=='Credit' && el.IsRefundFlag==false) {
       this.type = "Credit"
       this.Creditflag = true;
@@ -728,7 +728,7 @@ export class BrowsSalesBillComponent implements OnInit {
     );
   }
   viewSalesPdf(el) {
-   // debugger
+   // 
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
       // this.SpinLoading =true;
@@ -1340,7 +1340,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   getWhatsappshareSalesReturn(el) {
-   // debugger
+   // 
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": el.RegNo,
@@ -1378,7 +1378,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
   expPrint(el, xls) {
-   // debugger
+   // 
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
@@ -1400,7 +1400,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   onExport(reportPrintObjList, el, exprtType) {
-   // debugger
+   // 
     // setTimeout(() => {
     //   this.expPrint(el);
     // }, 1000);
@@ -1551,7 +1551,7 @@ this.viewSalesstatement(contact);
 
  viewSalesstatement(el) {
   console.log(el) 
-//  debugger
+//  
   let StoreId= this._loggedService.currentUserValue.storeId || 0
     this.sIsLoading = 'loading-data';
     setTimeout(() => {

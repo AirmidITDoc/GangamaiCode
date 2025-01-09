@@ -395,7 +395,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
   
     deleteTableRow(event, element) { 
-      debugger
+      
       let index = this.Chargelist.indexOf(element);
       if (index >= 0) {
         this.Chargelist.splice(index, 1);
@@ -455,7 +455,7 @@ bp:any=1000;
   } 
 
   getPrescriptionList(el) {
-    // debugger
+    // 
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
@@ -468,7 +468,7 @@ bp:any=1000;
   }
   vIsNormalDeath:any;
   getDischargeSummaryData(el) {
-    // debugger
+    // 
     var m_data2 = {
       "AdmissionId": el.AdmissionID 
     }
@@ -499,7 +499,7 @@ bp:any=1000;
       this.DocName3 = this.RetrDischargeSumryList[0].DischargeDoctor3
       this.IsNormalDeath = this.RetrDischargeSumryList[0].IsNormalOrDeath
        this.getRetevDropdownvalue(); 
-       debugger
+       
        if(this.IsNormalDeath == 1){
         this.vIsNormalDeath = true;
         this.DischargesumForm.get("IsNormalOrDeath").setValue('True');
@@ -523,7 +523,7 @@ bp:any=1000;
   DocName3:any;
 
   getRetevDropdownvalue(){
-    debugger
+    
     
       const ddValue1= this.Doctor1List.filter(item => item.DoctorID ==  this.DocName1);
       console.log(ddValue1) 
@@ -545,7 +545,7 @@ bp:any=1000;
   }
   ClinicalFInding:any;
 OnSave(){
-  debugger
+  
  
   let DoctorName1 = 0;
   if(this.DischargesumForm.get("DischargeDoctor1").value)

@@ -251,7 +251,7 @@ export class NewEmergencyComponent implements OnInit {
     }
 //     else
    
-// debugger
+// 
 //       var m_data1 = {
 //         "opdRegistrationUpdate": {
 //           "RegID": this.RegID,
@@ -289,7 +289,7 @@ export class NewEmergencyComponent implements OnInit {
 //         if (response) {
 //           Swal.fire('Congratulations !', 'Register Data Udated Successfully !', 'success').then((result) => {
 //             if (result.isConfirmed) {
-//              debugger
+//              
 //               this.viewgetPatientAppointmentReportPdf(this.registerObj.VisitId);
 //               if(this.Submitflag)
 //                 this.getAdmittedPatientCasepaperview(this.registerObj.AdmissionID);
