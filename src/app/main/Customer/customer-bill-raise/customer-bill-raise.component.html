@@ -34,34 +34,35 @@
                             <div fxFlex.gt-sm="100%" fxFlex>
                                 <div fxLayout="column" class="gap-12">
                                     <form [formGroup]="_CustomerBill.myform">
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
 
-                                        <div fxLayout="row" fxLayoutAlign="start center" style="width: 300px;">
+                                            <div fxLayout="row" fxLayoutAlign="start center" style="width: 300px;">
 
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Search Customer Name</mat-label>
-                                                <input name="CustomerNameSearch" formControlName="CustomerNameSearch" matInput
-                                                    (keyup)="getCustomerPayDueList()">
-                                            </mat-form-field>
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Search Customer Name</mat-label>
+                                                    <input name="CustomerNameSearch"
+                                                        formControlName="CustomerNameSearch" matInput
+                                                        (keyup)="getCustomerPayDueList()">
+                                                </mat-form-field>
 
-                                        </div>
-                                        <!-- "pill" class is used for rounded border -->
-                                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" 
-                                        style="margin-right: 10px;">
-                                            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
-                                                class="gap-4">
-                                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                                                <span class="blue-600-fg">Bill</span>
                                             </div>
-                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
-                                                class="gap-4">
-                                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                                <span class="green-600-fg">AMC</span>
-                                            </div>
+                                            <!-- "pill" class is used for rounded border -->
+                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"
+                                                style="margin-right: 10px;">
+                                                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
+                                                    class="gap-4">
+                                                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                                    <span class="blue-600-fg">Bill</span>
+                                                </div>
+                                                <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
+                                                    class="gap-4">
+                                                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                    <span class="green-600-fg">AMC</span>
+                                                </div>
 
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
 
                                     <div fxlayout="row">
                                         <div style="width:100%;">
@@ -511,7 +512,7 @@
                                                     [ngClass]="{'hide':!(dsPayMonthSummary!=null && dsPayMonthSummary.data.length==0)}">
                                                 </mat-footer-row>
                                             </mat-table>
-<!-- 
+                                            <!-- 
                                             <mat-paginator #paginator [pageSizeOptions]="[100]" [pageSize]="50"
                                                 showFirstLastButtons>
                                             </mat-paginator> -->
@@ -536,7 +537,7 @@
                                     <!-- code by raksha -->
                                     <form [formGroup]="_CustomerBill.myform">
                                         <div fxLayout="row" fxLayoutAlign="space-between">
-    
+
                                             <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
 
                                                 <mat-form-field appearance="outline" fxFlex>
@@ -547,19 +548,22 @@
                                                         <input matEndDate formControlName="end" placeholder="End date"
                                                             (dateChange)="getCustomerPaymentDaySummary()">
                                                     </mat-date-range-input>
-                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker"></mat-datepicker-toggle>
                                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                                 </mat-form-field>
-    
+
                                                 <mat-form-field appearance="outline" style="width: 300px;">
                                                     <mat-label>Search Customer Name</mat-label>
-                                                    <input name="CustomerNameSearch" formControlName="CustomerNameSearch" matInput
+                                                    <input name="CustomerNameSearch"
+                                                        formControlName="CustomerNameSearch" matInput
                                                         (keyup)="getCustomerPaymentDaySummary()">
                                                 </mat-form-field>
 
-                                                <mat-radio-group name="IsAmcOrBill" formControlName="IsAmcOrBill" 
-                                                (change)="getCustomerPaymentDaySummary()" (keydown)="getCustomerPaymentDaySummary()" 
-                                                    fxLayout="row" value="2" style="padding: 6px;" class="gap-4">
+                                                <mat-radio-group name="IsAmcOrBill" formControlName="IsAmcOrBill"
+                                                    (change)="getCustomerPaymentDaySummary()"
+                                                    (keydown)="getCustomerPaymentDaySummary()" fxLayout="row" value="2"
+                                                    style="padding: 6px;" class="gap-4">
                                                     <mat-label>Type:</mat-label>
                                                     <div fxLayout="row">
                                                         <mat-radio-button value="2">All
@@ -570,11 +574,11 @@
                                                         </mat-radio-button>
                                                     </div>
                                                 </mat-radio-group>
-    
+
                                             </div>
                                             <!-- "pill" class is used for rounded border -->
-                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" 
-                                            style="margin-right: 10px;">
+                                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"
+                                                style="margin-right: 10px;">
                                                 <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
                                                     class="gap-4">
                                                     <mat-icon class="pill blue-600 s-16">circle</mat-icon>
@@ -585,7 +589,7 @@
                                                     <mat-icon class="pill green-600 s-16">circle</mat-icon>
                                                     <span class="green-600-fg">AMC</span>
                                                 </div>
-    
+
                                             </div>
                                         </div>
                                     </form>
@@ -598,7 +602,8 @@
 
                                                 <ng-container matColumnDef="Type">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
-                                                        <span class="material-icons" (click)="getCustomerPaymentDaySummary()">
+                                                        <span class="material-icons"
+                                                            (click)="getCustomerPaymentDaySummary()">
                                                             cached
                                                         </span>
                                                     </mat-header-cell>
@@ -624,7 +629,7 @@
                                                         {{contact.PaymentDate | date: 'dd/MM/yyyy'}}
                                                     </mat-cell>
                                                 </ng-container>
-                                                
+
                                                 <ng-container matColumnDef="ReceiptNumber">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         ReceiptNumber </mat-header-cell>
@@ -632,7 +637,7 @@
                                                         {{contact.ReceiptNumber}}
                                                     </mat-cell>
                                                 </ng-container>
-                                                
+
                                                 <ng-container matColumnDef="CustomerName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         CustomerName </mat-header-cell>
@@ -656,7 +661,7 @@
                                                         {{contact.Comments || '--'}}
                                                     </mat-cell>
                                                 </ng-container>
-                                                
+
                                                 <ng-container matColumnDef="loading">
                                                     <mat-header-cell *matFooterCellDef colspan="6"
                                                         style="display: none;">
@@ -683,13 +688,11 @@
                                                 </mat-footer-row>
                                             </mat-table>
 
-                                            <!-- <mat-paginator [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25"
-                                            [length]="resultsLength2" showFirstLastButtons
-                                            (page)="getCustomerPaymentDaySummary()">
-                                        </mat-paginator> -->
-                                        <mat-paginator [length]="resultsLength2" [pageSizeOptions]="[25, 50, 75, 100]" [pageSize]="25" (page)="getCustomerPaymentDaySummary()">
-                                        </mat-paginator>
-                                        
+                                            <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
+                                                [length]="resultsLength" showFirstLastButtons
+                                                (page)="getCustomerPaymentDaySummary()">
+                                            </mat-paginator>
+
                                         </div>
                                     </div>
                                 </div>

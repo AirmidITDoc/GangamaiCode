@@ -79,52 +79,54 @@
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                     <ng-container matColumnDef="ConsentId" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-130">Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-130">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                             {{contact.ConsentId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="ConsentName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
                                             OT Consent Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             {{contact.ConsentName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="ConsentDesc" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                            class="w-130">Consent Desc
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-200">Consent Desc
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-200">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             {{contact.ConsentDesc}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="DepartmentName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
-                                            Department Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-150">Department Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                             {{contact.DepartmentName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="CreatedBy" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">
-                                            CreatedBy</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-200">CreatedBy
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             {{contact.CreatedBy}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IsActive" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-130">
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
@@ -155,12 +157,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1100"
+                                    <mat-header-row class="accent min-width-1500"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1500" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"

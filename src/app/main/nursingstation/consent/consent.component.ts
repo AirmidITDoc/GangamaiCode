@@ -23,17 +23,26 @@ export class ConsentComponent implements OnInit {
   sIsLoading: string = '';
 
   displayedColumns: string[] = [
-    'patientId',
+    'ConsentId',
+    'ConsentDate',
+    'ConsentTime',
+    'ConsentName',
+    'ConsentText',
+    'ConsentDeptId',
+    'ConsentTempId',
+    'Action'
+  ]
+  displayedPatientColumns: string[] = [
+    'RegNo',
     'PatientName',
-    'Age',
+    'OPIPType',
     'MobileNo',
-    'DoctorName',
-    'PatienSource',
-    'date',
+    'AgeYear',
     'Action'
   ]
 
   dsConsentList = new MatTableDataSource<OPIPMasterList>();
+  dsPatientList = new MatTableDataSource<OPIPMasterList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -47,22 +56,26 @@ export class ConsentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getIPOPPatientList();
+    this.getConsentPatientInfoList();
   }
 
-  getIPOPPatientList(){
-    // debugger
-    // var m_data = {
-    //   "Keyword": this.RegId
-    // }
-    // console.log(m_data)
-    // this._ConsentService.getPatientRegisterListSearch(m_data).subscribe(visit => {
-    //   console.log("Raw API Response:", visit); 
-    //   this.dsConsentList.data=visit as OPIPMasterList[];
-    //   console.log("daaaaaataaa:", this.dsConsentList.data)
-    //   this.dsConsentList.sort = this.sort;
-    //   this.dsConsentList.paginator = this.paginator;
-    // }); 
+  getConsentPatientInfoList(){
+    debugger
+    this.sIsLoading = 'loading-data';
+    var D_data = {
+      "FromDate": this.datePipe.transform(this._ConsentService.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      "ToDate ": this.datePipe.transform(this._ConsentService.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+    }
+    console.log("certificateList:", D_data);
+    this._ConsentService.getConsentPatientlist(D_data).subscribe(Visit => {
+    this.dsConsentList.data = Visit as OPIPMasterList[];
+    this.dsConsentList.sort = this.sort;
+    this.dsConsentList.paginator = this.paginator;
+    this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      }); 
   }
 
 
@@ -75,6 +88,24 @@ export class ConsentComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
+        this.getConsentPatientInfoList();
+     });
+  }
+  
+  OnEdit(element){
+    console.log('ddd:',element)
+    const dialogRef = this._matDialog.open(NewConsentComponent,
+      {
+        maxWidth: '85%',
+        height: '90%',
+        width: '100%',
+        data: {
+          Obj: element
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getConsentPatientInfoList();
      });
   }
 
@@ -82,24 +113,45 @@ export class ConsentComponent implements OnInit {
 export class OPIPMasterList {
 
   RegId: number;
+  ConsentId:number;
   PatientName: any;
+  ConsentDeptId:any;
+  ConsentTempId:any;
+  ConsentName:any;
+  ConsentText:any;
   Age: any;
   MobileNo: any;
   DoctorName: any;
   PatienSource: any;
   RegDate: any;
-
+  OPIPType:any;
+  RegNo:any;
+  AgeYear:any;
+  AgeMonth:any;
+  AgeDay:any;
+  OPIPID:any;
+ 
   constructor(OPIPMasterList) {
     {
-
       this.RegId = OPIPMasterList.RegId || 0;
       this.PatientName = OPIPMasterList.FirstName + ' ' +OPIPMasterList.MiddleName+ ' ' + OPIPMasterList.LastName || 0;
       this.Age = OPIPMasterList.Age || 0;
       this.MobileNo = OPIPMasterList.MobileNo || 0;      
       this.DoctorName = OPIPMasterList.DoctorName || 0;
       this.PatienSource = OPIPMasterList.PatienSource || 0;
-      this.RegDate = OPIPMasterList.RegDate || 0;
-
+      this.RegDate = OPIPMasterList.RegDate || 0;      
+      this.ConsentId = OPIPMasterList.ConsentId || 0;      
+      this.ConsentDeptId = OPIPMasterList.ConsentDeptId || 0;
+      this.ConsentTempId = OPIPMasterList.ConsentTempId || 0;
+      this.ConsentName = OPIPMasterList.ConsentName || 0;
+      this.ConsentText = OPIPMasterList.ConsentText || 0;
+      
+      this.OPIPType = OPIPMasterList.OPIPType || 0;      
+      this.RegNo = OPIPMasterList.RegNo || 0;
+      this.AgeYear = OPIPMasterList.AgeYear || 0;
+      this.AgeMonth = OPIPMasterList.AgeMonth || 0;
+      this.AgeDay = OPIPMasterList.AgeDay || 0;
+      this.OPIPID = OPIPMasterList.OPIPID || 0;
     }
   }
 }

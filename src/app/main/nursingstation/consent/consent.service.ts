@@ -20,10 +20,13 @@ export class ConsentService {
       PatientType:['OP'],
       MobileNo:'',
       PatientName:'',
-      TemplateDesc:[''],
+      ConsentName:'',
+      ConsentText:[''],
       Template:[''],
       Department:[''],
-      Language:['0']
+      Language:['0'],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
     })
   }
 
@@ -39,4 +42,14 @@ export class ConsentService {
     public getDepartmentCombo() {
      return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
  }
+ public getConsentPatientlist(employee) {
+  return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentpatientInformation_List",employee)
+}
+public NursingConsentInsert(employee){
+  return this._httpClient.post("OutPatient/TConsentInformationSave", employee);
+}
+
+public NursingConsentUpdate(employee){
+  return this._httpClient.post("OutPatient/TConsentInformationUpdate", employee);
+}
 }

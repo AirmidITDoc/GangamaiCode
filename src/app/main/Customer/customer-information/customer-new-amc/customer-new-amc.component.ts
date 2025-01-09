@@ -63,7 +63,7 @@ export class CustomerNewAMCComponent implements OnInit {
           this.registerObj = this.data.Obj;
           console.log(this.registerObj);
           this.AMCId = this.registerObj.TranId;
-          this.vAmount = this.registerObj.AMCAmount;
+          this.vAmount = this.registerObj.Amount;
           this.vDescription = this.registerObj.Comments;
           this.vDuration = this.registerObj.AMCDuration;
           this.vAMCStartDate = this.registerObj.AMCStartDate;

@@ -177,26 +177,44 @@ export class CustomerBillRaiseComponent implements OnInit {
 
   getCustomerPaymentDaySummary() {
     debugger
-    var D_data = {
-      "FromDate": this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "ToDate ": this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "CustomerName": this._CustomerBill.myform.get("CustomerNameSearch").value + '%' || '%',
-      "TranType": this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
-      "Start": (this.paginator?.pageIndex ?? 0),
-      "Length": (this.paginator?.pageSize ?? 25),
-    };
-    console.log(D_data)
-    this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data => {
-      console.log("API Response:", data);
-      this.dsPaymentDaySummary.data = data["Table1"] ?? [] as PaymentDaySummary[];
-      this.dsPaymentDaySummary.sort=this.sort;
-      this.resultsLength2 = data["Table"][0]["total_row"];
-      this.sIsLoading = '';
-      console.log("dsPaymentDaySummary:",this.dsPaymentDaySummary.data)
-    },
-      error => {
-        this.isLoading = false;
-      });
+    // var D_data = {
+    //   "FromDate": this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+    //   "ToDate ": this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+    //   "CustomerName": this._CustomerBill.myform.get("CustomerNameSearch").value + '%' || '%',
+    //   "TranType": this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
+    //   "Start": this.paginator?.pageIndex ?? 0,
+    //   "Length": this.paginator?.pageSize ?? 5,
+    // };
+    // console.log(D_data)
+    // this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data => {
+    //   console.log("API Response:", data);
+    //   this.dsPaymentDaySummary.data = data["Table1"] ?? [] as PaymentDaySummary[];
+    //   this.dsPaymentDaySummary.sort=this.sort;
+    //   this.resultsLength2 = data["Table"][0]["total_row"];
+    //   this.sIsLoading = '';
+    //   console.log("dsPaymentDaySummary:",this.dsPaymentDaySummary.data)
+    // },
+    //   error => {
+    //     this.isLoading = false;
+    //   });
+    var m_data = {
+      FromDate: this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+      ToDate: this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+      CustomerName:this._CustomerBill.myform.get("CustomerNameSearch").value + "%" || "%",
+      TranType: this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
+      Start:(this.paginator?.pageIndex ?? 0),
+      Length:(this.paginator?.pageSize ?? 30),                  
+  };
+          console.log(m_data)
+          this._CustomerBill.getCustomerPaymentDaySummary(m_data).subscribe((data) => {
+          this.dsPaymentDaySummary.data = data["Table1"]??[] as PaymentDaySummary[];
+          // this.DSItemMasterList.sort = this.sort;
+          this.resultsLength = data["Table"][0]["total_row"];
+          this.sIsLoading = '';
+          console.log(this.dsPaymentDaySummary.data)
+      },
+      (error) => (this.isLoading = false)
+  );
   }
 
 

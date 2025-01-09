@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-new-consent',
@@ -21,7 +23,7 @@ export class NewConsentComponent implements OnInit {
 
   vSelectedOption: any = 'OP';
   isRegIdSelected: boolean = false;
-  vTemplateDesc: any;
+  vConsentText: any;
   DepartmentList: any = [];
   TemplateList: any = [];
   PatientName: any;
@@ -60,14 +62,17 @@ export class NewConsentComponent implements OnInit {
   vOtReqIPD: any;
   vDepartmentName: any;
   vIPDNo: any;
-  vSiteDescId: any;
-  vSurgeryCategoryId: any;
-  vSurgeryId: any;
   vAdmissionID: any;
+  vConsentName:any
   registerObj: any;
   isDepartmentSelected: boolean = false;
   filteredOptionsDep: Observable<string[]>;
   optionsDep: any[] = [];
+  selectedDepartment: string = '';
+  vConsentId:any;
+  vTemplateId:any;
+  vVisited:any;
+  Vopipid:any;
 
   editorConfig: AngularEditorConfig = {
     // color:true,
@@ -82,7 +87,7 @@ export class NewConsentComponent implements OnInit {
 
   };
   onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
+    this.vConsentText = e.target.innerHTML;
   }
 
   constructor(
@@ -90,15 +95,79 @@ export class NewConsentComponent implements OnInit {
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<NewConsentComponent>,
     public _matDialog: MatDialog,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
     this.getDepartmentList();
-
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
+
+
+    if(this.data){
+      debugger
+      this.registerObj1=this.data.Obj;
+      console.log("Consent RegisterObj:",this.registerObj1)
+
+      if (this.registerObj1.OPIPType === 1) {
+        // Fetch IP-specific information
+      console.log("IIIIIIIIIIIIIPPPPPPPPP:",this.registerObj1.OPIPType);
+      this.vWardName=this.registerObj1.RoomName;
+      this.vBedNo=this.registerObj1.BedName;
+      this.vGenderName=this.registerObj1.GenderName;
+      // this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+      this.vPatientName = this.registerObj1.PatientName;
+      this.vAgeYear = this.registerObj1.AgeYear;
+      this.RegId = this.registerObj1.RegID;
+      this.vAdmissionID = this.registerObj1.AdmissionID
+      this.vAge=this.registerObj1.Age;
+      this.vRegNo =this.registerObj1.RegNo; 
+      this.vIPDNo = this.registerObj1.IPDNo;
+      this.vCompanyName = this.registerObj1.CompanyName;
+      this.vTariffName = this.registerObj1.TariffName; 
+      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+      this.vDepartmentName=this.registerObj1.DepartmentName;      
+      this.vSelectedOption = 'IP';
+      this.vConsentName=this.registerObj1.ConsentName;
+      this.vConsentId=this.registerObj1.ConsentId;
+      this.vConsentText=this.registerObj1.ConsentText;
+      
+      this.selectedDepartment=this.registerObj1.ConsentDeptId;
+      this.vTemplateId=this.registerObj1.ConsentTempId
+      
+      // this.getSiteList();
+      this.getDepartmentList();
+      } else if (this.registerObj1.OPIPType === 0) {
+        // Fetch OP-specific information
+      console.log("OOOOOOOPPPPPPPPP:",this.registerObj1.OPIPType);
+      this.vWardName=this.registerObj1.RoomName;
+      this.vBedNo=this.registerObj1.BedName;
+      this.vGenderName=this.registerObj1.GenderName;
+      this.vPatientName = this.registerObj1.PatientName;
+      this.vAgeYear = this.registerObj1.AgeYear;
+     this.RegId = this.registerObj1.RegID;
+      this.vAdmissionID = this.registerObj1.AdmissionID
+      this.vAge=this.registerObj1.Age;
+      this.vRegNo =this.registerObj1.RegNo; 
+      this.vOPDNo = this.registerObj1.OPDNo;
+      this.vCompanyName = this.registerObj1.CompanyName;
+      this.vTariffName = this.registerObj1.TariffName; 
+      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+      this.vDoctorName = this.registerObj1.DoctorName;
+      this.vDepartmentName=this.registerObj1.DepartmentName;
+      this.vSelectedOption = 'OP';
+      this.vConsentName=this.registerObj1.ConsentName;
+      this.vConsentId=this.registerObj1.ConsentId;
+      this.vConsentText=this.registerObj1.ConsentText;
+      
+      this.selectedDepartment=this.registerObj1.ConsentDeptId;
+      this.vTemplateId=this.registerObj1.ConsentTempId
+
+      // this.getSiteList();
+      this.getDepartmentList();
+      }    
+    }
 
     this.vOtReqOPD = this._loggedService.currentUserValue.user.pharOPOpt;
     this.vOtReqIPD = this._loggedService.currentUserValue.user.pharIPOpt;
@@ -199,7 +268,6 @@ export class NewConsentComponent implements OnInit {
     this.PatientInformReset();
   }
 
-
   getSelectedObjOP(obj) {
     console.log("AdmittedListOP:", obj)
     this.registerObj = obj;
@@ -209,7 +277,7 @@ export class NewConsentComponent implements OnInit {
     this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
     this.vAgeYear = obj.AgeYear;
     this.RegId = obj.RegID;
-    this.vAdmissionID = obj.AdmissionID
+    this.vVisited = obj.VisitId
     this.vAge = obj.Age;
     this.vRegNo = obj.RegNo;
     this.vOPDNo = obj.OPDNo;
@@ -244,6 +312,7 @@ export class NewConsentComponent implements OnInit {
       this.vDepartmentName = obj.DepartmentName;
       this.vAge = obj.Age;
       this.vGenderName = obj.GenderName;
+      this.vAdmissionID=obj.AdmissionID;
       this.getDepartmentList();
     }
   }
@@ -275,8 +344,133 @@ export class NewConsentComponent implements OnInit {
     this.vIPDNo = '';
   }
 
-  onSubmit() {
+  onSave(){
+    if (this.vConsentName == '' || this.vConsentName == null || this.vConsentName== undefined) {
+      this.toastr.warning('Please enter ConsentName  ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
+      this.toastr.warning('Please enter select Department ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._ConsentService.myform.get('Department').value) {
+      if(!this.DepartmentList.find(item => item.DepartmentName == this._ConsentService.myform.get('Department').value.DepartmentName))
+     {
+      this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+     }
+    }
+    // if (this.vTemplateId == '' || this.vTemplateId == null || this.vTemplateId == undefined) {
+    //   this.toastr.warning('Please enter select Template ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this._ConsentService.myform.get('Template').value) {
+    //   if(!this.DepartmentList.find(item => item.Template == this._ConsentService.myform.get('Template').value.Template))
+    //  {
+    //   this.toastr.warning('Please select Valid Template Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    //  }
+    // }
 
+    Swal.fire({
+      title: 'Do you want to Save the Consent Recode ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save it!" ,
+      cancelButtonText: "No, Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+          this.onSubmit();
+      }
+    });
+  }
+
+  vSOPIP=0;
+  onSubmit() {
+    debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+ 
+    this.vSOPIP = this.OP_IPType === 'OP' ? 0 : 1;
+    this.Vopipid = this.vSOPIP === 0 ? this.vVisited : this.vAdmissionID;
+
+    if(!this.vConsentId){
+
+      var m_dataInsert={
+        "saveTConsentInformationparams": {
+          "consentId": 0,
+          "consentDate": formattedDate,
+          "consentTime": formattedTime,
+          "opipid": this.Vopipid,
+          "opipType": this.vSOPIP,
+          "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
+          "consentTempId": 0, // parseInt(this._ConsentService.myform.get("Template").value.ConsentTempId).toString() || 0,
+          "consentName": this._ConsentService.myform.get("ConsentName").value || 0,
+          "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
+          "createdBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+      console.log("insertJson:", m_dataInsert);
+
+      this._ConsentService.NursingConsentInsert(m_dataInsert).subscribe(response =>{
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+    else{
+      debugger
+      var m_dataUpdate={
+          "updateTConsentInformationparams": {
+          "consentId": this.vConsentId,
+          "consentDate": formattedDate,
+          "consentTime": formattedTime,
+          "opipid": this.Vopipid,
+          "opipType": this.vSOPIP,
+          "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
+          "consentTempId": 0, //parseInt(this._ConsentService.myform.get("Template").value.ConsentTempId).toString() || 0,
+          "consentName": this._ConsentService.myform.get("ConsentName").value || 0,
+          "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
+          "modifiedBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+      console.log("UpdateJson:", m_dataUpdate);
+
+      this._ConsentService.NursingConsentUpdate(m_dataUpdate).subscribe(response =>{
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
 
   private _filterDep(value: any): string[] {
@@ -285,8 +479,13 @@ export class NewConsentComponent implements OnInit {
       // this.isDepartmentSelected = false;
       return this.optionsDep.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
     }
-
   }
+  
+// onDepartmentSelected(event: MatAutocompleteSelectedEvent): void {
+//   const selectedOption = event.option.value; // The selected object from the dropdown
+//   this.selectedDepartment = selectedOption?.DepartmentName || ''; // Set the name only
+// }
+
 
   getDepartmentList() {
     debugger
@@ -297,9 +496,8 @@ export class NewConsentComponent implements OnInit {
         startWith(''),
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
-      if (this.registerObj) {
-
-        const DValue = this.DepartmentList.filter(item => item.DepartmentName == this.registerObj.DepartmentName);
+      if (this.data.Obj) {
+        const DValue = this.DepartmentList.filter(item => item.DepartmentId == this.registerObj1.ConsentDeptId);
         console.log("Department:", DValue)
         this._ConsentService.myform.get('Department').setValue(DValue[0]);
         this._ConsentService.myform.updateValueAndValidity();
@@ -307,13 +505,15 @@ export class NewConsentComponent implements OnInit {
       }
     });
   }
-  getOptionTextDep(option) {
-
+  getOptionTextDep(option) {    
     return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   onClose() {
-    this._ConsentService.myform.reset();
+    this._ConsentService.myform.reset({
+      start: this._ConsentService.myform.get('start')?.value,
+      end: this._ConsentService.myform.get('end')?.value,
+    });    
     this.dialogRef.close();
   }
   onClear() {

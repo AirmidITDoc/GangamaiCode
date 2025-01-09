@@ -74,10 +74,7 @@ export class CustomerBillRaiseService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CustomerPayReceivedSummary",Param);
   }
-  public getCustomerPaymentDaySummary(Param,loader = true) {
-    // if(loader){
-    //   this._loaderService.show()
-    // }
+  public getCustomerPaymentDaySummary(Param) {
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_CustomerPaymentDaySummary",Param);
   }
 }

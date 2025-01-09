@@ -27,6 +27,7 @@ import { AppointmentSreviceService } from "../appointment/appointment-srevice.se
 import { UpdateRegisteredPatientInfoComponent } from "../appointment/update-registered-patient-info/update-registered-patient-info.component";
 import { NewCasepaperComponent } from "../new-casepaper/new-casepaper.component";
 import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
+import { PatientcertificateComponent } from "./patientcertificate/patientcertificate.component";
 
 @Component({
   selector: 'app-appointment-list',
@@ -349,6 +350,22 @@ export class AppointmentListComponent implements OnInit {
 
     }, 100);
     this.chkprint = false;
+  }
+
+  OpenCertificate(contact){
+    const dialogRef = this._matDialog.open(PatientcertificateComponent,
+      {
+        maxWidth: '85%',
+        height: '90%',
+        width: '100%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      
+    });
   }
 
   Billpayment(contact) {

@@ -172,11 +172,24 @@
                         <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
                             <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+
+                              <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Consent Name</mat-label>
+                                <input name="ConsentName" formControlName="ConsentName" required
+                                    placeholder="Consent Name" matInput type="text"
+                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                                    [(ngModel)]="vConsentName ">
+                                <mat-error
+                                    *ngIf="_ConsentService.myform.get('ConsentName').invalid && _ConsentService.myform.get('ConsentName').touched">
+                                    Consent Name is required Enter only
+                                    Alphabets</mat-error>
+                            </mat-form-field>
+
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Department</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
                                       formControlName="Department" [matAutocomplete]="autoDep"
-                                       [(ngModel)]="vDepartmentName">
+                                       [(ngModel)]="selectedDepartment">
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
                                         (click)="_ConsentService.myform.get('Department').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -194,7 +207,7 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Template</mat-label>
                                     <mat-select formControlName="Template" name="Template"
-                                        Placeholder="select Template">
+                                        Placeholder="select Template" [(ngModel)]="vTemplateId">
                                         <mat-option></mat-option>
                                         <!-- <mat-option *ngFor="let m of TemplateList" [value]="m">
                                             {{m.Template}}
@@ -212,8 +225,8 @@
                             <div>
                                 <mat-label>Template Details</mat-label>
                                 <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                    [(ngModel)]="vTemplateDesc" required
-                                    formControlName="TemplateDesc"></angular-editor>
+                                    [(ngModel)]="vConsentText" required
+                                    formControlName="ConsentText"></angular-editor>
                             </div>
                         </div>
                     </mat-card>
@@ -223,7 +236,7 @@
     
                 <div class="modal-footer-buttons gap-8 m-8" fxLayout="row" fxLayoutAlign="end" style="margin-right: 15px;">
                     <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                    <button class="btn btn-primary" (click)="onSubmit()">
+                    <button class="btn btn-primary" (click)="onSave()">
                         Save</button>
                 </div>
     

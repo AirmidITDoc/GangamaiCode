@@ -47,6 +47,7 @@ import { NewCasepaperComponent } from "../new-casepaper/new-casepaper.component"
 import { PrescriptionTemplateComponent } from "../new-casepaper/prescription-template/prescription-template.component";
 import { PrePresciptionListComponent } from "../new-casepaper/pre-presciption-list/pre-presciption-list.component";
 import { AddItemComponent } from "../new-casepaper/add-item/add-item.component";
+import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
 
 
 const routes: Routes = [
@@ -61,7 +62,8 @@ const routes: Routes = [
     NewCasepaperComponent,
     PrescriptionTemplateComponent,
     PrePresciptionListComponent,
-    AddItemComponent
+    AddItemComponent,
+    PatientcertificateComponent
 
 
   ],
