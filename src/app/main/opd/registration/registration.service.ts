@@ -183,7 +183,7 @@ export class RegistrationService {
 
  
   public RegstrationtSaveData(Param: any, showLoader = true) {
-    debugger
+    
     if (Param.RegId) {
       return this._httpClient1.PostData("OutPatient/RegistrationUpdate",Param, showLoader);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
@@ -228,6 +228,11 @@ export class RegistrationService {
 
 public getcitylist(version){
   return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
+}
+
+public getPatientListView(mode){
+    return this._httpClient1.PostData("Report/ViewReport",mode);
+ 
 }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

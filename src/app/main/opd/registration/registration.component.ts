@@ -17,6 +17,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -68,7 +69,7 @@ export class RegistrationComponent implements OnInit {
                     },
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            this.getAdmittedPatientCasepaperview(data);
+                            // this.getAdmittedPatientCasepaperview(data);
                         }
                     },
                     {
@@ -192,7 +193,53 @@ export class RegistrationComponent implements OnInit {
             this.confirmDialogRef = null;
         });
     }
-    getAdmittedPatientCasepaperview(Id) { }
+    getRegistrationCasepaperview() { 
+
+    setTimeout(() => {
+
+let param={
+      
+        "searchFields": [
+              {
+                "fieldName": "FromDate",
+                "fieldValue": "10-01-2024",
+                "opType": "13"
+              },
+          {
+                "fieldName": "ToDate",
+                "fieldValue": "12-12-2024",
+                "opType": "13"
+              }
+            ],
+            "mode": "RegistrationReport"
+          }
+    
+
+      this._RegistrationService.getPatientListView(param).subscribe(res => {
+        debugger
+        console.log(res)
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,  
+              title: "Registration List  Viewer"
+          
+            }
+            
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+        
+        });
+      });
+
+    }, 100);
+    }
+
+
 }
 
 

@@ -474,6 +474,7 @@ export class SearchInforObj
 export class ChargesList{
   ChargesId: number;
   ServiceId: number;
+  serviceId: number;
   ServiceName : String;
   Price:number;
   Qty: number;
@@ -491,8 +492,9 @@ export class ChargesList{
   ChargesAddedName: string;
 
   constructor(ChargesList){
-          this.ChargesId = ChargesList.ChargesId || '';
-          this.ServiceId = ChargesList.ServiceId || '';
+          this.ChargesId = ChargesList.ChargesId || 0;
+          this.ServiceId = ChargesList.ServiceId || 0;
+          this.serviceId = ChargesList.serviceId || 0;
           this.ServiceName = ChargesList.ServiceName || '';
           this.Price = ChargesList.Price || '';
           this.Qty = ChargesList.Qty || '';

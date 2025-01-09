@@ -197,13 +197,13 @@ export class OPBillingComponent implements OnInit {
 
   currentDate = new Date();
 
-
-
-
   //new 
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModeService: string = "Service";
+  autocompleteModeConcession: string = "Concession";
+
+  getsupplierId
   ServiceList: any = [];
   constructor(
     private _fuseSidebarService: FuseSidebarService,
@@ -242,7 +242,7 @@ export class OPBillingComponent implements OnInit {
     }
 
     this.getConcessionReasonList();
-    this.getServiceListCombobox();
+    
   }
   createSearchForm() {
     return this.formBuilder.group({
@@ -322,7 +322,7 @@ export class OPBillingComponent implements OnInit {
   getOptionText1(option) {
     if (!option)
       return '';
-    return option.serviceName + ' ' + option.price + ' ' + option.ServiceId;
+    return option.serviceName;
 
   }
 
@@ -334,14 +334,15 @@ export class OPBillingComponent implements OnInit {
 
   getServiceListCombobox() {
     debugger
+    let sname=this.registeredForm.get('SrvcName').value +'%' || '%'
     var m_data = {
 
       "first": 0,
-      "rows": 10,
+      "rows": 100,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
-        { "fieldName": "ServiceName", "fieldValue": "%", "opType": "StartsWith" },
+        { "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
         { "fieldName": "TariffId", "fieldValue": "0", "opType": "Equals" },
         { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
         { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
@@ -355,21 +356,32 @@ export class OPBillingComponent implements OnInit {
     this._oPSearhlistService.getBillingServiceList(m_data).subscribe(data => {
       this.filteredOptionsService = data.data;
       this.ServiceList = data.data;
-      console.log(data)
-      console.log(this.filteredOptionsService)
+     
       if (this.filteredOptionsService.length == 0) {
         this.noOptionFound = true;
       } else {
         this.noOptionFound = false;
       }
     });
-    // });
+   
 
   }
-
+  SrvcName1:any=""
   getSelectedObj(obj) {
+    if (this.dataSource.data.length > 0) {
+      this.dataSource.data.forEach((element) => {
+        if (obj.serviceId == element.serviceId) {
+        
+          Swal.fire('Selected Item already added in the list ');
+         
+          this.onClearServiceAddList();
+        }
+      
+      });
+    }else{
     console.log(obj)
-    this.SrvcName = obj.serviceName;
+   
+    this.SrvcName1 = obj.serviceName;
     this.vPrice = obj.price;
     this.vQty = 1;
     this.vChargeTotalAmount = obj.price;
@@ -394,10 +406,14 @@ export class OPBillingComponent implements OnInit {
     }
   }
 
+  
+  }
+
+
+  
   getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ServiceName;
+   
+    return option && option.serviceName ? option.serviceName : '';
   }
   // getSelectedObj3(obj) {
   //   console.log(obj)
@@ -490,7 +506,7 @@ export class OPBillingComponent implements OnInit {
       {
         ChargesId: 0,// this.serviceId,
         ServiceId: this.serviceId,
-        ServiceName: this.SrvcName,
+        ServiceName: this.SrvcName1,
         Price: this.vPrice || 0,
         Qty: this.vQty || 0,
         TotalAmt: this.vChargeTotalAmount || 0,
@@ -827,40 +843,14 @@ export class OPBillingComponent implements OnInit {
   SavePackageList: any = [];
   onSaveOPBill2() {
     debugger
-    // if ((this.vOPIPId == '' || this.vOPIPId == null || this.vOPIPId == undefined)) {
-    //   this.toastr.warning('Please select Patient', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+  
     if ((!this.dataSource.data.length)) {
       this.toastr.warning('Please add service in table', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this.BillingForm.get('FinalconcessionPer').value > 0 || this.BillingForm.get('FinalconcessionAmt').value > 0) {
-      if (!this.BillingForm.get('ConcessionId').value) {
-        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    // if (!this.searchFormGroup.get('CashCounterID').value) {
-    //   this.toastr.warning('Select Cash Counter', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if (this.searchFormGroup.get('CashCounterID').value) {
-    //   if (!this.CashCounterList.some(item => item.CashCounterName === this.searchFormGroup.get('CashCounterID').value.CashCounterName)) {
-    //     this.toastr.warning('Please Select valid Cash Counter Name', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // }
+    
     this.savebtn = true;
     if (this.CompanyId !== 0 && this.CompanyId !== "" && this.CompanyId !== undefined) {
       this.saveCreditbill();
@@ -881,9 +871,9 @@ export class OPBillingComponent implements OnInit {
         ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
 
       let ConcessionReason = '';
-      if (this.BillingForm.get('ConcessionId').value)
-        ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
-      debugger
+      // if (this.BillingForm.get('ConcessionId').value)
+      //   ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
+      
       this.isLoading = 'submit';
       let InsertBillUpdateBillNoObj = {};
       InsertBillUpdateBillNoObj['BillNo'] = 0;
@@ -957,14 +947,14 @@ export class OPBillingComponent implements OnInit {
           InsertAddChargesObj['docPercentage'] = 0,
           InsertAddChargesObj['docAmt'] = 0,
           InsertAddChargesObj['hospitalAmt'] = element.NetAmount,
-          InsertAddChargesObj['isGenerated'] = 0,
+          InsertAddChargesObj['isGenerated'] = false,
           InsertAddChargesObj['addedBy'] = 1,// this.accountService.currentUserValue.user.id,
           InsertAddChargesObj['isCancelled'] = false,
           InsertAddChargesObj['isCancelledBy'] = 0,
           InsertAddChargesObj['isCancelledDate'] = "01/01/1900",
           InsertAddChargesObj['isPathology'] = true,// Boolean(JSON.parse(String(element.IsPathology))),
           InsertAddChargesObj['isRadiology'] = false,// Boolean(JSON.parse(String(element.IsRadiology))),
-          InsertAddChargesObj['isPackage'] = 0,//element.IsPackage,
+          InsertAddChargesObj['isPackage'] = false,//element.IsPackage,
           InsertAddChargesObj['packageMainChargeID'] = 0,
           InsertAddChargesObj['isSelfOrCompanyService'] = false,
           InsertAddChargesObj['packageId'] = 0,
@@ -1027,8 +1017,8 @@ export class OPBillingComponent implements OnInit {
       if (this.BillingForm.get('PaymentType').value == 'PayOption') {
         const dialogRef = this._matDialog.open(OpPaymentNewComponent,
           {
-            maxWidth: "80vw",
-            height: '650px',
+            maxWidth: "90vw",
+            height: '850px',
             width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
@@ -1066,7 +1056,41 @@ export class OPBillingComponent implements OnInit {
               // "opCalDiscAmountBill": opCalDiscAmountBill,
               // "opInsertPayment": result.submitDataPay.ipPaymentInsert,
               // "chargesPackageInsert": InsertPackageDetails
-            };
+              BillNo: 0,
+              OPDIPDID: this.vOPIPId,
+              TotalAmt: this.BillingForm.get('FinalTotalAmt').value || 0,
+              ConcessionAmt: parseFloat(this.BillingForm.get('FinalconcessionAmt').value) || 0,
+              NetPayableAmt: this.BillingForm.get('FinalNetAmt').value || 0,
+              PaidAmt: this.paidamt,
+              BalanceAmt:this.balanceamt,// this.BillingForm.get('FinalNetAmt').value,
+              BillDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+              OPDIPDType: 0,
+              AddedBy: 1,
+              TotalAdvanceAmount: 0,
+              BillTime: this.dateTimeObj.time,
+              ConcessionReasonId: ConcessionId,
+              IsSettled: true,
+              IsPrinted: true,
+              IsFree: true,
+              CompanyId: 0,
+              TariffId: this.vTariffId || 0,
+              UnitId: 1,
+              InterimOrFinal: 0,
+              CompanyRefNo: 0,
+              ConcessionAuthorizationName: 0,
+              SpeTaxPer: 10,
+              SpeTaxAmt: 10,
+              CompDiscAmt: Math.round(this.BillingForm.get('FinalconcessionAmt').value) || 0,
+              DiscComments: ConcessionReason,
+              CashCounterId: this.searchFormGroup.get('CashCounterID').value.CashCounterId || 0,
+        
+        
+              "AddCharges": InsertAdddetArr,
+              // "insertBillupdatewithbillno": InsertBillUpdateBillNoObj,
+              "BillDetails": Billdetsarr,
+              // "opCalDiscAmountBill": opCalDiscAmountBill,
+              "Payments": result.submitDataPay.ipPaymentInsert,
+            }
             console.log(submitData);
             this._oPSearhlistService.InsertOPBilling(submitData).subscribe(response => {
               if (response) {
@@ -1212,12 +1236,12 @@ export class OPBillingComponent implements OnInit {
     // }
 
     let ConcessionId = 0;
-    if (this.BillingForm.get('ConcessionId').value)
-      ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
+    // if (this.BillingForm.get('ConcessionId').value)
+    //   ConcessionId = this.BillingForm.get('ConcessionId').value.ConcessionId;
 
     let ConcessionReason = '';
-    if (this.BillingForm.get('ConcessionId').value)
-      ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
+    // if (this.BillingForm.get('ConcessionId').value)
+    //   ConcessionReason = this.BillingForm.get('ConcessionId').value.ConcessionReason;
 
     if (this.vFinalconcessionDiscPer > 0 || disamt > 0) {
       this.FinalNetAmt = this.vFinalnetPaybleAmt;
@@ -1231,6 +1255,7 @@ export class OPBillingComponent implements OnInit {
     this.isLoading = 'submit';
 
     let InsertBillUpdateBillNoObj = {};
+    
     InsertBillUpdateBillNoObj['BillNo'] = 0;
     InsertBillUpdateBillNoObj['OPD_IPD_ID'] = this.vOPIPId;
     InsertBillUpdateBillNoObj['TotalAmt'] = this.BillingForm.get('FinalTotalAmt').value;
@@ -1322,10 +1347,13 @@ export class OPBillingComponent implements OnInit {
     }
 
     let Paymentobj = {};
+
+    
+    Paymentobj['PaymentId'] = 0;
     Paymentobj['BillNo'] = 0;
     Paymentobj['PaymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       Paymentobj['PaymentTime'] = this.dateTimeObj.time || '01/01/1900',
-      Paymentobj['CashPayAmount'] = parseFloat(this.BillingForm.get('FinalNetAmt').value) || 0;
+      Paymentobj['CashPayAmount'] =0,// parseFloat(this.BillingForm.get('FinalNetAmt').value) || 0;
     Paymentobj['ChequePayAmount'] = 0;
     Paymentobj['ChequeNo'] = "0";
     Paymentobj['BankName'] = "";
@@ -1412,6 +1440,9 @@ export class OPBillingComponent implements OnInit {
       this.isLoading = '';
     });
   }
+
+
+  
   getWhatsappshareSales(el, vmono) {
     if (vmono != '') {
       var m_data = {
@@ -1708,11 +1739,14 @@ export class OPBillingComponent implements OnInit {
       ],
       ChargeDiscAmount: [{ name: "pattern", Message: "only Number allowed." }],
       netAmount: [{ name: "pattern", Message: "only Number allowed." }],
-      SrvcName: [{ name: "required", Message: "Service Name is required", }]
+      SrvcName: [{ name: "required", Message: "Service Name is required", }],
+      ConcessionId:[{}]
 
     }
   }
   selectChangedeptdoc(event) { }
+
+  selectChangeConcession(event){}
 }
 
 

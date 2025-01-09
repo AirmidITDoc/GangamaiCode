@@ -2,9 +2,9 @@
   <div class="center" fusePerfectScrollbar style="overflow: auto;">  
     <div fxlayout="row" fxlayoutalign="start center" class="accent header p-12 ng-tns-c409-38" style="width:100%;">
       <span class="h5 ng-tns-c409-38" style="font-size: 17px;">{{title}}</span>
-      <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="float:right;margin-top:-7px;">
-        <!-- <mat-icon>close</mat-icon> -->
-      </button>
+      <!-- <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="float:right;margin-top:-7px;">
+        <mat-icon>close</mat-icon>
+      </button> -->
     </div>
 
     <!-- <mat-toolbar matDialogTitle class="mat-accent m-0">
@@ -18,7 +18,7 @@
 
     <div style="padding:10px;" fxLayoutGap="2px">
       <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
-        <!-- <ngx-extended-pdf-viewer [base64Src]="base64" [zoom]="100"></ngx-extended-pdf-viewer> -->
+        <ngx-extended-pdf-viewer [base64Src]="base64" [zoom]="100"></ngx-extended-pdf-viewer>
       </div>
     </div>
   </div>
