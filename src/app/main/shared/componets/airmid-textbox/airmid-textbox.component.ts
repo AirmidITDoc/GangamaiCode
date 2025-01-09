@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
-import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self, forwardRef } from "@angular/core";
+import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self, forwardRef } from "@angular/core";
 import {
     ControlValueAccessor,
     FormControl,
@@ -34,8 +34,8 @@ import { takeUntil } from "rxjs/operators";
         '(focusout)': 'onTouched()',
     },
 })
-export class AirmidTextboxComponent implements 
-//ControlValueAccessor,
+export class AirmidTextboxComponent implements
+    //ControlValueAccessor,
     //MatFormFieldControl<string>,
     OnInit,
     OnDestroy {
@@ -49,16 +49,17 @@ export class AirmidTextboxComponent implements
 
     control = new FormControl();
     stateChanges: Subject<void> = new Subject();
+    @Output() valueChange = new EventEmitter<string>();
     @Input() formGroup: FormGroup;
-    @Input() formControlName:string;
+    @Input() formControlName: string;
     @Input() maxLength: number = 50;
     @Input() validations: [] = [];
     @Input() label: string = "";
-    @Input() type:string="text";
-    @Input() keyup:Event;
-    @Input() appearance:string="outline";
-    @Input() readonly:boolean=false;
-    @Input() width:number=100;
+    @Input() type: string = "text";
+    @Input() keyup: Event;
+    @Input() appearance: string = "outline";
+    @Input() readonly: boolean = false;
+    @Input() width: number = 100;
     @Input()
     get disabled(): boolean {
         return this._disabled;
@@ -166,7 +167,13 @@ export class AirmidTextboxComponent implements
 
     writeValue(value: string | null): void {
         this.control.setValue(value);
+        this.value = value;
     }
+    onValueChange(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        this.valueChange.emit(input.value);
+    }
+
 
     //constructor() { }
     // @Input() label: string = ""; // Dynamic placeholder
