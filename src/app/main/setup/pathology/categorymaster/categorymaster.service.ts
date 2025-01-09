@@ -24,7 +24,7 @@ export class CategorymasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isDeleted: ["true"],
+            isDeleted: true,
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

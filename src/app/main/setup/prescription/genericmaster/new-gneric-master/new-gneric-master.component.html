@@ -19,16 +19,16 @@
     <div class="modal-body-container">
             <form [formGroup]="genericForm">
 
-                <input type="hidden" name="GenericId" formControlName="GenericId">
+                <input type="hidden" name="GenericId" formControlName="genericId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="Generic Name" 
-                            formControlName="GenericName" 
-                            [value]="data?.GenericName"
+                            formControlName="genericName" 
+                            [value]="data?.genericName"
                             [formGroup]="genericForm"
-                            [validations]="getValidationMessages().GenericName"
+                            [validations]="getValidationMessages().genericName"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>

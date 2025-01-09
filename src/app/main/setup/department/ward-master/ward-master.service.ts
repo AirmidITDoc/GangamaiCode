@@ -17,9 +17,7 @@ export class WardMasterService {
 
     createWardForm(): FormGroup {
         return this._formBuilder.group({
-            roomId: ["",
-                Validators.required
-            ],
+            roomId: [0],
             roomName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
@@ -47,8 +45,9 @@ export class WardMasterService {
     initializeFormGroup() {
         this.createWardForm();
     }
-    
+    // WardMaster
     public roomMasterSave(Param: any, showLoader = true) {
+        debugger
         if (Param.roomId) {
             return this._httpClient.PutData("WardMaster/" + Param.roomId, Param, showLoader);
         } else return this._httpClient.PostData("WardMaster", Param, showLoader);

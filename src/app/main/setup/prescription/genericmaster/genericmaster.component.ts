@@ -2,10 +2,9 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { GenericmasterService } from "./genericmaster.service";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { NewGnericMasterComponent } from "./new-gneric-master/new-gneric-master.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 

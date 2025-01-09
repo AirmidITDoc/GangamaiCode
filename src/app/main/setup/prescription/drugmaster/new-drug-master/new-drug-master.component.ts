@@ -83,7 +83,7 @@ export class NewDrugMasterComponent implements OnInit {
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             classId: [
-                { name: "required", Message: "Class Name is required" },
+                // { name: "required", Message: "Class Name is required" },
             ],
             genericId : [
                 { name: "required", Message: "Generic Name is required" },

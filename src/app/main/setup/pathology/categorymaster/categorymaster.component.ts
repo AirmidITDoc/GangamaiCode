@@ -32,7 +32,7 @@ export class CategorymasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._categorymasterService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
+                            this._categorymasterService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });

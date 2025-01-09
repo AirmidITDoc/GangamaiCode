@@ -17,17 +17,17 @@ export class GenericmasterService {
 
     createGenericForm(): FormGroup {
         return this._formBuilder.group({
-            GenericId: [0],
-            GenericName: ["", 
+            genericId: [0],
+            genericName: ["", 
                 [
                     Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
-            isActive: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            isActive: true,
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // AddedByName: [""],
         });
     }
 
@@ -43,17 +43,17 @@ export class GenericmasterService {
     }
 
     public genericMasterInsert(Param: any, showLoader = true) {
-        if (Param.GenericId) {
-            return this._httpClient.PutData("GenericMaster/" + Param.GenericId, Param, showLoader);
+        if (Param.genericId) {
+            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param, showLoader);
         } else return this._httpClient.PostData("GenericMaster", Param, showLoader);
     }
 
-    public genericMasterUpdate(id: number , Param: any, showLoader = true) {
-        return this._httpClient.PostData("generic", Param, showLoader);
-    }
+    // public genericMasterUpdate(id: number , Param: any, showLoader = true) {
+    //     return this._httpClient.PostData("generic", Param, showLoader);
+    // }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("generic?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("GenericMaster?Id=" + m_data.toString());
     }
 
 }

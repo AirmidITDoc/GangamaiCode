@@ -35,7 +35,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._TermsOfPaymentMasterService.deactivateTheStatus(data.itemTypeId).subscribe((response: any) => {
+                            this._TermsOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });

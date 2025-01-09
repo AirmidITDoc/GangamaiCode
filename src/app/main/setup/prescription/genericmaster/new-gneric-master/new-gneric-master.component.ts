@@ -65,7 +65,7 @@ export class NewGnericMasterComponent implements OnInit {
 
     getValidationMessages(){
         return{
-            GenericName: [
+            genericName: [
                 { name: "required", Message: "Generic Name is required" },
                 { name: "maxlength", Message: "Generic Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }

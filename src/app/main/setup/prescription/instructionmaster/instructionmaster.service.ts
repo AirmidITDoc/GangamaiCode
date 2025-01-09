@@ -16,11 +16,6 @@ export class InstructionmasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    // {
-    //     "instructionId": 0,
-    //     "instructionDescription": "string",
-    //     "instructioninMarathi": "string"
-    //   }
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
             instructionId: [0],
@@ -53,6 +48,6 @@ export class InstructionmasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("Instruction?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("InstructionMastere?Id=" + m_data.toString());
     }
 }

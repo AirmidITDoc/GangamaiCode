@@ -18,14 +18,14 @@ export class PrescriptionclassmasterService {
 
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
-            ClassId: [0],
-            ClassName: ["",
+            classId: [0],
+            className: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"]
+            isActive: true
         });
     }
     createSearchForm(): FormGroup {
@@ -41,7 +41,8 @@ export class PrescriptionclassmasterService {
 
     public prescriptionClassMasterSave(Param: any, showLoader = true) {
         if (Param.classId) {
-            return this._httpClient.PutData("Priscriptionclass/" + Param.ClassId, Param, showLoader);
+            debugger
+            return this._httpClient.PutData("Priscriptionclass/" + Param.classId, Param, showLoader);
         } else return this._httpClient.PostData("Priscriptionclass", Param, showLoader);
     }
 

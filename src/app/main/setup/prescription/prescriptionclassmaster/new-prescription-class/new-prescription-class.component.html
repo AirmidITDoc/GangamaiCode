@@ -19,16 +19,16 @@
     <div class="modal-body-container">
             <form [formGroup]="prescriptionForm">
 
-                <input type="hidden" name="ClassId" formControlName="ClassId">
+                <input type="hidden" name="classId" formControlName="classId">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="Class Name" 
-                            formControlName="ClassName" 
-                            [value]="data?.ClassName"
+                            formControlName="className" 
+                            [value]="data?.className"
                             [formGroup]="prescriptionForm"
-                            [validations]="getValidationMessages().ClassName"
+                            [validations]="getValidationMessages().className"
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>

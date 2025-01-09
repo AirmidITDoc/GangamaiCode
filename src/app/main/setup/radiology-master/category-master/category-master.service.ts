@@ -25,9 +25,9 @@ export class CategoryMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isDeleted: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            isActive: true,
+            // AddedBy: [0],
+            // UpdatedBy: [0],
         });
     }
     createSearchForm(): FormGroup {
@@ -42,11 +42,11 @@ export class CategoryMasterService {
 
     public categoryMasterSave(Param: any, showLoader = true) {
         if (Param.categoryId) {
-            return this._httpClient.PutData("PathCategoryMaster/" + Param.categoryId, Param, showLoader);
-        } else return this._httpClient.PostData("PathCategoryMaster", Param, showLoader);
+            return this._httpClient.PutData("RadiologyCategoryMaster/" + Param.categoryId, Param, showLoader);
+        } else return this._httpClient.PostData("RadiologyCategoryMaster", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("PathCategoryMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("RadiologyCategoryMaster?Id=" + m_data.toString());
     }
 }

@@ -26,9 +26,9 @@ export class TermsOfPaymentMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            // IsDeleted: false,
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     
@@ -50,7 +50,7 @@ export class TermsOfPaymentMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("TermsOfPaymentType?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("TermsOfPayment?Id=" + m_data.toString());
     }
 
 }

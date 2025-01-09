@@ -20,7 +20,7 @@ export class CategoryMasterComponent implements OnInit {
 
 
     gridConfig: gridModel = {
-        apiUrl: "PathCategoryMaster/List",
+        apiUrl: "RadiologyCategoryMaster/List",
         columnsList: [
             { heading: "Code", key: "categoryId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Category Name", key: "categoryName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
