@@ -36,7 +36,7 @@
                             <form [formGroup]="searchFormGroup">
                                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
-                                    <mat-form-field class=searchRegId appearance="outline"
+                                    <!-- <mat-form-field class=searchRegId appearance="outline"
                                         style="width:800px !important;margin-left:20px;">
                                         <input type="text" name="RegId" formControlName="RegId"
                                             placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput
@@ -57,7 +57,7 @@
                                             </mat-option>
                                         </mat-autocomplete>
                                     </mat-form-field>
-
+ -->
 
 
                                     <airmid-autocomplete label="CashCounterID" formControlName="CashCounterID"
@@ -222,24 +222,9 @@
                                                 </mat-error>
                                             </mat-form-field>
 
-                                            <!-- <mat-form-field appearance="outline">
-                                                <mat-label>Service Name</mat-label>
-                                                <mat-select formControlName="SrvcName" name="SrvcName" (selectionChange)="onChangeServiceList($event.value)">
-                                                    <mat-option></mat-option>
-                                                    <mat-option *ngFor="let m of ServiceList" [value]="m">
-                                                        {{m.serviceName}} || {{m.price}} ({{m.ServiceId}})
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field> -->
 
 
-                                            <!-- <airmid-autocomplete label="SrvcName" formControlName="SrvcName"
-                                                [formGroup]="registeredForm" [(value)]="text"
-                                                [validations]="getValidationMessages().SrvcName"
-                                                [mode]="autocompleteModeService">
-                                            </airmid-autocomplete> -->
-
-                                            <mat-form-field appearance="outline" #Price fxFlex="10%">
+                                            <!-- <mat-form-field appearance="outline" #Price fxFlex="10%">
                                                 <mat-label>Price</mat-label>
                                                 <input matInput [(ngModel)]="vPrice" name="price" #price
                                                     (keyup)="calculateTotalAmtbyprice()"
@@ -249,28 +234,28 @@
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
-                                            <!-- <airmid-textbox label="price" formControlName="price"
-                                                [value]="vPrice" [formGroup]="registeredForm" (keyup)="calculateTotalAmtbyprice()"
+                                            <airmid-textbox label="price" formControlName="price" [value]="vPrice"
+                                                [formGroup]="registeredForm" (keyup)="calculateTotalAmtbyprice()"
                                                 [validations]="getValidationMessages().price">
-                                            </airmid-textbox> -->
+                                            </airmid-textbox>
 
-                                            <mat-form-field appearance="outline" fxFlex="5%">
+                                            <!-- <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Qty</mat-label>
                                                 <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text"
                                                     OnlyNumber (keyup)="calculateTotalAmtbyprice()"
                                                     (keydown)="onEnterqty($event)" formControlName="qty" id="qty"
                                                     required (keypress)="keyPressAlphanumeric($event)">
 
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
-                                            <!-- <airmid-textbox label="qty" formControlName="qty" [value]="vQty"
+                                            <airmid-textbox label="qty" formControlName="qty" [value]="vQty"
                                                 [formGroup]="registeredForm" (click)="calculateTotalAmtbyprice()"
                                                 [validations]="getValidationMessages().qty">
-                                            </airmid-textbox> -->
+                                            </airmid-textbox>
 
-                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                            <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>TotalAmt</mat-label>
                                                 <input matInput [(ngModel)]="vChargeTotalAmount"
                                                     name="ChargeTotalAmount" readonly
@@ -278,13 +263,13 @@
                                                 <mat-error
                                                     *ngIf="registeredForm.get('ChargeTotalAmount').invalid && registeredForm.get('ChargeTotalAmount').touched">
                                                     TotalAmount is required</mat-error>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
-                                            <!-- <airmid-textbox label="ChargeTotalAmount"
+                                            <airmid-textbox label="ChargeTotalAmount"
                                                 formControlName="ChargeTotalAmount" [value]="vChargeTotalAmount"
                                                 [formGroup]="registeredForm" (click)="calculateTotalAmtbyprice()"
                                                 [validations]="getValidationMessages().ChargeTotalAmount">
-                                            </airmid-textbox> -->
+                                            </airmid-textbox>
                                             <!-- 
                                             <mat-form-field appearance="outline" fxFlex *ngIf="isDoctor">
                                                 <mat-label>Doctor Name</mat-label>
@@ -316,22 +301,22 @@
                                                 </airmid-autocomplete>
                                             </div>
 
-                                            <mat-form-field appearance="outline" fxFlex="5%">
+                                            <!-- <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc %</mat-label>
                                                 <input matInput placeholder="Percentage" formControlName="ChargeDiscPer"
                                                     [(ngModel)]="VchargeDiscPer" autocomplete="off" #disper
                                                     (keydown)="onEnterdiscper($event)" (keyup)="calculatePersc()"
                                                     onlyNumber maxlength="5" type="text"
                                                     (keypress)="keyPressCharater($event)">
-                                            </mat-form-field>
+                                            </mat-form-field> -->
 
-                                            <!-- <airmid-textbox label="ChargeDiscPer" formControlName="ChargeDiscPer"
+                                            <airmid-textbox label="ChargeDiscPer" formControlName="ChargeDiscPer"
                                                 [value]="VchargeDiscPer" [formGroup]="registeredForm"
                                                 (click)="calculatePersc()"
                                                 [validations]="getValidationMessages().ChargeDiscPer">
-                                            </airmid-textbox> -->
+                                            </airmid-textbox>
 
-                                            <mat-form-field appearance="outline" fxFlex="5%">
+                                            <!-- <mat-form-field appearance="outline" fxFlex="5%">
                                                 <mat-label>Disc Amt</mat-label>
                                                 <input matInput [(ngModel)]="vchargeDisAmount" name="ChargeDiscAmount"
                                                     #discamt formControlName="ChargeDiscAmount" type="text" onlyNumber
@@ -341,24 +326,24 @@
                                                     *ngIf="registeredForm.get('ChargeDiscAmount').invalid && registeredForm.get('ChargeDiscAmount').touched">
                                                     Discount Amount Schod me Less than Tptal Amount TotalAmount is
                                                     required</mat-error>
-                                            </mat-form-field>
-                                            <!-- <airmid-textbox label="ChargeDiscAmount" formControlName="ChargeDiscAmount"
+                                            </mat-form-field> -->
+                                            <airmid-textbox label="ChargeDiscAmount" formControlName="ChargeDiscAmount"
                                                 [value]="vchargeDisAmount" [formGroup]="registeredForm"
                                                 (click)="calChargeDiscAmt()"
                                                 [validations]="getValidationMessages().ChargeDiscAmount">
-                                            </airmid-textbox> -->
-                                            <mat-form-field appearance="outline" fxFlex="10%">
+                                            </airmid-textbox>
+                                            <!-- <mat-form-field appearance="outline" fxFlex="10%">
                                                 <mat-label>NetAmount</mat-label>
                                                 <input matInput [(ngModel)]="vCahrgeNetAmount" name="b_netAmount"
                                                     readonly type="text" onlyNumber formControlName="netAmount" required
                                                     (keyup)="addData()" #netamt>
 
-                                            </mat-form-field> &nbsp;&nbsp;
-                                            <!-- <airmid-textbox label="ChargeTotalAmount"
+                                            </mat-form-field> &nbsp;&nbsp; -->
+                                            <airmid-textbox label="ChargeTotalAmount"
                                                 formControlName="ChargeTotalAmount" [value]="vCahrgeNetAmount"
                                                 [formGroup]="registeredForm" (click)="addData()"
                                                 [validations]="getValidationMessages().netAmount">
-                                            </airmid-textbox> -->
+                                            </airmid-textbox>
 
                                             <div matTooltip="Enter all data to enable this button!!"
                                                 [matTooltipPosition]="'above'">
@@ -811,51 +796,57 @@
                                 fxLayout="row" fxLayout.gt-xs="column" fusePerfectScrollbar>
                                 <div class="nav material2">
                                     <div fxLayout="row" class="gap-8">
-                                        <mat-form-field appearance="outline" class="Consession-field" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" class="Consession-field" fxFlex>
                                             <mat-label>Total Amount</mat-label>
                                             <input matInput [(ngModel)]="vFinalTotalAmt" name="FinalTotalAmt"
                                                 formControlName="FinalTotalAmt" readonly>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
 
-                                        <mat-form-field appearance="outline" fxFlex *ngIf="BillDiscPer">
+                                        <airmid-textbox label="qty" formControlName="FinalTotalAmt"
+                                            [value]="vFinalTotalAmt" [formGroup]="BillingForm">
+                                        </airmid-textbox>
+                                        <!-- <mat-form-field appearance="outline" fxFlex *ngIf="BillDiscPer">
                                             <mat-label>Disc %</mat-label>
                                             <input matInput placeholder="Percentage"
                                                 formControlName="FinalconcessionPer"
                                                 [(ngModel)]="vFinalconcessionDiscPer" autocomplete="off" #disper
                                                 id="Percentage" (keyup)="CalcDiscPercentageonBill()" type="text"
                                                 onlyNumber (keypress)="keyPressCharater($event)">
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <airmid-textbox label="FinalconcessionPer" formControlName="FinalconcessionPer"
+                                            [value]="vFinalconcessionDiscPer" [formGroup]="BillingForm"
+                                            (click)="calculateTotalAmtbyprice()">
+                                        </airmid-textbox>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Disc Amt</mat-label>
                                             <input matInput name="concessionAmt" formControlName="FinalconcessionAmt"
                                                 type="text" autocomplete="off" onlyNumber
                                                 [(ngModel)]="vFinalConcessionAmt" (keyup)="CalcDiscAmtonBill()">
-                                        </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex *ngIf="Consessionres">
-                                            <mat-label>Concession Reason Type</mat-label>
-                                            <mat-select formControlName="ConcessionId">
-                                                <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                                    {{Doc.ConcessionReason}}
-                                                </mat-option>
-                                            </mat-select>
                                         </mat-form-field> -->
+
+
+                                        <airmid-textbox label="FinalConcessionAmt" formControlName="FinalconcessionAmt"
+                                            [value]="vFinalConcessionAmt" [formGroup]="BillingForm">
+                                        </airmid-textbox>
                                         <div *ngIf="Consessionres">
                                             <airmid-autocomplete label="Concession Reason"
-                                                formControlName="ConcessionId" [formGroup]="registeredForm"
+                                                formControlName="ConcessionId" [formGroup]="BillingForm"
                                                 [validations]="getValidationMessages().ConcessionId"
                                                 [mode]="autocompleteModeConcession"
                                                 (selectionChange)="selectChangeConcession($event)">
                                             </airmid-autocomplete>
                                         </div>
-                                        <mat-form-field appearance="outline" class="Consession-field" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" class="Consession-field" fxFlex>
                                             <mat-label>Net Amount</mat-label>
                                             <input matInput [(ngModel)]="vFinalnetPaybleAmt" name="FinalNetAmt"
                                                 formControlName="FinalNetAmt" readonly required>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
 
+                                        <airmid-textbox label="FinalNetAmt" formControlName="FinalNetAmt"
+                                            [value]="FinalNetAmt" [formGroup]="BillingForm">
+                                        </airmid-textbox>
                                     </div>
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
