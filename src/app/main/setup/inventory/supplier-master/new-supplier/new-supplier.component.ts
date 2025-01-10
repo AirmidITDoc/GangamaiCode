@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SupplierMaster, SupplierMasterComponent } from '../supplier-master.component';
 import { FormGroup } from '@angular/forms';
@@ -7,18 +7,21 @@ import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-supplier',
   templateUrl: './new-supplier.component.html',
-  styleUrls: ['./new-supplier.component.scss']
+  styleUrls: ['./new-supplier.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewSupplierComponent implements OnInit {
 
   supplierForm: FormGroup;
   
     submitted = false;
-  
+    @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
     registerObj = new SupplierMaster({});
   
   
@@ -99,7 +102,7 @@ export class NewSupplierComponent implements OnInit {
     }
   
   
-    @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
+    
   
     removestore(item) {
       let removedIndex = this.supplierForm.value.MAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);

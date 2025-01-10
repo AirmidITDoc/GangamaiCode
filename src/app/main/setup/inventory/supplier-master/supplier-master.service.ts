@@ -18,6 +18,39 @@ export class SupplierMasterService {
         this.supplierForm = this.createSuppliermasterForm();
     }
 
+    /**
+     * POST–
+{
+  "supplierId": 0,
+  "supplierName": "shilpa",
+  "contactPerson": "meshram",
+  "address": "pune",
+  "cityId": 12,
+  "stateId": 123,
+  "countryId": 0,
+  "creditPeriod": "string",
+  "mobile": "8809765454",
+  "phone": "string",
+  "fax": "string",
+  "email": "shilpa342@gmail.com",
+  "modeofPayment": 0,
+  "termofPayment": 0,
+  "currencyId": 0,
+  "octroi": 0,
+  "freight": 0,
+  "gstNo": "string",
+  "panNo": "string",
+  "supplierTime": "10:00:00 AM",
+  "mAssignSupplierToStores": [
+    {
+      "assignId": 0,
+      "storeId": 12,
+      "supplierId": 0
+    }
+  ]
+}
+
+     */
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
             supplierId: [0],
@@ -105,7 +138,8 @@ export class SupplierMasterService {
                     Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
                 ]
             ],
-            supplierTime:  [(new Date()).toISOString()],
+            supplierTime: [(new Date()).toISOString()],
+            // mAssignSupplierToStores:[""],
             mAssignSupplierToStores: [
                 {
                     assignId: 0,
@@ -113,55 +147,7 @@ export class SupplierMasterService {
                     supplierId: 0
                 }
             ]
-            // StoreId: [""],
-            // StoreName: [""],
-            // AddedBy: [""],
-            // IsDeleted: ["true"],
-            // UpdatedBy: [""],
-            // SupplierType:[""],
-            // LicNo: ["", Validators.required],
-            // ExpDate:[{ value: this.registerObj.ExpDate}],
-            // // DlNo:["",Validators.pattern("^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$")],
-          
-            // DlNo:['', Validators.required],
-            // MsmNo:[0],
-            // MSMNo:[0],
-            // Apprval:[""],
-            // Pincode:[""],
-            // Taluka:['', [
-            //     Validators.required,
-            //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //   ]],
-            // BankName:["", Validators.required],
-            // BankNo:['', 
-            //     [
-            //         Validators.required,
-            //         Validators.pattern("[0-9]{9,18}"),
-            //         Validators.minLength(9),
-            //         Validators.maxLength(18)
-            //     ]
-            // ],
-            // BankBranch:['', [
-            //     Validators.required,
-            //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-            //   ]],
-            // IFSCcode:["",
-            //     [
-            //         Validators.required,
-            //         Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")
-            //     ]
-            // ],
-            // VenderTypeId:[""],
-            // OpeningBal:['', 
-            //     [
-            //         Validators.required
-            //         // Validators.pattern("^[0-9]*$"),
-            //         // Validators.minLength(1),
-            //         // Validators.maxLength(10)
-            //     ]
-            // ],
-            // CreateApproval:[true],
-            // MAssignSupplierToStores: ["", Validators.required],
+        
         });
     }
 

@@ -15,6 +15,8 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { SuppliertestingComponent } from "./suppliertesting/suppliertesting.component";
+import { Row } from "jspdf-autotable";
+import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
 
 @Component({
     selector: "app-supplier-master",
@@ -33,6 +35,7 @@ export class SupplierMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Supplier/SupplierList",
         columnsList: [
+            { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "Supplier", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -79,7 +82,7 @@ export class SupplierMasterComponent implements OnInit {
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             let that = this;
-                            const dialogRef = this._matDialog.open(SuppliertestingComponent,
+                            const dialogRef = this._matDialog.open(FixSupplierComponent,
                                 {
                                     maxWidth: "95vw",
                                     height: '85%',
@@ -130,12 +133,12 @@ export class SupplierMasterComponent implements OnInit {
 
     onSave(obj: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(SuppliertestingComponent,
+        const dialogRef = this._matDialog.open(FixSupplierComponent,
             {
                 maxWidth: "100vw",
                 height: '95%',
-                width: '70%'
-                // data: obj
+                width: '70%',
+                data: Row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -274,6 +277,7 @@ modeofPayment: Number;
     OpeningBalance: any;
     supplierTime:any;
     mAssignSupplierToStores: any[];
+Freight: any;
     /**
      * Constructor
      *

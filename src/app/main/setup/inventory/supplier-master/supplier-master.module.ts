@@ -39,6 +39,7 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { SuppliertestingComponent } from './suppliertesting/suppliertesting.component';
+import { FixSupplierComponent } from './fix-supplier/fix-supplier.component';
 const routes: Routes = [
     {
         path: "**",
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [SupplierMasterComponent, SupplierFormMasterComponent, NewSupplierComponent, SuppliertestingComponent],
+    declarations: [SupplierMasterComponent, SupplierFormMasterComponent, NewSupplierComponent, SuppliertestingComponent, FixSupplierComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,
@@ -80,6 +81,8 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
+        MatDialogModule,
+       
         
     ],
     providers: [SupplierMasterService, DatePipe]

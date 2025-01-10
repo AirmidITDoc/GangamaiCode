@@ -345,16 +345,44 @@
 
         </form>
 
-        <!-- <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;"> -->
+        <form [formGroup]="supplierForm" fxLayout="column" style="padding: 0px 5px 0px 5px;">
 
-        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-            class="top-header accent heading-container h-40 border-radius-4">
-            <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Details</span>
-        </div>
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Details</span>
+            </div>
+            <div fxLayout="row">                            
+                <div fxFlex>
+                    <form [formGroup]="supplierForm">
+                        <div fxLayout="row">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-autocomplete 
+                                    label="Store" 
+                                    formControlName="mAssignSupplierToStores"
+                                    [formGroup]="supplierForm" 
+                                    [IsMultiPle]="true" 
+                                    [value]="registerObj.mAssignSupplierToStores"
+                                    [validations]="getValidationMessages().StoreId" #ddlStore
+                                    ValueField="storeId" 
+                                    TextField="storeName"
+                                    ApiUrl="StoreMaster/get-store" 
+                                    [ReqFullObj]="true">
+                                </airmid-autocomplete>
+                            </div>
+                            <mat-chip-listbox #chipList>
+                                <mat-chip *ngFor="let item of supplierForm.value.mAssignSupplierToStores">
+                                    {{ item.storeName }} <mat-icon
+                                        (click)="removestore(item)">close</mat-icon>
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-        <mat-card>
+        <!-- <mat-card> -->
 
-            <div fxFlex="100" fxLayout="row wrap">
+            <!-- <div fxFlex="100" fxLayout="row wrap"> -->
                 <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
 
                 <!-- <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
@@ -376,11 +404,11 @@
                         class="top-header accent heading-container h-40 border-radius-4">
                         <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Store Details</span>
                     </div> -->
-                <div fxLayout="row">
+                <!-- <div fxLayout="row"> -->
 
-                    <div fxFlex>
-                        <mat-card>
-                            <form [formGroup]="supplierForm">
+                    <!-- <div fxFlex> -->
+                        <!-- <mat-card> -->
+                            <!-- <form [formGroup]="supplierForm"> -->
                                 <!-- <div fxLayout="row">
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete label="Store" formControlName="MAssignSupplierToStores"
@@ -396,15 +424,15 @@
                                         </mat-chip>
                                     </mat-chip-listbox>
                                 </div> -->
-                            </form>
-                        </mat-card>
-                    </div>
-                </div>
+                            <!-- </form> -->
+                        <!-- </mat-card> -->
+                    <!-- </div> -->
+                <!-- </div> -->
                 <!-- </form> -->
-            </div>
-        </mat-card>
+            <!-- </div> -->
+        <!-- </mat-card> -->
 
-        <!-- </form> -->
+        </form>
 
 
 

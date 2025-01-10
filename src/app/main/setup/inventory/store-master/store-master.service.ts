@@ -22,107 +22,121 @@ export class StoreMasterService {
             storeId: [0],
             storeShortName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    // Validators.required, 
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             storeName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    // Validators.required, 
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             indentPrefix: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    // Validators.required,
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             indentNo: ["",
                 [
-                    Validators.required,Validators.maxLength(30),
+                    // Validators.required,
+                    Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             purchasePrefix: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    // Validators.required,
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],  
             purchaseNo: ["",
                 [
-                    Validators.required,Validators.maxLength(30),
+                    // Validators.required,
+                    Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             grnPrefix: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    // Validators.required,
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],  
             grnNo: ["",
                 [
-                    Validators.required,Validators.maxLength(30),
+                    // Validators.required,
+                    Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             grnreturnNoPrefix: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    // Validators.required,
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             grnreturnNo: ["",
                 [
-                    Validators.required,Validators.maxLength(30),
+                    // Validators.required,
+                    Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             issueToDeptPrefix: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    // Validators.required,
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             issueToDeptNo: ["",
                 [
-                    Validators.required,Validators.maxLength(30),
+                    // Validators.required,
+                    Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             returnFromDeptNoPrefix: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    // Validators.required,
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             returnFromDeptNo: ["",
                 [
-                    Validators.required,Validators.maxLength(30),
+                    // Validators.required,
+                    Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             isDeleted: ["true"],
-            UpdatedBy: [""],
-            AddedByName: [""],
+            UpdatedBy: ["0"],
+            AddedByName: ["0"],
             Header:[""],
-            pharSalCountId:[1,
+            pharSalCountId:["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            pharSalRecCountId:[2,
+            pharSalRecCountId:["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            pharSalReturnCountId:[3,
+            pharSalReturnCountId:["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
@@ -165,13 +179,12 @@ export class StoreMasterService {
     }
 
     public storeMasterSave(Param: any, showLoader = true) {
-        
         if (Param.storeId) {
             return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param, showLoader);
         } else return this._httpClient.PostData("StoreMaster",Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("Store?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
 }

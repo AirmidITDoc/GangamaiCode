@@ -79,6 +79,7 @@ export class DrugmasterComponent implements OnInit {
                 maxWidth: "45vw",
                 height: '35%',
                 width: '70%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if(result){

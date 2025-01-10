@@ -289,16 +289,49 @@
                                     </div>
                                 </div>
                                 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                <div fxLayout="row">                            
+                                    <div fxFlex>
+                                        <form [formGroup]="itemForm">
+                                            <div fxLayout="row">
+                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-autocomplete 
+                                                        label="Store" 
+                                                        formControlName="mAssignItemToStores"
+                                                        [formGroup]="itemForm" 
+                                                        [IsMultiPle]="true" 
+                                                        [value]="registerObj.mAssignItemToStores"
+                                                        [validations]="getValidationMessages().storeId" #ddlStore
+                                                        ValueField="storeId" 
+                                                        TextField="storeName"
+                                                        ApiUrl="StoreMaster/get-store" 
+                                                        [ReqFullObj]="true">
+                                                    </airmid-autocomplete>
+                                                </div>
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip *ngFor="let item of itemForm.value.mAssignItemToStores">
+                                                        {{ item.storeName }} <mat-icon
+                                                            (click)="removestore(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                     <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <form [formGroup]="itemForm">
                                             <div fxLayout="row">
                                                 <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete label="Store"
-                                                        formControlName="mAssignItemToStores" [formGroup]="itemForm"
-                                                        [IsMultiPle]="true" [value]="registerObj.mAssignItemToStores"
+                                                    <airmid-autocomplete 
+                                                        label="Store"
+                                                        formControlName="mAssignItemToStores" 
+                                                        [formGroup]="itemForm"
+                                                        [IsMultiPle]="true" 
+                                                        [value]="registerObj.mAssignItemToStores"
                                                         [validations]="getValidationMessages().storeId" #ddlStore
-                                                        ValueField="storeId" TextField="storeName"
+                                                        ValueField="storeId" 
+                                                        TextField="storeName"
                                                         ApiUrl="StoreMaster/get-store">
                                                     </airmid-autocomplete>
                                                 </div>
@@ -312,7 +345,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                </div>
+                                </div> -->
                                 
 
                                 <div>
@@ -327,6 +360,7 @@
                             </div>
 
                         </form>
+                        
                         <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end" style="padding: 20px;"> 
                             <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
                                 <button mat-raised-button (click)="onSave()">+ New Generic Item
@@ -334,7 +368,7 @@
                             </div>
                               <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                               <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Saveflag">Save</button> 
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
