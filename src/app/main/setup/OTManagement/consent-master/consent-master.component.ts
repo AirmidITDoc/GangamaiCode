@@ -52,6 +52,7 @@ export class ConsentMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getotConsentList();
   }
 
   

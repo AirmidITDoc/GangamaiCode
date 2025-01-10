@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -48,6 +48,7 @@ import { PrescriptionTemplateComponent } from "../new-casepaper/prescription-tem
 import { PrePresciptionListComponent } from "../new-casepaper/pre-presciption-list/pre-presciption-list.component";
 import { AddItemComponent } from "../new-casepaper/add-item/add-item.component";
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 const routes: Routes = [
@@ -68,7 +69,8 @@ const routes: Routes = [
 
   ],
   imports: [
-      RouterModule.forChild(routes),
+        RouterModule.forChild(routes),
+        CommonModule,
          MatButtonModule,
          MatCheckboxModule,
          MatDatepickerModule,
@@ -108,7 +110,8 @@ const routes: Routes = [
          MatTooltipModule,
          MatTreeModule,
          MatSliderModule,
-         MatButtonToggleModule
+         MatButtonToggleModule,
+         AngularEditorModule
   ],
   providers: [DatePipe],
   entryComponents: [AppointmentListComponent],

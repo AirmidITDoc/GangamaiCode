@@ -6,50 +6,54 @@ import { FormBuilder, FormGroup, FormGroupName } from '@angular/forms';
   providedIn: 'root'
 })
 export class ConsentService {
-  myform:FormGroup;
+  myform: FormGroup;
 
   constructor(
-    public _frombuilder : FormBuilder,
-    public _httpClient : HttpClient
-  ) 
-  {this.myform = this.CreateMyform() }
+    public _frombuilder: FormBuilder,
+    public _httpClient: HttpClient
+  ) { this.myform = this.CreateMyform() }
 
-  CreateMyform(){
+  CreateMyform() {
     return this._frombuilder.group({
-      RegID:[''],
-      PatientType:['OP'],
-      MobileNo:'',
-      PatientName:'',
-      ConsentName:'',
-      ConsentText:[''],
-      Template:[''],
-      Department:[''],
-      Language:['0'],
+      RegID: [''],
+      PatientType: ['OP'],
+      MobileNo: '',
+      PatientName: '',
+      ConsentName: '',
+      ConsentText: [''],
+      Template: [''],
+      Department: [''],
+      Language: ['0'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     })
   }
 
-    // ip
-    public getAdmittedPatientList(employee){
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
-    }
-    // op
-    public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
-    }
-    //Deartment Combobox List
-    public getDepartmentCombo() {
-     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
- }
- public getConsentPatientlist(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentpatientInformation_List",employee)
-}
-public NursingConsentInsert(employee){
-  return this._httpClient.post("OutPatient/TConsentInformationSave", employee);
-}
+  // ip
+  public getAdmittedPatientList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+  }
+  // op
+  public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  }
+  //Deartment Combobox List
+  public getDepartmentCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+  }
+  //template list
+  public getTemplateMasterCombo(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentMasterList", param)
+  }
 
-public NursingConsentUpdate(employee){
-  return this._httpClient.post("OutPatient/TConsentInformationUpdate", employee);
-}
+  public getConsentPatientlist(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentpatientInformation_List", employee)
+  }
+  public NursingConsentInsert(employee) {
+    return this._httpClient.post("OutPatient/TConsentInformationSave", employee);
+  }
+
+  public NursingConsentUpdate(employee) {
+    return this._httpClient.post("OutPatient/TConsentInformationUpdate", employee);
+  }
 }

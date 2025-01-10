@@ -383,6 +383,7 @@
                                                     (click)="getOpCasePaper(contact)">list_alt</mat-icon>
 
                                                 <button mat-icon-button matTooltip="Certificate"
+                                                (click)="OpenCertificate(contact)"
                                                     *ngIf="contact.IsCancelled==0">
                                                     <mat-icon> insert_drive_file</mat-icon>
                                                 </button>

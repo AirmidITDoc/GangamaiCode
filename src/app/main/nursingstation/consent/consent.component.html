@@ -25,231 +25,227 @@
 
     </mat-toolbar>
 
+    <!-- SELECTED BAR -->
+    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
+    <!-- / SELECTED BAR -->
+
     <div class="content">
+        <!--  -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <!-- SIDEBAR HEADER -->
+            <div class="sidebar-content">
+
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div class="nav material2">
+                    <form [formGroup]="_ConsentService.myform">
+                        <div fxLayout="column" fxLayoutAlign="start none">
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="start" placeholder="Start date">
+                                    <input matEndDate formControlName="end" placeholder="End date"
+                                        (dateChange)="getConsentPatientInfoList()">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </fuse-sidebar>
+        <!--  -->
         <div class="center p-12 pb-56" fxFlexAlign="height: fit-content;">
 
             <div class="content-card" style="border-radius:4px;">
 
-                <div fxlayout="row">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                        <div fxFlex.gt-sm="100%" fxFlex>
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
 
-                            <div fxLayout="column" class="gap-12">
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
 
-                                <!-- code by raksha -->
-                                <form [formGroup]="_ConsentService.myform">
-                                    <div style="width: 250px;">
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Enter a date range</mat-label>
-                                            <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChange)="getConsentPatientInfoList()">
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                        </mat-form-field>
-                                    </div>
-                                </form>
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger"></div>
+                                </div>
+                                <!-- sppinner -->
 
                                 <div fxlayout="row">
-                                    <div style="width: 100%;">
+                                    <div style="width:100%;">
+                                        <mat-table class="table2" matSort [dataSource]="dsConsentList"
+                                            [@animateStagger]="{value:'50'}" style="overflow: auto; width: 100%;">
 
-                                        <div matColumnDef="loading"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                            class="backgroundBlur">
-                                            <div class="spinner-border text-danger"></div>
-                                        </div>
-                                        <!-- sppinner -->
+                                            <!-- <ng-container matColumnDef="ConsentDate">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    ConsentDate </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.ConsentDate}} </mat-cell>
+                                            </ng-container>
 
-                                        <div fxlayout="row">
-                                            <div style="width:100%;">
-                                                <mat-table class="table2" matSort [dataSource]="dsConsentList"
-                                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                            <ng-container matColumnDef="ConsentTime">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    ConsentTime </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                    {{element.ConsentTime}} </mat-cell>
+                                            </ng-container> -->
 
-                                                    <ng-container matColumnDef="ConsentId">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            Code </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentId}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="ConsentDateTime">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                    Date & Time
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                    {{element.ConsentDate | date: 'dd/MM/yyyy'}}- {{element.ConsentTime | date:'shortTime'}}
+                                                </mat-cell>
+                                            </ng-container>
+                                            
 
-                                                    <ng-container matColumnDef="ConsentDate">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            ConsentDate </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentDate}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="ConsentName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                    Consent Name </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
+                                                    {{element.ConsentName}} </mat-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="ConsentTime">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            ConsentTime </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentTime}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="ConsentText">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" fxShow.gt-sm>
+                                                    ConsentText </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="w-200" fxShow.gt-sm>
+                                                    {{element.ConsentText}} </mat-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="ConsentName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            Consent Name </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentName}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="ConsentDeptId">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" fxShow.gt-sm>
+                                                    ConsentDept </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="w-200" fxShow.gt-sm>
+                                                    {{element.DepartmentName}} </mat-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="ConsentText">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            ConsentText </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentText}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="ConsentTempId">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" fxShow.gt-sm>
+                                                    ConsentTemp </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="w-200" fxShow.gt-sm>
+                                                    {{element.TemplateName}} </mat-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="ConsentDeptId">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            ConsentDept </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentDeptId}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="Action">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" fxShow.gt-sm>
+                                                    Action </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="w-200" fxShow.gt-sm>
+                                                    <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                </mat-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="ConsentTempId">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            ConsentTemp </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.ConsentTempId}} </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="loading">
+                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                </mat-header-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="Action">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            Action </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            <button mat-icon-button matTooltip="Edit"
-                                                                (click)="OnEdit(element)">
-                                                                <mat-icon>edit</mat-icon>
-                                                            </button>
-                                                        </mat-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    no data found...
+                                                </mat-footer-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="loading">
-                                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                                            style="display: none;">
-                                                        </mat-header-cell>
-                                                    </ng-container>
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedColumns; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(dsConsentList!=null && dsConsentList.data.length==0)}">
+                                            </mat-footer-row>
+                                        </mat-table>
+                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                            showFirstLastButtons>
+                                        </mat-paginator>
+                                    </div>
 
-                                                    <ng-container matColumnDef="noData">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                            no data found...
-                                                        </mat-footer-cell>
-                                                    </ng-container>
+                                    <div style="width:100%;">
+                                        <mat-table class="table2" matSort [dataSource]="dsPatientList"
+                                            [@animateStagger]="{value:'50'}" style="overflow: auto; width: 100%;">
 
-                                                    <mat-header-row class="accent"
-                                                        *matHeaderRowDef="displayedColumns; sticky: true">
-                                                    </mat-header-row>
-                                                    <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                        class="element"
-                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                        [ngClass]="{'hide':!(dsConsentList!=null && dsConsentList.data.length==0)}">
-                                                    </mat-footer-row>
-                                                </mat-table>
-                                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                                    showFirstLastButtons>
-                                                </mat-paginator>
-                                            </div>
-
-                                            <div>
-                                                <mat-table class="table2" matSort [dataSource]="dsPatientList"
-                                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
-                                                    <ng-container matColumnDef="RegNo">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            Code </mat-header-cell>
-                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <ng-container matColumnDef="RegNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Code </mat-header-cell>
+                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.ConsentId}} </mat-cell> -->
-                                                    </ng-container>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="PatientName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            Patient Name </mat-header-cell>
-                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <ng-container matColumnDef="PatientName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Patient Name </mat-header-cell>
+                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.PatientName}} </mat-cell> -->
-                                                    </ng-container>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="OPIPType">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            OPIPType</mat-header-cell>
-                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <ng-container matColumnDef="OPIPType">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    OPIPType</mat-header-cell>
+                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.OPIPType}} </mat-cell> -->
-                                                    </ng-container>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="MobileNo">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            MobileNo </mat-header-cell>
-                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <ng-container matColumnDef="MobileNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    MobileNo </mat-header-cell>
+                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.MobileNo}} </mat-cell> -->
-                                                    </ng-container>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="AgeYear">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            AgeYear </mat-header-cell>
-                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <ng-container matColumnDef="AgeYear">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    AgeYear </mat-header-cell>
+                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.AgeYear}} </mat-cell> -->
-                                                    </ng-container>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="Action">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>
-                                                            Action </mat-header-cell>
-                                                        <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <ng-container matColumnDef="Action">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Action </mat-header-cell>
+                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             <button mat-icon-button matTooltip="Edit"
                                                                 (click)="OnEdit(contact)">
                                                                 <mat-icon>edit</mat-icon>
                                                             </button>
                                                         </mat-cell> -->
-                                                    </ng-container>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="loading">
-                                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                                            style="display: none;">
-                                                        </mat-header-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="loading">
+                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                </mat-header-cell>
+                                            </ng-container>
 
-                                                    <ng-container matColumnDef="noData">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                            no data found...
-                                                        </mat-footer-cell>
-                                                    </ng-container>
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    no data found...
+                                                </mat-footer-cell>
+                                            </ng-container>
 
-                                                    <mat-header-row class="accent"
-                                                        *matHeaderRowDef="displayedPatientColumns; sticky: true">
-                                                    </mat-header-row>
-                                                    <mat-row *matRowDef="let row; columns: displayedPatientColumns;"
-                                                        class="element"
-                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                        [ngClass]="{'hide':!(dsPatientList!=null && dsPatientList.data.length==0)}">
-                                                    </mat-footer-row>
-                                                </mat-table>
-                                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                                    showFirstLastButtons>
-                                                </mat-paginator>
-                                            </div>
-                                        </div>
-
-
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedPatientColumns; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedPatientColumns;"
+                                                class="element" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(dsPatientList!=null && dsPatientList.data.length==0)}">
+                                            </mat-footer-row>
+                                        </mat-table>
+                                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                            showFirstLastButtons>
+                                        </mat-paginator>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>

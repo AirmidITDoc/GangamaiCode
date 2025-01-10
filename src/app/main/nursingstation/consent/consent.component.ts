@@ -21,11 +21,10 @@ import { NewConsentComponent } from './new-consent/new-consent.component';
 export class ConsentComponent implements OnInit {
   
   sIsLoading: string = '';
+  hasSelectedContacts: boolean;
 
   displayedColumns: string[] = [
-    'ConsentId',
-    'ConsentDate',
-    'ConsentTime',
+    'ConsentDateTime',
     'ConsentName',
     'ConsentText',
     'ConsentDeptId',
@@ -45,7 +44,7 @@ export class ConsentComponent implements OnInit {
   dsPatientList = new MatTableDataSource<OPIPMasterList>();
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   
   constructor(
     public _ConsentService : ConsentService,

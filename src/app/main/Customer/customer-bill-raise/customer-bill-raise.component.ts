@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { NewBillRaiseComponent } from './new-bill-raise/new-bill-raise.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -20,7 +20,7 @@ import { CustomerPaymentAmtViewComponent } from './customer-payment-amt-view/cus
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class CustomerBillRaiseComponent implements OnInit {
+export class CustomerBillRaiseComponent implements AfterViewInit {
   displayedDueColumns: string[] = [
     'Type',
     'InvoiceDate',
@@ -77,6 +77,7 @@ export class CustomerBillRaiseComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatPaginator) paginator2: MatPaginator;
+  @ViewChild(MatPaginator) paginator2!: MatPaginator;
   
   constructor(
     public _CustomerBill: CustomerBillRaiseService,
@@ -174,8 +175,20 @@ export class CustomerBillRaiseComponent implements OnInit {
   }
 
   resultsLength2=0;
+  pageSize2 = 15;
 
-  getCustomerPaymentDaySummary() {
+  ngAfterViewInit() {
+    this.dsPaymentDaySummary.paginator = this.paginator2;
+    this.getCustomerPaymentDaySummary();
+  }
+
+  onPageSizeChange(event: any) {
+    this.pageSize2 = event.pageSize; 
+    const pageIndex = event.pageIndex || 0;
+    this.getCustomerPaymentDaySummary(pageIndex);
+  }
+
+  getCustomerPaymentDaySummary(pageIndex: number = 0) {
     debugger
     // var D_data = {
     //   "FromDate": this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
@@ -197,19 +210,23 @@ export class CustomerBillRaiseComponent implements OnInit {
     //   error => {
     //     this.isLoading = false;
     //   });
+    
+    // const pageIndex = this.paginator2?.pageIndex ?? 0;
+    // this.paginator2.pageIndex = 0; 
+    const pageSize = this.pageSize2;
+
     var m_data = {
       FromDate: this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       ToDate: this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       CustomerName:this._CustomerBill.myform.get("CustomerNameSearch").value + "%" || "%",
       TranType: this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
-      Start:(this.paginator?.pageIndex ?? 0),
-      Length:(this.paginator?.pageSize ?? 30),                  
+      Start: pageIndex * pageSize, 
+      Length: pageSize,                   
   };
-          console.log(m_data)
+          console.log("paginator2:",m_data)
           this._CustomerBill.getCustomerPaymentDaySummary(m_data).subscribe((data) => {
           this.dsPaymentDaySummary.data = data["Table1"]??[] as PaymentDaySummary[];
-          // this.DSItemMasterList.sort = this.sort;
-          this.resultsLength = data["Table"][0]["total_row"];
+          this.resultsLength2 = data["Table"][0]["total_row"];
           this.sIsLoading = '';
           console.log(this.dsPaymentDaySummary.data)
       },

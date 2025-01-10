@@ -13,6 +13,7 @@ export class AppointmentSreviceService {
   public afterMethodFileSelect: Subject<any> = new Subject();
    myFilterform: FormGroup;
    mySaveForm:FormGroup;
+   mycertificateForm: FormGroup;
 
   now = Date.now();
   sIsLoading: string = '';
@@ -21,7 +22,7 @@ export class AppointmentSreviceService {
     private _formBuilder: FormBuilder
   ) {
     this.myFilterform = this.filterForm();
-   
+    this.mycertificateForm = this.CreatePatientCertiform();
   }
 
   filterForm(): FormGroup {
@@ -39,6 +40,22 @@ export class AppointmentSreviceService {
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
     });
+  }
+
+  CreatePatientCertiform() {
+    return this._formBuilder.group({
+      RegID: [''],
+      PatientType: ['OP'],
+      MobileNo: '',
+      PatientName: '',
+      ConsentName: '',
+      ConsentText: [''],
+      Template: [''],
+      Department: [''],
+      Language: ['0'],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+    })
   }
 
  
@@ -145,6 +162,20 @@ export class AppointmentSreviceService {
 
   //   });
   // }
+
+  // code by raksha
+  //template list
+  public getTemplateMasterCombo(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentMasterList", param)
+  }
+
+  public CertificateInsert(employee) {
+    return this._httpClient.post("OutPatient/TCertificateInformationSave", employee);
+  }
+
+  public CertificateUpdate(employee) {
+    return this._httpClient.post("OutPatient/TCertificateInformationUpdate", employee);
+  }
 
   initializeFormGroup() {
     // this.saveForm();

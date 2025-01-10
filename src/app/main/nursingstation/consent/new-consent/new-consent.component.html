@@ -198,23 +198,39 @@
                                     </span>
                   
                                     <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                      <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
+                                      <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                        (onSelectionChange)="OnChangeTemplateList(option)">
                                         {{option.DepartmentName}}
                                       </mat-option>
                                     </mat-autocomplete>
                                   </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Template</mat-label>
-                                    <mat-select formControlName="Template" name="Template"
-                                        Placeholder="select Template" [(ngModel)]="vTemplateId">
-                                        <mat-option></mat-option>
-                                        <!-- <mat-option *ngFor="let m of TemplateList" [value]="m">
-                                            {{m.Template}}
-                                        </mat-option> -->
-                                    </mat-select>
+                                  <mat-label>Template</mat-label>
+                                  <input matAutocompletePosition="below" type="text" placeholder="Select Template Name" matInput
+                                    formControlName="Template" [(ngModel)]="selectedTemplate" [matAutocomplete]="autoTemplate"
+                                    required>
+                                  <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                      (click)="_ConsentService.myform.get('Template').setValue(''); isTemplateSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                      (click)="_ConsentService.myform.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
+                                  </span>
+                                
+                                  <mat-autocomplete #autoTemplate="matAutocomplete" [displayWith]="getOptionTextTemp">
+                                    <mat-option *ngFor="let option of filteredOptionsTemp | async" [value]="option"
+                                      (onSelectionChange)="onTemplateSelect(option)">
+                                      {{option.ConsentName }} <b>|</b> {{option.DepartmentName }} 
+                                    </mat-option>
+                                  </mat-autocomplete>
                                 </mat-form-field>
 
+                                <div class="modal-footer-buttons gap-8 m-8">
+                                  <button class="btn btn-primary" (click)="addTemplateDescription()">
+                                    Add
+                                  </button>
+                              </div>
+                                
                                 <mat-radio-group name="Language" value="1" formControlName="Language"
                                     style="padding: 15px 0px 0px 0px">
                                     <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
