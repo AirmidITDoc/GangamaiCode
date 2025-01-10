@@ -16,6 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AnyARecord } from 'dns';
+import { CreateTemplateComponent } from '../../doctornote/create-template/create-template.component';
 
 @Component({
   selector: 'app-nursingnote',
@@ -221,11 +222,15 @@ export class NursingnoteComponent implements OnInit {
     this.dsNursingNoteList.data = []
     this.dsHandOverNoteList.data = []
     this.dsItemList.data = []
+    this.HandOverNoteList = []
     this._NursingStationService.myform.get('TemplateName').setValue('')
   }
   ///Template note list
     getTemplateNoteList() {
-      this._NursingStationService.getNursingNoteCombo().subscribe(data => {
+      var vdata={
+        "category": "NursNote"
+      }
+      this._NursingStationService.getNursingNoteCombo(vdata).subscribe(data => {
         this.TemplateNoteList = data;
         console.log(this.TemplateNoteList)
         this.TemplateListfilteredOptions = this._NursingStationService.myform.get('TemplateName').valueChanges.pipe(
@@ -236,14 +241,14 @@ export class NursingnoteComponent implements OnInit {
     } 
     private _filterTemp(value: any): string[] {
       if (value) {
-        const filterValue = value && value.NursTempName ? value.NursTempName.toLowerCase() : value.toLowerCase();
-        return this.TemplateNoteList.filter(option => option.NursTempName.toLowerCase().includes(filterValue));
+        const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+        return this.TemplateNoteList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
       }
     }
     getOptionTextTemplateName(option) { 
       if (!option)
         return '';
-      return option.NursTempName;
+      return option.TemplateName;
     }
     getSelectedObjTemplateName(obj) {
       console.log(obj)
@@ -283,7 +288,7 @@ export class NursingnoteComponent implements OnInit {
     return;
   }
   if(this._NursingStationService.myform.get('TemplateName').value){
-    if(!this.TemplateNoteList.some(item=> item.NursTempName == this._NursingStationService.myform.get('TemplateName').value.NursTempName)){
+    if(!this.TemplateNoteList.some(item=> item.TemplateName == this._NursingStationService.myform.get('TemplateName').value.TemplateName)){
       this.toastr.warning('Please select valid Note', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -429,14 +434,21 @@ export class NursingnoteComponent implements OnInit {
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
      this.dateTimeObj = dateTimeObj;
-  } 
-  onClear() {
-    this._NursingStationService.myform.reset();
-  } 
+  }  
   onClose() {
-    this._NursingStationService.myform.reset();
+    //this._NursingStationService.myform.reset();
     this._matDialog.closeAll();
-    this.onClearPatientInfo(); 
+    //this.onClearPatientInfo(); 
+    this._NursingStationService.myform.get('TemplateName').setValue('')
+    this._NursingStationService.myform.get('Description').setValue('')
+    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
+    this.dsHandOverNoteList.data = [];
+    this.HandOverNoteList = []
   } 
   doseList:any=[];
   filteredOptionsItem:any;
@@ -688,7 +700,7 @@ export class NursingnoteComponent implements OnInit {
       });  
   }
   OnHandOverEdit(row) {
-    console.log(row)
+    console.log(row)  
     var m_data = {
       "HandOverType": row.ShiftInfo,
       "staffName": row.PatHand_I,
@@ -696,7 +708,7 @@ export class NursingnoteComponent implements OnInit {
       "Instruction": row.PatHand_R,
       "Stable":row.PatHand_S,
       "Assessment":row.PatHand_A,
-      "docHandId":row.DocHandId,
+      "PatHandId":row.PatHandId, 
       "Comments":row.Comments
     } 
     this._NursingStationService.HandOverNotepoppulateForm(m_data);
@@ -716,7 +728,7 @@ export class NursingnoteComponent implements OnInit {
     }
   
   this.isLoading = 'submit'; 
-  if(!this._NursingStationService.PatientHandOverForm.get('docHandId').value){  
+  if(!this._NursingStationService.PatientHandOverForm.get('PatHandId').value){  
     let saveTNursingPatientHandoverParam 
     this.dsHandOverNoteList.data.forEach(element=>{
       saveTNursingPatientHandoverParam={
@@ -759,7 +771,7 @@ export class NursingnoteComponent implements OnInit {
     let updateTNursingPatientHandoverParam 
     this.dsHandOverNoteList.data.forEach(element=>{
       updateTNursingPatientHandoverParam={
-        "patHandId": this._NursingStationService.PatientHandOverForm.get('docHandId').value,
+        "patHandId": this._NursingStationService.PatientHandOverForm.get('PatHandId').value,
         "admID": this.vAdmissionID,
         "tDate": element.VDate,
         "tTime": element.MTime,
@@ -813,7 +825,19 @@ export class NursingnoteComponent implements OnInit {
       this.dsHandOverNoteList.paginator = this.paginator
       console.log(this.dsHandOverNoteList.data); 
     });
-  } 
+  }
+  
+    NewTemplate() {
+      const dialogRef = this._matDialog.open(CreateTemplateComponent,
+        {
+          maxWidth: "75vw",
+          height: '85%',
+          width: '100%', 
+        });
+      dialogRef.afterClosed().subscribe(result => { 
+        this.getTemplateNoteList();
+      });
+    }
 }
  
 export class DocNote {

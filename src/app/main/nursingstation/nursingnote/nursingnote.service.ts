@@ -36,7 +36,7 @@ export class NursingnoteService {
       Instruction:[''],
       Stable:[''],
       Assessment:[''],
-      docHandId:[''],
+      PatHandId:[''],
       Comments:['']
     });
   }
@@ -70,8 +70,8 @@ export class NursingnoteService {
   public getAdmittedPatientList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
   }
-  public getNursingNoteCombo(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_NursingNotesTemplateMaterForCombo ", {})
+  public getNursingNoteCombo(param){//m_Rtrv_NursingNotesTemplateMaterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_TemplateMaterForCombo", param)
   }
   public getItemlist(Param, loader = true) {
     if (loader) {
