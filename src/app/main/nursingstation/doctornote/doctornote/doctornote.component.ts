@@ -15,6 +15,7 @@ import { fuseAnimations } from "@fuse/animations";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { element } from "protractor";
+import { CreateTemplateComponent } from "../create-template/create-template.component";
 
 
 
@@ -189,12 +190,17 @@ getSelectedObjRegIP(obj) {
   this.getHandOverNotelist(obj);
   this.dsDoctorNoteList.data = []
   this.dsHandOverNoteList.data = [] 
+  this.HandOverNoteList = []
   this._NursingStationService.myform.get('TemplateName').setValue('')
 }
 
 ///Template note list
-  getTemplateNoteList() {
-    this._NursingStationService.getDoctorNoteCombo().subscribe(data => {
+  getTemplateNoteList() { 
+    var vdata={
+      "category": "DoctorNote"
+    }
+    console.log(vdata)
+    this._NursingStationService.getDoctorNoteCombo(vdata).subscribe(data => {
       this.TemplateNoteList = data;
       console.log(this.TemplateNoteList)
       this.TemplateListfilteredOptions = this._NursingStationService.myform.get('TemplateName').valueChanges.pipe(
@@ -205,12 +211,12 @@ getSelectedObjRegIP(obj) {
   } 
   private _filterTemp(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DocsTempName ? value.DocsTempName.toLowerCase() : value.toLowerCase();
-      return this.TemplateNoteList.filter(option => option.DocsTempName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+      return this.TemplateNoteList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
     }
   }
   getOptionTextTemplateName(option) {
-    return option ? option.DocsTempName : option.DocsTempName
+    return option ? option.TemplateName : option.TemplateName
   }
   getSelectedObjTemplateName(obj) {
     console.log(obj)
@@ -229,7 +235,7 @@ getSelectedObjRegIP(obj) {
       return;
     }
     if(this._NursingStationService.myform.get('TemplateName').value){
-      if(!this.TemplateNoteList.some(item=> item.DocsTempName == this._NursingStationService.myform.get('TemplateName').value.DocsTempName)){
+      if(!this.TemplateNoteList.some(item=> item.TemplateName == this._NursingStationService.myform.get('TemplateName').value.TemplateName)){
         this.toastr.warning('Please select valid Note', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -382,14 +388,22 @@ getDoctorNotelist() {
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  } 
-  onClear() {
-    this._NursingStationService.myform.reset();
-  } 
+  }  
   onClose() {
-    this._NursingStationService.myform.reset();
+    debugger
+    // this._NursingStationService.myform.reset();
     this._matDialog.closeAll();
-    this.onClearPatientInfo();
+    //this.onClearPatientInfo();
+    this._NursingStationService.myform.get('TemplateName').setValue('')
+    this._NursingStationService.myform.get('Description').setValue('')
+    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+    this._NursingStationService.myform.get('HandOverType').setValue('Morning')
+    this.dsHandOverNoteList.data = [];
+    this.HandOverNoteList = [];
   }
   onClearPatientInfo() {
     this.vRegNo = '';
@@ -587,6 +601,17 @@ getHandOverNotelist(obj) {
     console.log(this.dsHandOverNoteList.data); 
   });
 }  
+  NewTemplate() {
+    const dialogRef = this._matDialog.open(CreateTemplateComponent,
+      {
+        maxWidth: "75vw",
+        height: '85%',
+        width: '100%', 
+      });
+    dialogRef.afterClosed().subscribe(result => { 
+      this.getTemplateNoteList();
+    });
+  }
 }
 export class DocNote {
 

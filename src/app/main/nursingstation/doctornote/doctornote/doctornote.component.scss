@@ -6,3 +6,78 @@
     overflow: hidden !important;
    justify-content:left; 
   }
+
+  @import "src/@fuse/scss/fuse";
+
+.perm-identity {
+    font-size: 30px;
+}
+
+.perm-identity .mat-badge-content{
+    background: #cc583d !important;
+}
+
+.airline_seat_flat .mat-badge-content{
+    background: #e89b4c !important;
+}
+
+.business .mat-badge-content{
+    background: #e84cdc !important;
+}
+
+.airline_seat_flat_angled .mat-badge-content{
+    background: #64d635 !important;
+}
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    height: 100%;
+    
+    .mat-form-field {
+        margin-right: 12px;
+      }
+
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background-color: white;    
+            
+        @include media-breakpoint(gt-sm) {
+            //prasad
+            // padding: 24px 4px 24px 24px;
+            padding: 12px 0 12px 12px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            flex: 0 1 auto;
+            padding: 0;
+            border-radius: 8px;
+
+            @include media-breakpoint(gt-sm) {
+                @include mat-elevation(1);
+            }
+
+            > .header {
+                flex: 0 1 auto;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            }
+
+            > .content {
+                flex: 0 1 auto;
+            }
+
+            // .mat-form-field-wrapper {
+            //     padding-bottom: 0.34375em;
+            // }
+        }
+
+       
+
+
+    }
+}
+

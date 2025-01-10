@@ -157,7 +157,7 @@
                             <mat-tab label="Nursing Note">
                                 <div class="content p-12 pb-56">
                                     <div fxLayout="row" fxLayoutGap="10px">
-                                        <div fxFlex.gt-sm="60%" fxFlex>
+                                        <div fxFlex.gt-sm="50%" fxFlex>
                                             <mat-card style="padding: 5px;">
                                                 <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
                                                     [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
@@ -230,7 +230,7 @@
                                             </mat-card>
                                         </div>
     
-                                        <div fxFlex.gt-sm="40%" fxFlex>
+                                        <div fxFlex.gt-sm="50%" fxFlex>
     
                                             <div fxLayout="column" fxLayoutGap="10px">
                                                 <mat-card style="padding: 5px;height: 358px;overflow: auto;">
@@ -256,7 +256,7 @@
                                                                 <mat-option
                                                                     *ngFor="let option of TemplateListfilteredOptions | async"
                                                                     [value]="option">
-                                                                    {{option.NursTempName}}
+                                                                    {{option.TemplateName}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
@@ -286,7 +286,7 @@
                                                     </div>
                                                 </mat-card>
                                                 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
-                                                    <button class="btn btn-primary-outline" type="button" value="Input">New
+                                                    <button class="btn btn-primary-outline" type="button" value="Input" (click)="NewTemplate()">New
                                                         Template</button>
                                                     <button class="btn btn-danger-outline" type="button" value="Input"
                                                         (click)="onClose()">Reset</button>
@@ -561,7 +561,7 @@
 
                                         <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                                             <form [formGroup]="_NursingStationService.PatientHandOverForm">
-                                                <input name="docHandId" formControlName="docHandId" type="hidden">
+                                                <input name="PatHandId" formControlName="PatHandId" type="hidden">
                                                 <div fxLayout="row" fxLayoutGap="20px">
                                                     <span style="font-size:40px;padding: 10px 10px 0 0;">I</span>
                                              
@@ -596,11 +596,16 @@
                                                             [(ngModel)]="VAssessment"></textarea>
                                                     </mat-form-field> 
 
+
+                                                    <span style="font-size:40px;padding: 15px"></span>
+
+                                                   
+
                                                 
-                                                    <div fxLayout="column" fxLayoutGap="10px"  style="padding-left: 45px;">
-                                                        <mat-form-field appearance="outline" style="width: 300px;">
-                                                            <mat-label>Comment</mat-label>
-                                                            <input  matInput name="Comments" formControlName="Comments"  >
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <mat-form-field appearance="outline" fxFlex="31%">
+                                                        <mat-label>Comment</mat-label>
+                                                        <input  matInput name="Comments" formControlName="Comments"  >
                                                         </mat-form-field> 
 
                                                         <div fxLayout="row" fxLayoutGap="10px" style="padding: 10px;">
@@ -686,7 +691,7 @@
                                                             fxHide fxShow.gt-sm>
                                                             Comments </mat-header-cell>
                                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.Comments}} </mat-cell>
+                                                            {{element.Comments || '-'}} </mat-cell>
                                                     </ng-container>
 
                                                     <ng-container matColumnDef="CreatedBy">

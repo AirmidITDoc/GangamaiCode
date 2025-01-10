@@ -8,11 +8,14 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class DoctornoteService {
   myform: FormGroup;
+  Templateform: FormGroup;
+
   constructor(public _httpClient: HttpClient,
     public _formBuilder: FormBuilder,
     private _loaderService:LoaderService
   ) {
       this.myform = this.createtemplateForm();
+      this.Templateform=this.createnewtemplateForm();
      }
 
      createtemplateForm(): FormGroup {
@@ -30,6 +33,16 @@ export class DoctornoteService {
       docHandId:['']
       });
     }
+    createnewtemplateForm(): FormGroup {
+      return this._formBuilder.group({
+        TemplateId:[''],
+        TemplateName:[''],
+        TemplateDesc:[''],
+        IsDeleted:[true],
+        Category:['NursNote']
+          });
+    }
+
   
   public DoctorNoteInsert(employee, loader = true) {
     if (loader) {
@@ -56,8 +69,8 @@ export class DoctornoteService {
     return this._httpClient.post("Nursing/UpdateTDoctorPatientHandover", employee)
   }
 
-  public getDoctorNoteCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorNotesTemplateMaterForCombo", {})
+  public getDoctorNoteCombo(param) {//m_Rtrv_DoctorNotesTemplateMaterForCombo
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_TemplateMaterForCombo", param)
   }
   public getWardNameList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_WardClassMasterForCombo", {})
@@ -78,6 +91,19 @@ export class DoctornoteService {
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_Doctor_PatientHandoverList ", employee)
   }
+  public insertTemplateMaster(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Nursing/SaveMTemplateMaster", employee)
+  }
+  public updateTemplateMaster(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Nursing/UpdateMTemplateMaster", employee)
+  }
+
 
 
   DoctorNotepoppulateForm(param){

@@ -1,0 +1,69 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                New Template
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
+
+                    <form [formGroup]="_NursingStationService.Templateform">
+                        <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="8px">
+
+                            <div  fxLayout="row" fxLayoutGap="10px">
+                                <input type="hidden" name="TemplateId" formControlName="TemplateId"
+                                    [(ngModel)]="vTemplateId">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Template Name</mat-label>
+                                    <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
+                                        name="TemplateName" formControlName="TemplateName" required>
+                                    <mat-error>Please enter TestName </mat-error>
+                                </mat-form-field>
+
+                                <div  fxLayout="column" fxLayout.gt-xs="row">
+                                    <mat-radio-group formControlName="Category" name="Category" style="padding: 15px;" value="NursNote">
+                                        <mat-label>Category :</mat-label>&nbsp;
+                                        <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
+                                        <mat-radio-button value="DoctorNote">DoctorNote</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+
+                            <mat-card style="padding: 5px;">
+                                <mat-label>Template Details</mat-label>
+                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                    [(ngModel)]="vTemplateDesc" required
+                                    formControlName="TemplateDesc"></angular-editor>
+                            </mat-card>
+
+                            <mat-checkbox value='true' [checked]="true" name="IsDeleted"
+                                formControlName="IsDeleted">IsActive</mat-checkbox>
+                        </div>
+                    </form>
+
+                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

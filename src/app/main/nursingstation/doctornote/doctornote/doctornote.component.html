@@ -164,7 +164,7 @@
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                                                     <div fxLayout="row" fxLayoutGap="10px">
-                                                        <div fxFlex.gt-sm="60%" fxFlex>
+                                                        <div fxFlex.gt-sm="50%" fxFlex>
                                                             <mat-card style="padding: 5px;">
                                                                 <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
@@ -201,10 +201,10 @@
 
                                                                     <ng-container matColumnDef="Action">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-70"> 
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
                                                                             Action </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm class="w-100">
+                                                                            fxShow.gt-sm class="w-80">
                                                                             <button mat-icon-button matTooltip="Edit"
                                                                             (click)="OnEdit(element)">
                                                                                 <mat-icon>edit</mat-icon>
@@ -246,7 +246,7 @@
                                                                 </mat-paginator>
                                                             </mat-card>
                                                         </div>
-                                                        <div fxFlex.gt-sm="40%" fxFlex>
+                                                        <div fxFlex.gt-sm="50%" fxFlex>
 
                                                             <div fxLayout="column" fxLayoutGap="10px">
                                                                 <mat-card
@@ -274,7 +274,7 @@
                                                                                 <mat-option
                                                                                     *ngFor="let option of TemplateListfilteredOptions | async"
                                                                                     [value]="option">
-                                                                                    {{option.DocsTempName}}
+                                                                                    {{option.TemplateName}}
                                                                                 </mat-option>
                                                                             </mat-autocomplete>
                                                                         </mat-form-field>
@@ -308,7 +308,7 @@
 
                                                                 <div fxLayout="row" fxLayoutAlign="end"
                                                                     fxLayoutGap="6px">
-                                                                    <button class="btn btn-primary-outline">New
+                                                                    <button class="btn btn-primary-outline" (click)="NewTemplate()">New
                                                                         Template</button>
                                                                     <button
                                                                         class="btn btn-danger-outline" (click)="onClose()">Reset</button>
@@ -424,7 +424,7 @@
                                                             [dataSource]="dsHandOverNoteList"
                                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                                            <ng-container matColumnDef="Date">
+                                                            <ng-container matColumnDef="Date" sticky>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxHide fxShow.gt-sm class="w-180">
                                                                     DateTime </mat-header-cell>
@@ -488,7 +488,7 @@
                                                                     {{element.CreatedBy}} </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="Action">
+                                                            <ng-container matColumnDef="Action" stickyEnd>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxHide fxShow.gt-sm class="w-70">
                                                                     Action </mat-header-cell>
