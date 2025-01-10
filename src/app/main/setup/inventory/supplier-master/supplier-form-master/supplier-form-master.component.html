@@ -6,13 +6,10 @@
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Supplier Master</span>
             </div>
             <div class="modal-header-right">
-
                 <div fxLayout="row" fxLayoutALign="end start">
-
                     <button mat-icon-button (click)="onClose()" aria-label="Close dialog">
                         <mat-icon>close</mat-icon>
                     </button>
-
                 </div>
             </div>
         </div>
@@ -290,6 +287,7 @@
                     
                 </div>
             </mat-card>
+          
             <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
                 <input matInput [matDatepicker]="picker2"  placeholder="Choose a Date" name="Date"
                     formControlName="supplierTime">

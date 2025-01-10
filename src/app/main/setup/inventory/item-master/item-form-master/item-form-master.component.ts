@@ -51,6 +51,7 @@ export class ItemFormMasterComponent implements OnInit {
     ) { }
     @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
     ItemId:any=0;
+
     ngOnInit(): void {
         this.itemForm=this._itemService.createItemmasterForm();
 
@@ -185,7 +186,7 @@ export class ItemFormMasterComponent implements OnInit {
                 ],
                 itemShortName:[
                     // { name: "required", Message: "Item Name is required" },
-                    // { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
+                    { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Special char not allowed." }
                 ],
                 

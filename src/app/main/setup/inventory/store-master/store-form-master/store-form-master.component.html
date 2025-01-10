@@ -34,16 +34,16 @@
                                     <input type="hidden" name="storeId" formControlName="storeId">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Store Short Name" formControlName="storeShortName"
-                                                [value]="registerObj?.storeShortName" [formGroup]="storeForm"
-                                                [validations]="getValidationMessages().storeShortName" [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Store Name" formControlName="storeName"
                                                 [value]="registerObj?.storeName" [formGroup]="storeForm"
                                                 [validations]="getValidationMessages().storeName" [maxLength]="50">
+                                            </airmid-textbox>
+                                        </div>
+                                        
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Store Short Name" formControlName="storeShortName"
+                                                [value]="registerObj?.storeShortName" [formGroup]="storeForm"
+                                                [validations]="getValidationMessages().storeShortName" [maxLength]="50">
                                             </airmid-textbox>
                                         </div>
                                     </div>

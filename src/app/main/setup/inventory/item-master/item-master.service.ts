@@ -1,4 +1,3 @@
-
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -30,14 +29,19 @@ export class ItemMasterService {
             IsDeletedSearch: ["2"],
         });
     }
-
     
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
              
             // as per payload list (insert)
                 itemId: 0,
-                itemShortName: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                itemShortName: ["", 
+                    [
+                        // Validators.required, 
+                        Validators.maxLength(50),
+                        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    ] 
+                ],
                 itemName: ["",
                     [
                         // Validators.required, 
@@ -176,19 +180,7 @@ export class ItemMasterService {
                         itemId: 0
                     }
                 ]
-                // mAssignItemToStores: 
-                // [
-                    // {
-                    //     assignId: [""],
-                    //     storeId: ["",
-                            // [
-                                // Validators.required,
-                            // ] 
-                    //     ],
-                    //     itemId: [""]
-                    // },
-                // ],
-                // mAssignItemToStores: ["", Validators.required],
+              
         });
     }
 
