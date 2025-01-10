@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NewBillRaiseComponent } from './new-bill-raise/new-bill-raise.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -20,7 +20,7 @@ import { CustomerPaymentAmtViewComponent } from './customer-payment-amt-view/cus
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class CustomerBillRaiseComponent implements AfterViewInit {
+export class CustomerBillRaiseComponent implements OnInit {
   displayedDueColumns: string[] = [
     'Type',
     'InvoiceDate',
@@ -76,8 +76,7 @@ export class CustomerBillRaiseComponent implements AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  // @ViewChild(MatPaginator) paginator2: MatPaginator;
-  @ViewChild(MatPaginator) paginator2!: MatPaginator;
+  @ViewChild(MatPaginator) paginator2: MatPaginator;
   
   constructor(
     public _CustomerBill: CustomerBillRaiseService,
@@ -177,51 +176,26 @@ export class CustomerBillRaiseComponent implements AfterViewInit {
   resultsLength2=0;
   pageSize2 = 15;
 
-  ngAfterViewInit() {
-    this.dsPaymentDaySummary.paginator = this.paginator2;
+  onPageSizeChange(event: any) {
+    this.pageSize2 = event.pageSize; 
+    this.paginator2.pageIndex = 0;
     this.getCustomerPaymentDaySummary();
   }
 
-  onPageSizeChange(event: any) {
-    this.pageSize2 = event.pageSize; 
-    const pageIndex = event.pageIndex || 0;
-    this.getCustomerPaymentDaySummary(pageIndex);
-  }
-
-  getCustomerPaymentDaySummary(pageIndex: number = 0) {
+  getCustomerPaymentDaySummary() {
     debugger
-    // var D_data = {
-    //   "FromDate": this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-    //   "ToDate ": this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-    //   "CustomerName": this._CustomerBill.myform.get("CustomerNameSearch").value + '%' || '%',
-    //   "TranType": this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
-    //   "Start": this.paginator?.pageIndex ?? 0,
-    //   "Length": this.paginator?.pageSize ?? 5,
-    // };
-    // console.log(D_data)
-    // this._CustomerBill.getCustomerPaymentDaySummary(D_data).subscribe(data => {
-    //   console.log("API Response:", data);
-    //   this.dsPaymentDaySummary.data = data["Table1"] ?? [] as PaymentDaySummary[];
-    //   this.dsPaymentDaySummary.sort=this.sort;
-    //   this.resultsLength2 = data["Table"][0]["total_row"];
-    //   this.sIsLoading = '';
-    //   console.log("dsPaymentDaySummary:",this.dsPaymentDaySummary.data)
-    // },
-    //   error => {
-    //     this.isLoading = false;
-    //   });
-    
-    // const pageIndex = this.paginator2?.pageIndex ?? 0;
-    // this.paginator2.pageIndex = 0; 
-    const pageSize = this.pageSize2;
+  
+    // const pageSize = this.pageSize2;
 
     var m_data = {
       FromDate: this.datePipe.transform(this._CustomerBill.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
       ToDate: this.datePipe.transform(this._CustomerBill.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
       CustomerName:this._CustomerBill.myform.get("CustomerNameSearch").value + "%" || "%",
       TranType: this._CustomerBill.myform.get("IsAmcOrBill").value || 0,
-      Start: pageIndex * pageSize, 
-      Length: pageSize,                   
+      Start: (this.paginator2?.pageIndex ?? 0) * this.pageSize2,
+      Length: this.pageSize2,
+      // Start: (this.paginator2?.pageIndex ?? 0), 
+      // Length: (this.paginator2?.pageSize ?? 15),                   
   };
           console.log("paginator2:",m_data)
           this._CustomerBill.getCustomerPaymentDaySummary(m_data).subscribe((data) => {
