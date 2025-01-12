@@ -124,10 +124,18 @@
                                             [mode]="autocompleteModedepartment"
                                             (selectDdlObject)="selectChangedepartment($event)">
                                         </airmid-autocomplete>
+
+                                        <!-- <airmid-autocomplete label="Departmentid" formControlName="departmentId"
+                                        [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
+                                        [validations]="getValidationMessages().Departmentid"
+                                        ValueField="departmentId" TextField="departmentName"
+                                        (selectionChange)="onChangeDepartment($event)"
+                                        ApiUrl="DepartmentMaster/get-departments">
+                                    </airmid-autocomplete> -->
                                        
                                         <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
-                                            [validations]="getValidationMessages().DoctorID"
+                                            [validations]="getValidationMessages().DoctorID" #ddldoctor
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-autocomplete>
                                     </div>

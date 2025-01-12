@@ -47,9 +47,12 @@ export class AppointmentListComponent implements OnInit {
     myformSearch:FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    fromDate = "01/01/2022"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-    toDate = this.datePipe.transform(new Date(), "MM/dd/yyyy")
+    nowdate = new Date();
+    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
   
+    fromDate ="2024-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    
     DoctorId="0";
     autocompleteModedeptdoc: string = "ConDoctor";
   
@@ -192,11 +195,7 @@ export class AppointmentListComponent implements OnInit {
     ngOnInit(): void {
        
         this.myformSearch=this._AppointmentlistService.filterForm();
-             
-      
-        // this.myformSearch.get("fromDate").setValue(this.datePipe.transform(new Date(), "MM/dd/yyyy"))
-        // this.getVisitList();
-      
+           
     }
     onSave(row: any = null) {
 
@@ -251,7 +250,7 @@ export class AppointmentListComponent implements OnInit {
         // this.fname=this.myFilterform.get("FirstName").value
         // this.lname=this.myFilterform.get("LastName").value
         this.fromdate = this.gridConfig.filters[4].fieldValue,//this.myFilterform.get("startdate").value
-            this.todate = this.gridConfig.filters[5].fieldValue//this.myFilterform.get("enddate").value
+        this.todate = this.gridConfig.filters[5].fieldValue//this.myFilterform.get("enddate").value
         // this.RegNo=this.myFilterform.get("RegNo").value
         // this.DoctorId=this.myFilterform.get("DoctorId").value
         console.log(this.fromdate)
@@ -307,21 +306,20 @@ let param={
         "searchFields": [
               {
                 "fieldName": "FromDate",
-                "fieldValue": "10-01-2024",
+                "fieldValue": this.fromDate,
                 "opType": "13"
               },
           {
                 "fieldName": "ToDate",
-                "fieldValue": "12-12-2024",
+                "fieldValue": this.toDate,
                 "opType": "13"
               }
             ],
             "mode": "AppointmentListReport"
           }
     
-
+          console.log(param)
       this._AppointmentlistService.getPatientListView(param).subscribe(res => {
-        debugger
         console.log(res)
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -415,7 +413,7 @@ let param={
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
                 maxWidth: "65vw",
-                height: '60%',
+                height: '70%',
                 width: '80%',
                 data: row
             });
@@ -463,7 +461,7 @@ let param={
     EditOpBill(row) {
 
         let that = this;
-        const dialogRef = this._matDialog.open(OPBillingComponent,
+        const dialogRef = this._matDialog.open(NewOPBillingComponent,
             {
                 maxWidth: "99vw",
                 height: '95%',
@@ -512,35 +510,38 @@ let param={
     }
 
 
-    viewgetPatientAppointmentReportPdf(obj) {
-        var data = {
-            //     "searchFields": [
-            //       {
-            //         "fieldName": "FromDate",
-            //         "fieldValue": "11-11-2023",
-            //         "opType": "13"
-            //       },
-            //    {
-            //         "fieldName": "ToDate",
-            //         "fieldValue": "11-15-2023",
-            //         "opType": "13"
-            //       }
-            //     ],
-            //     "mode": "Registrationreport"
-            //   }
+    getAppointmentrview() {
+        // var data = {
+          
 
+        //     searchFields: [
+        //         { fieldName: "FromDate", fieldValue: "11/11/2023", opType: OperatorComparer.Equals },
+        //         { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
 
-            searchFields: [
-                { fieldName: "FromDate", fieldValue: "11/11/2023", opType: OperatorComparer.Equals },
-                { fieldName: "ToDate", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+        //     ],
+        //     "mode": "Registrationreport"
+        // }
 
-            ],
-            "mode": "Registrationreport"
-        }
-        console.log(data)
+        let param={
+      
+            "searchFields": [
+                  {
+                    "fieldName": "FromDate",
+                    "fieldValue": "10-01-2024",
+                    "opType": "13"
+                  },
+              {
+                    "fieldName": "ToDate",
+                    "fieldValue": "12-12-2024",
+                    "opType": "13"
+                  }
+                ],
+                "mode": "AppointmentListReport"
+              }
+        console.log(param)
         setTimeout(() => {
 
-            this._AppointmentlistService.getAppointmenttemplateReport(data
+            this._AppointmentlistService.getAppointmenttemplateReport(param
             ).subscribe(res => {
                 const dialogRef = this._matDialog.open(PdfviewerComponent,
                     {
@@ -558,8 +559,7 @@ let param={
             });
 
         }, 100);
-        // this.chkprint = false;
-
+       
     }
   
     selectChangedeptdoc(obj: any) {

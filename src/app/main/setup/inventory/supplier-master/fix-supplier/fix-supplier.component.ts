@@ -51,11 +51,7 @@ export class FixSupplierComponent implements OnInit
        ngOnInit(): void {
          this.supplierForm = this._supplierService.createSuppliermasterForm();
      
-         if (this.data) {
-           this.registerObj = this.data.registerObj;
-           console.log(this.registerObj);
-            
-           this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
+                 
          if (this.data.supplierId > 0) {
            
            this._supplierService.getsupplierId(this.data.supplierId).subscribe((response) => {
@@ -68,7 +64,7 @@ export class FixSupplierComponent implements OnInit
            });
        }
        }
-       }
+       
      
        removestore(item) {
          let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);

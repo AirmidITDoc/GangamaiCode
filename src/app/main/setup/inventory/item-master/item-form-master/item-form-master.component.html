@@ -8,10 +8,10 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
                                         <airmid-autocomplete 
                                             label="Item Type Name"
                                             formControlName="itemTypeId"
-                                            [value]="registerObj?.itemTypeID"
+                                            [value]="registerObj?.itemTypeId"
                                             [formGroup]="itemForm"
                                             [validations]="getValidationMessages().itemTypeId"
                                             [mode]="autocompleteModeItemType"
@@ -80,7 +80,7 @@
                                         <airmid-autocomplete 
                                             label="Item Category Name"
                                             formControlName="itemCategaryId"
-                                            [value]="registerObj?.itemCategoryId"
+                                            [value]="registerObj?.itemCategaryId"
                                             [formGroup]="itemForm"
                                             [validations]="getValidationMessages().itemCategaryId"
                                             [mode]="autocompleteModeItemCategory"
@@ -144,7 +144,7 @@
                                         <airmid-autocomplete 
                                             label="Stock Unit Of Measurement ID"
                                             formControlName="stockUomid"
-                                            [value]="registerObj?.stockUOM"
+                                            [value]="registerObj?.stockUomid"
                                             [formGroup]="itemForm"
                                             [validations]="getValidationMessages().stockUomid"
                                             [mode]="autocompleteModeStockUOM"

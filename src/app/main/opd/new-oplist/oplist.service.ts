@@ -77,4 +77,7 @@ public deactivateTheStatuspayment(m_data) {
   return this._httpClient.PostData("VisitDetail", m_data);
 }
 
+public getBilllistReport(Param: any, showLoader = true) {
+  return this._httpClient.PostData("Report/ViewReport",Param,showLoader);
+}
 }

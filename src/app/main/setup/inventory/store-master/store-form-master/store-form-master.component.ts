@@ -52,7 +52,7 @@ export class StoreFormMasterComponent implements OnInit {
 
         console.log(this.data)
         if (this.data) {
-            this.isActive = this.data.isActive
+            this.isActive =this.data.isActive
             this.storeForm.patchValue(this.data);
             this.Header = this.data.Header
             setTimeout(() => {

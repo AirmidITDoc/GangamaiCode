@@ -39,11 +39,11 @@ export class EditRefranceDoctorComponent implements OnInit {
 
   ngOnInit(): void {
     this.RefrancedrForm = this._AppointmentlistService.createRefranceDrForm();
-    if (this.data) {
-      console.log(this.data)
-      this.RegId = this.data.regId
-      this.VisitId = this.data.visitId
-    }
+    // if (this.data) {
+    //   console.log(this.data)
+    //   this.RegId = this.data.regId
+    //   this.VisitId = this.data.visitId
+    // }
 
     
     this.RefrancedrForm.patchValue(this.data);
@@ -54,7 +54,7 @@ export class EditRefranceDoctorComponent implements OnInit {
    
   getValidationMessages() {
     return {
-      DoctorID: [
+      refDocId: [
             { name: "required", Message: "Doctor Name is required" }
         ]
     };

@@ -112,7 +112,7 @@ export class RegistrationComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '75%',
+                height: '95%',
                 width: '90%',
 
             });
@@ -147,7 +147,7 @@ export class RegistrationComponent implements OnInit {
             NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '75%',
+                height: '95%',
                 width: '90%',
                 data: {
                     data1: row,
@@ -176,7 +176,7 @@ export class RegistrationComponent implements OnInit {
             
             if (result) {
                 this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
-                    //  this.msg = data
+                    
                     if (data.StatusCode == 200) {
                         this.toastr.success(
                             "Record updated Successfully.",
@@ -196,28 +196,27 @@ export class RegistrationComponent implements OnInit {
     getRegistrationCasepaperview() { 
 
     setTimeout(() => {
-
+      
 let param={
       
         "searchFields": [
               {
                 "fieldName": "FromDate",
-                "fieldValue": "10-01-2024",
+                "fieldValue": this.fromDate,//"10-01-2024",
                 "opType": "13"
               },
           {
                 "fieldName": "ToDate",
-                "fieldValue": "12-12-2024",
+                "fieldValue":this.toDate,//"12-12-2024",
                 "opType": "13"
               }
             ],
             "mode": "RegistrationReport"
           }
     
-
+          debugger
+          console.log(param)
       this._RegistrationService.getPatientListView(param).subscribe(res => {
-        debugger
-        console.log(res)
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",

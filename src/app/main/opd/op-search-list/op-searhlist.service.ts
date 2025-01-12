@@ -306,11 +306,9 @@ public getConcessionCombo()
     return this._httpClient.post("OPBill/OPBillingInsert", employee)
   }
 
- 
-  
-  // public InsertOPRefundBilling(employee) {
-  //   return this._httpClient.post("OutPatient/OPRefundBill", employee)
-  // }
+  public InsertOPBillingpayment(employee) {
+    return this._httpClient.post("Payment/PaymentInsert", employee)
+  }
 
  
   public InsertOPBillingCredit(Param: any, showLoader = true) {

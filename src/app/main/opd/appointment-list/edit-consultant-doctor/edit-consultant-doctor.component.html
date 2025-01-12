@@ -104,16 +104,19 @@
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                        <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="data.regId">
+
+                                        <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
                                         <airmid-autocomplete label="Departmentid" formControlName="Departmentid"
-                                            [formGroup]="ConsdrForm" [value]="data?.Departmentid"
+                                            [formGroup]="ConsdrForm" [value]="data?.departmentId"
                                             [validations]="getValidationMessages().Departmentid" 
                                              [mode]="autocompleteModedepartment">
                                         </airmid-autocomplete>
 
-                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
-                                            [formGroup]="ConsdrForm" [value]="data?.DoctorID"
-                                            [validations]="getValidationMessages().DoctorID"
+                                        <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
+                                            [formGroup]="ConsdrForm" [value]="data?.consultantDocId"
+                                            [validations]="getValidationMessages().consultantDocId"
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-autocomplete>
 

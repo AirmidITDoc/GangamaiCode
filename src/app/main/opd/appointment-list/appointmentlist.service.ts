@@ -49,6 +49,8 @@ createSearchForm(): FormGroup {
 
 createConsultatDrForm() {
   return this._formBuilder.group({
+    visitId:0,
+    regId:0,
     consultantDocId: '',
     departmentId: ''
   });
@@ -56,7 +58,9 @@ createConsultatDrForm() {
 
 createRefranceDrForm() {
   return this._formBuilder.group({
-    DoctorID: ['', [
+    visitId:0,
+    regId:0,
+    refDocId: ['', [
       Validators.required]],
    
   });
@@ -67,15 +71,7 @@ initializeFormGroup() {
   // this.createVisitdetailForm();
 }
 
-  getCrossConValidationMessages() {
-    return {
-      Departmentid: [
-            { name: "required", Message: "Patient Name is required" },
-            { name: "maxlength", Message: "Patient name should not be greater than 50 char." },
-            { name: "pattern", Message: "Special char not allowed." }
-        ]
-    };
-}
+ 
 public documentuploadInsert(employee, loader = true){
   if (loader) {
       this._loaderService.show();
@@ -115,25 +111,7 @@ public crossconsultSave(Param: any, showLoader = true) {
   } else return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
 }
 
-public getMaster(mode,Id) {
-  return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
-}
 
-getRegistrationValidationMessages() {
-      return {
-          patientName: [
-              { name: "required", Message: "Patient Name is required" },
-              { name: "maxlength", Message: "Patient name should not be greater than 50 char." },
-              { name: "pattern", Message: "Special char not allowed." }
-          ]
-      };
-  }
-
-  public getAppointmenttemplateReport(Param: any, showLoader = true) {
-    
-        return this._httpClient1.PutData("Report/ViewReport" +  Param, showLoader);
-    
-}
   
 
 
@@ -144,9 +122,7 @@ public getAppointmentList(employee) {
 }  
 
 public Appointmentcancle(employee, loader = true) {
-  // if (loader) {
-  //     this._loaderService.show();
-  // }
+
   return this._httpClient1.PostData("VisitDetail/Cancel", employee);
 }
 
@@ -161,6 +137,14 @@ public getPatientListView(mode){
   return this._httpClient1.PostData("Report/ViewReport",mode);
 
 }
+
+public getMaster(mode,Id) {
+  return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
+}
+
+  public getAppointmenttemplateReport(Param: any, showLoader = true) {
+    return this._httpClient1.PostData("Report/ViewReport",Param,showLoader);
+  }
 }
 
 //192.168.2.100:

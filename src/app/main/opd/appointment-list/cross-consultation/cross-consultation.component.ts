@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { VisitMaster } from '../../appointment/appointment.component';
 import { VisitMaster1 } from '../appointment-list.component';
+import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 
 
 @Component({
@@ -111,6 +112,10 @@ export class CrossConsultationComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
+   @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
+  onChangeDepartment(e) {
+    this.ddldoctor.SetSelection(e.doctorID);
+}
 
   getValidationMessages() {
     return {

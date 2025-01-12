@@ -10,6 +10,7 @@ import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.
 import { NewOPRefundofbillComponent } from '../op-search-list/new-oprefundofbill/new-oprefundofbill.component';
 import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -301,6 +302,47 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
         }
+    }
+
+
+    getBilllistview(){
+        let param={
+      
+            "searchFields": [
+                  {
+                    "fieldName": "FromDate",
+                    "fieldValue": "10-01-2024",
+                    "opType": "13"
+                  },
+              {
+                    "fieldName": "ToDate",
+                    "fieldValue": "12-12-2024",
+                    "opType": "13"
+                  }
+                ],
+                "mode": "OPDailyCollectionReport"
+              }
+        console.log(param)
+         setTimeout(() => {
+        
+                    this._OPListService.getBilllistReport(param
+                    ).subscribe(res => {
+                        const dialogRef = this._matDialog.open(PdfviewerComponent,
+                            {
+                                maxWidth: "85vw",
+                                height: '750px',
+                                width: '100%',
+                                data: {
+                                    base64: res["base64"] as string,
+                                    title: "OP Bill  Viewer"
+                                }
+                            });
+                        dialogRef.afterClosed().subscribe(result => {
+        
+                        });
+                    });
+        
+                }, 100);
     }
 }
 export class BrowseOPDBill {

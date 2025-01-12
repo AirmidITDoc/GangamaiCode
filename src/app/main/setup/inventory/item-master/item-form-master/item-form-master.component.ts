@@ -40,7 +40,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     vchkactive: any=true;
     grid: any;
-
+  
 
     constructor(
         public _itemService: ItemMasterService,
@@ -60,8 +60,9 @@ export class ItemFormMasterComponent implements OnInit {
  
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
               this.registerObj = response;
+              console.log(response)
               this.ItemId = this.registerObj.itemId 
-              
+              this.vchkactive=this.registerObj.isActive
               this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
     
             }, (error) => {

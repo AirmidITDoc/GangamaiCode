@@ -28,26 +28,17 @@ export class ItemMasterComponent implements OnInit {
             { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ItemTypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ItemShortName", key: "itemShortName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "ItemTypeID", key: "itemTypeID", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "ItemCategaryId", key: "itemCategaryId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "ItemClassId", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+           { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ItemClassName", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "ItemGenericNameId", key: "itemGenericNameId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ItemGenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "PurchaseUOMId", key: "purchaseUOMId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "PuchaseUOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "StockUOMId", key: "stockUOMId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "StockUOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "CurrencyId", key: "currencyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "CurrencyName", key: "currencyName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "TaxPer", key: "taxPer", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "MinQty", key: "minQty", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "MaxQty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            // { heading: "StoreId", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Cgst", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Sgst", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Igst", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
@@ -64,7 +55,7 @@ export class ItemMasterComponent implements OnInit {
             // { heading: "DrugTypeName", key: "drugTypeName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             // { heading: "ItemCompnayId", key: "itemCompnayId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -85,7 +76,7 @@ export class ItemMasterComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "StoreID", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
         ],
@@ -172,6 +163,10 @@ export class ItemMaster {
     itemCompnayId: any;
     position: any;
     mAssignItemToStores: any[];
+    isActive:any;
+
+    stockUomid:any;
+
 
     /**
      * Constructor
@@ -230,9 +225,10 @@ export class ItemMaster {
             this.drugType = ItemMaster.drugType || ""
             this.drugTypeName = ItemMaster.DrugTypeName || ""
             this.itemCompnayId = ItemMaster.itemCompnayId || 0
-
+            this.isActive=ItemMaster.isActiuve || true;
             this.mAssignItemToStores = ItemMaster.mAssignItemToStores || [];
 
+            this.stockUomid=ItemMaster.stockUomid ||0
         }
     }
 }

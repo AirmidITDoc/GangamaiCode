@@ -195,11 +195,11 @@ export class NewAppointmentComponent implements OnInit {
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
-        this.personalFormGroup.markAsUntouched();
+        // this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
-        this.VisitFormGroup.markAsUntouched();
+        // this.VisitFormGroup.markAsUntouched();
         this.searchFormGroup = this.createSearchForm();
-        this.searchFormGroup.markAsUntouched();
+        // this.searchFormGroup.markAsUntouched();
 
        
         if (this.data)
@@ -365,7 +365,7 @@ export class NewAppointmentComponent implements OnInit {
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
             PinNo: [''],
-       
+            IsHealthCard:0
 
         });
 
@@ -807,6 +807,7 @@ export class NewAppointmentComponent implements OnInit {
             "visit":this.VisitFormGroup.value
         };
         console.log(submitData);
+        debugger
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

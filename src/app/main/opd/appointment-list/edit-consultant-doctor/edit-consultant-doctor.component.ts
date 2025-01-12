@@ -19,82 +19,83 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   ConsdrForm: FormGroup;
 
-  VisitId:any=0;
-  RegId:any=0;
-  Departmentid=0;
-  DoctorID=0;
+  VisitId: any = 0;
+  RegId: any = 0;
+  Departmentid = 0;
+  DoctorID = 0;
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
 
 
   constructor(
-      public _AppointmentlistService: AppointmentlistService,
-      public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public datePipe: DatePipe,
-      public toastr: ToastrService
+    public _AppointmentlistService: AppointmentlistService,
+    public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public datePipe: DatePipe,
+    public toastr: ToastrService
   ) { }
- 
+
   ngOnInit(): void {
-      this.ConsdrForm = this._AppointmentlistService.createConsultatDrForm();
-    
-      if(this.data){
-        this.RegId=this.data.regId
-        this.VisitId=this.data.visitId
-        this.ConsdrForm.patchValue(this.data);
-            }
+    this.ConsdrForm = this._AppointmentlistService.createConsultatDrForm();
 
-        }
+    // if (this.data) {
+    //   console.log(this.data)
 
+    //   this.RegId = this.data.regId
+    //   this.VisitId = this.data.visitId
+    //   this.ConsdrForm.patchValue(this.data);
+    // }
+
+  }
 
 
   getValidationMessages() {
     return {
       Departmentid: [
-            { name: "required", Message: "Department Name is required" }
-        ],
-        DoctorID: [
-          { name: "required", Message: "Doctor Name is required" }
+        { name: "required", Message: "Department Name is required" }
+      ],
+      consultantDocId: [
+        { name: "required", Message: "Doctor Name is required" }
       ]
     };
   }
- 
+
   onSubmit() {
-      if (this.ConsdrForm.valid) {
-       
-        console.log(this.ConsdrForm.value)
-          this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
+    if (this.ConsdrForm.valid) {
+
+      console.log(this.ConsdrForm.value)
+      this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    }
   }
 
- 
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-      this.dateTimeObj = dateTimeObj;
+    this.dateTimeObj = dateTimeObj;
   }
 
 
   onClear(val: boolean) {
-      this.ConsdrForm.reset();
-      this.dialogRef.close(val);
+    this.ConsdrForm.reset();
+    this.dialogRef.close(val);
   }
 
-  onClose(){
+  onClose() {
     this.dialogRef.close();
   }
 
-  selectChangedepartment(obj: any){
+  selectChangedepartment(obj: any) {
     console.log(obj);
-  
+
   }
-  
-  selectChangedeptdoc(obj: any){
+
+  selectChangedeptdoc(obj: any) {
     console.log(obj);
-  
+
   }
 }

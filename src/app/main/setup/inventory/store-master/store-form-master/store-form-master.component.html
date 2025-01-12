@@ -6,10 +6,10 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -225,7 +225,7 @@
                                 </mat-radio-button>
                             </mat-radio-group> -->
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="storeForm"
-                        [(ngModel)]="isActive"></app-airmid-slider>
+                        [value]="isActive"></app-airmid-slider>
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                     <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
                         <span>Save</span>

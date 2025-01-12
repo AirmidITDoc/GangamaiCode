@@ -22,28 +22,30 @@ export class NewRegistrationComponent implements OnInit {
 
 
     personalFormGroup: FormGroup;
+    searchFormGroup: FormGroup;
+   
+    screenFromString = 'registration';
     registerObj = new RegInsert({});
-
+    now = Date.now();
 
     submitted = false;
-    now = Date.now();
-    searchFormGroup: FormGroup;
     isRegSearchDisabled: boolean = true;
+    Submitflag: boolean = false;
+    
+   
     newRegSelected: any = 'registration';
     minDate: Date;
     msg: any = [];
     AgeYear: any;
     AgeMonth: any;
     AgeDay: any;
-
-    Submitflag: boolean = false;
-    screenFromString = 'registration';
     matDialogRef: any;
     RegID: number = 0;
+   
+   
+   
     ApiUrl1 = 'Prefix/get-prefixs'
-    // prefixId=0;
-    // prefixName='';
-
+    
     // New Api
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -89,26 +91,10 @@ export class NewRegistrationComponent implements OnInit {
 
         }
     }
-    get f() {
-        return this.personalFormGroup.controls;
-    }
-    onChangePrefix(e) {
-        
-        this.ddlGender.SetSelection(e.sexId);
-    }
-
-    onChangestate(e) {
-        this.ddlCountry.SetSelection(e.stateId);
-    }
-
-    onChangecity(e) {
-        this.ddlState.SetSelection(e.cityId);
-        this.ddlCountry.SetSelection(e.stateId);
-    }
-
-    
+  
     OnSubmit() {
         console.log(this.personalFormGroup.value)
+        debugger
         // if (this.personalFormGroup.valid) {
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.toastr.success(response.message);
@@ -145,73 +131,91 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-    @ViewChild('fname') fname: ElementRef;
-    @ViewChild('mname') mname: ElementRef;
-    @ViewChild('lname') lname: ElementRef;
-    @ViewChild('bday') bday: ElementRef;
-    @ViewChild('agey') agey: ElementRef;
-    @ViewChild('agem') agem: ElementRef;
-    @ViewChild('aged') aged: ElementRef;
-    @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
-    @ViewChild('address') address: ElementRef;
-    @ViewChild('mobile') mobile: ElementRef;
-    @ViewChild('phone') phone: ElementRef;
-    public onEnterfname(event): void {
-        if (event.which === 13) {
-            this.fname.nativeElement.focus();
-        }
+    // @ViewChild('fname') fname: ElementRef;
+    // @ViewChild('mname') mname: ElementRef;
+    // @ViewChild('lname') lname: ElementRef;
+    // @ViewChild('bday') bday: ElementRef;
+    // @ViewChild('agey') agey: ElementRef;
+    // @ViewChild('agem') agem: ElementRef;
+    // @ViewChild('aged') aged: ElementRef;
+    // @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
+    // @ViewChild('address') address: ElementRef;
+    // @ViewChild('mobile') mobile: ElementRef;
+    // @ViewChild('phone') phone: ElementRef;
+    // public onEnterfname(event): void {
+    //     if (event.which === 13) {
+    //         this.fname.nativeElement.focus();
+    //     }
+    // }
+    // public onEntermname(event): void {
+    //     if (event.which === 13) {
+    //         this.mname.nativeElement.focus();
+    //     }
+    // }
+    // public onEnterlname(event): void {
+    //     if (event.which === 13) {
+    //         this.lname.nativeElement.focus();
+    //     }
+    // }
+    // public onEnterbday(event): void {
+    //     if (event.which === 13) {
+    //         this.bday.nativeElement.focus();
+    //     }
+    // }
+    // public onEnteragey(event): void {
+    //     if (event.which === 13) {
+    //         this.agem.nativeElement.focus();
+    //     }
+    // }
+    // public onEnteragem(event): void {
+    //     if (event.which === 13) {
+    //         this.aged.nativeElement.focus();
+    //     }
+    // }
+    // public onEnteraged(event): void {
+    //     if (event.which === 13) {
+    //         this.AadharCardNo.nativeElement.focus();
+    //     }
+    // }
+    // public onEnterAadharCardNo(event): void {
+    //     if (event.which === 13) {
+    //         this.AadharCardNo.nativeElement.focus();
+    //     }
+    // }
+    // public onEnteraddress(event): void {
+    //     if (event.which === 13) {
+    //         this.address.nativeElement.focus();
+    //     }
+    // }
+    // public onEntermobile(event): void {
+    //     if (event.which === 13) {
+    //         this.mobile.nativeElement.focus();
+    //     }
+    // }
+    // public onEnterphone(event): void {
+    //     if (event.which === 13) {
+    //         this.phone.nativeElement.focus();
+    //     }
+    // }
+
+    get f() {
+        return this.personalFormGroup.controls;
     }
-    public onEntermname(event): void {
-        if (event.which === 13) {
-            this.mname.nativeElement.focus();
-        }
-    }
-    public onEnterlname(event): void {
-        if (event.which === 13) {
-            this.lname.nativeElement.focus();
-        }
-    }
-    public onEnterbday(event): void {
-        if (event.which === 13) {
-            this.bday.nativeElement.focus();
-        }
-    }
-    public onEnteragey(event): void {
-        if (event.which === 13) {
-            this.agem.nativeElement.focus();
-        }
-    }
-    public onEnteragem(event): void {
-        if (event.which === 13) {
-            this.aged.nativeElement.focus();
-        }
-    }
-    public onEnteraged(event): void {
-        if (event.which === 13) {
-            this.AadharCardNo.nativeElement.focus();
-        }
-    }
-    public onEnterAadharCardNo(event): void {
-        if (event.which === 13) {
-            this.AadharCardNo.nativeElement.focus();
-        }
-    }
-    public onEnteraddress(event): void {
-        if (event.which === 13) {
-            this.address.nativeElement.focus();
-        }
-    }
-    public onEntermobile(event): void {
-        if (event.which === 13) {
-            this.mobile.nativeElement.focus();
-        }
-    }
-    public onEnterphone(event): void {
-        if (event.which === 13) {
-            this.phone.nativeElement.focus();
-        }
+    onChangePrefix(e) {
+        
+        this.ddlGender.SetSelection(e.sexId);
     }
 
+    onChangestate(e) {
+        this.ddlCountry.SetSelection(e.stateId);
+    }
+
+    onChangecity(e) {
+        this.ddlState.SetSelection(e.cityId);
+        this.ddlCountry.SetSelection(e.stateId);
+    }
+
+    
     getValidationMessages() {
         return {
             firstName: [

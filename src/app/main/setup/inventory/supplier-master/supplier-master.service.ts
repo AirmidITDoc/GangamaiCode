@@ -67,15 +67,15 @@ export class SupplierMasterService {
             address: ["", 
                 // Validators.required
             ],
-            cityId: ["", 
+            cityId: [0, 
                 // Validators.required
             ],
             // CityName: [""],
-            stateId: ["", 
+            stateId: [0, 
                 // Validators.required
             ],
             // StateName: [""],
-            countryId: [""],
+            countryId: [0],
             // CountryName: [""],
             CreditPeriod: ["",
                 // [
