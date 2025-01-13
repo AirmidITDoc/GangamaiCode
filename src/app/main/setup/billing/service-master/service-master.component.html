@@ -28,44 +28,88 @@
     <div class="content">
 
         <!-- SIDEBAR -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <!-- SIDEBAR HEADER -->
+            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center">
+                <span class="h5">Search Facility</span>
+                <!-- / USER -->
+            </div>
+            <!-- / SIDEBAR HEADER -->
+            <!-- SIDEBAR CONTENT -->
+            <div class="nav material2">
+                <form [formGroup]="_serviceMasterService.myformSearch">
+                    <div fxLayout="column" fxLayoutAlign="start none">  
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <input matInput placeholder="Search Service Name"  (keyup)="onSearch()" autocomplete="off"
+                                name="ServiceNameSearch" formControlName="ServiceNameSearch" />
+                            <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                                (click)="onSearchClear()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field> 
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Tariff Name</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select Group" matInput
+                              formControlName="TariffId" [matAutocomplete]="autoTariffId" #TariffId >
+                            <span matSuffix style="display: flex;">
+                              <mat-icon class="mat-icon-close"
+                                (click)="onSearchClear()">close</mat-icon>
+                              <mat-icon class="mat-icon-close"
+                                (click)="_serviceMasterService.myformSearch.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoTariffId="matAutocomplete" [displayWith]="getOptionTextTariff">
+                              <mat-option *ngFor="let option of filteredTariff | async" [value]="option">
+                                {{option.TariffName}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Group Name</mat-label>
+                            <input matAutocompletePosition="below" type="text" placeholder="Select Group" matInput
+                              formControlName="GroupId" [matAutocomplete]="autoGroupId" #GroupId  >
+                            <span matSuffix style="display: flex;">
+                              <mat-icon class="mat-icon-close"
+                                (click)="onSearchClear()">close</mat-icon>
+                              <mat-icon class="mat-icon-close"
+                                (click)="_serviceMasterService.myformSearch.get('GroupId').setValue(''); isGroupIdSelected = false;">search</mat-icon>
+                            </span>
+                            <mat-autocomplete #autoGroupId="matAutocomplete" [displayWith]="getOptionTextgroupid">
+                              <mat-option *ngFor="let option of filteredGroupname | async" [value]="option">
+                                {{option.GroupName}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+
+                        <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                        fxLayoutAlign="center center" style="padding: 10px 0px 10px 0px;" (change)="onSearch()">
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                       </mat-radio-group>
+
+                        <div class="action-buttons">
+                            <button mat-raised-button (click)="onSearchClear()" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>
+                            <button mat-raised-button (click)="onSearch()" matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fuse-sidebar>
         <!-- / SIDEBAR -->
 
         <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
+        <div class="center p-12 pb-56" fusePerfectScrollbar>
             <!-- CONTENT -->
-            <div class="content-card">
-
-
+            <div class="content-card"> 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card style="padding: 8px;">
-                        <div fxlayout="row"fxLayoutGap="3px">
-                            <form [formGroup]="_serviceMasterService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Service Name"  (keyup)="onSearch()" autocomplete="off"
-                                            name="ServiceNameSearch" formControlName="ServiceNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
-
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
-                                        fxLayoutAlign="center center">
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                        <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                        <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                    </mat-radio-group>
-
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button>
-                                </div>
-                            </form>
-                        </div>  
-
+                    <div fxFlex.gt-sm="100%" fxFlex> 
                         <div style="width: 100%;">
                             <mat-table #table matSort [dataSource]="DSServiceMasterList"
                                 [@animateStagger]="{value:'50'}" style="overflow:auto">  
@@ -126,7 +170,16 @@
                                         EmergencyAmt </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-120">
                                          {{element.EmgAmt | currency:"INR"}} </mat-cell>
-                                </ng-container>  
+                                </ng-container> 
+                                
+                                <ng-container matColumnDef="TariffName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
+                                        TariffName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-110"> 
+                                        {{element.TariffName}}
+                                    </mat-cell>
+                                </ng-container>
   
                                 <ng-container matColumnDef="IsEditable">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
@@ -208,7 +261,7 @@
                                     <mat-cell *matCellDef="let row" class="w-90">
                                         <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                 title="Edit Menu">edit</mat-icon></button>
-                                        <button mat-icon-button (click)="onDeactive(row.ServiceId)"
+                                        <button mat-icon-button (click)="onDeactive(row,row.ServiceId)"
                                             color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                     </mat-cell>
@@ -226,9 +279,9 @@
                                     </mat-footer-cell>
                                 </ng-container> 
 
-                                <mat-header-row class="accent min-width-1550"
+                                <mat-header-row class="accent min-width-1650"
                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-1550"
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-1650"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
                                 <mat-footer-row *matFooterRowDef="['loading']"
@@ -241,7 +294,7 @@
                         <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30" [length]="resultsLength"
                             showFirstLastButtons (page)="getServiceMasterList()">
                         </mat-paginator> 
-                    </mat-card>
+                   
                     </div> 
                 </div>
             </div> 

@@ -546,7 +546,7 @@
                                                             </mat-form-field> -->
                         
                                                             <div class="input-add-button">
-                                                                <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'">
+                                                                <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'" fxLayoutGap="10px" fxLayout="row">
                                                                     <button #addbutton class="btn btn-primary btn-with-icon" 
                                                                         (click)="onAdd()">
                                                                         <span class="btn-icon">
@@ -554,6 +554,10 @@
                                                                         </span>
                                                                         <span>Add</span>
                                                                     </button>
+
+                                                                    <button mat-raised-button (click)="getItemMaster()">
+                                                                        <mat-icon>add</mat-icon>
+                                                                        Drug</button>
                                                                    
                                                                 </div>
                                                             </div>

@@ -165,10 +165,10 @@
                                                 </ng-container>
             
                                                 <ng-container matColumnDef="Date">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pres.Date
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Pres.DateTime
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                                        <span> {{contact.Date}}</span>
+                                                        <span> {{contact.Date}}-{{contact.Time | date:'hh:mm'}}</span>
                                                     </mat-cell>
                                                 </ng-container>  
             

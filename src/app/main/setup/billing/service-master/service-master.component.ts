@@ -9,6 +9,9 @@ import { ServiceMasterFormComponent } from "./service-master-form/service-master
 import { ToastrService } from "ngx-toastr";
 import { AddPackageDetComponent } from "./add-package-det/add-package-det.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-service-master",
@@ -18,23 +21,14 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
-    showDivs:boolean = false;
-    submitted = false;
-
-    RadiologytemplateMasterList: any;
-    isLoading = true;
-    msg: any;
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    displayedColumns: string[] = [  
+    displayedColumns: string[] = [
         "ServiceName",
         "ServiceShortDesc",
         "GroupName",
+        "TariffName",
         "PrintOrder",
-        "Price",  
-        "EmgAmt",  
+        "Price",
+        "EmgAmt",
         "IsEditable",
         "CreditedtoDoctor",
         "IsPathology",
@@ -44,17 +38,36 @@ export class ServiceMasterComponent implements OnInit {
         "action",
     ];
 
+    showDivs: boolean = false;
+    submitted = false;
+    filteredGroupname: Observable<string[]>
+    filteredTariff: Observable<string[]>
+    RadiologytemplateMasterList: any;
+    isLoading = true;
+    msg: any;
+    TariffcmbList: any = [];
+    GroupcmbList: any = [];
+    isTariffIdSelected: boolean = false;
+    isGroupIdSelected: boolean = false;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+
     DSServiceMasterList = new MatTableDataSource<ServiceMaster>();
 
     constructor(
         public _serviceMasterService: ServiceMasterService,
-        public toastr : ToastrService,
+        public toastr: ToastrService,
 
         public _matDialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getServiceMasterList();
+        this.getGroupNameCombobox();
+        this.getTariffNameCombobox();
     }
     onSearch() {
         this.getServiceMasterList();
@@ -64,6 +77,8 @@ export class ServiceMasterComponent implements OnInit {
         this._serviceMasterService.myformSearch.reset({
             ServiceNameSearch: "",
             IsDeletedSearch: "2",
+            TariffId: "",
+            GroupId: ""
         });
         this.getServiceMasterList();
     }
@@ -73,20 +88,29 @@ export class ServiceMasterComponent implements OnInit {
 
     resultsLength = 0;
     getServiceMasterList() {
+        let tariffId = 0;
+        if (this._serviceMasterService.myformSearch.get('TariffId').value)
+            tariffId = this._serviceMasterService.myformSearch.get('TariffId').value.TariffId
+
+        let groupId = 0;
+        if (this._serviceMasterService.myformSearch.get('GroupId').value)
+            groupId = this._serviceMasterService.myformSearch.get('GroupId').value.GroupId
+
         var param = {
-            ServiceName:this._serviceMasterService.myformSearch.get("ServiceNameSearch").value.trim() + "%" || "%",
-            TariffId: 0,
-            GroupId: 0,
-            Start:(this.paginator?.pageIndex??0),
-            Length:(this.paginator?.pageSize??30),
+            ServiceName: this._serviceMasterService.myformSearch.get("ServiceNameSearch").value.trim() + "%" || "%",
+            TariffId: tariffId,
+            GroupId: groupId,
+            IsActive: this._serviceMasterService.myformSearch.get('IsDeletedSearch').value,
+            Start: (this.paginator?.pageIndex ?? 0),
+            Length: (this.paginator?.pageSize ?? 30),
         };
         console.log(param)
         this._serviceMasterService.getServiceMasterList_Pagn(param).subscribe(
             (data) => {
-                this.DSServiceMasterList.data = data["Table1"]??[] as ServiceMaster[];
+                this.DSServiceMasterList.data = data["Table1"] ?? [] as ServiceMaster[];
                 this.DSServiceMasterList.sort = this.sort;
-                console.log( this.DSServiceMasterList.data)
-                this.resultsLength= data["Table"][0]["total_row"];
+                console.log(this.DSServiceMasterList.data)
+                this.resultsLength = data["Table"][0]["total_row"];
             },
             (error) => (this.isLoading = false)
         );
@@ -95,214 +119,6 @@ export class ServiceMasterComponent implements OnInit {
     onClear() {
         this._serviceMasterService.myform.reset({ IsDeleted: "false" });
         this._serviceMasterService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._serviceMasterService.myform.valid) {
-            if (!this._serviceMasterService.myform.get("ServiceId").value) {
-                var m_data = {
-                    serviceMasterInsert: {
-                        groupId: 1,
-                        serviceShortDesc:
-                            this._serviceMasterService.myform.get(
-                                "ServiceShortDesc"
-                            ).value,
-                        serviceName: this._serviceMasterService.myform
-                            .get("ServiceName")
-                            .value.trim(),
-                        price:
-                            this._serviceMasterService.myform.get("Price")
-                                .value || "0",
-                        isEditable: Boolean(
-                            JSON.parse(
-                                this._serviceMasterService.myform.get(
-                                    "IsEditable"
-                                ).value
-                            )
-                        ),
-                        creditedtoDoctor: Boolean(
-                            JSON.parse(
-                                this._serviceMasterService.myform.get(
-                                    "CreditedtoDoctor"
-                                ).value
-                            )
-                        ),
-                        isPathology:
-                            this._serviceMasterService.myform.get("IsPathology")
-                                .value,
-                        isRadiology:
-                            this._serviceMasterService.myform.get("IsRadiology")
-                                .value,
-                        isActive:
-                            this._serviceMasterService.myform.get("IsDeleted")
-                                .value,
-                        printOrder:
-                            this._serviceMasterService.myform.get("PrintOrder")
-                                .value || "0",
-                        isPackage:
-                            this._serviceMasterService.myform.get("IsPackage")
-                                .value,
-                        subgroupId:
-                            this._serviceMasterService.myform.get("SubGroupId")
-                                .value,
-                        doctorId:
-                            this._serviceMasterService.myform.get("DoctorId]")
-                                .value,
-                        isEmergency:
-                            Boolean(
-                                JSON.parse(
-                                    this._serviceMasterService.myform.get(
-                                        "IsEmergency"
-                                    ).value
-                                )
-                            ) || "0",
-                        emgAmt:
-                            this._serviceMasterService.myform.get("EmgAmt")
-                                .value || "0",
-                        emgPer:
-                            this._serviceMasterService.myform.get("EmgPer")
-                                .value || "0",
-                        isDocEditable:
-                            Boolean(
-                                JSON.parse(
-                                    this._serviceMasterService.myform.get(
-                                        "IsDocEditable"
-                                    ).value
-                                )
-                            ) || "0",
-                        serviceId:
-                            this._serviceMasterService.myform.get("ServiceId")
-                                .value,
-                    },
-                };
-                this._serviceMasterService
-                    .serviceMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getServiceMasterList();
-                           
-                        } else {
-                            this.toastr.error('Service Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getServiceMasterList();
-                    },error => {
-                        this.toastr.error('Service Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-                        this.getServiceMasterList();
-                    
-            } else {
-                var m_dataUpdate = {
-                    serviceMasterUpdate: {
-                        groupId: 1,
-
-                        serviceShortDesc:
-                            this._serviceMasterService.myform.get(
-                                "ServiceShortDesc"
-                            ).value || "%",
-                        serviceName: this._serviceMasterService.myform
-                            .get("ServiceName")
-                            .value.trim(),
-                        price:
-                            this._serviceMasterService.myform.get("Price")
-                                .value || "0",
-                        isEditable: Boolean(
-                            JSON.parse(
-                                this._serviceMasterService.myform.get(
-                                    "IsEditable"
-                                ).value
-                            )
-                        ),
-                        creditedtoDoctor: Boolean(
-                            JSON.parse(
-                                this._serviceMasterService.myform.get(
-                                    "CreditedtoDoctor"
-                                ).value
-                            )
-                        ),
-                        isPathology:
-                            this._serviceMasterService.myform.get("IsPathology")
-                                .value,
-                        isRadiology:
-                            this._serviceMasterService.myform.get("IsRadiology")
-                                .value,
-                        isActive: Boolean(
-                            JSON.parse(
-                                this._serviceMasterService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                        printOrder:
-                            this._serviceMasterService.myform.get("PrintOrder")
-                                .value || "0",
-                        isPackage:
-                            this._serviceMasterService.myform.get("IsPackage")
-                                .value,
-                        subgroupId:
-                            this._serviceMasterService.myform.get("SubGroupId")
-                                .value,
-                        doctorId:
-                            this._serviceMasterService.myform.get("DoctorId]")
-                                .value,
-                        isEmergency:
-                            Boolean(
-                                JSON.parse(
-                                    this._serviceMasterService.myform.get(
-                                        "IsEmergency"
-                                    ).value
-                                )
-                            ) || "0",
-                        emgAmt:
-                            this._serviceMasterService.myform.get("EmgAmt")
-                                .value || "0",
-                        emgPer:
-                            this._serviceMasterService.myform.get("EmgPer")
-                                .value || "0",
-                        isDocEditable: Boolean(
-                            JSON.parse(
-                                this._serviceMasterService.myform.get(
-                                    "IsDocEditable"
-                                ).value
-                            )
-                        ),
-                        serviceId:
-                            this._serviceMasterService.myform.get("ServiceId")
-                                .value,
-                    },
-                };
-                this._serviceMasterService
-                    .serviceMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getServiceMasterList();
-                         
-                        } else {
-                            this.toastr.error('Service Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getServiceMasterList();
-                    },error => {
-                        this.toastr.error('Service Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-                        this.getServiceMasterList();
-            }
-            this.onClear();
-        }
     }
     onEdit(row) {
         console.log(row);
@@ -326,7 +142,7 @@ export class ServiceMasterComponent implements OnInit {
             IsDocEditable: JSON.stringify(row.IsDocEditable),
             UpdatedBy: row.UpdatedBy,
             GroupId: row.GroupId,
-            GroupName:row.GroupName,
+            GroupName: row.GroupName,
             IsActive: row.IsActive,
             TariffId: row.TariffId,
             TariffName: row.TariffName
@@ -337,71 +153,110 @@ export class ServiceMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             height: "96%",
-            width: '85%',  
-            data : {
-                registerObj : row,
-              }
-             });
-      
+            width: '85%',
+            data: {
+                registerObj: row,
+            }
+        });
+
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
             this.getServiceMasterList();
         });
     }
 
+    getGroupNameCombobox() {
+        this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
+            this.GroupcmbList = data;
+            this.filteredGroupname = this._serviceMasterService.myform.get('GroupId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterGroupName(value) : this.GroupcmbList.slice()),
+            );
+        });
+    }
+    getTariffNameCombobox() {
+        this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
+            this.TariffcmbList = data;
+            this.filteredTariff = this._serviceMasterService.myform.get('TariffId').valueChanges.pipe(
+                startWith(''),
+                map(value => value ? this._filterTariff(value) : this.TariffcmbList.slice()),
+            );
+        });
+    }
+    private _filterTariff(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.TariffName ? value.TariffName.toLowerCase() : value.toLowerCase();
+            return this.TariffcmbList.filter(option => option.TariffName.toLowerCase().includes(filterValue));
+        }
+    }
+    private _filterGroupName(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.GroupName ? value.GroupName.toLowerCase() : value.toLowerCase();
+            return this.GroupcmbList.filter(option => option.GroupName.toLowerCase().includes(filterValue));
+        }
+    }
+    getOptionTextgroupid(option) {
+        return option && option.GroupName ? option.GroupName : '';
+    }
+    getOptionTextTariff(option) {
+        return option && option.TariffName ? option.TariffName : '';
+    }
     onAdd() {
-        const dialogRef = this._matDialog.open(ServiceMasterFormComponent, { 
+        const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             height: "96%",
-            width: '85%',  
+            width: '85%',
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.getServiceMasterList();
         });
     }
     onAddPackageDet(element) {
-        if(element.IsPackage == 1){
+        if (element.IsPackage == 1) {
             const dialogRef = this._matDialog.open(AddPackageDetComponent, {
                 height: "70%",
                 width: '70%',
-                data:{
-                    Obj:element
+                data: {
+                    Obj: element
                 }
             });
             dialogRef.afterClosed().subscribe((result) => {
                 this.getServiceMasterList();
             });
-        }else{
+        } else {
             this.toastr.warning('Please select check box ', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
-              }); 
+            });
         }
-        
+
     }
 
 
-    
-    onDeactive(ServiceId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                let Query =
-                    "Update ServiceMaster set IsActive=0 where ServiceId=" +
-                    ServiceId;
-                console.log(Query);
+
+    onDeactive(contact, ServiceId) {
+        Swal.fire({
+            title: 'Do you sure you want to deactive?',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm"
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                let Query
+                if (contact.IsActive == true) {
+                    Query = "Update ServiceMaster set IsActive=0 where ServiceId=" + ServiceId;
+                } else {
+                    Query = "Update ServiceMaster set IsActive=1 where ServiceId=" + ServiceId;
+                }
+                console.log(Query)
                 this._serviceMasterService.deactivateTheStatus(Query).subscribe((data) => (this.msg = data));
                 this.getServiceMasterList();
             }
-            this.confirmDialogRef = null;
         });
     }
-  
+
 }
 
 export class ServiceMaster {
@@ -426,7 +281,7 @@ export class ServiceMaster {
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
-    IsDeleted:any;
+    IsDeleted: any;
     /**
      * Constructor
      *
@@ -468,7 +323,7 @@ export class Servicedetail {
     ClassRate: any;
     EffectiveDate: Date;
     ClassName: any;
- 
+
     constructor(Servicedetail) {
         {
             this.ServiceDetailId = Servicedetail.ServiceDetailId || "";

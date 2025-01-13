@@ -17,6 +17,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
+import { AddItemComponent } from 'app/main/opd/new-casepaper/add-item/add-item.component';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -792,7 +793,18 @@ export class DischargeSummaryComponent implements OnInit {
         });
     });
   }
-
+  getItemMaster() { 
+    const dialogRef = this._matDialog.open(AddItemComponent,
+      {
+        maxWidth: "60vw",
+        maxHeight: "65vh",
+        width: '100%',
+        height: "100%" 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  } 
 
   SetDeathOrNormal() {
 

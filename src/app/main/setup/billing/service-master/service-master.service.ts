@@ -55,6 +55,8 @@ export class ServiceMasterService {
         return this._formBuilder.group({
             ServiceNameSearch: [""],
             IsDeletedSearch: ["2"],
+            TariffId:[''],
+            GroupId:['']
         });
     }
     initializeFormGroup() {
