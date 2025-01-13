@@ -18,7 +18,7 @@ export class NewSurgeryMasterComponent implements OnInit {
 
   registerObj:any;
   vSurgeryId:string;
-  vProcedureName:string;
+  vSurgeryName:string;
   vCategoryName:string;
   vDepartmentName:string;
   vAmount:string;
@@ -88,7 +88,7 @@ export class NewSurgeryMasterComponent implements OnInit {
 }
 export class SurgeryMasterList {
   SurgeryId:number;
-  ProcedureName:string;
+  SurgeryName:string;
   CategoryName:string;
   DepartmentName:string;
   Amount:number;
@@ -103,7 +103,7 @@ export class SurgeryMasterList {
   constructor(SurgeryMasterList) {
     {
       this.SurgeryId = SurgeryMasterList.SurgeryId || '';
-      this.ProcedureName = SurgeryMasterList.ProcedureName || '';      
+      this.SurgeryName = SurgeryMasterList.SurgeryName || '';      
       this.CategoryName = SurgeryMasterList.CategoryName || '';
       this.DepartmentName = SurgeryMasterList.DepartmentName || '';   
       this.Amount = SurgeryMasterList.Amount || '';   

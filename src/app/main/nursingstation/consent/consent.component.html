@@ -56,6 +56,15 @@
                                 <mat-date-range-picker #picker></mat-date-range-picker>
                             </mat-form-field>
                         </div>
+                        <div style="margin-top: 10px;">
+                            <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;
+                            <button mat-raised-button class="searchButton" (click)="getConsentPatientInfoList()"
+                                matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -134,7 +143,7 @@
                                                     {{element.TemplateName}} </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="Action">
+                                            <!-- <ng-container matColumnDef="Action">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200" fxShow.gt-sm>
                                                     Action </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" class="w-200" fxShow.gt-sm>
@@ -142,7 +151,7 @@
                                                         <mat-icon>edit</mat-icon>
                                                     </button>
                                                 </mat-cell>
-                                            </ng-container>
+                                            </ng-container> -->
 
                                             <ng-container matColumnDef="loading">
                                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -173,39 +182,25 @@
                                         <mat-table class="table2" matSort [dataSource]="dsPatientList"
                                             [@animateStagger]="{value:'50'}" style="overflow: auto; width: 100%;">
 
-                                            <ng-container matColumnDef="RegNo">
+                                            <ng-container matColumnDef="Date">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Code </mat-header-cell>
+                                                    Date&Time </mat-header-cell>
                                                 <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.ConsentId}} </mat-cell> -->
                                             </ng-container>
 
-                                            <ng-container matColumnDef="PatientName">
+                                            <ng-container matColumnDef="ConsentName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Patient Name </mat-header-cell>
+                                                    Consent Name </mat-header-cell>
                                                 <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.PatientName}} </mat-cell> -->
                                             </ng-container>
 
-                                            <ng-container matColumnDef="OPIPType">
+                                            <ng-container matColumnDef="ConsentDesc">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    OPIPType</mat-header-cell>
+                                                    Consent Desc</mat-header-cell>
                                                 <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                             {{element.OPIPType}} </mat-cell> -->
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="MobileNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    MobileNo </mat-header-cell>
-                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.MobileNo}} </mat-cell> -->
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="AgeYear">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    AgeYear </mat-header-cell>
-                                                <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                            {{element.AgeYear}} </mat-cell> -->
                                             </ng-container>
 
                                             <ng-container matColumnDef="Action">
@@ -215,6 +210,11 @@
                                                             <button mat-icon-button matTooltip="Edit"
                                                                 (click)="OnEdit(contact)">
                                                                 <mat-icon>edit</mat-icon>
+                                                            </button>
+
+                                                             <button mat-icon-button matTooltip="Print"
+                                                                (click)="OnEdit(contact)">
+                                                                <mat-icon>print</mat-icon>
                                                             </button>
                                                         </mat-cell> -->
                                             </ng-container>

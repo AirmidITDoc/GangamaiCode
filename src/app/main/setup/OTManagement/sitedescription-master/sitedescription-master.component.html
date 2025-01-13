@@ -42,11 +42,11 @@
                         <div fxLayout="column" fxLayoutAlign="start none">
                            
                             <mat-form-field appearance="outline">
-                                <mat-label>Search OTSiteDesc Name</mat-label>
+                                <mat-label>Search SiteDesc Name</mat-label>
                                 <input name="OtSiteDescNameSearch" formControlName="OtSiteDescNameSearch" matInput
                                     (keyup)="getotSiteDescList()">
                                 <span class="error" *ngIf="f.OtSiteDescNameSearch.invalid && f.OtSiteDescNameSearch.touched">
-                                    OtType Name is required Enter only Alphabets</span>
+                                    Site Name is required Enter only Alphabets</span>
                             </mat-form-field>
 
                             <div style="margin-top: 10px;">
@@ -86,20 +86,36 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="OtSiteDescId" sticky>
+                                    <ng-container matColumnDef="SiteDescId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                            class="w-130">Code
+                                            class="w-100">Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-130">
-                                            {{contact.OtSiteDescId}}
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-100">
+                                            {{contact.SiteDescId}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="OtSiteDescName" sticky>
+                                    <ng-container matColumnDef="SiteDescriptionName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">
                                             OT SiteDesc Name</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
-                                            {{contact.OtSiteDescName}}
+                                            {{contact.SiteDescriptionName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SurgeryCategoryName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                            Surgery Category</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                            {{contact.SurgeryCategoryName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedBy">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                            AddedBy</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                            {{contact.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -124,9 +140,9 @@
                                             <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
                                                 <mat-icon style="color: black;">edit</mat-icon>
                                             </button>
-                                            <!-- <button mat-icon-button (click)="onDeactive(contact.OTTableId)" color="warn">
+                                            <button mat-icon-button (click)="onDeactive(contact.SiteDescId)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
-                                            </button>  -->
+                                            </button> 
                                         </mat-cell>
                                     </ng-container>
                                     
@@ -142,12 +158,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1100"
+                                    <mat-header-row class="accent min-width-1000"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"

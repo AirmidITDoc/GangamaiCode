@@ -96,10 +96,18 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="OtTypeName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-750">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-650">
                                             OT Type Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-750">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-650">
                                             {{contact.TypeName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="AddedBy" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
+                                            AddedBy</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                            {{contact.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 

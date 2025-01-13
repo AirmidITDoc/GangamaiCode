@@ -125,6 +125,14 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="AddedBy" >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                            AddedBy</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                                            {{contact.CreatedBy}}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="IsActive" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
                                             IsActive

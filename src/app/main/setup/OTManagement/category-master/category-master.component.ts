@@ -34,6 +34,7 @@ export class CategoryMasterComponent implements OnInit {
     // 'IsCancelled',
     'SurgeryCategoryId',
     'SurgeryCategoryName',
+    'AddedBy',
     'IsActive',
     'action'
   ];

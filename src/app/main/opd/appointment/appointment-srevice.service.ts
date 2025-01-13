@@ -52,9 +52,10 @@ export class AppointmentSreviceService {
       ConsentText: [''],
       Template: [''],
       Department: [''],
-      Language: ['0'],
+      Language: ['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      certificateId:''
     })
   }
 
@@ -175,6 +176,13 @@ export class AppointmentSreviceService {
 
   public CertificateUpdate(employee) {
     return this._httpClient.post("OutPatient/TCertificateInformationUpdate", employee);
+  }
+
+  public getCertificateList(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_CertificateInformation_List", param)
+  }
+  editCertficateForm(param){
+    this.mycertificateForm.patchValue(param);
   }
 
   initializeFormGroup() {

@@ -643,7 +643,7 @@ addTemplateDescription() {
     this.dialogRef.close();
   }
   onClear() {
-    this._ConsentService.myform.reset();
+    this._ConsentService.myform.reset({Language: '1'});
   }
 
 }

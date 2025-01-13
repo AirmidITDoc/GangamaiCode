@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,9 @@ import { Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { DatePipe } from '@angular/common';
 import { AppointmentSreviceService } from '../../appointment/appointment-srevice.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-patientcertificate',
@@ -72,18 +75,19 @@ export class PatientcertificateComponent implements OnInit {
   vConsentId:any;
   vTemplateId:any;
   vVisitedId:any;
-  vCertficateId:any;
+  vCertificateId:any;
   Vopipid:any;
   optionsTemp: any[] = [];
   filteredOptionsTemp: Observable<string[]>;
   vDoctorName:any;
+  sIsLoading: string = '';
 
   editorConfig: AngularEditorConfig = {
     // color:true,
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '15rem',
+    height: '14rem',
+    minHeight: '14rem',
     translate: 'yes',
     placeholder: 'Enter text here...',
     enableToolbar: true,
@@ -93,6 +97,18 @@ export class PatientcertificateComponent implements OnInit {
   onBlur(e: any) {
     this.vConsentText = e.target.innerHTML;
   }
+  
+  dsCertficateTemp = new MatTableDataSource<certificateTemp>();
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  displayedColumns: string[] = [
+    'CertificateDate', 
+    'CertificateName',
+    'CertificateText',
+    // 'CreatedBy',
+    'Action'
+  ]
 
   constructor(
     public _AppointmentServiceService: AppointmentSreviceService,
@@ -136,7 +152,28 @@ export class PatientcertificateComponent implements OnInit {
 
       // this.getSiteList();
       this.getDepartmentList();
+      this.getCertificateList();
     }
+  }
+
+  getCertificateList(){
+    debugger
+    this.sIsLoading = 'loading-data';
+
+    const D_data = {
+      "VisitedID": this.vVisitedId,
+    };
+    console.log('data:',D_data)
+    this._AppointmentServiceService.getCertificateList(D_data).subscribe(Visit => {
+    this.dsCertficateTemp.data = Visit as certificateTemp[];
+    this.dsCertficateTemp.sort = this.sort;
+    this.dsCertficateTemp.paginator = this.paginator;
+    console.log('check:',this.dsCertficateTemp.data)
+    this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
 
   selectedTemplateOption: any; 
@@ -197,36 +234,42 @@ addTemplateDescription() {
       });
       return;
     } 
-    if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
-      this.toastr.warning('Please select Department ', 'Warning !', {
+    if (this.vConsentText == '' || this.vConsentText == null || this.vConsentText== undefined) {
+      this.toastr.warning('Please enter ConsentText  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-    if (this._AppointmentServiceService.mycertificateForm.get('Department').value) {
-      if(!this.DepartmentList.find(item => item.DepartmentName == this._AppointmentServiceService.mycertificateForm.get('Department').value.DepartmentName))
-     {
-      this.toastr.warning('Please select Valid Department Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-     }
-    }
-    if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
-      this.toastr.warning('Please enter select Template ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this._AppointmentServiceService.mycertificateForm.get('Template').value) {
-      if(!this.TemplateList.find(item => item.ConsentId == this._AppointmentServiceService.mycertificateForm.get('Template').value.ConsentId))
-     {
-      this.toastr.warning('Please select Valid Template Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-     }
-    }
+    } 
+    // if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
+    //   this.toastr.warning('Please select Department ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this._AppointmentServiceService.mycertificateForm.get('Department').value) {
+    //   if(!this.DepartmentList.find(item => item.DepartmentName == this._AppointmentServiceService.mycertificateForm.get('Department').value.DepartmentName))
+    //  {
+    //   this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    //  }
+    // }
+    // if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
+    //   this.toastr.warning('Please enter select Template ', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this._AppointmentServiceService.mycertificateForm.get('Template').value) {
+    //   if(!this.TemplateList.find(item => item.ConsentId == this._AppointmentServiceService.mycertificateForm.get('Template').value.ConsentId))
+    //  {
+    //   this.toastr.warning('Please select Valid Template Name', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    //  }
+    // }
 
     Swal.fire({
       title: 'Do you want to Save the Consent Recode ',
@@ -251,7 +294,7 @@ addTemplateDescription() {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 
-    if(!this.vCertficateId){
+    if(!this.vCertificateId){
 
       var m_dataInsert={
         "saveTCertificateInformationparams": {
@@ -259,7 +302,7 @@ addTemplateDescription() {
           "certificateDate": formattedDate,
           "certificateTime": formattedTime,
           "visitId":this.vVisitedId,
-          "certificateTempId":this._AppointmentServiceService.mycertificateForm.get("Template").value.ConsentId || 0,
+          "certificateTempId": 0, //this._AppointmentServiceService.mycertificateForm.get("Template").value.ConsentId || 0,
           "certificateName": this._AppointmentServiceService.mycertificateForm.get("ConsentName").value || '',
           "certificateText": this._AppointmentServiceService.mycertificateForm.get("ConsentText").value || '',
           "createdBy": this._loggedService.currentUserValue.user.id,
@@ -280,35 +323,35 @@ addTemplateDescription() {
         }
       });
     }
-    // else{
-    //   debugger
-    //   var m_dataUpdate={
-    //       "updateTCertificateInformationparams": {
-    //       "certificateId": this.vCertficateId,
-    //       "certificateDate": formattedDate,
-    //       "certificateTime": formattedTime,
-    //       "visitId":this.vVisitedId,
-    //       "certificateTempId":1, //this._AppointmentServiceService.mycertificateForm.get("Template").value.ConsentId || 0,
-    //       "certificateName": this._AppointmentServiceService.mycertificateForm.get("ConsentName").value || '',
-    //       "certificateText": this._AppointmentServiceService.mycertificateForm.get("ConsentText").value || '',
-    //       "modifiedBy": this._loggedService.currentUserValue.user.id,
-    //     }
-    //   }
-    //   console.log("UpdateJson:", m_dataUpdate);
+    else{
+      debugger
+      var m_dataUpdate={
+          "updateTCertificateInformationparams": {
+          "certificateId": this.vCertificateId,
+          "certificateDate": formattedDate,
+          "certificateTime": formattedTime,
+          "visitId":this.vVisitedId,
+          "certificateTempId":0, //this._AppointmentServiceService.mycertificateForm.get("Template").value.ConsentId || 0,
+          "certificateName": this._AppointmentServiceService.mycertificateForm.get("ConsentName").value || '',
+          "certificateText": this._AppointmentServiceService.mycertificateForm.get("ConsentText").value || '',
+          "modifiedBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+      console.log("UpdateJson:", m_dataUpdate);
 
-    //   this._AppointmentServiceService.CertificateUpdate(m_dataUpdate).subscribe(response =>{
-    //     if (response) {
-    //       this.toastr.success('Record Updated Successfully.', 'Updated !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //       });
-    //       this.onClose()
-    //     } else {
-    //       this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     }
-    //   });
-    // }
+      this._AppointmentServiceService.CertificateUpdate(m_dataUpdate).subscribe(response =>{
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
 
   private _filterDep(value: any): string[] {
@@ -384,12 +427,39 @@ addTemplateDescription() {
     return option && option.ConsentName ? option.ConsentName : '';
   }
 
+  OnEdit(row) {
+    console.log(row)
+    var m_data = {
+      "certificateId":row.CertificateId,
+      "ConsentName":row.CertificateName,
+      "ConsentText":row.CertificateText
+    }
+    console.log('edit data:',m_data);
+    this._AppointmentServiceService.editCertficateForm(m_data);
+  }
+
   onClose() {
-    this._AppointmentServiceService.mycertificateForm.reset({});    
+    this._AppointmentServiceService.mycertificateForm.reset({Language: '1'});    
     this.dialogRef.close();
   }
   onClear() {
-    this._AppointmentServiceService.mycertificateForm.reset({});   
+    this._AppointmentServiceService.mycertificateForm.reset({Language: '1'});   
   }
 
+}
+
+export class certificateTemp {
+
+  CertificateDate : Date;
+  CreatedBy : any;
+  CetificateName: any;
+  CertificateText: any;
+ 
+  constructor(certificateTemp) {
+ 
+    this.CertificateDate = certificateTemp.CertificateDate || '';
+    this.CreatedBy = certificateTemp.CreatedBy || '';
+   this.CetificateName =certificateTemp.CetificateName  || '';
+   this.CertificateText = certificateTemp.CertificateText || '';
+  } 
 }

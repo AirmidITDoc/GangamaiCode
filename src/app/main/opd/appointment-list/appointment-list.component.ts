@@ -355,7 +355,7 @@ export class AppointmentListComponent implements OnInit {
   OpenCertificate(contact){
     const dialogRef = this._matDialog.open(PatientcertificateComponent,
       {
-        maxWidth: '85%',
+        maxWidth: '90%',
         height: '90%',
         width: '100%',
         data: {
