@@ -19,7 +19,7 @@ export class SurgeryMasterService {
     return this._formBuilder.group({
       SurgeryId:[''],
       Site:[''],
-      ProcedureName:[''],
+      SurgeryName:[''],
       CategoryName:[''],
       SystemName:[''],
       TemplateName:[''],

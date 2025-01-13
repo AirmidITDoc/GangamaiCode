@@ -90,7 +90,7 @@ export class NewOttypeMasterComponent implements OnInit {
           "typeName": this._otTypeMasterService.myform.get("TypeName").value || '',
           "isActive": Boolean(JSON.parse(this._otTypeMasterService.myform.get("IsDeleted").value) || 0),
           "createdBy": this._loggedService.currentUserValue.user.id,
-          "otTableId": 0
+          "otTypeId": 0
         }
       }
       console.log("insertJson:", m_dataInsert);
@@ -113,9 +113,8 @@ export class NewOttypeMasterComponent implements OnInit {
       var m_dataUpdate={
           "updateOTTypemasterParam": {
           "otTypeId": this.vOTTypeId,
-          "otTableName": this._otTypeMasterService.myform.get("TypeName").value || '',
+          "typeName": this._otTypeMasterService.myform.get("TypeName").value || '',
           "isActive": Boolean(JSON.parse(this._otTypeMasterService.myform.get("IsDeleted").value) || 0),
-          "createdBy": 0,
           "modifiedBy": this._loggedService.currentUserValue.user.id,
         }
       }

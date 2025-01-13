@@ -63,25 +63,6 @@ export class OttableMasterComponent implements OnInit {
   // field validation 
   get f() { return this._otTableMasterService.myformSearch.controls; }
 
-
-  // getotTableList(){
-  //   debugger
-  //   this.sIsLoading = 'loading-data';
-  //   var D_data = {
-  //     "OTTableName": this._otTableMasterService.myformSearch.get("OtRoomNameSearch").value + '%' || '%',
-  //   }
-  //   console.log("TableList:",D_data)
-  //   this._otTableMasterService.getOTTableListlist(D_data).subscribe(Visit => {
-  //   this.dataSource.data = Visit as OtTableMasterList[];
-  //   this.dataSource.sort = this.sort;
-  //   this.dataSource.paginator = this.paginator;
-  //   this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
-
   getotTableList() {
     debugger;
     this.sIsLoading = 'loading-data';
@@ -260,6 +241,7 @@ export class OtTableMasterList {
   LocationName:any;
   OTTableName:string;
   IsActive:string;
+  CreatedBy:boolean;
   OTTableId:string;
   IsCancelled: boolean;
   
@@ -279,6 +261,7 @@ export class OtTableMasterList {
       this.IsActive=OtTableMasterList.IsActive || '';
       this.OTTableId=OtTableMasterList.OTTableId || '';
       this.IsCancelled = OtTableMasterList.IsCancelled || '';
+      this.CreatedBy=OtTableMasterList.CreatedBy || '';
     }
   }
 }

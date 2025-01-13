@@ -34,6 +34,7 @@ export class OttypeMasterComponent implements OnInit {
   displayedColumns = [
     'OtTypeId',
     'OtTypeName',
+    'AddedBy',
     'IsActive',
     'action'
   ];

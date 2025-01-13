@@ -223,19 +223,19 @@
                                       {{option.ConsentName }} <b>|</b> {{option.DepartmentName }} 
                                     </mat-option>
                                   </mat-autocomplete>
-                                </mat-form-field>
-
-                                <div class="modal-footer-buttons gap-8 m-8">
-                                  <button class="btn btn-primary" (click)="addTemplateDescription()">
-                                    Add
-                                  </button>
-                              </div>
+                                </mat-form-field>                                
                                 
                                 <mat-radio-group name="Language" value="1" formControlName="Language"
                                     style="padding: 15px 0px 0px 0px">
                                     <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
                                     <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
                                 </mat-radio-group>
+
+                                <div class="modal-footer-buttons gap-8 m-8">
+                                  <button class="btn btn-primary" (click)="addTemplateDescription()">
+                                    Add
+                                  </button>
+                              </div>
                             </div>
 
                             <div>

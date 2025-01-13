@@ -32,8 +32,10 @@ export class SitedescriptionMasterComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   displayedColumns = [
-    'OtSiteDescId',
-    'OtSiteDescName',
+    'SiteDescId',
+    'SiteDescriptionName',
+    'SurgeryCategoryName',
+    'AddedBy',
     'IsActive',
     'action'
   ];
@@ -49,6 +51,7 @@ export class SitedescriptionMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getotSiteDescList();
   }
 
   
@@ -61,7 +64,25 @@ export class SitedescriptionMasterComponent implements OnInit {
   get f() { return this._otSiteDescMasterService.myformSearch.controls; }
 
   getotSiteDescList(){
+    debugger
+    this.sIsLoading = 'loading-data';
 
+    const sitDescNameSearch = this._otSiteDescMasterService.myformSearch.get("OtSiteDescNameSearch").value || '';
+  
+    const D_data = {
+      "SiteDescriptionName": sitDescNameSearch.trim() ? sitDescNameSearch + '%' : '%', // Use '%' if search is empty
+    };
+
+    console.log("SiteDescriptionName:",D_data)
+    this._otSiteDescMasterService.getSiteDesclist(D_data).subscribe(Visit => {
+    this.dataSource.data = Visit as OtSiteDescMasterList[];
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.sIsLoading = '';
+    },
+      error => {
+        this.sIsLoading = '';
+      });
   }
 
   newOtSiteDesc(){
@@ -93,6 +114,47 @@ export class SitedescriptionMasterComponent implements OnInit {
     });
   }
 
+  onDeactive(SiteDescId){
+    debugger
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+    debugger
+
+      if (result.isConfirmed) {
+        let Query;
+        const tableItem = this.dataSource.data.find(item => item.SiteDescId === SiteDescId);
+        console.log("table:",tableItem)
+    
+        if (tableItem.IsActive) {
+            Query = "Update M_OT_SiteDescriptionMaster set IsActive=0 where SiteDescId=" + SiteDescId;
+        } else {
+            Query = "Update M_OT_SiteDescriptionMaster set IsActive=1 where SiteDescId=" + SiteDescId;
+        }
+    
+        console.log("query:", Query);
+    
+        this._otSiteDescMasterService.deactivateTheStatus(Query)
+            .subscribe(
+                (data) => {
+                    Swal.fire('Changed!', 'SiteDesc Status has been Changed.', 'success');
+                    this.getotSiteDescList();
+                },
+                (error) => {
+                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                }
+            );
+    }
+    
+  });
+  }
+
   onClear() {
     this._otSiteDescMasterService.myformSearch.reset({
       OtSiteDescNameSearch: "",
@@ -101,8 +163,10 @@ export class SitedescriptionMasterComponent implements OnInit {
   }
 }
 export class OtSiteDescMasterList {
-  OtSiteDescId:number;
-  OtSiteDescName:string;
+  SiteDescId:number;
+  SiteDescriptionName:string;
+  SurgeryCategoryName:any;
+  AddedBy:boolean;
   IsActive:string;
   
   /**
@@ -112,8 +176,10 @@ export class OtSiteDescMasterList {
    */
   constructor(OtSiteDescMasterList) {
     {
-      this.OtSiteDescId = OtSiteDescMasterList.OtSiteDescId || '';
-      this.OtSiteDescName = OtSiteDescMasterList.OtSiteDescName || '';
+      this.SiteDescId = OtSiteDescMasterList.SiteDescId || '';
+      this.SiteDescriptionName = OtSiteDescMasterList.SiteDescriptionName || '';
+      this.SurgeryCategoryName=OtSiteDescMasterList.SurgeryCategoryName || '';
+      this.AddedBy = OtSiteDescMasterList.AddedBy || '';
       this.IsActive=OtSiteDescMasterList.IsActive || '';
     }
   }

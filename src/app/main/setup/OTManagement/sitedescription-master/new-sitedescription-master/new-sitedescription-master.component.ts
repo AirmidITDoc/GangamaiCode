@@ -25,7 +25,7 @@ export class NewSitedescriptionMasterComponent implements OnInit {
   vIsDeleted:any;
   isSurgeryCategorySelected:boolean=false;
   SurgeryCategorycmbList:any=[];
-  optionsSearchgroup: any[] = [];
+  optionsSurgeryCategory: any[] = [];
   filteredOptionsSurgeryCategory: Observable<string[]>;
 
   constructor(
@@ -55,38 +55,37 @@ export class NewSitedescriptionMasterComponent implements OnInit {
     }
   }
 
-  getOptionTextLoc(option){
-    
+  getOptionTextautoSurgeryCategory(option) {
     return option && option.SurgeryCategoryName ? option.SurgeryCategoryName : '';
   }
 
   getSurgeryCategoryNameCombo(){
-    
+
     this._otSiteDescMasterService.getSurgerycategoryMasterCombo().subscribe(data => {
       this.SurgeryCategorycmbList = data;
-      this.optionsSearchgroup = this.SurgeryCategorycmbList.slice();
-      this.filteredOptionsSurgeryCategory = this._otSiteDescMasterService.myform.get('SiteDescId').valueChanges.pipe(
+      this.optionsSurgeryCategory = this.SurgeryCategorycmbList.slice();
+      this.filteredOptionsSurgeryCategory = this._otSiteDescMasterService.myform.get('SurgeryCategoryID').valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filtersearchSurgeyCate(value) : this.SurgeryCategorycmbList.slice()),
+        map(value => value ? this._filterSurgeryCategory(value) : this.SurgeryCategorycmbList.slice()),
       );
       if (this.data) {
         
-        const DValue = this.SurgeryCategorycmbList.filter(item => item.SurgeryCategoryName == this.registerObj.SurgeryCategoryName);
-        console.log("SurgeryCategoryName:",DValue)
-        this._otSiteDescMasterService.myform.get('SiteDescId').setValue(DValue[0]);
+        const DValue = this.SurgeryCategorycmbList.filter(item => item.SurgeryCategoryId == this.registerObj.SurgeryCategoryID);
+        console.log("SurgeryCategoryId:",DValue)
+        this._otSiteDescMasterService.myform.get('SurgeryCategoryID').setValue(DValue[0]);
         this._otSiteDescMasterService.myform.updateValueAndValidity();
+       
         return;
       }
     });
   }
 
-  private _filtersearchSurgeyCate(value: any): string[] {
-    
+  private _filterSurgeryCategory(value: any): string[] {
     if (value) {
       const filterValue = value && value.SurgeryCategoryName ? value.SurgeryCategoryName.toLowerCase() : value.toLowerCase();
-      return this.SurgeryCategorycmbList.filter(option => option.SurgeryCategoryName.toLowerCase().includes(filterValue));
+      return this.optionsSurgeryCategory.filter(option => option.SurgeryCategoryName.toLowerCase().includes(filterValue));
     }
-  }
+  } 
 
   onSave(){
     if (this.vSiteDescriptionName == '' || this.vSiteDescriptionName == null || this.vSiteDescriptionName== undefined) {
@@ -140,7 +139,7 @@ export class NewSitedescriptionMasterComponent implements OnInit {
         "saveMOTSiteDescriptionMasterParam": {
           "siteDescriptionName": this._otSiteDescMasterService.myform.get("SiteDescriptionName").value || '',
           "surgeryCategoryID": parseInt(this._otSiteDescMasterService.myform.get("SurgeryCategoryID").value.SurgeryCategoryId).toString(),
-          "isActive": this._otSiteDescMasterService.myform.get("IsDeleted").value || 0,
+          "isActive": Boolean(JSON.parse(this._otSiteDescMasterService.myform.get("IsDeleted").value) || 0),
           "createdBy": this._loggedService.currentUserValue.user.id,
           "siteDescId": 0
         }
@@ -164,9 +163,9 @@ export class NewSitedescriptionMasterComponent implements OnInit {
       debugger
       var m_dataUpdate={
           "updateMOTSiteDescriptionMasterParam": {
-          "siteDescId": 0,
+          "siteDescId": this.vSiteDescId,
           "siteDescriptionName": this._otSiteDescMasterService.myform.get("SiteDescriptionName").value || '',
-          "surgeryCategoryID": parseInt(this._otSiteDescMasterService.myform.get("SurgeryCategoryID").value.SurgeryCategoryId).toString(),
+          "surgeryCategoryID": this._otSiteDescMasterService.myform.get("SurgeryCategoryID").value.SurgeryCategoryId || 0,
           "isActive": Boolean(JSON.parse(this._otSiteDescMasterService.myform.get("IsDeleted").value) || 0),
           "modifiedBy": this._loggedService.currentUserValue.user.id,
         }

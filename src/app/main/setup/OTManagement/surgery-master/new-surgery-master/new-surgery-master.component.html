@@ -123,13 +123,13 @@
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" class="gap-8">
                                             <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Procedure Name</mat-label>
-                                                <input name="ProcedureName" formControlName="ProcedureName"
+                                                <mat-label>Surgery Name</mat-label>
+                                                <input name="SurgeryName" formControlName="SurgeryName"
                                                     placeholder="Procedure Name" matInput type="text"
                                                     oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vProcedureName">
+                                                    [(ngModel)]="vSurgeryName">
                                                 <mat-error
-                                                    *ngIf="_surgeryMasterService.myform.get('ProcedureName').invalid && _surgeryMasterService.myform.get('ProcedureName').touched">
+                                                    *ngIf="_surgeryMasterService.myform.get('SurgeryName').invalid && _surgeryMasterService.myform.get('SurgeryName').touched">
                                                     Procedure Name is required Enter only
                                                     Alphabets</mat-error>
                                             </mat-form-field>

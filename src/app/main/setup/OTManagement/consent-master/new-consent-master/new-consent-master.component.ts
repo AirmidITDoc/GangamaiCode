@@ -49,7 +49,7 @@ export class NewConsentMasterComponent implements OnInit {
       this.vConsentName = this.registerObj.ConsentName;
       this.vDepartmentName = this.registerObj.DepartmentName;
       this.vConsentDesc=this.registerObj.ConsentDesc
-      this.vConsentId=this.registerObj.OTTableId;
+      this.vConsentId=this.registerObj.ConsentId;
       if(this.registerObj.IsActive==true){
         this._otConsentService.myform.get("IsDeleted").setValue(true)
         // this.vIsDeleted=true;

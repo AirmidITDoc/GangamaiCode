@@ -23,7 +23,7 @@ export class ConsentService {
       ConsentText: [''],
       Template: [''],
       Department: [''],
-      Language: ['0'],
+      Language: ['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     })

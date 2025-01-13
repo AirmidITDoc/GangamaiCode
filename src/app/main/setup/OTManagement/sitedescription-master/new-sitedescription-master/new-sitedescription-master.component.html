@@ -50,8 +50,8 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Surgery Category</mat-label>
                                                 <input matAutocompletePosition="below" type="text"
-                                                    placeholder="Select Location" matInput formControlName="SurgeryCategoryID" required
-                                                    required [(ngModel)]="vSurgeryCategoryID" [matAutocomplete]="autoSurgeryCat">
+                                                    placeholder="Select Surgery Category" matInput formControlName="SurgeryCategoryID" required
+                                                    required [(ngModel)]="vSurgeryCategoryID" [matAutocomplete]="autoSurgeryCategory">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
                                                         (click)="_otSiteDescMasterService.myform.get('SurgeryCategoryID').setValue(''); isSurgeryCategorySelected = false;">close</mat-icon>
@@ -59,10 +59,9 @@
                                                         (click)="_otSiteDescMasterService.myform.get('SurgeryCategoryID').setValue(''); isSurgeryCategorySelected = false;">search</mat-icon>
                                                 </span>
 
-                                                <mat-autocomplete #autoSurgeryCat="matAutocomplete" [displayWith]="getOptionTextLoc">
-                                                    <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" 
-                                                    [value]="option">
-                                                        {{option.SurgeryCategoryName}} || {{option.SurgeryCategoryId}}
+                                                <mat-autocomplete #autoSurgeryCategory="matAutocomplete" [displayWith]="getOptionTextautoSurgeryCategory">
+                                                    <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" [value]="option">
+                                                        {{option.SurgeryCategoryName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>

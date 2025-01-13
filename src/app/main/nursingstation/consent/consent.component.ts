@@ -29,14 +29,12 @@ export class ConsentComponent implements OnInit {
     'ConsentText',
     'ConsentDeptId',
     'ConsentTempId',
-    'Action'
+    // 'Action'
   ]
   displayedPatientColumns: string[] = [
-    'RegNo',
-    'PatientName',
-    'OPIPType',
-    'MobileNo',
-    'AgeYear',
+    'Date',
+    'ConsentName',
+    'ConsentDesc',
     'Action'
   ]
 
@@ -106,6 +104,14 @@ export class ConsentComponent implements OnInit {
         console.log('The dialog was closed - Insert Action', result);
         this.getConsentPatientInfoList();
      });
+  }
+
+  onClear() {
+    this._ConsentService.myform.reset({
+      start: new Date(),
+      end: new Date(),
+    });
+    this.getConsentPatientInfoList();
   }
 
 }

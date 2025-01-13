@@ -40,7 +40,7 @@ export class SitedescriptionMasterService {
   public getSurgerycategoryMasterCombo() {
     debugger
     return this._httpClient.post(
-      "Generic/GetByProc?procName=RetrieveSurgeryCategoryForCombo",
+      "Generic/GetByProc?procName=Retrieve_SurgeryCategoryMasterForCombo",
       {}
     );
   }
@@ -50,5 +50,13 @@ export class SitedescriptionMasterService {
   }
   public OtSiteDescUpdate(employee) {
     return this._httpClient.post("OT/UpdateMOTSiteDescriptionMaster", employee);
+  }
+  public getSiteDesclist(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_otSiteDescriptionMaster", employee)
+  }
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.post(
+        "Generic/ExecByQueryStatement?query=" + m_data,{}
+    );
   }
 }
