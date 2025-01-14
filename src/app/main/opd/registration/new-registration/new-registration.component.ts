@@ -72,17 +72,19 @@ export class NewRegistrationComponent implements OnInit {
 
     ngOnInit(): void {
         this.personalFormGroup = this._registerService.createPesonalForm1();
+       
         this.minDate = new Date();
         console.log(this.data)
         
         if(this.data.Submitflag==true)
-            this.registerObj.regId=this.data.data1.RegID
-
+            this.registerObj.regId=this.data.data1.regId
+        debugger
         if (this.data.data1.regId > 0) {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.data1.regId).subscribe((response) => {
                     this.registerObj = response;
-                   
+                    console.log(this.registerObj)
+                    // this.registerObj.regId=this.registerObj.RegId 
                    });
             }, 500);
         }
@@ -94,8 +96,9 @@ export class NewRegistrationComponent implements OnInit {
   
     OnSubmit() {
         console.log(this.personalFormGroup.value)
-        debugger
+        
         // if (this.personalFormGroup.valid) {
+            
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

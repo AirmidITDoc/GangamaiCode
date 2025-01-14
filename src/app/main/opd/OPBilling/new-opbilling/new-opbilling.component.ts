@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { ChargesList, SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntypedFormBuilder, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -93,7 +92,7 @@ export class NewOPBillingComponent implements OnInit {
   registerObj = new BrowseOPDBill({});
   registerObj1 = new Regdetail({});
   Paymentdataobj1 = new PaymentInsert({});
-  selectedAdvanceObj: SearchInforObj;
+  // selectedAdvanceObj: SearchInforObj;
   PatientHeaderObj: AdvanceDetailObj;
   dataSource = new MatTableDataSource<ChargesList>();
   dsPackageDet = new MatTableDataSource<ChargesList>();
@@ -2155,3 +2154,53 @@ export class Post {
   }
 }
 
+export class ChargesList{
+  ChargesId: number;
+  ServiceId: number;
+  serviceId: number;
+  ServiceName : String;
+  Price:any;
+  Qty: any;
+  TotalAmt: number;
+  DiscPer: number;
+  DiscAmt: number;
+  NetAmount: number;
+  DoctorId:number;
+  ChargeDoctorName: String;
+  ChargesDate: Date;
+  IsPathology:boolean;
+  IsRadiology:boolean;
+  ClassId:number;
+  ClassName: string;
+  ChargesAddedName: string;
+  PackageId:any;
+  PackageServiceId:any;
+  IsPackage:any;
+  PacakgeServiceName:any;
+  BillwiseTotalAmt: any;
+  
+  constructor(ChargesList){
+          this.ChargesId = ChargesList.ChargesId || '';
+          this.ServiceId = ChargesList.ServiceId || '';
+          this.serviceId = ChargesList.serviceId || '';
+          this.ServiceName = ChargesList.ServiceName || '';
+          this.Price = ChargesList.Price || '';
+          this.Qty = ChargesList.Qty || '';
+          this.TotalAmt = ChargesList.TotalAmt || '';
+          this.DiscPer = ChargesList.DiscPer || '';
+          this.DiscAmt = ChargesList.DiscAmt || '';
+          this.NetAmount = ChargesList.NetAmount || '';
+          this.DoctorId=ChargesList.DoctorId || 0;
+          this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+          this.ChargesDate = ChargesList.ChargesDate || '';
+          this.IsPathology = ChargesList.IsPathology || '';
+          this.IsRadiology = ChargesList.IsRadiology || '';
+          this.ClassId=ChargesList.ClassId || 0;
+          this.ClassName = ChargesList.ClassName || '';
+          this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+          this.PackageId=ChargesList.PackageId || 0;
+          this.PackageServiceId=ChargesList.PackageServiceId || 0;
+          this.IsPackage=ChargesList.IsPackage || 0; 
+          this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+  }
+} 

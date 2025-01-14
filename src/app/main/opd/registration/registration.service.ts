@@ -32,8 +32,8 @@ export class RegistrationService {
       LastName: ['', [
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
       MobileNo: ['']
       //   , [
       //   Validators.pattern("^[0-9]*$"),
@@ -63,13 +63,13 @@ export class RegistrationService {
       address: '',
       dateOfBirth: [(new Date()).toISOString()],
       age: ['2'],
-      ageYear: ['12', [
+      ageYear: ['0', [
         // Validators.required,
         Validators.maxLength(3),
         Validators.pattern("^[0-9]*$")]],
-      ageMonth: ['2', [
+      ageMonth: ['0', [
         Validators.pattern("^[0-9]*$")]],
-      ageDay: ['21', [
+      ageDay: ['0', [
         Validators.pattern("^[0-9]*$")]],
       phoneNo: ['', [Validators.minLength(10),
       Validators.maxLength(10),
@@ -185,6 +185,7 @@ export class RegistrationService {
   public RegstrationtSaveData(Param: any, showLoader = true) {
     
     if (Param.RegId) {
+      debugger
       return this._httpClient1.PostData("OutPatient/RegistrationUpdate",Param, showLoader);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
   }

@@ -50,7 +50,7 @@ export class AppointmentListComponent implements OnInit {
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
   
-    fromDate ="2024-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    fromDate ="2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
     toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
     
     DoctorId="0";
@@ -74,6 +74,7 @@ export class AppointmentListComponent implements OnInit {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 50, type:17},
             { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 50, type:15 },
             { heading: "PhoneAppId", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 100, type:13 },
@@ -158,9 +159,9 @@ export class AppointmentListComponent implements OnInit {
     onChangeDate(selectDate) {
         if (selectDate) {
             
-          
-            this.gridConfig.filters[4].fieldValue =this.datePipe.transform(selectDate, "MM/dd/yyyy")// this.fromDate
-
+            // this.gridConfig.filters[4].fieldValue =this.datePipe.transform(selectDate, "dd-MM-yyyy")// this.fromDate
+            this.fromDate=this.datePipe.transform(selectDate, "dd-MM-yyyy")
+            debugger
             this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
                 { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -171,14 +172,14 @@ export class AppointmentListComponent implements OnInit {
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
         }
-
+        // this.getVisitList();
     }
     onChangeDate1(selectDate) {
         if (selectDate) {
 
-            this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
+            this.toDate = this.datePipe.transform(selectDate, "dd-MM-yyyy")
             console.log(this.toDate);
-            this.gridConfig.filters[5].fieldValue = this.toDate
+            // this.gridConfig.filters[5].fieldValue = this.toDate
             
             this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -190,12 +191,14 @@ export class AppointmentListComponent implements OnInit {
                 { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
         }
+        // this.getVisitList();
     }
 
     ngOnInit(): void {
        
         this.myformSearch=this._AppointmentlistService.filterForm();
-           
+        this.getVisitList();
+           console.log(this.gridConfig)
     }
     onSave(row: any = null) {
 
@@ -291,8 +294,6 @@ export class AppointmentListComponent implements OnInit {
             error => {
 
             });
-
-
            
 }
 
@@ -346,26 +347,29 @@ let param={
     VFollowupcount = 0;
     VBillcount = 0;
     VCrossConscount = 0;
+
+
     Appointdetail(data) {
+        debugger
         this.Vtotalcount = 0;
         this.VNewcount = 0;
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-        // console.log(data)
+        console.log(data)
         this.Vtotalcount;
 
         for (var i = 0; i < data.length; i++) {
-            if (data[i].PatientOldNew == 1) {
+            if (data[i].patientOldNew== 1) {
                 this.VNewcount = this.VNewcount + 1;
             }
-            else if (data[i].PatientOldNew == 2) {
+            else if (data[i].patientOldNew == 2) {
                 this.VFollowupcount = this.VFollowupcount + 1;
             }
-            if (data[i].MPbillNo == 1 || data[i].MPbillNo == 2) {
+            if (data[i].mPbillNo == 1 || data[i].mPbillNo == 2) {
                 this.VBillcount = this.VBillcount + 1;
             }
-            if (data[i].CrossConsulFlag == 1) {
+            if (data[i].crossConsulFlag == 1) {
                 this.VCrossConscount = this.VCrossConscount + 1;
             }
 

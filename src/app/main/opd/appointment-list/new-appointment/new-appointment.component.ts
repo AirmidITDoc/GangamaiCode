@@ -37,7 +37,7 @@ export class NewAppointmentComponent implements OnInit {
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
     searchFormGroup: FormGroup;
-   
+
     currentDate = new Date();
     TempKeys: any[] = [];
     doclist: any = [];
@@ -63,7 +63,7 @@ export class NewAppointmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     isCompanySelected: boolean = false;
     loadID = 0;
-    
+
     VisitTime: String;
     AgeYear: any;
     AgeMonth: any;
@@ -139,7 +139,7 @@ export class NewAppointmentComponent implements OnInit {
     menuActions: Array<string> = [];
     pdfDataSource = new MatTableDataSource<any>();
     imgDataSource = new MatTableDataSource<any>();
-   
+
     public height: string;
     sanitizeImagePreview;
     displayedColumns1 = [
@@ -168,11 +168,11 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
-   @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
+    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
     @ViewChild('ddlState') ddlState: AirmidAutocompleteComponent;
     @ViewChild('ddlCountry') ddlCountry: AirmidAutocompleteComponent;
 
-   
+
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -195,13 +195,9 @@ export class NewAppointmentComponent implements OnInit {
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
-        // this.personalFormGroup.markAsUntouched();
         this.VisitFormGroup = this.createVisitdetailForm();
-        // this.VisitFormGroup.markAsUntouched();
         this.searchFormGroup = this.createSearchForm();
-        // this.searchFormGroup.markAsUntouched();
 
-       
         if (this.data)
             this.registerObj = this.data;
         console.log(this.registerObj)
@@ -312,29 +308,29 @@ export class NewAppointmentComponent implements OnInit {
             RegId: [0],
             RegNo: '1',
             PrefixId: ['', [Validators.required]],
-            FirstName:['', [
-              Validators.required,
-              Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+            FirstName: ['', [
+                Validators.required,
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
             MiddleName: ['', [
-              Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
             LastName: ['', [
-              Validators.required,
-              Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                Validators.required,
+                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
             DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['0', [
-              // Validators.required,
-              Validators.maxLength(3),
-              Validators.pattern("^[0-9]*$")]],
+                // Validators.required,
+                Validators.maxLength(3),
+                Validators.pattern("^[0-9]*$")]],
             AgeMonth: ['0', [
-              Validators.pattern("^[0-9]*$")]],
+                Validators.pattern("^[0-9]*$")]],
             AgeDay: ['0', [
-              Validators.pattern("^[0-9]*$")]],
+                Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -345,10 +341,10 @@ export class NewAppointmentComponent implements OnInit {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             aadharCardNo: ['', [Validators.required,
-                Validators.minLength(12),
-                Validators.maxLength(12),
-                Validators.pattern("^[0-9]*$")
-                ]],
+            Validators.minLength(12),
+            Validators.maxLength(12),
+            Validators.pattern("^[0-9]*$")
+            ]],
             panCardNo: 'ds',
             MaritalStatusId: '',
             ReligionId: 0,
@@ -361,22 +357,22 @@ export class NewAppointmentComponent implements OnInit {
             IsSeniorCitizen: false,
             AddedBy: 1,
             updatedBy: 1,
-            RegDate:  [(new Date()).toISOString()],
+            RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
             PinNo: [''],
-            IsHealthCard:0
+            IsHealthCard: 0
 
         });
 
     }
     createVisitdetailForm() {
         return this.formBuilder.group({
-          
+
             visitId: 0,
             regId: 0,
             visitDate: [(new Date()).toISOString()],
-            visitTime:[(new Date()).toISOString()],
+            visitTime: [(new Date()).toISOString()],
             UnitId: 1,
             PatientTypeId: 0,
             ConsultantDocId: 0,
@@ -388,15 +384,15 @@ export class NewAppointmentComponent implements OnInit {
             isCancelledBy: 0,
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
-            ClassId: 0,
+            ClassId: 1,
             DepartmentId: 0,
-            patientOldNew: 0,
+            patientOldNew: 1,
             firstFollowupVisit: 0,
             AppPurposeId: 0,
             followupDate: [(new Date()).toISOString()],
             crossConsulFlag: 0,
             phoneAppId: 0
-          
+
         });
     }
     IsPhoneAppflag: boolean = true;
@@ -414,30 +410,32 @@ export class NewAppointmentComponent implements OnInit {
             this.searchFormGroup.get('RegId').disable();
             this.isRegSearchDisabled = false;
 
-            this.personalFormGroup = this.createPesonalForm();
-            this.personalFormGroup.markAllAsTouched();
-            this.VisitFormGroup = this.createVisitdetailForm();
-            this.VisitFormGroup.markAllAsTouched();
-            // this.Regdisplay = false;
+            // this.personalFormGroup = this.createPesonalForm();
+            // this.personalFormGroup.markAllAsTouched();
+            // this.VisitFormGroup = this.createVisitdetailForm();
+            // this.VisitFormGroup.markAllAsTouched();
+            // // this.Regdisplay = false;
             // this.showtable = false;
             this.Regflag = false;
             this.IsPhoneAppflag = true;
 
         } else if (event.value == 'registrered') {
 
-            this.personalFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').reset();
-            this.personalFormGroup.reset();
-            this.Patientnewold = 2;
+            // this.personalFormGroup.get('RegId').enable();
+            // this.searchFormGroup.get('RegId').enable();
+            // this.searchFormGroup.get('RegId').reset();
+            // this.personalFormGroup.reset();
+            // this.Patientnewold = 2;
 
-            this.personalFormGroup = this.createPesonalForm();
-            this.personalFormGroup.markAllAsTouched();
-            this.VisitFormGroup = this.createVisitdetailForm();
-            this.VisitFormGroup.markAllAsTouched();
+            // this.personalFormGroup = this.createPesonalForm();
+            // this.personalFormGroup.markAllAsTouched();
+            // this.VisitFormGroup = this.createVisitdetailForm();
+            // this.VisitFormGroup.markAllAsTouched();
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
+
+            // this.getregdetails();
 
         }
 
@@ -456,6 +454,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onChangePatient(value) {
+        debugger
         var mode = "Company"
         if (value.text == "Company") {
             this._AppointmentlistService.getMaster(mode, 1);
@@ -482,6 +481,23 @@ export class NewAppointmentComponent implements OnInit {
             this.isRowDisabled = true
         else
             this.isRowDisabled = false
+    }
+
+    getregdetails(){
+        debugger
+        let RegId=this.searchFormGroup.get("RegId").value
+        if (RegId > 0) {
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(RegId).subscribe((response) => {
+                    this.registerObj = response;
+                   console.log( this.registerObj)
+                   });
+            }, 500);
+        }
+        else {
+            this.searchFormGroup.reset();
+
+        }
     }
 
     Vtotalcount = 0;
@@ -664,6 +680,7 @@ export class NewAppointmentComponent implements OnInit {
 
     getValidationMessages() {
         return {
+            RegId:[],
             firstName: [
                 { name: "required", Message: "First Name is required" },
                 { name: "maxLength", Message: "Enter only upto 50 chars" },
@@ -758,7 +775,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onNewSave() {
-
+        debugger
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
             if (this.searchFormGroup.get('regRadio').value == "registration") {
@@ -777,34 +794,37 @@ export class NewAppointmentComponent implements OnInit {
     onSave() {
 
         var Ageflag = false
-        // if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-        if (this.registerObj.ageYear != 0 || this.registerObj.ageMonth != 0 || this.registerObj.ageDay != 0) {
 
-            if (this.searchFormGroup.get('regRadio').value == "registration") {
-                //if (this.vPhoneAppId == 0 && this.Regflag == false) {
-                this.OnsaveNewRegister();
+        if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
+            // if (this.registerObj.ageYear != 0 || this.registerObj.ageMonth != 0 || this.registerObj.ageDay != 0) {
 
-            }
-            else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                this.onSaveRegistered();
-                this.onClose();
-            }
+                if (this.searchFormGroup.get('regRadio').value == "registration") {
+                    //if (this.vPhoneAppId == 0 && this.Regflag == false) {
+                    this.OnsaveNewRegister();
+
+                }
+                else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                    this.onSaveRegistered();
+                    this.onClose();
+                }
+
+            // } else {
+            //     Swal.fire("Enter Age Properly ..")
+            // }
 
         } else {
-            Swal.fire("Enter Age Properly ..")
+            Swal.fire("Form Invalid chk....")
         }
-
     }
 
-
     OnsaveNewRegister() {
-       
+
         console.log(this.VisitFormGroup.value);
         console.log(this.personalFormGroup.value);
-        
+
         let submitData = {
             "registration": this.personalFormGroup.value,
-            "visit":this.VisitFormGroup.value
+            "visit": this.VisitFormGroup.value
         };
         console.log(submitData);
         debugger
@@ -817,9 +837,17 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
     onSaveRegistered() {
-        console.log(this.personalFormGroup.value);
+        this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
+        this.VisitFormGroup.get("patientOldNew").setValue(2)
+       
+        
+        let submitData = {
+            "registration": this.personalFormGroup.value,
+            "visit": this.VisitFormGroup.value
+        };
+        console.log(submitData);
 
-        this._AppointmentlistService.RregisteredappointmentSave(this.personalFormGroup.value).subscribe((response) => {
+        this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);
             this._matDialog.closeAll();
@@ -1289,7 +1317,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangeDateofBirth(DateOfBirth) {
-        
+
         console.log(DateOfBirth)
         if (DateOfBirth) {
             const todayDate = new Date();
@@ -1430,7 +1458,7 @@ export class NewAppointmentComponent implements OnInit {
 
     selectChangeprefix(obj: any) {
         console.log(obj);
-      
+
     }
 
     selectChangegender(obj: any) {

@@ -51,7 +51,7 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   getValidationMessages() {
     return {
-      Departmentid: [
+      departmentId: [
         { name: "required", Message: "Department Name is required" }
       ],
       consultantDocId: [

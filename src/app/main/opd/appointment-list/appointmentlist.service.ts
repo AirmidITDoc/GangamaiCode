@@ -50,7 +50,7 @@ createSearchForm(): FormGroup {
 createConsultatDrForm() {
   return this._formBuilder.group({
     visitId:0,
-    regId:0,
+    // regId:0,
     consultantDocId: '',
     departmentId: ''
   });
@@ -59,7 +59,7 @@ createConsultatDrForm() {
 createRefranceDrForm() {
   return this._formBuilder.group({
     visitId:0,
-    regId:0,
+    // regId:0,
     refDocId: ['', [
       Validators.required]],
    
@@ -80,25 +80,26 @@ public documentuploadInsert(employee, loader = true){
 }
 
 public NewappointmentSave(Param: any, showLoader = true) {
-    if (Param.visitID) {
-        return this._httpClient1.PutData("VisitDetail/AppVisitInsert" + Param.visitID, Param, showLoader);
-    } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
+    // if (Param.visitID) {
+        return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
+    // } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
 }
 
 public RregisteredappointmentSave(Param: any, showLoader = true) {
-  if (Param.visitID) {
-      return this._httpClient1.PutData("VisitDetail/AppVisitInsert" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
+ 
+      return this._httpClient1.PostData("VisitDetail/Update",Param, showLoader);
+  
+  // else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
 }
 
 public EditConDoctor(Param: any, showLoader = true) {
 
-   return this._httpClient1.PostData("ConsRefDoctor/ConsultantDoctorUpdate", Param, showLoader);
+   return this._httpClient1.PutData("ConsRefDoctor/Edit/" + Param.visitId, Param, showLoader);
 }
 
 public EditRefDoctor(Param: any, showLoader = true) {
  
-  return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
+  return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate"+ Param.visitId, Param, showLoader);
 }
 
 public deactivateTheStatus(m_data) {
@@ -145,6 +146,10 @@ public getMaster(mode,Id) {
   public getAppointmenttemplateReport(Param: any, showLoader = true) {
     return this._httpClient1.PostData("Report/ViewReport",Param,showLoader);
   }
+
+  public getRegistraionById(Id,showLoader = true) {
+    return this._httpClient1.GetData("OutPatient/" + Id,showLoader);
+}
 }
 
 //192.168.2.100:

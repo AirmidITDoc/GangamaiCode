@@ -7,8 +7,8 @@
       </div>
       <div class="modal-header-right">
         <div class="close-icon">
-          <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-            <mat-icon>close</mat-icon>
+          <button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+            <mat-icon style="width: 10px;height: 10px;">close</mat-icon>
           </button>
         </div>
       </div>
@@ -38,33 +38,7 @@
 
              
               <br />
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-            
-
-                <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                  <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate"
-                    name="AppointmentDate" formControlName="appDate">
-                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                  <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                  <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate"
-                    name="AppointmentDate" formControlName="appTime">
-                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                  <mat-datepicker #picker2></mat-datepicker>
-                </mat-form-field>
-
-              
-
-                <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                  <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime"
-                    name="AppointmentDate" formControlName="phAppTime">
-                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                  <mat-datepicker #picker3></mat-datepicker>
-                </mat-form-field>
-              </div>
+             
                 <!-- <mat-form-field appearance="outline">
                   <mat-label>First Name</mat-label>
                   <input name="FirstName" formControlName="firstName" placeholder="First Name" matInput required
@@ -163,7 +137,7 @@
               </div>
             
             </div>
-
+        
           
             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
@@ -177,7 +151,33 @@
 
 
         </div>
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
+            
+
+          <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+            <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate"
+              name="AppointmentDate" formControlName="appDate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+            <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate"
+              name="AppointmentDate" formControlName="appTime">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+        
+
+          <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+            <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime"
+              name="AppointmentDate" formControlName="phAppTime">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+        </div>
       </form>
     </div>
   </div>
