@@ -139,7 +139,7 @@ export class DoctornoteComponent implements OnInit {
       this.vWardName = this.selectedAdvanceObj.RoomName;
       this.vAdmissionID  = this.selectedAdvanceObj.AdmissionID;
       this.getDoctorNotelist()
-      this.getHandOverNotelist(this.vAdmissionID);
+      this.getHandOverNotelist();
     } 
  
   }
@@ -187,7 +187,7 @@ getSelectedObjRegIP(obj) {
   this.vPatientType = obj.PatientType;
   this.vCompanyId = obj.CompanyId;
   this.getDoctorNotelist();
-  this.getHandOverNotelist(obj);
+  this.getHandOverNotelist();
   this.dsDoctorNoteList.data = []
   this.dsHandOverNoteList.data = [] 
   this.HandOverNoteList = []
@@ -389,8 +389,7 @@ getDoctorNotelist() {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }  
-  onClose() {
-    debugger
+  onClose() { 
     // this._NursingStationService.myform.reset();
     this._matDialog.closeAll();
     //this.onClearPatientInfo();
@@ -401,8 +400,7 @@ getDoctorNotelist() {
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this._NursingStationService.myform.get('HandOverType').setValue('Morning')
-    this.dsHandOverNoteList.data = [];
+    this._NursingStationService.myform.get('HandOverType').setValue('Morning') 
     this.HandOverNoteList = [];
   }
   onClearPatientInfo() {
@@ -451,13 +449,15 @@ getDoctorNotelist() {
         CreatedBy:this.accountService.currentUserValue.user.userName || ''
       }
     )
-    this.dsHandOverNoteList.data = this.HandOverNoteList   
+   // this.dsHandOverNoteList.data = this.HandOverNoteList   
+   this.onSubmitHandOver();
    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
    this._NursingStationService.myform.get('HandOverType').setValue('Morning')
+  
   }
   deleteHandOverTableRow(element) { 
     let index = this.HandOverNoteList.indexOf(element);
@@ -495,17 +495,17 @@ onSubmitHandOver() {
     });
     return;
   } 
-  if (!this.dsHandOverNoteList.data.length) {
-    this.toastr.warning('Please add Patient HandOver Note', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
+  // if (!this.dsHandOverNoteList.data.length) {
+  //   this.toastr.warning('Please add Patient HandOver Note', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
 
 this.isLoading = 'submit'; 
 if(!this._NursingStationService.myform.get("docHandId").value){  
   let saveTDoctorPatientHandoverParam 
-  this.dsHandOverNoteList.data.forEach(element=>{
+  this.HandOverNoteList.forEach(element=>{
      saveTDoctorPatientHandoverParam={
       "admID": this.vAdmissionID,
       "tDate": element.VDate,
@@ -528,7 +528,9 @@ if(!this._NursingStationService.myform.get("docHandId").value){
     if (response) {
       this.toastr.success('Record Saved Successfully.', 'Saved !', {
         toastClass: 'tostr-tost custom-toast-success',
-      });   
+      }); 
+      this.getHandOverNotelist()
+      this.onClose()  
     }
     else {
       this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
@@ -543,7 +545,7 @@ if(!this._NursingStationService.myform.get("docHandId").value){
 }
 else{ 
   let updateTDoctorPatientHandoverParam 
-  this.dsHandOverNoteList.data.forEach(element=>{
+  this.HandOverNoteList.forEach(element=>{
     updateTDoctorPatientHandoverParam={
       "docHandId": this._NursingStationService.myform.get("docHandId").value,
       "admID":  this.vAdmissionID,
@@ -567,7 +569,7 @@ this._NursingStationService.HandOverUpdate(submitData).subscribe(response => {
     this.toastr.success('Record Updated Successfully.', 'Updated !', {
       toastClass: 'tostr-tost custom-toast-success',
     }); 
-    this.getTemplateNoteList();
+    this.getHandOverNotelist()
     this.onClose()
   }
   else {
@@ -589,9 +591,9 @@ this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
 this._NursingStationService.myform.get('HandOverType').setValue('Morning')
 this.dsHandOverNoteList.data = [];
 }
-getHandOverNotelist(obj) {
+getHandOverNotelist() {
   var vdata = {
-    'AdmId': obj.AdmissionID 
+    'AdmId':this.vAdmissionID 
   }
   this._NursingStationService.getHandOverNotelist(vdata).subscribe(data => {
     this.dsHandOverNoteList.data = data as DocNote[];

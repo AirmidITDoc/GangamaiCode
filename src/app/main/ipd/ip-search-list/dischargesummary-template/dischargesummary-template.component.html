@@ -283,7 +283,7 @@
 
                                 <div class="input-add-button">
                                     <div matTooltip="Select Itemname to enable this button!!"
-                                        [matTooltipPosition]="'above'">
+                                        [matTooltipPosition]="'above'" fxLayoutGap="10px" fxLayout="row">
                                         <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()" [disabled]="MedicineItemForm.invalid">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
@@ -291,7 +291,12 @@
                                             <span>Add</span>
                                         </button>
 
-                                    </div>
+                                        <button mat-raised-button (click)="getItemMaster()">
+                                            <mat-icon>add</mat-icon>
+                                            Drug</button>
+
+                                    </div> 
+                                   
                                 </div>
                             </div>
                         </form>

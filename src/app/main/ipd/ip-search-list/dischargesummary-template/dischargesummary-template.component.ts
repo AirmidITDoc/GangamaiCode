@@ -15,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AddItemComponent } from 'app/main/opd/new-casepaper/add-item/add-item.component';
 
 @Component({
   selector: 'app-dischargesummary-template',
@@ -769,4 +770,17 @@ export class DischargesummaryTemplateComponent implements OnInit {
   onClose() {
     this._matDialog.closeAll();
    }
+
+  getItemMaster() {
+    const dialogRef = this._matDialog.open(AddItemComponent,
+      {
+        maxWidth: "60vw",
+        maxHeight: "65vh",
+        width: '100%',
+        height: "100%"
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
 }
