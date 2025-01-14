@@ -63,7 +63,7 @@ export class NewConsentComponent implements OnInit {
   vDepartmentName: any;
   vIPDNo: any;
   vAdmissionID: any;
-  vConsentName:any
+  vConsentName: any
   registerObj: any;
   isDepartmentSelected: boolean = false;
   isTemplateSelected: boolean = false;
@@ -71,10 +71,10 @@ export class NewConsentComponent implements OnInit {
   optionsDep: any[] = [];
   selectedDepartment: string = '';
   selectedTemplate: string = '';
-  vConsentId:any;
-  vTemplateId:any;
-  vVisited:any;
-  Vopipid:any;
+  vConsentId: any;
+  vTemplateId: any;
+  vVisited: any;
+  Vopipid: any;
   optionsTemp: any[] = [];
   filteredOptionsTemp: Observable<string[]>;
 
@@ -109,70 +109,71 @@ export class NewConsentComponent implements OnInit {
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
 
 
-    if(this.data){
-      
-      this.registerObj1=this.data.Obj;
-      console.log("Consent RegisterObj:",this.registerObj1)
+    if (this.data) {
+      debugger
+      this.registerObj1 = this.data.Obj;
+      console.log("Consent RegisterObj:", this.registerObj1)
 
       if (this.registerObj1.OPIPType === 1) {
         // Fetch IP-specific information
-      console.log("IIIIIIIIIIIIIPPPPPPPPP:",this.registerObj1.OPIPType);
-      this.vWardName=this.registerObj1.RoomName;
-      this.vBedNo=this.registerObj1.BedName;
-      this.vGenderName=this.registerObj1.GenderName;
-      // this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
-      this.vPatientName = this.registerObj1.PatientName;
-      this.vAgeYear = this.registerObj1.AgeYear;
-      this.RegId = this.registerObj1.RegID;
-      this.vAdmissionID = this.registerObj1.OPIPID
-      this.vAge=this.registerObj1.Age;
-      this.vRegNo =this.registerObj1.RegNo; 
-      this.vIPDNo = this.registerObj1.IPDNo;
-      this.vCompanyName = this.registerObj1.CompanyName;
-      this.vTariffName = this.registerObj1.TariffName; 
-      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
-      this.vDepartmentName=this.registerObj1.DepartmentName;      
-      this.vSelectedOption = 'IP';
-      this.vConsentName=this.registerObj1.ConsentName;
-      this.vConsentId=this.registerObj1.ConsentId;
-      this.vConsentText=this.registerObj1.ConsentText;
-      
-      this.selectedDepartment=this.registerObj1.ConsentDeptId;
-      this.selectedTemplate=this.registerObj1.ConsentTempId;
-      this.vTemplateId=this.registerObj1.ConsentTempId
-      
-      // this.getSiteList();
-      this.getDepartmentList();
+        console.log("IIIIIIIIIIIIIPPPPPPPPP:", this.registerObj1.OPIPType);
+        this.vWardName = this.registerObj1.RoomName;
+        this.vBedNo = this.registerObj1.BedName;
+        this.vGenderName = this.registerObj1.GenderName;
+        // this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        this.vAdmissionID = this.registerObj1.OPIPID
+        this.vAge = this.registerObj1.AgeYear;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vIPDNo = this.registerObj1.OPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vSelectedOption = 'IP';
+        this.vConsentName = this.registerObj1.ConsentName;
+        this.vConsentId = this.registerObj1.ConsentId;
+        this.vConsentText = this.registerObj1.ConsentText;
+
+        this.selectedDepartment = this.registerObj1.ConsentDeptId;
+        this.selectedTemplate = this.registerObj1.ConsentTempId;
+        this.vTemplateId = this.registerObj1.ConsentTempId
+
+        // this.getSiteList();
+        this.getDepartmentList();
       } else if (this.registerObj1.OPIPType === 0) {
         // Fetch OP-specific information
-      console.log("OOOOOOOPPPPPPPPP:",this.registerObj1.OPIPType);
-      this.vWardName=this.registerObj1.RoomName;
-      this.vBedNo=this.registerObj1.BedName;
-      this.vGenderName=this.registerObj1.GenderName;
-      this.vPatientName = this.registerObj1.PatientName;
-      this.vAgeYear = this.registerObj1.AgeYear;
-     this.RegId = this.registerObj1.RegID;
-      this.vVisited = this.registerObj1.OPIPID
-      this.vAge=this.registerObj1.Age;
-      this.vRegNo =this.registerObj1.RegNo; 
-      this.vOPDNo = this.registerObj1.OPDNo;
-      this.vCompanyName = this.registerObj1.CompanyName;
-      this.vTariffName = this.registerObj1.TariffName; 
-      this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
-      this.vDoctorName = this.registerObj1.DoctorName;
-      this.vDepartmentName=this.registerObj1.DepartmentName;
-      this.vSelectedOption = 'OP';
-      this.vConsentName=this.registerObj1.ConsentName;
-      this.vConsentId=this.registerObj1.ConsentId;
-      this.vConsentText=this.registerObj1.ConsentText;
-      
-      this.selectedDepartment=this.registerObj1.ConsentDeptId;
-      this.selectedTemplate=this.registerObj1.ConsentTempId;
-      this.vTemplateId=this.registerObj1.ConsentTempId
+        console.log("OOOOOOOPPPPPPPPP:", this.registerObj1.OPIPType);
+        this.vWardName = this.registerObj1.RoomName;
+        this.vBedNo = this.registerObj1.BedName;
+        this.vGenderName = this.registerObj1.GenderName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        this.vVisited = this.registerObj1.OPIPID
+        this.vAdmissionID = this.registerObj1.OPIPID
+        this.vAge = this.registerObj1.Age;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vOPDNo = this.registerObj1.OPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+        this.vDoctorName = this.registerObj1.DoctorName;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vSelectedOption = 'OP';
+        this.vConsentName = this.registerObj1.ConsentName;
+        this.vConsentId = this.registerObj1.ConsentId;
+        this.vConsentText = this.registerObj1.ConsentText;
 
-      // this.getSiteList();
-      this.getDepartmentList();
-      }    
+        this.selectedDepartment = this.registerObj1.ConsentDeptId;
+        this.selectedTemplate = this.registerObj1.ConsentTempId;
+        this.vTemplateId = this.registerObj1.ConsentTempId
+
+        // this.getSiteList();
+        this.getDepartmentList();
+      }
     }
 
     this.vOtReqOPD = this._loggedService.currentUserValue.user.pharOPOpt;
@@ -209,32 +210,23 @@ export class NewConsentComponent implements OnInit {
       this.PatientInformReset();
       this.OP_IPType = 0;
       this.RegId = "";
-      this._ConsentService.myform.get('MobileNo').reset();
-      this._ConsentService.myform.get('PatientName').reset();
-      this._ConsentService.myform.get('MobileNo').clearValidators();
-      this._ConsentService.myform.get('PatientName').clearValidators();
-      this._ConsentService.myform.get('MobileNo').updateValueAndValidity();
-      this._ConsentService.myform.get('PatientName').updateValueAndValidity();
+      // this._ConsentService.myform.get('MobileNo').reset();
+      // this._ConsentService.myform.get('PatientName').reset();
+      // this._ConsentService.myform.get('MobileNo').clearValidators();
+      // this._ConsentService.myform.get('PatientName').clearValidators();
+      // this._ConsentService.myform.get('MobileNo').updateValueAndValidity();
+      // this._ConsentService.myform.get('PatientName').updateValueAndValidity();
     }
     else if (event.value == 'IP') {
       this.PatientInformReset();
       this.OP_IPType = 1;
       this.RegId = "";
-      this._ConsentService.myform.get('MobileNo').reset();
-      this._ConsentService.myform.get('PatientName').reset();
-      this._ConsentService.myform.get('MobileNo').clearValidators();
-      this._ConsentService.myform.get('PatientName').clearValidators();
-      this._ConsentService.myform.get('MobileNo').updateValueAndValidity();
-      this._ConsentService.myform.get('PatientName').updateValueAndValidity();
-    } else {
-      this._ConsentService.myform.get('MobileNo').reset();
-      this._ConsentService.myform.get('MobileNo').setValidators([Validators.required]);
-      this._ConsentService.myform.get('MobileNo').enable();
-      this._ConsentService.myform.get('PatientName').reset();
-      this._ConsentService.myform.get('PatientName').setValidators([Validators.required]);
-      this._ConsentService.myform.get('PatientName').enable();
-      this._ConsentService.myform.updateValueAndValidity();
-      this.OP_IPType = 2;
+      // this._ConsentService.myform.get('MobileNo').reset();
+      // this._ConsentService.myform.get('PatientName').reset();
+      // this._ConsentService.myform.get('MobileNo').clearValidators();
+      // this._ConsentService.myform.get('PatientName').clearValidators();
+      // this._ConsentService.myform.get('MobileNo').updateValueAndValidity();
+      // this._ConsentService.myform.get('PatientName').updateValueAndValidity();
     }
   }
 
@@ -283,7 +275,7 @@ export class NewConsentComponent implements OnInit {
     this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
     this.vAgeYear = obj.AgeYear;
     this.RegId = obj.RegID;
-    this.vVisited = obj.VisitId
+    this.vAdmissionID = obj.VisitId
     this.vAge = obj.Age;
     this.vRegNo = obj.RegNo;
     this.vOPDNo = obj.OPDNo;
@@ -318,7 +310,7 @@ export class NewConsentComponent implements OnInit {
       this.vDepartmentName = obj.DepartmentName;
       this.vAge = obj.Age;
       this.vGenderName = obj.GenderName;
-      this.vAdmissionID=obj.AdmissionID;
+      this.vAdmissionID = obj.AdmissionID;
       this.getDepartmentList();
     }
   }
@@ -339,7 +331,7 @@ export class NewConsentComponent implements OnInit {
     this.RegId = '';
     this.vAdmissionID = '';
     this.vAge = '';
-    this.vRegNo
+    this.vRegNo = '';
     this.vOPDNo = '';
     this.vCompanyName = '';
     this.vTariffName = '';
@@ -349,65 +341,15 @@ export class NewConsentComponent implements OnInit {
     this.OP_IP_Id = '';
     this.vIPDNo = '';
   }
-  selectedTemplateOption: any; 
+  selectedTemplateOption: any;
   onTemplateSelect(option: any) {
-    
+
     this.selectedTemplateOption = option;
     this.isTemplateSelected = true;
   }
 
-addTemplateDescription() {
-  debugger
-  if (this.vConsentName == '' || this.vConsentName == null || this.vConsentName== undefined) {
-    this.toastr.warning('Please enter ConsentName  ', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  } 
-  if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
-    this.toastr.warning('Please select Department ', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  if (this._ConsentService.myform.get('Department').value) {
-    if(!this.DepartmentList.find(item => item.DepartmentName == this._ConsentService.myform.get('Department').value.DepartmentName))
-   {
-    this.toastr.warning('Please select Valid Department Name', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-   }
-  }
-  if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
-    this.toastr.warning('Please enter select Template ', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  if (this._ConsentService.myform.get('Template').value) {
-    if(!this.TemplateList.find(item => item.ConsentId == this._ConsentService.myform.get('Template').value.ConsentId))
-   {
-    this.toastr.warning('Please select Valid Template Name', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-   }
-  }
-
-  if (this.selectedTemplateOption) {
-    this.vConsentText = this.selectedTemplateOption.ConsentDesc;
-    // `Description: ${this.selectedTemplateOption.ConsentDesc}`
-  }
-}
-
-  onSave(){
-    if (this.vConsentName == '' || this.vConsentName == null || this.vConsentName== undefined) {
-      this.toastr.warning('Please enter ConsentName  ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
+  addTemplateDescription() {
+    debugger
     if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -415,13 +357,12 @@ addTemplateDescription() {
       return;
     }
     if (this._ConsentService.myform.get('Department').value) {
-      if(!this.DepartmentList.find(item => item.DepartmentName == this._ConsentService.myform.get('Department').value.DepartmentName))
-     {
-      this.toastr.warning('Please select Valid Department Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-     }
+      if (!this.DepartmentList.find(item => item.DepartmentName == this._ConsentService.myform.get('Department').value.DepartmentName)) {
+        this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
     if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
       this.toastr.warning('Please enter select Template ', 'Warning !', {
@@ -430,13 +371,48 @@ addTemplateDescription() {
       return;
     }
     if (this._ConsentService.myform.get('Template').value) {
-      if(!this.TemplateList.find(item => item.ConsentId == this._ConsentService.myform.get('Template').value.ConsentId))
-     {
-      this.toastr.warning('Please select Valid Template Name', 'Warning !', {
+      if (!this.TemplateList.find(item => item.ConsentId == this._ConsentService.myform.get('Template').value.ConsentId)) {
+        this.toastr.warning('Please select Valid Template Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    if (this.selectedTemplateOption) {
+      this.vConsentText = this.selectedTemplateOption.ConsentDesc;
+      // `Description: ${this.selectedTemplateOption.ConsentDesc}`
+    }
+  }
+
+  onSave() {
+    if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
+      this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-     }
+    }
+    if (this._ConsentService.myform.get('Department').value) {
+      if (!this.DepartmentList.find(item => item.DepartmentName == this._ConsentService.myform.get('Department').value.DepartmentName)) {
+        this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
+      this.toastr.warning('Please enter select Template ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._ConsentService.myform.get('Template').value) {
+      if (!this.TemplateList.find(item => item.ConsentId == this._ConsentService.myform.get('Template').value.ConsentId)) {
+        this.toastr.warning('Please select Valid Template Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
 
     Swal.fire({
@@ -446,59 +422,50 @@ addTemplateDescription() {
       showCancelButton: true,
       confirmButtonColor: '#28a745',
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Save it!" ,
+      confirmButtonText: "Yes, Save it!",
       cancelButtonText: "No, Cancel"
     }).then((result) => {
       if (result.isConfirmed) {
-          this.onSubmit();
+        this.onSubmit();
       }
     });
   }
 
   onSubmit() {
-    
+
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    if(!this.vConsentId){
-
-      let m_dataInsert: any;
-    if (this.vSelectedOption === 'IP') {
-        m_dataInsert = {
-            "saveTConsentInformationparams": {
-                "consentId": 0,
-                "consentDate": formattedDate,
-                "consentTime": formattedTime,
-                "opipid": this.vAdmissionID,
-                "opipType": 1,
-                "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
-                "consentTempId":this._ConsentService.myform.get("Template").value.ConsentId || 0,
-                "consentName": this._ConsentService.myform.get("ConsentName").value || 0,
-                "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
-                "createdBy": this._loggedService.currentUserValue.user.id,
-            }
-        };
-    } else { 
-        m_dataInsert = {
-            "saveTConsentInformationparams": {
-                "consentId": 0,
-                "consentDate": formattedDate,
-                "consentTime": formattedTime,
-                "opipid": this.vVisited,
-                "opipType": 0,
-                "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
-                "consentTempId": this._ConsentService.myform.get("Template").value.ConsentId || 0,
-                "consentName": this._ConsentService.myform.get("ConsentName").value || 0,
-                "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
-                "createdBy": this._loggedService.currentUserValue.user.id,
-            }
-        };
+    let opip_Type;
+    if (this._ConsentService.myform.get('PatientType').value == 'IP') {
+      opip_Type = 1;
     }
-      console.log("insertJson:", m_dataInsert);
+    else {
+      opip_Type = 0;
+    }
+    if (!this.vConsentId) {
 
-      this._ConsentService.NursingConsentInsert(m_dataInsert).subscribe(response =>{
+      let saveTConsentInformationparams = {
+        "consentId": 0,
+        "consentDate": formattedDate,
+        "consentTime": formattedTime,
+        "opipid": this.vAdmissionID,
+        "opipType": opip_Type,
+        "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
+        "consentTempId": this._ConsentService.myform.get("Template").value.ConsentId || 0,
+        "consentName": this._ConsentService.myform.get("Template").value.ConsentName || 0,
+        "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
+        "createdBy": this._loggedService.currentUserValue.user.id,
+      }
+     
+      let submitData = {
+        "saveTConsentInformationparams": saveTConsentInformationparams
+      }
+      console.log("insertJson:", submitData);
+
+      this._ConsentService.NursingConsentInsert(submitData).subscribe(response => {
         if (response) {
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
@@ -511,43 +478,28 @@ addTemplateDescription() {
         }
       });
     }
-    else{
-      
-      let m_dataUpdate: any;
-      if (this.vSelectedOption === 'IP') { 
-        m_dataUpdate = {
-            "updateTConsentInformationparams": {
-                "consentId": this.vConsentId,
-                "consentDate": formattedDate,
-                "consentTime": formattedTime,
-                "opipid": this.vAdmissionID,
-                "opipType": 1,
-                "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
-                "consentTempId": this._ConsentService.myform.get("Template").value.ConsentId || 0,
-                "consentName": this._ConsentService.myform.get("ConsentName").value || 0,
-                "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
-                "modifiedBy": this._loggedService.currentUserValue.user.id,
-            }
-        };
-    } else { // OP
-        m_dataUpdate = {
-            "updateTConsentInformationparams": {
-                "consentId": this.vConsentId,
-                "consentDate": formattedDate,
-                "consentTime": formattedTime,
-                "opipid": this.vVisited,
-                "opipType": 0,
-                "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
-                "consentTempId": this._ConsentService.myform.get("Template").value.ConsentId || 0,
-                "consentName": this._ConsentService.myform.get("ConsentName").value || 0,
-                "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
-                "modifiedBy": this._loggedService.currentUserValue.user.id,
-            }
-        };
-    }
-      console.log("UpdateJson:", m_dataUpdate);
+    else {
 
-      this._ConsentService.NursingConsentUpdate(m_dataUpdate).subscribe(response =>{
+      let updateTConsentInformationparams = {
+        "consentId": this.vConsentId,
+        "consentDate": formattedDate,
+        "consentTime": formattedTime,
+        "opipid": this.vAdmissionID,
+        "opipType": opip_Type,
+        "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
+        "consentTempId": this._ConsentService.myform.get("Template").value.ConsentId || 0,
+        "consentName": this._ConsentService.myform.get("Template").value.ConsentName || 0,
+        "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
+        "modifiedBy": this._loggedService.currentUserValue.user.id,
+      }
+      
+      let updateData = {
+        "updateTConsentInformationparams": updateTConsentInformationparams
+      }
+      
+      console.log("UpdateJson:", updateData);
+
+      this._ConsentService.NursingConsentUpdate(updateData).subscribe(response => {
         if (response) {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
@@ -560,7 +512,10 @@ addTemplateDescription() {
         }
       });
     }
+
   }
+
+
 
   private _filterDep(value: any): string[] {
     if (value) {
@@ -571,7 +526,7 @@ addTemplateDescription() {
   }
 
   getDepartmentList() {
-    
+
     this._ConsentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
@@ -589,17 +544,17 @@ addTemplateDescription() {
       }
     });
   }
-  getOptionTextDep(option) {    
+  getOptionTextDep(option) {
     return option && option.DepartmentName ? option.DepartmentName : '';
   }
 
   OnChangeTemplateList(departmentObj) {
-    
+    debugger
     console.log(departmentObj)
     this._ConsentService.myform.get('Template').reset();
-    var vdata={
-      "DepartmentId":departmentObj.DepartmentId
-    } 
+    var vdata = {
+      "DepartmentId": departmentObj.DepartmentId
+    }
 
     this.isDepartmentSelected = true;
     this._ConsentService.getTemplateMasterCombo(vdata).subscribe(
@@ -611,17 +566,17 @@ addTemplateDescription() {
           startWith(''),
           map(value => value ? this._filterTemp(value) : this.TemplateList.slice()),
         );
-        if(this.registerObj1){
-          
-          const dVaule=this.TemplateList.filter(item=>item.ConsentId == this.registerObj1.ConsentTempId)
+        if (this.registerObj1) {
+          debugger
+          const dVaule = this.TemplateList.filter(item => item.ConsentName == this.registerObj1.ConsentName)
           this._ConsentService.myform.get('Template').setValue(dVaule[0])
         }
-        console.log("doctor ndfkdf:",this._ConsentService.myform.get('Template').value)
+        console.log("doctor ndfkdf:", this._ConsentService.myform.get('Template').value)
       })
   }
 
   private _filterTemp(value: any): string[] {
-    
+
     if (value) {
       const filterValue = value && value.ConsentName ? value.ConsentName.toLowerCase() : value.toLowerCase();
       this.isTemplateSelected = false;
@@ -631,7 +586,7 @@ addTemplateDescription() {
   }
 
   getOptionTextTemp(option) {
-    
+
     return option && option.ConsentName ? option.ConsentName : '';
   }
 
@@ -639,11 +594,12 @@ addTemplateDescription() {
     this._ConsentService.myform.reset({
       start: this._ConsentService.myform.get('start')?.value,
       end: this._ConsentService.myform.get('end')?.value,
-    });    
+      Language: '1'
+    });
     this.dialogRef.close();
   }
   onClear() {
-    this._ConsentService.myform.reset({Language: '1'});
+    this._ConsentService.myform.reset({ Language: '1' });
   }
 
 }

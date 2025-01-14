@@ -166,8 +166,8 @@ export class AppointmentSreviceService {
 
   // code by raksha
   //template list
-  public getTemplateMasterCombo(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentMasterList", param)
+  public getCertificateCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_CertificateMasterCombo", {})
   }
 
   public CertificateInsert(employee) {

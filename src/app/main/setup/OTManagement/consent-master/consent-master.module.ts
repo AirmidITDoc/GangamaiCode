@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { ConsentMasterComponent } from './consent-master.component';
 import { NewConsentMasterComponent } from './new-consent-master/new-consent-master.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 const routes: Routes = [
   {
@@ -88,7 +89,8 @@ const routes: Routes = [
     MatSelectModule,
     MatSelectModule,
     MatChipsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    AngularEditorModule
   ],
   providers: [
     DatePipe,

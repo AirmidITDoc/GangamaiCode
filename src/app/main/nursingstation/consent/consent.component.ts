@@ -24,11 +24,12 @@ export class ConsentComponent implements OnInit {
   hasSelectedContacts: boolean;
 
   displayedColumns: string[] = [
+    'IpOpType',
     'ConsentDateTime',
-    'ConsentName',
-    'ConsentText',
-    'ConsentDeptId',
-    'ConsentTempId',
+    'PatientName',
+    'AgeYear',
+    'Mobile',
+    'AddedBy',
     // 'Action'
   ]
   displayedPatientColumns: string[] = [
@@ -39,10 +40,12 @@ export class ConsentComponent implements OnInit {
   ]
 
   dsConsentList = new MatTableDataSource<OPIPMasterList>();
-  dsPatientList = new MatTableDataSource<OPIPMasterList>();
+  dsPatientDetailList = new MatTableDataSource<OPIPMasterList>();
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginator1', { static: true }) paginator1: MatPaginator;
+  @ViewChild('paginator2', { static: true }) paginator2: MatPaginator;
+  @ViewChild(MatSort) sort1: MatSort;
+  @ViewChild(MatSort) sort2: MatSort;
   
   constructor(
     public _ConsentService : ConsentService,
@@ -57,7 +60,7 @@ export class ConsentComponent implements OnInit {
   }
 
   getConsentPatientInfoList(){
-    debugger
+    
     this.sIsLoading = 'loading-data';
     var D_data = {
       "FromDate": this.datePipe.transform(this._ConsentService.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
@@ -66,8 +69,8 @@ export class ConsentComponent implements OnInit {
     console.log("certificateList:", D_data);
     this._ConsentService.getConsentPatientlist(D_data).subscribe(Visit => {
     this.dsConsentList.data = Visit as OPIPMasterList[];
-    this.dsConsentList.sort = this.sort;
-    this.dsConsentList.paginator = this.paginator;
+    this.dsConsentList.sort = this.sort1;
+    this.dsConsentList.paginator = this.paginator1;
     this.sIsLoading = '';
     },
       error => {
@@ -75,6 +78,20 @@ export class ConsentComponent implements OnInit {
       }); 
   }
 
+  currentOPIPID: any;
+  getConsentPatientInfoDetailList(Param){
+    this.currentOPIPID = Param.OPIPID;
+    var vdata={
+      OPIPID: Param.OPIPID
+    }
+    console.log("OPIPID:",vdata)
+    this._ConsentService.getConsentPatientInfoDetaillist(vdata).subscribe(data =>{
+      this.dsPatientDetailList.data = data as OPIPMasterList[];
+      this.dsPatientDetailList.sort = this.sort2;
+      this.dsPatientDetailList.paginator = this.paginator2;
+       console.log(this.dsPatientDetailList.data);
+    })
+  }
 
   NewConsent() {
     const dialogRef = this._matDialog.open(NewConsentComponent,
@@ -103,6 +120,9 @@ export class ConsentComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed - Insert Action', result);
         this.getConsentPatientInfoList();
+        if (this.currentOPIPID) {
+          this.getConsentPatientInfoDetailList({ OPIPID: this.currentOPIPID });
+        }
      });
   }
 

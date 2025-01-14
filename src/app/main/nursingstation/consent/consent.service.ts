@@ -49,6 +49,9 @@ export class ConsentService {
   public getConsentPatientlist(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentpatientInformation_List", employee)
   }
+  public getConsentPatientInfoDetaillist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentpatientInformationDemo_List",Param)
+  }
   public NursingConsentInsert(employee) {
     return this._httpClient.post("OutPatient/TConsentInformationSave", employee);
   }

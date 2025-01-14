@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ConsentMasterService } from '../consent-master.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-new-consent-master',
@@ -39,6 +40,22 @@ export class NewConsentMasterComponent implements OnInit {
     private _loggedService: AuthenticationService
   ) { }
 
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '13rem',
+    minHeight: '13rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+  onBlur(e: any) {
+    this.vConsentDesc = e.target.innerHTML;
+  }
+  
   ngOnInit(): void {
     this.getDepartmentList();
 

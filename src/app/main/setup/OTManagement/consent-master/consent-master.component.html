@@ -39,6 +39,7 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Search Consent Name</mat-label>
                                 <input name="OtConsentNameSearch" formControlName="OtConsentNameSearch" matInput
+                                oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
                                     (keyup)="getotConsentList()">
                                 <span class="error" *ngIf="f.OtConsentNameSearch.invalid && f.OtConsentNameSearch.touched">
                                     OtConsent Name is required Enter only Alphabets</span>
@@ -99,7 +100,11 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-200">Consent Desc
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            {{contact.ConsentDesc}}
+                                        </mat-cell> -->
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-200 ellipsis"
+                                        matTooltip="{{contact.ConsentDesc}}">
                                             {{contact.ConsentDesc}}
                                         </mat-cell>
                                     </ng-container>

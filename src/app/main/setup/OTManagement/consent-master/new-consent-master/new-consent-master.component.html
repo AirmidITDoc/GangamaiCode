@@ -73,15 +73,18 @@
                                             </div>
                                         </div>
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Description</mat-label>
-                                                <textarea rows="5" name="ConsentDesc" formControlName="ConsentDesc"
-                                                    matInput type="text" OnlyNumber OnlyNumber id="ConsentDesc"
-                                                    [(ngModel)]="vConsentDesc">
-                                                </textarea>
-                                            </mat-form-field>
+                                        <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
+                                        
+                                            <mat-label>Description</mat-label>
+                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" [(ngModel)]="vConsentDesc" required
+                                                formControlName="ConsentDesc"></angular-editor>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                                                                        <mat-label>Description</mat-label>
+                                                                                        <textarea rows="5" name="ConsentDesc" formControlName="ConsentDesc"
+                                                                                            matInput type="text" OnlyNumber OnlyNumber id="ConsentDesc"
+                                                                                            [(ngModel)]="vConsentDesc">
+                                                                                        </textarea>
+                                                                                    </mat-form-field> -->
                                         </div>
 
                                     </div>

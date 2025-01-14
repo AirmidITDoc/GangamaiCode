@@ -105,6 +105,12 @@
                                     fxLayoutAlign="space-between">
                                     <div fxLayout="column" fxLayoutGap="6px">
                                       <div class="patient-col">
+                                        <span class="patient-col-key">UHID No
+                                        </span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{vRegNo}}</span>
+                                      </div>
+                                      <div class="patient-col">
                                         <span class="patient-col-key">{{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
                                         </span>
                                         <span>:</span>
@@ -116,11 +122,6 @@
                                         </span>
                                         <span>:</span>
                                         <span class="patient-col-value">{{vPatientName}}</span>
-                                      </div>
-                                      <div class="patient-col">
-                                        <span class="patient-col-key">Doctor Name</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value">{{vDoctorName}}</span>
                                       </div>
                                     </div>
                                     <div fxLayout="column" fxLayoutGap="6px">
@@ -147,7 +148,11 @@
                                       </div>
                                     </div>
                                     <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
-      
+                                      <div class="patient-col">
+                                        <span class="patient-col-key">Doctor Name</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{vDoctorName}}</span>
+                                      </div>
                                       <div class="patient-col">
                                         <span class="patient-col-key">Tarrif Name
                                         </span>
@@ -173,22 +178,10 @@
 
                             <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
 
-                              <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Consent Name</mat-label>
-                                <input name="ConsentName" formControlName="ConsentName" required
-                                    placeholder="Consent Name" matInput type="text"
-                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                    [(ngModel)]="vConsentName ">
-                                <mat-error
-                                    *ngIf="_ConsentService.myform.get('ConsentName').invalid && _ConsentService.myform.get('ConsentName').touched">
-                                    Consent Name is required Enter only
-                                    Alphabets</mat-error>
-                            </mat-form-field>
-
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Department</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                                      formControlName="Department" [matAutocomplete]="autoDep"
+                                      formControlName="Department" [matAutocomplete]="autoDep" required
                                        [(ngModel)]="selectedDepartment">
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
@@ -199,7 +192,7 @@
                   
                                     <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
                                       <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                        (onSelectionChange)="OnChangeTemplateList(option)">
+                                        (onSelectionChange)="OnChangeTemplateList(option)" >
                                         {{option.DepartmentName}}
                                       </mat-option>
                                     </mat-autocomplete>
