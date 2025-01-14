@@ -157,7 +157,7 @@
                             <mat-tab label="Nursing Note">
                                 <div class="content p-12 pb-56">
                                     <div fxLayout="row" fxLayoutGap="10px">
-                                        <div fxFlex.gt-sm="50%" fxFlex>
+                                        <div fxFlex.gt-sm="35%" fxFlex>
                                             <mat-card style="padding: 5px;">
                                                 <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
                                                     [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
@@ -195,6 +195,9 @@
                                                                 (click)="OnEdit(element)">
                                                                 <mat-icon>edit</mat-icon>
                                                             </button>
+                                                            <button mat-icon-button matTooltip="Print" >
+                                                                <mat-icon>print</mat-icon>
+                                                            </button>
     
                                                             <!-- <button mat-icon-button color="warn" matTooltip="Delete">
                                                                 <mat-icon>delete</mat-icon>
@@ -230,7 +233,7 @@
                                             </mat-card>
                                         </div>
     
-                                        <div fxFlex.gt-sm="50%" fxFlex>
+                                        <div fxFlex.gt-sm="65%" fxFlex>
     
                                             <div fxLayout="column" fxLayoutGap="10px">
                                                 <mat-card style="padding: 5px;height: 358px;overflow: auto;">
@@ -597,9 +600,7 @@
                                                     </mat-form-field> 
 
 
-                                                    <span style="font-size:40px;padding: 15px"></span>
-
-                                                   
+                                                    <span style="font-size:40px;padding: 15px"></span> 
 
                                                 
                                                     <div fxLayout="column" fxLayoutGap="10px">
@@ -616,8 +617,7 @@
                                                             </mat-radio-group>
 
                                                             <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd"
-                                                            (click)="OnAddHand()">
-                                                            <mat-icon>add</mat-icon>
+                                                            (click)="OnAddHand()">Save 
                                                         </button>
                                                         </div>
                                                     </div>  
@@ -711,10 +711,10 @@
                                                             (click)="OnHandOverEdit(element)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
-                                                            <button mat-icon-button color="warn" matTooltip="Delete"
+                                                            <!-- <button mat-icon-button color="warn" matTooltip="Delete"
                                                              (click)="deleteHandOverTableRow(element)">
                                                                 <mat-icon>delete</mat-icon>
-                                                            </button>
+                                                            </button> -->
                                                          </mat-cell>
                                                     </ng-container> 
 
@@ -746,10 +746,10 @@
                                                     </mat-paginator>
                                                 </mat-card>
                                             </div>
-                                            <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
+                                            <!-- <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
                                                 <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
                                                 <button class="btn btn-primary" (click)="onSubmitHandOver()">Save</button>
-                                            </div>
+                                            </div> -->
                                         </div>
 
                                     </div>

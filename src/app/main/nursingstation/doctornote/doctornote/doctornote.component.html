@@ -164,7 +164,7 @@
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                                                     <div fxLayout="row" fxLayoutGap="10px">
-                                                        <div fxFlex.gt-sm="50%" fxFlex>
+                                                        <div fxFlex.gt-sm="35%" fxFlex>
                                                             <mat-card style="padding: 5px;">
                                                                 <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
@@ -173,10 +173,10 @@
 
                                                                     <ng-container matColumnDef="VDate">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-180">
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-160">
                                                                             DateTime </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm class="w-180">
+                                                                            fxShow.gt-sm class="w-160">
                                                                             {{element.VTDate}}-{{element.TTime}} </mat-cell>
                                                                     </ng-container> 
 
@@ -192,22 +192,25 @@
 
                                                                     <ng-container matColumnDef="CreatedBy">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-120">
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-110">
                                                                             CreatedBy </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm class="w-120">
+                                                                            fxShow.gt-sm class="w-110">
                                                                             {{element.CreatedBy}} </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="Action">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-80"> 
+                                                                            mat-sort-header fxHide fxShow.gt-sm class="w-70"> 
                                                                             Action </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm class="w-80">
+                                                                            fxShow.gt-sm class="w-70">
                                                                             <button mat-icon-button matTooltip="Edit"
                                                                             (click)="OnEdit(element)">
                                                                                 <mat-icon>edit</mat-icon>
+                                                                            </button>
+                                                                            <button mat-icon-button matTooltip="Print" >
+                                                                                <mat-icon>print</mat-icon>
                                                                             </button>
 
                                                                             <!-- <button mat-icon-button color="warn" matTooltip="Delete"
@@ -246,7 +249,7 @@
                                                                 </mat-paginator>
                                                             </mat-card>
                                                         </div>
-                                                        <div fxFlex.gt-sm="50%" fxFlex>
+                                                        <div fxFlex.gt-sm="65%" fxFlex>
 
                                                             <div fxLayout="column" fxLayoutGap="10px">
                                                                 <mat-card
@@ -411,9 +414,9 @@
 
                                                     <div style="padding: 30px 10px 0 10px;">
                                                         <button type="button" class="btn btn-primary btn-with-icon py-8"
-                                                            #addbutton id="btnAdd" (click)="OnAddHand()">
-                                                            <mat-icon>add</mat-icon>
-                                                        </button>
+                                                             (click)="OnAddHand()">
+                                                            Save
+                                                        </button> 
                                                     </div> 
 
                                                 </div>
@@ -497,10 +500,10 @@
                                                                     (click)="OnHandOverEdit(element)">
                                                                     <mat-icon>edit</mat-icon>
                                                                 </button>
-                                                                    <button mat-icon-button color="warn" matTooltip="Delete"
+                                                                    <!-- <button mat-icon-button color="warn" matTooltip="Delete"
                                                                      (click)="deleteHandOverTableRow(element)">
                                                                         <mat-icon>delete</mat-icon>
-                                                                    </button>
+                                                                    </button> -->
                                                                  </mat-cell>
                                                             </ng-container> 
 
@@ -532,10 +535,10 @@
                                                         </mat-paginator>
                                                     </mat-card>
                                                 </div>
-                                                <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
+                                                <!-- <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
                                                     <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
                                                     <button class="btn btn-primary" (click)="onSubmitHandOver()">Save</button>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>

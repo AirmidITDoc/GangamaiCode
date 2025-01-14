@@ -299,7 +299,7 @@ export class AddItemComponent implements OnInit {
           conversionFactor: 0,
           currencyId: 0,
           taxPer: 0,
-          isDeleted: 0,
+          isDeleted: 1,
           addedBy: this._loggedService.currentUserValue.user.id || 0,
           isBatchRequired: 0,
           minQty: 0,

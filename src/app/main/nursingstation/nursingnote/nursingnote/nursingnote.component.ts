@@ -160,7 +160,7 @@ export class NursingnoteComponent implements OnInit {
       this.vWardName = this.selectedAdvanceObj.RoomName;
       this.vAdmissionID = this.selectedAdvanceObj.AdmissionID
       this.getNoteTablelist()
-      this.getHandOverNotelist(this.vAdmissionID);
+      this.getHandOverNotelist();
     }  
      
   }
@@ -218,7 +218,7 @@ export class NursingnoteComponent implements OnInit {
     this.vCompanyId = obj.CompanyId;
     this.vAdmissionID = obj.AdmissionID
     this.getNoteTablelist()
-    this.getHandOverNotelist(obj); 
+    this.getHandOverNotelist(); 
     this.dsNursingNoteList.data = []
     this.dsHandOverNoteList.data = []
     this.dsItemList.data = []
@@ -446,8 +446,7 @@ export class NursingnoteComponent implements OnInit {
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
-    this.dsHandOverNoteList.data = [];
+    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning') 
     this.HandOverNoteList = []
   } 
   doseList:any=[];
@@ -680,7 +679,8 @@ export class NursingnoteComponent implements OnInit {
           CreatedBy:this.accountService.currentUserValue.user.userName || ''
         }
       )
-      this.dsHandOverNoteList.data = this.HandOverNoteList   
+      this.onSubmitHandOver();
+     // this.dsHandOverNoteList.data = this.HandOverNoteList   
      this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
      this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
      this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
@@ -712,6 +712,13 @@ export class NursingnoteComponent implements OnInit {
       "Comments":row.Comments
     } 
     this._NursingStationService.HandOverNotepoppulateForm(m_data);
+    if(row.ShiftInfo == 'Night'){
+      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Night')
+    }else if(row.ShiftInfo == 'Morning'){
+      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
+    }else{
+      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Evening')
+    }
   }
   onSubmitHandOver() {  
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
@@ -754,7 +761,9 @@ export class NursingnoteComponent implements OnInit {
       if (response) {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
-        });   
+        });  
+        this.getHandOverNotelist();
+        this.onClose() 
       }
       else {
         this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
@@ -793,7 +802,9 @@ export class NursingnoteComponent implements OnInit {
     if (response) {
       this.toastr.success('Record Updated Successfully.', 'Updated !', {
         toastClass: 'tostr-tost custom-toast-success',
-      });   
+      });
+      this.getHandOverNotelist(); 
+      this.onClose()  
     }
     else {
       this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
@@ -814,9 +825,9 @@ export class NursingnoteComponent implements OnInit {
   this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
   this.dsHandOverNoteList.data = [];
   }
-  getHandOverNotelist(obj) {
+  getHandOverNotelist() {
     var vdata = {
-      'AdmId': obj.AdmissionID 
+      'AdmId': this.vAdmissionID
     }
     this._NursingStationService.getHandOverNotelist(vdata).subscribe(data => {
       this.dsHandOverNoteList.data = data as DocNote[];
