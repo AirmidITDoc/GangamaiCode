@@ -102,174 +102,164 @@
 
                 <mat-card>
 
-                <div class="content p-12 pb-56">
+                  <div class="content p-12 pb-56">
 
-                  <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxLayout="row" fxLayoutGap="10px">
 
-                    <!-- left table -->
-                    <div fxFlex.gt-sm="50%" fxFlex>
-                      <mat-card style="padding: 5px;">
-                        <mat-table class="table2" matSort [dataSource]="dsCertficateTemp"
-                          [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
+                      <!-- left table -->
+                      <div fxFlex.gt-sm="50%" fxFlex>
+                        <mat-card style="padding: 5px;">
+                          <mat-table class="table2" matSort [dataSource]="dsCertficateTemp"
+                            [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
 
-                          <ng-container matColumnDef="CertificateDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
-                              DateTime </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
-                                    {{element.CertificateDate | date: 'dd/MM/yyyy'}}- {{element.CertificateTime | date:'shortTime'}} </mat-cell>
-                          </ng-container>
+                            <ng-container matColumnDef="CertificateDate">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                DateTime </mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                {{element.CertificateDate | date: 'dd/MM/yyyy'}}- {{element.CertificateTime |
+                                date:'shortTime'}} </mat-cell>
+                            </ng-container>
 
-                          <ng-container matColumnDef="CertificateName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-120">
-                              Template Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
-                                    {{element.CertificateName}} </mat-cell>
-                          </ng-container>
+                            <ng-container matColumnDef="CertificateName">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-120">
+                                Template Name </mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
+                                {{element.CertificateName}} </mat-cell>
+                            </ng-container>
 
-                          <!-- <ng-container matColumnDef="CertificateText">
+                            <!-- <ng-container matColumnDef="CertificateText">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
                               Template Desc </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
                                   {{element.CertificateText}} </mat-cell>
                           </ng-container> -->
 
-                          <ng-container matColumnDef="CertificateText">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
-                              Template Desc
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
-                              <span matTooltip="{{element.CertificateText}}" matTooltipPosition="above">
-                                {{element.CertificateText | slice:0:10}}...
-                              </span>
-                            </mat-cell>
-                          </ng-container>
-                          
+                            <ng-container matColumnDef="CertificateText">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                Template Desc
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                <span matTooltip="{{element.CertificateText}}" matTooltipPosition="above">
+                                  {{element.CertificateText | slice:0:10}}...
+                                </span>
+                              </mat-cell>
+                            </ng-container>
 
-                          <ng-container matColumnDef="Action" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
-                              Action </mat-header-cell>
-                            <mat-cell *matCellDef="let element" class="w-70">
-                                    <button mat-icon-button matTooltip="Edit"
-                                    (click)="OnEdit(element)">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
-                                    <button mat-icon-button matTooltip="Print">
-                                      <mat-icon>print</mat-icon>
-                                  </button>
-                                </mat-cell>
-                          </ng-container>
 
-                          <ng-container matColumnDef="loading">
-                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                            </mat-header-cell>
-                          </ng-container>
+                            <ng-container matColumnDef="Action" stickyEnd>
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
+                                Action </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="w-70">
+                                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
+                                  <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="Print">
+                                  <mat-icon>print</mat-icon>
+                                </button>
+                              </mat-cell>
+                            </ng-container>
 
-                          <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                              no data found...
-                            </mat-footer-cell>
-                          </ng-container>
+                            <ng-container matColumnDef="loading">
+                              <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                              </mat-header-cell>
+                            </ng-container>
 
-                          <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                          </mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                          <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
-                          </mat-footer-row>
-                        </mat-table>
-                        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                          showFirstLastButtons>
-                        </mat-paginator>
-                      </mat-card>
-                    </div>
+                            <ng-container matColumnDef="noData">
+                              <mat-footer-cell *matFooterCellDef colspan="6">
+                                no data found...
+                              </mat-footer-cell>
+                            </ng-container>
 
-                    <!-- right form -->
-                    <div fxFlex.gt-sm="50%" fxFlex>
-                      <div fxLayout="column" fxLayoutGap="10px">
-                        <mat-card style="padding: 5px;overflow: auto;height:370px;" fxLayout="column">
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                              [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                              [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
+                            </mat-footer-row>
+                          </mat-table>
+                          <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                            showFirstLastButtons>
+                          </mat-paginator>
+                        </mat-card>
+                      </div>
 
-                          <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                      <!-- right form -->
+                      <div fxFlex.gt-sm="50%" fxFlex>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                          <mat-card style="padding: 5px;overflow: auto;height:370px;" fxLayout="column">
 
-                            <input type="hidden" name="certificateId" formControlName="certificateId"
-                                            [(ngModel)]="vCertificateId">
+                            <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                  <mat-label>Template</mat-label>
-                                  <input matAutocompletePosition="below" type="text" placeholder="Select Template Name" matInput
-                                    formControlName="Template" [(ngModel)]="selectedTemplate" [matAutocomplete]="autoTemplate"
-                                    required>
-                                  <!-- <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                      (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                      (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
-                                  </span> -->
-                                  <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                      (click)="resetTemplateSelection()">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                      (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
-                                  </span>
-                                
-                                  <mat-autocomplete #autoTemplate="matAutocomplete" [displayWith]="getOptionTextTemp">
-                                    <mat-option *ngFor="let option of filteredOptionsTemp | async" [value]="option"
-                                    (onSelectionChange)="onTemplateSelect($event.option.value)">
-                                      {{option.CertificateName }} 
-                                    </mat-option>
-                                  </mat-autocomplete>
-                                </mat-form-field>
+                              <input type="hidden" name="certificateId" formControlName="certificateId"
+                                [(ngModel)]="vCertificateId">
 
-                                <div class="modal-footer-buttons gap-8 m-8">
-                                  <button class="btn btn-primary" (click)="addTemplateDescription()"
+                              <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Template</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Template Name"
+                                  matInput formControlName="Template" [(ngModel)]="selectedTemplate"
+                                  [matAutocomplete]="autoTemplate" required>
+                                <span matSuffix style="display: flex;">
+                                  <mat-icon class="mat-icon-close"
+                                    (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">close</mat-icon>
+                                  <mat-icon class="mat-icon-close"
+                                    (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoTemplate="matAutocomplete" [displayWith]="getOptionTextTemp" 
+                                  (optionSelected)='onTemplateSelect($event.option.value)' >
+                                  <mat-option *ngFor="let option of filteredOptionsTemp | async" [value]="option">
+                                    {{option.CertificateName}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+
+                              <div class="modal-footer-buttons gap-8 m-8">
+                                <button class="btn btn-primary" (click)="addTemplateDescription()"
                                   [disabled]="isButtonDisabled">
-                                    Add
-                                  </button>
+                                  Add
+                                </button>
                               </div>
 
 
+                            </div>
+
+                            <div>
+                              <mat-label>Certificate Details</mat-label>
+                              <angular-editor (blur)="onBlur($event)" [config]="editorConfig" [(ngModel)]="vConsentText"
+                                required formControlName="ConsentText"></angular-editor>
+                            </div>
+
+                          </mat-card>
+
+                          <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                            <div>
+                              <mat-radio-group name="Language" value="1" formControlName="Language"
+                                style="padding: 15px 0px 0px 0px">
+                                <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
+                                <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+
+                            <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                              <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                              <button class="btn btn-primary" (click)="onSave()">
+                                Save</button>
+                            </div>
+
                           </div>
 
-                          <div>
-                            <mat-label>Certificate Details</mat-label>
-                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" [(ngModel)]="vConsentText"
-                              required formControlName="ConsentText"></angular-editor>
-                          </div>
-                          
-                        </mat-card>
-
-                        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-                          <div>
-                            <mat-radio-group name="Language" value="1" formControlName="Language"
-                            style="padding: 15px 0px 0px 0px">
-                            <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
-                            <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
-                          </mat-radio-group>
-                          </div>
-               
-                          <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                            <button class="btn btn-primary" (click)="onSave()">
-                              Save</button>
-                          </div>
-               
+                        </div>
                       </div>
 
-                      </div>
                     </div>
 
                   </div>
 
-                </div>
-
                 </mat-card>
 
               </div>
-            </form>
-
-
-
+            </form>  
           </div>
         </div>
       </div>
