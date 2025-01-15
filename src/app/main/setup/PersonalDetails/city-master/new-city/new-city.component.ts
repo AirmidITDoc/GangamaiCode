@@ -39,13 +39,9 @@ export class NewCityComponent implements OnInit {
 
     saveflag: boolean = false;
     onSubmit() {
-        
         if(this.cityForm.valid) 
         {
             this.saveflag = true;
-
-            console.log(this.cityForm.value);
-
             this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);

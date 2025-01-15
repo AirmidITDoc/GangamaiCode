@@ -144,6 +144,7 @@ export class AirmidAutocompleteComponent implements OnInit {
         }
 
     }
+
     ngOnDestroy() {
         this._onDestroy.next();
         this._onDestroy.complete();
@@ -195,6 +196,7 @@ export class AirmidAutocompleteComponent implements OnInit {
         if (!changes.value?.firstChange && changes.value?.currentValue) {
             this.SetSelection(changes.value.currentValue);
         }
+        this.changeDetectorRefs.detectChanges();
     }
 
 }
