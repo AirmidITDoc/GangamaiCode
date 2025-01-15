@@ -448,6 +448,7 @@ ServiceList:any=[];
     }
   }
   IsPackage:any;
+  DocDoctorName:any;
   getSelectedObj(obj) { 
     console.log(obj)
     this.SrvcName = obj.ServiceName;
@@ -458,8 +459,10 @@ ServiceList:any=[];
     this.b_isPath = obj.IsPathology;
     this.b_isRad = obj.IsRadiology; 
     this.IsPackage = obj.IsPackage;
+    //this.IsDocEditable = obj.IsDocEditable;
+    this.DocDoctorName = obj.DoctorName;
 
-    if (obj.CreditedtoDoctor == true) {
+    if (obj.IsDocEditable == true) {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').setValidators([Validators.required]);
       this.Serviceform.get('DoctorID').enable();
@@ -473,6 +476,7 @@ ServiceList:any=[];
       this.isDoctor = false;
     }
     this.getpackagedetList();
+    this.getAdmittedDoctorCombo();
   }
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
@@ -486,9 +490,16 @@ ServiceList:any=[];
 
     //Doctor list 
     getAdmittedDoctorCombo() {
-      var vdata={
-        "Keywords": this.Serviceform.get('DoctorID').value + "%" || "%"
+
+      let DoctorName
+      if(this.Serviceform.get('DoctorID').value){
+        DoctorName = this.Serviceform.get('DoctorID').value
+      }else{
+        DoctorName =  this.DocDoctorName
       }
+      var vdata={
+        "Keywords": DoctorName + "%" || "%"
+      } 
       console.log(vdata)
       this._IpSearchListService.getAdmittedDoctorCombo(vdata).subscribe(data => { 
         this.filteredOptionsDoctors = data; 
@@ -498,7 +509,10 @@ ServiceList:any=[];
           } else {
             this.noOptionFound = false;
           } 
-      }); 
+          if(this.DocDoctorName){
+            this.Serviceform.get('DoctorID').setValue(this.filteredOptionsDoctors[0])
+          }
+      });  
     }
     getOptionTextsearchDoctor(option) {
       return option && option.Doctorname ? option.Doctorname : '';

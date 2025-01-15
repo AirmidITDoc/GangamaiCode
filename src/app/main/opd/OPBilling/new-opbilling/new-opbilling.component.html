@@ -200,7 +200,7 @@
                                                         style="width: 500px;">
                                                         {{option.ServiceName}} | Price {{option.Price}} |
                                                         <span fxLayoutGap="4px">
-                                                            <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
+                                                            <mat-icon *ngIf="option.IsDocEditable == true" matTooltip="IsDoctor">
                                                                 <img width="10px" height="6px" src="assets/images/logos/doctor.png">
                                                             </mat-icon> |
                                                             <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">

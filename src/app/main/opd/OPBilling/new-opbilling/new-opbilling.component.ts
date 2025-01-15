@@ -377,6 +377,8 @@ export class NewOPBillingComponent implements OnInit {
       return '';
     return option.ServiceName; 
   } 
+  IsDocEditable:any;
+  DocDoctorName:any;
   getSelectedObj(obj) {
 console.log(obj)  
     if (this.dataSource.data.length > 0) {
@@ -396,7 +398,9 @@ console.log(obj)
       this.IsRadiology = obj.IsRadiology;
       this.vIsPackage = obj.IsPackage;
       this.CreditedtoDoctor = obj.CreditedtoDoctor;
-      if (this.CreditedtoDoctor == true) {
+      this.IsDocEditable = obj.IsDocEditable;
+      this.DocDoctorName = obj.DoctorName;
+      if (this.IsDocEditable == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);
@@ -421,7 +425,9 @@ console.log(obj)
       this.IsRadiology = obj.IsRadiology;
       this.vIsPackage = obj.IsPackage;
       this.CreditedtoDoctor = obj.CreditedtoDoctor;
-      if (this.CreditedtoDoctor == true) {
+      this.IsDocEditable = obj.IsDocEditable;
+      this.DocDoctorName = obj.DoctorName;
+      if (this.IsDocEditable == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);
@@ -434,6 +440,7 @@ console.log(obj)
         this.registeredForm.get('DoctorID').disable();
       }
     } 
+    this.getAdmittedDoctorCombo(); 
   }
   onScroll() {
     //Note: This is called multiple times after the scroll has reached the 80% threshold position.
@@ -441,8 +448,14 @@ console.log(obj)
   }
   //Doctor list 
   getAdmittedDoctorCombo() {
+    let DoctorName
+    if(this.registeredForm.get('DoctorID').value){
+      DoctorName = this.registeredForm.get('DoctorID').value
+    }else{
+      DoctorName =  this.DocDoctorName
+    }
     var vdata={
-      "Keywords": this.registeredForm.get('DoctorID').value + "%" || "%"
+      "Keywords": DoctorName + "%" || "%"
     }
     console.log(vdata)
     this._oPSearhlistService.getAdmittedDoctorCombo(vdata).subscribe(data => { 
@@ -453,6 +466,9 @@ console.log(obj)
         } else {
           this.noOptionFound = false;
         } 
+        if(this.DocDoctorName){
+          this.registeredForm.get('DoctorID').setValue(this.filteredOptionsDoctors[0])
+        }
     }); 
   }
   getOptionTextDoctor(option) {
@@ -487,7 +503,7 @@ onAddCharges() {
     });
     return;
   }
-  if (this.CreditedtoDoctor) {
+  if (this.IsDocEditable) {
     if ((this.vDoctor == undefined || this.vDoctor == null || this.vDoctor == "")) {
       this.toastr.warning('Please select Doctor', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

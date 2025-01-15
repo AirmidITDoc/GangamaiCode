@@ -17,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AnyARecord } from 'dns';
 import { CreateTemplateComponent } from '../../doctornote/create-template/create-template.component';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
 
 @Component({
   selector: 'app-nursingnote',
@@ -54,11 +56,30 @@ export class NursingnoteComponent implements OnInit {
   ]
   displayedItemColumnPatient: string[] = [
     'ItemName', 
+    'BatchNo',
     'Qty', 
     'Action'
   ]
+
+      editorConfig: AngularEditorConfig = {
+        // color:true,
+        editable: true,
+        spellcheck: true,
+        height: '15rem',
+        minHeight: '15rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+    
+      };
+      onBlur(e: any) {
+        this.vDescription = e.target.innerHTML;
+      }
+      
   currentDate = new Date();
   isLoading: any;
+  IsAddFlag:boolean=false;;
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
   PathologyDoctorList: any = [];
@@ -224,6 +245,7 @@ export class NursingnoteComponent implements OnInit {
     this.dsItemList.data = []
     this.HandOverNoteList = []
     this._NursingStationService.myform.get('TemplateName').setValue('')
+    this.getItemlistforMedication();
   }
   ///Template note list
     getTemplateNoteList() {
@@ -324,7 +346,7 @@ export class NursingnoteComponent implements OnInit {
       const currentDate = new Date();
       const datePipe = new DatePipe('en-US');
       const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
       if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
         this.toastr.warning('Please select Patient', 'Warning !', {
@@ -416,6 +438,8 @@ export class NursingnoteComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-error',
       });
     }); 
+
+    this.IsAddFlag = false
    }
   } 
   OnEdit(row) {
@@ -428,6 +452,7 @@ export class NursingnoteComponent implements OnInit {
       "NursingNoteId":row.DocNoteId
     }
     this._NursingStationService.NursingNotepoppulateForm(m_data);
+    this.IsAddFlag = true;
   }
   
 
@@ -441,6 +466,7 @@ export class NursingnoteComponent implements OnInit {
     //this.onClearPatientInfo(); 
     this._NursingStationService.myform.get('TemplateName').setValue('')
     this._NursingStationService.myform.get('Description').setValue('')
+    this._NursingStationService.myform.get("NursingNoteId").setValue('')
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
@@ -448,6 +474,7 @@ export class NursingnoteComponent implements OnInit {
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
     this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning') 
     this.HandOverNoteList = []
+    this.IsAddFlag = false
   } 
   doseList:any=[];
   filteredOptionsItem:any;
@@ -849,6 +876,35 @@ export class NursingnoteComponent implements OnInit {
         this.getTemplateNoteList();
       });
     }
+
+    //Medication chart
+    getItemlistforMedication(){
+      var vdata={
+        'AdmId': this.vAdmissionID
+      }
+      this._NursingStationService.getItemlistforMedication(vdata).subscribe(data =>{
+        this.dsPatientItemList.data = data as MedicineItemList[];
+        console.log(this.dsPatientItemList.data);
+        this.dsPatientItemList.sort = this.sort;
+        this.dsPatientItemList.paginator =this.paginator;
+      });
+     }
+
+     getSchedular(contact) {
+      const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
+        {
+          maxWidth: "75vw",
+          height: '85%',
+          width: '100%', 
+          data:{
+            Obj:contact
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => { 
+        
+      });
+    }
+    
 }
  
 export class DocNote {

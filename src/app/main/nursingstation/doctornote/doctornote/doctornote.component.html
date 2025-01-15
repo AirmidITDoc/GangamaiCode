@@ -169,7 +169,7 @@
                                                                 <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow: auto;height:305px;padding-bottom: 0px;">
+                                                                    style="overflow: auto;height:360px;padding-bottom: 0px;">
 
                                                                     <ng-container matColumnDef="VDate">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -251,9 +251,9 @@
                                                         </div>
                                                         <div fxFlex.gt-sm="65%" fxFlex>
 
-                                                            <div fxLayout="column" fxLayoutGap="10px">
-                                                                <mat-card
-                                                                    style="padding: 5px;height: 310px;overflow: auto;">
+                                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                              
+                                                                    
                                                                     <div fxLayout="row" fxLayoutGap="20px">
 
                                                                         <input type="hidden" formControlName="DoctNoteId" >
@@ -286,7 +286,7 @@
                                                                             <div>
                                                                                 <button #addbutton
                                                                                     class="btn btn-primary btn-with-icon"
-                                                                                    (click)="OnAdd()" id="btnAdd">
+                                                                                    (click)="OnAdd()" id="btnAdd"  [disabled]="IsAddFlag">
                                                                                     <span class="btn-icon">
                                                                                         <mat-icon> add </mat-icon>
                                                                                     </span>
@@ -297,7 +297,7 @@
 
                                                                     </div>
                                                                     <div>
-                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                                                             <mat-label>Description</mat-label>
                                                                             <textarea rows="13" matInput
                                                                                 name="Description"
@@ -305,12 +305,18 @@
                                                                                 placeholder="Add Note....." type="text"
                                                                                 id="Description" #description required
                                                                                 [(ngModel)]="vDescription"></textarea>
-                                                                        </mat-form-field>
-                                                                    </div>
-                                                                </mat-card>
+                                                                        </mat-form-field> -->
+
+                                                                        <mat-card style="padding: 5px;">
+                                                                            <mat-label>Template Details</mat-label>
+                                                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                                                [(ngModel)]="vDescription" required
+                                                                                formControlName="Description"></angular-editor>
+                                                                        </mat-card>
+                                                                    </div> 
 
                                                                 <div fxLayout="row" fxLayoutAlign="end"
-                                                                    fxLayoutGap="6px">
+                                                                    fxLayoutGap="6px" style="padding-top: 2px;">
                                                                     <button class="btn btn-primary-outline" (click)="NewTemplate()">New
                                                                         Template</button>
                                                                     <button

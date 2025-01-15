@@ -1,0 +1,225 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar" dynamicTableHeight>
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                New Scheduler
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px"> 
+                    <form [formGroup]="MedicineItemForm">
+                        <div fxLayout="row" class="gap-8">
+                            <!-- <mat-form-field appearance="outline" fxFlex="30%">
+                                <mat-label>Drug Name</mat-label>
+                                <input type="text" name="ItemId"
+                                    formControlName="ItemId" #itemid
+                                    (keydown)="onEnterItem($event)"
+                                    placeholder="Item Name " matInput
+                                    [matAutocomplete]="auto"
+                                    (input)="getSearchItemList()" required>
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
+                                        close </mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="MedicineItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #auto="matAutocomplete"
+                                    [displayWith]="getOptionItemText"
+                                    (optionSelected)='getSelectedObjItem($event.option.value)'>
+                                    <mat-option
+                                        *ngFor="let option of filteredOptionsItem"
+                                        [value]="option">
+                                        {{option.ItemId}} | {{option.ItemName}}
+                                        |{{option.BalanceQty}}
+                                    </mat-option>
+                                </mat-autocomplete> 
+                            </mat-form-field> -->
+
+                            <mat-form-field appearance="outline" fxFlex="15%">
+                                <mat-label>Item Name</mat-label>
+                                <input type="text"  [(ngModel)]="registerObj.ItemName"
+                                    name="ItemId" required (keydown)="onEnterItem($event)"
+                                    formControlName="ItemId" matInput required #itemid readonly >
+                            </mat-form-field>
+
+                            <!-- <mat-form-field appearance="outline" fxFlex="12%">
+                                <mat-label>Dose Name</mat-label>
+                                <input matAutocompletePosition="below" type="text"
+                                    placeholder="Select Dose Name" matInput
+                                    formControlName="DoseId"
+                                    [matAutocomplete]="autodose" required #dosename
+                                    (keydown)="onEnterDose($event)">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="MedicineItemForm.get('DoseId').setValue(''); isDoseSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autodose="matAutocomplete"
+                                    [displayWith]="getOptionTextDose">
+                                    <mat-option
+                                        *ngFor="let option of filteredOptionsDosename | async"
+                                        [value]="option">
+                                        {{option.DoseName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field> -->
+ 
+                                <app-common-date [screenFrom]="screenFromString" 
+                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> 
+                            
+
+
+                            <mat-form-field appearance="outline" fxFlex="10%">
+                                <mat-label>Route</mat-label>
+                                <input type="text" OnlyNumber [(ngModel)]="vRoute"
+                                    name="Route" required (keydown)="onEnterqty($event)"
+                                    formControlName="Route" matInput required #Day
+                                    (keypress)="keyPressAlphanumeric($event)">
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline" fxFlex="15%">
+                                <mat-label>Frequency</mat-label>
+                                <input type="text" name="Frequency"
+                                    [(ngModel)]="vFrequency" formControlName="Frequency"
+                                    matInput #Instruction
+                                    (keydown)="onEnterremark($event)">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Nurse Name</mat-label>
+                                <input type="text" name="NurseName"
+                                    [(ngModel)]="vNurseName" formControlName="NurseName"
+                                    matInput #NurseName
+                                    (keydown)="onEnterremark($event)">
+                            </mat-form-field>
+
+                            <div class="input-add-button">
+                                <div matTooltip="Select Drug to enable this button!!"
+                                    [matTooltipPosition]="'above'">
+                                    <button #addbutton
+                                        class="btn btn-primary btn-with-icon"
+                                        (click)="onAddMedicine()">
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                        <span>Add</span>
+                                    </button>
+                                </div>
+                            </div>  
+                        </div>
+                    </form>
+
+                    <div class="modal-card-container table-container">
+
+                        <div class="table" fxFlex="100%">
+                            <mat-card style="padding: 5px;">
+                                <mat-table class="mat-table-1" matSort
+                                    [dataSource]="dsItemList"
+                                    [@animateStagger]="{value:'50'}"
+                                    style="overflow: auto;">
+
+                                    <ng-container matColumnDef="ItemName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxHide fxShow.gt-sm>
+                                            Drug Name</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide
+                                            fxShow.gt-sm>
+                                            <span> {{element.DrugName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="DoseName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxHide fxShow.gt-sm>
+                                            Dose DateTime</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide
+                                            fxShow.gt-sm>
+                                            <span> {{element.DoseDate}}-{{element.DoseTime}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Route">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxShow.gt-sm>Route
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.Route}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Frequency">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxShow.gt-sm>Frequency
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.Frequency}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="NurseName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxShow.gt-sm>NurseName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <span> {{element.NurseName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef
+                                            class="table-actions">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <ng-container class="actions">
+                                                <mat-icon
+                                                    (click)="deleteTableRow($event ,contact)"
+                                                    color="warn">
+                                                    delete
+                                                </mat-icon>
+                                            </ng-container>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row
+                                        *matRowDef="let row; columns: displayedItemColumn;"
+                                        class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                </mat-table>
+                                <mat-paginator #paginator
+                                    [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                    showFirstLastButtons>
+                                </mat-paginator>
+                            </mat-card>
+                        </div> 
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
+                        <button class="btn btn-danger-outline" (click)="OnClear()">Clear</button>
+                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1231,7 +1231,7 @@ public getModenameListCombo(){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrvm_modeOfDischarge",{});
 }
 public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_ForPrescription",Param)
 }
 public getDoseList() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})

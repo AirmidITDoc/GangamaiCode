@@ -168,7 +168,7 @@ export class ServiceMasterComponent implements OnInit {
     getGroupNameCombobox() {
         this._serviceMasterService.getGroupMasterCombo().subscribe(data => {
             this.GroupcmbList = data;
-            this.filteredGroupname = this._serviceMasterService.myform.get('GroupId').valueChanges.pipe(
+            this.filteredGroupname = this._serviceMasterService.myformSearch.get('GroupId').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterGroupName(value) : this.GroupcmbList.slice()),
             );
@@ -177,7 +177,7 @@ export class ServiceMasterComponent implements OnInit {
     getTariffNameCombobox() {
         this._serviceMasterService.getTariffMasterCombo().subscribe(data => {
             this.TariffcmbList = data;
-            this.filteredTariff = this._serviceMasterService.myform.get('TariffId').valueChanges.pipe(
+            this.filteredTariff = this._serviceMasterService.myformSearch.get('TariffId').valueChanges.pipe(
                 startWith(''),
                 map(value => value ? this._filterTariff(value) : this.TariffcmbList.slice()),
             );
@@ -204,7 +204,7 @@ export class ServiceMasterComponent implements OnInit {
     onAdd() {
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent, {
             height: "96%",
-            width: '85%',
+            width: '75%',
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.getServiceMasterList();

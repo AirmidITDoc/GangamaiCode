@@ -1,4 +1,4 @@
-<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" >
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -71,14 +71,14 @@
                                   </mat-form-field>
                       
                 
-                                <mat-form-field appearance="outline" fxFlex="15%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="15%">
                                     <mat-label>Date</mat-label>
                                     <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date"
                                         name="EffectiveDate" formControlName="EffectiveDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                     <mat-datepicker #picker3></mat-datepicker>
                 
-                                </mat-form-field>
+                                </mat-form-field> -->
                 
                             </div>
                 
@@ -103,24 +103,17 @@
                 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Price</mat-label>
                                     <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber #Price
                                         (keypress)="keyPressCharater($event)"      (keydown)="onEnterPrice($event)" 
                                         matInput required maxlength="5">
-                                </mat-form-field>
-                
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>PrintOrder</mat-label>
-                                    <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput
-                                         OnlyNumber (keypress)="keyPressCharater($event)" [(ngModel)]="vPrintOrder"
-                                         min="0" maxlength="5"     (keydown)="onEnterPrintOrder($event)" #PrintOrder> 
-                                </mat-form-field> 
+                                </mat-form-field> -->
 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Tariff Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Group" matInput
-                                      formControlName="TariffId" [matAutocomplete]="autoTariffId" #TariffId
+                                      formControlName="TariffId" [matAutocomplete]="autoTariffId" #TariffId (keydown)="onEnterTariff($event)"
                                        [(ngModel)]="vTariffId">
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
@@ -135,6 +128,15 @@
                                     </mat-autocomplete>
                                   </mat-form-field>
                 
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>PrintOrder</mat-label>
+                                    <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput
+                                         OnlyNumber (keypress)="keyPressCharater($event)" [(ngModel)]="vPrintOrder"
+                                         min="0" maxlength="5"   #PrintOrder> 
+                                </mat-form-field> 
+
+                                
+                
                             </div>
                         </form>
                     </mat-card> 
@@ -142,8 +144,7 @@
                     <mat-card style="padding: 5px;">
                         <div fxFlex="100%">
                             <mat-table #table matSort [dataSource]="DSServicedetailList" [@animateStagger]="{value:'50'}"
-                                style="overflow:auto;height:250px;">
-                
+                                style="overflow:auto;height: 300px !important;"> 
                 
                                 <ng-container matColumnDef="ClassId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
@@ -207,7 +208,7 @@
 
                     <hr>  
 
-                    <form [formGroup]="_serviceMasterService.myform">
+                    <form [formGroup]="_serviceMasterService.myform" style="padding: 5px 10px 5px 10px;">
                         <div fxLayout="row" fxLayoutAlign="space-between">
                 
                             <mat-checkbox name="IsDocEditable" formControlName="IsDocEditable" value='false'>
@@ -285,7 +286,7 @@
                         </div>
                     </form> 
 
-                    <div fxLayout="row" fxLayoutAlign="space-between">
+                    <div fxLayout="row" fxLayoutAlign="space-between" style="padding: 5px 10px 5px 10px;">
                         <form [formGroup]="_serviceMasterService.myform">
                         <mat-checkbox aria-label="Is Active" formControlName="IsActive"  value='true'
                         [(ngModel)]="registerObj.IsActive" style="font-weight: bold;">

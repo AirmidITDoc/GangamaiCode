@@ -1,4 +1,4 @@
-<div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" >
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -52,7 +52,7 @@
                                             (optionSelected)='getSelectedObj($event.option.value)'>
                                 
                                             <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
-                                                {{option.ServiceName}} | Price {{option.Price}} |
+                                                {{option.ServiceName}} |
                                                 <span fxLayoutGap="4px">
                                                     <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
                                                         <img width="10px" height="6px" src="assets/images/logos/doctor.png">
