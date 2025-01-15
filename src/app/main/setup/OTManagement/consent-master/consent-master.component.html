@@ -77,48 +77,48 @@
                                 </div>
                                 
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; width: 100%;">
 
                                     <ng-container matColumnDef="ConsentId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-130">Code
+                                            class="w-100">Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                             {{contact.ConsentId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="ConsentName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
                                             OT Consent Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                             {{contact.ConsentName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ConsentDesc" sticky>
+                                    <ng-container matColumnDef="ConsentDesc">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-200">Consent Desc
+                                            class="w-300">Consent Desc
                                         </mat-header-cell>
                                         <!-- <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                             {{contact.ConsentDesc}}
                                         </mat-cell> -->
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-200 ellipsis"
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-300 ellipsis"
                                         matTooltip="{{contact.ConsentDesc}}">
                                             {{contact.ConsentDesc}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="DepartmentName" sticky>
+                                    <ng-container matColumnDef="DepartmentName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-150">Department Name
+                                            class="w-250">Department Name
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                             {{contact.DepartmentName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="CreatedBy" sticky>
+                                    <ng-container matColumnDef="CreatedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-200">CreatedBy
                                         </mat-header-cell>
@@ -127,11 +127,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsActive" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                    <ng-container matColumnDef="IsActive">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-130">
+                                        <mat-cell *matCellDef="let element" class="w-150">
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
@@ -140,13 +140,17 @@
                                     </ng-container> 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef
-                                            class="w-150">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-180">
                                             Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-150">
+                                        <mat-cell *matCellDef="let contact" class="w-180">
                                             <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
                                                 <mat-icon style="color: black;">edit</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="onDeactive(contact.ConsentId)">
+                                                <mat-icon>delete_outline</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>                                    
@@ -162,12 +166,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1500"
+                                    <mat-header-row class="accent min-width-1100"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1500" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"

@@ -54,4 +54,9 @@ public OtConsentUpdate(employee)
   public getDepartmentCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
 }
+public deactivateTheStatus(m_data) {
+  return this._httpClient.post(
+      "Generic/ExecByQueryStatement?query=" + m_data,{}
+  );
+}
 }

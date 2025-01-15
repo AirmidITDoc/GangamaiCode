@@ -48,8 +48,9 @@ export class NewCertificatemasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.data.obj) {
+    if (this.data) {
       this.registerObj = this.data.obj;
+      console.log("RegisterObj:",this.registerObj)
       this.vTemplateId = this.registerObj.CertificateId;
       this.vTemplateName = this.registerObj.CertificateName;
       this.vTemplateDesc = this.registerObj.CertificateDesc;
@@ -119,11 +120,11 @@ export class NewCertificatemasterComponent implements OnInit {
   }
 
   onClear() {
-    this._certificatetemplateService.myform.reset();
+    this._certificatetemplateService.myform.reset({IsDeleted: true});
   }
 
   onClose() {
-    this._certificatetemplateService.myform.reset();
+    this._certificatetemplateService.myform.reset({IsDeleted: true});
     this.dialogRef.close();
   }
 

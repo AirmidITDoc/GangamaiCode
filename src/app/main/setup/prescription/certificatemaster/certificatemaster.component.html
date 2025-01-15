@@ -104,7 +104,12 @@
                                     <ng-container matColumnDef="CertificateDesc">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-450">Template Desc
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-450">
+                                        <!-- <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-450">
+                                            {{contact.CertificateDesc}}
+                                        </mat-cell> -->
+
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-450 ellipsis"
+                                        matTooltip="{{contact.CertificateDesc}}">
                                             {{contact.CertificateDesc}}
                                         </mat-cell>
                                     </ng-container>

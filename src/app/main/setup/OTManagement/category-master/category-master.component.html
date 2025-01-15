@@ -125,7 +125,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedBy" >
+                                    <ng-container matColumnDef="AddedBy">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                             AddedBy</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
@@ -133,11 +133,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IsActive" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                    <ng-container matColumnDef="IsActive">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let element" class="w-100">
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"

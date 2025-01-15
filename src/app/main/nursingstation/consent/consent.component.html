@@ -100,12 +100,12 @@
                                                     <div class="pill-icon">
                                                         <mat-icon style="border-radius:100% ;"
                                                             *ngIf="!element.OPIPType=='0'" matTooltip="IP"
-                                                            class="red-600 s-16">circle
+                                                            class="green-600 s-16">circle
                                                         </mat-icon>
 
                                                         <mat-icon style="border-radius:100% ;"
                                                             *ngIf="!element.OPIPType=='1'" matTooltip="OP"
-                                                            class="green-600 s-16">circle
+                                                            class="orange-600 s-16">circle
                                                         </mat-icon>
                                                     </div>
                                                 </mat-cell>
@@ -218,7 +218,7 @@
                                             <ng-container matColumnDef="Action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                                     Action </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                                                <mat-cell *matCellDef="let element" class="w-150">
                                                     <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
                                                         <mat-icon>edit</mat-icon>
                                                     </button>

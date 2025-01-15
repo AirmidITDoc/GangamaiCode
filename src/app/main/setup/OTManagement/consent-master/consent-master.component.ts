@@ -126,6 +126,47 @@ export class ConsentMasterComponent implements OnInit {
     this.getotConsentList();
   }
 
+  onDeactive(ConsentId){
+    debugger
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+    debugger
+
+      if (result.isConfirmed) {
+        let Query;
+        const tableItem = this.dataSource.data.find(item => item.ConsentId === ConsentId);
+        console.log("table:",tableItem)
+    
+        if (tableItem.IsActive) {
+            Query = "Update M_ConsentMaster set IsActive=0 where ConsentId=" + ConsentId;
+        } else {
+            Query = "Update M_ConsentMaster set IsActive=1 where ConsentId=" + ConsentId;
+        }
+    
+        console.log("query:", Query);
+    
+        this._otConsentService.deactivateTheStatus(Query)
+            .subscribe(
+                (data) => {
+                    Swal.fire('Changed!', 'SurgeryCategory Status has been Changed.', 'success');
+                    this.getotConsentList();
+                },
+                (error) => {
+                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                }
+            );
+    }
+    
+  });
+  }
+
 }
 export class OtConsentMasterList {
   ConsentId:number;

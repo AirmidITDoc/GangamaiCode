@@ -181,7 +181,7 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Department</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                                      formControlName="Department" [matAutocomplete]="autoDep" required
+                                      formControlName="Department" [matAutocomplete]="autoDep" required [disabled]="isButtonDisabled"
                                        [(ngModel)]="selectedDepartment">
                                     <span matSuffix style="display: flex;">
                                       <mat-icon class="mat-icon-close"
@@ -202,7 +202,7 @@
                                   <mat-label>Template</mat-label>
                                   <input matAutocompletePosition="below" type="text" placeholder="Select Template Name" matInput
                                     formControlName="Template" [(ngModel)]="selectedTemplate" [matAutocomplete]="autoTemplate"
-                                    required>
+                                    required [disabled]="isButtonDisabled">
                                   <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                       (click)="_ConsentService.myform.get('Template').setValue(''); isTemplateSelected = false;">close</mat-icon>
@@ -225,7 +225,8 @@
                                 </mat-radio-group>
 
                                 <div class="modal-footer-buttons gap-8 m-8">
-                                  <button class="btn btn-primary" (click)="addTemplateDescription()">
+                                  <button class="btn btn-primary" (click)="addTemplateDescription()"
+                                  [disabled]="isButtonDisabled">
                                     Add
                                   </button>
                               </div>

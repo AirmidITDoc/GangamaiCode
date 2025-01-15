@@ -145,14 +145,17 @@
                           </ng-container>
                           
 
-                          <ng-container matColumnDef="Action">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-70">
+                          <ng-container matColumnDef="Action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
                               Action </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-70">
+                            <mat-cell *matCellDef="let element" class="w-70">
                                     <button mat-icon-button matTooltip="Edit"
                                     (click)="OnEdit(element)">
                                         <mat-icon>edit</mat-icon>
                                     </button>
+                                    <button mat-icon-button matTooltip="Print">
+                                      <mat-icon>print</mat-icon>
+                                  </button>
                                 </mat-cell>
                           </ng-container>
 
@@ -196,24 +199,30 @@
                                   <input matAutocompletePosition="below" type="text" placeholder="Select Template Name" matInput
                                     formControlName="Template" [(ngModel)]="selectedTemplate" [matAutocomplete]="autoTemplate"
                                     required>
-                                  <span matSuffix style="display: flex;">
+                                  <!-- <span matSuffix style="display: flex;">
                                     <mat-icon class="mat-icon-close"
                                       (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                      (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
+                                  </span> -->
+                                  <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                      (click)="resetTemplateSelection()">close</mat-icon>
                                     <mat-icon class="mat-icon-close"
                                       (click)="_AppointmentServiceService.mycertificateForm.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
                                   </span>
                                 
                                   <mat-autocomplete #autoTemplate="matAutocomplete" [displayWith]="getOptionTextTemp">
                                     <mat-option *ngFor="let option of filteredOptionsTemp | async" [value]="option"
-                                    (onSelectionChange)="onTemplateSelect(option)">
-                                      {{option.CertificateName }} <b>|</b> {{option.CertificateDesc }} ||
-                                      <b>|</b> {{option.CertificateId}}
+                                    (onSelectionChange)="onTemplateSelect($event.option.value)">
+                                      {{option.CertificateName }} 
                                     </mat-option>
                                   </mat-autocomplete>
                                 </mat-form-field>
 
                                 <div class="modal-footer-buttons gap-8 m-8">
-                                  <button class="btn btn-primary" (click)="addTemplateDescription()">
+                                  <button class="btn btn-primary" (click)="addTemplateDescription()"
+                                  [disabled]="isButtonDisabled">
                                     Add
                                   </button>
                               </div>
@@ -240,7 +249,7 @@
                           </div>
                
                           <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                            <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
                             <button class="btn btn-primary" (click)="onSave()">
                               Save</button>
                           </div>

@@ -42,6 +42,7 @@ export class NewConsentComponent implements OnInit {
   registerObj1: any;
   filteredOptions: any;
   noOptionFound: boolean = false;
+  isButtonDisabled: boolean = false;
   PatientListfilteredOptionsIP: any;
   PatientListfilteredOptionsOP: any;
   vWardName: any;
@@ -174,6 +175,9 @@ export class NewConsentComponent implements OnInit {
         // this.getSiteList();
         this.getDepartmentList();
       }
+
+      
+    this.isButtonDisabled=true
     }
 
     this.vOtReqOPD = this._loggedService.currentUserValue.user.pharOPOpt;
@@ -210,23 +214,11 @@ export class NewConsentComponent implements OnInit {
       this.PatientInformReset();
       this.OP_IPType = 0;
       this.RegId = "";
-      // this._ConsentService.myform.get('MobileNo').reset();
-      // this._ConsentService.myform.get('PatientName').reset();
-      // this._ConsentService.myform.get('MobileNo').clearValidators();
-      // this._ConsentService.myform.get('PatientName').clearValidators();
-      // this._ConsentService.myform.get('MobileNo').updateValueAndValidity();
-      // this._ConsentService.myform.get('PatientName').updateValueAndValidity();
     }
     else if (event.value == 'IP') {
       this.PatientInformReset();
       this.OP_IPType = 1;
       this.RegId = "";
-      // this._ConsentService.myform.get('MobileNo').reset();
-      // this._ConsentService.myform.get('PatientName').reset();
-      // this._ConsentService.myform.get('MobileNo').clearValidators();
-      // this._ConsentService.myform.get('PatientName').clearValidators();
-      // this._ConsentService.myform.get('MobileNo').updateValueAndValidity();
-      // this._ConsentService.myform.get('PatientName').updateValueAndValidity();
     }
   }
 
@@ -349,6 +341,7 @@ export class NewConsentComponent implements OnInit {
   }
 
   addTemplateDescription() {
+    this.isButtonDisabled=false
     debugger
     if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
       this.toastr.warning('Please select Department ', 'Warning !', {
@@ -429,6 +422,7 @@ export class NewConsentComponent implements OnInit {
         this.onSubmit();
       }
     });
+    
   }
 
   onSubmit() {

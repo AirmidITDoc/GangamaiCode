@@ -81,7 +81,9 @@ export class PatientcertificateComponent implements OnInit {
   filteredOptionsTemp: Observable<string[]>;
   vDoctorName:any;
   sIsLoading: string = '';
-  vCertificateName:any;
+  vCertificateName:any;  
+  isButtonDisabled: boolean = false;
+  isDropdownDisabled: boolean = false;
 
   editorConfig: AngularEditorConfig = {
     // color:true,
@@ -154,11 +156,12 @@ export class PatientcertificateComponent implements OnInit {
       // this.getSiteList();
       this.getCertificateDropDownList();
       this.getCertificateList();
+      this._AppointmentServiceService.mycertificateForm.get('Template').enable();
     }
   }
 
   getCertificateList(){
-    debugger
+    
     this.sIsLoading = 'loading-data';
 
     const D_data = {
@@ -178,16 +181,33 @@ export class PatientcertificateComponent implements OnInit {
   }
 
   selectedTemplateOption: any; 
-  onTemplateSelect(option: any) {
-    
-    this.selectedTemplateOption = option;
-    this.isTemplateSelected = true;
+  registerObjDet:any;
+  onTemplateSelect(option) {
+    console.log(option)
+
+    // this.vConsentText = '';     
+    // this.selectedTemplateOption = option;
+    this.registerObjDet = option.CertificateDesc;
+
+    // this.isTemplateSelected = true;
+
+  //   this.vConsentText = ''; // Reset consent text
+  //   this.registerObjDet = null;
+
+  //   this.selectedTemplateOption = option;
+  // this.registerObjDet = option; // Update with the new option
+  // this.isTemplateSelected = true;
+
+  // this._AppointmentServiceService.mycertificateForm.get('Template').setValue(option);
+  // console.log('Form Control Value:', this._AppointmentServiceService.mycertificateForm.get('Template').value);
+
   }
 
 addTemplateDescription() {
   debugger
+  this.isButtonDisabled=false;
   if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
-    this.toastr.warning('Please enter select Template ', 'Warning !', {
+    this.toastr.warning('Please select Template Name ', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
     return;
@@ -202,12 +222,23 @@ addTemplateDescription() {
    }
   }
   
-  if (this.selectedTemplateOption) {
-    this.vConsentText = this.selectedTemplateOption.CertificateDesc;
-  }
+  this.vConsentText = this.registerObjDet || '';
+  this.registerObjDet='';
+  
+}
+
+resetTemplateSelection(){
+  // this._AppointmentServiceService.mycertificateForm.reset({Language: '1'}); 
+  
+  const templateControl = this._AppointmentServiceService.mycertificateForm.get('Template');
+  templateControl.setValue(''); 
+  this.selectedTemplate = '';
+  this._AppointmentServiceService.mycertificateForm.patchValue({ Language: '1' });
+  this.isTemplateSelected = false;
 }
 
   onSave(){ 
+    this.isButtonDisabled=false;
     if (this.vConsentText == '' || this.vConsentText == null || this.vConsentText== undefined) {
       this.toastr.warning('Please enter ConsentText  ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -247,7 +278,7 @@ addTemplateDescription() {
   }
 
   onSubmit() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -283,7 +314,6 @@ addTemplateDescription() {
       });
     }
     else{
-      debugger
       var m_dataUpdate={
           "updateTCertificateInformationparams": {
           "certificateId": this.vCertificateId,
@@ -313,41 +343,14 @@ addTemplateDescription() {
     }
   }
 
-  // private _filterDep(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
-  //     // this.isDepartmentSelected = false;
-  //     return this.optionsDep.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
-  //   }
-  // }
-
-  // getDepartmentList() {
-    
-  //   this._AppointmentServiceService.getDepartmentCombo().subscribe(data => {
-  //     this.DepartmentList = data;
-  //     this.optionsDep = this.DepartmentList.slice();
-  //     this.filteredOptionsDep = this._AppointmentServiceService.mycertificateForm.get('Department').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
-  //     );
-  //     if (this.data.Obj) {
-  //       const DValue = this.DepartmentList.filter(item => item.DepartmentName == this.registerObj1.DepartmentName);
-  //       console.log("Department:", DValue)
-  //       this._AppointmentServiceService.mycertificateForm.get('Department').setValue(DValue[0]);
-  //       this._AppointmentServiceService.mycertificateForm.updateValueAndValidity();
-  //       // this.OnChangeTemplateList(DValue[0]);
-  //       return;
-  //     }
-  //   });
-  // }
-  // getOptionTextDep(option) {    
-  //   return option && option.DepartmentName ? option.DepartmentName : '';
-  // }
-
   certificateId:any;
   getCertificateDropDownList() {
-    debugger
+    
     this.isTemplateSelected = true;
+
+    const templateControl = this._AppointmentServiceService.mycertificateForm.get('Template');
+  templateControl.setValue('');  // Clear the current selected value
+  
     this._AppointmentServiceService.getCertificateCombo().subscribe(
       data => {
         this.TemplateList = data;
@@ -357,13 +360,6 @@ addTemplateDescription() {
           startWith(''),
           map(value => value ? this._filterTemp(value) : this.TemplateList.slice()),
         );
-        // this.certificateId=data?.[0]?.CertificateId
-        // if(this.registerObj1){
-          
-        //   const dVaule=this.TemplateList.filter(item=>item.CertificateId == this.certificateId)
-        //   this._AppointmentServiceService.mycertificateForm.get('Template').setValue(dVaule[0])
-        // }
-        //console.log("Selected Template:",this._AppointmentServiceService.mycertificateForm.get('Template').value)
       })
   }
 
@@ -381,24 +377,48 @@ addTemplateDescription() {
     return option && option.CertificateName ? option.CertificateName : '';
   }
 
-  OnEdit(row) {
-    console.log(row)
-    var m_data = {
-      "certificateId":row.CertificateId,
-      "Template":row.CertificateName,
-      "ConsentText":row.CertificateText
-    }
-    // const selectedTemplate = this.TemplateList.find(item => item.CertificateName === row.CertificateName);
-    if (row) {
-      const dVaule=this.TemplateList.filter(item=>item.CertificateName == row.CertificateName)
-      this._AppointmentServiceService.mycertificateForm.get('Template').setValue(dVaule[0]);
-    }
-    this._AppointmentServiceService.mycertificateForm.get('ConsentText').setValue(row.CertificateText);
+OnEdit(row) { 
+  
+  console.log('Row data received:', row);
 
-    console.log('Edit Data:', row);
-    console.log('edit data:',m_data);
-    this._AppointmentServiceService.editCertficateForm(m_data);
+  const matchedTemplate = this.TemplateList.find(
+      item => item.CertificateName.trim() === row.CertificateName.trim()
+  );
+
+  if (matchedTemplate) {
+
+      this.selectedTemplate = matchedTemplate;
+
+      this._AppointmentServiceService.mycertificateForm.get('Template').setValue(matchedTemplate);
+
+      console.log('Matched Template:', matchedTemplate);
+  } else {
+      console.warn('No matching template found for CertificateName:', row.CertificateName);
   }
+
+  this._AppointmentServiceService.mycertificateForm.get('ConsentText').setValue(row.CertificateText);
+
+  const m_data = {
+      certificateId: row.CertificateId,
+      // Template: matchedTemplate ? matchedTemplate.CertificateName : null,
+      ConsentText: row.CertificateText,
+  };
+
+  console.log('Data sent to editCertficateForm:', m_data);
+
+  this._AppointmentServiceService.editCertficateForm(m_data);
+
+  console.log('Selected Template after setting:', this.selectedTemplate);
+  console.log('ConsentText updated to:', row.CertificateText);
+
+  this.isDropdownDisabled = true;  
+  this._AppointmentServiceService.mycertificateForm.get('Template').disable();
+  this.isButtonDisabled= true;
+}
+
+
+
+  
 
   onClose() {
     this._AppointmentServiceService.mycertificateForm.reset({Language: '1'});    
