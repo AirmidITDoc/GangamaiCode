@@ -79,6 +79,12 @@ export class NursingnoteService {
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BalanceQty",Param)
   }
+  public getItemlistforMedication(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrvNursingDrugListForMedication",Param)
+  }
   public getDoseList( loader = true) {
     if (loader) {
       this._loaderService.show();

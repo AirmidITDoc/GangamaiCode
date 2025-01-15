@@ -48,7 +48,7 @@ export class ServiceMasterService {
             TariffId: [""],
             ClassId: ["0"],
             ClassRate: ["0"],
-            EffectiveDate: [""],
+            //EffectiveDate: [""],
         });
     }
     createSearchForm(): FormGroup {
@@ -160,7 +160,7 @@ export class ServiceMasterService {
     }
       // Get billing Service List 
   public getBillingServiceList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesListForPackage", employee)
   }
 
   public getRtevPackageDetList(param,loader = true) {

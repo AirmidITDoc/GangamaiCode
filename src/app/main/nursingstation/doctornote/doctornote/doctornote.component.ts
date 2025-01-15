@@ -16,6 +16,7 @@ import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { element } from "protractor";
 import { CreateTemplateComponent } from "../create-template/create-template.component";
+import { AngularEditorConfig } from "@kolkov/angular-editor";
 
 
 
@@ -49,6 +50,22 @@ export class DoctornoteComponent implements OnInit {
     'Action'
   ]
 
+    editorConfig: AngularEditorConfig = {
+      // color:true,
+      editable: true,
+      spellcheck: true,
+      height: '15rem',
+      minHeight: '15rem',
+      translate: 'yes',
+      placeholder: 'Enter text here...',
+      enableToolbar: true,
+      showToolbar: true,
+  
+    };
+    onBlur(e: any) {
+      this.vDescription = e.target.innerHTML;
+    }
+    IsAddFlag:boolean=false;
   currentDate = new Date();
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
@@ -279,7 +296,7 @@ getDoctorNotelist() {
       const currentDate = new Date();
       const datePipe = new DatePipe('en-US');
       const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
       if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
         this.toastr.warning('Please select Patient', 'Warning !', {
@@ -372,6 +389,7 @@ getDoctorNotelist() {
         toastClass: 'tostr-tost custom-toast-error',
       });
     }); 
+    this.IsAddFlag = false
    }
   } 
   OnEdit(row) {
@@ -383,7 +401,9 @@ getDoctorNotelist() {
       "UpdatedBy": row.UpdatedBy,
       "DoctNoteId":row.DoctNoteId
     }
+    this.IsAddFlag = true;
     this._NursingStationService.DoctorNotepoppulateForm(m_data);
+    
   } 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -395,6 +415,7 @@ getDoctorNotelist() {
     //this.onClearPatientInfo();
     this._NursingStationService.myform.get('TemplateName').setValue('')
     this._NursingStationService.myform.get('Description').setValue('')
+    this._NursingStationService.myform.get("DoctNoteId").setValue('')
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
@@ -402,6 +423,7 @@ getDoctorNotelist() {
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
     this._NursingStationService.myform.get('HandOverType').setValue('Morning') 
     this.HandOverNoteList = [];
+    this.IsAddFlag = false
   }
   onClearPatientInfo() {
     this.vRegNo = '';
@@ -487,7 +509,7 @@ onSubmitHandOver() {
   const currentDate = new Date();
   const datePipe = new DatePipe('en-US');
   const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
   if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
     this.toastr.warning('Please select Patient', 'Warning !', {

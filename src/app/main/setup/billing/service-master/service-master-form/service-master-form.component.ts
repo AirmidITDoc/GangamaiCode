@@ -11,6 +11,7 @@ import { map, startWith } from "rxjs/operators";
 import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
 import { timeStamp } from "console";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-service-master-form",
@@ -67,7 +68,8 @@ export class ServiceMasterFormComponent implements OnInit {
   constructor(
     public _serviceMasterService: ServiceMasterService,
     public toastr: ToastrService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    public datePipe: DatePipe,   
     public dialogRef: MatDialogRef<ServiceMasterComponent>,
   ) { }
 
@@ -99,7 +101,7 @@ export class ServiceMasterFormComponent implements OnInit {
     this.getClassList() 
     this.getDoctorNameCombobox();
     //  this.getServicewiseClassMasterList(); 
-    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
+   // this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
   }
   onEditService(row) {
     console.log(row)
@@ -243,6 +245,10 @@ export class ServiceMasterFormComponent implements OnInit {
 
 
   onSubmit() { 
+      const currentDate = new Date();
+      const datePipe = new DatePipe('en-US');
+      const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     if ((this.vGroupId == '' || this.vGroupId == undefined || this.vGroupId == null)) {
       this.toastr.warning('Please select GroupName.', 'Warning !', {
@@ -350,7 +356,7 @@ export class ServiceMasterFormComponent implements OnInit {
         "groupId": this._serviceMasterService.myform.get("GroupId").value.GroupId || 0,
         "serviceShortDesc": this._serviceMasterService.myform.get("ServiceShortDesc").value || '',
         "serviceName": this._serviceMasterService.myform.get("ServiceName").value || '',
-        "price": this._serviceMasterService.myform.get("Price").value || 0,
+        "price": 0,//this._serviceMasterService.myform.get("Price").value || 0,
         "isEditable": this._serviceMasterService.myform.get("IsEditable").value,
         "creditedtoDoctor": this._serviceMasterService.myform.get("CreditedtoDoctor").value,
         "isPathology": IsPathology, 
@@ -373,7 +379,7 @@ export class ServiceMasterFormComponent implements OnInit {
         "tariffId": this._serviceMasterService.myform.get("TariffId").value.TariffId || 0,
         "classId": 0,
         "classRate": 0,
-        "effectiveDate": this._serviceMasterService.myform.get("EffectiveDate").value || "01/01/1900",
+        "effectiveDate": formattedDate,
       }
       this.DSServicedetailList.data.forEach(element => {
         let c = JSON.parse(JSON.stringify(serviceDetailInsert));
@@ -443,7 +449,7 @@ export class ServiceMasterFormComponent implements OnInit {
     this._serviceMasterService.myform.reset();
     this._serviceMasterService.myform.get('IsEditable').setValue(true);
     this._serviceMasterService.myform.get('IsActive').setValue(true);
-    this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
+    //this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
     this._serviceMasterService.myform.get('TariffId').setValue(this.TariffcmbList[0]);
     this.dialogRef.close();
   }
@@ -493,18 +499,18 @@ export class ServiceMasterFormComponent implements OnInit {
 
   public onEnterServiceShortDesc(event): void {
     if (event.which === 13) {
-      this.Price.nativeElement.focus();
+      this.TariffId.nativeElement.focus();
     }
   }
 
   public onEnterPrice(event): void {
     if (event.which === 13) {
-      this.PrintOrder.nativeElement.focus();
+      //this.PrintOrder.nativeElement.focus();
     }
   }
-  public onEnterPrintOrder(event): void {
+  public onEnterTariff(event): void {
     if (event.which === 13) {
-      this.TariffId.nativeElement.focus();
+      this.PrintOrder.nativeElement.focus();
     }
   }
 

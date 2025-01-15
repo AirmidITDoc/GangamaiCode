@@ -86,9 +86,7 @@ export class AddPackageDetComponent implements OnInit {
   //Service list
   getServiceListCombobox() {
     var m_data = {
-      SrvcName: `${this.PackageForm.get('SrvcName').value}%`,
-      TariffId: this.registerObj.TariffId || 1, 
-      ClassId: 0,
+      SrvcName: `${this.PackageForm.get('SrvcName').value}%`, 
     };
     console.log(m_data)
     if (this.PackageForm.get('SrvcName').value.length >= 1) {
