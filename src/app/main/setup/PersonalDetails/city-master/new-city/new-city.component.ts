@@ -30,21 +30,11 @@ export class NewCityComponent implements OnInit {
     autocompleteModestatus: string = "State";
 
     ngOnInit(): void {
-
         this.cityForm = this._CityMasterService.createCityForm();
-        console.log(this.data)
-        if (this.data.cityId > 0) {
+        if ((this.data?.cityId??0) > 0) {
             this.isActive=this.data.isActive
             this.cityForm.patchValue(this.data);
         }
-        else {
-            this.cityForm.reset();
-            this.cityForm.get('isActive').setValue(1);
-
-        }
-        // if(this.data){
-        //     this.isActive=this.data.isActive
-        //   this.cityForm.patchValue(this.data);}
     }
 
     saveflag: boolean = false;
@@ -84,10 +74,5 @@ export class NewCityComponent implements OnInit {
     onClear(val: boolean) {
         this.cityForm.reset();
         this.dialogRef.close(val);
-    }
-
-    selectChangestate(obj: any) {
-        console.log(obj);
-        this.stateId = obj
     }
 }

@@ -209,22 +209,10 @@ export class AirmidDropdownComponent implements OnInit {
     getOptionText(option) {
         return option && option.text ? option.text : '';
     }
-    ngAfterViewInit() {
-        this.setInitialValue();
-    }
     ngOnDestroy() {
         this._onDestroy.next();
         this._onDestroy.complete();
         this.stateChanges.complete();
-    }
-    protected setInitialValue() {
-        // 
-        // this.filteredDdls
-        //     .pipe(take(1), takeUntil(this._onDestroy))
-        //     .subscribe(() => {
-        //         this.singleSelect.compareWith = (a: any, b: any) =>
-        //             a && b && a.id === b.id;
-        //     });
     }
     writeValue(value: string | null): void {
         this.control.setValue(value);

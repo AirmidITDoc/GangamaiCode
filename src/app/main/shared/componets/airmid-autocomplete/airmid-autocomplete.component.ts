@@ -144,9 +144,6 @@ export class AirmidAutocompleteComponent implements OnInit {
         }
 
     }
-    ngAfterViewInit() {
-        this.setInitialValue();
-    }
     ngOnDestroy() {
         this._onDestroy.next();
         this._onDestroy.complete();
@@ -154,15 +151,6 @@ export class AirmidAutocompleteComponent implements OnInit {
     }
     public comparer(o1: any, o2: any): boolean {
         return o1 && o2 && (o1[this["ariaLabel"]].toString() === o2.toString() || o1[this["ariaLabel"]].toString() === o2[this["ariaLabel"]].toString());
-    }
-    protected setInitialValue() {
-        // 
-        // this.filteredDdls
-        //     .pipe(take(1), takeUntil(this._onDestroy))
-        //     .subscribe(() => {
-        //         this.singleSelect.compareWith = (a: any, b: any) =>
-        //             a && b && a.id === b.id;
-        //     });
     }
     protected filterDdls() {
         if (!this.ddls) {
