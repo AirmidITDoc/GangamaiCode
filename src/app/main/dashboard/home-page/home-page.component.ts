@@ -14,7 +14,6 @@ import { DatePipe } from '@angular/common';
 })
 export class HomePageComponent implements OnInit {
 
-
   username: any;
 
   constructor(
@@ -25,7 +24,9 @@ export class HomePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.username = this._accountServices.currentUserValue.user.UserName || '';
+    this.username = this._accountServices.currentUserValue.user
+    ? this._accountServices.currentUserValue.user.firstName + ' ' + this._accountServices.currentUserValue.user.lastName
+    : '';
   }
 
 }
