@@ -5,7 +5,7 @@
         (input)="onValueChange($event)" (change)="onChange($event)" />
     <div *ngIf="formGroup?.controls[formControlName]?.invalid && control?.touched && validations.length>0">
         <div *ngFor="let item of validations">
-            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
+            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name.toLowerCase())">
                 {{item.Message}}
             </mat-error>
         </div>
