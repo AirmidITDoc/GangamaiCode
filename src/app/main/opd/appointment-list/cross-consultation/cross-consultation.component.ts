@@ -23,6 +23,7 @@ import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-au
 export class CrossConsultationComponent implements OnInit {
   crossconForm: FormGroup;
   date = new Date().toISOString();
+  // date: Date;
   screenFromString = 'admission-form';
   Departmentid = 0;
   DoctorID = 0;
@@ -47,10 +48,8 @@ export class CrossConsultationComponent implements OnInit {
    
   }
 
-  ngOnInit(): void {
-
-
-    if (this.data.visitId > 0) {
+  ngOnInit(): void {   
+      if ((this.data?.visitId ?? 0) > 0) {
       setTimeout(() => {
         this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
           this.registerObj1 = response;
@@ -83,8 +82,8 @@ export class CrossConsultationComponent implements OnInit {
     return this.formBuilder.group({
       visitId: 0,
       regId: 0,
-      visitDate: this.registerObj1.visitTime,
-      visitTime: this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm'),
+      visitDate:"",// this.registerObj1.visitTime,
+      visitTime:" ",// this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm'),
       unitId: this.registerObj1.unitId,
       patientTypeId: this.registerObj1.patientTypeId,
       consultantDocId: this.registerObj1.consultantDocId,
@@ -99,7 +98,7 @@ export class CrossConsultationComponent implements OnInit {
       classId: this.registerObj1.classId,
       departmentId: this.registerObj1.departmentId,
       patientOldNew: this.registerObj1.patientOldNew,
-      firstFollowupVisit: this.registerObj1.firstFollowupVisit,
+      firstFollowupVisit: 0,
       appPurposeId: 0,//this.registerObj1.VisitDate,
       followupDate: new Date(),
       crossConsulFlag: 1,
@@ -114,7 +113,8 @@ export class CrossConsultationComponent implements OnInit {
 
    @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
   onChangeDepartment(e) {
-    this.ddldoctor.SetSelection(e.doctorID);
+    debugger
+    this.ddldoctor.SetSelection(e.value);
 }
 
   getValidationMessages() {
@@ -122,7 +122,7 @@ export class CrossConsultationComponent implements OnInit {
       Departmentid: [
         { name: "required", Message: "Department Name is required" }
       ],
-      DoctorID: [
+      consultantDocId: [
         { name: "required", Message: "Doctor Name is required" }
       ]
     };
@@ -131,63 +131,22 @@ export class CrossConsultationComponent implements OnInit {
   onSubmit() {
     console.log(this.crossconForm.value);
    
-    this.registerObj1.departmentId=parseInt(this.crossconForm.get('departmentId').value)
-    this.registerObj1.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
-    this.registerObj1.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
-    this.registerObj1.visitId=0
-    this.registerObj1.addedBy=0
-    this.registerObj1.updatedBy=0
-    console.log(this.registerObj1);
-    this._AppointmentlistService.crossconsultSave(this.registerObj1).subscribe((response) => {
+    let data=this.crossconForm.value;
+    data.departmentId=parseInt(this.crossconForm.get('departmentId').value)
+    data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
+    data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
+    data.visitId=0;
+    data.addedBy=0;
+    data.updatedBy=0;
+
+    console.log(data);
+    this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {
       this.toastr.error(error.message);
     });
   }
-
-
-  // onSubmit1() {
-  //   
-
-  //   var m_data = {
-  //     "visitId": 0,
-  //     "regId": 0,
-  //     "visitDate": this.datePipe.transform(this.crossconForm.get("VisitDate").value, 'yyyy-MM-dd') || this.dateTimeObj.date,
-  //     "visitTime": "2024-09-18T11:24:02.656Z",// this.datePipe.transform(this.crossconForm.get("VisitDate").value, 'yyyy-MM-dd HH:mm:ss'),
-  //     "unitId": 0,
-  //     "patientTypeId": 0,
-  //     "consultantDocId": this.crossconForm.get('DoctorID1').value,
-  //     "refDocId": 0,
-  //     "tariffId": 0,
-  //     "companyId": 0,
-  //     "addedBy": 0,
-  //     "updatedBy": 0,
-  //     "isCancelledBy": 0,
-  //     "isCancelled": true,
-  //     "isCancelledDate": "2024-09-18T11:24:02.656Z",
-  //     "classId": 0,
-  //     "departmentId": this.crossconForm.get('Departmentid').value,
-  //     "patientOldNew": 0,
-  //     "firstFollowupVisit": 0,
-  //     "appPurposeId": 0,
-  //     "followupDate": "2024-09-18T11:24:02.656Z",
-  //     "crossConsulFlag": 0,
-  //     "phoneAppId": 0
-  //   }
-  //   console.log(this.crossconForm.value);
-  //   this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
-  //     this.toastr.success(response.message);
-  //     this.onClear(true);
-  //   }, (error) => {
-  //     this.toastr.error(error.message);
-  //   });
-  //   // }
-  // }
-  selectChangedepartment($event) {
-    
-    this.crossconForm.get("departmentId").setValue($event.value)
-   }
 
   onClear(val: boolean) {
     this.crossconForm.reset();

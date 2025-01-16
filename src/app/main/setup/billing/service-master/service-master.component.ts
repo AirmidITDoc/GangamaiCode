@@ -139,6 +139,9 @@ export class ServiceMasterComponent implements OnInit {
     }
 
     onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
         let that = this;
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
             {

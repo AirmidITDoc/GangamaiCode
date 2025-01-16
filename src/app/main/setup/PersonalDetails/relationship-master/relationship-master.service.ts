@@ -25,6 +25,7 @@ export class RelationshipMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
+            isActive:[true,[Validators.required]]
         });
     }
 

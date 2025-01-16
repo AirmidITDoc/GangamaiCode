@@ -99,7 +99,7 @@ public EditConDoctor(Param: any, showLoader = true) {
 
 public EditRefDoctor(Param: any, showLoader = true) {
  
-  return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate"+ Param.visitId, Param, showLoader);
+  return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
 }
 
 public deactivateTheStatus(m_data) {
@@ -107,9 +107,8 @@ public deactivateTheStatus(m_data) {
 }
 
 public crossconsultSave(Param: any, showLoader = true) {
-  if (Param.visitID) {
-      return this._httpClient1.PutData("CrossConsultation/CrossConsultationInsert" + Param.visitID, Param, showLoader);
-  } else return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
+  return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
+  
 }
 
 

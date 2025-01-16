@@ -24,22 +24,19 @@ export class NewStateMasterComponent implements OnInit {
       public toastr: ToastrService
     ) { }
 
-  autocompleteModecountry: string = "State";
+  autocompleteModecountry: string = "Country";
 
   countryId = 0;
 
     ngOnInit(): void {
       this.stateForm = this._StateMasterService.createStateForm();
+      
       console.log(this.data)
-    if(this.data.stateId > 0){
-      this.isActive=this.data.isActive;
-      this.stateForm.patchValue(this.data);
-    }
-    else{
+      if ((this.data?.stateId??0) > 0) 
+       this.stateForm.patchValue(this.data);
+    else
       this.stateForm.reset();
-      this.stateForm.get('isActive').setValue(1);
-
-    }
+         
   }
 
   

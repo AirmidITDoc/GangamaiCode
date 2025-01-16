@@ -7,14 +7,12 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class ReligionMasterService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        this.myform = this.CreateReligionForm();
-        this.myformSearch = this.createSearchForm();
+              this.myformSearch = this.createSearchForm();
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -31,6 +29,7 @@ export class ReligionMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
+            isActive:[true,[Validators.required]]
         });
     }
     initializeFormGroup() {

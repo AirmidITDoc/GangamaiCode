@@ -26,11 +26,10 @@ export class NewRelationshipComponent implements OnInit {
 
     ngOnInit(): void {
       this.relationshipForm = this._RelationshipMasterService.createRelationshipForm();
-        if(this.data)
-        {
-            this.isActive=this.data.isActive
-            this.relationshipForm.patchValue(this.data);
-        }
+      if ((this.data?.relationshipId??0) > 0) 
+       this.relationshipForm.patchValue(this.data);
+       
+
     }
 
     onSubmit() {
