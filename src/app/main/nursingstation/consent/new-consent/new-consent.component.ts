@@ -176,8 +176,8 @@ export class NewConsentComponent implements OnInit {
         this.getDepartmentList();
       }
 
-      
-    this.isButtonDisabled=true
+
+      this.isButtonDisabled = true
     }
 
     this.vOtReqOPD = this._loggedService.currentUserValue.user.pharOPOpt;
@@ -333,15 +333,19 @@ export class NewConsentComponent implements OnInit {
     this.OP_IP_Id = '';
     this.vIPDNo = '';
   }
-  selectedTemplateOption: any;
-  onTemplateSelect(option: any) {
 
-    this.selectedTemplateOption = option;
-    this.isTemplateSelected = true;
+  selectedTemplateOption: any;
+
+  onTemplateSelect(option: any) {
+    debugger
+    console.log("selectedTemplateOption:", option)
+
+    this.selectedTemplateOption = option.ConsentDesc;
+
   }
 
   addTemplateDescription() {
-    this.isButtonDisabled=false
+    this.isButtonDisabled = false
     debugger
     if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
       this.toastr.warning('Please select Department ', 'Warning !', {
@@ -372,10 +376,8 @@ export class NewConsentComponent implements OnInit {
       }
     }
 
-    if (this.selectedTemplateOption) {
-      this.vConsentText = this.selectedTemplateOption.ConsentDesc;
-      // `Description: ${this.selectedTemplateOption.ConsentDesc}`
-    }
+    this.vConsentText = this.selectedTemplateOption || '';
+    this.selectedTemplateOption = '';
   }
 
   onSave() {
@@ -422,7 +424,7 @@ export class NewConsentComponent implements OnInit {
         this.onSubmit();
       }
     });
-    
+
   }
 
   onSubmit() {
@@ -453,7 +455,7 @@ export class NewConsentComponent implements OnInit {
         "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
         "createdBy": this._loggedService.currentUserValue.user.id,
       }
-     
+
       let submitData = {
         "saveTConsentInformationparams": saveTConsentInformationparams
       }
@@ -480,17 +482,17 @@ export class NewConsentComponent implements OnInit {
         "consentTime": formattedTime,
         "opipid": this.vAdmissionID,
         "opipType": opip_Type,
-        "consentDeptId": this._ConsentService.myform.get("Department").value.DepartmentId || 0,
-        "consentTempId": this._ConsentService.myform.get("Template").value.ConsentId || 0,
-        "consentName": this._ConsentService.myform.get("Template").value.ConsentName || 0,
+        "consentDeptId": this.registerObj1.ConsentDeptId || 0,
+        "consentTempId": this.registerObj1.ConsentTempId || 0,
+        "consentName": this.registerObj1.ConsentName || 0,
         "consentText": this._ConsentService.myform.get("ConsentText").value || 0,
         "modifiedBy": this._loggedService.currentUserValue.user.id,
       }
-      
+
       let updateData = {
         "updateTConsentInformationparams": updateTConsentInformationparams
       }
-      
+
       console.log("UpdateJson:", updateData);
 
       this._ConsentService.NursingConsentUpdate(updateData).subscribe(response => {
@@ -509,8 +511,6 @@ export class NewConsentComponent implements OnInit {
 
   }
 
-
-
   private _filterDep(value: any): string[] {
     if (value) {
       const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
@@ -519,7 +519,23 @@ export class NewConsentComponent implements OnInit {
     }
   }
 
+  onDepartmentSelected(event: MatAutocompleteSelectedEvent) {
+    debugger
+    const selectedDepartment = event.option.value;
+    if (selectedDepartment) {
+      this.OnChangeTemplateList(selectedDepartment);
+    }
+  }
+  
+
   getDepartmentList() {
+debugger
+    const DepControl = this._ConsentService.myform.get('Department');
+    DepControl.setValue('');
+    const templateControl = this._ConsentService.myform.get('Template');
+    templateControl.setValue(''); // Clear Template control
+    this.TemplateList = []; // Clear Template list
+    this.filteredOptionsTemp = null; // Clear Template filtered options
 
     this._ConsentService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
@@ -538,6 +554,7 @@ export class NewConsentComponent implements OnInit {
       }
     });
   }
+
   getOptionTextDep(option) {
     return option && option.DepartmentName ? option.DepartmentName : '';
   }
@@ -545,7 +562,14 @@ export class NewConsentComponent implements OnInit {
   OnChangeTemplateList(departmentObj) {
     debugger
     console.log(departmentObj)
-    this._ConsentService.myform.get('Template').reset();
+
+    const templateControl = this._ConsentService.myform.get('Template');
+
+    templateControl.setValue('');
+    this.TemplateList = [];
+    this.filteredOptionsTemp = null;
+    this.isDepartmentSelected = true;
+
     var vdata = {
       "DepartmentId": departmentObj.DepartmentId
     }

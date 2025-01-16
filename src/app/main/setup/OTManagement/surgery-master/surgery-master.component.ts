@@ -12,6 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Row } from 'jspdf-autotable';
 import { SurgeryMasterService } from './surgery-master.service';
 import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-surgery-master',
@@ -28,12 +29,13 @@ export class SurgeryMasterComponent implements OnInit {
 
   displayedColumns = [
     'SurgeryId',
-    'ProcedureName',
-    'CategoryName',
+    'SurgeryName',
     'DepartmentName',
+    'SurgeryCategoryName',
+    'SiteDescriptionName',
     'Amount',
-    'Site',
     'IsActive',
+    'action'
   ];
 
   constructor(public _surgeryMasterService: SurgeryMasterService,
@@ -47,19 +49,41 @@ export class SurgeryMasterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSurgeryList();
+    this.getSurgeryMasterList();
   }
 
   // toggle sidebar
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
-
   // field validation 
   get f() { return this._surgeryMasterService.myformSearch.controls; }
 
-  getSurgeryList(){
-
+  getSurgeryMasterList(){
+    
+    this.sIsLoading = 'loading-data';
+  
+    // Check if there is a valid search term
+    const otsurgeryNameSearch = this._surgeryMasterService.myformSearch.get("SurgeryNameSearch").value || '';
+  
+    const D_data = {
+      "SurgeryName": otsurgeryNameSearch.trim() ? otsurgeryNameSearch + '%' : '%', // Use '%' if search is empty
+    };
+  
+    console.log("SurgeryList:", D_data);
+  
+    this._surgeryMasterService.getOTSurgerylist(D_data).subscribe(
+      Visit => {
+        this.dataSource.data = Visit as SurgeryMasterList[];
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.sIsLoading = '';
+      },
+      error => {
+        console.error("Error loading table data:", error);
+        this.sIsLoading = '';
+      }
+    );
   }
 
   newSurgery(){
@@ -71,19 +95,71 @@ export class SurgeryMasterComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getSurgeryList();
+      this.getSurgeryMasterList();
     });
   }
   
-  OnEdit(obj){
+  OnEdit(contact){
+    const dialogRef = this._matDialog.open(NewSurgeryMasterComponent,
+      {
+        maxWidth: "60%",
+        width: "65%",
+        height: "70%",
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getSurgeryMasterList();
+    });
+  }
 
+  onDeactive(SurgeryId){
+    
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes,Change Status!'
+  }).then((result) => {
+    
+      if (result.isConfirmed) {
+        let Query;
+        const tableItem = this.dataSource.data.find(item => item.SurgeryId === SurgeryId);
+        console.log("M_OT_SurgeryMaster:",tableItem)
+    
+        if (tableItem.IsActive) {
+            Query = "Update M_OT_SurgeryMaster set IsActive=0 where SurgeryId=" + SurgeryId;
+        } else {
+            Query = "Update M_OT_SurgeryMaster set IsActive=1 where SurgeryId=" + SurgeryId;
+        }
+    
+        console.log("query:", Query);
+    
+        this._surgeryMasterService.deactivateTheStatus(Query)
+            .subscribe(
+                (data) => {
+                    Swal.fire('Changed!', 'OTTable Status has been Changed.', 'success');
+                    this.getSurgeryMasterList();
+                },
+                (error) => {
+                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                }
+            );
+    }
+    
+  });
   }
 
   onClear() {
     this._surgeryMasterService.myformSearch.reset({
       SurgeryNameSearch: "",
     });
-    this.getSurgeryList();
+    this.getSurgeryMasterList();
   }
 
 }
@@ -95,6 +171,7 @@ export class SurgeryMasterList {
   Amount:number;
   Site:string;
   IsDeleted:String;
+  IsActive:string;
   
   /**
    * Constructor
@@ -110,6 +187,7 @@ export class SurgeryMasterList {
       this.Amount = SurgeryMasterList.Amount || '';   
       this.Site = SurgeryMasterList.Site || '';
       this.IsDeleted = SurgeryMasterList.IsDeleted;
+      this.IsActive=SurgeryMasterList.IsActive || '';
     }
   }
 }

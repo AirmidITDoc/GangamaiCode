@@ -25,19 +25,22 @@ export class ConsentComponent implements OnInit {
 
   displayedColumns: string[] = [
     'IpOpType',
+    'UHIDNO',
     'ConsentDateTime',
     'PatientName',
+    'ConsentName',
+    'ConsentDesc',
     'AgeYear',
     'Mobile',
     'AddedBy',
-    // 'Action'
+    'Action',
   ]
-  displayedPatientColumns: string[] = [
-    'Date',
-    'ConsentName',
-    'ConsentDesc',
-    'Action'
-  ]
+  // displayedPatientColumns: string[] = [
+  //   'Date',
+  //   'ConsentName',
+  //   'ConsentDesc',
+  //   'Action'
+  // ]
 
   dsConsentList = new MatTableDataSource<OPIPMasterList>();
   dsPatientDetailList = new MatTableDataSource<OPIPMasterList>();

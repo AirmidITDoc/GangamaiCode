@@ -87,43 +87,43 @@
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                     <ng-container matColumnDef="SiteDescId" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                            class="w-100">Code
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.SiteDescId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="SiteDescriptionName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             OT SiteDesc Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.SiteDescriptionName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="SurgeryCategoryName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Surgery Category</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.SurgeryCategoryName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             AddedBy</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.AddedBy}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IsActive" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
@@ -132,8 +132,7 @@
                                     </ng-container> 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef
-                                            class="w-150">
+                                        <mat-header-cell *matHeaderCellDef class="w-150">
                                             Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-150">
@@ -158,12 +157,12 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1000"
+                                    <mat-header-row class="accent min-width-1200"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                        class=" min-width-1200" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"

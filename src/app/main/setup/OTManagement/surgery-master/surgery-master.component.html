@@ -44,7 +44,7 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Search Surgery Name</mat-label>
                                 <input name="SurgeryNameSearch" formControlName="SurgeryNameSearch" matInput
-                                    (keyup)="getSurgeryList()">
+                                    (keyup)="getSurgeryMasterList()">
                                 <span class="error" *ngIf="f.SurgeryNameSearch.invalid && f.SurgeryNameSearch.touched">
                                     Surgery Name is required Enter only Alphabets</span>
                             </mat-form-field>
@@ -53,7 +53,7 @@
                                 <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
                                     <mat-icon class="cleariconbutton">close</mat-icon>
                                 </button>&nbsp;
-                                <button mat-raised-button class="searchButton" (click)="getSurgeryList()"
+                                <button mat-raised-button class="searchButton" (click)="getSurgeryMasterList()"
                                     matTooltip="search">
                                     <mat-icon class="searchiconbutton">search</mat-icon>
                                 </button>
@@ -88,49 +88,57 @@
 
                                     <ng-container matColumnDef="SurgeryId" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-60">Code
+                                            >Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.SurgeryId}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="ProcedureName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
-                                            Procedure Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
-                                            {{contact.ProcedureName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="CategoryName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-180">
-                                            Category Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
-                                            {{contact.CategoryName}}
+                                    <ng-container matColumnDef="SurgeryName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            SurgeryName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.SurgeryName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="DepartmentName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-180">
-                                            Department Name
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md >
+                                            DepartmentName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-180">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.DepartmentName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                     <ng-container matColumnDef="Amount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-100">
-                                            Amount
+                                    <ng-container matColumnDef="SurgeryCategoryName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-200">
+                                            SurgeryCategoryName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-100">
-                                            {{contact.Amount}}
-                                        </mat-cell>
+                                        <!-- <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.SurgeryCategoryName}}
+                                        </mat-cell> -->
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-200 ellipsis"
+                                        matTooltip="{{contact.SurgeryCategoryName}}">
+                                        {{contact.SurgeryCategoryName}}
+                                    </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Site">
+                                     <ng-container matColumnDef="SiteDescriptionName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                            SiteDescriptionName
+                                        </mat-header-cell>
+                                        <!-- <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.SiteDescriptionName}}
+                                        </mat-cell> -->
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-200 ellipsis"
+                                        matTooltip="{{contact.SiteDescriptionName}}">
+                                        {{contact.SiteDescriptionName}}
+                                    </mat-cell>
+                                    </ng-container>
+
+                                    <!-- <ng-container matColumnDef="TemplateName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-100">
                                             Site
                                         </mat-header-cell>
@@ -138,16 +146,48 @@
                                             {{contact.Site}}
                                         </mat-cell>
                                     </ng-container>
+                                    
+                                    <ng-container matColumnDef="Service">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-100">
+                                            Site
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-100">
+                                            {{contact.Site}}
+                                        </mat-cell>
+                                    </ng-container>-->
 
-                                   <ng-container matColumnDef="IsActive" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                    <ng-container matColumnDef="Amount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                            Amount
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                            {{contact.SurgeryAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                   <ng-container matColumnDef="IsActive">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
                                                 class="active-icon red-500 s-16">close</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="w-150">
+                                            Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-150">
+                                            <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
+                                                <mat-icon style="color: black;">edit</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="onDeactive(contact.SurgeryId)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button>
                                         </mat-cell>
                                     </ng-container>
 
@@ -167,7 +207,7 @@
                                     </mat-header-row>
 
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        class=" min-width-1300" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class=" min-width-1500" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 
                                     <mat-footer-row *matFooterRowDef="['loading']"
