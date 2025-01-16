@@ -30,7 +30,7 @@ export class NewSubgroupComponent implements OnInit {
  
     ngOnInit(): void {
         this.subgroupForm = this._SubGroupMasterService.createSubgroupForm();
-        if(this.data){
+        if((this.data?.subGroupId??0) > 0){
             this.isActive=this.data.isActive
             this.subgroupForm.patchValue(this.data);
         }

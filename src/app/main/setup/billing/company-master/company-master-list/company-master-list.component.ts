@@ -32,7 +32,7 @@ export class CompanyMasterListComponent implements OnInit {
    
     ngOnInit(): void {
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-        if(this.data){
+        if((this.data?.companyId??0) > 0){
             this.isActive=this.data.isActive
             this.companyForm.patchValue(this.data);
         }

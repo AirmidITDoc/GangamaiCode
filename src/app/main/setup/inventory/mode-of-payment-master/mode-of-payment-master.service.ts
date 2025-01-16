@@ -31,6 +31,7 @@ export class ModeOfPaymentMasterService {
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
+            isActive:[false,[Validators.required]]
         });
     }
     

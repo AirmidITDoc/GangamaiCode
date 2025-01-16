@@ -28,7 +28,7 @@ export class NewCreditReasonComponent implements OnInit {
 
   ngOnInit(): void {
       this.creditreasonForm = this._CreditreasonService.createCreditreasonForm();
-      if(this.data){
+      if((this.data?.creditId??0) > 0){
         this.isActive=this.data.isActive
         this.creditreasonForm.patchValue(this.data);
     }

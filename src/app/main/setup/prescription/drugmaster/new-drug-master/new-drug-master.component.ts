@@ -27,7 +27,8 @@ export class NewDrugMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.drugForm=this._durgMasterService.createDrugForm();
-    if(this.data){
+    if((this.data?.drugId??0) > 0)
+        {
         this.isActive=this.data.isActive
         this.drugForm.patchValue(this.data);
     }

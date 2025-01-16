@@ -28,7 +28,8 @@ export class BedMasterService {
             roomId: ["",
                 Validators.required
             ],
-            isAvailible: ["true"],
+            isAvailible: true,
+            isActive:[false,[Validators.required]]
         });
     }
 
@@ -45,7 +46,7 @@ export class BedMasterService {
 
     public bedMasterSave(Param: any, showLoader = true) {
         if (Param.bedId) {
-            return this._httpClient.PutData("BedMaster" + Param.bedId, Param, showLoader);
+            return this._httpClient.PutData("BedMaster/" + Param.bedId, Param, showLoader);
         } else return this._httpClient.PostData("BedMaster", Param, showLoader);
     }
 

@@ -25,9 +25,7 @@ export class CategoryMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: true,
-            // AddedBy: [0],
-            // UpdatedBy: [0],
+            isActive:[false,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

@@ -26,6 +26,7 @@ export class TermsOfPaymentMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
+            isActive:[false,[Validators.required]]
             // IsDeleted: false,
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],

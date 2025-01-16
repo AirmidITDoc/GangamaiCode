@@ -31,7 +31,7 @@ export class NewBedComponent implements OnInit {
 
   ngOnInit(): void {
     this.bedForm = this._BedMasterService.createBedForm();
-    if(this.data)
+    if((this.data?.bedId??0) > 0)
     {
         this.isActive=this.data.isActive
         this.bedForm.patchValue(this.data);

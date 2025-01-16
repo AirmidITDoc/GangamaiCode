@@ -28,7 +28,7 @@ export class BankMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
+            isActive:[false,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

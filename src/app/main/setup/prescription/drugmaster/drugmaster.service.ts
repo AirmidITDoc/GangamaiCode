@@ -30,6 +30,7 @@ export class DrugmasterService {
             classId: [0,
                 // Validators.required
             ],
+            isActive:[false,[Validators.required]]
         });
     }
 

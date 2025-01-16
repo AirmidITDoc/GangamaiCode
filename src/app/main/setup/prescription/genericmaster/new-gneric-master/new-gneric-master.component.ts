@@ -27,7 +27,8 @@ export class NewGnericMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.genericForm=this._GenericMasterService.createGenericForm();
-        if(this.data){
+        if((this.data?.genericId??0) > 0)
+            {
             this.isActive=this.data.isActive
             this.genericForm.patchValue(this.data);
         }

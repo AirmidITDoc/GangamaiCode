@@ -27,7 +27,8 @@ export class NewUnitComponent implements OnInit {
  
     ngOnInit(): void {
         this.unitForm = this._UnitmasterService.createUnitmasterForm();
-        if(this.data){
+        if((this.data?.unitId??0) > 0)
+            {
             this.isActive=this.data.isActive
             this.unitForm.patchValue(this.data);
         }

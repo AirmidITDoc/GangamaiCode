@@ -4,8 +4,7 @@ import { BankMasterService } from "./bank-master.service";
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { NewBankComponent } from "./new-bank/new-bank.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
@@ -67,7 +66,7 @@ export class BankMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-
+        
         let that = this;
         const dialogRef = this._matDialog.open(NewBankComponent,
             {

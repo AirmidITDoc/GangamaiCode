@@ -25,7 +25,7 @@ export class NewDischargetypeComponent implements OnInit {
 
     ngOnInit(): void {
         this.dischargetypeForm = this._DischargetypeMasterService.createDischargetypeForm();
-        if(this.data){
+        if((this.data?.dischargeTypeId??0) > 0){
         this.isActive=this.data.isActive
         this.dischargetypeForm.patchValue(this.data);}
     }

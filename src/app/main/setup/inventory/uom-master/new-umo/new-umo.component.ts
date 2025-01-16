@@ -27,7 +27,8 @@ export class NewUMOComponent implements OnInit {
 
   ngOnInit(): void {
     this.unitForm = this._UomMasterService.createUnitofmeasurementForm();
-    if(this.data){
+    if((this.data?.unitofMeasurementId??0) > 0)
+    {
         this.isActive=this.data.isActive
         this.unitForm.patchValue(this.data);
     }

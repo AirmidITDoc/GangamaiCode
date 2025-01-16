@@ -30,6 +30,7 @@ export class ItemTypeMasterService {
             isDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
+            isActive:[false,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

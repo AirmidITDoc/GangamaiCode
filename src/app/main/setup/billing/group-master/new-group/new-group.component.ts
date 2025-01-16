@@ -24,7 +24,7 @@ export class NewGroupComponent implements OnInit {
  
     ngOnInit(): void {
         this.groupForm = this._GroupMasterService.createGroupForm();
-        if(this.data){
+        if((this.data?.groupId??0) > 0){
             this.isActive=this.data.isActive
             this.groupForm.patchValue(this.data);
         }

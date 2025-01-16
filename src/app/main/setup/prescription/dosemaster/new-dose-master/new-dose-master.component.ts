@@ -27,7 +27,8 @@ export class NewDoseMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.doseForm=this._doseMasterService.createDoseForm();
-        if(this.data){
+        if((this.data?.doseId??0) > 0)
+            {
             this.isActive=this.data.isActive
             this.doseForm.patchValue(this.data);
         }

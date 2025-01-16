@@ -26,6 +26,7 @@ export class CreditreasonService {
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ]
         ],
+        isActive:[false,[Validators.required]]
       });
   }
   createSearchForm(): FormGroup {

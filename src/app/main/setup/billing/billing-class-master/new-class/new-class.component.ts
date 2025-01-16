@@ -27,10 +27,11 @@ export class NewClassComponent implements OnInit {
  
   ngOnInit(): void {
       this.classForm = this._BillingClassMasterService.createClassForm();
-      if(this.data){
-        this.isActive=this.data.isActive
-         this.classForm.patchValue(this.data);}
-      
+      if((this.data?.classId??0) > 0)
+        {
+            this.isActive=this.data.isActive
+            this.classForm.patchValue(this.data);
+        }
   }
   onSubmit() {
    
