@@ -740,7 +740,7 @@ getDiscAmtSum(element) {
       let discPerLimit = this._loggedService.currentUserValue.user.discApplyPer || 0
 
       let finalDiscPer = this.BillingForm.get("FinalconcessionPer").value || 0;
-      if (finalDiscPer > 0 && finalDiscPer < discPerLimit || finalDiscPer > discPerLimit) {
+      if (finalDiscPer > 0 && finalDiscPer <= discPerLimit || finalDiscPer > discPerLimit) {
         if (finalDiscPer > discPerLimit) {
           Swal.fire({
             title: 'The Administration Defined The Dicount Limit',
@@ -1529,7 +1529,7 @@ getPacakgeDetail(contact){
   const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
     {
       maxWidth: "100%",
-      height: '75%',
+      height: '70%',
       width: '70%' ,
       data: {
         Obj:contact

@@ -24,9 +24,7 @@
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px;">
-                <div fxLayout="column" fxFlexFill fxLayoutGap="10px">
-
-                    <mat-card style="padding: 5px;">
+                <div fxLayout="column" fxFlexFill fxLayoutGap="5px"> 
                         <form [formGroup]="PackageForm">
                             <div fxLayout="row" fxLayoutGap="5px">
                                 <mat-form-field appearance="outline" fxFlex="35%">
@@ -96,8 +94,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
-                    </mat-card>
+                        </form> 
 
                     <mat-card style="padding: 5px;">
                         <div fxFlex="100%">
@@ -230,8 +227,9 @@
                         </div>
                     </mat-card>
 
+                  
                     <div fxLayout="row" fxLayoutAlign="start">
-                        <div style="padding: 15px 15px 5px 2px;">
+                        <div style="padding: 10px 15px 5px 10px;">
                             <mat-checkbox fxFlex="15%" [(ngModel)]="vBillWiseTotal" [checked]
                                 formControlName="BillWiseTotal" (change)="getBillwiseAmt($event)">BillWiseTotalAmt
                             </mat-checkbox>
@@ -241,7 +239,7 @@
                             <mat-label>BillWise TotalAmt</mat-label>
                             <input type="text" OnlyNumber matInput [(ngModel)]="vBillWiseTotalAmt">
                         </mat-form-field>
-                    </div> 
+                    </div>  
 
                     <div fxLayout="row" fxLayoutAlign="space-between">
 
@@ -252,9 +250,11 @@
                                 service.</span>
                         </div>
 
-                        <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onSavePackage()">Save</button>
+                        <div>
+                            <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary" (click)="onSavePackage()">Save</button>
+                            </div>
                         </div> 
                     </div> 
                 </div> 

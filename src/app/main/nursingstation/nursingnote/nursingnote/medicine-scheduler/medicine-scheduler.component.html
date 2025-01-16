@@ -55,7 +55,13 @@
                                 <mat-label>Item Name</mat-label>
                                 <input type="text"  [(ngModel)]="registerObj.ItemName"
                                     name="ItemId" required (keydown)="onEnterItem($event)"
-                                    formControlName="ItemId" matInput required #itemid readonly >
+                                    formControlName="ItemId" matInput   #itemid readonly >
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="6%">
+                                <mat-label>Qty</mat-label>
+                                <input type="text"  [(ngModel)]="registerObj.Qty"
+                                    name="Qty"  matInput  readonly  formControlName="Qty">
                             </mat-form-field>
 
                             <!-- <mat-form-field appearance="outline" fxFlex="12%">
@@ -81,8 +87,17 @@
                                 </mat-autocomplete>
                             </mat-form-field> -->
  
-                                <app-common-date [screenFrom]="screenFromString" 
-                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> 
+                                <!-- <app-common-date [screenFrom]="screenFromString" 
+                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>  -->
+
+
+                                
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Dose Date / Time</mat-label>
+                                        <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                                            (change)="date=$event.target.value" formControlName="DoseDateTime" />
+             
+                                    </mat-form-field> 
                             
 
 
@@ -152,7 +167,7 @@
                                             Dose DateTime</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide
                                             fxShow.gt-sm>
-                                            <span> {{element.DoseDate}}-{{element.DoseTime}}</span>
+                                            <span> {{element.DoseDateTime | date:'dd/MM/YYYY'}}-{{element.DoseDateTime | date: 'h:mm a' }}</span>
                                         </mat-cell>
                                     </ng-container>
 

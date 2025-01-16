@@ -443,16 +443,18 @@
                             <ng-container matColumnDef="IsCheck" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">Status</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-60">
+                                    <mat-icon *ngIf="contact.IsPackageMaster == 1" matTooltip="IsPackage"
+                                    (click)="getPacakgeDetail(contact)">
+                                        <img width="15px" height="9px" src="assets/images/logos/package.png">
+                                    </mat-icon>
+                                    
                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
                                         <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                     </mat-icon>
                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
                                         <img width="15px" height="9px" src="assets/images/logos/pathology.png">
                                     </mat-icon>
-                                    <mat-icon *ngIf="contact.IsPackageMaster == 1" matTooltip="IsPackage"
-                                    (click)="getPacakgeDetail(contact)">
-                                        <img width="15px" height="9px" src="assets/images/logos/package.png">
-                                    </mat-icon>
+                                   
 
                                 </mat-cell>
                             </ng-container>

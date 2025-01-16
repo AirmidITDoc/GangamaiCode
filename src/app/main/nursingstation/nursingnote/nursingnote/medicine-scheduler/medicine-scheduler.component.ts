@@ -39,6 +39,7 @@ export class MedicineSchedulerComponent implements OnInit {
   vFrequency:any;
   vNurseName:any;
   registerObj:any;
+  date: any;
 
    dsItemList = new MatTableDataSource<MedicineItemList>();
 
@@ -53,7 +54,15 @@ export class MedicineSchedulerComponent implements OnInit {
         public dialogRef: MatDialogRef<MedicineSchedulerComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
   ) 
-  { }
+  {
+    let mydate = new Date()
+    this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
+    console.log(this.date)
+
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    this.date = now.toISOString().slice(0, 16);
+  }
 
   ngOnInit(): void {
     this.MedicineItemForm = this.createMedicineItemForm();
@@ -69,6 +78,8 @@ export class MedicineSchedulerComponent implements OnInit {
       Route: '',
       Frequency: '', 
       NurseName: '', 
+      DoseDateTime:'',
+      Qty:''
     })
   }
   
@@ -109,6 +120,20 @@ export class MedicineSchedulerComponent implements OnInit {
 
   Chargelist:any=[];
   onAddMedicine() {
+    if (this.registerObj.Qty == this.dsItemList.data.length) {
+      this.toastr.warning('selected item Qty is 0,You cannot add new scheduler', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.MedicineItemForm.get('ItemId').setValue('')
+      this.MedicineItemForm.get('Qty').setValue('')
+      this.MedicineItemForm.get('Route').setValue('');
+      this.MedicineItemForm.get('Frequency').setValue('');
+      this.MedicineItemForm.get('NurseName').setValue('');
+      var now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      this.date = now.toISOString().slice(0, 16);
+      return;
+    }
 
     if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
@@ -116,19 +141,6 @@ export class MedicineSchedulerComponent implements OnInit {
       });
       return;
     }
-   
-    // if ((this.MedicineItemForm.get('DoseId').value == '' || this.MedicineItemForm.get('DoseId').value == null || this.MedicineItemForm.get('DoseId').value == undefined)) {
-    //   this.toastr.warning('Please select Dose', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if (!this.doseList.find(item => item.DoseName == this.MedicineItemForm.get('DoseId').value.DoseName)) {
-    //   this.toastr.warning('Please select valid Dose Name', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
     if ((this.vRoute == '' || this.vRoute == null || this.vRoute == undefined)) {
       this.toastr.warning('Please enter a Route', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -147,32 +159,27 @@ export class MedicineSchedulerComponent implements OnInit {
       });
       return;
     }
-    const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.MedicineItemForm.get('ItemId').value.ItemId)
-    if (!iscekDuplicate) {
-      //debugger
-      let Qty = this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0
-      this.Chargelist.push(
-        { 
-          DrugId: this.registerObj.ItemId || 0,
-          DrugName: this.registerObj.ItemName || '',
-          // DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0, 
-          // DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
-          DoseDate: this.dateTimeObj.date,
-          DoseTime: this.dateTimeObj.time,
-          Route: this.MedicineItemForm.get('Route').value || '',
-          Frequency: this.MedicineItemForm.get('Frequency').value || 0,  
-          NurseName: this.MedicineItemForm.get('NurseName').value || '', 
-        });
-      this.dsItemList.data = this.Chargelist
-      console.log(this.dsItemList.data);
-    } else {
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
+
+    this.Chargelist.push(
+      {
+        DrugId: this.registerObj.ItemId || 0,
+        DrugName: this.registerObj.ItemName || '',
+        // DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0, 
+        // DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
+        DoseDateTime: this.MedicineItemForm.get('DoseDateTime').value || '01/01/1900',
+        Route: this.MedicineItemForm.get('Route').value || '',
+        Frequency: this.MedicineItemForm.get('Frequency').value || 0,
+        NurseName: this.MedicineItemForm.get('NurseName').value || '',
       });
-      return;
-    } 
-    this.MedicineItemForm.reset(); 
-    this.itemid.nativeElement.focus();
+    this.dsItemList.data = this.Chargelist
+    console.log(this.dsItemList.data);
+    this.MedicineItemForm.get('Route').setValue('');
+    this.MedicineItemForm.get('Frequency').setValue('');
+    this.MedicineItemForm.get('NurseName').setValue(''); 
+
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    this.date = now.toISOString().slice(0, 16);
   }
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);

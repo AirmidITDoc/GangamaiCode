@@ -869,15 +869,39 @@ ServiceList:any=[];
         this.isLoading = 'list-loaded';
       }); 
   } 
-
+  newlist:any=[];
   getRtrvPackageList() {  
      this.isLoadingStr = 'loading';
      let Query = "Select *  from lvwAddCharges where IsGenerated=0 and IsPackage=1  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
      console.log(Query); 
      this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
        this.PackageDatasource.data = data as ChargesList[];
-       this.PacakgeList = data as ChargesList[];
+      // this.PacakgeList = data as ChargesList[];
        console.log(this.PacakgeList)   
+
+       this.dataSource.data.forEach(element=>{
+        debugger
+       this.newlist =  this.PackageDatasource.data.filter(item=> item.PackageId  == element.ServiceId)
+
+       this.newlist.forEach(obj=>{
+        this.PacakgeList.push(
+          {
+            ServiceId: obj.ServiceId,
+            ServiceName: obj.ServiceName,
+            Price: obj.Price || 0,
+            Qty: obj.Qty || 1,
+            TotalAmt: obj.TotalAmt || 0, 
+            ConcessionAmt: obj.ConcessionAmount || 0,
+            NetAmount: obj.NetAmount || 0,
+            IsPathology: obj.IsPathology || 0,
+            IsRadiology: obj.IsRadiology || 0,
+            PackageId: obj.PackageId || 0,
+            PackageServiceId: element.ServiceId || 0, 
+            PacakgeServiceName:element.ServiceName || '',
+          }); 
+       })     
+       })
+       this.PackageDatasource.data = this.PacakgeList
      },
        (error) => {
          this.isLoading = 'list-loaded';
@@ -893,7 +917,7 @@ ServiceList:any=[];
     // console.log(Query);
      this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
-      //console.log(this.chargeslist)
+      console.log(this.chargeslist)
       this.dataSource.data = this.chargeslist;
 
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -1413,7 +1437,7 @@ CalculateAdminCharge(){
           if (response) {
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
               if (contact.IsPackageMaster == '1' && contact.ServiceId) {
-                this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== contact.ServiceId)
+                this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId !== contact.ServiceId)
                 console.log(this.PacakgeList)
                 this.PackageDatasource.data = this.PacakgeList;
               }
@@ -1451,7 +1475,7 @@ CalculateAdminCharge(){
    const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
      {
        maxWidth: "100%",
-       height: '75%',
+       height: '70%',
        width: '70%' ,
        data: {
          Obj:contact
@@ -1465,7 +1489,7 @@ CalculateAdminCharge(){
        this.PackageDatasource.data = result
        console.log( this.PackageDatasource.data)   
        this.PackageDatasource.data.forEach(element => {
-         this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId !== element.PackageServiceId)
+         this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId  !== element.ServiceId)
          console.log(this.PacakgeList)   
          if(element.BillwiseTotalAmt > 0){
            this.TotalPrice = element.BillwiseTotalAmt;  
@@ -1483,7 +1507,7 @@ CalculateAdminCharge(){
  
        this.PackageDatasource.data.forEach(element => {
          this.PacakgeList.push(
-           {
+           {  
              ServiceId: element.ServiceId,
              ServiceName: element.ServiceName,
              Price: element.Price || 0,
@@ -1522,6 +1546,7 @@ CalculateAdminCharge(){
                  IsRadiology: element.IsRadiology,
                  IsPackage: element.IsPackage,
                  ClassName: element.ClassName, 
+                 IsPackageMaster:1,
                  ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
                });
            

@@ -123,11 +123,12 @@ export class IPSearchListComponent implements OnInit {
       this.menuActions.push('Patient Feedback');
     }
     else if (this._ActRoute.url == '/ipd/dischargesummary') {
-      this.menuActions.push('Discharge');
-      this.menuActions.push('Discharge Summary');
+      this.menuActions.push('Discharge'); 
       if(this._configue.configParams.IsDischargeTemplate){
         this.menuActions.push('Discharge Summary Template');
-      } 
+      }else{
+        this.menuActions.push('Discharge Summary');
+      }
     }
     else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance' || this._ActRoute.url == '/ipd/refund/iprefundofbill') {
 
