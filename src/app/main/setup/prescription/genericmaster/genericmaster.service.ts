@@ -24,7 +24,7 @@ export class GenericmasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ] 
             ],
-            isActive: true,
+            isActive:[false,[Validators.required]]
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
             // AddedByName: [""],

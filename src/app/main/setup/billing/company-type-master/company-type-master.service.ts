@@ -25,7 +25,7 @@ export class CompanyTypeMasterService {
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            isActive: ["true"],
+            isActive:[false,[Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

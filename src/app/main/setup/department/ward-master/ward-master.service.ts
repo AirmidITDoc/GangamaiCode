@@ -30,8 +30,9 @@ export class WardMasterService {
             classId: ["",
                 Validators.required
             ],
-            roomType: ["1"],
-            isAvailable: ["1"],
+            roomType: [0],
+            isAvailable: "true",
+            // isActive:[false,[Validators.required]],
         });
     }
 

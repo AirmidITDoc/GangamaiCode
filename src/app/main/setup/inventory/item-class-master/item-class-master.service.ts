@@ -29,6 +29,7 @@ export class ItemClassMasterService {
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
+            isActive:[false,[Validators.required]]
         });
     }
 

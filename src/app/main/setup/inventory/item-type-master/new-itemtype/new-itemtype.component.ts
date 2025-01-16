@@ -25,7 +25,8 @@ export class NewItemtypeComponent implements OnInit {
 
   ngOnInit(): void {
       this.itemtypeForm = this._ItemTypeMasterService.createItemtypeForm();
-      if(this.data){
+      if((this.data?.itemTypeId??0) > 0)
+        {
         this.isActive=this.data.isActive
         this.itemtypeForm.patchValue(this.data);
         }

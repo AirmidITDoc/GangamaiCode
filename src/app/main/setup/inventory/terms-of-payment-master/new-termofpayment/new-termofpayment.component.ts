@@ -24,7 +24,8 @@ export class NewTermofpaymentComponent implements OnInit {
 
     ngOnInit(): void {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
-      if(this.data){
+      if((this.data?.Id??0) > 0)
+        {
         this.isActive=this.data.isActive
         this.termsofpaymentForm.patchValue(this.data);
       }

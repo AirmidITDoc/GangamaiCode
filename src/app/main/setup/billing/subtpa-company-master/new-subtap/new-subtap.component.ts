@@ -30,7 +30,7 @@ export class NewSubtapComponent implements OnInit {
 
   ngOnInit(): void {
     this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
-    if(this.data){
+    if((this.data?.subCompanyId??0) > 0){
         this.isActive=this.data.isActive
         this.subTpaForm.patchValue(this.data);
     }
