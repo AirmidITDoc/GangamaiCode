@@ -93,8 +93,8 @@ export class ConsentMasterComponent implements OnInit {
   newConsent(){
     const dialogRef = this._matDialog.open(NewConsentMasterComponent,
       {
-        maxWidth: "70vw",
-        height: '70%',
+        maxWidth: "80vw",
+        height: '80%',
         width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -106,8 +106,8 @@ export class ConsentMasterComponent implements OnInit {
   OnEdit(contact){
     const dialogRef = this._matDialog.open(NewConsentMasterComponent,
       {
-        maxWidth: "70vw",
-        height: '70%',
+        maxWidth: "80vw",
+        height: '80%',
         width: '100%',
         data: {
           Obj: contact

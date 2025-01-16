@@ -87,57 +87,36 @@
                                 <mat-table #table class="table1" matSort [dataSource]="dataSource"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <!-- <ng-container matColumnDef="IsCancelled" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-60">
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
-                                            {{contact.SystemId}}
-                                        
-                                        <div class="pill-icon">
-                                            <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled==1"
-                                                matTooltip="Cancelled"
-                                                class="red-600 s-16">circle
-                                            </mat-icon>
-    
-                                            <mat-icon style="border-radius:100% ;" *ngIf="contact.IsCancelled==0"
-                                                matTooltip="Approve"
-                                                class="green-600 s-16">circle
-                                            </mat-icon>
-                                        </div>
-                                    </mat-cell>
-                                    </ng-container> -->
-
                                     <ng-container matColumnDef="SurgeryCategoryId" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-100">Code
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.SurgeryCategoryId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="SurgeryCategoryName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-650">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             SystemName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-650">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.SurgeryCategoryName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             AddedBy</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             {{contact.CreatedBy}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IsActive">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="w-100">
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
@@ -146,20 +125,16 @@
                                     </ng-container> 
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-170">Action
+                                        <mat-header-cell *matHeaderCellDef class="w-150">
+                                            Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-170">
+                                        <mat-cell *matCellDef="let contact" class="w-150">
 
                                               <button mat-icon-button matTooltip="Edit" (click)="OnEdit(contact)">
                                                 <mat-icon>edit</mat-icon>
                                             </button>
 
-                                            <!-- <button mat-icon-button (click)="CancleCategory(contact)" matTooltip="Cancel"
-                                            *ngIf="contact.IsCancelled == '0'">
-                                                <mat-icon>cancel</mat-icon>
-                                            </button> -->
-
-                                            <button mat-icon-button (click)="onDeactive(contact.SurgeryCategoryId)">
+                                            <button mat-icon-button (click)="onDeactive(contact.SurgeryCategoryId)" color="warn">
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
 
@@ -182,7 +157,7 @@
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
 
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                    <mat-row *matRowDef="let row; columns: displayedColumns;"
                                         class=" min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
 

@@ -190,9 +190,10 @@
                                         (click)="_ConsentService.myform.get('Department').setValue(''); isDepartmentSelected = false;">search</mat-icon>
                                     </span>
                   
-                                    <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                                    <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep"
+                                    (optionSelected)="onDepartmentSelected($event)">
                                       <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                        (onSelectionChange)="OnChangeTemplateList(option)" >
+                                        >
                                         {{option.DepartmentName}}
                                       </mat-option>
                                     </mat-autocomplete>
@@ -210,9 +211,9 @@
                                       (click)="_ConsentService.myform.get('Template').setValue(''); isTemplateSelected = false;">search</mat-icon>
                                   </span>
                                 
-                                  <mat-autocomplete #autoTemplate="matAutocomplete" [displayWith]="getOptionTextTemp">
-                                    <mat-option *ngFor="let option of filteredOptionsTemp | async" [value]="option"
-                                      (onSelectionChange)="onTemplateSelect(option)">
+                                  <mat-autocomplete #autoTemplate="matAutocomplete" [displayWith]="getOptionTextTemp"
+                                  (optionSelected)='onTemplateSelect($event.option.value)'>
+                                    <mat-option *ngFor="let option of filteredOptionsTemp | async" [value]="option">
                                       {{option.ConsentName }} <b>|</b> {{option.DepartmentName }} 
                                     </mat-option>
                                   </mat-autocomplete>

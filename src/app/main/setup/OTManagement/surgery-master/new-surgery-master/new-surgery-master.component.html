@@ -1,176 +1,163 @@
 <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="color: white;">
-                <mat-icon>account_box</mat-icon>
-            </button>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                {{_surgeryMasterService.myform.controls.SurgeryId.value?"Modify Surgery Master":"New
-                Surgery Master"}}
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutALign="end start">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
+  <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+        {{_surgeryMasterService.myform.controls.SurgeryId.value?"Modify Surgery Master":"New
+        Surgery Master"}}
+      </span>
+    </div>
+    <div fxLayout="row" fxLayoutALign="end start">
+      <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
 
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row">
-                            <form [formGroup]="_surgeryMasterService.myform">
-                                <div class="dialog-content-wrapper">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
+  <div class="content">
+    <div class="center p-24 pb-56" fusePerfectScrollbar>
+      <div class="content-card">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+          <div fxFlex.gt-sm="100%" fxFlex>
+            <div fxlayout="row">
+              <form [formGroup]="_surgeryMasterService.myform">
+                <div class="dialog-content-wrapper">
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
 
-                                        <input type="hidden" name="SurgeryId" formControlName="SurgeryId"
-                                            [(ngModel)]="vSurgeryId">                                        
+                    <input type="hidden" name="SurgeryId" formControlName="SurgeryId" [(ngModel)]="vSurgeryId">
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Department</mat-label>
-                                                <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                                                  formControlName="Departmentid" [matAutocomplete]="autoDep"
-                                                   [(ngModel)]="vDepartmentName">
-                                                <span matSuffix style="display: flex;">
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                </span>
-                              
-                                                <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                  <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                                    (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.DepartmentName}}
-                                                  </mat-option>
-                                                </mat-autocomplete>
-                                              </mat-form-field>
-                                        </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Department</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                          formControlName="Departmentid" [matAutocomplete]="autoDep" [(ngModel)]="vDepartmentName">
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('Departmentid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                        </span>
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>System</mat-label>
-                                                <input matAutocompletePosition="below" type="text" placeholder="Select System" matInput
-                                                  formControlName="Systemid" [matAutocomplete]="autoDep"
-                                                   [(ngModel)]="vSystemName">
-                                                <span matSuffix style="display: flex;">
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('Systemid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('Systemid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                </span>
-                              
-                                                <!-- <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                  <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                                    (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.DepartmentName}}
-                                                  </mat-option>
-                                                </mat-autocomplete>-->
-                                              </mat-form-field> 
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Site</mat-label>
-                                                <input matAutocompletePosition="below" type="text" placeholder="Select Site" matInput
-                                                  formControlName="Siteid" [matAutocomplete]="autoDep"
-                                                   [(ngModel)]="vSiteName">
-                                                <span matSuffix style="display: flex;">
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('Siteid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('Siteid').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                </span>
-                              
-                                                <!-- <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                  <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                                    (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.DepartmentName}}
-                                                  </mat-option>
-                                                </mat-autocomplete>-->
-                                              </mat-form-field> 
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Template Name</mat-label>
-                                                <input matAutocompletePosition="below" type="text" placeholder="Select TemplateName" matInput
-                                                  formControlName="TemplateName" [matAutocomplete]="autoDep"
-                                                   [(ngModel)]="vTemplateName">
-                                                <span matSuffix style="display: flex;">
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('TemplateName').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                                                  <mat-icon class="mat-icon-close"
-                                                    (click)="_surgeryMasterService.myform.get('TemplateName').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                                                </span>
-                              
-                                                <!-- <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
-                                                  <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
-                                                    (onSelectionChange)="OnChangeDoctorList(option)">
-                                                    {{option.DepartmentName}}
-                                                  </mat-option>
-                                                </mat-autocomplete>-->
-                                              </mat-form-field> 
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" class="gap-8">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Surgery Name</mat-label>
-                                                <input name="SurgeryName" formControlName="SurgeryName"
-                                                    placeholder="Procedure Name" matInput type="text"
-                                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vSurgeryName">
-                                                <mat-error
-                                                    *ngIf="_surgeryMasterService.myform.get('SurgeryName').invalid && _surgeryMasterService.myform.get('SurgeryName').touched">
-                                                    Procedure Name is required Enter only
-                                                    Alphabets</mat-error>
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Amount</mat-label>
-                                                <input name="Amount" formControlName="Amount"
-                                                    placeholder="Amount Name" matInput type="text"
-                                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vAmount">
-                                                <mat-error
-                                                    *ngIf="_surgeryMasterService.myform.get('Amount').invalid && _surgeryMasterService.myform.get('Amount').touched">
-                                                    Procedure Name is required Enter only
-                                                    Alphabets</mat-error>
-                                            </mat-form-field>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="footer-navigation-container">
-
-                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
-                                        (checked)=true>IsActive
-                                    </mat-checkbox>
-
-                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px"
-                                        style="margin-right: 10px;">
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_surgeryMasterService.myform.invalid">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                        <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                          <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option">
+                            {{option.DepartmentName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
                     </div>
 
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                      <mat-form-field appearance="outline" fxFlex="100%">
+                        <mat-label>Surgery Category</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select SurgeryCategory" matInput
+                          #SurgeryCategory formControlName="SurgeryCategoryId" [(ngModel)]="vSurgeryCategoryId"
+                          [matAutocomplete]="autoSurgeryCategory" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('SurgeryCategoryId').setValue(''); isSurgeryCatSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('SurgeryCategoryId').setValue(''); isSurgeryCatSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoSurgeryCategory="matAutocomplete"
+                          [displayWith]="getOptionTextautoSurgeryCategory">
+                          <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" [value]="option"
+                            (onSelectionChange)="onChangeSiteList(option)">
+                            {{option.SurgeryCategoryName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                      <mat-form-field appearance="outline" fxFlex="100%">
+                        <mat-label>Site Description</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select SiteDescription" matInput #Site
+                          formControlName="SiteDescId" [(ngModel)]="vSiteDescId"
+                          [matAutocomplete]="autoSite" required>
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('SiteDescId').setValue(''); isSiteSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('SiteDescId').setValue(''); isSiteSelected = false;">search</mat-icon>
+                        </span>
+                        <mat-autocomplete #autoSite="matAutocomplete" [displayWith]="getOptionTextautoSiteDesc">
+                          <mat-option *ngFor="let option of filteredOptionsSite | async" [value]="option"
+                            (onSelectionChange)="isSiteSelected = true;">
+                            {{option.SiteDescriptionName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Template Name</mat-label>
+                        <input matAutocompletePosition="below" type="text" placeholder="Select TemplateName" matInput
+                          formControlName="TemplateName" [matAutocomplete]="autoDep" [(ngModel)]="vTemplateName">
+                        <span matSuffix style="display: flex;">
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('TemplateName').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                          <mat-icon class="mat-icon-close"
+                            (click)="_surgeryMasterService.myform.get('TemplateName').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                        </span>
+
+                        <!-- <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionTextDep">
+                                                  <mat-option *ngFor="let option of filteredOptionsDep | async" [value]="option"
+                                                    (onSelectionChange)="OnChangeDoctorList(option)">
+                                                    {{option.DepartmentName}}
+                                                  </mat-option>
+                                                </mat-autocomplete>-->
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" class="gap-8">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Surgery Name</mat-label>
+                        <input name="SurgeryName" formControlName="SurgeryName" placeholder="Procedure Name" matInput
+                          type="text" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                          [(ngModel)]="vSurgeryName">
+                        <mat-error
+                          *ngIf="_surgeryMasterService.myform.get('SurgeryName').invalid && _surgeryMasterService.myform.get('SurgeryName').touched">
+                          Procedure Name is required Enter only
+                          Alphabets</mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Amount</mat-label>
+                        <input name="Amount" formControlName="Amount" placeholder="Amount Name" matInput type="text"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" [(ngModel)]="vAmount">
+                        <mat-error
+                          *ngIf="_surgeryMasterService.myform.get('Amount').invalid && _surgeryMasterService.myform.get('Amount').touched">
+                          Procedure Name is required Enter only
+                          Alphabets</mat-error>
+                      </mat-form-field>
+                    </div>
+
+                  </div>
                 </div>
+
+                <div class="footer-navigation-container">
+
+                  <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" (checked)=true>IsActive
+                  </mat-checkbox>
+
+                  <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary" (click)="onSave()">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
+          </div>
+
         </div>
+      </div>
     </div>
-    
+  </div>
+
 
 </div>

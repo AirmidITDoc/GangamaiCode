@@ -183,24 +183,10 @@ export class PatientcertificateComponent implements OnInit {
   selectedTemplateOption: any; 
   registerObjDet:any;
   onTemplateSelect(option) {
+    
     console.log(option)
 
-    // this.vConsentText = '';     
-    // this.selectedTemplateOption = option;
     this.registerObjDet = option.CertificateDesc;
-
-    // this.isTemplateSelected = true;
-
-  //   this.vConsentText = ''; // Reset consent text
-  //   this.registerObjDet = null;
-
-  //   this.selectedTemplateOption = option;
-  // this.registerObjDet = option; // Update with the new option
-  // this.isTemplateSelected = true;
-
-  // this._AppointmentServiceService.mycertificateForm.get('Template').setValue(option);
-  // console.log('Form Control Value:', this._AppointmentServiceService.mycertificateForm.get('Template').value);
-
   }
 
 addTemplateDescription() {
@@ -305,7 +291,7 @@ resetTemplateSelection(){
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose()
+          this.onSubList()
         } else {
           this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -333,7 +319,7 @@ resetTemplateSelection(){
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose()
+          this.onSubList()
         } else {
           this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -416,7 +402,10 @@ OnEdit(row) {
   this.isButtonDisabled= true;
 }
 
-
+onSubList(){
+  this.getCertificateList();
+  this._AppointmentServiceService.mycertificateForm.reset({Language: '1'}); 
+}
 
   
 
