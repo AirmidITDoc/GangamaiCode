@@ -33,12 +33,10 @@ export class StoreMasterComponent implements OnInit {
             { heading: "GRN No", key: "grnNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "GRN Return Pre", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Grn Ret No", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "Issue To dept", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "No", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Ret Fr Dept", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Ret Fr DeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "Issue to DeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {

@@ -63,19 +63,25 @@ export class ParametermasterService {
             parameterId: [0],
             parameterShortName: [
                 "",
-                [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
+                [
+                    // Validators.required,
+                    Validators.pattern("^[A-Za-z ]*$")],
             ],
             parameterName: [
                 "",
-                [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
+                [
+                    // Validators.required,
+                    Validators.pattern("^[A-Za-z ]*$")],
             ],
             
             printParameterName: [
                 "",
-                [Validators.required,Validators.pattern("^[A-Za-z ]*$")],
+                [
+                    // Validators.required,
+                    Validators.pattern("^[A-Za-z ]*$")],
             ],
             unitId: ["",
-                Validators.required
+                // Validators.required
             ],
             isNumeric: ["1"],
             isPrintDisSummary: true,
@@ -92,7 +98,9 @@ export class ParametermasterService {
                 {
                     pathparaRangeId: 0,
                     paraId: 0,
-                    sexId: ["", Validators.required],
+                    sexId: ["", 
+                        // Validators.required
+                    ],
                     minValue: "string",
                     maxvalue: "string"
                 }

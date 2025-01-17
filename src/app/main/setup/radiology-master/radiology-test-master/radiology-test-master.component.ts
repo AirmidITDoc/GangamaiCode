@@ -1,22 +1,11 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
-import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { RadiologyTestMasterService } from './radiology-test-master.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatTabGroup } from '@angular/material/tabs';
-import { DatePipe } from '@angular/common';
 import { UpdateradiologymasterComponent } from './updateradiologymaster/updateradiologymaster.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -32,7 +21,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 export class RadiologyTestMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     gridConfig: gridModel = {
-        apiUrl: "RadiologyTest/List",
+        apiUrl: "RadiologyTest/RadiologyList",
         columnsList: [
             { heading: "Code", key: "testId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TestName", key: "testName",width: 200, sort: true, align: 'left', emptySign: 'NA' },

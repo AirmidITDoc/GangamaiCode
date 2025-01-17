@@ -28,10 +28,12 @@ export class NewPatientTypeComponent implements OnInit {
 
   ngOnInit(): void {
       this.patienttypeForm = this._PatienttypeMasterService.createPatientTypeForm();
-      if(this.data)
+      if((this.data?.patientTypeId??0) > 0)
+      {
         this.isActive=this.data.isActive
       this.patienttypeForm.patchValue(this.data);
-  }
+    }
+    }
 
   
   onSubmit() {

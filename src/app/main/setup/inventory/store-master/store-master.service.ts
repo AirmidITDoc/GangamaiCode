@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, MaxLengthValidator, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -124,20 +124,17 @@ export class StoreMasterService {
             Header:[""],
             pharSalCountId:["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.required
                 ]
             ],
             pharSalRecCountId:["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.required
                 ]
             ],
             pharSalReturnCountId:["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.required
                 ]
             ],
 
@@ -180,7 +177,6 @@ export class StoreMasterService {
 
     public storeMasterSave(Param: any, showLoader = true) {
         if (Param.storeId) {
-            debugger
             return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param, showLoader);
         } else return this._httpClient.PostData("StoreMaster",Param, showLoader);
     }

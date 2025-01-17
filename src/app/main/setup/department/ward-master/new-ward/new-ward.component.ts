@@ -92,7 +92,7 @@ export class NewWardComponent implements OnInit {
         return {
             roomName: [
                 { name: "required", Message: "RoomName  is required" },
-                { name: "maxlength", Message: "RoomName should not be greater than 50 char." },
+                { name: "maxlength", Message: "Room Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             locationId: [

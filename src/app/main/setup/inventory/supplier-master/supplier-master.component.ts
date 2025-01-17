@@ -1,20 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { SupplierFormMasterComponent } from "./supplier-form-master/supplier-form-master.component";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { SupplierMasterService } from "./supplier-master.service";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatSort } from "@angular/material/sort";
-import { MatAccordion } from "@angular/material/expansion";
-import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
-
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { SuppliertestingComponent } from "./suppliertesting/suppliertesting.component";
 import { Row } from "jspdf-autotable";
 import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
 import { FormGroup } from "@angular/forms";
@@ -50,34 +42,6 @@ export class SupplierMasterComponent implements OnInit {
             { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 50 },
-            // {
-            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:150, actions: [
-            //         {
-            //             action: gridActions.edit, callback: (data: any) => {
-            //                 this.onSave(data) // EDIT Records
-            //             }
-            //         }, {
-            //             action: gridActions.delete, callback: (data: any) => {
-            //                 this.confirmDialogRef = this._matDialog.open(
-            //                     FuseConfirmDialogComponent,
-            //                     {
-            //                         disableClose: false,
-            //                     }
-            //                 );
-            //                 this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-            //                 this.confirmDialogRef.afterClosed().subscribe((result) => {
-            //                     if (result) {
-            //                         let that= this;
-            //                         this._supplierService.deactivateTheStatus(data.supplierId).subscribe((response: any) => {
-            //                             this.toastr.success(response.Message);
-            //                             that.grid.bindGridData();
-            //                         });
-            //                     }
-            //                     this.confirmDialogRef = null;
-            //                 });
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {

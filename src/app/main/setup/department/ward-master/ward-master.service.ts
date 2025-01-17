@@ -46,7 +46,7 @@ export class WardMasterService {
     initializeFormGroup() {
         this.createWardForm();
     }
-    // WardMaster
+    
     public roomMasterSave(Param: any, showLoader = true) {
         debugger
         if (Param.roomId) {

@@ -76,7 +76,7 @@
                                         </div>
                                         <div fxLayout="row">
                                             <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>PrintTestName</mat-label>
+                                                <mat-label>Print Test Name</mat-label>
                                                 <input name="PrintTestName" formControlName="PrintTestName" placeholder="PrintTestName"
                                                      matInput #printName (keydown)="onEnterprintName($event)" required [(ngModel)]="vPrintName">
                                                      <mat-error class="error"
@@ -106,7 +106,7 @@
                                                 </mat-autocomplete>
                                             </mat-form-field> -->
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete label="ServiceName" formControlName="ServiceId"
+                                                <airmid-autocomplete label="Service Name" formControlName="ServiceId"
                                                     [formGroup]="testForm"
                                                     [validations]="_radiologytestService.getValidationMessages().ServiceId"
                                                     [mode]="autocompleteModeService">
@@ -144,7 +144,7 @@
                                                     </mat-form-field> -->
                                                     
                                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-autocomplete label="TemplateName" formControlName="TemplateName"
+                                                        <airmid-autocomplete label="Template Name" formControlName="TemplateName"
                                                             [formGroup]="testForm"
                                                             [validations]="_radiologytestService.getValidationMessages().TemplateName"
                                                             [mode]="autocompleteModeTemplate">

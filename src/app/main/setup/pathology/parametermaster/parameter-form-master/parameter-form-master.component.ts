@@ -141,48 +141,6 @@ export class ParameterFormMasterComponent implements OnInit {
             this.parameterForm.patchValue(mdata);
     }
 
-    // onSubmit(){
-    //     
-    //     // if(this.parameterForm.valid){
-    //         if (this.parameterForm.invalid) {
-    //             this.toastr.warning('please check form is invalid', 'Warning !', {
-    //                 toastClass:'tostr-tost custom-toast-warning',
-    //             })
-    //             return;
-    //         }
-    //         else if(this.dsParameterAgeList.data.length ==0){
-    //             this.toastr.warning('please check form is invalid', 'Warning !', {
-    //                 toastClass:'tostr-tost custom-toast-warning',
-    //             })
-    //             return;
-                
-    //         }else{
-    //             if(!this.parameterForm.get("ParameterID").value){
-    //                 
-    //                 var m_data={
-    //                     "parameterId": 0,
-    //                     "parameterShortName": this.parameterForm.get("ParameterShortName").value || "",
-    //                     "parameterName": this.parameterForm.get("ParameterName").value || "",
-    //                     "printParameterName": this.parameterForm.get("PrintParameterName").value || "",
-    //                     "unitId": 1,// parseInt(this.parameterForm.get("UnitId").value),
-    //                     "isNumeric": 0,
-    //                     "isPrintDisSummary": true
-    //                   }
-    //                   console.log("parameter Insert:",m_data)
-        
-    //                   this._ParameterService.insertParameterMaster(m_data).subscribe((response) => {
-    //                   this.toastr.success(response.message);
-    //                 //  this.onClear(true);
-    //                 }, (error) => {
-    //                   this.toastr.error(error.message);
-    //                 });
-    //               } else{
-    //                   // update
-    //               }
-    //     }
-        
-    //     this.dialogRef.close();
-    // }
 
     /**
      * {
@@ -362,51 +320,49 @@ export class ParameterFormMasterComponent implements OnInit {
     getValidationMessages() {
         return {
             parameterShortName: [
-                { name: "required", Message: "Parameter Short Name is required" },
+                // { name: "required", Message: "Parameter Short Name is required" },
                 { name: "maxlength", Message: "Parameter Short Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             parameterName:[
-                { name: "required", Message: "Parameter Name is required" },
+                // { name: "required", Message: "Parameter Name is required" },
                 { name: "maxlength", Message: "Parameter Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             printParameterName:[
-                { name: "required", Message: "Print Parameter Name is required" },
+                // { name: "required", Message: "Print Parameter Name is required" },
                 { name: "maxlength", Message: "Print Parameter Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             MethodName:[
-                { name: "required", Message: "Method Name is required" },
+                // { name: "required", Message: "Method Name is required" },
             ],
             Formula:[
-                { name: "required", Message: "Formula is required" },
+                // { name: "required", Message: "Formula is required" },
             ],
             unitId:[
-                { name: "required", Message: "Unit Id is required" },
+                // { name: "required", Message: "Unit Id is required" },
             ],
             sexId:[
-                { name: "required", Message: "Sex Id is required" },
+                // { name: "required", Message: "Sex Id is required" },
             ],
             MinAge:[
-                { name: "required", Message: "Min Age is required" },
+                // { name: "required", Message: "Min Age is required" },
             ],
             MaxAge:[
-                { name: "required", Message: "Max Age is required" },
+                // { name: "required", Message: "Max Age is required" },
             ],
             AgeType:[
-                { name: "required", Message: "Age Type is required" },
+                // { name: "required", Message: "Age Type is required" },
             ],
             minValue:[
-                { name: "required", Message: "Min Value is required" },
+                // { name: "required", Message: "Min Value is required" },
             ],
             maxvalue:[
-                { name: "required", Message: "Max Value is required" },
+                // { name: "required", Message: "Max Value is required" },
             ],
             paraId:[],
             defaultValue:[],
-
-
         };
     }
 
@@ -534,7 +490,8 @@ export class ParameterFormMasterComponent implements OnInit {
     checkFields(event) {
         
         const formValues = this.parameterForm.value
-        const fieldsTobeChecked = formValues.SexID
+        const fieldsTobeChecked =
+             formValues.SexID
             && formValues.MinAge
             && formValues.MaxAge
             && formValues.AgeType
@@ -544,14 +501,15 @@ export class ParameterFormMasterComponent implements OnInit {
             event.preventDefault;
             this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
         }
-        else this.onAdd(event);
+        else
+         this.onAdd(event);
 
 
     }
     getValidationGenderMessages() {
         return {
             SexID: [
-                { name: "required", Message: "Religion Name is required" }
+                // { name: "required", Message: "Religion Name is required" }
             ]
         };
     }
@@ -672,149 +630,6 @@ export class ParameterFormMasterComponent implements OnInit {
     get f() {
         return this._ParameterService.myform.controls;
     }
-
-    // onSubmit() {
-    //     const invalid = [];
-    //     const controls = this.parameterForm.controls;
-    //     for (const name in controls) {
-    //         if (controls[name].invalid) {
-    //             invalid.push(name);
-    //         }
-    //     }
-    //     console.log(invalid);
-        
-    //     if(this.parameterForm.get("IsBold").value)
-    //         var BoldValue="B"
-    //     else
-    //      var BoldValue=""
-
-    //      if(this._ParameterService.is_numeric)
-    //         var is_numeric="1"
-    //     else
-    //      var is_numeric="0"
-
-    //     var numeric_info = [];
-    //     var data2 = [];
-    //     if (!this._ParameterService.is_numeric) {
-
-    //         for (var val of this.selectedItems) {
-    //             var data = {
-    //                 parameterID: +this._ParameterService.descform.get("ParaId").value || 0,
-    //                 parameterValues: val,
-    //                 isDefaultValue: this._ParameterService.descform.get("DefaultValue").value ? true : false,
-    //                 addedby: this.accountService.currentUserValue.userId,
-    //                 defaultValue: this._ParameterService.descform.get("DefaultValue").value ? this._ParameterService.descform.get("DefaultValue").value.trim() : "%",
-             
-    //             };
-    //             data2.push(data);
-    //         }
-    //     }
-    //     else {
-    //         var info: any = {
-    //             paraId: 0 || +this.parameterForm.get("ParameterID").value,
-    //             sexId: 0,
-    //             minValue: "%",
-    //             MaxValue: "%",
-    //             addedby: this.accountService.currentUserValue.userId || 1,
-    //             ageType: "%",
-    //             minAge: 0,
-    //             IsDeleted:this.parameterForm.get("IsDeleted").value ||1,
-    //             maxAge: 0
-    //         };
-    //         this.dsParameterAgeList.data.forEach(element => {
-    //             let c = JSON.parse(JSON.stringify(info));
-    //             c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
-    //             c['minValue'] = element.MinValue;
-    //             c['minAge'] = +element.MinAge;
-    //             c['maxAge'] = +element.MaxAge;
-    //             c['MaxValue'] = element.MaxValue;
-    //             c['ageType'] = element.AgeType;
-    //             c['IsDeleted'] = element.IsDeleted;
-    //           numeric_info.push(c)
-    //         });
-    //     }
-
-
-    //     var PathParameterMasterInsert = {
-    //         parameterShortName: this.parameterForm.get("ParameterShortName").value.trim() || "%",
-    //         parameterName: this.parameterForm.get("ParameterName").value.trim() || "%",
-    //         printParameterName: this.parameterForm.get("PrintParameterName").value.trim() || "%",
-    //         methodName: this.parameterForm.get("MethodName").value || "%",
-    //         IsBoldFlag: BoldValue, //this.parameterForm.get("IsBold").value || 'B',
-    //         formula: this.parameterForm.get("Formula").value || "%",
-    //         unitId: this.parameterForm.get("UnitId").value.UnitId || 0,
-    //         isNumeric: is_numeric,
-    //         isDeleted:Boolean(JSON.parse(this.parameterForm.get("IsDeleted").value)),
-    //         parameterID: this.parameterForm.get("ParameterID").value || 0,
-    //         isPrintDisSummary: Boolean(JSON.parse(this.parameterForm.get("IsPrintDisSummary").value))
-    //     }
-
-    //     // var mdata={
-    //     //     {
-    //     //         "parameterId": 0,
-    //     //         "parameterShortName": "shilpaAirmid",
-    //     //         "parameterName": "sss",
-    //     //         "printParameterName": "abc",
-    //     //         "unitId": 0,
-    //     //         "isNumeric": 0,
-    //     //         "isPrintDisSummary": true
-    //     //       }
-              
-    //     // }
-
-    //     var m_data = {}
-
-    //     if (this._ParameterService.is_numeric) {
-    //         m_data['parameterRangeWithAgeMasterInsert'] = numeric_info;
-    //         m_data['parameterRangeWithAgeMasterDelete'] = { parameterId: this.parameterForm.get("ParameterID").value || 0, };
-    //     } else {
-    //         m_data['parameterDescriptiveMasterInsert'] = data2;
-    //         m_data['descriptiveParameterMasterDelete'] = { parameterId: this.parameterForm.get("ParameterID").value || 0, }
-    //     }
-
-    //     if (!this.parameterForm.get("ParameterID").value) {
-    //         PathParameterMasterInsert['addedby'] = this.accountService.currentUserValue.userId || 1;
-    //         m_data['pathParameterMasterInsert'] = PathParameterMasterInsert;
-    //         console.log(m_data);
-
-    //         this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
-                
-    //             if (data) {
-    //                 this.parameterForm.reset();
-    //                 // this.parameterForm.get("IsDeleted").setValue(false);
-    //                 this.selectedItems = [];
-    //                 this.dsParameterAgeList.data = [];
-
-    //                 this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //                     toastClass: 'tostr-tost custom-toast-success',
-    //                 });
-    //             } 
-    //         });
-    //     } else {
-    //         PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.userId || 1;
-    //         m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
-
-    //         console.log(m_data)
-    //         this._ParameterService.updateParameterMaster(m_data).subscribe((data) => {this.msg = data;if (data) {
-    //                     this.parameterForm.reset();
-    //                    this.toastr.success('Record updated Successfully.', 'Updated !', {
-    //                         toastClass: 'tostr-tost custom-toast-success',
-    //                     });
-    //                 } else {
-    //                     this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
-    //                         toastClass: 'tostr-tost custom-toast-error',
-    //                     });
-    //                 }
-    //             });
-
-    //     }
-
-    //     this.onClear();
-    //     // }
-
-    //     this.onClose()
-    // }
-
 
 
     onEdit(row) {

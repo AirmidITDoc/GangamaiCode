@@ -30,7 +30,8 @@ export class NewPrefixComponent implements OnInit {
     ngOnInit(): void {
         
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
-        if(this.data){
+        if((this.data?.prefixId??0) > 0)
+            {
             this.isActive=this.data.isActive
             this.prefixForm.patchValue(this.data);
         }

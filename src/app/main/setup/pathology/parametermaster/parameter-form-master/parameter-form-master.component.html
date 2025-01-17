@@ -1,5 +1,5 @@
 <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+    <!-- <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
@@ -18,8 +18,8 @@
                 <mat-icon>close</mat-icon>
             </button>
         </div>
-    </mat-toolbar>
-    <!-- <div class="modal-wrapper grid-container">
+    </mat-toolbar> -->
+    <div class="modal-wrapper grid-container">
         <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
@@ -48,7 +48,6 @@
                                 <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
                                     <input type="hidden" name="ParameterID" formControlName="parameterId">
 
-                                // new created  -------------------------------------------------
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox 
@@ -120,121 +119,7 @@
                                                 (selectDdlObject)="selectChangeUnitId($event)">
                                             </airmid-autocomplete>
                                         </div> 
-                                    </div>
-
-
-                                    <div>
-                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
-                                            <mat-label>Parameter ShortName</mat-label>
-                                            <input name="ParameterShortName" placeholder="Select ParameterShort Name"
-                                                formControlName="ParameterShortName" required
-                                                [ngClass]="{ 'is-invalid': submitted && f.ParameterShortName.errors }"
-                                                matInput>
-                                            <span class="error"
-                                                *ngIf="f.ParameterShortName.invalid && f.ParameterShortName.touched">ParameterShortName
-                                                Enter only Alphabets</span>
-                                        </mat-form-field> -->
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ParameterShortName</mat-label>
-                                            <input name="ParameterShortName" formControlName="ParameterShortName" placeholder="ParameterShortName"
-                                                matInput (keydown)="onEnterParameterShortName($event)" #parameterShortName
-                                                [(ngModel)]="vParameterShortName">
-                                                <mat-error
-                                                *ngIf="parameterForm.get('ParameterShortName').invalid && parameterForm.get('ParameterShortName').touched">
-                                                ParameterShortName is required Enter only
-                                                Alphabets</mat-error>
-                                        </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
-                                            <mat-label>Parameter Name</mat-label>
-                                            <input name="ParameterName" placeholder="Select Parameter Name"
-                                                formControlName="ParameterName"
-                                                [ngClass]="{ 'is-invalid': submitted && f.ParameterName.errors }"
-                                                matInput required>
-                                            <span class="error"
-                                                *ngIf="f.ParameterName.invalid && f.ParameterName.touched">ParameterName
-                                                Enter only Alphabets</span>
-                                        </mat-form-field> -->
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>ParameterName</mat-label>
-                                            <input name="ParameterName" formControlName="ParameterName" placeholder="ParameterName"
-                                                matInput (keydown)="onEnterParameterName($event)" #parameterName
-                                                [(ngModel)]="vParameterName">
-                                                <mat-error
-                                                *ngIf="parameterForm.get('ParameterName').invalid && parameterForm.get('ParameterName').touched">
-                                                Parameter Name is required Enter only
-                                                Alphabets</mat-error>
-                                        </mat-form-field>
-
-                                    </div>
-                                    <div>
-                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
-                                            <mat-label>PrintParameter Name</mat-label>
-                                            <input name="PrintParameterName" placeholder="Select PrintParameterName"
-                                                formControlName="PrintParameterName" matInput required
-                                                [ngClass]="{ 'is-invalid': submitted && f.PrintParameterName.errors }">
-                                            <span class="error"
-                                                *ngIf="f.PrintParameterName.invalid && f.PrintParameterName.touched">PrintParameterName
-                                                required Enter only alphabets</span>
-                                        </mat-form-field> -->
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>PrintParameterName</mat-label>
-                                            <input name="PrintParameterName" formControlName="PrintParameterName" placeholder="PrintParameterName"
-                                                matInput (keydown)="onEnterPrintParameterName($event)" #printParameterName
-                                                [(ngModel)]="vPrintParameterName">
-                                                <mat-error
-                                                *ngIf="parameterForm.get('PrintParameterName').invalid && parameterForm.get('PrintParameterName').touched">
-                                                PrintParameter Name is required Enter only
-                                                Alphabets</mat-error>
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>MethodName</mat-label>
-                                            <input name="MethodName" formControlName="MethodName" placeholder="MethodName"
-                                                matInput (keydown)="onEnterMethodName($event)" #methodName
-                                                [(ngModel)]="vMethodName">
-                                                <mat-error
-                                                *ngIf="parameterForm.get('MethodName').invalid && parameterForm.get('MethodName').touched">
-                                                Method Name is required Enter only
-                                                Alphabets</mat-error>
-                                        </mat-form-field>
-                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
-                                            <mat-label>Method Name</mat-label>
-                                            <input name="MethodName" placeholder="Select MethodName"
-                                                formControlName="MethodName" matInput
-                                                [ngClass]="{ 'is-invalid': submitted && f.MethodName.errors }">
-                                            <span class="error"
-                                                *ngIf="f.MethodName.invalid && f.MethodName.touched">MethodName Enter
-                                                Only Alphabets
-                                            </span>
-                                        </mat-form-field> -->
-
-                                    </div>
-                                    <div>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="65%">
-                                            <mat-label>Formula</mat-label>
-                                            <input name="Formula" placeholder="Select Formula" formControlName="Formula"
-                                                matInput [ngClass]="{ 'is-invalid': submitted && f.Formula.errors }">
-                                            <span class="error" *ngIf="f.Formula.invalid && f.Formula.touched">Formula
-                                                required Enter only alphabets</span>
-                                        </mat-form-field> -->
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Formula</mat-label>
-                                            <input name="Formula" formControlName="Formula" placeholder="Formula"
-                                                matInput (keydown)="onEnterFormula($event)" #formula
-                                                [(ngModel)]="vFormula">
-                                        </mat-form-field>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>UnitId</mat-label>
-                                            <input name="UnitId" formControlName="UnitId" placeholder="UnitId"
-                                                matInput (keydown)="onEnterUnitId($event)" #unitId
-                                                [(ngModel)]="vUnitId">
-                                                
-                                        </mat-form-field> -->
-
+                                    
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-autocomplete 
                                                 label="UnitId" 
@@ -244,29 +129,9 @@
                                                 [mode]= "autocompleteModeUnitId"
                                                 (selectDdlObject)="selectChangeUnitId($event)">
                                             </airmid-autocomplete>
-                                        </div>
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex="50%">
-                                            <mat-label>UnitName</mat-label>
-                                            <input matAutocompletePosition="below" type="text"
-                                                placeholder="Select UnitName" matInput formControlName="UnitId"
-                                                [matAutocomplete]="autoUnitId" required>
-                                            <span matSuffix style="display: flex;">
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="parameterForm.get('UnitId').setValue(''); isunitSelected = false;">close</mat-icon>
-                                                <mat-icon class="mat-icon-close"
-                                                    (click)="parameterForm.get('UnitId').setValue(''); isunitSelected = false;">search</mat-icon>
-                                            </span>
-                                            <mat-autocomplete #autoUnitId="matAutocomplete"
-                                                [displayWith]="getOptionTextUnit">
-                                                <mat-option *ngFor="let option of filteredOptionsUnit | async"
-                                                    [value]="option">
-                                                    {{option.UnitName}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field> -->
-
+                                        </div> 
                                     </div>
+
                                     <div fxLayoutAlign="space-between">
                                         <mat-radio-group name="IsNumeric" formControlName="IsNumeric"
                                             aria-label="Select an option" style="margin-top: 20px; margin-left: 20px;">
@@ -277,11 +142,7 @@
                                                 style="margin-left: 20px;">IsDescriptive</mat-radio-button>
                                         </mat-radio-group>
 
-                                        <!-- <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='true'
-                                        style="margin-top: 20px; margin-left: 20px;">
-                                        <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive</mat-radio-button>
-                                        </mat-radio-group>
-                                         -->
+                                        
                                         <div style="margin-top: 20px;">
                                             <section class="example-section">
                                                 <mat-checkbox class="example-margin" formControlName="IsDeleted"
@@ -296,8 +157,6 @@
 
                                     </div>
 
-
-                                    <hr>
                                 </div>
                             </form>
                         </div>
@@ -321,9 +180,8 @@
                                         <form [formGroup]="parameterForm">
                                             <mat-card-content>
                                                 <div>
-                                                    // new created ----------------------------------------------
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-autocomplete 
                                                                 label="SexID" 
                                                                 formControlName="sexId"
@@ -333,7 +191,7 @@
                                                                 (selectDdlObject)="selectChangeGender($event)">
                                                             </airmid-autocomplete>
                                                         </div>
-                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-textbox 
                                                                 label="Min Age" 
                                                                 formControlName="MinAge" 
@@ -343,7 +201,7 @@
                                                                 [maxLength]="3">
                                                             </airmid-textbox>    
                                                         </div>
-                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-textbox 
                                                                 label="Max Age" 
                                                                 formControlName="MaxAge" 
@@ -353,7 +211,7 @@
                                                                 [maxLength]="3">
                                                             </airmid-textbox>    
                                                         </div>
-                                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-autocomplete 
                                                                 label="Select Age Type" 
                                                                 formControlName="AgeType"
@@ -363,7 +221,7 @@
                                                                 (selectDdlObject)="selectChangeGender($event)">
                                                             </airmid-autocomplete>
                                                         </div>
-                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-textbox 
                                                                 label="Min Value" 
                                                                 formControlName="minValue" 
@@ -373,7 +231,7 @@
                                                                 [maxLength]="3">
                                                             </airmid-textbox>    
                                                         </div>
-                                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-textbox 
                                                                 label="Max Value" 
                                                                 formControlName="maxvalue" 
@@ -391,69 +249,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div fxLayoutAlign="space-between" style="padding:5px">
-                                                       
-                                                        <airmid-autocomplete label="SexID" formControlName="SexID"
-                                                            [formGroup]="parameterForm"
-                                                            [validations]="getValidationGenderMessages().SexID"
-                                                            [mode]="autocompleteModeGender"
-                                                            (selectDdlObject)="selectChangeGender($event)">
-                                                        </airmid-autocomplete>
-
-
-                                                     <--  <mat-form-field appearance="outline" fxFlex="10%">
-                                                            <mat-label>Min Age</mat-label>
-                                                            <input name="MinAge" placeholder="MinAge" maxlength="3"
-                                                                (keyup)="ageyearcheck(vMinAge)" #minage
-                                                                [(ngModel)]="vMinAge" formControlName="MinAge" matInput
-                                                                (keydown)="onEnteragey($event,vMinAge)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                        </mat-form-field> -->
-
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
-                                                            <mat-label>Max Age</mat-label>
-                                                            <input name="MaxAge" placeholder="MaxAge" maxlength="3"
-                                                                (keyup)="ageyear1check(vMaxAge)" [(ngModel)]="vMaxAge"
-                                                                formControlName="MaxAge" matInput
-                                                                (keydown)="onEnteragey($event,vMaxAge)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                        </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex="20%">
-                                                            <mat-label>Age Type</mat-label>
-                                                            <mat-select placeholder="Select Age Type"
-                                                                formControlName="AgeType" name="AgeType">
-                                                                <mat-option *ngFor="let i of ageType" [value]="i">{{
-                                                                    i}}</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
-                                                            <mat-label>Min Value</mat-label>
-                                                            <input name="MinValue" placeholder="MinValue" maxlength="3"
-                                                                (keydown)="onEntermin($event,vMinValue)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                                [(ngModel)]="vMinValue" formControlName="MinValue"
-                                                                matInput>
-                                                        </mat-form-field>
-
-                                                        <mat-form-field appearance="outline" fxFlex="10%">
-                                                            <mat-label>Max value</mat-label>
-                                                            <input name="MaxValue" placeholder="MaxValue" maxlength="3"
-                                                                (keydown)="onEntermax($event,vMaxValue)"
-                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                                [(ngModel)]="vMaxValue" formControlName="MaxValue"
-                                                                matInput>
-                                                        </mat-form-field>
-
-                                                        <div matTooltip="Select All Value to enable this button!!">
-                                                            <button mat-raised-button class="custom_add_button"
-                                                                (click)="checkFields($event)">
-                                                                Add <mat-icon> add_to_photos </mat-icon>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
+                                                   
                                                     <div>
                                                         <mat-table class="table" matSort
                                                             [dataSource]="dsParameterAgeList"
@@ -564,7 +360,6 @@
                                             </mat-card-content>
                                             <form [formGroup]="_ParameterService.descform">
                                                 <mat-card-content>
-                                                    // new created --------------------------------------
                                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                                         <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-textbox 
@@ -594,49 +389,6 @@
                                                             </div>
                                                     </div>
 
-                                                    // old code ---------------------------------------
-                                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
-                                                        <div flex="100%">
-
-                                                            <mat-form-field appearance="outline" class="mr-sm-12"
-                                                                fxFlex="30%" style="margin-left: 2%;">
-                                                                <mat-label>Parameter</mat-label>
-                                                                <input name="ParaId" placeholder="Enter value to add"
-                                                                    [(ngModel)]="ParaId" formControlName="ParaId"
-                                                                    matInput>
-                                                            </mat-form-field>
-
-                                                            <mat-form-field appearance="outline" class="mr-sm-12"
-                                                                fxFlex="90%" style="margin-left: 2%;">
-                                                                <mat-label>DefaultValue</mat-label>
-                                                                <input name="DefaultValue"
-                                                                    placeholder="Enter DefaultValue"
-                                                                    [(ngModel)]="DefaultValue"
-                                                                    formControlName="DefaultValue" matInput>
-                                                            </mat-form-field>
-
-
-
-                                                            <!-- <mat-form-field appearance="outline" class="mr-sm-12"
-                                                                style="margin-left: 2%;">
-                                                                <textarea name="DefaultValue" matInput rows="1" [(ngModel)]="DefaultValue"
-                                                                    cols="150" placeholder="Enter Default Value"
-                                                                    formControlName="DefaultValue" matInput>
-                                                              </textarea>
-                                                              </mat-form-field>
-                                                           -->
-                                                            <!-- [disabled]="DefaultValue ! ==" "" -->
-                                                            <div matTooltip="Select All Value to enable this button!!">
-                                                                <button mat-raised-button class="custom_add_button"
-                                                                    (click)="AddData(ParaId)"> Add
-                                                                    <mat-icon> add_to_photos </mat-icon>
-                                                                </button>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                    </div>
                                                     <div style="display:block !important; width:100%;">
                                                         <div flex="100%" style="overflow: auto; max-height: 100vh;">
                                                             <mat-list style="background: cornflowerblue;"
@@ -662,33 +414,6 @@
                                                             </mat-list>
 
 
-
-                                                            <!-- <mat-table class="table" matSort
-                                                            [dataSource]="selectedItems"
-                                                            [@animateStagger]="{value:'50'}" style="overflow:auto">
-
-                                                            <ng-container matColumnDef="ParameterValues">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>Parameter Values
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <mat-header-row class="accent"
-                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                                class="element"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                                [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                                [ngClass]="{'hide':!(dsParameterAgeList!=null && dsParameterAgeList.data.length==0)}"></mat-footer-row>
-
-                                                        </mat-table> -->
-
-
                                                         </div>
                                                     </div>
 
@@ -706,18 +431,7 @@
                     </div>
 
                 </div>
-                <!-- [disabled]="parameterForm.invalid" -->
 
-                <!-- <div fxLayoutGap="5px">
-
-                    <div class="footer-navigation-container">
-                        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                        </div>
-                    </div>
-
-                </div> -->
                 <div class="modal-footer">
                     <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end center">
                         <div class="modal-footer-buttons" fxLayoutGap="6px">

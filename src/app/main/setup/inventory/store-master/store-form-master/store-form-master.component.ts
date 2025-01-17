@@ -51,7 +51,8 @@ export class StoreFormMasterComponent implements OnInit {
         this.storeForm = this._StoreMasterService.createStoremasterForm();
 
         console.log(this.data)
-        if (this.data) {
+        if((this.data?.storeId??0) > 0)
+        {
             this.isActive =this.data.isActive
             this.storeForm.patchValue(this.data);
             this.Header = this.data.Header

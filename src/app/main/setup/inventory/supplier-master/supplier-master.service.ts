@@ -26,91 +26,90 @@ export class SupplierMasterService {
         return this._formBuilder.group({
             supplierId: [0],
             supplierName:["", [
-                // Validators.required,
+                Validators.required,
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-              ]],
+            ]],
             ContactPerson:["Subhash Choughule", [ 
                 // Validators.required,
                 // Validators.pattern("^[a-zA-Z._ -]+$"),
                 // Validators.maxLength(100),
-              ]],
-
+            ]],
             address: ["", 
-                // Validators.required
+                Validators.required,
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ],
             cityId: [0, 
-                // Validators.required
+                Validators.required
             ],
             // CityName: [""],
             stateId: [0, 
-                // Validators.required
+                Validators.required
             ],
             // StateName: [""],
-            countryId: [0],
+            countryId: [0,
+                Validators.required
+            ],
             // CountryName: [""],
             CreditPeriod: ["",
-                // [
-                //     Validators.required
-                // ]
+                [
+                    Validators.required
+                ]
             ],
             mobile: ["", 
                 [
-                     Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    Validators.required,
+                    Validators.maxLength(10),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
             phone:["", 
                 [
-                    Validators.minLength(10),
+                    Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
             fax: ['',
                 [
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    Validators.required,
+                    Validators.maxLength(10),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
             email: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
                 ]
             ],
             modeofPayment: ["", 
-                // Validators.required
+                Validators.required
             ],
             termofPayment: ["", 
-                // Validators.required
+                Validators.required
             ],
-            // TaxNature: ["", Validators.required],
             CurrencyId: [1],// Validators.pattern("[0-9]+")
             Octroi: [0],//Validators.pattern("[0-9]+")
             Freight: [0, 
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.pattern("^[0-9]*$"),
                     Validators.maxLength(10),
                 ]
             ],
             gstNo: ["", 
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(15)
                 ]
             ], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
             panNo: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
                 ]
             ],
             supplierTime: [(new Date()).toISOString()],
-            // mAssignSupplierToStores:[""],
             mAssignSupplierToStores: [
                 {
                     assignId: 0,
@@ -118,7 +117,6 @@ export class SupplierMasterService {
                     supplierId: 0
                 }
             ]
-        
         });
     }
 

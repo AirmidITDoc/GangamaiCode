@@ -33,6 +33,7 @@ export class PrefixMasterService {
                 ]
             ],
             sexId:["", Validators.required] ,
+            isActive:[true,[Validators.required]],
         });
     }
     initializeFormGroup() {

@@ -31,7 +31,7 @@ export class PatienttypeMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: ["true"],
+            isActive:[true,[Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

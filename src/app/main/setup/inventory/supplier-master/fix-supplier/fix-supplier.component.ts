@@ -1,11 +1,10 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { SupplierMaster, SupplierMasterComponent } from '../supplier-master.component';
 import { SupplierMasterService } from '../supplier-master.service';
-import { Subject } from 'rxjs';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 import { FormGroup } from '@angular/forms';
 
@@ -77,7 +76,7 @@ export class FixSupplierComponent implements OnInit
      
             this.Saveflag = true;
             console.log(this.supplierForm.value);
-     debugger
+            debugger
             this._supplierService.SupplierSave(this.supplierForm.value).subscribe((response) => {
                this.toastr.success(response.message);
                this.onClear(true);
@@ -151,32 +150,64 @@ export class FixSupplierComponent implements OnInit
      
     getValidationMessages() {
         return {
-            
-            supplierName:[],
-            SupplierType:[],
+            supplierName:[
+                { name: "required", Message: "Supplier Name is required" },
+                { name: "pattern", Message: "Only Characters Allowed" },
+            ],
             mobile: [
-              { name: "pattern", Message: "Only numbers allowed" },
-              { name: "required", Message: "Mobile No is required" },
-              { name: "minLength", Message: "10 digit required." },
-              { name: "maxLength", Message: "More than 10 digits not allowed." }
-
-          ],
-            phone:[],
-            address:[],
-            cityId:[],
-            stateId:[],
-            countryId:[],
-            panNo:[],
-            fax:[],
-            email:[],
-            Freight:[],
-            CreditPeriod:[],
-            modeofPayment:[],
-            termofPayment:[],
-            gstNo:[],
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Mobile No is required" },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+            ],
+            phone:[
+                { name: "required", Message: "Phone No is required" },
+                { name: "pattern", Message: "Only Numbers Allowed" },
+            ],
+            address:[
+                { name: "required", Message: "Address is required" },
+                { name: "pattern", Message: "Only Characters Allowed" },
+            ],
+            cityId:[
+                { name: "required", Message: "City is required" },
+            ],
+            stateId:[
+                { name: "required", Message: "State is required" },
+            ],
+            countryId:[
+                { name: "required", Message: "Country is required" },
+            ],
+            panNo:[
+                { name: "required", Message: "Pan No is required" },
+                { name: "pattern", Message: "Only Numbers & Characters Allowed" },
+            ],
+            fax:[
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Fax No is required" },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+            ],
+            email:[
+                { name: "required", Message: "Email is required" },
+                { name: "pattern", Message: "Only Numbers & Characters Allowed" },
+            ],
+            Freight:[
+                { name: "pattern", Message: "Only Numbers allowed" },
+                { name: "required", Message: "Freight is required" },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+            ],
+            CreditPeriod:[
+                { name: "required", Message: "Credit Period is required" },
+            ],
+            modeofPayment:[
+                { name: "required", Message: "Mode Of Payment is required" },
+            ],
+            termofPayment:[
+                { name: "required", Message: "Terms Of Payment is required" }, 
+            ],
+            gstNo:[
+                { name: "required", Message: "GST is required" },
+                { name: "maxLength", Message: "More than 15 digits not allowed." }
+            ],
             storeId:[],
-            
-
-        }
+        };
     }
 }

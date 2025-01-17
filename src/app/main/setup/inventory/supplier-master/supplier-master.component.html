@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">Add
+            <button mat-raised-button (click)="onSave()">+ Add New Supplier
             </button>
         </div>
     </div>
@@ -29,11 +29,14 @@
                     </button>
                 </mat-form-field>
                
-                <airmid-autocomplete label="Store Name" formControlName="StoreId"
-                [formGroup]="myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
-                [mode]="autocompleteModestoreName"
-                (selectionChange)="selectChangestoreName($event)"  >
-            </airmid-autocomplete>
+                <airmid-autocomplete 
+                    label="Store Name" 
+                    formControlName="StoreId"
+                    [formGroup]="myformSearch" 
+                    [(ngModel)]="gridConfig.filters[1].fieldValue"
+                    [mode]="autocompleteModestoreName"
+                    (selectionChange)="selectChangestoreName($event)"  >
+                </airmid-autocomplete>
             </ng-container>
         </airmid-table>
     </div>
