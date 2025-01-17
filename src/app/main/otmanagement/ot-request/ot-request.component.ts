@@ -48,23 +48,15 @@ export class OTRequestComponent implements OnInit {
   displayedColumns: string[] = [
 
     'IsCancelled',
-    // 'OTBookingId',
-    // 'PatientName',
-    // 'GenderName',
-    'OTbookingDate',
-    'OTbookingTime',
-    // 'RoomName',
-    // 'BedName',
-    // 'OP_IP_Id',
-    // 'OP_IP_Type',
-    // 'AdmittingDoctor',
+    'OP_IP_Type',
+    'SurgeryType',
+    'OTbookingDateTime',
     'SurgeonName',
     'SurgeryCategoryName',
-    'SurgeryType',
+    'SiteDesc',
+    'SurgeryName',
     'DepartmentName',
     'AddedBy',
-    // 'UpdateBy',
-    // 'IsCancelledBy',
     'action'
   ];
   dataSource = new MatTableDataSource<Requestlist>();
@@ -100,9 +92,8 @@ export class OTRequestComponent implements OnInit {
   }
 
 
-  getRequestList() {
-
-    debugger
+  getRequestList() {   
+    
     this.sIsLoading = 'loading-data';
     var m_data = {
       "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
@@ -129,7 +120,7 @@ export class OTRequestComponent implements OnInit {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
     
-    debugger
+    
     Swal.fire({
       title: 'Do you want to cancel the OT Booking?',
       text: "You won't be able to revert this!",
@@ -139,18 +130,18 @@ export class OTRequestComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((flag) => {
+      debugger
       if (flag.isConfirmed) {
         let bookingcancle = {};
         bookingcancle['otBookingId'] = contact.OTBookingId;
         bookingcancle['isCancelled'] = 1;
         bookingcancle['isCancelledBy'] = this.accountService.currentUserValue.user.id;
-        bookingcancle['isCancelledDateTime'] = formattedDate;
   
         let submitData = {
           "cancelOTBookingRequestParam": bookingcancle,
         };
 
-        console.log(submitData);
+        console.log("cancelOTBookingRequestParam:",submitData);
   
         this.isLoading = true;
   
@@ -286,11 +277,11 @@ export class OTRequestComponent implements OnInit {
 
 
   onClear() {
-
-    this.searchFormGroup.get('start').reset();
-    this.searchFormGroup.get('end').reset();
-    this.searchFormGroup.get('Reg_No').reset();
-
+    this.searchFormGroup.reset({
+      start: new Date(),
+      end: new Date(),
+    });
+    this.getRequestList();
   }
 }
 
@@ -309,7 +300,6 @@ export class Requestlist {
   OTbookingDate: any;
   BedName: any;
   OP_IP_Id: any;
-  OP_IP_Type: any;
   SurgeonId: any;
   SurgeryId: any;
   DoctorId: any;
@@ -319,13 +309,10 @@ export class Requestlist {
   BedId: any;
   GenderId: any;
   AdmittingDoctor: any;
-  SurgeonName: any;
   SurgeryCategoryName: any;
-  SurgeryType: any;
   DepartmentName: any;
   AddedBy: any;
   UpdateBy: any;
-  IsCancelled: any;
   GenderName: any;
   OTbookingTime: any;
   IsCancelledBy: any;
@@ -342,6 +329,12 @@ export class Requestlist {
   Age:any;
   SiteDescId:any;
   SurgeryCategoryId:any;
+
+  IsCancelled:any;
+OP_IP_Type:any;
+SurgeryType:any;
+OTbookingDateTime:any;
+SurgeonName:any;
 
   constructor(Requestlist) {
     this.OTBookingId = Requestlist.OTBookingId || 0;
