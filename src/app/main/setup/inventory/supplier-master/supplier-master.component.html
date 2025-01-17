@@ -21,7 +21,7 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Supplier Name</mat-label>
-                    <input matInput placeholder="Search Supplier Name" autocomplete="off"
+                    <input matInput placeholder="Search Supplier Name" autocomplete="off"   [formGroup]="myformSearch" 
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
@@ -30,9 +30,9 @@
                 </mat-form-field>
                
                 <airmid-autocomplete label="Store Name" formControlName="StoreId"
-                [formGroup]="_supplierService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                [formGroup]="myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
                 [mode]="autocompleteModestoreName"
-                (selectDdlObject)="selectChangestoreName($event)"  >
+                (selectionChange)="selectChangestoreName($event)"  >
             </airmid-autocomplete>
             </ng-container>
         </airmid-table>

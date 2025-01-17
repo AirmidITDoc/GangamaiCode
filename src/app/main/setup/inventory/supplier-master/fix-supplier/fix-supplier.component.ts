@@ -77,7 +77,7 @@ export class FixSupplierComponent implements OnInit
      
             this.Saveflag = true;
             console.log(this.supplierForm.value);
-     
+     debugger
             this._supplierService.SupplierSave(this.supplierForm.value).subscribe((response) => {
                this.toastr.success(response.message);
                this.onClear(true);
@@ -154,7 +154,13 @@ export class FixSupplierComponent implements OnInit
             
             supplierName:[],
             SupplierType:[],
-            mobile:[],
+            mobile: [
+              { name: "pattern", Message: "Only numbers allowed" },
+              { name: "required", Message: "Mobile No is required" },
+              { name: "minLength", Message: "10 digit required." },
+              { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+          ],
             phone:[],
             address:[],
             cityId:[],
@@ -169,6 +175,7 @@ export class FixSupplierComponent implements OnInit
             termofPayment:[],
             gstNo:[],
             storeId:[],
+            
 
         }
     }
