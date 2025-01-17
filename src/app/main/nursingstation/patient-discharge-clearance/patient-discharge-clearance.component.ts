@@ -10,10 +10,6 @@ import { MatSort } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { PatientClearanceOptionComponent } from './patient-clearance-option/patient-clearance-option.component';
 import {MatStepperModule} from '@angular/material/stepper';
-interface Step {
-  title: string;
-  content: string;
-}
  
 @Component({
   selector: 'app-patient-discharge-clearance',
@@ -58,16 +54,7 @@ export class PatientDischargeClearanceComponent implements OnInit {
 
 
 
-  }
-  steps: Step[] = [
-    { title: 'Step 1', content: 'This is the content for Step 1.' },
-    { title: 'Step 2', content: 'This is the content for Step 2.' },
-    { title: 'Step 3', content: 'This is the content for Step 3.' },
-    { title: 'Step 4', content: 'This is the content for Step 4.' },
-    { title: 'Step 5', content: 'This is the content for Step 5.' }
-];
-
- 
+  } 
  
 getClearancelist(){  
     this._PatientDischargeClearanceService.getClearancelist().subscribe(data =>{
@@ -109,7 +96,7 @@ getPatietnapprovelist(contact){
         }
       });
       dialogRef.afterClosed().subscribe(result => {
-        console.log(result)
+        this.getClearancelist()
       });
   }
  

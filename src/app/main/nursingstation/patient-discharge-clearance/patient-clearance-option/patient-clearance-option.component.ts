@@ -101,7 +101,7 @@ onSave(){
     return;
   } 
     let updateDischargeInitiateApprovalParamObj = {
-      "admId": this.registerObj.AdmissionID|| 0,
+      "admId": this.registerObj.AdmID|| 0,
       "departmentID":  this.DepartmentId || 0,
       "initateDiscId": this.InitateDiscId  || 0,
       "isApproved": 1,

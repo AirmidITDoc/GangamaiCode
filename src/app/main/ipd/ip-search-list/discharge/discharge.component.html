@@ -243,14 +243,14 @@
                 </form>
                 <div fxLayout="row" fxLayoutAlign="space-between">
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-                        <button mat-raised-button (click)="DischargeInitiate()" >
+                        <button mat-raised-button (click)="DischargeInitiate()" [disabled]="ChkConfigInitiate">
                            Initiate Discharge
                         </button>
                     </div>
                    
                     <div class="modal-footer-buttons gap-8 p-16" fxLayout="row" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary " (click)="onDischarge()"> Save</button>
+                        <button class="btn btn-primary " (click)="onDischarge()" > Save</button>
                     </div>
                 </div>
                 

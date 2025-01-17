@@ -12,6 +12,7 @@ import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/conf
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import Swal from "sweetalert2";
+import { AddNewTariffComponent } from "./add-new-tariff/add-new-tariff.component";
 
 @Component({
     selector: "app-service-master",
@@ -229,7 +230,16 @@ export class ServiceMasterComponent implements OnInit {
         }
 
     }
-
+    NewTariff() {
+        const dialogRef = this._matDialog.open(AddNewTariffComponent, 
+            {
+            height: "30%",
+            width: '40%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            this.getServiceMasterList();
+        });
+    }
 
 
     onDeactive(contact, ServiceId) {

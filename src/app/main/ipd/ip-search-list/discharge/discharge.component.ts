@@ -76,7 +76,7 @@ export class DischargeComponent implements OnInit {
 
     }
   }
-
+ ChkConfigInitiate:boolean=false;
   ngOnInit(): void {
     if (this.advanceDataStored.storage) {
       this.vAdmissionId = this.registerObj.AdmissionID;
@@ -84,6 +84,14 @@ export class DischargeComponent implements OnInit {
       this.getRtrvDischargelist()
       this.getCheckBalanceAmt();
     }
+
+    if(this._ConfigService.configParams.IsDischargeInitiateflow == 1){
+      this.ChkConfigInitiate = false
+    }else{
+      this.ChkConfigInitiate = true
+    }
+
+    this.getchkConfigInitiate();
   }
 
 
@@ -100,11 +108,11 @@ export class DischargeComponent implements OnInit {
     console.log(Query)
     this._IpSearchListService.getDischargeId(Query).subscribe(data => {
       this.RtrvDischargeList = data;
-      this.IsCancelled = this.RtrvDischargeList[0].IsCancelled || 0
+      this.IsCancelled = this.RtrvDischargeList[0]?.IsCancelled || 0
       if (this.IsCancelled == '1') {
         this.DischargeId = 0
       } else {
-        this.DischargeId = this.RtrvDischargeList[0].DischargeId || 0
+        this.DischargeId = this.RtrvDischargeList[0]?.DischargeId || 0
       }
       // this.vComments = this.RtrvDischargeList.
       this.Rtevdropdownvalue();
@@ -205,13 +213,39 @@ export class DischargeComponent implements OnInit {
       console.log(this.CheckBalanceAmt)
     })
   }
+  vApproved_Cnt:any;
+  vDeptCount:any;
+  getchkConfigInitiate() {
+    let Query = "SELECT Isnull(Count(IsApproved),0)as DeptCount,(SELECT Isnull(Count(b.IsApproved),0)as TotalCnt FROM dbo.initiateDischarge B Where b.AdmId=A.AdmId and b.IsApproved = 1)as Approved_Cnt " +
+      " FROM dbo.initiateDischarge A Where AdmId=" + this.selectedAdvanceObj.AdmissionID + " Group by AdmId"
+    console.log(Query)
+    this._IpSearchListService.getchkConfigInitiate(Query).subscribe((data) => {
+      console.log(data)
+      if(data){
+        this.vApproved_Cnt = data[0]?.Approved_Cnt
+        this.vDeptCount = data[0]?.DeptCount
+        console.log(this.vApproved_Cnt)
+        console.log(this.vDeptCount)
+      } 
+    })
+
+  }
   vDoctorId: any;
   vDescType: any;
   onDischarge() {
-    this.isLoading = 'submit';
-
+    this.isLoading = 'submit'; 
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
+
+    if(this.vDeptCount > 0){
+      if(this.vApproved_Cnt != this.vDeptCount){
+        this.toastr.warning('Please be informed that your discharge approval is still pending.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+ 
 
     if (this.vDoctorId == '' || this.vDoctorId == null || this.vDoctorId == undefined) {
       this.toastr.warning('Please select Doctor', 'Warning !', {

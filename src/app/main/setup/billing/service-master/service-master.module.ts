@@ -37,6 +37,7 @@ import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { AddPackageDetComponent } from "./add-package-det/add-package-det.component";
 import { ServiceMasterService } from "./service-master.service";
+import { AddNewTariffComponent } from './add-new-tariff/add-new-tariff.component';
 
 const routes: Routes = [
     {
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, AddPackageDetComponent],
+    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, AddPackageDetComponent, AddNewTariffComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,

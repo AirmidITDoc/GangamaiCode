@@ -1,0 +1,74 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar class="accent" style="height: 40px;width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                New Tariff
+            </span>
+        </div>
+
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="content-card">
+                <div fxLayout="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" fxFlex>
+                    <form [formGroup]="AddTariff">
+                        <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="4px" fxFlex>
+                        
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Old Tariff Name</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Old Tariff" matInput
+                                    formControlName="TariffId" [matAutocomplete]="autoTariffId" [(ngModel)]="vOldTariff">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="AddTariff.get('TariffId').setValue(''); isTariffIdSelected = false;">clear</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="AddTariff.get('TariffId').setValue(''); isTariffIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoTariffId="matAutocomplete" [displayWith]="getOptionTextTariff">
+                                    <mat-option *ngFor="let option of filteredTariff | async" [value]="option">
+                                        {{option.TariffName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>New Tariff Name</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select New Tariff" matInput
+                                    formControlName="NewTariffId" [matAutocomplete]="autoTariffIdNew" [(ngModel)]="vNewTariff">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="AddTariff.get('NewTariffId').setValue(''); NewisTariffIdSelected = false;">clear</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="AddTariff.get('NewTariffId').setValue(''); NewisTariffIdSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoTariffIdNew="matAutocomplete" [displayWith]="getOptionTextNewTariff">
+                                    <mat-option *ngFor="let option of NewfilteredTariff | async" [value]="option">
+                                        {{option.TariffName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        
+                        </div>
+                    </form>
+
+                    <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSave()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
