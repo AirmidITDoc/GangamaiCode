@@ -113,7 +113,7 @@ export class OTReservationComponent implements OnInit {
 
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
+      // "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
 
     }
     console.log(D_data);
@@ -180,7 +180,7 @@ export class OTReservationComponent implements OnInit {
 
     // debugger;
 
-    console.log(this.dataSource.data['OTTableID'])
+    // console.log(this.dataSource.data['OTTableID'])
     //  this.advanceDataStored.storage = new OTReservationDetail(m_data);
 
     const dialogRef = this._matDialog.open(NewReservationComponent,
@@ -190,18 +190,22 @@ export class OTReservationComponent implements OnInit {
         width: '100%',
 
       });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
-        this.dataSource.data = Visit as OTReservationDetail[];
-        console.log(this.dataSource.data);
-        this.sIsLoading = '';
-        //  this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getOtreservationList();
+     });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed - Insert Action', result);
+    //   this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
+    //     this.dataSource.data = Visit as OTReservationDetail[];
+    //     console.log(this.dataSource.data);
+    //     this.sIsLoading = '';
+    //     //  this.click = false;
+    //   },
+    //     error => {
+    //       this.sIsLoading = '';
+    //     });
+    // });
     //  if(row) this.dialogRef.close(m_data);
   }
 
@@ -303,8 +307,11 @@ OPreOPrativenote(){
   }
 
   onClear() {
-    // this.personalFormGroup.reset();
-    // this.dialogRef.close();
+    this.searchFormGroup.reset({
+      start: new Date(),
+      end: new Date(),
+    });
+    this.getOtreservationList();
   }
   onClose() {
     // this.personalFormGroup.reset();

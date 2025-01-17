@@ -9,12 +9,14 @@ export class OTManagementServiceService {
 
   Otserachform:FormGroup;
   otreservationFormGroup:FormGroup;
+  otRequestForm:FormGroup;
   
   constructor(private _httpClient: HttpClient,
     private _formBuilder: FormBuilder) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm1();
-      this.otreservationFormGroup = this.createOtreservationForm();
+      this.otreservationFormGroup = this.createOtreservationForm();      
+    this.otRequestForm = this.createOtrequestForm();
      }
  
 
@@ -29,6 +31,34 @@ export class OTManagementServiceService {
       });
     }
 
+    createOtrequestForm() {
+      return this._formBuilder.group({
+        OTbookingDate: [new Date().toISOString()],
+        OTbookingTime: [new Date().toISOString()],
+        OP_IP_ID: '',
+        OP_IP_Type: '',
+        AddedDateTime: [new Date().toISOString()],        
+        SurgeonId: '',
+
+        RegID: '',
+        PatientType: ['OP'],
+        DepartmentId: '',
+        SurgeryCategoryId:'',
+        SiteDescId: '',
+        SurgeryId: '',
+        DoctorId: '',
+        SurgeryType: ['0'],
+
+        IsCancelled: '',
+        WardName: '',
+        BedNo: '',
+        PatientName: '',
+        GenderId: '',
+        Age: '',
+        MobileNo: '',
+      });
+    }
+
     createOtreservationForm() {
       return this._formBuilder.group({
        TranDate : [new Date().toISOString()],
@@ -38,18 +68,11 @@ export class OTManagementServiceService {
        OTbookingDate:[new Date().toISOString()],
        OPDate : [new Date().toISOString()],
       //  OPTime : [new Date().toISOString()],
-       SurgeryId: ['', [
-        Validators.required]],
        Duration  : '',
-       OTTableId  : '',
        SurgeonId :['', [
         Validators.required
         ]],
        SurgeonId1 :' ',
-       AnestheticsDr :['', [
-        Validators.required,
-        ]],
-       AnestheticsDr1 :'',
        Surgeryname :[''],
        ProcedureId :'',
        AnesthType :'',
@@ -60,7 +83,6 @@ export class OTManagementServiceService {
        OTCathLabBokingID:'',
        SurgeryCategoryId:'',
        SiteDescId:'',
-       DoctorId:'',
        SurgeryType:'1',
        DepartmentId:'',
        DepartmentName:'',
@@ -75,7 +97,19 @@ export class OTManagementServiceService {
       postOpertiveInstru:'',
       detSpecimenForLab:'',
       Prepost:'',
-      Extra:''
+      Extra:'',
+
+      RegID: '',
+      PatientType: ['OP'],
+      MobileNo:'',
+      PatientName:'',
+      SurgeryId:'',
+      DoctorId:'',
+      DoctorId1:'',
+      AnestheticsDr:'',
+      AnestheticsDr1:'',
+      OTTableId:'',
+
      });
    }
 
@@ -91,6 +125,15 @@ export class OTManagementServiceService {
     });
   }
   
+  // otbooking insert and update
+  public otBookingRequestInsert(employee) {
+    return this._httpClient.post("OT/SaveOTBookingRequest", employee);
+  }
+
+  public otBookingRequestUpdate(employee) {
+    return this._httpClient.post("OT/UpdateOTBookingRequest", employee);
+  }
+
   public getOTReservationlist(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookinglist",employee)
   }
@@ -127,11 +170,11 @@ export class OTManagementServiceService {
   }
 
   public ReservationInsert(employee){
-    return this._httpClient.post("InPatient/OTBookingInsert", employee);
+    return this._httpClient.post("OT/SaveOTBooking", employee);
   }
 
   public ReservationUpdate(employee){
-    return this._httpClient.post("InPatient/OTBookingUpdate", employee);
+    return this._httpClient.post("OT/UpdateOTBooking", employee);
   }
 
   public PrepostOTNoteInsert(employee){
@@ -219,7 +262,7 @@ export class OTManagementServiceService {
   }
   public BookingCancle(employee)
   {
-    return this._httpClient.post("CustomerInformation/CancelOTBookingRequest", employee);
+    return this._httpClient.post("OT/CancelOTBookingRequest", employee);
   }
   public getGenderCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {})
