@@ -38,6 +38,7 @@ export class CashCounterMasterService {
                     Validators.pattern("^[0-9]*$")
                 ]
             ],
+            isActive:[false,[Validators.required]]
         });
     }
 

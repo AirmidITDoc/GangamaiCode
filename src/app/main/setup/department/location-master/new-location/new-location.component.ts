@@ -24,9 +24,11 @@ export class NewLocationComponent implements OnInit {
 
     ngOnInit(): void {
         this.locationForm = this._LocationMasterService.createLocationForm();
-        if(this.data){
-        this.isActive=this.data.isActive
-        this.locationForm.patchValue(this.data);}
+        if((this.data?.locationId??0) > 0)
+        {
+            this.isActive=this.data.isActive
+            this.locationForm.patchValue(this.data);
+        }
     }
 
   onSubmit() {

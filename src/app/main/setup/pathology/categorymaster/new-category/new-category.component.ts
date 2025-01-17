@@ -28,7 +28,8 @@ export class NewCategoryComponent implements OnInit {
  
   ngOnInit(): void {
       this.categoryForm = this._CategorymasterService.createCategorymasterForm();
-      if(this.data){
+      if((this.data?.categoryId??0) > 0)
+        {
         this.isActive=this.data.isActive
         this.categoryForm.patchValue(this.data);
     }

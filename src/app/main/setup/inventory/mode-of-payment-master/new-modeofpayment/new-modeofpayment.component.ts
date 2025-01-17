@@ -28,7 +28,8 @@ export class NewModeofpaymentComponent implements OnInit {
 
   ngOnInit(): void {
       this.modeofpayForm = this._ModeOfPaymentMasterService.createModeofpaymentForm();
-      if(this.data){
+      if((this.data?.id??0) > 0)
+        {
         this.isActive=this.data.isActive
         this.modeofpayForm.patchValue(this.data);
       }

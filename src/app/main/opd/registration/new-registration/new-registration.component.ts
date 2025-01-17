@@ -74,17 +74,17 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup = this._registerService.createPesonalForm1();
        
         this.minDate = new Date();
-        console.log(this.data)
-        
-        if(this.data.Submitflag==true)
+      
+        if((this.data?.Submitflag?? true)==true)
             this.registerObj.regId=this.data.data1.regId
-        debugger
-        if (this.data.data1.regId > 0) {
+        
+        if ((this.data.data1?.regId?? 0) > 0) {
+          
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.data1.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-                    // this.registerObj.regId=this.registerObj.RegId 
+                   
                    });
             }, 500);
         }
@@ -98,7 +98,7 @@ export class NewRegistrationComponent implements OnInit {
         console.log(this.personalFormGroup.value)
         
         // if (this.personalFormGroup.valid) {
-            
+            debugger
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
@@ -134,72 +134,7 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-    // @ViewChild('fname') fname: ElementRef;
-    // @ViewChild('mname') mname: ElementRef;
-    // @ViewChild('lname') lname: ElementRef;
-    // @ViewChild('bday') bday: ElementRef;
-    // @ViewChild('agey') agey: ElementRef;
-    // @ViewChild('agem') agem: ElementRef;
-    // @ViewChild('aged') aged: ElementRef;
-    // @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
-    // @ViewChild('address') address: ElementRef;
-    // @ViewChild('mobile') mobile: ElementRef;
-    // @ViewChild('phone') phone: ElementRef;
-    // public onEnterfname(event): void {
-    //     if (event.which === 13) {
-    //         this.fname.nativeElement.focus();
-    //     }
-    // }
-    // public onEntermname(event): void {
-    //     if (event.which === 13) {
-    //         this.mname.nativeElement.focus();
-    //     }
-    // }
-    // public onEnterlname(event): void {
-    //     if (event.which === 13) {
-    //         this.lname.nativeElement.focus();
-    //     }
-    // }
-    // public onEnterbday(event): void {
-    //     if (event.which === 13) {
-    //         this.bday.nativeElement.focus();
-    //     }
-    // }
-    // public onEnteragey(event): void {
-    //     if (event.which === 13) {
-    //         this.agem.nativeElement.focus();
-    //     }
-    // }
-    // public onEnteragem(event): void {
-    //     if (event.which === 13) {
-    //         this.aged.nativeElement.focus();
-    //     }
-    // }
-    // public onEnteraged(event): void {
-    //     if (event.which === 13) {
-    //         this.AadharCardNo.nativeElement.focus();
-    //     }
-    // }
-    // public onEnterAadharCardNo(event): void {
-    //     if (event.which === 13) {
-    //         this.AadharCardNo.nativeElement.focus();
-    //     }
-    // }
-    // public onEnteraddress(event): void {
-    //     if (event.which === 13) {
-    //         this.address.nativeElement.focus();
-    //     }
-    // }
-    // public onEntermobile(event): void {
-    //     if (event.which === 13) {
-    //         this.mobile.nativeElement.focus();
-    //     }
-    // }
-    // public onEnterphone(event): void {
-    //     if (event.which === 13) {
-    //         this.phone.nativeElement.focus();
-    //     }
-    // }
+   
 
     get f() {
         return this.personalFormGroup.controls;

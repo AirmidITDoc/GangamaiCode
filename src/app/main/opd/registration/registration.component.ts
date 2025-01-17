@@ -109,6 +109,8 @@ export class RegistrationComponent implements OnInit {
         
     }
     onNewregistration(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
@@ -142,6 +144,9 @@ export class RegistrationComponent implements OnInit {
     }
 
     onEdit(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
         console.log(row)
         this._RegistrationService.populateForm(row);
         

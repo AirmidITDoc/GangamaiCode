@@ -27,7 +27,7 @@ export class NewDepartmentComponent implements OnInit {
 
     ngOnInit(): void {
       this.departmentForm = this._DepartmentMasterService.createDepartmentForm();
-      if(this.data){
+      if((this.data?.departmentId??0) > 0){
         this.isActive=this.data.isActive
         this.departmentForm.patchValue(this.data);}
     }

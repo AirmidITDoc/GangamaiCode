@@ -110,32 +110,35 @@
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                        <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj1.regId">
 
-                                        <mat-form-field appearance="outline" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline" fxFlex.sm="10%" style="visibility: hidden;">
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
-                                                formControlName="visitTime"
+                                                formControlName="visitDate" 
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
-                                      
+                                        <mat-form-field appearance="outline" fxFlex.sm="50%">
+                                            <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="visitTime" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
+                                        </mat-form-field>
+
                                         <airmid-autocomplete label="Departmentid" formControlName="departmentId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
                                             [validations]="getValidationMessages().Departmentid"
                                             [mode]="autocompleteModedepartment"
-                                            (selectDdlObject)="selectChangedepartment($event)">
+                                            (selectionChange)="onChangeDepartment($event)">
                                         </airmid-autocomplete>
 
-                                        <!-- <airmid-autocomplete label="Departmentid" formControlName="departmentId"
-                                        [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
-                                        [validations]="getValidationMessages().Departmentid"
-                                        ValueField="departmentId" TextField="departmentName"
-                                        (selectionChange)="onChangeDepartment($event)"
-                                        ApiUrl="DepartmentMaster/get-departments">
+                                        <!-- <airmid-autocomplete label="departmentId" formControlName="departmentId"
+                                        [formGroup]="crossconForm" [value]="registerObj?.departmentId"
+                                        [validations]="getValidationMessages().Departmentid" ValueField="departmentId"
+                                        TextField="departmentName" (selectionChange)="selectChangedepartment($event)"
+                                        ApiUrl="Prefix/get-prefixs">
                                     </airmid-autocomplete> -->
                                        
                                         <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
-                                            [validations]="getValidationMessages().DoctorID" #ddldoctor
+                                            [validations]="getValidationMessages().consultantDocId" #ddldoctor
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-autocomplete>
                                     </div>
@@ -167,8 +170,8 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field> -->
-
-                <mat-form-field appearance="outline">
+<!-- //DD with old code -->
+                <!-- <mat-form-field appearance="outline">
                     <mat-label>Doctor Name</mat-label>
                     <mat-select formControlName="DoctorID" name="DoctorID">
                         <mat-option></mat-option>
@@ -176,8 +179,8 @@
                             {{m.doctorId}} || {{m.firstName}} {{m.lastName}}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>
-
+                </mat-form-field> -->
+<!-- ///////////// -->
                 <!-- <app-airmid-dropdown label="DoctorID" formControlName="consultantDocId" [value]="DoctorID1"
                     [formGroup]="crossconForm" [mode]="autocompleteModedeptdoc">
                 </app-airmid-dropdown>

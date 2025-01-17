@@ -17,6 +17,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { SuppliertestingComponent } from "./suppliertesting/suppliertesting.component";
 import { Row } from "jspdf-autotable";
 import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-supplier-master",
@@ -26,7 +27,7 @@ import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
     animations: fuseAnimations,
 })
 export class SupplierMasterComponent implements OnInit {
-
+    myformSearch:FormGroup;
     autocompleteModestoreName: string = "Store";
     // new code
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -117,7 +118,7 @@ export class SupplierMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-        ;
+        this.myformSearch=this._supplierService.createSearchForm();
     }
     onSearch() {
 
@@ -132,6 +133,9 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     onSave(obj: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
         let that = this;
         const dialogRef = this._matDialog.open(FixSupplierComponent,
             {
@@ -149,12 +153,13 @@ export class SupplierMasterComponent implements OnInit {
     }
     storeId = "0";
     selectChangestoreName(obj: any) {
+        debugger
         this.storeId = obj.value;
-
-        console.log(obj);
-        this.storeId = String(obj);
-        this.gridConfig.filters = [{ fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "StoreID", fieldValue: this.storeId, opType: OperatorComparer.Equals }
+        this.gridConfig.filters = [
+        { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "StoreID", fieldValue: this.storeId, opType: OperatorComparer.Equals },
+        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
         ]
     }
 

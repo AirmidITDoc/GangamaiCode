@@ -190,17 +190,7 @@ export class RegistrationService {
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
   }
 
-  // public RegstrationtSave(Param: any, showLoader = true) {
-  //   if (Param.regID) {
-  //     return this._httpClient1.PutData("OutPatient/RegistrationInsert" + Param.regID, Param, showLoader);
-  //   } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
-  // }
-
-  // public Regstrationtupdate(Param: any, showLoader = true) {
-  //   if (Param.regId) {
-  //     return this._httpClient1.PutData("OutPatient/RegistrationUpdate" + Param.regId, Param, showLoader);
-  //   } else return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
-  // }
+ 
 
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);

@@ -29,6 +29,7 @@ export class DischargetypeMasterService {
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
+            isActive:[false,[Validators.required]],
         });
     }
 

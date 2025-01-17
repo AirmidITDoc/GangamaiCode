@@ -8,10 +8,10 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
-                    </button> -->
+                    </button>
                 </div>
             </div>
         </div>
@@ -316,46 +316,16 @@
                                             </div>
                                         </form>
                                     </div>
-                                </div>
-                                
-                                <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                    <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <form [formGroup]="itemForm">
-                                            <div fxLayout="row">
-                                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete 
-                                                        label="Store"
-                                                        formControlName="mAssignItemToStores" 
-                                                        [formGroup]="itemForm"
-                                                        [IsMultiPle]="true" 
-                                                        [value]="registerObj.mAssignItemToStores"
-                                                        [validations]="getValidationMessages().storeId" #ddlStore
-                                                        ValueField="storeId" 
-                                                        TextField="storeName"
-                                                        ApiUrl="StoreMaster/get-store">
-                                                    </airmid-autocomplete>
-                                                </div>
-                                                <mat-chip-listbox #chipList>
-                                                    <mat-chip
-                                                        *ngFor="let item of itemForm.value.mAssignItemToStores">
-                                                        {{ item.storeName }} <mat-icon
-                                                            (click)="removestore(item)">close</mat-icon>
-                                                    </mat-chip>
-                                                </mat-chip-listbox>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div> -->
-                                
+                                </div>                        
 
                                 <div>
-                                    <mat-checkbox aria-label="Mode" formControlName="IsDeleted" [(ngModel)]="vchkactive"
+                                    <!-- <mat-checkbox aria-label="Mode" formControlName="IsDeleted" [(ngModel)]="vchkactive"
                                       style="font-weight: bold;margin-right: 20px;">IsActive
                                     </mat-checkbox>
                                     <mat-checkbox aria-label="Mode" formControlName="CreateApproval" (checked)=true
                                       (change)="onChangeMode($event)" style="font-weight: bold;margin-right: 20px;">Create / Approval
-                                    </mat-checkbox>
-                                  </div>
+                                    </mat-checkbox> -->
+                                </div>
 
                             </div>
 

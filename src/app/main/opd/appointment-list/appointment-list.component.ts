@@ -201,6 +201,8 @@ export class AppointmentListComponent implements OnInit {
            console.log(this.gridConfig)
     }
     onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(NewAppointmentComponent,
@@ -220,6 +222,8 @@ export class AppointmentListComponent implements OnInit {
 
 
     onRegistrationEdit(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
@@ -378,6 +382,8 @@ let param={
 
     }
     EditConsultdr(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
@@ -395,6 +401,8 @@ let param={
     }
 
     Editrefrancedr(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
@@ -412,6 +420,8 @@ let param={
     }
 
     Editcrossconsult(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
@@ -633,7 +643,7 @@ let param={
 
 export class VisitMaster1 {
     visitId: Number;
-   
+    regId:number;
     visitDate: any;
     visitTime: any;
     unitId: number;
@@ -660,19 +670,20 @@ export class VisitMaster1 {
     constructor(VisitMaster1) {
         {
             this.visitId = VisitMaster1.visitId || 0;
+            this.regId= VisitMaster1.regId || 0;
             this.visitDate = VisitMaster1.visitDate || "";
             this.visitTime = VisitMaster1.visitTime || "";
-            this.unitId = VisitMaster1.unitId || 0;
-            this.patientTypeId = VisitMaster1.patientTypeId || 0;
-            this.companyId = VisitMaster1.companyId || 0;
-            this.tariffId = VisitMaster1.tariffId || 0;
-            this.consultantDocId = VisitMaster1.consultantDocId || 0;
-            this.refDocId = VisitMaster1.refDocId || 0;
-            this.departmentId = VisitMaster1.departmentId || 0;
+            this.unitId = VisitMaster1.unitId || 1;
+            this.patientTypeId = VisitMaster1.patientTypeId || 1;
+            this.companyId = VisitMaster1.companyId || 1;
+            this.tariffId = VisitMaster1.tariffId || 1;
+            this.consultantDocId = VisitMaster1.consultantDocId || 1;
+            this.refDocId = VisitMaster1.refDocId || 1;
+            this.departmentId = VisitMaster1.departmentId || 1;
             this.patientOldNew = VisitMaster1.patientOldNew || 0;
             this.phoneAppId = VisitMaster1.phoneAppId || 0
             this.IsCancelled = VisitMaster1.IsCancelled || 0
-            this.classId = VisitMaster1.classId || 0
+            this.classId = VisitMaster1.classId || 1;
             this.firstFollowupVisit = VisitMaster1.firstFollowupVisit || "";
             this.addedBy = VisitMaster1.addedBy || 0
             this.updatedBy = VisitMaster1.updatedBy || 0;

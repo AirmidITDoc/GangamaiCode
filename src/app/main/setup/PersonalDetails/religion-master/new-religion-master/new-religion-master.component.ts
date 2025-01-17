@@ -25,10 +25,10 @@ export class NewReligionMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.religionForm = this._ReligionMasterService.CreateReligionForm();
-        if(this.data){
-            this.isActive=this.data.isActive
-            this.religionForm.patchValue(this.data);
-        }
+        console.log(this.data)
+        if ((this.data?.religionId??0) > 0) 
+         this.religionForm.patchValue(this.data);
+        
     }
  
   onSubmit() {
@@ -36,7 +36,6 @@ export class NewReligionMasterComponent implements OnInit {
     if(this.religionForm.valid) 
     {
         this.saveflag = true;
-        
         console.log("JSON :-",this.religionForm.value);
 
         this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {

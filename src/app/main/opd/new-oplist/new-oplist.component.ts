@@ -27,7 +27,7 @@ export class NewOPListComponent implements OnInit {
     hasSelectedContacts: boolean;
     //   fromDate=new Date().toISOString();
 
-    fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+    fromDate = this.datePipe.transform(new Date(), "dd-MM-yyyy")
     toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },

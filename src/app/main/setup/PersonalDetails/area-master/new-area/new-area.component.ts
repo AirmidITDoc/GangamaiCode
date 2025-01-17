@@ -30,9 +30,8 @@ export class NewAreaComponent implements OnInit {
 
   ngOnInit(): void {
       this.areaForm = this._AreaMasterService.createAreaForm();
-      if(this.data){
-      this.isActive=this.data.isActive
-      this.areaForm.patchValue(this.data);}
+      if ((this.data?.areaId??0) > 0) {
+          this.areaForm.patchValue(this.data);}
   }
 
   
@@ -40,7 +39,6 @@ export class NewAreaComponent implements OnInit {
     if (this.areaForm.valid) {
 
         this.saveflag = true;
-        
         console.log("area json :- ",this.areaForm.value);
 
         this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {

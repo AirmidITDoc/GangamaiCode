@@ -4,13 +4,13 @@ import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class StateMasterService {
-    myform: FormGroup;
+    stateForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        this.myform = this.createStateForm();
+        // this.stateForm = this.createStateForm();
         this.myformSearch = this.createSearchForm();
     }
 
@@ -23,9 +23,12 @@ export class StateMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            countryId: ["", Validators.required],
+            countryId: [0, Validators.required],
+            isActive:[true,[Validators.required]]
         });
     }
+
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             StateNameSearch: [""],

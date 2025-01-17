@@ -17,15 +17,6 @@ export class TariffMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    /**
-     * 
-     * @returns {
-  "tariffId": 0,
-  "tariffName": "shilpa",
-  "isActive": true
-}
-
-     */
     createTariffForm(): FormGroup {
         return this._formBuilder.group({
             tariffId: [0],
@@ -35,7 +26,7 @@ export class TariffMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive: true
+            isActive:[false,[Validators.required]]
         });
     }
 

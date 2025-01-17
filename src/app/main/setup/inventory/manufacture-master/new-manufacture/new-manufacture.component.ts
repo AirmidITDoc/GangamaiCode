@@ -24,7 +24,8 @@ export class NewManufactureComponent implements OnInit {
 
     ngOnInit(): void {
       this.manufForm = this._ManufactureMasterService.createManufactureForm();
-      if(this.data){
+      if((this.data?.itemManufactureId??0) > 0)
+        {
         this.isActive=this.data.isActive
         this.manufForm.patchValue(this.data);
       }

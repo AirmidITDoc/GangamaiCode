@@ -13,7 +13,7 @@ export class AreaMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        this.myform = this.createAreaForm();
+        // this.myform = this.createAreaForm();
         this.myformSearch = this.createSearchForm();
     }
 
@@ -28,9 +28,9 @@ export class AreaMasterService {
             ],
             cityId: [""],
             cityName: [""],
-            IsActive: ["true"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            isActive:[true,[Validators.required]]
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {

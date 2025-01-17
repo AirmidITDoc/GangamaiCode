@@ -27,7 +27,8 @@ export class NewTaxComponent implements OnInit {
 
     ngOnInit(): void {
         this.taxForm = this._TaxMasterService.createTaxMasterForm();
-        if (this.data) {
+        if((this.data?.id??0) > 0)
+        {
             this.isActive = this.data.isActive;
             this.taxForm.patchValue(this.data);
         }

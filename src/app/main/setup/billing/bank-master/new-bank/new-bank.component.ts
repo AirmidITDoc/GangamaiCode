@@ -28,7 +28,8 @@ export class NewBankComponent implements OnInit {
 
     ngOnInit(): void {
     this.bankForm=this._BankMasterService.createBankForm();
-        if(this.data){
+        if((this.data?.bankId??0) > 0)
+        {
             this.isActive=this.data.isActive
             this.bankForm.patchValue(this.data);
         }

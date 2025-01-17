@@ -45,15 +45,6 @@ export class ItemMasterComponent implements OnInit {
             { heading: "ManufId", key: "manufId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "IsNarcotic", key: "isNarcotic", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ProdLocation", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "IsH1Drug", key: "isH1Drug", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "IsScheduleH", key: "isScheduleH", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "IsHighRisk", key: "isHighRisk", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "IsScheduleX", key: "isScheduleX", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "IsLASA", key: "isLASA", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "IsEmgerency", key: "isEmgerency", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "DrugType", key: "drugType", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "DrugTypeName", key: "drugTypeName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "ItemCompnayId", key: "itemCompnayId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -84,6 +75,9 @@ export class ItemMasterComponent implements OnInit {
     }
 
     onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
         let that = this;
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
@@ -196,14 +190,14 @@ export class ItemMaster {
             this.conversionFactor = ItemMaster.conversionFactor || "";
             this.currencyId = ItemMaster.currencyId || "";
             this.taxPer = ItemMaster.taxPer || "";
-            this.Isdeleted = ItemMaster.Isdeleted || "true";
+            this.Isdeleted = ItemMaster.Isdeleted || true;
             this.Addedby = ItemMaster.Addedby || "";
             this.UpdatedBy = ItemMaster.UpdatedBy || "";
-            this.isBatchRequired = ItemMaster.isBatchRequired || "false";
+            this.isBatchRequired = ItemMaster.isBatchRequired || false;
             this.minQty = ItemMaster.minQty || "";
             this.maxQty = ItemMaster.maxQty || "";
             this.reOrder = ItemMaster.reOrder || "";
-            this.isNursingFlag = ItemMaster.isNursingFlag || "false";
+            this.isNursingFlag = ItemMaster.isNursingFlag || false;
             this.hsNcode = ItemMaster.hsNcode || "";
             this.cgst = ItemMaster.cgst || "";
             this.sgst = ItemMaster.sgst || "";

@@ -30,6 +30,7 @@ export class ItemCategoryMasterService {
             itemTypeId: ["",
                 Validators.required
             ],
+            isActive:[false,[Validators.required]]
         });
     }
 

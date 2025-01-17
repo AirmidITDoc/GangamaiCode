@@ -14,41 +14,12 @@ export class SupplierMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        this.myformSearch = this.createSearchForm();
-        this.supplierForm = this.createSuppliermasterForm();
+        // this.myformSearch = this.createSearchForm();
+        // this.supplierForm = this.createSuppliermasterForm();
     }
 
     /**
      * POST–
-{
-  "supplierId": 0,
-  "supplierName": "shilpa",
-  "contactPerson": "meshram",
-  "address": "pune",
-  "cityId": 12,
-  "stateId": 123,
-  "countryId": 0,
-  "creditPeriod": "string",
-  "mobile": "8809765454",
-  "phone": "string",
-  "fax": "string",
-  "email": "shilpa342@gmail.com",
-  "modeofPayment": 0,
-  "termofPayment": 0,
-  "currencyId": 0,
-  "octroi": 0,
-  "freight": 0,
-  "gstNo": "string",
-  "panNo": "string",
-  "supplierTime": "10:00:00 AM",
-  "mAssignSupplierToStores": [
-    {
-      "assignId": 0,
-      "storeId": 12,
-      "supplierId": 0
-    }
-  ]
-}
 
      */
     createSuppliermasterForm(): FormGroup {
@@ -84,7 +55,7 @@ export class SupplierMasterService {
             ],
             mobile: ["", 
                 [
-                    // Validators.required,
+                     Validators.required,
                 Validators.minLength(10),
                 Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -157,8 +128,9 @@ export class SupplierMasterService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
+            StoreId:0,
             SupplierNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            // IsDeletedSearch: ["2"],
         });
     }
 

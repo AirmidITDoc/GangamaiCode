@@ -15,8 +15,8 @@ export class ItemMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        this.myform = this.createItemmasterForm();
-        this.myformSearch = this.createSearchForm();
+        // this.myform = this.createItemmasterForm();
+        // this.myformSearch = this.createSearchForm();
     }
 
     initializeFormGroup() {
@@ -32,8 +32,6 @@ export class ItemMasterService {
     
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
-             
-            // as per payload list (insert)
                 itemId: 0,
                 itemShortName: ["", 
                     [
@@ -92,7 +90,7 @@ export class ItemMasterService {
                     ] 
                 ],
                 taxPer: ["0"],
-                isBatchRequired: true,
+                isBatchRequired:[true],
                 minQty: ["",
                     [
                         // Validators.required,
@@ -107,7 +105,7 @@ export class ItemMasterService {
                         Validators.pattern('^[0-9]*$')
                     ] 
                 ],
-                reOrder: [0,
+                reOrder: ["0",
                     [
                         // Validators.required,Validators.maxLength(50),
                         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")

@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MaritalstatusMasterService } from '../maritalstatus-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-maritalstatus',
   templateUrl: './new-maritalstatus.component.html',
-  styleUrls: ['./new-maritalstatus.component.scss']
+  styleUrls: ['./new-maritalstatus.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+        animations: fuseAnimations,
 })
 export class NewMaritalstatusComponent implements OnInit {
   maritalForm: FormGroup;
@@ -21,11 +24,11 @@ export class NewMaritalstatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.maritalForm = this._MaritalstatusMasterService.createMaritalForm();
-   if(this.data)
-    this.isActive=this.data.isActive;
+   
+    if ((this.data?.maritalStatusId??0) > 0) {
     this.maritalForm.patchValue(this.data);
   }
-
+  }
   
   onSubmit() {
     if(!this.maritalForm.invalid)

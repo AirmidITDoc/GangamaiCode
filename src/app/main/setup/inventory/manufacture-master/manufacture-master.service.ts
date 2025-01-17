@@ -30,6 +30,7 @@ export class ManufactureMasterService {
             isDeleted: ["false"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
+            isActive:[false,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
