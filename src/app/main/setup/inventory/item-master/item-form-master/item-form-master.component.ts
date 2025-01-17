@@ -53,11 +53,11 @@ export class ItemFormMasterComponent implements OnInit {
     ItemId:any=0;
 
     ngOnInit(): void {
-        this.itemForm=this._itemService.createItemmasterForm();
+        this.itemForm = this._itemService.createItemmasterForm();
 
        console.log(this.data)
-        if (this.data.itemID > 0) {
- 
+        if((this.data?.itemID??0) > 0)
+          {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
               this.registerObj = response;
               console.log(response)
@@ -145,27 +145,26 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     onSubmit() {
-                
-            // if (!this.itemForm.invalid) 
-            // {
+            
+            if (!this.itemForm.invalid) 
+            {
                 this.Saveflag = true;
 
                 console.log("Item JSON :-", this.itemForm.value);
-               
+               debugger
                 this._itemService.insertItemMaster(this.itemForm.value).subscribe((data) => {
-               
                 this.toastr.success(data.message);
                  this.onClear(true);
                 }, (error) => {
                   this.toastr.error(error.message);
                 });
-            // } 
-            // else {
-            //     this.toastr.warning('please check from is invalid', 'Warning !', {
-            //         toastClass: 'tostr-tost custom-toast-warning',
-            //       });
-            //       return;
-            // }
+            } 
+            else {
+                this.toastr.warning('please check from is invalid', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                  });
+                  return;
+            }
         }
 
         onClear(val: boolean) 
