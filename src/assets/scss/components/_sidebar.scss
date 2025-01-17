@@ -36,6 +36,7 @@ fuse-sidebar {
             display: flex;
             justify-content: flex-start;
             gap: 12px;
+            margin-top: 10px;
             .mat-icon {
                 margin: 0;
                 color: $primary-600;
@@ -47,6 +48,19 @@ fuse-sidebar {
             form {
                 padding: $sidebar-gap;
             }
+        }
+    }
+    .mat-mdc-radio-group{
+        display: flex !important;
+        flex-flow: column !important;
+        align-items: start !important;
+    }
+    .mat-mdc-raised-button{
+        .mat-icon{
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
         }
     }
     @include themed() {

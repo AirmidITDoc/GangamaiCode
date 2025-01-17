@@ -176,6 +176,24 @@
             }
         }
     }
+    .airmid-table-container {
+        .airmid-table {
+            .action-list {
+                display: flex;
+            }
+        }
+        .table-footer-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            .table-export-wrapper {
+                display: flex;
+                gap: 8px;
+            }
+        }
+    }
     .table-wrapper {
         position: relative;
     }
