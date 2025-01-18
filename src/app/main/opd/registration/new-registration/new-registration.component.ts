@@ -93,13 +93,14 @@ export class NewRegistrationComponent implements OnInit {
 
         }
     }
-  
+    Saveflag: boolean = false;
     OnSubmit() {
         console.log(this.personalFormGroup.value)
         
         // if (this.personalFormGroup.valid) {
-            debugger
+            this.Saveflag=true;
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
+                // console.log(response)
                 this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {

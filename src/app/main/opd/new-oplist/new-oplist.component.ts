@@ -11,6 +11,7 @@ import { NewOPRefundofbillComponent } from '../op-search-list/new-oprefundofbill
 import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -22,12 +23,12 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 })
 export class NewOPListComponent implements OnInit {
-
+    myFilterbillform:FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
     //   fromDate=new Date().toISOString();
 
-    fromDate = this.datePipe.transform(new Date(), "dd-MM-yyyy")
+    fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -44,9 +45,9 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             //   { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
-            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 80, type: 22 },
+            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 22 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -218,6 +219,9 @@ export class NewOPListComponent implements OnInit {
     constructor(public _OPListService: OPListService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
     ngOnInit(): void {
+        // this.gridConfig.filters[2].fieldValue=this.fromDate;
+
+        this.myFilterbillform=this._OPListService.myFilterbillbrowseform();
     }
 
     onSave(row: any = null) {

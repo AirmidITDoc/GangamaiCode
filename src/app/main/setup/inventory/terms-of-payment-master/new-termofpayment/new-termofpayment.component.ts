@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { TermsOfPaymentMasterService } from '../terms-of-payment-master.service';
 import { FormGroup } from '@angular/forms';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-termofpayment',
   templateUrl: './new-termofpayment.component.html',
-  styleUrls: ['./new-termofpayment.component.scss']
+  styleUrls: ['./new-termofpayment.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+        animations: fuseAnimations,
 })
 export class NewTermofpaymentComponent implements OnInit {
 
@@ -24,11 +27,10 @@ export class NewTermofpaymentComponent implements OnInit {
 
     ngOnInit(): void {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
-      if((this.data?.Id??0) > 0)
-        {
-        this.isActive=this.data.isActive
-        this.termsofpaymentForm.patchValue(this.data);
-      }
+      debugger
+      if((this.data?.id??0) > 0)
+            this.termsofpaymentForm.patchValue(this.data);
+      
     }
     
     
@@ -63,7 +65,7 @@ export class NewTermofpaymentComponent implements OnInit {
 
     getValidationMessages() {
         return {
-            TermsOfPayment: [
+          termsOfPayment: [
                 { name: "required", Message: "TermsOfPayment Name is required" },
                 { name: "maxlength", Message: "TermsOfPayment name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }

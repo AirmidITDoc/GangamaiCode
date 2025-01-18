@@ -33,11 +33,10 @@ export class NewWardComponent implements OnInit {
     
     ngOnInit(): void {
         this.roomForm = this._WardMasterService.createWardForm();
+        debugger
         if((this.data?.roomId??0) > 0)
-            {
-            this.isActive=this.data.isActive
-            this.roomForm.patchValue(this.data);
-        }
+          this.roomForm.patchValue(this.data);
+        
     }
 
     onSubmit() {

@@ -76,7 +76,11 @@ export class PhoneAppointListService {
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       address: ['', Validators.required],
-      mobileNo:[''],
+      mobileNo: ['', [Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
       phAppDate: [(new Date()).toISOString()],
       phAppTime: [(new Date()).toISOString()],
       departmentId: '',
@@ -119,9 +123,8 @@ public getPhoenappschdulelist() {
 
 // new Api
 public phoneMasterSave(Param: any, showLoader = true) {
-  if (Param.phoneAppId) {
-      return this._httpClient.PutData("PhoneAppointment2/InsertSP" + Param.phoneAppId, Param, showLoader);
-  } else return this._httpClient.PostData("PhoneAppointment2/InsertSP", Param, showLoader);
+        return this._httpClient.PostData("PhoneAppointment2/InsertSP",Param, showLoader);
+  
 }
 
 public deactivateTheStatus(m_data) {

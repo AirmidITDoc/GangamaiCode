@@ -17,8 +17,7 @@ import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-au
 })
 export class ItemFormMasterComponent implements OnInit {
 
-
-    itemForm:FormGroup;
+    itemForm: FormGroup;
     isActive:boolean=true;
     Saveflag: boolean= false;
 
@@ -37,6 +36,8 @@ export class ItemFormMasterComponent implements OnInit {
     autocompleteModeMenu:string="ItemManufacture";
 
     registerObj = new ItemMaster({});
+    @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
+    ItemId:any=0;
 
     vchkactive: any=true;
     grid: any;
@@ -49,13 +50,10 @@ export class ItemFormMasterComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<ItemMasterComponent>
     ) { }
-    @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
-    ItemId:any=0;
-
+    
     ngOnInit(): void {
         this.itemForm = this._itemService.createItemmasterForm();
 
-       console.log(this.data)
         if((this.data?.itemID??0) > 0)
           {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
@@ -69,7 +67,7 @@ export class ItemFormMasterComponent implements OnInit {
               this.toastr.error(error.message);
             });
           }   else {
-            this.itemForm.reset();
+            // this.itemForm.reset();
         }
     }
 
@@ -169,7 +167,7 @@ export class ItemFormMasterComponent implements OnInit {
 
         onClear(val: boolean) 
         {
-            this.itemForm.reset();
+            // this.itemForm.reset();
             this.dialogRef.close(val);
         }
 

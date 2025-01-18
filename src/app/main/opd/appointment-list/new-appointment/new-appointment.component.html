@@ -446,7 +446,7 @@
                             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary " color="accent" (click)="onSave()">
+                                <button class="btn btn-primary " color="accent" (click)="onSave()" [disabled]="Saveflag">
                                     <span>Save</span>
                                 </button>
                             </div>

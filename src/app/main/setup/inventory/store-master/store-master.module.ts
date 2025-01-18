@@ -67,7 +67,9 @@ const routes: Routes = [
         MatTabsModule,
         MatAutocompleteModule,
         SharedModule,
-        MatDialogModule
+        MatDialogModule,
+        // QuillModule.forRoot()
+        // MonacoEditorModule.forRoot() 
     ],
     providers: [StoreMasterService, DatePipe]
 })

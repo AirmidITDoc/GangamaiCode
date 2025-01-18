@@ -227,7 +227,7 @@ export class NewAppointmentComponent implements OnInit {
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
-            DateOfBirth: [(new Date()).toISOString()],
+            dateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['0', [
                 // Validators.required,
@@ -360,7 +360,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onChangePatient(value) {
-        debugger
+        
         var mode = "Company"
         if (value.text == "Company") {
             this._AppointmentlistService.getMaster(mode, 1);
@@ -390,7 +390,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     getregdetails(){
-        debugger
+        
         let RegId=this.searchFormGroup.get("RegId").value
         if (RegId > 0) {
             setTimeout(() => {
@@ -679,11 +679,11 @@ export class NewAppointmentComponent implements OnInit {
             ]
         };
     }
-
+    Saveflag: boolean = false;
     onNewSave() {
         debugger
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-
+            this.Saveflag=true;
             if (this.searchFormGroup.get('regRadio').value == "registration") {
                 //if (this.vPhoneAppId == 0 && this.Regflag == false) {
                 this.OnsaveNewRegister();

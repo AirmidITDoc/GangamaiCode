@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
+import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-item-master",
@@ -18,6 +19,7 @@ import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
 export class ItemMasterComponent implements OnInit {
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string = "StoreName";
+    myformSearch:FormGroup;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -28,7 +30,7 @@ export class ItemMasterComponent implements OnInit {
             { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ItemTypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ItemShortName", key: "itemShortName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-           { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ItemClassName", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "ItemGenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "PuchaseUOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -104,7 +106,9 @@ export class ItemMasterComponent implements OnInit {
         public toastr: ToastrService,
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.myformSearch=this._itemService.createSearchForm();
+     }
 }
 
 

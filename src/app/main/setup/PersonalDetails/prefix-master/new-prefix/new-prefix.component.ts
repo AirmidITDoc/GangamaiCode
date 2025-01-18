@@ -31,10 +31,8 @@ export class NewPrefixComponent implements OnInit {
         
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
         if((this.data?.prefixId??0) > 0)
-            {
-            this.isActive=this.data.isActive
-            this.prefixForm.patchValue(this.data);
-        }
+           this.prefixForm.patchValue(this.data);
+        
     }
 
  
@@ -43,7 +41,6 @@ export class NewPrefixComponent implements OnInit {
         if(!this.prefixForm.invalid)
         {
             this.saveflag = true;
-
             console.log("JSON :- ", this.prefixForm.value);
 
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
@@ -62,13 +59,7 @@ export class NewPrefixComponent implements OnInit {
         }
 
     }
-    genderId = 0;
-
-    selectChangegender(obj: any) {
-        console.log(obj)
-        this.genderId = obj.value;
-    }
-
+   
 
     getValidationMessages() {
         return {

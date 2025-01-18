@@ -20,7 +20,7 @@ export class TermsOfPaymentMasterService {
     createtermsofpaymentForm(): FormGroup {
         return this._formBuilder.group({
             Id: [0],
-            TermsOfPayment: ["",
+            termsOfPayment: ["",
                 [
                     Validators.required, Validators.maxLength(50), 
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")

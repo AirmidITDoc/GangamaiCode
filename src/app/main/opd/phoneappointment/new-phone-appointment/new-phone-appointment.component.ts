@@ -25,30 +25,18 @@ export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
   hasSelectedContacts: boolean;
 
-  DepartmentList: any = [];
-  DoctorList: any = [];
-  Doctor1List: any = [];
-
-
-  hospitalFormGroup: FormGroup;
-  // registerObj = new AdmissionPersonlModel({});
-  options = [];
-  filteredOptions: any;
-  noOptionFound: boolean = false;
+ 
   public now: Date = new Date();
-  isLoading: string = '';
+  
   screenFromString = 'admission-form';
   submitted = false;
-  sIsLoading: string = '';
+  isChecked = true;
   minDate: Date;
   vMobile: any;
   phoneAppId:any=0;
-
   vDepartmentid: any = '1';
   vDoctorId: any = '2';
 
-
-  isChecked = true;
 
   // New Api
   autocompletedepartment: string = "Department";
@@ -73,14 +61,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
      }
 
 
-  get f() { return this.phoneappForm.controls; }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
 
   getValidationMessages() {
+    
     return {
       firstName: [
         { name: "required", Message: "First Name is required" },
@@ -106,35 +89,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
       ],
       doctorId: [
         { name: "required", Message: "Doctor Name is required" }
-      ]
+      ],
+      mobileNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Mobile No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+    ]
     };
   }
 
 
 
   OnSubmit() {
-    
-
-    // var m_data = {
-    //   "phoneAppId": 0,
-    //   "regNo": '',
-    //   "appDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-    //   "appTime": this.dateTimeObj.time,
-    //   "firstName": this.phoneappForm.get('firstName').value || '',
-    //   "middleName": this.phoneappForm.get('middleName').value || '',
-    //   "lastName": this.phoneappForm.get('lastName').value || '',
-    //   "address": this.phoneappForm.get('address').value || '',
-    //   "mobileNo": this.phoneappForm.get('mobileNo').value.toString() || '',
-    //   "phAppDate": this.datePipe.transform(this.phoneappForm.get('phAppDate').value, "yyyy-MM-dd"),
-    //   "phAppTime": this.dateTimeObj.time,// this.datePipe.transform(this.phoneappForm.get('phAppTime').value, "yyyy-MM-dd 00:00:00.000"),
-    //   "departmentId": this.vDepartmentid,
-    //   "doctorId": this.vDoctorId,
-    //   "addedBy": 1,// this.accountService.currentUserValue.userId,
-    //   "updatedBy": 1,// this.accountService.currentUserValue.userId,
-
-    // }
-    // console.log(m_data);
+   
     console.log(this.phoneappForm.value);
+    debugger
    this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
@@ -148,54 +119,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
 
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-
-    this.dateTimeObj = dateTimeObj;
-  }
-
   onClose() { }
-
-  @ViewChild('fname') fname: ElementRef;
-  @ViewChild('mname') mname: ElementRef;
-  @ViewChild('lname') lname: ElementRef;
-
-  @ViewChild('Address') Address: ElementRef;
-  @ViewChild('mobile') mobile: ElementRef;
-  @ViewChild('dept') dept: ElementRef;
-  @ViewChild('docname') docname: ElementRef;
-
-  public onEnterfname(event): void {
-    
-    if (event.which === 13) {
-      this.mname.nativeElement.focus();
-    }
-  }
-
-  public onEntermname(event): void {
-    if (event.which === 13) {
-      this.lname.nativeElement.focus();
-    }
-  }
-
-  public onEnterlname(event): void {
-    if (event.which === 13) {
-      this.Address.nativeElement.focus();
-    }
-  }
-
-  public onEnterAddress(event): void {
-    if (event.which === 13) {
-      this.mobile.nativeElement.focus();
-    }
-  }
-
-  public onEntermobile(event): void {
-    if (event.which === 13) {
-      this.dept.nativeElement.focus();
-    }
-  }
 
 
   Phappcancle(data) {
@@ -205,10 +129,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     });
   }
 
-
-
-  // new Api
-
+// new Api
 
   selectChangedepartment(obj: any) {
     console.log(obj);

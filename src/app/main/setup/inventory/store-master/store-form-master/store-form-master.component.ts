@@ -17,21 +17,23 @@ import { StoreMaster } from "../store-master.component";
 })
 export class StoreFormMasterComponent implements OnInit {
 
-    Header: string;
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    };
+    // editordoc = jsonDoc;
 
-    onBlur(e: any) {
-        this.Header = e.target.innerHTML;
-    }
+//   editor: Editor;
+//   toolbar: Toolbar = [
+//     ['bold', 'italic'],
+//     ['underline', 'strike'],
+//     ['code', 'blockquote'],
+//     ['ordered_list', 'bullet_list'],
+//     [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+//     ['link', 'image'],
+//     ['text_color', 'background_color'],
+//     ['align_left', 'align_center', 'align_right', 'align_justify'],
+//   ];
+
+    // onBlur(e: any) {
+    //     this.Header = e.target.innerHTML;
+    // }
 
     storeForm: FormGroup;
     isActive: boolean = true;
@@ -55,7 +57,8 @@ export class StoreFormMasterComponent implements OnInit {
         {
             this.isActive =this.data.isActive
             this.storeForm.patchValue(this.data);
-            this.Header = this.data.Header
+            // this.Header = this.data.Header
+            // this.editor = new Editor();
             setTimeout(() => {
                 this._StoreMasterService.getStoreById(this.data.storeId).subscribe((response) => {
                     this.registerObj = response;

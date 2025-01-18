@@ -72,7 +72,7 @@ export class CompanyMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
                 maxWidth: "60vw",
-                height: '45%',
+                height: '55%',
                 width: '70%',
                 data: row
             });

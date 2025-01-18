@@ -42,13 +42,13 @@ export class CompanyMasterService {
                 [
                     Validators.required,
                     Validators.required,Validators.maxLength(10),
-                    Validators.pattern("^[0-9\s\-]{3,10}$")
+                    // Validators.pattern("^[0-9\s\-]{3,10}$")
                 ]
             ],
             phoneNo: ["",
                 [
                     Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.maxLength(10),
                 ],
             ],
@@ -56,13 +56,12 @@ export class CompanyMasterService {
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.maxLength(10),
                 ],
             ],
             faxNo: ["0"],
-            traiffId: [
-                "",
+            traiffId: ["",
                 [
                     Validators.required
                 ]

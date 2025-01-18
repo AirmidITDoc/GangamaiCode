@@ -152,7 +152,8 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                    <mat-form-field appearance="legacy">
+                                    <!-- <mat-form-field appearance="legacy"> -->
+                                        <mat-form-field appearance="outline">
                                         <input matInput [(ngModel)]="element.ClassRate" OnlyNumber
                                             (keyup)="gettableclassrate(element,$event.value)"
                                             (keypress)="keyPressCharater($event)">

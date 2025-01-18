@@ -31,22 +31,12 @@
                 fxLayoutGap="4px" fxLayoutAlign="space-between">
                 <span style="font-size: 22px; font-weight: 500; color: #10c7c7;">Personal Details</span>
 
-                <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                </app-common-date> -->
-
               </div>
 
              
               <br />
              
-                <!-- <mat-form-field appearance="outline">
-                  <mat-label>First Name</mat-label>
-                  <input name="FirstName" formControlName="firstName" placeholder="First Name" matInput required
-                    type="text" #fname (keydown)="onEnterfname($event)">
-                  <mat-error *ngIf="phoneappForm.get('firstName').invalid && phoneappForm.get('firstName').touched">
-                    First Name is required Enter only
-                    Alphabets</mat-error>
-                </mat-form-field> -->
+           
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <mat-form-field appearance="outline">
@@ -61,27 +51,13 @@
                     [validations]="getValidationMessages().firstName" [maxLength]="10">
                   </airmid-textbox>
                 </div>
-                <!-- <mat-form-field appearance="outline" fxFlex>
-                  <mat-label>Middle Name</mat-label>
-                  <input name="MiddleName" formControlName="middleName" matInput type="text"
-                    [ngClass]="{ 'is-invalid': submitted && f.middleName.errors }" #mname
-                    (keydown)="onEntermname($event)">
-                  <span class="error" *ngIf="f.middleName.invalid && f.middleName.touched">Middle Name is required Enter
-                    only Alphabets</span>
-                </mat-form-field> -->
+               
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-textbox label="middleName" formControlName="middleName" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().middleName" [maxLength]="10">
                   </airmid-textbox>
                 </div>
-                <!--                 
-                <mat-form-field appearance="outline" fxFlex>
-                  <mat-label>Last Name</mat-label>
-                  <input name="LastName" formControlName="lastName" matInput type="text" #lname
-                    (keydown)="onEnterlname($event)">
-                  <span class="error" *ngIf="f.lastName.invalid && f.lastName.touched">LastName Name is required Enter
-                    only Alphabets</span>
-                </mat-form-field> -->
+               
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-textbox label="lastName" formControlName="lastName" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().lastName" [maxLength]="10">
@@ -92,31 +68,17 @@
 
               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                <!-- <mat-form-field appearance="outline" fxFlex [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
-                  <mat-label>Address</mat-label>
-                  <input name="Address" formControlName="address" placeholder="Address" matInput #Address
-                    (keydown)="onEnterAddress($event)">
-                  </mat-form-field> -->
+               
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-textbox label="address" formControlName="address" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().address" [maxLength]="10">
                   </airmid-textbox>
                 </div>
-                <!-- type="number" -->
-                <mat-form-field appearance="outline" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                  style="margin-right:10px;">
-                  <mat-label>Mobile Number</mat-label>
-                  <input name="Mobile" formControlName="mobileNo" placeholder="Mobile Number" matInput required
-                    [(ngModel)]="vMobile" #mobile (keydown)="onEntermobile($event)"
-                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                    value="Mobile.length">
-                  <mat-error class="error"
-                    *ngIf="phoneappForm.get('mobileNo').invalid && phoneappForm.get('mobileNo').touched">10
-                    digits Mobile number is
-                    required</mat-error>
-                </mat-form-field>
-
-
+               
+                <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                [value]="vMobile" [formGroup]="phoneappForm"
+                [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+            </airmid-textbox>
               </div>
 
               <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
@@ -125,13 +87,13 @@
 
                   <airmid-autocomplete label="departmentId" formControlName="departmentId" [value]="data?.departmentId"
                     [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId"
-                    [mode]="autocompletedepartment" (selectDdlObject)="selectChangedepartment($event)">
+                    [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
                   </airmid-autocomplete>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-autocomplete label="doctorId" formControlName="doctorId" [value]="data?.doctorId"
                     [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId"
-                    [mode]="autocompleteModedoctor" (selectDdlObject)="selectChangedoctor($event)">
+                    [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
                   </airmid-autocomplete>
                 </div>
               </div>
@@ -182,6 +144,5 @@
     </div>
   </div>
 
-  <!-- Modal footer -->
 
 </div>

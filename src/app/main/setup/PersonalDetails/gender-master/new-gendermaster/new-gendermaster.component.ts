@@ -26,7 +26,7 @@ export class NewGendermasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.genderForm = this._GenderMasterService.createGenderForm();
-        if((this.data?.patientTypeId??0) > 0)
+        if((this.data?.genderId??0) > 0)
         {
             this.isActive=this.data.isActive
             this.genderForm.patchValue(this.data);

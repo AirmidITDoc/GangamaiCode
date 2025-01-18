@@ -2,11 +2,11 @@
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
+            <!-- <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
+            </button> -->
+            <!-- <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 OP Browse List
             </span>
@@ -77,7 +77,7 @@
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field> -->
-                            <form [formGroup]="_OPListService.myFilterbillform" fusePerfectScrollbar>
+                            <form [formGroup]="myFilterbillform" fusePerfectScrollbar>
 
                                 <div>
                                     <mat-form-field appearance="outline">
@@ -90,7 +90,7 @@
                                     </mat-form-field>
                                 </div>
                                 <div>
-                                    <mat-form-field appearance="outline"  style="margin-left: 10px;">
+                                    <mat-form-field appearance="outline">
                                         <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
                                             (dateChange)="onChangeDate1($event.value)"
                                             [(ngModel)]="gridConfig.filters[3].fieldValue" placeholder="mm/dd/yyyy">
@@ -199,19 +199,19 @@
 
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
+                                    <input matInput [matDatepicker]="validFromPicker2" formControlName="fromDate"
                                         (dateChange)="onChangeDate($event.value)"
                                         [(ngModel)]="gridConfig.filters[2].fieldValue" placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker2></mat-datepicker>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
+                                    <input matInput [matDatepicker]="validFromPicker3" formControlName="enddate"
                                         (dateChange)="onChangeDate1($event.value)"
                                         [(ngModel)]="gridConfig.filters[3].fieldValue" placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker1></mat-datepicker>
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker3"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker3></mat-datepicker>
                                 </mat-form-field>
                             </form>
 
@@ -333,19 +333,19 @@
 
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
+                                    <input matInput [matDatepicker]="validFromPicker4" formControlName="fromDate"
                                         (dateChange)="onChangeDate($event.value)" [(ngModel)]="fromDate"
                                         placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker4"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker4></mat-datepicker>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
+                                    <input matInput [matDatepicker]="validFromPicker5" formControlName="enddate"
                                         (dateChange)="onChangeDate1($event.value)"
                                         [(ngModel)]="gridConfig.filters[3].fieldValue" placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker1></mat-datepicker>
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker5"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker5></mat-datepicker>
                                 </mat-form-field>
                             </form>
 

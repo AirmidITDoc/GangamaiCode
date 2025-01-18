@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ItemClassMasterService } from '../item-class-master.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-item-class',
   templateUrl: './new-item-class.component.html',
-  styleUrls: ['./new-item-class.component.scss']
+  styleUrls: ['./new-item-class.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+        animations: fuseAnimations,
 })
 export class NewItemClassComponent implements OnInit {
 

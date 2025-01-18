@@ -28,7 +28,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
     animations: fuseAnimations
 })
 export class RegistrationComponent implements OnInit {
-    myFilterform:FormGroup;
+    myFilterform: FormGroup;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -36,16 +36,16 @@ export class RegistrationComponent implements OnInit {
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
     toDate = this.datePipe.transform(Date.now(), 'dd/MM/yyyy');
-    fromDate =this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    fromDate = this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
 
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
             { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-           
-            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 30 },
@@ -56,17 +56,17 @@ export class RegistrationComponent implements OnInit {
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 130, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 200, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onEdit(data);
                         }
                     },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            
-                        }
-                    },
+                    // {
+                    //     action: gridActions.view, callback: (data: any) => {
+
+                    //     }
+                    // },
                     {
                         action: gridActions.print, callback: (data: any) => {
                             // this.getAdmittedPatientCasepaperview(data);
@@ -95,8 +95,8 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            
-        ],  
+
+        ],
         row: 25
     }
 
@@ -105,8 +105,8 @@ export class RegistrationComponent implements OnInit {
 
     ngOnInit(): void {
         this.myFilterform = this._RegistrationService.filterForm();
-       
-        
+
+
     }
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -149,7 +149,7 @@ export class RegistrationComponent implements OnInit {
 
         console.log(row)
         this._RegistrationService.populateForm(row);
-        
+
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
             {
@@ -170,7 +170,7 @@ export class RegistrationComponent implements OnInit {
     }
 
     onDeactive(doctorId) {
-        
+
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -180,10 +180,10 @@ export class RegistrationComponent implements OnInit {
         this.confirmDialogRef.componentInstance.confirmMessage =
             "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
-            
+
             if (result) {
                 this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
-                    
+
                     if (data.StatusCode == 200) {
                         this.toastr.success(
                             "Record updated Successfully.",
@@ -193,56 +193,56 @@ export class RegistrationComponent implements OnInit {
                                     "tostr-tost custom-toast-success",
                             }
                         );
-                        
+
                     }
                 });
             }
             this.confirmDialogRef = null;
         });
     }
-    getRegistrationCasepaperview() { 
+    getRegistrationlistrview() {
+debugger
+        setTimeout(() => {
 
-    setTimeout(() => {
-      
-let param={
-      
-        "searchFields": [
-              {
-                "fieldName": "FromDate",
-                "fieldValue": this.fromDate,//"10-01-2024",
-                "opType": "13"
-              },
-          {
-                "fieldName": "ToDate",
-                "fieldValue":this.toDate,//"12-12-2024",
-                "opType": "13"
-              }
-            ],
-            "mode": "RegistrationReport"
-          }
-    
-          debugger
-          console.log(param)
-      this._RegistrationService.getPatientListView(param).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,  
-              title: "Registration List  Viewer"
-          
+            let param = {
+
+                "searchFields": [
+                    {
+                        "fieldName": "FromDate",
+                        "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
+                        "opType": "13"
+                    },
+                    {
+                        "fieldName": "ToDate",
+                        "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
+                        "opType": "13"
+                    }
+                ],
+                "mode": "RegistrationReport"
             }
-            
-          });
 
-        matDialog.afterClosed().subscribe(result => {
-        
-        });
-      });
+            debugger
+            console.log(param)
+            this._RegistrationService.getPatientListView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Registration List  Viewer"
 
-    }, 100);
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
     }
 
 
@@ -257,54 +257,56 @@ let param={
                 // { name: "required", Message: "Middle Name is required" },
                 // { name: "maxLength", Message: "Enter only upto 50 chars" },
                 { name: "pattern", Message: "only char allowed." }
+            ],
+            RegNo: []
+
+        }
+    }
+
+    onChangeDate(selectDate) {
+        if (selectDate) {
+
+            this.gridConfig.filters[3].fieldValue = this.datePipe.transform(selectDate, "dd-MM-yyyy")// this.fromDate
+            this.fromDate = this.datePipe.transform(selectDate, "dd-MM-yyyy")
+            debugger
+            this.gridConfig.filters = [
+                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
+                // { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             ]
-
-        }}
-
-        onChangeDate(selectDate) {
-            if (selectDate) {
-                
-                this.gridConfig.filters[3].fieldValue =this.datePipe.transform(selectDate, "dd-MM-yyyy")// this.fromDate
-                this.fromDate=this.datePipe.transform(selectDate, "dd-MM-yyyy")
-                debugger
-                this.gridConfig.filters = [
-                    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                    // { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
-                    // { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
-                    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                    { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
-                    { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-                    { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                    { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-                ]
-            }
-            // this.getVisitList();
         }
-        onChangeDate1(selectDate) {
-            if (selectDate) {
-    
-                this.toDate = this.datePipe.transform(selectDate, "dd-MM-yyyy")
-                console.log(this.toDate);
-                // this.gridConfig.filters[5].fieldValue = this.toDate
-                
-                this.gridConfig.filters = [
-                    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                    // { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
-                    // { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
-                    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                    { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
-                    { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-                    { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                    { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-                    
-                ]
-            }
-            // this.getVisitList();
+        // this.getVisitList();
+    }
+    onChangeDate1(selectDate) {
+        if (selectDate) {
+
+            this.toDate = this.datePipe.transform(selectDate, "dd-MM-yyyy")
+            console.log(this.toDate);
+            // this.gridConfig.filters[5].fieldValue = this.toDate
+
+            this.gridConfig.filters = [
+                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
+                // { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+
+            ]
         }
+        // this.getVisitList();
+    }
 }
 
 
@@ -392,7 +394,7 @@ export class RegInsert {
             this.RegDate = RegInsert.RegDate || this.currentDate;
             this.regDate = RegInsert.regDate || this.currentDate;
 
-            
+
             this.RegTime = RegInsert.RegTime || this.currentDate;
 
             this.prefixId = RegInsert.prefixId || 0;
@@ -411,7 +413,7 @@ export class RegInsert {
             this.PinNo = RegInsert.PinNo || '';
             this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
             this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
-            this.DateofBirth= RegInsert.DateofBirth || this.currentDate;
+            this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
             this.Age = RegInsert.Age || '';
             this.GenderId = RegInsert.GenderId || 0;
             this.genderId = RegInsert.genderId || 0;

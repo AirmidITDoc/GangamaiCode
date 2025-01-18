@@ -31,15 +31,19 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class PhoneappointmentComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
+    fromDate = "01/01/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+    toDate = "18/10/2025"//this.datePipe.transform(new Date(), "mm/ddyyyy")
+  
 
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
             { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 150 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 150 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -62,8 +66,8 @@ export class PhoneappointmentComponent implements OnInit {
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2021", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "11/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             
@@ -82,6 +86,8 @@ export class PhoneappointmentComponent implements OnInit {
     }
 
     onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,

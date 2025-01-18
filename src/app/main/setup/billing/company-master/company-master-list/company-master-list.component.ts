@@ -18,7 +18,6 @@ export class CompanyMasterListComponent implements OnInit {
     isActive:boolean=true;
     saveflag : boolean = false;
 
-    // new Api
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
     autocompleteModecity: string = "City";
@@ -32,10 +31,10 @@ export class CompanyMasterListComponent implements OnInit {
    
     ngOnInit(): void {
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-        if((this.data?.companyId??0) > 0){
-            this.isActive=this.data.isActive
-            this.companyForm.patchValue(this.data);
-        }
+        console.log(this.data)
+        if((this.data?.companyId??0) > 0)
+           this.companyForm.patchValue(this.data);
+        
     }
     
     onSubmit() {  
@@ -67,30 +66,7 @@ export class CompanyMasterListComponent implements OnInit {
         this.dialogRef.close(val);
     }
 
-    // new api
-    companyId=0;
-    companyName='';
-    typeId=0;
-    tariffId=0;
-    cityId=0;
-    cityName='';
-
-    
-    selectChangetypeName(obj:any){
-        this.typeId=obj;
-    }
-
-    selectChangetariff(obj: any){
-        console.log(obj);
-        this.tariffId=obj
-    }
-
-    selectChangecity(obj: any){
-        console.log(obj);
-        this.cityId=obj
-        this.cityName=obj.text
-        console.log("cityname:", obj.text)
-      }
+     
 
       onClose(){
         this.companyForm.reset();

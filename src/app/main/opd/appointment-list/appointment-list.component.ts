@@ -90,7 +90,7 @@ export class AppointmentListComponent implements OnInit {
             { heading: "DoctorId", key: "doctorId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
             {
-                heading: "Action", key: "action", align: "right", width: 300 ,sticky:true, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
