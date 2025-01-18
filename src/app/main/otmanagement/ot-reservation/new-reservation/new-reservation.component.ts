@@ -96,36 +96,36 @@ export class NewReservationComponent implements OnInit {
   vAge: any;
   vTariffName: any;
   vSiteDescId: any;
-  vSurgeryCategoryId: any;
   vSurgeryId: any;
   vDocName: any;
   vDepName: any;
   PatientListfilteredOptionsIP: any;
   PatientListfilteredOptionsOP: any;
   vOPIP_ID: any;
+  vAnesthType:any;
 
   isSurgerySelected: boolean = false;
   filteredOptionsSurgery: Observable<string[]>;
   optionsSurgery: any[] = [];
 
-  selectedDoctor1: string = '';
+  selectedDoctor1: any;
   optionsSurgeon1: any[] = [];
   filteredOptionsSurgeon1: Observable<string[]>;
   isSurgeon1Selected: boolean = false;
 
   isSurgeon2Selected: boolean = false;
   optionsSurgeon2: any[] = [];
-  selectedDoctor2: string = '';
+  selectedDoctor2: any;
   filteredOptionsSurgeon2: Observable<string[]>;
 
   filteredAnesthDoctor1: Observable<string[]>;
   optionsAnesthDoctor1: any[] = [];
-  selectedAnestheticsDr: string = '';
+  selectedAnestheticsDr: any;
   isAnestheticsDr1Selected: boolean = false;
 
   filteredAnesthDoctor2: Observable<string[]>;
   optionsAnesthDoctor2: any[] = [];
-  selectedAnestheticsDr2: string = '';
+  selectedAnestheticsDr2: any;
   isAnestheticsDr2Selected: boolean = false;
 
   filteredOtTable: Observable<string[]>;
@@ -163,36 +163,41 @@ export class NewReservationComponent implements OnInit {
 
     console.log(this.data)
     this.personalFormGroup = this.createOtCathlabForm();
-    this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
+
+    this.vSelectedOption = this.OP_IPType === true ? 'IP' : 'OP';
 
     if (this.data) {
-
-      this.registerObj1 = this.data.PatObj;
+debugger
+      this.registerObj1 = this.data.Obj;
 
       // ip and op edit
-      if (this.registerObj1.OP_IP_Type === 1) {
+      if (this.registerObj1.OP_IP_Type === true) {
         // Fetch IP-specific information
         console.log("IIIIIIIIIIIIIPPPPPPPPP:", this.registerObj1);
         this.vWardName = this.registerObj1.RoomName;
         this.vBedNo = this.registerObj1.BedName;
         this.vGenderName = this.registerObj1.GenderName;
-        this.vPatientName = this.registerObj1.FirstName + ' ' + this.registerObj1.MiddleName + ' ' + this.registerObj1.LastName;
+        this.vPatientName = this.registerObj1.PatientName;
         this.vAgeYear = this.registerObj1.AgeYear;
         this.RegId = this.registerObj1.RegID;
         this.vAdmissionID = this.registerObj1.AdmissionID
-        this.vAge = this.registerObj1.Age;
+        this.vAge = this.registerObj1.AgeYear;
         this.vRegNo = this.registerObj1.RegNo;
-        this.vIPDNo = this.registerObj1.IPDNo;
+        this.vIPDNo = this.registerObj1.Expr1;
         this.vCompanyName = this.registerObj1.CompanyName;
         this.vTariffName = this.registerObj1.TariffName;
         this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
         this.vDoctorName = this.registerObj1.DoctorName;
         this.vDepartmentName = this.registerObj1.DepartmentName;
         this.vSelectedOption = 'IP';
-        this.vSiteDescId = this.registerObj1.SiteDescId
-        this.vSurgeryCategoryId = this.registerObj1.SurgeryCategoryId;
-        this.vSurgeryId = this.registerObj1.SurgeryId;
+        this.vSiteDescId = this.registerObj1.SiteDescId;
+        this.vSurgeryId = this.registerObj1.Surgeryname;
         this.vOPIP_ID=this.registerObj1.OP_IP_ID;
+        this.selectedDoctor1=this.registerObj1.SurgeonId;
+        this.selectedDoctor2=this.registerObj1.SurgeonId1;
+        this.selectedAnestheticsDr=this.registerObj1.AnestheticsDr;        
+        this.selectedAnestheticsDr2=this.registerObj1.AnestheticsDr1;
+        this.vAnesthType=this.registerObj1.AnesthType;
 
         this.setDropdownObjs1();
         this.getSurgeryList();
@@ -202,17 +207,17 @@ export class NewReservationComponent implements OnInit {
         this.getDoctor2List();
         this.getAnesthestishDoctorList1();
         this.getAnesthestishDoctorList2();
-      } else if (this.registerObj1.OP_IP_Type === 0) {
+      } else if (this.registerObj1.OP_IP_Type === false) {
         // Fetch OP-specific information
         console.log("OOOOOOOPPPPPPPPP:", this.registerObj1);
         this.vWardName = this.registerObj1.RoomName;
         this.vBedNo = this.registerObj1.BedName;
         this.vGenderName = this.registerObj1.GenderName;
-        this.vPatientName = this.registerObj1.FirstName + ' ' + this.registerObj1.MiddleName + ' ' + this.registerObj1.LastName;
+        this.vPatientName = this.registerObj1.PatientName;
         this.vAgeYear = this.registerObj1.AgeYear;
         this.RegId = this.registerObj1.RegID;
         this.vAdmissionID = this.registerObj1.AdmissionID
-        this.vAge = this.registerObj1.Age;
+        this.vAge = this.registerObj1.AgeYear;
         this.vRegNo = this.registerObj1.RegNo;
         this.vOPDNo = this.registerObj1.OPDNo;
         this.vCompanyName = this.registerObj1.CompanyName;
@@ -222,9 +227,13 @@ export class NewReservationComponent implements OnInit {
         this.vDepartmentName = this.registerObj1.DepartmentName;
         this.vSelectedOption = 'OP';
         this.vSiteDescId = this.registerObj1.SiteDescId
-        this.vSurgeryCategoryId = this.registerObj1.SurgeryCategoryId;
-        this.vSurgeryId = this.registerObj1.SurgeryId;
+        this.vSurgeryId = this.registerObj1.Surgeryname;
         this.vOPIP_ID=this.registerObj1.OP_IP_ID;
+        this.selectedDoctor1=this.registerObj1.SurgeonId;
+        this.selectedDoctor2=this.registerObj1.SurgeonId1;
+        this.selectedAnestheticsDr=this.registerObj1.AnestheticsDr;        
+        this.selectedAnestheticsDr2=this.registerObj1.AnestheticsDr1;
+        this.vAnesthType=this.registerObj1.AnesthType;
 
         this.setDropdownObjs1();
         this.getSurgeryList();
@@ -390,7 +399,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   getSelectedObjOP(obj) {
-    debugger
+    
     console.log("AdmittedListOP:", obj)
     this.registerObj = obj;
     this.vWardName = obj.RoomName;
@@ -421,7 +430,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   getSelectedObjRegIP(obj) {
-    debugger
+    
     let IsDischarged = 0;
     IsDischarged = obj.IsDischarged
     if (IsDischarged == 1) {
@@ -488,8 +497,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   setDropdownObjs1() {
-    debugger;
-
+    
     this._OtManagementService.populateFormpersonal(this.registerObj1);
 
     console.log(this.DoctorList1);
@@ -516,7 +524,7 @@ export class NewReservationComponent implements OnInit {
 
   // surgury dropdown
   getSurgeryList() {
-    debugger
+    
     this._OtManagementService.getSurgeryCombo().subscribe(data => {
       this.SurgeryList = data;
       this.optionsSurgery = this.SurgeryList.slice();
@@ -525,13 +533,14 @@ export class NewReservationComponent implements OnInit {
         map(value => value ? this.Surgery(value) : this.SurgeryList.slice()),
       );
       if (this.data) {
-        debugger
-        const DValue = this.SurgeryList.filter(item => item.SurgeryId == this.registerObj1.SurgeryId);
+        
+        const DValue = this.SurgeryList.filter(item => item.SurgeryName == this.registerObj1.Surgeryname);
         console.log("SurgeryId:", DValue)
         this._OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(DValue[0]);
         this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
         return;
       }
+      
     });
   }
 
@@ -580,7 +589,7 @@ export class NewReservationComponent implements OnInit {
 
   // OtTable start 
   getOttableList() {
-    debugger
+    
     this._OtManagementService.getOTtableCombo().subscribe(data => {
       this.OTtableList = data;
       this.optionsOtTable = this.OTtableList.slice();
@@ -589,7 +598,7 @@ export class NewReservationComponent implements OnInit {
         map(value => value ? this._filterOTtable(value) : this.OTtableList.slice()),
       );
       if (this.data) {
-        debugger
+        
         const DValue = this.OTtableList.filter(item => item.OTTableName == this.registerObj1.OTTableName);
         console.log("OTTableId:", DValue)
         this._OtManagementService.otreservationFormGroup.get('OTTableId').setValue(DValue[0]);
@@ -611,7 +620,7 @@ export class NewReservationComponent implements OnInit {
 
   // AnestheticsDr 1 start 
   getAnesthestishDoctorList1() {
-    debugger
+    
     this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
       this.Anesthestishdoclist1 = data;
       this.optionsAnesthDoctor1 = this.Anesthestishdoclist1.slice();
@@ -620,8 +629,8 @@ export class NewReservationComponent implements OnInit {
         map(value => value ? this._filterAnesthDoctor1(value) : this.Anesthestishdoclist1.slice()),
       );
       if (this.data) {
-        debugger
-        const DValue = this.Anesthestishdoclist1.filter(item => item.AnestheticsDr == this.registerObj1.AnestheticsDr);
+        
+        const DValue = this.Anesthestishdoclist1.filter(item => item.DoctorId == this.registerObj1.AnestheticsDr);
         console.log("AnestheticsDr:", DValue)
         this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').setValue(DValue[0]);
         this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
@@ -642,7 +651,7 @@ export class NewReservationComponent implements OnInit {
 
   // AnestheticsDr 2 start 
   getAnesthestishDoctorList2() {
-    debugger
+    
     this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
       this.Anesthestishdoclist2 = data;
       this.optionsAnesthDoctor2 = this.Anesthestishdoclist2.slice();
@@ -651,8 +660,8 @@ export class NewReservationComponent implements OnInit {
         map(value => value ? this._filterAnesthDoctor2(value) : this.Anesthestishdoclist2.slice()),
       );
       if (this.data) {
-        debugger
-        const DValue = this.Anesthestishdoclist2.filter(item => item.AnestheticsDr1 == this.registerObj1.AnestheticsDr1);
+        
+        const DValue = this.Anesthestishdoclist2.filter(item => item.DoctorId == this.registerObj1.AnestheticsDr1);
         console.log("AnestheticsDr1:", DValue)
         this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(DValue[0]);
         this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
@@ -673,7 +682,7 @@ export class NewReservationComponent implements OnInit {
 
   // surgeon doctor 1 start 
   getDoctorList() {
-    debugger
+    
     this._OtManagementService.getDoctorMaster().subscribe(data => {
       this.DoctorList1 = data;
       this.optionsSurgeon1 = this.DoctorList1.slice();
@@ -682,7 +691,7 @@ export class NewReservationComponent implements OnInit {
         map(value => value ? this._filterDoctor(value) : this.DoctorList1.slice()),
       );
       if (this.data) {
-        debugger
+        
         const DValue = this.DoctorList1.filter(item => item.DoctorId == this.registerObj1.SurgeonId);
         console.log("DoctorId:", DValue)
         this._OtManagementService.otreservationFormGroup.get('DoctorId').setValue(DValue[0]);
@@ -704,7 +713,7 @@ export class NewReservationComponent implements OnInit {
 
   // surgeon doctor 2 start 
   getDoctorList1() {
-    debugger
+    
     this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {
       this.DoctorList2 = data;
       this.optionsSurgeon2 = this.DoctorList2.slice();
@@ -713,7 +722,7 @@ export class NewReservationComponent implements OnInit {
         map(value => value ? this._filterDoctor2(value) : this.DoctorList2.slice()),
       );
       if (this.data) {
-        debugger
+        
         const DValue = this.DoctorList2.filter(item => item.DoctorId == this.registerObj1.SurgeonId);
         console.log("DoctorId2:", DValue)
         this._OtManagementService.otreservationFormGroup.get('DoctorId1').setValue(DValue[0]);
@@ -731,7 +740,6 @@ export class NewReservationComponent implements OnInit {
   getOptionTextSurgeonId2(option) {
     return option && option.DoctorName ? option.DoctorName : '';
   }
-
   // surgeon doctor end
 
   getDoctor2List() {
@@ -744,12 +752,105 @@ export class NewReservationComponent implements OnInit {
   getOTRequest() {
     const dialogRef = this._matDialog.open(GetOTRequetComponent,
       {
-        maxWidth: '80%',
-        height: '90%',
+        maxWidth: '70%',
+        height: '70%',
         width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
+      debugger
       console.log('The dialog was closed - Insert Action', result);
+      this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
+      if (result.OP_IP_Type === 1) {
+        // Fetch IP-specific information
+        console.log("IIIIIIIIIIIIIPPPPPPPPP:",result);
+        this.vWardName = result.RoomName;
+        this.vBedNo = result.BedName;
+        this.vGenderName = result.GenderName;
+        this.vPatientName = result.PatientName;
+        this.vAgeYear = result.AgeYear;
+        this.RegId = result.RegID;
+        this.vAdmissionID = result.AdmissionID
+        this.vAge = result.AgeYear;
+        this.vRegNo = result.RegNo;
+        this.vIPDNo = result.OPDNo;
+        this.vCompanyName = result.CompanyName;
+        this.vTariffName = result.TariffName;
+        this.vOP_IP_MobileNo = result.MobileNo;
+        this.vDoctorName = result.DoctorName;
+        this.vDepartmentName = result.DepartmentName;
+        this.vSelectedOption = 'IP';
+        this.vSiteDescId = result.SiteDescId;
+        this.vSurgeryId = result.Surgeryname;
+        this.vOPIP_ID=result.OP_IP_Id;
+        this.selectedDoctor1=result.SurgeonId;
+        this.selectedDoctor2=result.SurgeonId1;
+        this.selectedAnestheticsDr=result.AnestheticsDr;        
+        this.selectedAnestheticsDr2=result.AnestheticsDr1;
+        this.vAnesthType=result.AnesthType;
+
+        this.setDropdownObjs1();
+        this.getDoctorList1();
+        this.getOttableList();
+        this.getDoctor2List();
+        this.getAnesthestishDoctorList1();
+        this.getAnesthestishDoctorList2();
+
+      } else if (result.OP_IP_Type === 0) {
+        // Fetch OP-specific information
+        console.log("OOOOOOOPPPPPPPPP:", result);
+        this.vWardName = result.RoomName;
+        this.vBedNo = result.BedName;
+        this.vGenderName = result.GenderName;
+        this.vPatientName = result.PatientName;
+        this.vAgeYear = result.AgeYear;
+        this.RegId = result.RegID;
+        this.vAdmissionID = result.AdmissionID
+        this.vAge = result.AgeYear;
+        this.vRegNo = result.RegNo;
+        this.vOPDNo = result.OPDNo;
+        this.vCompanyName = result.CompanyName;
+        this.vTariffName = result.TariffName;
+        this.vOP_IP_MobileNo = result.MobileNo;
+        this.vDoctorName = result.DoctorName;
+        this.vDepartmentName = result.DepartmentName;
+        this.vSelectedOption = 'OP';
+        this.vSiteDescId = result.SiteDescId
+        this.vSurgeryId = result.Surgeryname;
+        this.vOPIP_ID=result.OP_IP_Id;
+        this.selectedDoctor1=result.SurgeonId;
+        this.selectedDoctor2=result.SurgeonId1;
+        this.selectedAnestheticsDr=result.AnestheticsDr;        
+        this.selectedAnestheticsDr2=result.AnestheticsDr1;
+        this.vAnesthType=result.AnesthType;
+
+        this.setDropdownObjs1();
+        this.getDoctorList1();
+        this.getOttableList();
+        this.getDoctor2List();
+        this.getAnesthestishDoctorList1();
+        this.getAnesthestishDoctorList2();
+      }
+
+      this.getSurgeryList();
+      this.getDoctorList();
+
+      if (result) {
+        // Filter and set SurgeryId
+        const surgeryValue = this.SurgeryList.find(item => item.SurgeryId == result.SurgeryId);
+        if (surgeryValue) {
+          console.log("SurgeryId:", surgeryValue);
+          this._OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(surgeryValue);
+          this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        }
+        // Filter and set DoctorId
+        const doctorValue = this.DoctorList1.find(item => item.DoctorId == result.SurgeonId);
+        if (doctorValue) {
+          console.log("DoctorId:", doctorValue);
+          this._OtManagementService.otreservationFormGroup.get('DoctorId').setValue(doctorValue);
+          this._OtManagementService.otreservationFormGroup.updateValueAndValidity();
+        }
+      }
+
     });
   }
 
@@ -782,9 +883,124 @@ export class NewReservationComponent implements OnInit {
   }
 
   onClose() {
+    this._OtManagementService.otreservationFormGroup.reset();
     this.dialogRef.close();
   }
 
+    onSave() {
+      if (this.vSurgeryId == '' || this.vSurgeryId == null || this.vSurgeryId == undefined) {
+        this.toastr.warning('Please select Surgery ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._OtManagementService.otreservationFormGroup.get('SurgeryId').value) {
+        if (!this.SurgeryList.find(item => item.SurgeryName == this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName)) {
+          this.toastr.warning('Please select Valid Surgery Name', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      }
+
+      if (this.selectedDoctor1 == '' || this.selectedDoctor1 == null || this.selectedDoctor1 == undefined) {
+        this.toastr.warning('Please select Surgeon 1 ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._OtManagementService.otreservationFormGroup.get('DoctorId').value) {
+        if (!this.DoctorList1.find(item => item.Doctorname == this._OtManagementService.otreservationFormGroup.get('DoctorId').value.Doctorname)) {
+          this.toastr.warning('Please select Valid Surgeon Name 1', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      }
+
+      if (this.selectedDoctor2 == '' || this.selectedDoctor2 == null || this.selectedDoctor2 == undefined) {
+        this.toastr.warning('Please select Surgeon 2 ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._OtManagementService.otreservationFormGroup.get('DoctorId1').value) {
+        if (!this.DoctorList2.find(item => item.DoctorName == this._OtManagementService.otreservationFormGroup.get('DoctorId1').value.DoctorName)) {
+          this.toastr.warning('Please select Valid Surgeon Name 2', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      }
+  
+      if (this.selectedAnestheticsDr == '' || this.selectedAnestheticsDr == null || this.selectedAnestheticsDr == undefined) {
+        this.toastr.warning('Please select AnestheticsDr 1 ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value) {
+        if (!this.Anesthestishdoclist1.find(item => item.DoctorName == this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorName)) {
+          this.toastr.warning('Please select Valid AnestheticsDr Name 1', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      }
+
+      if (this.selectedAnestheticsDr2 == '' || this.selectedAnestheticsDr2 == null || this.selectedAnestheticsDr2 == undefined) {
+        this.toastr.warning('Please select AnestheticsDr 2 ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value) {
+        if (!this.Anesthestishdoclist2.find(item => item.DoctorName == this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorName)) {
+          this.toastr.warning('Please select Valid AnestheticsDr Name 2', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      } 
+
+      if (this.selectedOtTable == '' || this.selectedOtTable == null || this.selectedOtTable == undefined) {
+        this.toastr.warning('Please select OtTable ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (this._OtManagementService.otreservationFormGroup.get('OTTableId').value) {
+        if (!this.OTtableList.find(item => item.OTTableName == this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableName)) {
+          this.toastr.warning('Please select Valid OtTable Name', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      } 
+
+      if (this.vAnesthType == '' || this.vAnesthType == null || this.vAnesthType == undefined) {
+        this.toastr.warning('Please enter Anesthetics Type  ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+        
+      Swal.fire({
+        title: 'Do you want to Save the OtReservation Recode ',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Save it!",
+        cancelButtonText: "No, Cancel"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.onSubmit();
+        }
+      });
+  
+    }
 
   onSubmit() {
     debugger;
@@ -845,49 +1061,46 @@ export class NewReservationComponent implements OnInit {
       });
     }
     else {
-      debugger;
+      
       var m_data1 = {
-        "otTableBookingDetailUpdate": {
+        "updateOTBookingParam": {
           "OTBookingID": otBookingID,
-          "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-          "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-          "opDate": this.dateTimeObj.date,// this.datePipe.transform(this.personalFormGroup.get('OPDate').value,"yyyy-Mm-dd") ,// this.dateTimeObj.date,//
-          "opTime": this.dateTimeObj.time,
+          "tranDate": formattedDate, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
+          "tranTime": formattedTime, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
+          "oP_IP_ID": this.vOPIP_ID || 0,
+          "oP_IP_Type": opip_Type,
+          "opDate": formattedDate, //this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "opTime": formattedTime, //this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
           "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
           "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
-          "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-          "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
+          "surgeonId": this._OtManagementService.otreservationFormGroup.get('DoctorId').value.DoctorId || 0,
+          "surgeonId1": this._OtManagementService.otreservationFormGroup.get('DoctorId1').value.DoctorId || 0,
           "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
-          "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
-          "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || 0,// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
+          "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId || 0,
+          "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
           "procedureId": 0,
           "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
+          "unBooking": false,
           "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
-          "PatientName": this.PatientName || '',
-          "IsUpdatedBy": this.accountService.currentUserValue.user.id || 0,
-          "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-
-
+          "otTypeID": 0,
+          "modifiedBy": Number(this.accountService.currentUserValue.user.id),
         }
       }
-      console.log(m_data1);
+      console.log("updateJson:",m_data1);
       this._OtManagementService.ReservationUpdate(m_data1).subscribe(response => {
         if (response) {
-          Swal.fire('Congratulations !', 'Reservation Data Updated Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-            }
+          this.toastr.success('Record Update Successfully.', 'Update !', {
+            toastClass: 'tostr-tost custom-toast-success',
           });
+          this.onClose()
         } else {
-          Swal.fire('Error !', 'Reservation Data  not saved', 'error');
+          this.toastr.error('Record not Update !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
         }
-
       });
     }
-    // }
   }
-
-
 
 
 }

@@ -208,11 +208,10 @@ export class OTManagementServiceService {
   public populateFormpersonal(employee){
     this.otreservationFormGroup.patchValue(employee);
   }
-
-
-
-
-
+// otTable List in Reservation
+public getOTRequestListInReser(){
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist_EmergencyList", {})
+}
   
   public CathLabBookInsert(employee){
     return this._httpClient.post("InPatient/CathLabBookingInsert", employee);
@@ -263,6 +262,10 @@ export class OTManagementServiceService {
   public BookingCancle(employee)
   {
     return this._httpClient.post("OT/CancelOTBookingRequest", employee);
+  }
+  public BookingReservationCancle(employee)
+  {
+    return this._httpClient.post("OT/CancelOTBooking", employee);
   }
   public getGenderCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {})

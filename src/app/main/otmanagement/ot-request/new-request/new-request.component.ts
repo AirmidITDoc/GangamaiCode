@@ -557,7 +557,7 @@ debugger
     }
 
     Swal.fire({
-      title: 'Do you want to Save the Consent Recode ',
+      title: 'Do you want to Save the OtBooking Recode ',
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,

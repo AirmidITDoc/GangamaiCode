@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OTManagementServiceService } from '../ot-management-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,7 +16,6 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
-
 
 @Component({
   selector: 'app-ot-request',
@@ -40,8 +39,8 @@ export class OTRequestComponent implements OnInit {
   hasSelectedContacts: boolean;
 
   
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   
 
   
@@ -51,6 +50,7 @@ export class OTRequestComponent implements OnInit {
     'OP_IP_Type',
     'SurgeryType',
     'OTbookingDateTime',
+    'Patientname',
     'SurgeonName',
     'SurgeryCategoryName',
     'SiteDesc',
@@ -103,8 +103,8 @@ export class OTRequestComponent implements OnInit {
     this._OtManagementService.getOTRequestList(m_data).subscribe(Visit => {
        this.dataSource.data = Visit as Requestlist[];
       console.log(this.dataSource.data);
-      //  this.dataSource.sort = this.sort;
-      //  this.dataSource.paginator = this.paginator;
+       this.dataSource.sort = this.sort;
+       this.dataSource.paginator = this.paginator;
 
       this.sIsLoading = '';
       this.click = false;
@@ -382,12 +382,6 @@ SurgeonName:any;
     this.SiteDescId=Requestlist.SiteDescId || '';
     this.SurgeryCategoryId=Requestlist.SurgeryCategoryId || ''
   }
-}
-
-
-
-function ViewChild(MatSort: any) {
-  throw new Error('Function not implemented.');
 }
 
 

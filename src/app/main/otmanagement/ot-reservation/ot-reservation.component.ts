@@ -12,6 +12,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { NewReservationComponent } from './new-reservation/new-reservation.component';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ot-reservation',
@@ -33,10 +35,8 @@ export class OTReservationComponent implements OnInit {
   buttonColor: any;
   isCompanySelected: boolean = false;
   public now: Date = new Date();
-  isLoading: string = '';
   screenFromString = 'admission-form';
   submitted = false;
-  sIsLoading: string = '';
   minDate: Date;
   hasSelectedContacts: boolean;
   AnesthType: any = ''
@@ -46,29 +46,28 @@ export class OTReservationComponent implements OnInit {
 
   displayedColumns = [
 
-    'RegNo',
-    // 'PatientName',
-    'OPDate',
-    // 'OPTime',
-    'Duration',
-    // 'OTTableID',
-    'OTTableName',
-    // 'SurgeonId',
-    'SurgeonName',
-    'AnathesDrName',
-    'AnathesDrName1',
-    'Surgeryname',
-    'AnesthType',
+    'IsCancelled',
+    'OP_IP_Type',
     'UnBooking',
-    // 'IsAddedBy',
-    'AddedBy',
-    'TranDate',
+    'OPDateTime',
+    'PatientName',
+    'SurgeonName1',
+    'SurgeonName2',
+    'AnathesDrName1',
+    'AnathesDrName2',
+    'Surgeryname',
+    // 'Duration',
+    'OTTableName',
+    'AnesthType',
+    // 'AddedBy',
     'instruction',
     'action'
 
   ];
   dataSource = new MatTableDataSource<OTReservationDetail>();
   isChecked = true;
+  sIsLoading: string = '';
+  isLoading = true;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -80,6 +79,7 @@ export class OTReservationComponent implements OnInit {
 
     public _matDialog: MatDialog,
     private accountService: AuthenticationService,
+        public toastr: ToastrService,
     // public dialogRef: MatDialogRef<OTReservationComponent>,
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
@@ -104,8 +104,6 @@ export class OTReservationComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
 
     this.minDate = new Date();
-
-
     this.searchFormGroup = this.createSearchForm();
     debugger;
     this.minDate = new Date();
@@ -114,7 +112,6 @@ export class OTReservationComponent implements OnInit {
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       // "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
-
     }
     console.log(D_data);
     this.D_data1 = D_data;
@@ -140,7 +137,6 @@ export class OTReservationComponent implements OnInit {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-
   createSearchForm() {
     return this.formBuilder.group({
       start: [new Date().toISOString()],
@@ -150,10 +146,8 @@ export class OTReservationComponent implements OnInit {
     });
   }
 
-
   getOtreservationList() {
 
-    debugger
     this.sIsLoading = 'loading-data';
     var m_data = {
       "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
@@ -164,8 +158,8 @@ export class OTReservationComponent implements OnInit {
     this._OtManagementService.getOTReservationlist(m_data).subscribe(Visit => {
       this.dataSource.data = Visit as OTReservationDetail[];
       console.log(this.dataSource.data);
-      //  this.dataSource.sort = this.sort;
-      //  this.dataSource.paginator = this.paginator;
+       this.dataSource.sort = this.sort;
+       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
        this.click = false;
     },
@@ -174,15 +168,62 @@ export class OTReservationComponent implements OnInit {
       });
   }
 
+  CancleOTBooking(contact) {
 
+      Swal.fire({
+        title: 'Do you want to cancel the OT Reservation?',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel it!"
+      }).then((flag) => {
+        debugger
+        if (flag.isConfirmed) {
+          let bookingcancle = {};
+          bookingcancle['otBookingID'] = contact.OTBookingID;
+          bookingcancle['isCancelled'] = 1;
+          bookingcancle['isCancelledBy'] = this.accountService.currentUserValue.user.id;
+    
+          let submitData = {
+            "cancelOTBookingParam": bookingcancle,
+          };
+  
+          console.log("cancelOTBookingRequestParam:",submitData);
+    
+          this.isLoading = true;
+    
+          this._OtManagementService.BookingReservationCancle(submitData).subscribe(
+            (response) => {
+              if (response) {
+                this.toastr.success('Record Cancelled Successfully.', 'Cancelled!', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });
+              } else {
+                this.toastr.error('Record Data not Cancelled! Please check API error..', 'Error!', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                });
+              }
+              this.getOtreservationList();
+    
+              this.isLoading = false;
+            },
+            (error) => {
+              
+              this.toastr.error('An error occurred while canceling the appointment.', 'Error!', {
+                toastClass: 'tostr-tost custom-toast-error',
+              });
+              this.isLoading = false;
+            }
+          );
+        } else {
+          this.getOtreservationList();
+        }
+      });
+    }
 
   addNewReservationg() {
-
-    // debugger;
-
-    // console.log(this.dataSource.data['OTTableID'])
-    //  this.advanceDataStored.storage = new OTReservationDetail(m_data);
-
     const dialogRef = this._matDialog.open(NewReservationComponent,
       {
         maxWidth: "80%",
@@ -237,44 +278,43 @@ OPreOPrativenote(){
 
   onEdit(contact) {
 
+    // if (contact.AnesthType)
+    //   this.AnesthType = contact.AnesthType.trim();
 
-    if (contact.AnesthType)
-      this.AnesthType = contact.AnesthType.trim();
+    // let PatInforObj = {};
+    // PatInforObj['OTBookingID'] = contact.OTBookingID,
 
-    let PatInforObj = {};
-    PatInforObj['OTBookingID'] = contact.OTBookingID,
+    //   PatInforObj['PatientName'] = contact.PatientName,
+    //   PatInforObj['OTTableName'] = contact.OTTableName,
 
-      PatInforObj['PatientName'] = contact.PatientName,
-      PatInforObj['OTTableName'] = contact.OTTableName,
+    //   PatInforObj['OTTableID'] = contact.OTTableID,
+    //   PatInforObj['RegNo'] = contact.RegNo,
+    //   PatInforObj['SurgeonId'] = contact.SurgeonId,
+    //   PatInforObj['SurgeonId1'] = contact.SurgeonId1,
+    //   PatInforObj['SurgeonName'] = contact.SurgeonName,
+    //   PatInforObj['Surgeryname'] = contact.Surgeryname,
 
-      PatInforObj['OTTableID'] = contact.OTTableID,
-      PatInforObj['RegNo'] = contact.RegNo,
-      PatInforObj['SurgeonId'] = contact.SurgeonId,
-      PatInforObj['SurgeonId1'] = contact.SurgeonId1,
-      PatInforObj['SurgeonName'] = contact.SurgeonName,
-      PatInforObj['Surgeryname'] = 'Mild one',//contact.Surgeryname,
+    //   PatInforObj['AnathesDrName'] = contact.AnathesDrName,
+    //   PatInforObj['AnathesDrName1'] = contact.AnathesDrName1,
+    //   PatInforObj['AnesthType'] = contact.AnesthType,
+    //   PatInforObj['AnestheticsDr'] = contact.AnestheticsDr,
+    //   PatInforObj['AnestheticsDr1'] = contact.AnestheticsDr1,
+    //   PatInforObj['Duration'] = contact.Duration,
+    //   PatInforObj['OPDate'] = contact.OPDate,
+    //   PatInforObj['OPTime'] = contact.OPTime,
+    //   PatInforObj['OP_IP_ID'] = contact.OP_IP_ID
 
-      PatInforObj['AnathesDrName'] = contact.AnathesDrName,
-      PatInforObj['AnathesDrName1'] = contact.AnathesDrName1,
-      PatInforObj['AnesthType'] = contact.AnesthType,
-      PatInforObj['AnestheticsDr'] = contact.AnestheticsDr,
-      PatInforObj['AnestheticsDr1'] = contact.AnestheticsDr1,
-      PatInforObj['Duration'] = contact.Duration,
-      PatInforObj['OPDate'] = contact.OPDate,
-      PatInforObj['OPTime'] = contact.OPTime,
-      PatInforObj['OP_IP_ID'] = contact.OP_IP_ID
+    // PatInforObj['TranDate'] = contact.TranDate,
+    //   PatInforObj['UnBooking'] = contact.UnBooking,
+    //   PatInforObj['Instruction'] = contact.instruction,
+    //   PatInforObj['AddedBy'] = contact.AddedBy,
 
-    PatInforObj['TranDate'] = contact.TranDate,
-      PatInforObj['UnBooking'] = contact.UnBooking,
-      PatInforObj['Instruction'] = contact.instruction,
-      PatInforObj['AddedBy'] = contact.AddedBy,
-
-      console.log(PatInforObj);
+    //   console.log(PatInforObj);
 
 
-    this._OtManagementService.populateFormpersonal(PatInforObj);
+    // this._OtManagementService.populateFormpersonal(PatInforObj);
 
-    this.advanceDataStored.storage = new OTReservationDetail(PatInforObj);
+    // this.advanceDataStored.storage = new OTReservationDetail(PatInforObj);
 
     const dialogRef = this._matDialog.open(NewReservationComponent,
       {
@@ -282,19 +322,21 @@ OPreOPrativenote(){
         height: '80%',
         width: '100%',
         data: {
-          PatObj: PatInforObj
+          Obj: contact
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
-        this.dataSource.data = Visit as OTReservationDetail[];
-        console.log(this.dataSource.data);
-        this.sIsLoading = '';
-        //  this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
+      console.log('The dialog was closed - Insert Action', result);
+        this.getOtreservationList();
+      // this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
+      //   this.dataSource.data = Visit as OTReservationDetail[];
+      //   console.log(this.dataSource.data);
+      //   this.sIsLoading = '';
+      //   //  this.click = false;
+      // },
+      //   error => {
+      //     this.sIsLoading = '';
+      //   });
     });
     // if (contact) this.dialogRef.close(PatInforObj);
   }
@@ -361,7 +403,7 @@ export class OTReservationDetail {
   AgeYear:any;
   MobileNo:any;
   Age:any;
-
+  Expr1:any;
   OTBookingId: any;
   FirstName:string;
   MiddleName:string;
@@ -412,7 +454,7 @@ export class OTReservationDetail {
       this.SurgeonId1 = OTReservationDetail.SurgeonId1 || '';
       this.SurgeonName = OTReservationDetail.SurgeonName || '';
       this.AnestheticsDr = OTReservationDetail.AnestheticsDr || '';
-
+      this.Expr1 = OTReservationDetail.Expr1 || '';
       this.AnestheticsDr1 = OTReservationDetail.AnestheticsDr1 || '';
       this.Surgeryname = OTReservationDetail.Surgeryname || '';
       this.AnesthType = OTReservationDetail.AnesthType || '';
