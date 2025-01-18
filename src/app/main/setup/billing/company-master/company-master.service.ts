@@ -22,25 +22,27 @@ export class CompanyMasterService {
             companyId: [0],
             companyName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    // Validators.required, 
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             compTypeId: ["",
-                Validators.required
+                // Validators.required
             ],
             address: ["",
-                 Validators.required,Validators.maxLength(100),
+                //  Validators.required,
+                 Validators.maxLength(100),
                  Validators.pattern("^[a-zA-Z0-9\s,.'-]+$")
             ],
             city: ["",
                 [
-                    Validators.required
+                    // Validators.required
                 ],
             ],
             pinNo: ["", 
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.required,Validators.maxLength(10),
                     // Validators.pattern("^[0-9\s\-]{3,10}$")
                 ]
@@ -63,7 +65,7 @@ export class CompanyMasterService {
             faxNo: ["0"],
             traiffId: ["",
                 [
-                    Validators.required
+                    // Validators.required
                 ]
             ],
             isActive:[false,[Validators.required]]

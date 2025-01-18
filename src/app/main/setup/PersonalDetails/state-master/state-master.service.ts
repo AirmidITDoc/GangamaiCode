@@ -14,6 +14,13 @@ export class StateMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
+    /*
+        {
+            "stateId": 0,
+            "stateName": "string",
+            "countryId": 0
+        }
+    */
     createStateForm(): FormGroup {
         return this._formBuilder.group({
             stateId: [0],
@@ -40,15 +47,6 @@ export class StateMasterService {
         this.createStateForm();
     }
 
-    getValidationMessages() {
-        return {
-           stateName: [
-                { name: "required", Message: "State Name is required" },
-                { name: "maxlength", Message: "State name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
 
     public stateMasterSave(Param: any, showLoader = true) {
         if (Param.stateId) {
