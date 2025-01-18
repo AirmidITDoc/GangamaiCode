@@ -69,6 +69,30 @@ export class CityMasterComponent implements OnInit {
                 this.filterCity();
             });
     }
+ 
+    apiUrl = 'Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional'; 
+    apiParams = {
+        Id: 10181
+         };
+
+    onSelectionChange(selectedOption: any) {
+        console.log('Selected option:', selectedOption);
+    }
+    displayOption(option: any): string {
+        return option ? option.StateName : '';
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     onSearch() {
         this.getCityMasterList();

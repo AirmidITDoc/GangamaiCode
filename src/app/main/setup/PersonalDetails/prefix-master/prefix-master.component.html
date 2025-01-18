@@ -194,6 +194,20 @@
                                                     Name</mat-error>
                                             </mat-form-field>
                                         </div>
+
+                                        <div fxFlexFill fxLayout="column">
+                                            <h1>New DropDown</h1>  
+                                            <app-airmid-autocomplete
+                                            [label]="'GenderName'"
+                                            [placeholder]="'Search...'"
+                                            [formGroup]="_PrefixService.myform"
+                                            formControlName="SexID"
+                                            [apiUrl]="apiUrl"
+                                            [displayFn]="displayOption"
+                                            (selectionChange)="onSelectionChange($event)">
+                                          </app-airmid-autocomplete>  
+                                        </div>
+
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                             <mat-radio-group name="IsActive" formControlName="IsActive" value="true">
                                                 <mat-radio-button value="true" class="mr-sm-12"

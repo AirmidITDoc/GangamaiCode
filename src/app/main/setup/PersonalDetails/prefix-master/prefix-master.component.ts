@@ -6,6 +6,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
     selector: "app-prefix-master",
@@ -33,14 +34,39 @@ export class PrefixMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+
+
+    options: any[] = [];
     constructor(public _PrefixService: PrefixMasterService,
         public toastr : ToastrService,
+        private _httpClient: HttpClient
         ) {}
 
     ngOnInit(): void {
-        this.getPrefixMasterList();
-        this.getGenderNameCombobox();
+        //this.getPrefixMasterList();
+        this.getGenderNameCombobox(); 
+       
     }
+ 
+ 
+    apiUrl = 'Generic/GetByProc?procName=RetrieveGenderMasterForCombo';
+    onSelectionChange(selectedOption: any) {
+        console.log('Selected option:', selectedOption);
+    }
+    displayOption(option: any): string {
+        return option ? option.GenderName : '';
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     onSearch() {
         this.getPrefixMasterList();

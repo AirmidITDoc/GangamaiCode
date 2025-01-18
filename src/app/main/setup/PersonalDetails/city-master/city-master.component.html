@@ -223,6 +223,21 @@
 
                                         </mat-radio-group>
                                     </div>
+
+                                    <div fxFlexFill fxLayout="column">
+                                        <h1>New DropDown with parameter </h1>    
+                                        <app-airmid-autocomplete
+                                        [label]="'StateName'"
+                                        [placeholder]="'Search...'"
+                                        [formGroup]="_cityService.myform"
+                                        formControlName="StateId"
+                                        [apiUrl]="apiUrl"
+                                        [apiParams]="apiParams"
+                                        [displayFn]="displayOption"
+                                        (selectionChange)="onSelectionChange($event)">
+                                      </app-airmid-autocomplete>  
+
+                                    </div>
                                 </form>
                             </div>
                             <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">

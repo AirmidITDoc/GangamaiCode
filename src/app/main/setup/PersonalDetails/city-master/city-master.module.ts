@@ -21,6 +21,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatStepperModule } from "@angular/material/stepper";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -53,6 +54,7 @@ const routes: Routes = [
         MatSnackBarModule,
         MatStepperModule,
         NgxMatSelectSearchModule,
+        SharedModule
     ],
     providers: [CityMasterService],
 

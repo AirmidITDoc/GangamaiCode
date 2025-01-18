@@ -17,6 +17,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { PrefixMasterService } from "./prefix-master.service";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
     {
@@ -45,6 +46,7 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule,
+        SharedModule
     ],
     providers: [PrefixMasterService],
     entryComponents: [PrefixMasterComponent],
