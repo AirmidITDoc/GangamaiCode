@@ -68,9 +68,10 @@ export class ItemFormMasterComponent implements OnInit {
             }, (error) => {
               this.toastr.error(error.message);
             });
-          }   else {
-            this.itemForm.reset();
-        }
+          }   
+        //   else {
+        //     this.itemForm.reset();
+        //     }
     }
 
     onSave(row: any = null) {

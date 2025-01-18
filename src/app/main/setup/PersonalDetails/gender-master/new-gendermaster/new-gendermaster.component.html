@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Gender Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Gender Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -20,7 +20,7 @@
                 <input type="hidden" name="genderId" formControlName="genderId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <airmid-textbox 
-                        label="Gender name"
+                        label="Gender Name"
                         formControlName="genderName"
                         [value]="data?.genderName"
                         [formGroup]="genderForm"
@@ -29,14 +29,12 @@
                     </airmid-textbox> 
                 </div>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <!-- <div> -->
-                        <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                            </mat-radio-button>
-                            <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                            </mat-radio-button>
-                        </mat-radio-group>
-                    <!-- </div> -->
+                    <mat-radio-group name="isActive" formControlName="isActive">
+                        <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
+                        </mat-radio-button>
+                        <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
+                        </mat-radio-button>
+                    </mat-radio-group>
                 </div>
             </form>
         </div>

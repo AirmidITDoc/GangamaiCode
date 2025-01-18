@@ -19,17 +19,14 @@ export class TermsOfPaymentMasterService {
 
     createtermsofpaymentForm(): FormGroup {
         return this._formBuilder.group({
-            Id: [0],
-            TermsOfPayment: ["",
+            id: [0],
+            termsOfPayment: ["",
                 [
                     Validators.required, Validators.maxLength(50), 
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isActive:[false,[Validators.required]]
-            // IsDeleted: false,
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
     
@@ -45,8 +42,8 @@ export class TermsOfPaymentMasterService {
     }
 
     public termofpayMasterSave(Param: any, showLoader = true) {
-        if (Param.Id) {
-            return this._httpClient.PutData("TermsOfPayment/" + Param.Id, Param, showLoader);
+        if (Param.id) {
+            return this._httpClient.PutData("TermsOfPayment/" + Param.id, Param, showLoader);
         } else return this._httpClient.PostData("TermsOfPayment", Param, showLoader);
     }
 

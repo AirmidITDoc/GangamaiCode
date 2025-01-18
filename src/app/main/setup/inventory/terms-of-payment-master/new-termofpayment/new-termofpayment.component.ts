@@ -24,7 +24,7 @@ export class NewTermofpaymentComponent implements OnInit {
 
     ngOnInit(): void {
       this.termsofpaymentForm = this._TermsOfPaymentMasterService.createtermsofpaymentForm();
-      if((this.data?.Id??0) > 0)
+      if((this.data?.id??0) > 0)
         {
         this.isActive=this.data.isActive
         this.termsofpaymentForm.patchValue(this.data);
@@ -63,7 +63,7 @@ export class NewTermofpaymentComponent implements OnInit {
 
     getValidationMessages() {
         return {
-            TermsOfPayment: [
+            termsOfPayment: [
                 { name: "required", Message: "TermsOfPayment Name is required" },
                 { name: "maxlength", Message: "TermsOfPayment name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
