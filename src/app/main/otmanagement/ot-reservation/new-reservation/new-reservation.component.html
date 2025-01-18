@@ -29,66 +29,64 @@
                     <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
 
                         <form [formGroup]="_OtManagementService.otreservationFormGroup" class="gap-8">
-                            <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+                            <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
 
-                                <mat-radio-group aria-label="Select an option" formControlName="PatientType"
-                                    [(ngModel)]="vSelectedOption" name="PatientType"
-                                    (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)"
-                                    fxLayout="row">
-                                    <mat-radio-button value="OP" [disabled]="vConditionOP">OP</mat-radio-button>
-                                    <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
-                                </mat-radio-group>
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-radio-group aria-label="Select an option" formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                        name="PatientType" (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)" fxLayout="row">
+                                        <mat-radio-button value="OP" [disabled]="vConditionOP">OP</mat-radio-button>
+                                        <mat-radio-button value="IP" [disabled]="vConditionIP">IP</mat-radio-button>
+                                    </mat-radio-group>
+                                
+                                    <!-- op -->
+                                    <mat-form-field appearance="outline" style="width: 500px;"
+                                        *ngIf="_OtManagementService.otreservationFormGroup.get('PatientType').value != 'IP'">
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="OP-RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto1"
+                                            (input)="getSearchList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextOPObj"
+                                            (optionSelected)='getSelectedObjOP($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptionsOP" [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}}
+                                                {{option.LastName}} | {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                
+                                    </mat-form-field>
+                                    <!-- end op -->
+                                
+                                    <!-- Ip -->
+                                    <mat-form-field appearance="outline" style="width: 500px;"
+                                        *ngIf="_OtManagementService.otreservationFormGroup.get('PatientType').value != 'OP'">
+                                        <input type="text" name="RegID" formControlName="RegID"
+                                            placeholder="IP RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto2"
+                                            (input)="getSearchList()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextIPObj"
+                                            (optionSelected)='getSelectedObjRegIP($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptionsIP" [value]="option">
+                                                {{option.FirstName}} {{option.MiddleName}}
+                                                {{option.LastName}} | {{option.RegNo}} |
+                                                {{option.MobileNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <!-- end Ip -->
+                                </div>
 
-                                <!-- op -->
-                                <mat-form-field appearance="outline" style="width: 500px;"
-                                    *ngIf="_OtManagementService.otreservationFormGroup.get('PatientType').value != 'IP'">
-                                    <input type="text" name="RegID" formControlName="RegID"
-                                        placeholder="OP-RegNo / First Name / Last Name / Mobile No" matInput
-                                        [matAutocomplete]="auto1" (input)="getSearchList()">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionTextOPObj"
-                                        (optionSelected)='getSelectedObjOP($event.option.value)'>
-                                        <mat-option *ngFor="let option of PatientListfilteredOptionsOP"
-                                            [value]="option">
-                                            {{option.FirstName}} {{option.MiddleName}}
-                                            {{option.LastName}} | {{option.RegNo}} |
-                                            {{option.MobileNo}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-
-                                </mat-form-field>
-                                <!-- end op -->
-
-                                <!-- Ip -->
-                                <mat-form-field appearance="outline" style="width: 500px;"
-                                    *ngIf="_OtManagementService.otreservationFormGroup.get('PatientType').value != 'OP'">
-                                    <input type="text" name="RegID" formControlName="RegID"
-                                        placeholder="IP RegNo / First Name / Last Name / Mobile No" matInput
-                                        [matAutocomplete]="auto2" (input)="getSearchList()">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="_OtManagementService.otreservationFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #auto2="matAutocomplete" [displayWith]="getOptionTextIPObj"
-                                        (optionSelected)='getSelectedObjRegIP($event.option.value)'>
-                                        <mat-option *ngFor="let option of PatientListfilteredOptionsIP"
-                                            [value]="option">
-                                            {{option.FirstName}} {{option.MiddleName}}
-                                            {{option.LastName}} | {{option.RegNo}} |
-                                            {{option.MobileNo}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                                <!-- end Ip -->
-
-                                <div fxLayoutAlign="end">
+                                <div>
 
                                     <button mat-raised-button (click)="getOTRequest()">
                                         Get OT Request
@@ -328,7 +326,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>AnesthType</mat-label>
-                                            <input name="AnesthType" formControlName="AnesthType"
+                                            <input name="AnesthType" formControlName="AnesthType" [(ngModel)]="vAnesthType"
                                             oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
                                                 placeholder="AnesthType" matInput>
                                         </mat-form-field>
@@ -354,7 +352,7 @@
                             style="margin-right: 15px;">
 
                             <button class="btn btn-danger-outline" (click)="closeDialog()">Cancel</button>
-                            <button class="btn btn-primary" (click)="onSubmit()"
+                            <button class="btn btn-primary" (click)="onSave()"
                                 [disabled]="personalFormGroup.invalid">Save</button>
                             <!-- <button class="btn btn-primary" (click)="Otnote()" [disabled]="personalFormGroup.invalid">OTNote</button>
                                 <button class="btn btn-primary" (click)="OPreOPrativenote()" >Pre & Post OPrative Note</button> -->

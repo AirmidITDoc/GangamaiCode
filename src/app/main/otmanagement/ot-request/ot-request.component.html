@@ -201,6 +201,15 @@
                                                 </mat-cell>
                                             </ng-container>
 
+                                            <ng-container matColumnDef="Patientname" sticky>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                                                    PatientName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                                                    {{ contact.PatientName}}
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="SurgeonName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
                                                     SurgeonName
@@ -211,19 +220,21 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="SurgeryCategoryName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
                                                     CategoryName
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
+                                                matTooltip="{{contact.SurgeryCategoryName}}">
                                                     {{contact.SurgeryCategoryName}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="SiteDesc">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
                                                     SiteDescription
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
+                                                matTooltip="{{contact.SiteDescriptionName}}">
                                                     {{contact.SiteDescriptionName}}
                                                 </mat-cell>
                                             </ng-container>
