@@ -9,12 +9,14 @@ import { CompanyListService } from './company-list.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Admission } from '../Admission/admission/admission.component';
+import { Admission, AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { CompanyBillComponent } from '../ip-search-list/company-bill/company-bill.component';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { CompanyInformationComponent } from '../company-information/company-information.component';
+import { RegistrationService } from 'app/main/opd/registration/registration.service';
 
 @Component({
   selector: 'app-company-list',
@@ -62,7 +64,8 @@ export class CompanyListComponent implements OnInit {
     private _ActRoute: Router,
     public datePipe: DatePipe,
     public toastr: ToastrService,
-    private advanceDataStored: AdvanceDataStored
+    private advanceDataStored: AdvanceDataStored,
+     public _registrationService: RegistrationService,
   ) { }
 
   ngOnInit(): void {
@@ -258,4 +261,27 @@ export class CompanyListComponent implements OnInit {
         });
     });
   }
+    getEditCompany(row) {
+      
+      this.advanceDataStored.storage = new AdmissionPersonlModel(row);
+      console.log(row)
+     // this._registrationService.populateFormpersonal(row);
+      // this.registerObj["RegId"]=row.RegID;
+      // this.registerObj["RegID"]=row.RegID;
+      
+      const dialogRef = this._matDialog.open(CompanyInformationComponent,
+        {
+          maxWidth: "70vw",
+          height: '740px',
+          width: '100%',
+          data: {
+            registerObj: row,
+            Submitflag: true
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          this. getAdmittedPatientList(); 
+        });
+    }
 }

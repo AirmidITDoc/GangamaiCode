@@ -170,6 +170,12 @@ export class ServiceMasterService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PackageServiceInfo",param
     );
 }
+public SaveTariff(param,loader = true) {
+    if (loader) {
+        this._loaderService.show();
+    }
+    return this._httpClient.post("Billing/SaveServiceTraiff", param);
+}
 
 
     populateForm(param) {

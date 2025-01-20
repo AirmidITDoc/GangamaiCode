@@ -229,11 +229,17 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
 
-                                    <span> {{contact.CompanyName || '--'}}</span>
+                                    <span> {{contact.CompanyName || '--'}}</span> 
 
-                                    <button mat-icon-button *ngIf="!contact.CompanyName==''">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
+                                    <button mat-icon-button
+                                    *ngIf="contact.CompanyName !=''; else nocompany "
+                                    matTooltip="Company"
+                                    (click)="getEditCompany(contact)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <ng-template #nocompany>
+                                    <span>--</span>
+                                </ng-template>
 
                                 </mat-cell>
                             </ng-container>

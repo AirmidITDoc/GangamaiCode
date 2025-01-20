@@ -110,6 +110,12 @@ export class NursingnoteService {
   } 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_T_Nursing_PatientHandoverList ", employee)
   }
+  public NursingNoteReport(AdmID, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.get("Nursing/View-NursingNotes?AdmID=" + AdmID)
+  }
 
 
 

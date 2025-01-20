@@ -400,7 +400,7 @@ console.log(obj)
       this.CreditedtoDoctor = obj.CreditedtoDoctor;
       this.IsDocEditable = obj.IsDocEditable;
       this.DocDoctorName = obj.DoctorName;
-      if (this.IsDocEditable == true) {
+      if (this.IsDocEditable == true || this.CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);
@@ -427,7 +427,7 @@ console.log(obj)
       this.CreditedtoDoctor = obj.CreditedtoDoctor;
       this.IsDocEditable = obj.IsDocEditable;
       this.DocDoctorName = obj.DoctorName;
-      if (this.IsDocEditable == true) {
+      if (this.IsDocEditable == true || this.CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
         this.registeredForm.get('DoctorID').setValidators([Validators.required]);

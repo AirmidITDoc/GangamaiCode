@@ -19,6 +19,7 @@ import { AnyARecord } from 'dns';
 import { CreateTemplateComponent } from '../../doctornote/create-template/create-template.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-nursingnote',
@@ -387,6 +388,7 @@ export class NursingnoteComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-success',
           }); 
           this.getNoteTablelist();
+          this.getNursingNoteprint(this.vAdmissionID);
           this.onClose();
         }
         else {
@@ -426,6 +428,7 @@ export class NursingnoteComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.getNoteTablelist(); 
+        this.getNursingNoteprint(this.vAdmissionID);
         this.onClose();
       }
       else {
@@ -903,8 +906,30 @@ export class NursingnoteComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => { 
         
       });
-    }
-    
+    } 
+
+  getNursingNoteprint(AdmID) { 
+    setTimeout(() => {
+      this._NursingStationService.NursingNoteReport(
+        AdmID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "DOCTORNOTE REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+      });
+
+    }, 100);
+
+  }
 }
  
 export class DocNote {

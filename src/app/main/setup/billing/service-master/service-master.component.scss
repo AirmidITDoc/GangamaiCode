@@ -57,6 +57,19 @@
         display: inline-flex;
         display: inline; 
     }
+    .mat-column-TariffName {
+        width: 160px;
+        max-width: 160px;
+        min-width: 160px;
+        text-align: left;
+        justify-content: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden !important;
+        display: inline-flex;
+        display: inline; 
+    }
     .mat-column-IsEditable {
         text-align: center;
         justify-content: center;

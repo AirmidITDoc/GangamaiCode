@@ -121,7 +121,7 @@ export class AddNewTariffComponent implements OnInit {
 
     if (this.AddTariff.get('TariffId').value) {
       if (this.AddTariff.get('NewTariffId').value) {
-        if (this.TariffcmbList.some(item => item.TariffId == this.AddTariff.get('NewTariffId').value.TariffId)) {
+        if (this.AddTariff.get('TariffId').value.TariffId == this.AddTariff.get('NewTariffId').value.TariffId) {
           this.toastr.warning('same tariff name cannot be save,Please select different tariff name ', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
@@ -139,14 +139,15 @@ export class AddNewTariffComponent implements OnInit {
     }
 
     console.log(submitData)
-    this._serviceMasterService.SavePackagedet(submitData).subscribe(reponse => {
+    this._serviceMasterService.SaveTariff(submitData).subscribe(reponse => {
+      console.log(reponse)
       if (reponse) {
         this.toastr.success('Record Saved Successfully.', 'Saved !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
         this.onClose();
       } else {
-        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
         this.onClose();

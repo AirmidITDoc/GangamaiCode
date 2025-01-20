@@ -12,13 +12,17 @@
             </span>
         </div>
         <div fxLayout="row" fxLayoutGap="5px">
-                <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">
-                    <mat-icon>add</mat-icon>New Service
-                </button>
-                <!-- <button mat-raised-button  (click)="onAddPackageDet()" style="background-color: aliceblue;color: brown;">
-                    <mat-icon>add_box</mat-icon>Package 
-                </button> -->
-            </div>
+            <button mat-raised-button (click)="NewTariff()" style="background-color: aliceblue;color: brown;">
+                <mat-icon>add</mat-icon>New Tariff
+            </button>
+        
+            <button mat-raised-button (click)="onAdd()" style="background-color: aliceblue;color: brown;">
+                <mat-icon>add</mat-icon>New Service
+            </button>
+            <!-- <button mat-raised-button  (click)="onAddPackageDet()" style="background-color: aliceblue;color: brown;">
+                            <mat-icon>add_box</mat-icon>Package 
+                        </button> -->
+        </div>
     </mat-toolbar>
     <!-- / HEADER -->
 
@@ -99,13 +103,7 @@
                             </button>  
                             
                         </div>
-
-                        <div style="padding-top: 5px;">
-                            <button mat-raised-button (click)="NewTariff()" style="background-color: aliceblue;color: brown;">
-                                <mat-icon>add</mat-icon>New Tariff
-                            </button>
-                        </div>
-                       
+ 
                     </div>
                 </form>
             </div>
@@ -181,10 +179,13 @@
                                 </ng-container> 
                                 
                                 <ng-container matColumnDef="TariffName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         TariffName
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-110"> 
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm 
+                                    matTooltip="{{element.TariffName}}" 
+                                    matTooltipClass="example-tooltip-uppercase"
+                                    aria-label="Button that shows a red tooltip"> 
                                         {{element.TariffName}}
                                     </mat-cell>
                                 </ng-container>
@@ -287,9 +288,9 @@
                                     </mat-footer-cell>
                                 </ng-container> 
 
-                                <mat-header-row class="accent min-width-1650"
+                                <mat-header-row class="accent min-width-1850"
                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-1650"
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-1850"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
 
                                 <mat-footer-row *matFooterRowDef="['loading']"

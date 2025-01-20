@@ -103,6 +103,12 @@ export class DoctornoteService {
   } 
     return this._httpClient.post("Nursing/UpdateMTemplateMaster", employee)
   }
+  public DoctorNoteReport(AdmID,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.get("Nursing/View-DoctorNotes?AdmID="+ AdmID)
+  }
 
 
 

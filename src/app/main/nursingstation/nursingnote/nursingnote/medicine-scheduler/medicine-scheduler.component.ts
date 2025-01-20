@@ -59,9 +59,9 @@ export class MedicineSchedulerComponent implements OnInit {
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
     console.log(this.date)
 
-    var now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    this.date = now.toISOString().slice(0, 16);
+    // var now = new Date();
+    // now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    // this.date = now.toISOString().slice(0, 16);
   }
 
   ngOnInit(): void {
@@ -128,10 +128,7 @@ export class MedicineSchedulerComponent implements OnInit {
       this.MedicineItemForm.get('Qty').setValue('')
       this.MedicineItemForm.get('Route').setValue('');
       this.MedicineItemForm.get('Frequency').setValue('');
-      this.MedicineItemForm.get('NurseName').setValue('');
-      var now = new Date();
-      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      this.date = now.toISOString().slice(0, 16);
+      this.MedicineItemForm.get('NurseName').setValue(''); 
       return;
     }
 
@@ -175,11 +172,7 @@ export class MedicineSchedulerComponent implements OnInit {
     console.log(this.dsItemList.data);
     this.MedicineItemForm.get('Route').setValue('');
     this.MedicineItemForm.get('Frequency').setValue('');
-    this.MedicineItemForm.get('NurseName').setValue(''); 
-
-    var now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    this.date = now.toISOString().slice(0, 16);
+    this.MedicineItemForm.get('NurseName').setValue('');  
   }
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
@@ -199,40 +192,41 @@ export class MedicineSchedulerComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return
-    }
-    this.dialogRef.close(this.dsItemList.data)
-    // if (!this._NursingStationService.Templateform.get("TemplateId").value) {
-    //   let saveMTemplateMasterParam={
-    //    "templateId": 0,
-    //    "category": this._NursingStationService.Templateform.get("Category").value,
-    //    "templateName": this._NursingStationService.Templateform.get("TemplateName").value,
-    //    "templateDesc": this._NursingStationService.Templateform.get("TemplateDesc").value,
-    //    "isActive":this._NursingStationService.Templateform.get("IsDeleted").value,
-    //    "createdBy":this.accountService.currentUserValue.user.id
-    //   } 
+    }  
+      // let saveTNursingMedicationChartParams={ 
+      //  "admID": 0,
+      //  "mDate": "2025-01-20T12:12:53.064Z",
+      //  "mTime": "2025-01-20T12:12:53.064Z",
+      //  "durgId": 0,
+      //  "doseID": 0,
+      //  "route": "string",
+      //  "freq": "string",
+      //  "nurseName": "string",
+      //  "doseName": "string",
+      //  "createdBy": this.accountService.currentUserValue.user.id
+      // }  
 
-    //   let submitData ={
-    //     "saveMTemplateMasterParam":saveMTemplateMasterParam
-    //   } 
-    //   console.log(submitData);
-    //   this._NursingStationService.insertTemplateMaster(submitData).subscribe(response => {
-    //     if (response) {
-    //       this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //         toastClass: 'tostr-tost custom-toast-success',
-    //       });
-    //       this._matDialog.closeAll();
-    //       this.onClose();
-    //     } else {
-    //       this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     } 
-    //   }, error => {
-    //     this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });  
-    //   });
-    // } 
+      // let submitData ={
+      //   "saveTNursingMedicationChartParams":saveMTemplateMasterParam
+      // } 
+      // console.log(submitData);
+      // this._NursingStationService.insertTemplateMaster(submitData).subscribe(response => {
+      //   if (response) {
+      //     this.toastr.success('Record Saved Successfully.', 'Saved !', {
+      //       toastClass: 'tostr-tost custom-toast-success',
+      //     });
+      //     this._matDialog.closeAll();
+      //     this.onClose();
+      //   } else {
+      //     this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
+      //       toastClass: 'tostr-tost custom-toast-error',
+      //     });
+      //   } 
+      // }, error => {
+      //   this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
+      //     toastClass: 'tostr-tost custom-toast-error',
+      //   });  
+      // }); 
   }
 
 

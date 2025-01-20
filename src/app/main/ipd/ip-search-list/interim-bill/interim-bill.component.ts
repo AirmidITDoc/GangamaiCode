@@ -186,12 +186,32 @@ export class InterimBillComponent implements OnInit {
       CashCounterID:['']
     });
   }
-
+  vdiscAmount:any;
+  ChkServiceDisc:boolean=false;
   getNetAmtSum(element) {
     let netAmt;
-    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
+    let ServiceDiscAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0).toFixed(2);
+   
     this.vTotalBillAmt = netAmt;
     this.vNetAmount = netAmt;
+    if(ServiceDiscAmt > 0){
+      this.ChkServiceDisc = false;
+      this.vdiscAmount = ServiceDiscAmt;
+      this.InterimFormGroup.get('concessionAmt').setValue(this.vdiscAmount);
+      this.ConShow = true;
+      this.InterimFormGroup.get('ConcessionId').reset();
+      this.InterimFormGroup.get('ConcessionId').setValidators([Validators.required]);
+      this.InterimFormGroup.get('ConcessionId').enable;
+    }else{
+      this.InterimFormGroup.get('concessionAmt').clearValidators();
+      this.vdiscAmount = '';
+      // this.ConShow = false;
+      // this.InterimFormGroup.get('ConcessionId').reset();
+      // this.InterimFormGroup.get('ConcessionId').clearValidators();
+      // this.InterimFormGroup.get('ConcessionId').updateValueAndValidity();
+      this.ChkServiceDisc = true;
+    } 
     return netAmt;
   }
   setcashCounter:any;

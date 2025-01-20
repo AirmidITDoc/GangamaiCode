@@ -462,7 +462,7 @@ ServiceList:any=[];
     //this.IsDocEditable = obj.IsDocEditable;
     this.DocDoctorName = obj.DoctorName;
 
-    if (obj.IsDocEditable == true) {
+    if (obj.IsDocEditable == true || obj.CreditedtoDoctor == true) {
       this.Serviceform.get('DoctorID').reset();
       this.Serviceform.get('DoctorID').setValidators([Validators.required]);
       this.Serviceform.get('DoctorID').enable();
@@ -1069,7 +1069,7 @@ ServiceList:any=[];
   vTotalAmount: any = 0;
   getTotalAmtSum(element) {
     let totalAmt;
-    totalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0);
+    totalAmt = element.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2);
     this.vTotalAmount = totalAmt;
     this.CalculateAdminCharge(); 
     this.chkdiscstatus();
@@ -1079,7 +1079,7 @@ ServiceList:any=[];
   TotalServiceDiscPer:any=0;
   getDiscountSum(element) {
      this.TotalServiceDiscPer = element.reduce((sum, { ConcessionPercentage }) => sum += +(ConcessionPercentage || 0), 0);
-    let ServiceDiscAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
+    let ServiceDiscAmt = element.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0).toFixed(2);
     if(ServiceDiscAmt > 0){
       this.vFinalDiscountAmt = ServiceDiscAmt;
       this.Ipbillform.get('concessionAmt').setValue(this.vFinalDiscountAmt);
@@ -1092,7 +1092,7 @@ ServiceList:any=[];
   //Table Total netAmt
   getNetAmtSum(element) {
     let netAmt;
-    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0); 
+    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2); 
     this.vNetBillAmount = netAmt;  
     return netAmt;
   }
