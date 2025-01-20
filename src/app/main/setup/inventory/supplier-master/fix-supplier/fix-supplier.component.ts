@@ -151,61 +151,61 @@ export class FixSupplierComponent implements OnInit
     getValidationMessages() {
         return {
             supplierName:[
-                { name: "required", Message: "Supplier Name is required" },
-                { name: "pattern", Message: "Only Characters Allowed" },
+                // { name: "required", Message: "Supplier Name is required" },
+                // { name: "pattern", Message: "Only Characters Allowed" },
             ],
             mobile: [
-                { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "Mobile No is required" },
-                { name: "maxLength", Message: "More than 10 digits not allowed." }
+                // { name: "pattern", Message: "Only numbers allowed" },
+                // { name: "required", Message: "Mobile No is required" },
+                // { name: "maxLength", Message: "More than 10 digits not allowed." }
             ],
             phone:[
-                { name: "required", Message: "Phone No is required" },
-                { name: "pattern", Message: "Only Numbers Allowed" },
+                // { name: "required", Message: "Phone No is required" },
+                // { name: "pattern", Message: "Only Numbers Allowed" },
             ],
             address:[
-                { name: "required", Message: "Address is required" },
-                { name: "pattern", Message: "Only Characters Allowed" },
+                // { name: "required", Message: "Address is required" },
+                // { name: "pattern", Message: "Only Characters Allowed" },
             ],
             cityId:[
-                { name: "required", Message: "City is required" },
+                // { name: "required", Message: "City is required" },
             ],
             stateId:[
-                { name: "required", Message: "State is required" },
+                // { name: "required", Message: "State is required" },
             ],
             countryId:[
-                { name: "required", Message: "Country is required" },
+                // { name: "required", Message: "Country is required" },
             ],
             panNo:[
-                { name: "required", Message: "Pan No is required" },
-                { name: "pattern", Message: "Only Numbers & Characters Allowed" },
+                // { name: "required", Message: "Pan No is required" },
+                // { name: "pattern", Message: "Only Numbers & Characters Allowed" },
             ],
             fax:[
-                { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "Fax No is required" },
-                { name: "maxLength", Message: "More than 10 digits not allowed." }
+                // { name: "pattern", Message: "Only numbers allowed" },
+                // { name: "required", Message: "Fax No is required" },
+                // { name: "maxLength", Message: "More than 10 digits not allowed." }
             ],
             email:[
-                { name: "required", Message: "Email is required" },
-                { name: "pattern", Message: "Only Numbers & Characters Allowed" },
+                // { name: "required", Message: "Email is required" },
+                // { name: "pattern", Message: "Only Numbers & Characters Allowed" },
             ],
             Freight:[
-                { name: "pattern", Message: "Only Numbers allowed" },
-                { name: "required", Message: "Freight is required" },
-                { name: "maxLength", Message: "More than 10 digits not allowed." }
+                // { name: "pattern", Message: "Only Numbers allowed" },
+                // { name: "required", Message: "Freight is required" },
+                // { name: "maxLength", Message: "More than 10 digits not allowed." }
             ],
             CreditPeriod:[
-                { name: "required", Message: "Credit Period is required" },
+                // { name: "required", Message: "Credit Period is required" },
             ],
             modeofPayment:[
-                { name: "required", Message: "Mode Of Payment is required" },
+                // { name: "required", Message: "Mode Of Payment is required" },
             ],
             termofPayment:[
-                { name: "required", Message: "Terms Of Payment is required" }, 
+                // { name: "required", Message: "Terms Of Payment is required" }, 
             ],
             gstNo:[
-                { name: "required", Message: "GST is required" },
-                { name: "maxLength", Message: "More than 15 digits not allowed." }
+                // { name: "required", Message: "GST is required" },
+                // { name: "maxLength", Message: "More than 15 digits not allowed." }
             ],
             storeId:[],
         };

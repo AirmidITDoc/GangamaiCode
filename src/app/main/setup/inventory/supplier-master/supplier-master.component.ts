@@ -96,25 +96,25 @@ export class SupplierMasterComponent implements OnInit {
 
     }
 
-    onSave(obj: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+    // onSave(obj: any = null) {
+    //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    //     buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
-        const dialogRef = this._matDialog.open(FixSupplierComponent,
-            {
-                maxWidth: "100vw",
-                height: '95%',
-                width: '70%',
-                data: Row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-            console.log('The dialog was closed - Action', result);
-        });
-    }
+    //     let that = this;
+    //     const dialogRef = this._matDialog.open(FixSupplierComponent,
+    //         {
+    //             maxWidth: "100vw",
+    //             height: '95%',
+    //             width: '70%',
+    //             data: Row
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if (result) {
+    //             that.grid.bindGridData();
+    //         }
+    //         console.log('The dialog was closed - Action', result);
+    //     });
+    // }
     storeId = "0";
     selectChangestoreName(obj: any) {
         debugger

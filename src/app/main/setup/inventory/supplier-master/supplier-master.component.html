@@ -11,8 +11,8 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ Add New Supplier
-            </button>
+            <!-- <button mat-raised-button (click)="onSave()">+ Add New Supplier
+            </button> -->
         </div>
     </div>
 
@@ -22,7 +22,7 @@
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Supplier Name</mat-label>
                     <input matInput placeholder="Search Supplier Name" autocomplete="off"   [formGroup]="myformSearch" 
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        [(ngModel)]="gridConfig.filters[0].fieldValue"  formControlName="SupplierNameSearch" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
                         <mat-icon>close</mat-icon>
