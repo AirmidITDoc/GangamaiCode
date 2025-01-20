@@ -25,14 +25,14 @@
 <div class="center p-12 pb-56 airmid-table-container" fxFlexAlign="start center">
     <div class="content-card">
         <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()" style="overflow:auto" class="airmid-table">
-            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
-                <mat-header-cell [style.min-width.px]="row.width" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
+            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key" >
+                <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
                     row?.heading }}
                 </mat-header-cell>
-                <mat-cell [style.min-width.px]="row.width" *matCellDef="let element; let i = index" fxShow.gt-sm>
-                    <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
+                <mat-cell [style.min-width.px]="row.width || defaultColumnWidth" *matCellDef="let element; let i = index" fxShow.gt-sm>
+                    <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm >
                         <ng *ngSwitchCase="GridColumnType.customText">
-                            <span> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
+                            <span class="text-overflow"> {{ element[row.key] ? [row.text1] : [row.text2] }}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
                             <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16" style="color: azure;">check_circle</mat-icon>
@@ -44,23 +44,23 @@
                             </div>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.date">
-                            {{ element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'}}
+                            <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'}}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.time">
-                            {{ element[row.key] ? (element[row.key] | date: dateType.SHORT_TIME) : '-'}}
+                            <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date: dateType.SHORT_TIME) : '-'}}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.dateWithTime">
-                            {{ element[row.key] ? (element[row.key] | date: dateType.DATE_WITH_TIME) : '-'}}
+                            <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date: dateType.DATE_WITH_TIME) : '-'}}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.dateByTime">
-                            {{ element[row.key] ? (element[row.key] | date: dateType.DATE__TIME) : '-'}}
+                            <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date: dateType.DATE__TIME) : '-'}}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.wordBreak">
                             <a class="table-link bold break-spaces" test="{{element[row.key] | json}}" (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{ element[row.key]}}
                             </a>
                         </ng>
                         <ng *ngSwitchDefault>
-                            {{ element[row.key]}}
+                            <span class="text-overflow">{{ element[row.key]}}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.action">
                             <div class="action-list">

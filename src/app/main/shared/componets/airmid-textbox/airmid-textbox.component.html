@@ -1,4 +1,4 @@
-<mat-form-field [appearance]="appearance" class="mr-sm-12" fxFlex [style.width.%]="width">
+<mat-form-field [appearance]="appearance" fxFlex [style.width.%]="width">
     <mat-label>{{ label }}</mat-label>
     <input matInput [formControl]="control" [maxlength]="maxLength" (blur)="onTouched()" ngDefaultControl [type]="type"
         [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly"

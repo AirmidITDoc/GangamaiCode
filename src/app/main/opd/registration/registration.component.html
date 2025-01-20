@@ -1,8 +1,5 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -31,9 +28,7 @@
                     </button>
                 </mat-form-field> -->
 
-                <airmid-textbox label="First Name" formControlName="FirstName"
-                    [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().FirstName"
-                    [formGroup]="myFilterform">
+                <airmid-textbox label="First Name" formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().FirstName" [formGroup]="myFilterform">
                 </airmid-textbox>
                 <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Last Name</mat-label>
@@ -43,9 +38,8 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field> -->
-                <airmid-textbox label="LastName" formControlName="LastName"  [(ngModel)]="gridConfig.filters[1].fieldValue"
-                    [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
-            </airmid-textbox>
+                <airmid-textbox label="LastName" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
+                </airmid-textbox>
 
 
                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -56,9 +50,8 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field> -->
-                <airmid-textbox label="RegNo" formControlName="RegNo"  [(ngModel)]="gridConfig.filters[2].fieldValue"
-                [validations]="getValidationMessages().RegNo" [formGroup]="myFilterform">
-        </airmid-textbox>
+                <airmid-textbox label="RegNo" formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" [validations]="getValidationMessages().RegNo" [formGroup]="myFilterform">
+                </airmid-textbox>
 
                 <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
@@ -72,22 +65,18 @@
 
                     <div fxLayout="column" fxLayoutAlign="start none">
                         <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate" [formGroup]="myFilterform"
-                                (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
-                                placeholder="mm/dd/yyyy">
+                            <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate" [formGroup]="myFilterform" (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue" placeholder="mm/dd/yyyy">
                             <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
                             <mat-datepicker #validFromPicker></mat-datepicker>
                         </mat-form-field>
-                    
+
 
                         <mat-form-field appearance="outline">
-                            <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate" [formGroup]="myFilterform"
-                                (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[4].fieldValue"
-                                placeholder="mm/dd/yyyy">
+                            <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate" [formGroup]="myFilterform" (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[4].fieldValue" placeholder="mm/dd/yyyy">
                             <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
                             <mat-datepicker #validFromPicker1></mat-datepicker>
                         </mat-form-field>
-                    
+
                         <!-- <mat-form-field appearance="outline" fxFlex>
                             <mat-label>To Date</mat-label>
                             <input matInput placeholder="Search To Date" autocomplete="off" formControlName="enddate"
@@ -100,16 +89,14 @@
 
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>MobileNo</mat-label>
-                            <input matInput placeholder="Search MobileNo" autocomplete="off" formControlName="MobileNo" [formGroup]="myFilterform"
-                                [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[5].fieldValue=''">
+                            <input matInput placeholder="Search MobileNo" autocomplete="off" formControlName="MobileNo" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[5].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[5].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
 
                     </div>
-                  
+
                 </form>
             </ng-container>
         </airmid-table>
