@@ -14,6 +14,7 @@ import { AppointmentSreviceService } from '../../appointment/appointment-srevice
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-patientcertificate',
@@ -84,7 +85,7 @@ export class PatientcertificateComponent implements OnInit {
   vCertificateName:any;  
   isButtonDisabled: boolean = false;
   isDropdownDisabled: boolean = false;
-
+  SpinLoading: boolean = false;
   editorConfig: AngularEditorConfig = {
     // color:true,
     editable: true,
@@ -407,14 +408,41 @@ onSubList(){
   this._AppointmentServiceService.mycertificateForm.reset({Language: '1'}); 
 }
 
-  
-
   onClose() {
     this._AppointmentServiceService.mycertificateForm.reset({Language: '1'});    
     this.dialogRef.close();
   }
   onClear() {
     this._AppointmentServiceService.mycertificateForm.reset({Language: '1'});   
+  }
+
+  viewgetCertificateReportPdf(element) {
+    debugger
+    console.log("pdf:", element)
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._AppointmentServiceService.getCertificateReportview(
+        element.CertificateId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Certificate Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
   }
 
 }

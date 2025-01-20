@@ -102,23 +102,19 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="CertificateDesc">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-450">Template Desc
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-500">Template Desc
                                         </mat-header-cell>
-                                        <!-- <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-450">
-                                            {{contact.CertificateDesc}}
-                                        </mat-cell> -->
-
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-450 ellipsis"
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-500 ellipsis"
                                         matTooltip="{{contact.CertificateDesc}}">
                                             {{contact.CertificateDesc}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IsActive">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             <mat-icon *ngIf="element.IsActive"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!element.IsActive"
@@ -128,7 +124,8 @@
                                    
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-150">Action
+                                        <mat-header-cell *matHeaderCellDef class="w-150">
+                                            Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-150">
                

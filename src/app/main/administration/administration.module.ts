@@ -73,6 +73,10 @@ const appRoutes: Routes = [
   path: "dailyexpenses",
   loadChildren: () => import("./daily-expenses/daily-expenses.module").then((m) => m.DailyExpensesModule),
 },
+{
+  path: "Configuration",
+  loadChildren: () => import("./configuration/configuration.module").then((m) => m.ConfigurationModule),
+},
 ];
 
 @NgModule({

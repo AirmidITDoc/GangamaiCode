@@ -92,6 +92,18 @@ export class NewOttableMasterComponent implements OnInit {
     }
   }
 
+  // new dropdown code
+
+  // apiUrl = 'Generic/GetByProc?procName=RetrieveLocationMasterForCombo'; // dropdown prodedure
+  //   onSelectionChange(selectedOption: any) {
+      
+  //       console.log('Selected option:', selectedOption);
+  //   }
+  //   displayOption(option: any): string {
+
+  //       return option ? option.LocationName : '';
+  //   }
+
   onSave(){
     if (this.vOtRoomName == '' || this.vOtRoomName == null || this.vOtRoomName== undefined) {
       this.toastr.warning('Please enter RoomName  ', 'Warning !', {
@@ -99,8 +111,9 @@ export class NewOttableMasterComponent implements OnInit {
       });
       return;
     } 
+    
     if (this.vLocationid == '' || this.vLocationid == null || this.vLocationid == undefined) {
-      this.toastr.warning('Please enter select location ', 'Warning !', {
+      this.toastr.warning('Please select location ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
