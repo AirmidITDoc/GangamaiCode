@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupName } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class ConsentService {
 
   constructor(
     public _frombuilder: FormBuilder,
-    public _httpClient: HttpClient
+    public _httpClient: HttpClient,
+        public loaderService:LoaderService
   ) { this.myform = this.CreateMyform() }
 
   CreateMyform() {
@@ -26,6 +28,7 @@ export class ConsentService {
       Language: ['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      IsIPOrOP:['2']
     })
   }
 
@@ -52,11 +55,23 @@ export class ConsentService {
   public getConsentPatientInfoDetaillist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ConsentpatientInformationDemo_List",Param)
   }
-  public NursingConsentInsert(employee) {
+  public NursingConsentInsert(employee, loader = true) {
+    if(loader){
+      this.loaderService.show();
+    }
     return this._httpClient.post("OutPatient/TConsentInformationSave", employee);
   }
 
-  public NursingConsentUpdate(employee) {
+  public NursingConsentUpdate(employee, loader = true) {
+    if(loader){
+      this.loaderService.show();
+    }
     return this._httpClient.post("OutPatient/TConsentInformationUpdate", employee);
+  }
+  public getConsentReportview(ConsentId, loader = true) {
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.get("OT/view-TConsentInformation?ConsentId=" + ConsentId);
   }
 }

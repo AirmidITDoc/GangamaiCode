@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfigSettingParams } from 'app/core/models/config';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AdministrationService } from '../../administration.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { ConfigurationService } from '../configuration.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-configuration',
@@ -46,6 +48,8 @@ export class NewConfigurationComponent implements OnInit {
   City:any=false;
   Age:any=false;
   ClassEdit:any=false;
+  selectedPatienttype:any;
+  isPatientSelected:boolean=false;
 
 
   public oPDBillingFilterCtrl: FormControl = new FormControl();
@@ -99,14 +103,16 @@ public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   private _onDestroy = new Subject<void>();
   constructor(   public _matDialog: MatDialog,
     public _AdministrationService: AdministrationService,
+    public _configurationService: ConfigurationService,
     public dialogRef: MatDialogRef<NewConfigurationComponent>,
     private formBuilder: FormBuilder,
     public datePipe: DatePipe,
+    public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
-    this.configFormGroup = this.createconfigForm();
+    this.configFormGroup = this._configurationService.createconfigForm();
     this.getPatientTypeList();
     this.getOPDBillingList();
      this.getOPDReceiptCounterList();
@@ -123,25 +129,11 @@ public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     this.getPathDoctorList();
 
 
-    this.opdRefundOfBillFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterOpdRefundOfBill();
-    });
-
-
-    this.oPDBillingFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterOCounter();
-      });
-
-      //OPD Receipt Counterfilter
-      this.oPDReceiptFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterReceiptCounter();
-      });
+    // this.opdRefundOfBillFilterCtrl.valueChanges
+    // .pipe(takeUntil(this._onDestroy))
+    // .subscribe(() => {
+    //   this.filterOpdRefundOfBill();
+    // });
 
       //IPD Advance 
       this.iPDAdvanceFilterCtrl.valueChanges
@@ -214,21 +206,17 @@ public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
         //  this.setDropdownObjs();
       }
       
-
-
       if(this.configObj.OTCharges){
       this.configFormGroup.get('Charges').setValue(true);     
      }else{
       this.configFormGroup.get('Charges').setValue(false); 
      }
 
-
      if(this.configObj.PopPayAfterOPBill){
       this.configFormGroup.get('PopPayBill').setValue(true);     
      }else{
       this.configFormGroup.get('PopPayBill').setValue(false); 
      }
-
      
      if(this.configObj.GenerateOPBillInCashOption){
       this.configFormGroup.get('GenerateOPBill').setValue(true);     
@@ -253,8 +241,6 @@ public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
      }else{
       this.configFormGroup.get('PrintAdm').setValue(false); 
      }
-
-
 
      if(this.configObj.MandatoryFirstName){
       this.configFormGroup.get('FirstName').setValue(true);     
@@ -316,70 +302,28 @@ public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     
   }
 
-  private filterOCounter() {
 
-    if (!this.OPDBillingList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.oPDBillingFilterCtrl.value;
-    if (!search) {
-      this.filteredOPDCounter.next(this.OPDBillingList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredOPDCounter.next(
-      this.OPDBillingList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
-    );
+  // private filterOpdRefundOfBill() {
 
-  }
-  
-  private filterOpdRefundOfBill() {
+  //   if (!this.OPDRefundOfBillCounterList) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.opdRefundOfBillFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredOpdRefundBill.next(this.OPDRefundOfBillCounterList.slice());
+  //     return;
+  //   }
+  //   else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter
+  //   this.filteredOpdRefundBill.next(
+  //     this.OPDRefundOfBillCounterList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
+  //   );
 
-    if (!this.OPDRefundOfBillCounterList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.opdRefundOfBillFilterCtrl.value;
-    if (!search) {
-      this.filteredOpdRefundBill.next(this.OPDRefundOfBillCounterList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredOpdRefundBill.next(
-      this.OPDRefundOfBillCounterList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
-    );
+  // }
 
-  }
-
-//OPD Receipt Counterfilter
-  private filterReceiptCounter() {
-
-    if (!this.OPDReceiptCounterList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.oPDReceiptFilterCtrl.value;
-    if (!search) {
-      this.filteredReceipt.next(this.OPDReceiptCounterList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredReceipt.next(
-      this.OPDReceiptCounterList.filter(bank => bank.CashCounterName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-  
   //IPD Advance 
   private filterIPDAdvanceCounter() {
 
@@ -424,7 +368,6 @@ private filterIPDBillingCounter() {
 
 }
 
-
 //IPD Receipt
 private filterIPDReceiptCounter() {
 
@@ -447,7 +390,6 @@ private filterIPDReceiptCounter() {
 
 }
 
-
 private filteripdRefundOfBill() {
 
   if (!this.IPDRefundOfBillCounterList) {
@@ -468,8 +410,6 @@ private filteripdRefundOfBill() {
   );
 
 }
-
-
 
 private filteripdRefundOfAdvance() {
 
@@ -512,6 +452,7 @@ private filterpharmacySales() {
   );
 
 }
+
 private filterpharmacySalesReturn() {
 
   if (!this.SalesReturnList) {
@@ -533,7 +474,6 @@ private filterpharmacySalesReturn() {
 
 }
 
-
 private filterpharmacySalesReceipt() {
 
   if (!this.SalesReceiptList) {
@@ -554,7 +494,6 @@ private filterpharmacySalesReceipt() {
   );
 
 }
-
 
 private filterpathDepartment() {
 
@@ -597,106 +536,98 @@ private filterpathDoctor() {
 
 }
 
-  createconfigForm() {
-    return this.formBuilder.group({
-      Charges:0,
-      PopPayBill:0,
-      GenerateOPBill:0,
-      PrintAdm:0,
-      PrintOPDVisit:0,
-      PrintReg:0,
-      FirstName:0,
-      MiddleName:0,
-      LastName:0,
-      PhoneNo:0,
-      Address:0,
-      City:0,
-      Age:0,
-      ClassEdit:0,
-      OPD_Billing_Counter:'',
+  // createconfigForm() {
+  //   return this.formBuilder.group({
+  //     Charges:0,
+  //     PopPayBill:0,
+  //     GenerateOPBill:0,
+  //     PrintAdm:0,
+  //     PrintOPDVisit:0,
+  //     PrintReg:0,
+  //     FirstName:0,
+  //     MiddleName:0,
+  //     LastName:0,
+  //     PhoneNo:0,
+  //     Address:0,
+  //     City:0,
+  //     Age:0,
+  //     ClassEdit:0,
+  //     OPD_Billing_Counter:'',
 
-      ConfigId:'',
-      PrintRegAfterReg:'',
-      PDPrefix:'',
-      OTCharges: '',
-      PrintOPDCaseAfterVisit: '',
-      PrintIPDAfterAdm:'',
-      PopOPBillAfterVisit: '',
-      PopPayAfterOPBill: '',
-      GenerateOPBillInCashOption: '',
-      MandatoryFirstName:'',
-      MandatoryMiddleName: '',
-      MandatoryLastName: '',
-      MandatoryAddress: '',
-      MandatoryCity:'',
-      MandatoryAge: '',
-      MandatoryPhoneNo: '',
-      CashCounterId:'',
-      OPBillCounter: '',
-      OPReceiptCounter:'',
-      OPRefundOfBillCounter: '',
-      IPAdvanceCounter: '',
-      IPBillCounter: '',
-      IPReceiptCounter:'',
-      IPRefundBillCounter: '',
-      IPRefofAdvCounter:'',
-      RegPrefix:'',
-      RegNo: '',
-      IPPrefix: '',
-      IPNo: '',
-      OPPrefix: '',
-      OPNo:'',
-      PathDepartment:'',
-      IsPathologistDr: '',
-      OPD_Billing_CounterId:'',
-      OPD_Receipt_CounterId: '',
-      OPD_Refund_Bill_CounterId:'',
-      OPD_Advance_CounterId: '',
-      OPD_Refund_Advance_CounterId: '',
-      IPD_Advance_CounterId:'',
-      IPD_Billing_CounterId: '',
-      IPD_Receipt_CounterId: '',
-      IPD_Refund_of_Bill_CounterId: '',
-      IPD_Refund_of_Advance_CounterId: '',
-      PatientTypeSelf: '',
-      ClassForEdit: '',
-      PatientTypeId: '',
-      PharmacySales_CounterId: '',
-      PharmacySalesReturn_CounterId:'',
-      PharmacyReceipt_CounterId:'',
-      ChkPharmacyDue:'',
-      G_IsPharmacyPaperSetting:'',
-      PharmacyPrintName:'',
-      G_PharmacyPaperName:'',
-      G_IsOPPaperSetting:'',
-      G_PharmacyPrintName: '',
-      G_OPPaperName: '',
-      DepartmentId: '',
-      DoctorId: '',
-      G_IsIPPaperSetting:'',
-      G_IPPaperName: '',
-      G_OPPrintName:'',
-      IsOPSaleDisPer:'',
-      OPSaleDisPer: '',
-      IsIPSaleDisPer: '',
-      IPSaleDisPer:'',
-      PatientTypeID:'',
+  //     ConfigId:'',
+  //     PrintRegAfterReg:'',
+  //     PDPrefix:'',
+  //     OTCharges: '',
+  //     PrintOPDCaseAfterVisit: '',
+  //     PrintIPDAfterAdm:'',
+  //     PopOPBillAfterVisit: '',
+  //     PopPayAfterOPBill: '',
+  //     GenerateOPBillInCashOption: '',
+  //     MandatoryFirstName:'',
+  //     MandatoryMiddleName: '',
+  //     MandatoryLastName: '',
+  //     MandatoryAddress: '',
+  //     MandatoryCity:'',
+  //     MandatoryAge: '',
+  //     MandatoryPhoneNo: '',
+  //     CashCounterId:'',
+  //     OPBillCounter: '',
+  //     OPReceiptCounter:'',
+  //     OPRefundOfBillCounter: '',
+  //     IPAdvanceCounter: '',
+  //     IPBillCounter: '',
+  //     IPReceiptCounter:'',
+  //     IPRefundBillCounter: '',
+  //     IPRefofAdvCounter:'',
+  //     RegPrefix:'',
+  //     RegNo: '',
+  //     IPPrefix: '',
+  //     IPNo: '',
+  //     OPPrefix: '',
+  //     OPNo:'',
+  //     PathDepartment:'',
+  //     IsPathologistDr: '',
+  //     OPD_Billing_CounterId:'',
+  //     OPD_Receipt_CounterId: '',
+  //     OPD_Refund_Bill_CounterId:'',
+  //     OPD_Advance_CounterId: '',
+  //     OPD_Refund_Advance_CounterId: '',
+  //     IPD_Advance_CounterId:'',
+  //     IPD_Billing_CounterId: '',
+  //     IPD_Receipt_CounterId: '',
+  //     IPD_Refund_of_Bill_CounterId: '',
+  //     IPD_Refund_of_Advance_CounterId: '',
+  //     PatientTypeSelf: '',
+  //     ClassForEdit: '',
+  //     PatientTypeId: '',
+  //     PharmacySales_CounterId: '',
+  //     PharmacySalesReturn_CounterId:'',
+  //     PharmacyReceipt_CounterId:'',
+  //     ChkPharmacyDue:'',
+  //     G_IsPharmacyPaperSetting:'',
+  //     PharmacyPrintName:'',
+  //     G_PharmacyPaperName:'',
+  //     G_IsOPPaperSetting:'',
+  //     G_PharmacyPrintName: '',
+  //     G_OPPaperName: '',
+  //     DepartmentId: '',
+  //     DoctorId: '',
+  //     G_IsIPPaperSetting:'',
+  //     G_IPPaperName: '',
+  //     G_OPPrintName:'',
+  //     IsOPSaleDisPer:'',
+  //     OPSaleDisPer: '',
+  //     IsIPSaleDisPer: '',
+  //     IPSaleDisPer:'',
+  //     PatientTypeID:'',
      
-    });
-  }
+  //   });
+  // }
 
   onClose() {
-  
+    // this.configFormGroup.reset();
     this.dialogRef.close();
   }
-
-
-
-
-  
-
-
-
 
   onSubmit() {
     let reg = this.configObj.ConfigId;
@@ -733,11 +664,8 @@ private filterpathDoctor() {
     if(this.configFormGroup.get('PhoneNo').value)
     var ph=1; else ph=0;
 
-
-
     debugger;
       var m_data = {
-
         "configsettingupdate": {
           "ConfigId": this.configObj.ConfigId,// this._registerService.mySaveForm.get("RegId").value || 0,
           "PrintRegAfterReg": pr,// this.configFormGroup.get('PrintReg').value,
@@ -755,7 +683,6 @@ private filterpathDoctor() {
           "MandatoryCity": c,// this.configFormGroup.get('City').value,
           "MandatoryAge":ag,// this.configFormGroup.get('Age').value,
           "MandatoryPhoneNo": ph,//this.pharmacySalesFilterCtrl,// this.configFormGroup.get('PhoneNo').value,
-
           "opD_Billing_CounterId": this.configFormGroup.get('OPD_Billing_CounterId').value.CashCounterId ,
           "opD_Receipt_CounterId":this.configFormGroup.get('OPD_Receipt_CounterId').value.CashCounterId ,
           "opD_Refund_Bill_CounterId": this.configFormGroup.get('OPD_Refund_Bill_CounterId').value.CashCounterId,
@@ -766,7 +693,6 @@ private filterpathDoctor() {
           "ipD_Receipt_CounterId":this.configFormGroup.get('IPD_Receipt_CounterId').value.CashCounterId || 0,
           "ipD_Refund_of_Bill_CounterId": this.configFormGroup.get('IPD_Refund_of_Bill_CounterId').value.CashCounterId || 0,
           "ipD_Refund_of_Advance_CounterId":this.configFormGroup.get('IPD_Refund_of_Advance_CounterId').value.CashCounterId || 0,
-
           "regPrefix": this.configObj.RegPrefix || "",
           "ipPrefix":this.configFormGroup.get('IPPrefix').value || "",
           "opPrefix":this.configFormGroup.get('OPPrefix').value || "",
@@ -777,36 +703,31 @@ private filterpathDoctor() {
           "salesReturnCounterId": this.configFormGroup.get('PharmacySalesReturn_CounterId').value.CashCounterId || 0,
           "salesReceiptCounterID": this.configFormGroup.get('PharmacyReceipt_CounterId').value.CashCounterId || 0,
           "classForEdit": this.configObj.ClassForEdit || 0,
-
         }
       }
-      console.log(m_data);
-      this._AdministrationService.ConfigUpdate(m_data).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Configuration Data Updated Successfully !', 'success').then((result) => {
-            if (result.isConfirmed) {
-              this._matDialog.closeAll();
-            }
-          });
-        } else {
-          Swal.fire('Error !', 'Configuration Data  not saved', 'error');
-        }
 
+      console.log("UpdateJson:", m_data);
+
+      this._configurationService.ConfigUpdate(m_data).subscribe(response =>{
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
       });
-    
   }
 
 
 setDropdownObjs() {
 debugger;
-    const toSelect = this.OPDBillingList.find(c => c.CashCounterId == this.configObj.OPD_Billing_CounterId);
-    this.configFormGroup.get('OPD_Billing_CounterId').setValue(toSelect);
-
-    const toSelect1 = this.OPDReceiptCounterList.find(c => c.CashCounterId == this.configObj.OPD_Receipt_CounterId);
-    this.configFormGroup.get('OPD_Receipt_CounterId').setValue(toSelect1);
-
-    const toSelect2= this.OPDRefundOfBillCounterList.find(c => c.CashCounterId == this.configObj.OPD_Refund_Bill_CounterId);
-    this.configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(toSelect2);
+   
+    // const toSelect2= this.OPDRefundOfBillCounterList.find(c => c.CashCounterId == this.configObj.OPD_Refund_Bill_CounterId);
+    // this.configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(toSelect2);
 
     const toSelect3 = this.IPDAdvanceCounterList.find(c => c.CashCounterId == this.configObj.IPD_Advance_CounterId);
     this.configFormGroup.get('IPD_Advance_CounterId').setValue(toSelect3);
@@ -839,34 +760,21 @@ debugger;
     const toSelect13 = this.SalesReceiptList.find(c => c.CashCounterId == this.configObj.PharmacySalesReturn_CounterId);
     this.configFormGroup.get('PharmacyReceipt_CounterId').setValue(toSelect13);
 
-    const toSelect14 = this.PatientTypeList.find(c => c.PatientTypeId == this.configObj.PatientTypeSelf);
-    this.configFormGroup.get('PatientTypeID').setValue(toSelect14);
-
     // this.configFormGroup.updateValueAndValidity();
   }
  
-   getOPDBillingList() {
-    this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.OPDBillingList = data; 
-      this.filteredOPDCounter.next(this.OPDBillingList.slice());
-    })
-  }
 
-  getOPDRefundOfBillCounterList() {
-    this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.OPDRefundOfBillCounterList = data; 
-      this.filteredOpdRefundBill.next(this.OPDRefundOfBillCounterList.slice());
-    })
-  }
+  // getOPDRefundOfBillCounterList() {
+  //   this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.OPDRefundOfBillCounterList = data; 
+  //     this.filteredOpdRefundBill.next(this.OPDRefundOfBillCounterList.slice());
+  //   })
+  // }
   getIPDAdvanceCounterList(){
     this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.IPDAdvanceCounterList = data; 
       this.filteredIPDAdvance.next(this.IPDAdvanceCounterList.slice());
     })
   }
 
-  getOPDReceiptCounterList(){
-    this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.OPDReceiptCounterList = data; 
-      this.filteredReceipt.next(this.OPDReceiptCounterList.slice());
-    })
-  }
 
   getIPDBillingCounterList(){
     this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.IPDBillingList = data; 
@@ -886,14 +794,162 @@ debugger;
     })
   }
   
- 
- 
-  getPatientTypeList() {
-    this._AdministrationService.getPatientTypeCombo().subscribe(data => {
-      this.PatientTypeList = data;
-      this.configFormGroup.get('PatientTypeID').setValue(this.PatientTypeList[0]);
-    })
-  }
+  // patient type start
+  
+  optionsSearchgroup: any[] = [];
+  filteredOptionsPatient: Observable<string[]>;
+  selectedOpBilling:any;
+  isOpBillingSelected:boolean=false;
+  getOptionTextPatient(option){
+      debugger
+      return option && option.PatientType ? option.PatientType : '';
+    }  
+    getPatientTypeList(){
+      debugger
+      this._AdministrationService.getPatientTypeCombo().subscribe(data => {
+        this.PatientTypeList = data;
+        this.optionsSearchgroup = this.PatientTypeList.slice();
+        this.filteredOptionsPatient = this.configFormGroup.get('PatientTypeID').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filtersearchPatient(value) : this.PatientTypeList.slice()),
+        );
+        if (this.data) {
+          debugger
+          const DValue = this.PatientTypeList.filter(item => item.PatientTypeId == this.configObj.PatientTypeSelf);
+          console.log("PatientType:",DValue)
+          this.configFormGroup.get('PatientTypeID').setValue(DValue[0]);
+          this.configFormGroup.updateValueAndValidity();
+          return;
+        }
+      });
+    }  
+    private _filtersearchPatient(value: any): string[] {
+      debugger
+      if (value) {
+        const filterValue = value && value.PatientType ? value.PatientType.toLowerCase() : value.toLowerCase();
+        return this.PatientTypeList.filter(option => option.PatientType.toLowerCase().includes(filterValue));
+      }
+    }
+    // patient type end
+
+    // OPD_Billing_CounterId start
+    optionsSearchOPBilling: any[] = [];
+  filteredOptionsOpBilling: Observable<string[]>;
+    getOptionTextOpBilling(option){
+      debugger
+      return option && option.CashCounterName ? option.CashCounterName : '';
+    }
+  
+    getOPDBillingList(){
+      debugger
+      this._AdministrationService.getOPDBillingCombo().subscribe(data => {
+        this.OPDBillingList = data;
+        this.optionsSearchOPBilling = this.OPDBillingList.slice();
+        this.filteredOptionsOpBilling = this.configFormGroup.get('OPD_Billing_CounterId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filtersearchOpBilling(value) : this.OPDBillingList.slice()),
+        );
+        if (this.data) {
+          debugger
+          const DValue = this.OPDBillingList.filter(item => item.CashCounterId == this.configObj.OPD_Billing_CounterId);
+          console.log("OPD_Billing_CounterId:",DValue)
+          this.configFormGroup.get('OPD_Billing_CounterId').setValue(DValue[0]);
+          this.configFormGroup.updateValueAndValidity();
+          return;
+        }
+      });
+    }
+  
+    private _filtersearchOpBilling(value: any): string[] {
+      debugger
+      if (value) {
+        const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+        return this.OPDBillingList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+      }
+    }
+    // OPD_Billing_CounterId end
+
+    // OPD_Receipt_Counter start
+    optionsSearchOpdReceipt: any[] = [];
+    selectedOpdReceipt:any;
+    isOpdReceiptSelected:boolean=false;
+    filteredOptionsOpdReceipt: Observable<string[]>;
+    
+    getOptionTextOpdReceipt(option){
+      debugger
+      return option && option.CashCounterName ? option.CashCounterName : '';
+    }
+  
+    getOPDReceiptCounterList(){
+      debugger
+      this._AdministrationService.getOPDBillingCombo().subscribe(data => {
+        this.OPDReceiptCounterList = data;
+        this.optionsSearchOpdReceipt = this.OPDReceiptCounterList.slice();
+        this.filteredOptionsOpdReceipt = this.configFormGroup.get('OPD_Receipt_CounterId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filtersearchOpdReceipt(value) : this.OPDReceiptCounterList.slice()),
+        );
+        if (this.data) {
+          debugger
+          const DValue = this.OPDReceiptCounterList.filter(item => item.CashCounterId == this.configObj.OPD_Receipt_CounterId);
+          console.log("OPD_Receipt_CounterId:",DValue)
+          this.configFormGroup.get('OPD_Receipt_CounterId').setValue(DValue[0]);
+          this.configFormGroup.updateValueAndValidity();
+          return;
+        }
+      });
+    }
+  
+    private _filtersearchOpdReceipt(value: any): string[] {
+      debugger
+      if (value) {
+        const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+        return this.OPDReceiptCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+      }
+    }
+    // OPD_Receipt_Counter end
+
+    // OPD Refund Of Bill Counter start
+
+    optionsSearchOpdRefund: any[] = [];
+    selectedOpdRefund:any;
+    isOpdRefundSelected:boolean=false;
+    filteredOptionsOpdRefund: Observable<string[]>;
+    
+    getOptionTextOpdRefund(option){
+      debugger
+      return option && option.CashCounterName ? option.CashCounterName : '';
+    }
+  
+    getOPDRefundOfBillCounterList(){
+      debugger
+      this._AdministrationService.getOPDBillingCombo().subscribe(data => {
+        this.OPDRefundOfBillCounterList = data;
+        this.optionsSearchOpdRefund = this.OPDRefundOfBillCounterList.slice();
+        this.filteredOptionsOpdRefund = this.configFormGroup.get('OPD_Refund_Bill_CounterId').valueChanges.pipe(
+          startWith(''),
+          map(value => value ? this._filtersearchOpdRefund(value) : this.OPDRefundOfBillCounterList.slice()),
+        );
+        if (this.data) {
+          debugger
+          const DValue = this.OPDRefundOfBillCounterList.filter(item => item.CashCounterId == this.configObj.OPD_Refund_Bill_CounterId);
+          console.log("OPD_Refund_Bill_CounterId:",DValue)
+          this.configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(DValue[0]);
+          this.configFormGroup.updateValueAndValidity();
+          return;
+        }
+      });
+    }
+  
+    private _filtersearchOpdRefund(value: any): string[] {
+      debugger
+      if (value) {
+        const filterValue = value && value.CashCounterName ? value.CashCounterName.toLowerCase() : value.toLowerCase();
+        return this.OPDRefundOfBillCounterList.filter(option => option.CashCounterName.toLowerCase().includes(filterValue));
+      }
+    }
+
+    // OPD Refund Of Bill Counter end
 
   getIPDRefundOfBillCounterList() {
     this._AdministrationService.getOPDBillingCombo().subscribe(data => { this.IPDRefundOfBillCounterList = data; 

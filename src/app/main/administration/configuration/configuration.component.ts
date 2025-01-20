@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,22 +7,34 @@ import { AdministrationService } from '../administration.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { NotificationServiceService } from 'app/core/notification-service.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { Row } from 'jspdf-autotable';
+import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
+import { ConfigurationService } from './configuration.service';
 
 @Component({
   selector: 'app-configuration',
   templateUrl: './configuration.component.html',
-  styleUrls: ['./configuration.component.scss']
+  styleUrls: ['./configuration.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class ConfigurationComponent implements OnInit {
 
-  @ViewChild(MatSort) sort:MatSort;
-  @ViewChild(MatPaginator) paginator:MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   hasSelectedContacts: boolean;
   configObj = new ConfigSettingParams({});
-  
+
   dataSource = new MatTableDataSource<ConfigSettingParams>();
   displayedColumns: string[] = [
-    
+
     'MandatoryFirstName',
     'MandatoryMiddleName',
     'MandatoryLastName',
@@ -68,50 +80,56 @@ export class ConfigurationComponent implements OnInit {
     // 'OPSaleDisPer',
     // 'IsIPSaleDisPer',
     // 'IPSaleDisPer',
-    
-    
+
+
     'action'
 
-  ]; 
+  ];
   dataSource1 = new MatTableDataSource<SchedulerParams>();
   displayedColumns1: string[] = [
-    
+
     'ScheduleExecuteType',
     'MonthDay',
     'WeekDayName',
     'ExecuteTime',
     'Query',
     'IsDelete',
-   
+
     'action'
 
-  ]; 
+  ];
   sIsLoading: string = '';
- 
+
   constructor(
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
-    public _AdministrationService: AdministrationService,) { }
+    public _AdministrationService: AdministrationService,
+    public _configurationService: ConfigurationService,)
+     { }
 
   ngOnInit(): void {
     this.getConfigList();
     this.getSchedulerParamList();
   }
+  // toggle sidebar
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-    
+  // field validation 
+  // get f() { return this._otTableMasterService.myformSearch.controls; }
+
+
   getConfigList() {
     this.sIsLoading = 'loading-data';
-    
-    this._AdministrationService.ConfigSettingParamList().subscribe(Visit => {
+
+    this._configurationService.ConfigSettingParamList().subscribe(Visit => {
       this.dataSource.data = Visit as ConfigSettingParams[];
       console.log(this.dataSource.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
-     // this.click = false;
+      // this.click = false;
     },
       error => {
         this.sIsLoading = '';
@@ -121,13 +139,13 @@ export class ConfigurationComponent implements OnInit {
 
   getSchedulerParamList() {
     this.sIsLoading = 'loading-data';
-    
-    this._AdministrationService.SchedulerParamList().subscribe(Visit => {
+
+    this._configurationService.SchedulerParamList().subscribe(Visit => {
       this.dataSource1.data = Visit as SchedulerParams[];
       this.dataSource1.sort = this.sort;
       this.dataSource1.paginator = this.paginator;
       this.sIsLoading = '';
-     // this.click = false;
+      // this.click = false;
     },
       error => {
         this.sIsLoading = '';
@@ -138,27 +156,27 @@ export class ConfigurationComponent implements OnInit {
   addNewConfigration() {
     const dialogRef = this._matDialog.open(NewConfigurationComponent,
       {
-        maxWidth: "96vw",
-            maxHeight: "700px !important ", 
-            width: '100%' //, height: '100%' 
+        maxWidth: "90%",
+        maxHeight: "95%",
+        width: '100%', height: '100%' 
       });
     dialogRef.afterClosed().subscribe(result => {
-      
+      this.getConfigList();
     });
   }
-  onEdit(row){
-console.log(row);
+  onEdit(row) {
+    console.log(row);
     var m_data = {
-      "ConfigId":row.ConfigId,
-      "PrintRegAfterReg":row.PrintRegAfterReg,
-      "IPDPrefix":row.IPDPrefix,
+      "ConfigId": row.ConfigId,
+      "PrintRegAfterReg": row.PrintRegAfterReg,
+      "IPDPrefix": row.IPDPrefix,
       "OTCharges": row.OTCharges,
       "PrintOPDCaseAfterVisit": row.PrintOPDCaseAfterVisit,
-      "PrintIPDAfterAdm":row.PrintIPDAfterAdm,
+      "PrintIPDAfterAdm": row.PrintIPDAfterAdm,
       "PopOPBillAfterVisit": row.PopOPBillAfterVisit,
       "PopPayAfterOPBill": row.PopPayAfterOPBill,
       "GenerateOPBillInCashOption": row.GenerateOPBillInCashOption,
-      "MandatoryFirstName":row.MandatoryFirstName,
+      "MandatoryFirstName": row.MandatoryFirstName,
       "MandatoryMiddleName": row.MandatoryMiddleName,
       "MandatoryLastName": row.MandatoryLastName,
       "MandatoryAddress": row.MandatoryAddress,
@@ -166,27 +184,27 @@ console.log(row);
       "MandatoryAge": row.MandatoryAge,
       "MandatoryPhoneNo": row.MandatoryPhoneNo,
       "OPBillCounter": row.OPBillCounter,
-      "OPReceiptCounter":row.OPReceiptCounter,
+      "OPReceiptCounter": row.OPReceiptCounter,
       "OPRefundOfBillCounter": row.OPRefundOfBillCounter,
       "IPAdvanceCounter": row.IPAdvanceCounter,
       "IPBillCounter": row.IPBillCounter,
       "IPReceiptCounter": row.IPReceiptCounter,
       "IPRefundBillCounter": row.IPRefundBillCounter,
-      "IPRefofAdvCounter":row.IPRefofAdvCounter,
+      "IPRefofAdvCounter": row.IPRefofAdvCounter,
       "RegPrefix": row.RegPrefix,
       "RegNo": row.RegNo,
       "IPPrefix": row.IPPrefix,
       "IPNo": row.IPNo,
       "OPPrefix": row.OPPrefix,
-      "OPNo":row.OPNo,
-      "PathDepartment":row.PathDepartment,
+      "OPNo": row.OPNo,
+      "PathDepartment": row.PathDepartment,
       "IsPathologistDr": row.IsPathologistDr,
       "OPD_Billing_CounterId": row.OPD_Billing_CounterId,
       "OPD_Receipt_CounterId": row.OPD_Receipt_CounterId,
-      "OPD_Refund_Bill_CounterId":row.OPD_Refund_Bill_CounterId,
+      "OPD_Refund_Bill_CounterId": row.OPD_Refund_Bill_CounterId,
       "OPD_Advance_CounterId": row.OPD_Advance_CounterId,
       "OPD_Refund_Advance_CounterId": row.OPD_Refund_Advance_CounterId,
-      "IPD_Advance_CounterId":row.IPD_Advance_CounterId,
+      "IPD_Advance_CounterId": row.IPD_Advance_CounterId,
       "IPD_Billing_CounterId": row.IPD_Billing_CounterId,
       "IPD_Receipt_CounterId": row.IPD_Receipt_CounterId,
       "IPD_Refund_of_Bill_CounterId": row.IPD_Refund_of_Bill_CounterId,
@@ -194,65 +212,65 @@ console.log(row);
       "PatientTypeSelf": row.PatientTypeSelf,
       "ClassForEdit": row.ClassForEdit,
       "PharmacySales_CounterId": row.PharmacySales_CounterId,
-      "PharmacySalesReturn_CounterId":row.PharmacySalesReturn_CounterId,
+      "PharmacySalesReturn_CounterId": row.PharmacySalesReturn_CounterId,
       "PharmacyReceipt_CounterId": row.PharmacyReceipt_CounterId,
       "ChkPharmacyDue": row.ChkPharmacyDue,
       "G_IsPharmacyPaperSetting": row.G_IsPharmacyPaperSetting,
       "PharmacyPrintName": row.PharmacyPrintName,
-      "G_PharmacyPaperName":row.G_PharmacyPaperName,
+      "G_PharmacyPaperName": row.G_PharmacyPaperName,
       "G_IsOPPaperSetting": row.G_IsOPPaperSetting,
       "G_PharmacyPrintName": row.G_PharmacyPrintName,
       "G_OPPaperName": row.G_OPPaperName,
       "DepartmentId": row.DepartmentId,
       "DoctorId": row.DoctorId,
-      "G_IsIPPaperSetting":row.G_IsIPPaperSetting,
+      "G_IsIPPaperSetting": row.G_IsIPPaperSetting,
       "G_IPPaperName": row.G_IPPaperName,
       "G_OPPrintName": row.G_OPPrintName,
-      "IsOPSaleDisPer":row.IsOPSaleDisPer,
+      "IsOPSaleDisPer": row.IsOPSaleDisPer,
       "OPSaleDisPer": row.OPSaleDisPer,
       "IsIPSaleDisPer": row.IsIPSaleDisPer,
       "IPSaleDisPer": row.IPSaleDisPer,
-      "PatientTypeID":row.PatientTypeSelf,
+      "PatientTypeID": row.PatientTypeSelf,
     }
-    const dialogRef = this._matDialog.open(NewConfigurationComponent, 
-      {    maxWidth: "96vw",
-      maxHeight: "700px !important ", 
-      width: '100%', //, height: '100%' 
-        data : {
-          configObj : m_data,
-         
+    const dialogRef = this._matDialog.open(NewConfigurationComponent,
+      {
+        maxWidth: "90%",
+        maxHeight: "90%",
+        width: '100%', height: '100%',
+        data: {
+          configObj: m_data,
         }
-});
-    
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      
-    });
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.getConfigList();
+      });
   }
- 
- 
+
+
 }
 
 
 export class SchedulerParams {
-  
+
   ScheduleExecuteType: number;
   MonthDay: number;
   WeekDayName: String;
   ExecuteTime: any;
   Query: string;
   IsDelete: any;
-  
+
 
   constructor() {
-      this.ScheduleExecuteType = 0;
-      this.MonthDay = 0;
-      this.WeekDayName = '';
-      this.ExecuteTime = '0';
-      this.Query = '';
-      this.IsDelete = 0;
-     
+    this.ScheduleExecuteType = 0;
+    this.MonthDay = 0;
+    this.WeekDayName = '';
+    this.ExecuteTime = '0';
+    this.Query = '';
+    this.IsDelete = 0;
+
   }
 
 }
- 
+

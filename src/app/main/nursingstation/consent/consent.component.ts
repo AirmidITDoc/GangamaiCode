@@ -10,6 +10,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { NewConsentComponent } from './new-consent/new-consent.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-consent',
@@ -22,6 +23,7 @@ export class ConsentComponent implements OnInit {
   
   sIsLoading: string = '';
   hasSelectedContacts: boolean;
+  SpinLoading: boolean = false;
 
   displayedColumns: string[] = [
     'IpOpType',
@@ -127,6 +129,35 @@ export class ConsentComponent implements OnInit {
           this.getConsentPatientInfoDetailList({ OPIPID: this.currentOPIPID });
         }
      });
+  }
+
+  viewgetConsentReportPdf(element){
+debugger
+    console.log("pdf:", element)
+    setTimeout(() => {
+      this.SpinLoading = true;
+      this._ConsentService.getConsentReportview(
+        element.ConsentId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          this.SpinLoading = false;
+        });
+      });
+
+    }, 100);
   }
 
   onClear() {

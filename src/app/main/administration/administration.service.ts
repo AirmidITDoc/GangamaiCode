@@ -35,19 +35,19 @@ export class AdministrationService {
   public getUserList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
   }
-  public ConfigSettingParamList() {
-    // debugger;
-    return this._httpClient.post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {})
-    // console.log(this.configSettingParam);
-  };
-  public SchedulerParamList() {
-    // debugger;
-    return this._httpClient.post(`Generic/GetByProc?procName=ss_get_schedulerList`, {})
+  // public ConfigSettingParamList() {
+  //   // debugger;
+  //   return this._httpClient.post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {})
+  //   // console.log(this.configSettingParam);
+  // };
+  // public SchedulerParamList() {
+  //   // debugger;
+  //   return this._httpClient.post(`Generic/GetByProc?procName=ss_get_schedulerList`, {})
 
-  };
-  public ConfigUpdate(employee) {
-    return this._httpClient.post("OutPatient/UpdateConfigSetting", employee);
-  }
+  // };
+  // public ConfigUpdate(employee) {
+  //   return this._httpClient.post("OutPatient/UpdateConfigSetting", employee);
+  // }
   public getOPDBillingCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveCashCounterMasterForCombo", {})
   }

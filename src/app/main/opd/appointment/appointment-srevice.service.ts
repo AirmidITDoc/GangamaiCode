@@ -170,11 +170,17 @@ export class AppointmentSreviceService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_CertificateMasterCombo", {})
   }
 
-  public CertificateInsert(employee) {
+  public CertificateInsert(employee, loader=true) {
+    if(loader){
+    this._loaderService.show();
+  }
     return this._httpClient.post("OutPatient/TCertificateInformationSave", employee);
   }
 
-  public CertificateUpdate(employee) {
+  public CertificateUpdate(employee, loader=true) {
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("OutPatient/TCertificateInformationUpdate", employee);
   }
 
@@ -183,6 +189,13 @@ export class AppointmentSreviceService {
   }
   editCertficateForm(param){
     this.mycertificateForm.patchValue(param);
+  }
+
+  public getCertificateReportview(CertificateId, loader=true) {
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.get("OutPatient/view-CertificateInformationPrint?CertificateId=" + CertificateId);
   }
 
   initializeFormGroup() {
