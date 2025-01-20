@@ -1,23 +1,23 @@
 .mat-typography {
-    .mat-table {
+    mat-table {
         border-radius: 4px;
         overflow: auto;
         font-family: inherit;
         min-height: 200px;
-        .mat-header-row,
-        .mat-row {
+        mat-header-row,
+        mat-row {
             min-height: auto;
             height: auto;
         }
-        .mat-header-row {
-            .mat-header-cell {
-                // @include font-size(13px);
-                font-size: 1rem;
+        mat-header-row {
+            mat-header-cell {
+                @include font-size(14px);
+                // font-size: 1rem;
                 color: inherit;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                font-family: $font-primary;
+                // font-family: $font-primary;
                 font-weight: normal;
                 margin: 0;
                 &:not(:first-of-type) {
@@ -29,12 +29,12 @@
                 }
             }
         }
-        .mat-row {
-            .mat-cell {
+        mat-row {
+            mat-cell {
                 @include font-size(13px);
                 word-break: break-word;
                 line-height: 26px;
-                font-family: $font-primary;
+                // font-family: $font-primary;
                 margin: 0;
                 &:not(:first-of-type) {
                     padding: 3px 10px;

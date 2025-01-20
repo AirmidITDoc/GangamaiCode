@@ -8,7 +8,8 @@ fuse-sidebar {
         // margin-right: 10px;
     }
 }
-.fuse-search-sidebar,.fuse-search-sidebar.mat-drawer {
+.fuse-search-sidebar,
+.fuse-search-sidebar.mat-drawer {
     margin: $sidebar-gap 0 0 $sidebar-gap;
     border-radius: 4px;
     font-family: inherit;
@@ -22,12 +23,13 @@ fuse-sidebar {
         }
         .sidebar-body {
             .sidebar-form {
-                form {
+                > form {
                     padding: $sidebar-gap;
                 }
             }
         }
-        .mat-form-field {
+        mat-form-field {
+            width: 100%;
             .mat-form-field-wrapper {
                 padding-bottom: 10px;
             }
@@ -50,13 +52,13 @@ fuse-sidebar {
             }
         }
     }
-    .mat-mdc-radio-group{
+    .mat-mdc-radio-group {
         display: flex !important;
         flex-flow: column !important;
         align-items: start !important;
     }
-    .mat-mdc-raised-button{
-        .mat-icon{
+    .mat-mdc-raised-button {
+        .mat-icon {
             display: inline-flex;
             justify-content: center;
             align-items: center;
