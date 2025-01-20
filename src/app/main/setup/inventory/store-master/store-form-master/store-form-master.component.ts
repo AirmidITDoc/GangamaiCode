@@ -75,7 +75,7 @@ export class StoreFormMasterComponent implements OnInit {
         // if (!this.storeForm.invalid) {
             this.saveflag = true;
             console.log("StoreCategoryMaster Insert:", this.storeForm.value)
-
+debugger
             this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
@@ -100,73 +100,73 @@ export class StoreFormMasterComponent implements OnInit {
         return {
             storeName: [
                 // { name: "required", Message: "storeName  is required" },
-                { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "storeName  should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             storeShortName: [
                 // { name: "required", Message: "storeShortName is required" },
-                { name: "maxlength", Message: "storeShortName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "storeShortName should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             indentPrefix: [
                 // { name: "required", Message: "Indent Prefix is required" },
-                { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             indentNo: [
                 // { name: "required", Message: "Indent No is required" },
-                { name: "maxlength", Message: "Indent No should not be greater than 30 Numbers." },
-                { name: "pattern", Message: "Only Numbers allowed." }
+                // { name: "maxlength", Message: "Indent No should not be greater than 30 Numbers." },
+                // { name: "pattern", Message: "Only Numbers allowed." }
             ],
             grnreturnNoPrefix: [
                 // { name: "required", Message: "GRN Return No Prefix is required" },
-                { name: "maxlength", Message: "GRN Return No Prefix should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "GRN Return No Prefix should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             grnreturnNo: [
                 // { name: "required", Message: "GRN Return No is required" },
-                { name: "maxlength", Message: "GRN Return No should not be greater than 30 Numbers." },
-                { name: "pattern", Message: "Only Numbers allowed." }
+                // { name: "maxlength", Message: "GRN Return No should not be greater than 30 Numbers." },
+                // { name: "pattern", Message: "Only Numbers allowed." }
             ],
             purchasePrefix: [
                 // { name: "required", Message: "Purchase Prefix is required" },
-                { name: "maxlength", Message: "Purchase Prefix should not be greater than 50 char." },
-                { name: "pattern", Message: "Only Characters allowed." }
+                // { name: "maxlength", Message: "Purchase Prefix should not be greater than 50 char." },
+                // { name: "pattern", Message: "Only Characters allowed." }
             ],
             purchaseNo: [
                 // { name: "required", Message: "Purchase No is required" },
-                { name: "maxlength", Message: "Purchase No should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Numbers allowed." }
+                // { name: "maxlength", Message: "Purchase No should not be greater than 30 char." },
+                // { name: "pattern", Message: "Only Numbers allowed." }
             ],
             issueToDeptPrefix: [
                 // { name: "required", Message: "Issue to Dept Prefix is required" },
-                { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
-                { name: "pattern", Message: "Only Characters allowed." }
+                // { name: "maxlength", Message: "Indent Prefix should not be greater than 50 char." },
+                // { name: "pattern", Message: "Only Characters allowed." }
             ],
             issueToDeptNo: [
                 // { name: "required", Message: "Issue to Dept No is required" },
-                { name: "maxlength", Message: "Issue to Dept No should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Numbers allowed." }
+                // { name: "maxlength", Message: "Issue to Dept No should not be greater than 30 char." },
+                // { name: "pattern", Message: "Only Numbers allowed." }
             ],
             grnPrefix: [
                 // { name: "required", Message: "GRN Prefix is required" },
-                { name: "maxlength", Message: "GRN Prefix should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "GRN Prefix should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             grnNo: [
                 // { name: "required", Message: "GRN No is required" },
-                { name: "maxlength", Message: "GRN No should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Numbers allowed." }
+                // { name: "maxlength", Message: "GRN No should not be greater than 30 char." },
+                // { name: "pattern", Message: "Only Numbers allowed." }
             ],
             returnFromDeptNoPrefix: [
                 // { name: "required", Message: "Return From Dept No Prefix is required" },
-                { name: "maxlength", Message: "Return From Dept No Prefix should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "Return From Dept No Prefix should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             returnFromDeptNo: [
                 // { name: "required", Message: "Return From Dept No is required" },
-                { name: "maxlength", Message: "Return From Dept No should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Numbers allowed." }
+                // { name: "maxlength", Message: "Return From Dept No should not be greater than 30 char." },
+                // { name: "pattern", Message: "Only Numbers allowed." }
             ],
             pharSalCountId: [
                 // { name: "required", Message: "Phar Sales Cash Counter is required" }
