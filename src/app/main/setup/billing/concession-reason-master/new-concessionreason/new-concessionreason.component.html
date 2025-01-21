@@ -2,7 +2,9 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Concession Reason Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    New Concession Reason Master
+                </span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -21,7 +23,7 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                        label="concession Reason Name"
+                        label="Concession Reason Name"
                         formControlName="concessionReason"
                         [value]="data?.concessionReason"
                         [formGroup]="concessionForm"

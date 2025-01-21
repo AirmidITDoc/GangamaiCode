@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule, DatePipe } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
@@ -14,7 +14,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import {  MatPaginatorModule } from "@angular/material/paginator";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSortModule } from "@angular/material/sort";

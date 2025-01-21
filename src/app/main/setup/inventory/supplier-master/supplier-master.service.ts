@@ -1,15 +1,12 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
-import { SupplierMaster } from "./supplier-master.component";
-import { gridRequest } from "app/core/models/gridRequest";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
 export class SupplierMasterService {
     supplierForm: FormGroup;
     myformSearch: FormGroup;
-    // registerObj = new SupplierMaster({});
+    
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
@@ -18,10 +15,6 @@ export class SupplierMasterService {
         this.supplierForm = this.createSuppliermasterForm();
     }
 
-    /**
-     * POST–
-
-     */
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
             supplierId: [0],
@@ -149,13 +142,6 @@ export class SupplierMasterService {
             return this._httpClient.PutData("Supplier/Edit/" + Param.supplierId,Param, showLoader);
         } else return this._httpClient.PostData("Supplier/InsertEDMX", Param, showLoader);
     }
-
-    // public updateSupplierMaster(Param: any, showLoader = true) {
-    //     if (Param.regId) {
-    //         return this._httpClient.PutData("OutPatient/RegistrationUpdate" + Param.regId, Param, showLoader);
-    //     } else return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
-    // }
-
    
     public deleteAssignSupplierToStore(param) {
         return this._httpClient.PostData("Inventory/SupplierUpdate", param);

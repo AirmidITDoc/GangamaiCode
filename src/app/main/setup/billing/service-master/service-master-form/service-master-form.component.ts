@@ -10,7 +10,6 @@ import { MatSort } from "@angular/material/sort";
 import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
     selector: "app-service-master-form",

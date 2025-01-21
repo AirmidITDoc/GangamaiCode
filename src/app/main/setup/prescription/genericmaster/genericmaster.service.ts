@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
@@ -25,9 +24,6 @@ export class GenericmasterService {
                 ] 
             ],
             isActive:[false,[Validators.required]]
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // AddedByName: [""],
         });
     }
 

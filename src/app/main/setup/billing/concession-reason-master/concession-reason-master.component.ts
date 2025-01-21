@@ -26,7 +26,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA', width: 800 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                     {
