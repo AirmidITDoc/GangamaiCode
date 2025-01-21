@@ -50,6 +50,7 @@ export class ConfigurationComponent implements OnInit {
     'IPReceiptCounter',
     'IPRefundBillCounter',
     'IPRefofAdvCounter',
+    'PathDepartment',
     'PrintRegAfterReg',
     'OTCharges',
     'PrintOPDCaseAfterVisit',
@@ -109,7 +110,7 @@ export class ConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getConfigList();
-    this.getSchedulerParamList();
+    // this.getSchedulerParamList();
   }
   // toggle sidebar
   toggleSidebar(name): void {
@@ -137,20 +138,20 @@ export class ConfigurationComponent implements OnInit {
   }
 
 
-  getSchedulerParamList() {
-    this.sIsLoading = 'loading-data';
+  // getSchedulerParamList() {
+  //   this.sIsLoading = 'loading-data';
 
-    this._configurationService.SchedulerParamList().subscribe(Visit => {
-      this.dataSource1.data = Visit as SchedulerParams[];
-      this.dataSource1.sort = this.sort;
-      this.dataSource1.paginator = this.paginator;
-      this.sIsLoading = '';
-      // this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
+  //   this._configurationService.SchedulerParamList().subscribe(Visit => {
+  //     this.dataSource1.data = Visit as SchedulerParams[];
+  //     this.dataSource1.sort = this.sort;
+  //     this.dataSource1.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //     // this.click = false;
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+  // }
 
 
   addNewConfigration() {

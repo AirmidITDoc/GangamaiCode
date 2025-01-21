@@ -60,7 +60,8 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                             FirstName</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                            {{contact.MandatoryFirstName}}
+                                            <!-- {{contact.MandatoryFirstName}} -->
+                                            {{ contact.MandatoryFirstName === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -69,7 +70,7 @@
                                             MiddleName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                            {{contact.MandatoryMiddleName}}
+                                            {{contact.MandatoryMiddleName === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -78,7 +79,7 @@
                                             LastName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                            {{contact.MandatoryLastName}}
+                                            {{contact.MandatoryLastName === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -87,7 +88,7 @@
                                             Address
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                            {{contact.MandatoryAddress}}
+                                            {{contact.MandatoryAddress === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -96,7 +97,7 @@
                                             City
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                            {{contact.MandatoryCity}}
+                                            {{contact.MandatoryCity === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -105,7 +106,7 @@
                                             Age
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                            {{contact.MandatoryAge}}
+                                            {{contact.MandatoryAge === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -114,7 +115,7 @@
                                             PhoneNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                            {{contact.MandatoryPhoneNo}}
+                                            {{contact.MandatoryPhoneNo === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -189,12 +190,21 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="PathDepartment">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
+                                            Department Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
+                                            {{contact.DepartmentName}}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="PrintRegAfterReg">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
                                             Print Reg After Reg
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                            {{contact.PrintRegAfterReg}}
+                                            {{contact.PrintRegAfterReg === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -203,7 +213,7 @@
                                             OTCharges
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                            {{contact.OTCharges}}
+                                            {{contact.OTCharges === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -212,7 +222,7 @@
                                             Case After Visit
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                            {{contact.PrintOPDCaseAfterVisit}}
+                                            {{contact.PrintOPDCaseAfterVisit === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -220,7 +230,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
                                             Print IPD After Adm</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                                            {{contact.PrintIPDAfterAdm}}
+                                            {{contact.PrintIPDAfterAdm === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
