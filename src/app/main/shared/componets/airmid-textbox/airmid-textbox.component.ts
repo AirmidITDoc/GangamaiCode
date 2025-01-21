@@ -177,8 +177,7 @@ export class AirmidTextboxComponent implements
         this.valueChange.emit(input.value);
     }
     onKeyUp(event:Event):void{
-        const input = event.target as HTMLInputElement;
-        this.keyup.emit(input.value);
+        this.keyup.emit(event);
     }
     onChange(event:Event):void{
         const input = event.target as HTMLInputElement;

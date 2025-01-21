@@ -183,7 +183,7 @@ export class ItemFormMasterComponent implements OnInit {
                     { name: "pattern", Message: "Special char not allowed." }
                 ],
                 itemShortName:[
-                    // { name: "required", Message: "Item Name is required" },
+                    { name: "required", Message: "Item Name is required" },
                     { name: "maxlength", Message: "Item Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Special char not allowed." }
                 ],
@@ -216,8 +216,8 @@ export class ItemFormMasterComponent implements OnInit {
                 ],
                 reOrder:[
                     { name: "required", Message: "ReOrder is required" },
-                    { name: "maxlength", Message: "ReOrder should not be greater than 50 char." },
-                    { name: "pattern", Message: "Special char not allowed." }
+                    // { name: "maxlength", Message: "ReOrder should not be greater than 50 char." },
+                    { name: "pattern", Message: "Only NUMBER allowed." }
                 ],
                 cgst:[
                     { name: "required", Message: "C-GST required" },

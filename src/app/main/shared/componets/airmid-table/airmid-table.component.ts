@@ -34,6 +34,7 @@ export class AirmidTableComponent implements OnInit {
     // }
     headers = [];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    public defaultColumnWidth = 120;
     ngOnInit(): void {
         this.bindGridData();
     }

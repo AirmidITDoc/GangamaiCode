@@ -151,7 +151,7 @@
 // }
 
 // Override styles for elements within mat-form-field
-.mat-form-field {
+mat-form-field {
     @include font-size(13px);
     font-family: $font-primary;
     @include themed() {

@@ -14,17 +14,12 @@
                     <mat-icon style="width: 20px;height: 20px;">close</mat-icon>
                 </button> -->
                 <div class="comman-date-container">
-                    <app-common-date [screenFrom]="screenFromString"
-                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    <!-- <div class="comman-date">
-                       
-                     </div> -->
-                    <!-- <div class="close-icon">
-                        <button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
-                            <mat-icon style="width: 20px;height: 20px;">close</mat-icon>
+                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
                         </button>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,9 +43,7 @@
                                             [formGroup]="personalFormGroup"></app-airmid-datepicker> -->
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                            <input matInput [matDatepicker]="picker1" [min]="minDate"
-                                                [(ngModel)]="registerObj.regDate" placeholder="Choose a Date"
-                                                name="Date" formControlName="RegDate">
+                                            <input matInput [matDatepicker]="picker1" [min]="minDate" [(ngModel)]="registerObj.regDate" placeholder="Choose a Date" name="Date" formControlName="RegDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
                                         </mat-form-field>
@@ -60,18 +53,12 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Prefix" formControlName="PrefixId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
-                                            [validations]="getValidationMessages().prefixId" ValueField="prefixId"
-                                            TextField="prefixName" (selectionChange)="onChangePrefix($event)"
-                                            ApiUrl="Prefix/get-prefixs">
+                                        <airmid-autocomplete label="Prefix" formControlName="PrefixId" [formGroup]="personalFormGroup" [value]="registerObj?.prefixId" [validations]="getValidationMessages().prefixId" ValueField="prefixId" TextField="prefixName" (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="First Name" formControlName="FirstName"
-                                            [value]="registerObj.firstName" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().firstName" [maxLength]="50">
+                                        <airmid-textbox label="First Name" formControlName="FirstName" [value]="registerObj.firstName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().firstName" [maxLength]="50">
                                         </airmid-textbox>
                                         <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>First Name</mat-label>
@@ -87,9 +74,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Middle Name" formControlName="MiddleName"
-                                            [value]="registerObj.middleName" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().middleName" [maxLength]="50">
+                                        <airmid-textbox label="Middle Name" formControlName="MiddleName" [value]="registerObj.middleName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().middleName" [maxLength]="50">
                                         </airmid-textbox>
 
                                         <!-- <mat-form-field appearance="outline" fxFlex>
@@ -108,9 +93,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Last Name" formControlName="LastName"
-                                            [value]="registerObj.lastName" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().lastName" [maxLength]="50">
+                                        <airmid-textbox label="Last Name" formControlName="LastName" [value]="registerObj.lastName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().lastName" [maxLength]="50">
                                         </airmid-textbox>
 
                                         <!-- <mat-form-field appearance="outline" fxFlex>
@@ -128,10 +111,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Gender" formControlName="GenderId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
-                                            [validations]="getValidationMessages().genderId" #ddlGender
-                                            [disabled]="true" [mode]="autocompleteModegender">
+                                        <airmid-autocomplete label="Gender" formControlName="GenderId" [formGroup]="personalFormGroup" [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId" #ddlGender [disabled]="true" [mode]="autocompleteModegender">
                                         </airmid-autocomplete>
 
                                     </div>
@@ -151,103 +131,72 @@
 
                                     <!-- </div> -->
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup"
-                                            formControlName="DateOfBirth"
-                                            [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
                                     </div>
 
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                      
 
-                                        <airmid-textbox label="aadharcardno" formControlName="aadharCardNo"
-                                            [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup"
-                                            [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
+
+                                        <airmid-textbox label="aadharcardno" formControlName="aadharCardNo" [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup" [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Address" formControlName="Address"
-                                            [value]="registerObj.address" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().address">
+                                        <airmid-textbox label="Address" formControlName="Address" [value]="registerObj.address" [formGroup]="personalFormGroup" [validations]="getValidationMessages().address">
                                         </airmid-textbox>
-                                       
+
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
 
-                                        <airmid-autocomplete label="Area" formControlName="AreaId"
-                                            [value]="registerObj?.areaId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().areaId"
-                                            [mode]="autocompleteModearea">
+                                        <airmid-autocomplete label="Area" formControlName="AreaId" [value]="registerObj?.areaId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId" [mode]="autocompleteModearea">
                                         </airmid-autocomplete>
 
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <airmid-autocomplete label="City" formControlName="CityId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj?.cityId"
-                                            [validations]="getValidationMessages().cityId" ValueField="cityId"
-                                            TextField="cityName" (selectionChange)="onChangecity($event)"
-                                            ApiUrl="CityMaster/get-cities">
+                                        <airmid-autocomplete label="City" formControlName="CityId" [formGroup]="personalFormGroup" [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="State" formControlName="StateId"
-                                            [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
-                                            [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
-                                            [mode]="autocompleteModestate" (selectionChange)="onChangestate($event)">
+                                        <airmid-autocomplete label="State" formControlName="StateId" [value]="registerObj?.stateId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState [mode]="autocompleteModestate" (selectionChange)="onChangestate($event)">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Country" formControlName="CountryId"
-                                            [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
-                                            [disabled]="true" [validations]="getValidationMessages().countryId"
-                                            #ddlCountry [mode]="autocompleteModecountry">
+                                        <airmid-autocomplete label="Country" formControlName="CountryId" [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().countryId" #ddlCountry [mode]="autocompleteModecountry">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="MaritalStatusId" formControlName="MaritalStatusId"
-                                            [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().maritalStatusId"
-                                            [mode]="autocompleteModemstatus">
+                                        <airmid-autocomplete label="MaritalStatusId" formControlName="MaritalStatusId" [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().maritalStatusId" [mode]="autocompleteModemstatus">
                                         </airmid-autocomplete>
                                     </div>
                                     <!-- Phone number -->
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div fxLayout="row" class="gap-8">
 
-                                            <airmid-textbox label="MobileNo" formControlName="MobileNo"
-                                                [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
-                                                [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+                                            <airmid-textbox label="MobileNo" formControlName="MobileNo" [value]="registerObj.mobileNo" [formGroup]="personalFormGroup" [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                                             </airmid-textbox>
-                                         
-                                            <airmid-textbox label="PhoneNo" formControlName="PhoneNo"
-                                                [validations]="getValidationMessages().phoneNo"
-                                                [value]="registerObj.phoneNo" [formGroup]="personalFormGroup"
-                                                [maxLength]="10">
+
+                                            <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [validations]="getValidationMessages().phoneNo" [value]="registerObj.phoneNo" [formGroup]="personalFormGroup" [maxLength]="10">
                                             </airmid-textbox>
                                         </div>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="ReligionId" formControlName="ReligionId"
-                                            [value]="registerObj?.religionId" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().religionId"
-                                            [mode]="autocompleteModereligion">
+                                        <airmid-autocomplete label="ReligionId" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion">
                                         </airmid-autocomplete>
                                     </div>
                                     <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
 
                                         <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                            <input matInput [matDatepicker]="picker2" [min]="minDate"
-                                                placeholder="Choose a Date" name="Date" formControlName="appTime">
+                                            <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a Date" name="Date" formControlName="appTime">
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                             <mat-datepicker #picker2></mat-datepicker>
                                         </mat-form-field>

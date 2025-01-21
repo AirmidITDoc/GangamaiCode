@@ -41,22 +41,22 @@ export class RegistrationComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
-            { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', },
 
-            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 200, actions: [
+                heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onEdit(data);
@@ -201,7 +201,6 @@ export class RegistrationComponent implements OnInit {
         });
     }
     getRegistrationlistrview() {
-debugger
         setTimeout(() => {
 
             let param = {

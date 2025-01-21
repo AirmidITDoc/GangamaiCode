@@ -1,7 +1,7 @@
 $modal-gap: 16px;
-$modalHeader: 45px;
+$modalHeader: 50px;
 .mat-typography {
-    .mat-dialog-container {
+    mat-dialog-container {
         .modal-wrapper {
             overflow: auto;
             &.grid-container {
@@ -17,7 +17,7 @@ $modalHeader: 45px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 4px $modal-gap;
+                    padding: 8px $modal-gap;
                     max-height: $modalHeader;
                     .modal-header-title {
                         @include font-size(16px);
@@ -37,6 +37,10 @@ $modalHeader: 45px;
                             justify-content: center;
                             align-items: center;
                         }
+                    }
+                    .close-icon {
+                        cursor: pointer;
+                        margin-left: 12px;
                     }
                     .comman-date-container {
                         display: flex;
