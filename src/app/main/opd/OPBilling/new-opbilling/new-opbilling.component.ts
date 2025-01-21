@@ -379,6 +379,8 @@ export class NewOPBillingComponent implements OnInit {
   } 
   IsDocEditable:any;
   DocDoctorName:any;
+  Editableprice:any;
+  vIsEditable:any;
   getSelectedObj(obj) {
 console.log(obj)  
     if (this.dataSource.data.length > 0) {
@@ -400,6 +402,7 @@ console.log(obj)
       this.CreditedtoDoctor = obj.CreditedtoDoctor;
       this.IsDocEditable = obj.IsDocEditable;
       this.DocDoctorName = obj.DoctorName;
+      this.vIsEditable = obj.IsEditable
       if (this.IsDocEditable == true || this.CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
@@ -412,6 +415,11 @@ console.log(obj)
         this.registeredForm.get('DoctorID').clearValidators();
         this.registeredForm.get('DoctorID').updateValueAndValidity();
         this.registeredForm.get('DoctorID').disable();
+      }
+      if(this.vIsEditable == true){
+        this.Editableprice = 1
+      }else{
+        this.Editableprice = 0
       }
     }
     else { 
@@ -427,6 +435,7 @@ console.log(obj)
       this.CreditedtoDoctor = obj.CreditedtoDoctor;
       this.IsDocEditable = obj.IsDocEditable;
       this.DocDoctorName = obj.DoctorName;
+      this.vIsEditable = obj.IsEditable
       if (this.IsDocEditable == true || this.CreditedtoDoctor == true) {
         this.isDoctor = true;
         this.registeredForm.get('DoctorID').reset();
@@ -438,6 +447,11 @@ console.log(obj)
         this.registeredForm.get('DoctorID').clearValidators();
         this.registeredForm.get('DoctorID').updateValueAndValidity();
         this.registeredForm.get('DoctorID').disable();
+      }
+      if(this.vIsEditable == true){
+        this.Editableprice = 1
+      }else{
+        this.Editableprice = 0
       }
     } 
     this.getAdmittedDoctorCombo(); 

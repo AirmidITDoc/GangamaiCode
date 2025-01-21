@@ -435,6 +435,7 @@ ServiceList:any=[];
       TariffId: this.selectedAdvanceObj.TariffId,
       ClassId: this.Serviceform.get('ChargeClass').value.ClassId || 0
     };
+    console.log(m_data)
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
         this.filteredOptions = data;
@@ -449,6 +450,8 @@ ServiceList:any=[];
   }
   IsPackage:any;
   DocDoctorName:any;
+  vIsEditable:any;
+  Editableprice:any; 
   getSelectedObj(obj) { 
     console.log(obj)
     this.SrvcName = obj.ServiceName;
@@ -460,6 +463,7 @@ ServiceList:any=[];
     this.b_isRad = obj.IsRadiology; 
     this.IsPackage = obj.IsPackage;
     //this.IsDocEditable = obj.IsDocEditable;
+    this.vIsEditable = obj.IsEditable
     this.DocDoctorName = obj.DoctorName;
 
     if (obj.IsDocEditable == true || obj.CreditedtoDoctor == true) {
@@ -474,6 +478,11 @@ ServiceList:any=[];
       this.Serviceform.get('DoctorID').updateValueAndValidity();
       this.Serviceform.get('DoctorID').disable();
       this.isDoctor = false;
+    }
+    if(this.vIsEditable == true){
+      this.Editableprice = 1
+    }else{
+      this.Editableprice = 0
     }
     this.getpackagedetList();
     this.getAdmittedDoctorCombo();

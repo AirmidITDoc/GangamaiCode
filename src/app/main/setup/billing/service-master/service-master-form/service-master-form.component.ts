@@ -74,8 +74,8 @@ export class ServiceMasterFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.data) {
-      this.getServicewiseClassMasterList();
+   
+    if (this.data) { 
       this.registerObj = this.data.registerObj;
       this.vServiceName = this.registerObj.ServiceName
       this.vPrintOrder = this.registerObj.PrintOrder
@@ -94,11 +94,10 @@ export class ServiceMasterFormComponent implements OnInit {
         this.vemg_per = this.registerObj.EmgPer
       }
     }
-
+    this.getClassList() 
     this.getGroupNameCombobox();
     this.getTariffNameCombobox();
-    this.getSubgroupNameCombobox();
-    this.getClassList() 
+    this.getSubgroupNameCombobox(); 
     this.getDoctorNameCombobox();
     //  this.getServicewiseClassMasterList(); 
    // this._serviceMasterService.myform.get('EffectiveDate').setValue(new Date());
@@ -179,26 +178,28 @@ export class ServiceMasterFormComponent implements OnInit {
     });
   }
   getClassList() {
-    this._serviceMasterService.getClassMasterList().subscribe(Menu => {
-      this.DSServicedetailList.data = Menu as Servicedetail[];;
-      this.DSServicedetailList.sort = this.sort;
-      this.DSServicedetailList.paginator = this.paginator;
-      console.log(this.DSServicedetailList.data)
-    });
+    if(this.registerObj.ServiceId){
+      var data = {
+        ServiceId: this.registerObj.ServiceId || 0
+      }
+      this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
+        this.DSServicedetailList.data = Menu as Servicedetail[];
+        console.log(this.DSServicedetailList.data)
+      });
+    }else{
+      this._serviceMasterService.getClassMasterList().subscribe(Menu => {
+        this.DSServicedetailList.data = Menu as Servicedetail[];;
+        this.DSServicedetailList.sort = this.sort;
+        this.DSServicedetailList.paginator = this.paginator;
+        console.log(this.DSServicedetailList.data)
+      });
+    } 
   }
   gettableclassrate(element, ClassRate) {
     console.log(element)
     // this.DSServicedetailList[element.ClassId]["ClassRate"]=ClassRate;
   }
-  getServicewiseClassMasterList() {
-    var data = {
-      ServiceId: this.data.registerObj.ServiceId || 0
-    }
-    this._serviceMasterService.getServicewiseClassMasterList(data).subscribe(Menu => {
-      this.DSServicedetailList.data = Menu as Servicedetail[];
-      console.log(this.DSServicedetailList.data)
-    });
-  }
+ 
 
 
   //filters

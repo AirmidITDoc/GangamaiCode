@@ -222,10 +222,11 @@
             
                                             <mat-form-field appearance="outline" #Price fxFlex="10%">
                                                 <mat-label>Price</mat-label>
-                                                <input matInput [(ngModel)]="vPrice" name="price" #price
+                                                <input matInput [(ngModel)]="vPrice" name="price" #price  
+                                                [readonly]="Editableprice == 1"
                                                     (keyup)="calculateTotalAmtbyprice()" (keypress)="keyPressCharater($event)"
                                                     formControlName="price" required type="text" onlyNumber id="Price" #price
-                                                    (keydown)="onEnterorice($event)">
+                                                    (keydown)="onEnterorice($event)" >
                                                 <mat-error
                                                     *ngIf="registeredForm.get('price').invalid && registeredForm.get('price').touched">
                                                     Price is required</mat-error>

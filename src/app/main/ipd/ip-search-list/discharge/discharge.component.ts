@@ -237,6 +237,14 @@ export class DischargeComponent implements OnInit {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
+    if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
+      if(this.vDeptCount < 0)
+        this.toastr.warning('Please be informed that your discharge initiated to department', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+      return;
+    }
+
     if(this.vDeptCount > 0){
       if(this.vApproved_Cnt != this.vDeptCount){
         this.toastr.warning('Please be informed that your discharge approval is still pending.', 'Warning !', {

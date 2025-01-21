@@ -37,7 +37,7 @@
 
                             <form [formGroup]="InitiateForm">
                                 <mat-form-field appearance="outline" fxFlex="60%">
-                                    <mat-label>Department Name</mat-label>
+                                    <mat-label>Store/Department Name</mat-label>
                                     <input type="text" name="DepartmentName" formControlName="DepartmentName"
                                         #DepartmentName placeholder="DepartmentName" matInput
                                         [matAutocomplete]="autoDep" required id="myInput" [(ngModel)]="vDepartmentName">
@@ -75,7 +75,7 @@
 
                                 <ng-container matColumnDef="DepartmentName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        DepartmentName
+                                        Store/DepartmentName
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <span> {{contact.DepartmentName}}</span>
