@@ -151,6 +151,11 @@
 // }
 
 // Override styles for elements within mat-form-field
+// .mat-typography {
+//     mat-form-field,mat-select {
+//         @include font-size(13px);
+//     }
+// }
 mat-form-field {
     @include font-size(13px);
     font-family: $font-primary;
@@ -179,8 +184,8 @@ mat-form-field {
                             color: t($input-control-label);
                         }
                     }
-                    .mat-date-range-input{
-                        .mat-date-range-input-separator{
+                    .mat-date-range-input {
+                        .mat-date-range-input-separator {
                             color: inherit;
                         }
                     }
@@ -263,7 +268,7 @@ mat-form-field {
         }
     }
 }
-.mat-form-field-100{
+.mat-form-field-100 {
     .mat-form-field {
         width: 100%;
         .mat-form-field-wrapper {

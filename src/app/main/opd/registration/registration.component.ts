@@ -116,7 +116,7 @@ export class RegistrationComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '95%',
+                // height: '95%',
                 width: '90%',
 
             });

@@ -47,7 +47,9 @@ $modalHeader: 50px;
                         flex-flow: row;
                         gap: 4px;
                         align-items: center;
-                        .mat-form-field {
+                        mat-form-field {
+                            @include font-size(12px);
+                            max-height: 40px;
                             .mat-form-field-wrapper {
                                 margin: 0;
                                 padding: 0;
