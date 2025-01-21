@@ -117,12 +117,11 @@ export class ConfigurationService {
     // }
     return this._httpClient.post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {})
   };
-  public SchedulerParamList(loader = true) {
-    if (loader) {
-      this.loaderService.show();
-    }
-    return this._httpClient.post(`Generic/GetByProc?procName=ss_get_schedulerList`, {})
-  };
-  
+  // public SchedulerParamList(loader = true) {
+  //   if (loader) {
+  //     this.loaderService.show();
+  //   }
+  //   return this._httpClient.post(`Generic/GetByProc?procName=ss_get_schedulerList`, {})
+  // };
 
 }

@@ -217,68 +217,97 @@
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>IPD Advance Counter</mat-label>
-                    <mat-select formControlName="IPD_Advance_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="iPDAdvanceFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select IPD Advance Counter" matInput
+                      formControlName="IPD_Advance_CounterId" [matAutocomplete]="autoIPD_Advance_CounterId" required
+                       [(ngModel)]="selectedIpdAdvCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Advance_CounterId').setValue(''); isIpdAdvCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Advance_CounterId').setValue(''); isIpdAdvCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoIPD_Advance_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdAdvCounter">
+                      <mat-option *ngFor="let option of filteredOptionsIpdAdvCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredIPDAdvance | async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>IPD Billing Counter</mat-label>
-                    <mat-select formControlName="IPD_Billing_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="iPDBillingFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select IPD Billing Counter" matInput
+                      formControlName="IPD_Billing_CounterId" [matAutocomplete]="autoIPD_Billing_CounterId" required
+                       [(ngModel)]="selectedIpdBillCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Billing_CounterId').setValue(''); isIpdBillCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Billing_CounterId').setValue(''); isIpdBillCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoIPD_Billing_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdBillCounter">
+                      <mat-option *ngFor="let option of filteredOptionsIpdBillCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredIPDBilling | async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>IPD Receipt Counter</mat-label>
-                    <mat-select formControlName="IPD_Receipt_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="iPDReceiptFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select IPD Receipt Counter" matInput
+                      formControlName="IPD_Receipt_CounterId" [matAutocomplete]="autoIPD_Receipt_CounterId" required
+                       [(ngModel)]="selectedIpdReceiptCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Receipt_CounterId').setValue(''); isIpdReceiptCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Receipt_CounterId').setValue(''); isIpdReceiptCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoIPD_Receipt_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdReceiptCounter">
+                      <mat-option *ngFor="let option of filteredOptionsIpdReceiptCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredIPDReceipt | async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>IPD Refund Of Bill Counter</mat-label>
-                    <mat-select formControlName="IPD_Refund_of_Bill_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="ipdRefundOfBillFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select IPD RefundOfBill Counter" matInput
+                      formControlName="IPD_Refund_of_Bill_CounterId" [matAutocomplete]="autoIPD_Refund_of_Bill_CounterId" required
+                       [(ngModel)]="selectedIpdRefundOfBillCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(''); isIpdRefundOfBillCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(''); isIpdRefundOfBillCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoIPD_Refund_of_Bill_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdRefundOfBillCounter">
+                      <mat-option *ngFor="let option of filteredOptionsIpdRefundOfBillCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredIpdRefundBill | async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>IPD Refund Advance Counter</mat-label>
-                    <mat-select formControlName="IPD_Refund_of_Advance_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="ipdRefundOfAdvanceFilterCtrl"
-                          [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select IPD Refund Advance Counter" matInput
+                      formControlName="IPD_Refund_of_Advance_CounterId" [matAutocomplete]="autoIPD_Refund_of_Advance_CounterId" required
+                       [(ngModel)]="selectedIpdRefundOfAdvanceCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(''); isIpdRefundOfAdvanceCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(''); isIpdRefundOfAdvanceCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoIPD_Refund_of_Advance_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdRefundOfAdvanceCounter">
+                      <mat-option *ngFor="let option of filteredOptionsIPDRefundOfAdvanceCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredIpdRefundOfAdvance| async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                 </div>
@@ -295,30 +324,45 @@
 
               <mat-card>
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Pathology Department</mat-label>
-                    <mat-select formControlName="DepartmentId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="pathDepartmentFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                      formControlName="DepartmentId" [matAutocomplete]="autoDepartmentId" required
+                       [(ngModel)]="selectedDepartment">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('DepartmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoDepartmentId="matAutocomplete" [displayWith]="getOptionTextDepartment"
+                    (optionSelected)="onDepartmentSelected($event)">
+                      <mat-option *ngFor="let option of filteredOptionsDepartment | async" [value]="option">
+                        {{option.DepartmentName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredPathDepartment| async" [value]="element">
-                        {{element.DepartmentName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
-                  
+
                   <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Pathology Doctor Name</mat-label>
-                    <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="pathDoctorFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <mat-label>Pathology Doctor</mat-label>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                      formControlName="DoctorId" [matAutocomplete]="autoDoctorId" required
+                       [(ngModel)]="selectedDoctor">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctor"
+                    (optionSelected)='onDoctorSelect($event.option.value)'>
+                      <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
+                        {{option.Doctorname}} <b>|</b> {{option.DepartmentName }}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredPathDoctor| async" [value]="element">
-                        {{element.Doctorname}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                 </div>
@@ -338,43 +382,59 @@
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Sales Counter</mat-label>
-                    <mat-select formControlName="PharmacySales_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="pharmacySalesFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Sales Counter" matInput
+                      formControlName="PharmacySales_CounterId" [matAutocomplete]="autoPharmacySales_CounterId" required
+                       [(ngModel)]="selectedSalesCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('PharmacySales_CounterId').setValue(''); isSalesCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('PharmacySales_CounterId').setValue(''); isSalesCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoPharmacySales_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesCounter">
+                      <mat-option *ngFor="let option of filteredOptionsSalesCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredPharmacySales | async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Sales Return Counter</mat-label>
-                    <mat-select formControlName="PharmacySalesReturn_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="pharmacySalesReturnFilterCtrl"
-                          [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Sales Return Counter" matInput
+                      formControlName="PharmacySalesReturn_CounterId" [matAutocomplete]="autoPharmacySalesReturn_CounterId" required
+                       [(ngModel)]="selectedSalesReturnCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('PharmacySalesReturn_CounterId').setValue(''); isSalesReturnCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('PharmacySalesReturn_CounterId').setValue(''); isSalesReturnCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoPharmacySalesReturn_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesReturnCounter">
+                      <mat-option *ngFor="let option of filteredOptionsSalesReturnCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredPharmacySalesReturn | async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Sales Receipt Counter</mat-label>
-                    <mat-select formControlName="PharmacyReceipt_CounterId" placeholder="Bank" #singleSelect>
-                      <mat-option>
-                        <ngx-mat-select-search [formControl]="pharmacySalesReceiptFilterCtrl"
-                          [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
+                    <input matAutocompletePosition="below" type="text" placeholder="Select Sales Receipt Counter" matInput
+                      formControlName="PharmacyReceipt_CounterId" [matAutocomplete]="autoPharmacyReceipt_CounterId" required
+                       [(ngModel)]="selectedSalesReceiptCounter">
+                    <span matSuffix style="display: flex;">
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('PharmacyReceipt_CounterId').setValue(''); isSalesReceiptCounterSelected = false;">close</mat-icon>
+                      <mat-icon class="mat-icon-close"
+                        (click)="configFormGroup.get('PharmacyReceipt_CounterId').setValue(''); isSalesReceiptCounterSelected = false;">search</mat-icon>
+                    </span>
+  
+                    <mat-autocomplete #autoPharmacyReceipt_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesReceiptCounter">
+                      <mat-option *ngFor="let option of filteredOptionsSalesReceiptCounter | async" [value]="option">
+                        {{option.CashCounterName}}
                       </mat-option>
-                      <mat-option *ngFor="let element of filteredPharmacySalesReceipt| async" [value]="element">
-                        {{element.CashCounterName}}
-                      </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                   </mat-form-field>
                 </div>
               </mat-card>

@@ -58,8 +58,8 @@ export class AdministrationService {
     public getPathDepartmentCombo() {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveDocDepartmentMasterForCombo", {})
     }
-    public getPathologistDoctorCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
+    public getPathologistDoctorCombo(param) { //Retrieve_PathologistDoctorMasterForCombo
+      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", param)
     }
     public getRoleCombobox() {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoleMasterForCombo", {})
@@ -71,6 +71,7 @@ export class AdministrationService {
     public getDoctorMasterCombo() {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
     }
+
     
     public getwebRoleCombobox() {
       return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_WebRoleList", {})
