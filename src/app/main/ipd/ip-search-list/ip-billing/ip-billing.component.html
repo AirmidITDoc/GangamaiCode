@@ -110,7 +110,7 @@
                                             <input matInput [(ngModel)]="vPrice" name="price" #price
                                                 (keyup)="calculateTotalAmt()" formControlName="price" required
                                                 type="text" OnlyNumber id="price" (keydown)="onEnterprice($event)"
-                                                (keypress)="keyPressCharater($event)">
+                                                (keypress)="keyPressCharater($event)" [readonly]="Editableprice == 1">
                                             <mat-error
                                                 *ngIf="Serviceform.get('price').invalid && Serviceform.get('price').touched">
                                                 Price is required</mat-error>
