@@ -23,7 +23,8 @@ export class UnitmasterService {
             unitId: [0],
             unitName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    Validators.required, 
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

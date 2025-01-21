@@ -1,7 +1,6 @@
 
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
@@ -12,7 +11,6 @@ export class PrescriptionclassmasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        // this.prescriptionForm = this.createPrescriptionclassForm();
         this.myformSearch = this.createSearchForm();
     }
 

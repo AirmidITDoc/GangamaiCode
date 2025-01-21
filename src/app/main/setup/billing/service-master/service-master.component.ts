@@ -5,8 +5,7 @@ import { ServiceMasterFormComponent } from "./service-master-form/service-master
 import { ToastrService } from "ngx-toastr";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 
 
@@ -33,7 +32,6 @@ export class ServiceMasterComponent implements OnInit {
             { heading: "Service Short Desc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            // { heading: "IsEditable", key: "isEditable", sort: true, align: 'left', emptySign: 'NA',width:100 },
             { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
             { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 100, type: 21 },
             { heading: "IsPathology", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 19 },
@@ -42,7 +40,7 @@ export class ServiceMasterComponent implements OnInit {
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "IsEmergency", key: "isEmergency", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "EmgAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {

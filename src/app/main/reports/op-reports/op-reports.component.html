@@ -9,15 +9,15 @@
 
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                 style="font-size: 20px;width: 70%; font-weight: 400;">
-               OP REPORTS
+                OP REPORTS
             </span>
 
             <div fxLayout="column" fxLayout.gt-xs="row">
 
-                <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
+                <!-- <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
                     (click)="onClose()">
                     close
-                </span>
+                </span> -->
             </div>
         </div>
 
@@ -39,7 +39,7 @@
                                 <div class="spinner-border text-danger"></div>
                             </div>
 
-                            <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+                            <!-- <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                                 <ng-container matColumnDef="ReportName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Report
                                         Name
@@ -75,8 +75,22 @@
                                     [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
                                     [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                            </mat-table>
+                            </mat-table> -->
 
+                            <form [formGroup]="ReportFormGroup">
+                                <!-- <input type="hidden" name="reportId" formControlName="reportId" 
+                                    [(ngModel)]="reportId">
+
+                               
+                             <airmid-autocomplete label="ReportName" formControlName="ReportName" [value]="ReportName"
+                                [formGroup]="ReportFormGroup" [validations]="getValidationMessages().ReportName"
+                                [mode]="autocompleteMode">
+                            </airmid-autocomplete> -->
+
+                                <airmid-autocomplete [options]="autocompleteOptions" (selectionChange)="selectChange($event)" formControlName="ReportName"
+                                [formGroup]="ReportFormGroup" [value]="ReportName" [mode]="autocompleteOptions"></airmid-autocomplete>
+                          
+                            </form>
                         </div>
 
                     </div>
@@ -84,13 +98,13 @@
                     <div>
 
                         <div class="dialog-content-wrapper" style="width: 100%;">
-                            <!-- ================================ LABEL HEADER  -->
+                          
                             <form [formGroup]="_OPReportsService.userForm" style="padding: 6px 6px 5px 5px;"
                                 fusePerfectScrollbar>
                                 <div>
                                     <span
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);padding: 10px;">Selected
-                                        Report :<span style="font-weight: bold;">{{ReportName}}</span>  | </span>
+                                        Report :<span style="font-weight: bold;">{{ReportName}}</span> | </span>
 
                                     <span
                                         style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);float: right;">Current
@@ -154,7 +168,7 @@
 
                                         </mat-form-field>
                                     </div>
-                                  
+
                                 </div>
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
@@ -165,8 +179,6 @@
                                 </div>
                             </form>
 
-
-                            <!-- ================================ LABEL HEADER  -->
                         </div>
 
                     </div>
@@ -175,7 +187,7 @@
 
 
         </div>
-        <!-- / CONTENT -->
+        
     </div>
-    <!-- / CENTER -->
+    
 </div>

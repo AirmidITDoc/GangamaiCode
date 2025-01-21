@@ -113,8 +113,7 @@ export class CrossConsultationComponent implements OnInit {
 
    @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
   onChangeDepartment(e) {
-    debugger
-    this.ddldoctor.SetSelection(e.value);
+        this.ddldoctor.SetSelection(e.value);
 }
 
   getValidationMessages() {
@@ -126,6 +125,12 @@ export class CrossConsultationComponent implements OnInit {
         { name: "required", Message: "Doctor Name is required" }
       ]
     };
+  }
+  selected=""
+  selectChange(obj){
+    
+    this.selected=obj
+    console.log(obj)
   }
 
   onSubmit() {

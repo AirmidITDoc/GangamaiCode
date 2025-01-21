@@ -1,20 +1,18 @@
-import { Inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
 import { ToastrService } from 'ngx-toastr';
-import { APP_CONFIG, AppConfig } from "app/app-config.module";
-import { User } from "../models/user";
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: "root" })
 export class ApiCaller {
     ApiUrl=environment.API_BASE_PATH;
-    constructor(@Inject(APP_CONFIG) private config: AppConfig, public _httpClient: HttpClient, public toastr: ToastrService) {
+    constructor(public _httpClient: HttpClient, public toastr: ToastrService) {
     }
     GetData(url: string, passToken: boolean = true): Observable<any> {
-        var httpOptions = {};
+        let httpOptions = {};
         if (passToken) {
             let currentUser=JSON.parse(localStorage.getItem("currentUser"));
             httpOptions = {
@@ -27,7 +25,6 @@ export class ApiCaller {
         return this._httpClient.get(`${this.ApiUrl}${url}`, httpOptions).pipe(
             map((data: apiResponse) => {
                 if (data.statusCode == 200) {
-                    console.log('get : ' + data.data);
                     return data.data;
 
                 }
@@ -45,7 +42,7 @@ export class ApiCaller {
     }
 
     PostData(url: string, data: any,passToken: boolean = true) {
-        var httpOptions = {};
+        let httpOptions = {};
         if (passToken) {
             let currentUser=JSON.parse(localStorage.getItem("currentUser"));
             httpOptions = {
@@ -57,7 +54,6 @@ export class ApiCaller {
         };
         return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                console.log('Post : ' + data.data);
                 return data?.data || data;
             }
             else {
@@ -69,7 +65,7 @@ export class ApiCaller {
     }
 
     PutData(url: string, data: any,passToken: boolean = true) {
-        var httpOptions = {};
+        let httpOptions = {};
         if (passToken) {
             let currentUser=JSON.parse(localStorage.getItem("currentUser"));
             httpOptions = {
@@ -81,7 +77,6 @@ export class ApiCaller {
         };
         return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                console.log('Put : ' + data.data);
                 return data?.data || data;
             }
             else {
@@ -93,7 +88,7 @@ export class ApiCaller {
     }
 
     DeleteData(url: string,passToken: boolean = true) {
-        var httpOptions = {};
+        let httpOptions = {};
         if (passToken) {
             let currentUser=JSON.parse(localStorage.getItem("currentUser"));
             httpOptions = {
@@ -103,9 +98,8 @@ export class ApiCaller {
                 })
             };
         };
-        return (this._httpClient.delete<any>(`${this.ApiUrl}${url}`).pipe(map((data: apiResponse) => {
+        return (this._httpClient.delete<any>(`${this.ApiUrl}${url}`, httpOptions).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
-                console.log('Delete : ' + data.data);
                 return data?.data || data;
 
             }

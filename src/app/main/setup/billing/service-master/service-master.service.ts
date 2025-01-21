@@ -1,8 +1,5 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
-import { LoaderService } from "app/core/components/loader/loader.service";
-import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
@@ -14,7 +11,6 @@ export class ServiceMasterService {
     edit_data = {};
     constructor(
         private _httpClient: ApiCaller,
-        private _loaderService: LoaderService,
         private _formBuilder: UntypedFormBuilder
     ) {
         this.myform = this.createServicemasterForm();
@@ -78,30 +74,7 @@ export class ServiceMasterService {
     initializeFormGroup() {
         this.createServicemasterForm();
     }
-    // getValidationGroupNameMessages(){
-    //     return {
-    //         GroupId: [
-    //           { name: "required", Message: "Group Name is required" }
-    //       ]
-    //   };
-    // }
-    // getValidationtariffMessages() {
-    //     return {
-    //       TariffId: [
-    //             { name: "required", Message: "Tariff Name is required" }
-    //         ]
-    //     };
-    // }
-    // public getbankMasterList(param: gridRequest, showLoader = true) {
-    //     return this._httpClient.PostData("BankMaster/List", param, showLoader);
-    // }
-
-    // public bankMasterSave(Param: any, id: string ,showLoader = true) {
-    //     if(id)
-    //         return this._httpClient.PutData("bank/"+ id, Param, showLoader);
-    //     else
-    //         return this._httpClient.PostData("bank", Param, showLoader);       
-    // }
+    
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("bank?Id=" + m_data.toString());
@@ -117,13 +90,7 @@ export class ServiceMasterService {
         return this._httpClient.PostData("ClassMaster/List",param);
     }
 
-    // public getServicewiseClassMasterList(param,loader = true) {
-    //     if (loader) {
-    //         this._loaderService.show();
-    //     }
-    //     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServiceClassdetail",param
-    //     );
-    // }
+  
 
     populateForm(param) {
         ;

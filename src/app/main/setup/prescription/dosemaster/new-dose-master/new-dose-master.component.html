@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Dose Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Dose Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -20,9 +20,7 @@
             <form [formGroup]="doseForm">
 
                 <input type="hidden" name="DoseId" formControlName="doseId">
-
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="Dose Name" 
@@ -33,11 +31,8 @@
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
-                    
                     </div>
-                   
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInEnglish" 
@@ -48,7 +43,6 @@
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
-
                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInMarathi" 

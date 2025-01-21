@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { OPReportsService } from './opreports.service';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,14 +20,18 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class OpReportsComponent implements OnInit {
 
- 
+  ReportFormGroup: FormGroup;
+  autocompleteModeReport: string = "Report";
+  ReportName = '';
+  reportId = 0;
+
   UserList: any = [];
   DoctorList: any = [];
   sIsLoading: string = '';
   currentDate = new Date();
- 
-    ReportID: any;
- 
+
+  ReportID: any;
+
   filteredOptionsUser: Observable<string[]>;
   filteredOptionsDoctorMode: Observable<string[]>;
   isUserSelected: boolean = false;
@@ -41,9 +45,8 @@ export class OpReportsComponent implements OnInit {
   optionsUser: any[] = [];
   optionsPaymentMode: any[] = [];
   PaymentMode: any;
- 
-  ReportName: any;
-  
+
+
   SpinLoading: boolean = false;
   AdList: boolean = false;
   FromDate: any;
@@ -53,21 +56,45 @@ export class OpReportsComponent implements OnInit {
   IsLoading: boolean = false;
   searchDoctorList: any = [];
   optionsSearchDoc: any[] = [];
-  Reportsection='OP Reports';
-// Reportsection='Inventory Reports';
+  Reportsection = 'OP Reports';
+  // Reportsection='Inventory Reports';
   FlagDoctorIdSelected: boolean = false;
 
 
-FlagDoctorSelected: boolean = false;
-FlagBillNoSelected: boolean = false;
+  FlagDoctorSelected: boolean = false;
+  FlagBillNoSelected: boolean = false;
 
   displayedColumns = [
     'ReportName'
   ];
 
   dataSource = new MatTableDataSource<ReportDetail>();
+
+  // autocompleteMode: string = "Report";
+  public autocompleteOptions: any[] = [
+    { text: 'Registration Report', value: 'A' },
+    { text: 'AppoitnmentList Report', value: '1' },
+    { text: 'DoctorWise Visit Report', value: 'B' },
+    { text: 'Department Wise count summury', value: 'C' },
+    { text: 'DoctorWise Visit Count Summary', value: 'D' },
+    { text: 'Reference doctor wise Report', value: 'E' },
+    { text: 'Department Wise Count Summary', value: 'F' },
+    { text: 'DoctorWise Visit Count Summary', value: 'G' },
+    { text: 'Appointment List with Service Availed', value: 'H' },
+    { text: 'Cross Consultation Report', value: 'I' },
+    { text: 'Doctor Wise new and Old Patient Report', value: 'J' },
+    { text: 'OP Daily Collection', value: 'K' },
+    { text: 'OP Bill Report', value: 'L' },
+    { text: 'Bill Summary Report', value: 'M' },
+    { text: 'Refund of Bill Reports', value: 'N' },
+    { text: 'OP Daily Collection Summary Reports', value: 'O' },
+    { text: 'OP DAILY COLLECTION USERWISE', value: 'P' },
+    // { text: 'Bank Q (Germany)', value: 'Q' },
+    // { text: 'Bank R (Germany)', value: 'R' }
+  ];
+
   constructor(
-    
+
     public _OPReportsService: OPReportsService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
@@ -82,15 +109,16 @@ FlagBillNoSelected: boolean = false;
 
 
   ngOnInit(): void {
-    
-    if (this._ActRoute.url == "/reports/opreports") 
-      this.Reportsection='OP Reports'
-    if (this._ActRoute.url == "/reports/opmisreports") 
-    this.Reportsection='OP MIS Reports'
-    if (this._ActRoute.url == "/reports/opbillingreport") 
-      this.Reportsection='OP Billing'
-    this.bindReportData();
+    this.ReportFormGroup = this._OPReportsService.CreateReport();
+    if (this._ActRoute.url == "/reports/opreports")
+      this.Reportsection = 'OP Reports'
+    if (this._ActRoute.url == "/reports/opmisreports")
+      this.Reportsection = 'OP MIS Reports'
+    if (this._ActRoute.url == "/reports/opbillingreport")
+      this.Reportsection = 'OP Billing'
+    // this.bindReportData();
     this.GetUserList();
+
 
     this.filteredOptionsUser = this._OPReportsService.userForm.get('UserId').valueChanges.pipe(
       startWith(''),
@@ -98,12 +126,13 @@ FlagBillNoSelected: boolean = false;
 
     );
   }
+ 
 
   bindReportData() {
-   
-var data={
-  ReportSection:this.Reportsection
-}
+
+    var data = {
+      ReportSection: this.Reportsection
+    }
     this._OPReportsService.getDataByQuery(data).subscribe(data => {
       this.dataSource.data = data as any[];
 
@@ -115,18 +144,26 @@ var data={
     this.dateTimeObj = dateTimeObj;
   }
 
-  ReportSelection(el) {
-    this.ReportName = el.ReportName;
-    this.ReportID = el.ReportId;
+  getValidationMessages() {
+    return {
+      ReportName: []
+    }
+  }
+  selectChange(el) {
+    this.ReportName = el.text;
+    this.ReportID = el.value;
+    this.ReportFormGroup.get("ReportName").setValue(this.ReportName)
+
+    debugger
     if (this.ReportName == 'Registration Report') {
-      this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=false
-      } 
+      this.FlagVisitSelected = false
+      this.FlagPaymentIdSelected = false
+    }
     if (this.ReportName == 'AppoitnmentList Report') {
-      this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=false
-      } 
-   else if (this.ReportName == 'DoctorWise Visit Report') {
+      this.FlagVisitSelected = false
+      this.FlagPaymentIdSelected = false
+    }
+    else if (this.ReportName == 'DoctorWise Visit Report') {
       this.FlagUserSelected = false;
       // this.FlagPaymentSelected = false;
 
@@ -134,7 +171,7 @@ var data={
       this.FlagUserSelected = true;
       // this.FlagPaymentSelected = false;
 
-    } 
+    }
     else if (this.ReportName == 'Department Wise count summury') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
@@ -145,13 +182,13 @@ var data={
     } else if (this.ReportName == 'Reference doctor wise Report') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
-    }else if (this.ReportName == 'Department Wise Count Summary') {
+    } else if (this.ReportName == 'Department Wise Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
-    }else if (this.ReportName == 'DoctorWise Visit Count Summary') {
+    } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
-    }else if (this.ReportName == 'Appointment List with Service Availed') {
+    } else if (this.ReportName == 'Appointment List with Service Availed') {
       // this.FlagPaymentSelected = false;
       this.FlagUserSelected = false;
 
@@ -164,7 +201,7 @@ var data={
       // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
 
-    } 
+    }
 
     //op Billing
     if (this.ReportName == 'OP Daily Collection') {
@@ -172,7 +209,7 @@ var data={
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
 
-    }else if (this.ReportName == 'OP Bill Report') {
+    } else if (this.ReportName == 'OP Bill Report') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = false;
@@ -180,22 +217,22 @@ var data={
     }
     else if (this.ReportName == 'Bill Summary Report') {
       this.FlagUserSelected = false;
-    //  this.FlagPaymentSelected = false;
-    this.FlagBillNoSelected = false;
+      //  this.FlagPaymentSelected = false;
+      this.FlagBillNoSelected = false;
 
-    } 
-    else if (this.ReportName == 'OP Bill Balance Report') {
+    }
+    else if (this.ReportName == 'Bill Summary Report') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-    } 
-     
+    }
+
     else if (this.ReportName == 'Refund of Bill Reports') {
       this.FlagUserSelected = false;
-      this.FlagPaymentIdSelected=false
+      this.FlagPaymentIdSelected = false
       this.FlagRefundIdSelected = false;
 
-    } 
+    }
     // else if (this.ReportName == 'OP DAILY COLLECTION') {
     //   this.FlagUserSelected = true;
     //   this.FlagDoctorSelected = true;
@@ -204,9 +241,9 @@ var data={
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'OP DAILY COLLECTION USERWISE') {
+    else if (this.ReportName == 'OP DAILY COLLECTION USERWISE') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -215,23 +252,23 @@ var data={
 
     //OPMIS
     if (this.ReportName == 'Day wise OPD Count Details') {
-      this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=false
-     
-    } 
+      this.FlagVisitSelected = false
+      this.FlagPaymentIdSelected = false
+
+    }
     if (this.ReportName == 'Day wise OPD Count Summary') {
-      this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=false
-      
-    } 
+      this.FlagVisitSelected = false
+      this.FlagPaymentIdSelected = false
+
+    }
     else if (this.ReportName == 'Department wise OPD Count ') {
-      this.FlagVisitSelected=false
-      this.FlagPaymentIdSelected=false
+      this.FlagVisitSelected = false
+      this.FlagPaymentIdSelected = false
       // this.viewgetOPPayemntPdf();
       this.FlagRefundIdSelected = false;
-      
-    } 
-    
+
+    }
+
     else if (this.ReportName == 'Department wise OPD Count Summary') {
       this.FlagUserSelected = false;
       // this.FlagPaymentSelected = false;
@@ -240,7 +277,7 @@ var data={
       this.FlagUserSelected = false;
       this.FlagDoctorIdSelected = true;
 
-    } 
+    }
     else if (this.ReportName == 'Dr. Wise OPD Count Summary') {
       this.FlagDoctorIdSelected = true;
       this.FlagUserSelected = false;
@@ -266,20 +303,20 @@ var data={
       // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
 
-    }else if (this.ReportName == 'Dept Service Group Wise Collection Summary') {
+    } else if (this.ReportName == 'Dept Service Group Wise Collection Summary') {
       // this.FlagPaymentSelected = true;
       this.FlagUserSelected = false;
 
     }
 
-    
+
     //Inventory
     if (this.ReportName == 'Item List') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
 
-    }else if (this.ReportName == 'Supplier List') {
+    } else if (this.ReportName == 'Supplier List') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -287,33 +324,33 @@ var data={
     }
     else if (this.ReportName == 'Indent Report') {
       this.FlagUserSelected = false;
-    //  this.FlagPaymentSelected = false;
-    this.FlagBillNoSelected = false;
+      //  this.FlagPaymentSelected = false;
+      this.FlagBillNoSelected = false;
 
-    } 
+    }
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-    } 
-     
+    }
+
     else if (this.ReportName == 'GRN Report') {
       this.FlagUserSelected = false;
-      this.FlagPaymentIdSelected=false
+      this.FlagPaymentIdSelected = false
       this.FlagRefundIdSelected = false;
 
-    } 
+    }
     else if (this.ReportName == 'GRN Return Report') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
+    else if (this.ReportName == 'Monthly Purchase(GRN) Report') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -322,14 +359,14 @@ var data={
     else if (this.ReportName == 'GRN Wise Product Qty Report') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
     else if (this.ReportName == 'GRN Purchase Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Supplier Wise GRN List') {
+    else if (this.ReportName == 'Supplier Wise GRN List') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -338,14 +375,14 @@ var data={
     else if (this.ReportName == 'Issue To Department') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
     else if (this.ReportName == 'Issue To Department Item Wise') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Return From Department') {
+    else if (this.ReportName == 'Return From Department') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -354,14 +391,14 @@ var data={
     else if (this.ReportName == 'Purchase Order') {
       this.FlagUserSelected = true;
       this.FlagDoctorSelected = true;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
     else if (this.ReportName == 'Material Consumption Monthly Summary') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Material Consumption') {
+    else if (this.ReportName == 'Material Consumption') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -370,9 +407,9 @@ var data={
     else if (this.ReportName == 'Item Expiry Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Current Stock Report') {
+    else if (this.ReportName == 'Current Stock Report') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -381,9 +418,9 @@ var data={
     else if (this.ReportName == 'Closing Current Stock Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Item Wise Supplier List') {
+    else if (this.ReportName == 'Item Wise Supplier List') {
       this.FlagBillNoSelected = true;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -392,9 +429,9 @@ var data={
     else if (this.ReportName == 'Current Stock Date Wise') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Non-Moving Item List') {
+    else if (this.ReportName == 'Non-Moving Item List') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -409,9 +446,9 @@ var data={
     else if (this.ReportName == 'Patient Wise Material Consumption') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
+    else if (this.ReportName == 'Last Purchase Rate Wise Consumtion') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
@@ -420,975 +457,168 @@ var data={
     else if (this.ReportName == 'Item Count') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
+    else if (this.ReportName == 'Supplier Wise Debit Credit Note') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
 
-    }   else if (this.ReportName == 'Stock Adjustment Report') {
+    } else if (this.ReportName == 'Stock Adjustment Report') {
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
-      this.FlagBillNoSelected=false;
+      this.FlagBillNoSelected = false;
     }
-     else if (this.ReportName == 'Purchase Wise GRN Summary') {
+    else if (this.ReportName == 'Purchase Wise GRN Summary') {
       this.FlagBillNoSelected = false;
       this.FlagUserSelected = false;
       this.FlagDoctorSelected = false;
 
     }
-    
+
   }
 
 
   getPrint() {
-   
+
     if (this.ReportName == 'Registration Report') {
-      this.viewgetRegistrationlistReportPdf();
+      this.viewgetlistReportPdf("RegistrationReport");
     }
     if (this.ReportName == 'AppoitnmentList Report') {
-      this.viewgetAppointmentlistReportPdf();
-     
-    } 
-     else if (this.ReportName == 'DoctorWise Visit Report') {
-      this.viewgetDoctorwisevisitReportPdf();
+      this.viewgetlistReportPdf("AppointmentListReport");
+    }
+    else if (this.ReportName == 'DoctorWise Visit Report') {
+          this.viewgetlistReportPdf("DoctorWiseVisitReport");
     } else if (this.ReportName == 'Reference doctor wise Report') {
-      this.viewgetRefDoctorwisevisitReportPdf();
-    } 
-    else if (this.ReportName == 'Department Wise Count Summary') {
-      this.viewgetDeptwisecountsummaryReportPdf();
+    this.viewgetlistReportPdf("RefDoctorWiseReport");
+    }
+    else if (this.ReportName == 'Department Wise count summury') {
+    this.viewgetlistReportPdf("DepartmentWisecountSummury");
     } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
-      this.viewgetDocwisevisitcountsummaryReportPdf();
+    this.viewgetlistReportPdf("DoctorWiseVisitReport");
     } else if (this.ReportName == 'Appointment List with Service Availed') {
-      this.viewgetApplistwithserviceavailedReportPdf();
+    this.viewgetlistReportPdf("OPAppoinmentListWithServiseAvailed");
     }
     else if (this.ReportName == 'Cross Consultation Report') {
-      this.getCrossConsultationview();
+    this.viewgetlistReportPdf("CrossConsultationReport");
     }
     else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
-      this.viewgetDocwisenewoldpatientReportPdf();
+    this.viewgetlistReportPdf("OPDoctorWiseNewOldPatientReport");
     }
-   
+
 
     //op billing 
     if (this.ReportName == 'OP Daily Collection') {
-      this.viewOpDailyCollectionuserwisePdf();
-    } 
+     this.viewgetlistReportPdf("OPDailyCollectionReport");
+    }
     else if (this.ReportName == 'OP Daily Collection Summary Reports') {
-      this.viewOpDailyCollectionSummaryPdf();
-      
+     this.viewgetlistReportPdf("OPCollectionSummary");
     }
     else if (this.ReportName == 'OP Bill Report') {
-      this.viewgetOPBillReportPdf();
-      
+     this.viewgetlistReportPdf("BillReportSummary");
     }
-     else if (this.ReportName == 'OP Daily COLLECTION UserWise') {
-      this.viewOpDailyCollectionUserwisePdf();
-    } 
+    else if (this.ReportName == 'OP Daily COLLECTION UserWise') {
+    this.viewgetlistReportPdf("OPDailyCollectionReport");
+    }
     else if (this.ReportName == 'Bill Summary Report') {
-      this.viewgetOPBillSummaryReportPdf();
+      this.viewgetlistReportPdf("BillReportSummarySummary");
     }
-     else if (this.ReportName == 'OP Bill Balance Report') {
-      this.viewgetCreditReportPdf();
-    } 
+    else if (this.ReportName == 'OP Bill Balance Report') {
+      this.viewgetlistReportPdf("OPDBillBalanceReport");
+    }
     else if (this.ReportName == 'Refund of Bill Reports') {
-    
-      this.viewgetOPRefundofBillPdf();
+      this.viewgetlistReportPdf("OPDRefundOfBill");
     }
 
 
-    
-    
-    
+
+
+
 
     //OPMIS
-    if (this.ReportName == 'Day wise OPD Count Details') {
-      this.viewgetDaywiseopdcountReportPdf();
-    }
-    else   if (this.ReportName == 'Day wise OPD Count Summary') {
-      this.viewgetDaywiseopdcountsummaryReportPdf();
-     
-    }   else if (this.ReportName == 'Department wise OPD Count ') {
-      this.viewgetDeptwiseopdcountPdf();
-     
-    } 
-     else if (this.ReportName == 'Department wise OPD Count Summary') {
-      this.viewgetDeptwiseopdcountsummaryReportPdf();
-    } 
-    else if (this.ReportName == 'Dr. Wise OPD Count Detail') {
-      this.viewgetDoctorwiseopdcountdetailReportPdf();
-    } else if (this.ReportName == 'Dr. Wise OPD Count Summary') {
-      this.viewgetDocwiseopdcountsummaryReportPdf();
-    } else if (this.ReportName == 'Dr. Wise OPD Collection  Details ') {
-      this.viewgetDoctorwiseopdcolledetailReportPdf();
-    }
-    else if (this.ReportName == 'Dr. Wise OPD Collection  Summary ') {
-      this.getDocwiseopdcollsummaryview();
-    }
-    else if (this.ReportName == 'Department Wise OPD Collection Details') {
-      this.viewgetDeptwiseopdcolldetailReportPdf();
-    } else if (this.ReportName == 'Department Wise OPD Collection Summary') {
-      this.viewgetDeptwiseopdcollesummaryReportPdf();
-    }
-    else if (this.ReportName == 'Dept Service Group Wise Collection Details') {
-      this.getDeptservicegroupwisecolldetailview();
-    }
-    else if (this.ReportName == 'Dept Service Group Wise Collection Summary') {
-      this.getDeptservicegroupwisecollsummaryview();
-    }
+  //   if (this.ReportName == 'Day wise OPD Count Details') {
+  //     this.viewgetDaywiseopdcountReportPdf();
+  //   }
+  //   else if (this.ReportName == 'Day wise OPD Count Summary') {
+  //     this.viewgetDaywiseopdcountsummaryReportPdf();
+
+  //   } else if (this.ReportName == 'Department wise OPD Count ') {
+  //     this.viewgetDeptwiseopdcountPdf();
+
+  //   }
+  //   else if (this.ReportName == 'Department wise OPD Count Summary') {
+  //     this.viewgetDeptwiseopdcountsummaryReportPdf();
+  //   }
+  //   else if (this.ReportName == 'Dr. Wise OPD Count Detail') {
+  //     this.viewgetDoctorwiseopdcountdetailReportPdf();
+  //   } else if (this.ReportName == 'Dr. Wise OPD Count Summary') {
+  //     this.viewgetDocwiseopdcountsummaryReportPdf();
+  //   } else if (this.ReportName == 'Dr. Wise OPD Collection  Details ') {
+  //     this.viewgetDoctorwiseopdcolledetailReportPdf();
+  //   }
+  //   else if (this.ReportName == 'Dr. Wise OPD Collection  Summary ') {
+  //     this.getDocwiseopdcollsummaryview();
+  //   }
+  //   else if (this.ReportName == 'Department Wise OPD Collection Details') {
+  //     this.viewgetDeptwiseopdcolldetailReportPdf();
+  //   } else if (this.ReportName == 'Department Wise OPD Collection Summary') {
+  //     this.viewgetDeptwiseopdcollesummaryReportPdf();
+  //   }
+  //   else if (this.ReportName == 'Dept Service Group Wise Collection Details') {
+  //     this.getDeptservicegroupwisecolldetailview();
+  //   }
+  //   else if (this.ReportName == 'Dept Service Group Wise Collection Summary') {
+  //     this.getDeptservicegroupwisecollsummaryview();
+  //   }
   }
 
 
-  
-  viewgetRegistrationlistReportPdf() {
-    
-    this.sIsLoading = 'loading-data';
-   
-     setTimeout(() => {
-       this.AdList = true;
-       this._OPReportsService.getRegistrationlistReport(
-        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-       ).subscribe(res => {
-         const dialogRef = this._matDialog.open(PdfviewerComponent,
-           {
-             maxWidth: "85vw",
-             height: '750px',
-             width: '100%',
-             data: {
-               base64: res["base64"] as string,
-               title: "Registration List Report  Viewer"
-             }
-           });
-         dialogRef.afterClosed().subscribe(result => {
-           this.AdList = false;
-           this.sIsLoading = '';
-         });
-       });
- 
-     }, 100);
-   }
 
-
-  viewgetAppointmentlistReportPdf() {
-    this.sIsLoading = 'loading-data';
-     setTimeout(() => {
-       this.AdList = true;
-       this._OPReportsService.getAppointmentListReport(
-        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-       ).subscribe(res => {
-         const dialogRef = this._matDialog.open(PdfviewerComponent,
-           {
-             maxWidth: "85vw",
-             height: '750px',
-             width: '100%',
-             data: {
-               base64: res["base64"] as string,
-               title: "Appointment List Viewer"
-             }
-           });
-         dialogRef.afterClosed().subscribe(result => {
-           this.AdList = false;
-           this.sIsLoading = '';
-         });
-       });
- 
-     }, 100);
-   }
-
-  
-
-getCrossConsultationview() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getCrossConsultationreportView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Cross Consultation Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-viewgetRefDoctorwisevisitReportPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getRefDoctorwisevisitView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Ref Doctor Wise Visit  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-viewgetDoctorwisevisitReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getDoctorwisevisitView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Wise Visit  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-viewgetDeptwisecountsummaryReportPdf() {
-  
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getdepartmentwisecountsummView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department wise count Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-viewgetDocwisevisitcountsummaryReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDocwisevisitsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Wise Visit count Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-viewgetApplistwithserviceavailedReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-
-  this._OPReportsService.getAppointmentlistwithserviceavailedView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Appointment list With Service Availed Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-viewgetDocwisenewoldpatientReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDocwisenewoldpatientView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Wise New Old Patient List Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-
-//opbilling
-viewOpDailyCollectionuserwisePdf() {
-  let AddUserId = 0;
-  let DoctorId =0
-  this.sIsLoading = 'loading-data';
-  if (this._OPReportsService.userForm.get('UserId').value)
-    AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
-  
-  setTimeout(() => {
-    
-    this.AdList = true;
-    
-    this._OPReportsService.getOpDailyCollectionuserwise(
-      this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      AddUserId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '1000px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "OP Daily Collection Viewer"
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        this.AdList = false;
-        this.sIsLoading = '';
-      });
-    });
-
-  }, 100);
-}
-
-
-viewOpDailyCollectionSummaryPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-    
-    this.AdList = true;
-    
-    this._OPReportsService.getOpDailyCollectionsummary(
-      this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-     
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '1000px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "OP Daily Collection Summary Viewer"
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        this.AdList = false;
-        this.sIsLoading = '';
-      });
-    });
-
-  }, 100);
-}
-
-
-viewgetOPBillReportPdf() {
-  let AddUserId = 0;
-  if (this._OPReportsService.userForm.get('UserId').value)
-    AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
-
-    this.sIsLoading = 'loading-data';
+  viewgetlistReportPdf(mode) {
+    debugger
     setTimeout(() => {
-      // this.SpinLoading =true;
-     this.AdList=true;
-    this._OPReportsService.getOpBilldetail(
-      this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      AddUserId
-    ).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "OP BILL Viewer"
+
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "FromDate",
+            "fieldValue": this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value,"dd-MM-yyyy"),//"10-01-2024",
+            "opType": "13"
+          },
+          {
+            "fieldName": "ToDate",
+            "fieldValue": this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value,"MM-dd-yyyy"),//"12-12-2024",
+            "opType": "13"
           }
-        });
+        ],
+        "mode": mode
+      }
+
+      console.log(param)
+      this._OPReportsService.getPatientListView(param).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: mode + " " + "Viewer"
+
+            }
+
+          });
+
         matDialog.afterClosed().subscribe(result => {
-          this.AdList=false;
-          this.sIsLoading = '';
-        });
-    });
-   
-    },100);
-  }
 
-  
-  viewOpDailyCollectionUserwisePdf() {
-    this.sIsLoading = 'loading-data';
-    let AddUserId = 0;
-    let DoctorId =0
-
-    if (this._OPReportsService.userForm.get('UserId').value)
-      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
-    
-    if (this._OPReportsService.userForm.get('DoctorId').value)
-      DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID
-
-    setTimeout(() => {
-      
-      this.AdList = true;
-      
-      this._OPReportsService.getOpDailyCollection(
-        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        AddUserId,DoctorId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "95vw",
-            height: '1000px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "OP Daily Collection User Wise Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = '';
         });
       });
 
     }, 100);
   }
-  viewgetOPBillSummaryReportPdf() {
-
-    let AddUserId = 0;
-    if (this._OPReportsService.userForm.get('UserId').value)
-      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
-
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this.AdList = true;
-     
-      this._OPReportsService.getOPBillSummary(
-        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "OP Bill Summary Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = '';
-        });
-      });
-
-    }, 100);
-  }
- 
-  viewgetCreditReportPdf() {
-    this.sIsLoading = 'loading-data';
-  
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this.AdList = true;
-     
-      this._OPReportsService.getOPcreditbalancelist(
-        this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-       
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "OP Credit List  Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = '';
-        });
-      });
-
-    }, 100);
-  }
-  viewgetOPRefundofBillPdf() {
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-    
-    this._OPReportsService.getOpRefundofbillview(
-      this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Op Refund Of Bill Report Viewer"
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-         
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          
-          this.sIsLoading = '';
-        });
-    });
-   
-    },100);
-  }
 
 
-  //inventory
-  
 
-  //OPMIS
-  
-  viewgetDaywiseopdcountReportPdf() {
-    this.sIsLoading = 'loading-data';
-     setTimeout(() => {
-       this.AdList = true;
-       this._OPReportsService.getdaywiseopdcountdetailReport(
-        this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-       ).subscribe(res => {
-         const dialogRef = this._matDialog.open(PdfviewerComponent,
-           {
-             maxWidth: "85vw",
-             height: '750px',
-             width: '100%',
-             data: {
-               base64: res["base64"] as string,
-               title: "Day Wise OPD Count Detail  Viewer"
-             }
-           });
-         dialogRef.afterClosed().subscribe(result => {
-           this.AdList = false;
-           this.sIsLoading = '';
-         });
-       });
- 
-     }, 100);
-   }
-
-  
-
-   viewgetDaywiseopdcountsummaryReportPdf() {
-    this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-
-  this._OPReportsService.getdaywiseopdcountsummaryReport(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-  ).subscribe(res => {
-    const dialogRef = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Day wise OPD Count Summary Viewer"
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = '';
-      });
-     
-  });
- 
-  },100);
-}
-
-
-viewgetDeptwiseopdcountPdf() {
-  
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDeptwiseopdcountView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Dept Wise OPD Count Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-
-viewgetDoctorwiseopdcountdetailReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let VisitId
-  this._OPReportsService.getDrwiseopdcountdetailView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctorwise Department Count Detail Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-
-viewgetDeptwiseopdcountsummaryReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDeptwiseopdcountsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department wise Count Summary  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-
-viewgetDocwiseopdcountsummaryReportPdf() {
-  
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  //   this.SpinLoading =true;
-  let DoctorID=this._OPReportsService.userForm.get("DoctorID").value || 0
-  this._OPReportsService.getDocwisevisitCountsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900"
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Wise OPD count Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-viewgetDoctorwiseopdcolledetailReportPdf() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-  
-  this._OPReportsService.getDocwisenopdcolldetailtView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Wise OPD Collection  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-getDocwiseopdcollsummaryview() {
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-
-  this._OPReportsService.getDoctorwisenopdcollsummarytView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Doctor Wise OPD Collection Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-
-}
-
-viewgetDeptwiseopdcolldetailReportPdf(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDeptwiseopdcolldetailView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department Wise OPD Collection Detail  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-
-viewgetDeptwiseopdcollesummaryReportPdf(){
-  
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDeptwiseopdcollsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department Wise OPD Collection Summary  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-getDeptservicegroupwisecolldetailview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDeptservicegroupcolldetailView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department wise Service Group wise Collection  Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
-getDeptservicegroupwisecollsummaryview(){
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
- 
-  this._OPReportsService.getDeptservicegroupcollsummaryView(
-    this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-    this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-    ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Department wise Group wise Collection Summary Viewer"
-        }
-      });
-
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList=false;
-        this.sIsLoading = ' ';
-      });
-  });
- 
-  },100);
-}
   userChk(option) {
     this.UserId = option.UserID || 0;
     this.UserName = option.UserName;
@@ -1399,8 +629,8 @@ getDeptservicegroupwisecollsummaryview(){
   }
   GetUserList() {
     var data = {
-          "StoreId": this._loggedUser.currentUserValue.storeId
-        }
+      "StoreId": this._loggedUser.currentUserValue.storeId
+    }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
       this.UserList = data;
       if (this.UserId) {
@@ -1412,8 +642,8 @@ getDeptservicegroupwisecollsummaryview(){
     });
   }
 
-  getSelectedObj(obj){
-    this.UserId=obj.UserId;
+  getSelectedObj(obj) {
+    this.UserId = obj.UserId;
   }
 
 

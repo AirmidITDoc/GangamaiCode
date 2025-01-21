@@ -13,7 +13,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import {  MatPaginatorModule } from "@angular/material/paginator";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { FuseSharedModule } from "@fuse/shared.module";
@@ -24,14 +24,10 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatCardModule } from "@angular/material/card";
 import { MatListModule } from "@angular/material/list";
-
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-import { MatBadgeModule } from "@angular/material/badge";
-
 import { SupplierMasterService } from "./supplier-master.service";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
-
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatDialogModule } from "@angular/material/dialog";
 import { NewSupplierComponent } from './new-supplier/new-supplier.component';
@@ -40,13 +36,13 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { SuppliertestingComponent } from './suppliertesting/suppliertesting.component';
 import { FixSupplierComponent } from './fix-supplier/fix-supplier.component';
+
 const routes: Routes = [
     {
         path: "**",
         component: SupplierMasterComponent,
     },
 ];
-
 @NgModule({
     declarations: [SupplierMasterComponent, SupplierFormMasterComponent, NewSupplierComponent, SuppliertestingComponent, FixSupplierComponent],
     imports: [
@@ -82,8 +78,6 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
-       
-        
     ],
     providers: [SupplierMasterService, DatePipe]
 })

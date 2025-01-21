@@ -78,49 +78,7 @@ export class NewAppointmentComponent implements OnInit {
     PatientName: any = '';
     RegId: any = 0;
     OPIP: any = '';
-    Bedname: any = '';
-    wardname: any = '';
-    classname: any = '';
-    tariffname: any = '';
-    ipno: any = '';
-    patienttype: any = 1;
-    Adm_Vit_ID: any = 0;
-    OTTableID: any;
-    AnestheticsDr: any;
-    OTTableName: any;
-    RegAppoint = 0;
-    docData;
-    docType;
-    docViewType: any;
-    sStatus: any = '';
-    minDate = new Date();
-    sysImage = '';
-    Filename: any;
-    RegNo: any = 0;
-    title = 'file-upload';
-    CompanyId: any = 0;
-    VisitId: any;
-    FimeName: any;
-    VisitFlag = 0;
-    vPhoneFlage = 0;
-    vPhoneAppId: any = 0;
-    vOPDNo: any = 0;
-    vTariffId = 0;
-    DoctorId: any;
-    PrefixID: any = 0;
-    MaritalStatusId: any = 0;
-    ReligionId: any = 0;
-    AreaId: any = 0;
-    CityId: any = 0;
-    PatientTypeID: any = 0;
-    Tariff: any = 0;
-    vDoctorId: any = 0;
-    DoctorID: any = 0;
-    Departmentid: any = 0;
-    vCompanyId: any = 0;
-    SubCompanyId: any = 0;
-    vadmittedDoctor1: any = 0;
-    RefDocId: any = 0;
+    VisitId=0;
 
     @ViewChild('attachments') attachment: any;
 
@@ -358,7 +316,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
 
-
+    patienttype=0
     onChangePatient(value) {
         
         var mode = "Company"
@@ -541,7 +499,9 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     RegOrPhoneflag = '';
-
+    vPhoneFlage=0;
+    vPhoneAppId:any;
+    RegNo=0;
     getSelectedObjPhone(obj) {
         this.RegOrPhoneflag = 'Entry From Phone Appointment'
         this.vPhoneFlage = 1;
@@ -676,7 +636,15 @@ export class NewAppointmentComponent implements OnInit {
             ],
             SubCompanyId: [
                 { name: "required", Message: "SubCompany Name is required" }
-            ]
+            ],
+            bedId: [
+                { name: "required", Message: "bedId Name is required" }
+            ],
+            wardId: [
+                { name: "required", Message: "wardId Name is required" }
+            ],
+            
+            
         };
     }
     Saveflag: boolean = false;
@@ -991,7 +959,7 @@ export class NewAppointmentComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
 
-            this.agey.nativeElement.focus();
+            // this.agey.nativeElement.focus();
         }
         return;
         // else{
@@ -1122,9 +1090,9 @@ export class NewAppointmentComponent implements OnInit {
             this.imgDataSource.data = this.images;
         }
 
-        this.FimeName = element.name;
+        // this.FimeName = element.name;
 
-        let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
+        // let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
 
         // this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
         //     if (resData) {
@@ -1140,8 +1108,8 @@ export class NewAppointmentComponent implements OnInit {
             this.pdfDataSource.data = [];
             this.pdfDataSource.data = this.doclist;
         }
-        this.FimeName = element.name;
-        let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
+        // this.FimeName = element.name;
+        // let query = "delete FROM T_MRD_AdmFile WHERE OPD_IPD_ID= " + this.VisitId + " AND FileName=" + "'" + this.FimeName + "'" + " ";
 
         // this._AppointmentSreviceService.getdeleteddocument(query).subscribe((resData: any) => {
         //     if (resData) {
@@ -1254,98 +1222,11 @@ export class NewAppointmentComponent implements OnInit {
         this.ddlCountry.SetSelection(e.stateId);
     }
 
-    @ViewChild('fname') fname: ElementRef;
-    @ViewChild('mname') mname: ElementRef;
-    @ViewChild('lname') lname: ElementRef;
-    @ViewChild('agey') agey: ElementRef;
-    @ViewChild('aged') aged: ElementRef;
-    @ViewChild('agem') agem: ElementRef;
-    @ViewChild('phone') phone: ElementRef;
-    @ViewChild('mobile') mobile: ElementRef;
-    @ViewChild('address') address: ElementRef;
-    @ViewChild('pan') pan: ElementRef;
-    @ViewChild('area') area: ElementRef;
-    @ViewChild('AadharCardNo') AadharCardNo: ElementRef;
-
-    @ViewChild('bday') bday: ElementRef;
-
-
-
-    // @ViewChild('dept') dept: MatSelect;
-
-    add: boolean = false;
-    @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-
-
-    public onEnterfname(event): void {
-        if (event.which === 13) {
-            this.mname.nativeElement.focus();
-        }
-    }
-    public onEntermname(event): void {
-        if (event.which === 13) {
-            this.lname.nativeElement.focus();
-        }
-    }
-    public onEnterlname(event): void {
-        if (event.which === 13) {
-            this.agey.nativeElement.focus();
-
-        }
-    }
-
-    public onEnterbday(event): void {
-        if (event.which === 13) {
-            this.agey.nativeElement.focus();
-
-        }
-    }
-
-
-    public onEnteragey(event, value): void {
-        if (event.which === 13) {
-            this.agem.nativeElement.focus();
-
-            this.ageyearcheck(value);
-        }
-    }
-    public onEnteragem(event): void {
-        if (event.which === 13) {
-            this.aged.nativeElement.focus();
-        }
-    }
-    public onEnteraged(event): void {
-        if (event.which === 13) {
-            this.AadharCardNo.nativeElement.focus();
-        }
-    }
-
-    public onEnterAadharCardNo(event): void {
-        if (event.which === 13) {
-            this.address.nativeElement.focus();
-        }
-    }
-    public onEnterphone(event): void {
-        if (event.which === 13) {
-            this.address.nativeElement.focus();
-        }
-    }
-
-
-    public onEntermobile(event): void {
-        if (event.which === 13) {
-            this.phone.nativeElement.focus();
-        }
-    }
-
-    public onEnteraddress(event): void {
-        if (event.which === 13) {
-            this.area.nativeElement.focus();
-        }
-    }
+    
 
     departmentId: any;
     DosctorId: any;
+    DoctorId:any;
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
         this.DosctorId = row.DoctorId;
@@ -1367,47 +1248,14 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-    selectChangegender(obj: any) {
-        console.log(obj);
-        // this.genderId = obj.value
-    }
-
-    selectChangearea(obj: any) {
-        console.log(obj);
-        // this.areaId = obj
-    }
-
+   
+   
     selectChangecity(obj: any) {
         console.log(obj);
         // this.cityId = obj
         // this.cityName = obj.text
     }
-    selectChangestate(obj: any) {
-        console.log(obj);
-        // this.stateId = obj
-    }
-
-    selectChangecountry(obj: any) {
-        console.log(obj);
-        // this.countryId = obj
-    }
-
-    selectChangemstatus(obj: any) {
-        console.log(obj);
-        // this.mstausId = obj
-    }
-
-    selectChangereligion(obj: any) {
-        console.log(obj);
-        // this.regilionId = obj
-    }
-
-    //  visitform?
-    selectChangeunit(obj: any) {
-        console.log(obj);
-        // this.patienttypeId = obj.value
-
-    }
+   
     selectChangepatienttype(obj: any) {
         console.log(obj);
         // this.patientTypeId = obj

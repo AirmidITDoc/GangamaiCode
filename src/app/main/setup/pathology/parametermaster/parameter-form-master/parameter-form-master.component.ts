@@ -488,7 +488,7 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
     checkFields(event) {
-        
+        debugger
         const formValues = this.parameterForm.value
         const fieldsTobeChecked =
              formValues.SexID
@@ -533,7 +533,7 @@ export class ParameterFormMasterComponent implements OnInit {
     onAdd(event) {
 
         let isNewRowUnique = true;
-
+debugger
         const newRow: any = {
             GenderName: this.parameterForm.get('SexID').value || "",
             MinAge: this.vMinAge || 0,

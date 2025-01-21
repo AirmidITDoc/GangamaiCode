@@ -36,7 +36,6 @@ export class NewBankComponent implements OnInit {
     }
 
   onSubmit(){
-    
       if(!this.bankForm.invalid){
         
         this.saveflag = true;

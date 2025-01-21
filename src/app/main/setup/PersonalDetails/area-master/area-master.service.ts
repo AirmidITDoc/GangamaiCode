@@ -29,8 +29,6 @@ export class AreaMasterService {
             cityId: [""],
             cityName: [""],
             isActive:[true,[Validators.required]]
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
         });
     }
     createSearchForm(): FormGroup {

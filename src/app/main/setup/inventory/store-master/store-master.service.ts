@@ -179,7 +179,7 @@ export class StoreMasterService {
         if (Param.storeId) {
             debugger
             return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param, showLoader);
-        } else return this._httpClient.PostData("StoreMaster",Param, showLoader);
+        } else return this._httpClient.PostData("StoreMaster",Param,showLoader);
     }
 
     public deactivateTheStatus(m_data) {

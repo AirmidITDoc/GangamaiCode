@@ -8,14 +8,13 @@ import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import {  MatPaginatorModule } from "@angular/material/paginator";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-
+import { FuseSidebarModule } from "@fuse/components";
 import { SharedModule } from "app/main/shared/shared.module";
 import { PrefixMasterComponent } from "./prefix-master.component";
 import { NewPrefixComponent } from "./new-prefix/new-prefix.component";

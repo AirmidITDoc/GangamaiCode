@@ -110,16 +110,20 @@
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                        <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj1.regId">
+                                        <input type="hidden" name="RegId" formControlName="regId"
+                                            [(ngModel)]="registerObj1.regId">
 
-                                        <mat-form-field appearance="outline" fxFlex.sm="10%" style="visibility: hidden;">
+                                        <mat-form-field appearance="outline" fxFlex.sm="10%"
+                                            style="visibility: hidden;">
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
-                                                formControlName="visitDate" 
+                                                formControlName="visitDate"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex.sm="50%">
-                                            <input matInput type="datetime-local" placeholder="Visit Date / Time" formControlName="visitTime" [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
+                                            <input matInput type="datetime-local" placeholder="Visit Date / Time"
+                                                formControlName="visitTime"
+                                                [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
                                         <airmid-autocomplete label="Departmentid" formControlName="departmentId"
@@ -135,7 +139,7 @@
                                         TextField="departmentName" (selectionChange)="selectChangedepartment($event)"
                                         ApiUrl="Prefix/get-prefixs">
                                     </airmid-autocomplete> -->
-                                       
+
                                         <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
                                             [validations]="getValidationMessages().consultantDocId" #ddldoctor
@@ -170,7 +174,7 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field> -->
-<!-- //DD with old code -->
+                <!-- //DD with old code -->
                 <!-- <mat-form-field appearance="outline">
                     <mat-label>Doctor Name</mat-label>
                     <mat-select formControlName="DoctorID" name="DoctorID">
@@ -180,15 +184,19 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field> -->
-<!-- ///////////// -->
+
+
+
+                <!-- ///////////// -->
                 <!-- <app-airmid-dropdown label="DoctorID" formControlName="consultantDocId" [value]="DoctorID1"
                     [formGroup]="crossconForm" [mode]="autocompleteModedeptdoc">
+                </app-airmid-dropdown>  -->
+
+
+                <app-airmid-dropdown  label="Department" formControlName="departmentId" [value]="Departmentid"
+                    [formGroup]="crossconForm" [mode]="autocompleteModedepartment" (selectionChange)="selectChange($event)">
                 </app-airmid-dropdown>
-
-                <app-airmid-dropdown label="Departmentid" formControlName="departmentId" [value]="Departmentid"
-                    [formGroup]="crossconForm" [mode]="autocompleteModedepartment" value="Departmentid">
-                </app-airmid-dropdown> -->
-
+                <span style="font-size: larger;color: blue;">{{selected}}</span>
             </form>
         </div>
         <!-- Modal footer -->

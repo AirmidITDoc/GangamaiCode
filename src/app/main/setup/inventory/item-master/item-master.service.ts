@@ -30,106 +30,107 @@ export class ItemMasterService {
             itemId: 0,
             itemShortName: ["",
                 [
-                    // Validators.required, 
+                    Validators.required, 
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             itemName: ["",
                 [
-                    // Validators.required, 
+                    Validators.required, 
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             itemTypeId: ["",
-                // [
-                // Validators.required,
-                // ] 
+                [
+                Validators.required,
+                ] 
             ],
             itemCategaryId: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             itemGenericNameId: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             itemClassId: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             purchaseUomid: [0,
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             stockUomid: [0,
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             conversionFactor: ["",
                 [
-                    // Validators.required, 
+                    Validators.required, 
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             currencyId: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             taxPer: ["0"],
             isBatchRequired: [false as boolean],
             minQty: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             maxQty: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             reOrder: ["0",
                 [
-                    // Validators.required,Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    // Validators.maxLength(50),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             hsNcode: ["",
                 [
-                    // Validators.required, 
+                    Validators.required, 
                     Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             cgst: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(15),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             sgst: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(15),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
             igst: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(15),
                     Validators.pattern('^[0-9]*$')
                 ]
@@ -137,7 +138,7 @@ export class ItemMasterService {
 
             manufId: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             isNarcotic: true,
@@ -149,20 +150,20 @@ export class ItemMasterService {
             isEmgerency: true,
             drugType: [0,
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             drugTypeName: [""],
             prodLocation: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             itemCompnayId: ["",
                 [
-                    // Validators.required,
+                    Validators.required,
                 ]
             ],
             itemTime: [(new Date()).toISOString()],

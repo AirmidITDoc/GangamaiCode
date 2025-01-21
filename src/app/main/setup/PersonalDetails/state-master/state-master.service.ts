@@ -14,13 +14,6 @@ export class StateMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    /*
-        {
-            "stateId": 0,
-            "stateName": "string",
-            "countryId": 0
-        }
-    */
     createStateForm(): FormGroup {
         return this._formBuilder.group({
             stateId: [0],

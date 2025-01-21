@@ -229,7 +229,7 @@
                                                         [disabled]="true"
                                                         [validations]="getValidationMessages().stateId" #ddlState
                                                         [mode]="autocompleteModestate"
-                                                        (selectionChange)="onChangestate($event)">
+                                                       >
                                                     </airmid-autocomplete>
                                                 </div>
 
@@ -391,7 +391,7 @@
                                                     [formGroup]="VisitFormGroup"
                                                     [validations]="getValidationMessages().SubCompanyId"
                                                     [mode]="autocompleteModesubcompany"
-                                                    (selectionChange)="selectChangesubcompany($event)">
+                                                    >
                                                 </airmid-autocomplete>
 
                                             </div>
@@ -424,7 +424,7 @@
                                                     [formGroup]="VisitFormGroup" [value]="data?.refDocId"
                                                     [validations]="getValidationMessages().refDocId"
                                                     [mode]="autocompleteModedeptdoc"
-                                                    (selectionChange)="selectChangerefdoc($event)">
+                                                    >
                                                 </airmid-autocomplete>
                                             </div>
 
@@ -435,7 +435,7 @@
                                                     [formGroup]="VisitFormGroup"
                                                     [validations]="getValidationMessages().PurposeId"
                                                     [mode]="autocompleteModepurpose"
-                                                    (selectionChange)="selectChangepurpose($event)">
+                                                   >
                                                 </airmid-autocomplete>
                                             </div>
 
