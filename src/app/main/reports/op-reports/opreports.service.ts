@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,16 @@ import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 export class OPReportsService {
   userForm:FormGroup;
   constructor( public _formBuilder:UntypedFormBuilder,
-    public _httpClient:HttpClient) {this.userForm=this.createUserFormGroup()}
+    public _httpClient:HttpClient,public _httpClient1:ApiCaller) {
+      this.userForm=this.createUserFormGroup()}
 
+
+    CreateReport(){
+      return this._formBuilder.group({
+        reportId:0,
+        ReportName:''
+      })
+    }
     createUserFormGroup(){
       return this._formBuilder.group({
         startdate: [(new Date()).toISOString()],
@@ -35,6 +44,12 @@ export class OPReportsService {
 
       })
     }
+
+    initializeFormGroup() {
+      this.CreateReport();
+  }
+
+
   public getDataByQuery(emp) {
         return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ReportList",emp)
   }
@@ -511,4 +526,9 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
   public getSupplierList(param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
   }
+
+  public getPatientListView(mode){
+    return this._httpClient1.PostData("Report/ViewReport",mode);
+ 
+}
   }

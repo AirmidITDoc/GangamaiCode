@@ -32,6 +32,7 @@ import Swal from 'sweetalert2';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.component';
+import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -45,7 +46,7 @@ import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.comp
 export class AppointmentListComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch:FormGroup;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
 
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);

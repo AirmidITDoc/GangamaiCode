@@ -35,6 +35,7 @@ import { MatTableModule } from '@angular/material/table';
 // import { OPIPBillReportsComponent } from '../opipbill-reports/opipbill-reports.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { OpReportsComponent } from './op-reports.component';
+import { OPReportsService } from './opreports.service';
 
 const routes : Routes =[
   {
@@ -87,7 +88,7 @@ const routes : Routes =[
         // MaterialModule,
         MatTreeModule
     ],
-    providers: [
+    providers: [OPReportsService,
         DatePipe,
     ]
 })
