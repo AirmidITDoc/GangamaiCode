@@ -123,6 +123,7 @@ export class RoleTemplateMasterComponent implements OnInit {
     this._RoleService.initializeFormGroup();
   }
   onPermission(RoleId){
+    console.log(RoleId)
     const dialogRef = this._matDialog.open(RolePermissionComponent,
       {
         maxWidth: "80vw",

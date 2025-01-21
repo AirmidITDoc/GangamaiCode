@@ -116,6 +116,12 @@ export class NursingnoteService {
   } 
     return this._httpClient.get("Nursing/View-NursingNotes?AdmID=" + AdmID)
   }
+  public insertMedicationChart(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.get("/api/Nursing/SaveTNursingMedicationChart" + Param)
+  }
 
 
 

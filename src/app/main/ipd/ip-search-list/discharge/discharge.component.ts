@@ -119,14 +119,13 @@ export class DischargeComponent implements OnInit {
       console.log(this.RtrvDischargeList);
     });
   }
-  Rtevdropdownvalue() {
-    debugger
-    if (this.RtrvDischargeList[0].DischargeTypeId) {
+  Rtevdropdownvalue() { 
+    if (this.RtrvDischargeList[0]?.DischargeTypeId) {
       const toSelect = this.DischargeTypeList.find(c => c.DischargeTypeId == this.RtrvDischargeList[0].DischargeTypeId);
       console.log(toSelect)
       this._IpSearchListService.mySaveForm.get('DischargeTypeId').setValue(toSelect);
     }
-    if (this.RtrvDischargeList[0].ModeOfDischargeid) {
+    if (this.RtrvDischargeList[0]?.ModeOfDischargeid) {
       const toSelect = this.ModeNameList.find(c => c.ModeOfDischargeId == this.RtrvDischargeList[0].ModeOfDischargeid);
       console.log(toSelect)
       this._IpSearchListService.mySaveForm.get('ModeId').setValue(toSelect);
@@ -237,12 +236,13 @@ export class DischargeComponent implements OnInit {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
-    if(this.selectedAdvanceObj.IsInitinatedDischarge == '1'){
-      if(this.vDeptCount < 0)
-        this.toastr.warning('Please be informed that your discharge initiated to department', 'Warning !', {
+    if(this.ChkConfigInitiate == false){
+      if(this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined){
+        this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
       return;
+      } 
     }
 
     if(this.vDeptCount > 0){

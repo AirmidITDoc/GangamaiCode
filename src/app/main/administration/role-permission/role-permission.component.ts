@@ -96,6 +96,7 @@ export class RolePermissionComponent implements OnInit {
     ngOnInit(): void {
         if (this.data) {
             this.roleId=this.data.RoleId;
+            console.log(this.roleId)
         }
     }
     updatePermission(obj, type, $event) {

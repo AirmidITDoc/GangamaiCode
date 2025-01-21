@@ -276,8 +276,8 @@ export class IPBillingComponent implements OnInit {
   ngOnInit(): void { 
     this.AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value;
     this.createserviceForm();
-    this.createBillForm();
-
+    this.createBillForm(); 
+    this.getCashCounterComboList();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
@@ -296,7 +296,6 @@ export class IPBillingComponent implements OnInit {
     this.getRtrvPackageList();
     this.getRequestChargelist();
     this.getBillingClassCombo();
-    this.getCashCounterComboList();
     this.getConcessionReasonList();
     this.getPrevBillList();
     this.getAdvanceDetList(); 

@@ -204,11 +204,10 @@ export class NewOPBillingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
-
-    this.createForm();
-
+    this.searchFormGroup = this.createSearchForm(); 
+    this.createForm(); 
     this.BillingFooterForm();
+    this.getCashCounterComboList();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
@@ -233,7 +232,7 @@ export class NewOPBillingComponent implements OnInit {
       this.RefDocName = this.selectedAdvanceObj.RefDocName;
       this.PatientType = this.selectedAdvanceObj.PatientType;
     } 
-    this.getCashCounterComboList();
+  
     this.getConcessionReasonList();  
    
   }

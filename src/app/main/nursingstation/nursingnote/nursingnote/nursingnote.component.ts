@@ -893,20 +893,20 @@ export class NursingnoteComponent implements OnInit {
       });
      }
 
-     getSchedular(contact) {
-      const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
-        {
-          maxWidth: "75vw",
-          height: '85%',
-          width: '100%', 
-          data:{
-            Obj:contact
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => { 
-        
+  getSchedular(contact) {
+    const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
+      {
+        maxWidth: "75vw",
+        height: '85%',
+        width: '100%',
+        data: {
+          Obj: contact
+        }
       });
-    } 
+    dialogRef.afterClosed().subscribe(result => {
+      this.getItemlistforMedication();
+    });
+  } 
 
   getNursingNoteprint(AdmID) { 
     setTimeout(() => {
@@ -980,6 +980,7 @@ export class MedicineItemList {
   DoseName2: any;
   Day2: number;
   Instruction: any; 
+  DoseDateTime:any;
 
   /**
   * Constructor

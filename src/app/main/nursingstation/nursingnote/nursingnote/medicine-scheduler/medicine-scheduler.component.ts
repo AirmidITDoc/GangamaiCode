@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MedicineItemList } from '../nursingnote.component';
 import { Observable, observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-medicine-scheduler',
@@ -129,6 +130,7 @@ export class MedicineSchedulerComponent implements OnInit {
       this.MedicineItemForm.get('Route').setValue('');
       this.MedicineItemForm.get('Frequency').setValue('');
       this.MedicineItemForm.get('NurseName').setValue(''); 
+      this.MedicineItemForm.get('DoseDateTime').setValue(''); 
       return;
     }
 
@@ -173,6 +175,7 @@ export class MedicineSchedulerComponent implements OnInit {
     this.MedicineItemForm.get('Route').setValue('');
     this.MedicineItemForm.get('Frequency').setValue('');
     this.MedicineItemForm.get('NurseName').setValue('');  
+    this.MedicineItemForm.get('DoseDateTime').setValue(''); 
   }
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
@@ -187,46 +190,57 @@ export class MedicineSchedulerComponent implements OnInit {
   }
 
   onSubmit() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
     if (!this.dsItemList.data.length) {
       this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return
-    }  
-      // let saveTNursingMedicationChartParams={ 
-      //  "admID": 0,
-      //  "mDate": "2025-01-20T12:12:53.064Z",
-      //  "mTime": "2025-01-20T12:12:53.064Z",
-      //  "durgId": 0,
-      //  "doseID": 0,
-      //  "route": "string",
-      //  "freq": "string",
-      //  "nurseName": "string",
-      //  "doseName": "string",
-      //  "createdBy": this.accountService.currentUserValue.user.id
-      // }  
+    } 
 
-      // let submitData ={
-      //   "saveTNursingMedicationChartParams":saveMTemplateMasterParam
-      // } 
-      // console.log(submitData);
-      // this._NursingStationService.insertTemplateMaster(submitData).subscribe(response => {
-      //   if (response) {
-      //     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-      //       toastClass: 'tostr-tost custom-toast-success',
-      //     });
-      //     this._matDialog.closeAll();
-      //     this.onClose();
-      //   } else {
-      //     this.toastr.error('Template Master Master Data not saved !, Please check API error..', 'Error !', {
-      //       toastClass: 'tostr-tost custom-toast-error',
-      //     });
-      //   } 
-      // }, error => {
-      //   this.toastr.error('New Template Order Data not saved !, Please check API error..', 'Error !', {
-      //     toastClass: 'tostr-tost custom-toast-error',
-      //   });  
-      // }); 
+    let saveTNursingMedicationChartParamsObj = [];
+    this.dsItemList.data.forEach(element=>{
+     let saveTNursingMedicationChartParams={ 
+        "admID": this.registerObj.AdmissionID,
+        "mDate": formattedDate,
+        "mTime": formattedTime,
+        "durgId": this.registerObj.ItemId || 0,
+        "doseID": 0,
+        "route": element.Route || '',
+        "freq": element.Frequency || '',
+        "nurseName":element.NurseName || '',
+        "doseName": this.datePipe.transform(this.MedicineItemForm.get('DoseDateTime').value,'h:mm a') ,
+        "createdBy": this.accountService.currentUserValue.user.id
+       }
+       saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
+    })
+    
+
+      let submitData ={
+        "saveTNursingMedicationChartParams":saveTNursingMedicationChartParamsObj
+      } 
+      console.log(submitData);
+      this._NursingStationService.insertMedicationChart(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this._matDialog.closeAll();
+          this.onClose();
+        } else {
+          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        } 
+      }, error => {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });  
+      }); 
   }
 
 

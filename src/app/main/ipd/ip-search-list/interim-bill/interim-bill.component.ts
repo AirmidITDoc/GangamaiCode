@@ -137,7 +137,7 @@ export class InterimBillComponent implements OnInit {
     this.dataSource.data = [];
     this.dataSource.data = this.interimArray;
     // console.log( this.dataSource.data);
-
+    this.getCashCounterComboList();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       // this.vPatientHeaderObj =this.advanceDataStored.storage;
@@ -146,7 +146,7 @@ export class InterimBillComponent implements OnInit {
        console.log(this.selectedAdvanceObj);
     }
 
-    this.getCashCounterComboList();
+    
     this.getConcessionReasonList();
   }
 
