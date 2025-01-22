@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { OperatorComparer } from 'app/core/models/gridRequest';
-import { VisitMaster } from '../../appointment/appointment.component';
 import { VisitMaster1 } from '../appointment-list.component';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 
@@ -58,10 +57,10 @@ export class CrossConsultationComponent implements OnInit {
         });
       }, 500);
     }
-    else {
-      this.crossconForm.reset();
+    // else {
+    //   this.crossconForm.reset();
 
-    }
+    // }
     this.crossconForm = this.createCrossConForm();
     if (this.data)
 
@@ -113,7 +112,9 @@ export class CrossConsultationComponent implements OnInit {
 
    @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
   onChangeDepartment(e) {
-        this.ddldoctor.SetSelection(e.value);
+   
+   let Id=this.crossconForm.get("departmentId").value;
+  // this.ddldoctor.SetSelection(Id);
 }
 
   getValidationMessages() {
@@ -135,9 +136,9 @@ export class CrossConsultationComponent implements OnInit {
 
   onSubmit() {
     console.log(this.crossconForm.value);
-   
+   debugger
     let data=this.crossconForm.value;
-    data.departmentId=parseInt(this.crossconForm.get('departmentId').value)
+    data.departmentId=this.crossconForm.get('departmentId').value.value
     data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
     data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
     data.visitId=0;

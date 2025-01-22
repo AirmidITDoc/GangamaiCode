@@ -13,7 +13,6 @@ import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { request } from 'http';
 import { ToastrService } from 'ngx-toastr';
 import { element } from 'protractor';

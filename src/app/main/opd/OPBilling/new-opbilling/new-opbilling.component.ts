@@ -23,8 +23,7 @@ import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.c
 import { ConfigService } from 'app/core/services/config.service';
 import { BrowseOPDBill } from '../../new-oplist/new-oplist.component';
 import { Regdetail } from '../../appointment-list/appointment-list.component';
-import { AdvanceDetailObj } from '../../appointment/appointment.component';
-import { Payment } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { AdvanceDetailObj, Payment } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 @Component({
   selector: 'app-new-opbilling',

@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AdvanceDetailObj } from '../../appointment/appointment.component';
 import { Observable, Subscription } from 'rxjs';
 import { OPAdvancePaymentComponent } from '../op-advance-payment/op-advance-payment.component';
 import Swal from 'sweetalert2';
@@ -16,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { OPSearhlistService } from '../op-searhlist.service';
 import { fuseAnimations } from '@fuse/animations';
 import * as converter from 'number-to-words';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 type NewType = Observable<any[]>;
 

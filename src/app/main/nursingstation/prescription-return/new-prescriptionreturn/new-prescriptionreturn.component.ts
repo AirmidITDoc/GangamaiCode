@@ -10,9 +10,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IndentList } from 'app/main/inventory/patient-material-consumption/patient-material-consumption.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 
 @Component({

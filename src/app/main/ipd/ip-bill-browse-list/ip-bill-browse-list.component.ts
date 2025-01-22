@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -25,7 +25,6 @@ import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-ne
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import { BrowseIpdPaymentReceipt } from '../browse-ipdpayment-receipt/ipd-paymentreceipt/ipd-paymentreceipt.component';
 import { RefundMaster } from '../Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
@@ -46,8 +45,11 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class IPBillBrowseListComponent implements OnInit {
+    myFilterform:FormGroup;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
+    
     fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     allfilters = [
@@ -68,11 +70,10 @@ export class IPBillBrowseListComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150,type:8 },
             { heading: "OpdIpdId", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "OpdIpdType", key: "opdIpdType", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:8  },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -118,7 +119,7 @@ export class IPBillBrowseListComponent implements OnInit {
             { heading: "Code", key: "paymentId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 150 ,type:8 },
             { heading: "AdvanceId", key: "advanceId", sort: true, align: "center", width: 150 },
             { heading: "RefundId", key: "refundId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             // { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -166,7 +167,7 @@ export class IPBillBrowseListComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "refundId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150 ,type:8 },
             { heading: "BillId", key: "billId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "AdvanceId", key: "advanceId", sort: true, align: "center", width: 150 },
             // { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
@@ -210,11 +211,28 @@ export class IPBillBrowseListComponent implements OnInit {
     constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
     ngOnInit(): void {
+        this.myFilterform=this._IPBrowseBillService.filterForm_IpdBrowse();
     }
 
     onSave(row: any = null) {
     }
+    getValidationMessages() {
+        return {
+            FirstName: [
+                { name: "required", Message: "First Name is required" },
+                { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }
+            ],
+            LastName: [
+                // { name: "required", Message: "Middle Name is required" },
+                // { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }
+            ],
+            RegNo: [],
+            PBillNo: []
 
+        }
+    }
 
     onChangeDate(selectDate) {
         if (selectDate) {

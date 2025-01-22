@@ -16,7 +16,6 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
-import { EditRegistrationComponent } from './edit-registration/edit-registration.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 

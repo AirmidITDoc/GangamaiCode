@@ -9,7 +9,6 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { SampleList, SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 import { fuseAnimations } from '@fuse/animations';
 import { NursingPathRadRequestList } from '../sample-request/sample-request.component';

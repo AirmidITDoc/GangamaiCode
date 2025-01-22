@@ -16,7 +16,6 @@ import { NewOPBillingComponent } from '../OPBilling/new-opbilling/new-opbilling.
 import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { VisitMaster } from '../appointment/appointment.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -24,7 +23,6 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { Router } from '@angular/router';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { EditRefraneDoctorComponent } from '../appointment/edit-refrane-doctor/edit-refrane-doctor.component';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
@@ -252,7 +250,7 @@ export class AppointmentListComponent implements OnInit {
     RegNo = "0"
     
     resultsLength = 0;
-    dataSource = new MatTableDataSource<VisitMaster>();
+    dataSource = new MatTableDataSource<VisitMaster1>();
     getVisitList() {
 
         // this.fname=this.myFilterform.get("FirstName").value
@@ -288,7 +286,7 @@ export class AppointmentListComponent implements OnInit {
 
         console.log(m_data);
         this._AppointmentlistService.getAppointmentList(m_data).subscribe(Visit => {
-            this.dataSource.data = Visit.data as VisitMaster[];
+            this.dataSource.data = Visit.data as VisitMaster1[];
             console.log(Visit);
             if (this.dataSource.data.length > 0) {
                 this.Appointdetail(this.dataSource.data);

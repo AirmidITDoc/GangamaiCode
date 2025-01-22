@@ -13,7 +13,7 @@ import { AdmissionService } from '../Admission/admission/admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NotificationServiceService } from 'app/core/notification-service.service';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import { AdmissionNewComponent } from '../Admission/admission/admission-new/admission-new.component';
+
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel, RegInsert } from '../Admission/admission/admission.component';
 
@@ -295,22 +295,22 @@ export class IPDSearcPatienthComponent implements OnInit {
     // this._AdmissionService.populateFormpersonal(m_data);
     this.advanceDataStored.storage = new AdmissionPersonlModel(m_data);
     
-    const dialogRef = this._matDialog.open(AdmissionNewComponent,
-      {
-        maxWidth: "90vw",
-        // maxHeight: "95vh", 
-        height: '780px',
-        width: '100%',
-        data: {
-          PatObj: m_data 
-        }
-      });
+    // const dialogRef = this._matDialog.open(NewAdmissionComponent,
+    //   {
+    //     maxWidth: "90vw",
+    //     // maxHeight: "95vh", 
+    //     height: '780px',
+    //     width: '100%',
+    //     data: {
+    //       PatObj: m_data 
+    //     }
+    //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // Swal.fire('Close');
-      console.log('The dialog was closed - Insert Action', result);
-      this.dialog.close();
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   // Swal.fire('Close');
+    //   console.log('The dialog was closed - Insert Action', result);
+    //   this.dialog.close();
+    // });
     // if (contact) this.dialogRef.close(PatInforObj);
   }
 
