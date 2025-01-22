@@ -54,9 +54,9 @@ export class RegistrationComponent implements OnInit {
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA' },
             {
-                heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action,width:160, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onEdit(data);
@@ -116,7 +116,7 @@ export class RegistrationComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                // height: '95%',
+                maxHeight: '90%',
                 width: '90%',
 
             });

@@ -156,6 +156,44 @@
 //         @include font-size(13px);
 //     }
 // }
+.mat-typography {
+    .accent,
+    .modal-header {
+        .comman-date-container {
+            .mat-mdc-form-field {
+                // Reduce height and font size
+                color: $primary-25;
+                .mat-mdc-form-field-flex {
+                    max-height: 42px;
+                    label {
+                        color: inherit;
+                    }
+                    input {
+                        background-color: transparent !important;
+                        color: inherit;
+                    }
+                    .mat-mdc-form-field-infix {
+                        padding-top: 13px;
+                    }
+                }
+
+                // Style the suffix (icon)
+                .mat-mdc-form-field-icon-suffix {
+                }
+
+                .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+                    .mdc-notched-outline__leading,
+                .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+                    .mdc-notched-outline__notch,
+                .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+                    .mdc-notched-outline__trailing {
+                    border-color: $primary-25 !important;
+                }
+            }
+        }
+    }
+}
+
 mat-form-field {
     @include font-size(13px);
     font-family: $font-primary;

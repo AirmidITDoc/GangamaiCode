@@ -24,7 +24,7 @@
 </fuse-sidebar>
 <div class="center p-12 pb-56 airmid-table-container" fxFlexAlign="start center">
     <div class="content-card">
-        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()" style="overflow:auto" class="airmid-table">
+        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"  class="airmid-table">
             <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key" >
                 <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
                     row?.heading }}
