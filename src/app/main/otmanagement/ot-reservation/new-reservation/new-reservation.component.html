@@ -7,16 +7,23 @@
                 New Reservation
             </span>
         </div>
-        <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-            </app-common-date> -->
-        <div class="close-icon">
+        
+        <div class="close-icon" fxLayout="row" fxLayoutALign="end start">
+
+            <div fxLayout="row">
+                <span style="margin-top: 7px; font-weight: 500; font-size:large">Operation Date</span>
+                <span style="margin-top: 7px; font-weight: 500; font-size:large">:</span>
+                <span>
+                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                    </app-common-date>
+                </span>
+            </div>
+
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
         </div>
     </mat-toolbar>
-
-
 
     <div class="content">
 
@@ -199,7 +206,7 @@
 
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
-                                        <mat-form-field appearance="outline" fxFlex="100%">
+                                        <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Surgery Name </mat-label>
                                             <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name"
                                               matInput formControlName="SurgeryId"

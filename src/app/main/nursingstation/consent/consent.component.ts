@@ -63,26 +63,83 @@ export class ConsentComponent implements OnInit {
   ngOnInit(): void {
     this.getConsentPatientInfoList();
   }
+ // field validation 
+ get f() { return this._ConsentService.myform.controls; }
 
-  getConsentPatientInfoList(){
-    
+  // getConsentPatientInfoList() {
+  //   this.sIsLoading = 'loading-data';
+  //   const D_data = {
+  //     "FromDate": this.datePipe.transform(this._ConsentService.myformSearch.get("start").value, "MM-dd-yyyy") || "01/01/1900",
+  //     "ToDate": this.datePipe.transform(this._ConsentService.myformSearch.get("end").value, "MM-dd-yyyy") || "01/01/1900",
+  //     "PatientName": this._ConsentService.myformSearch.get("consentNameSearch").value + '%' || '%',
+  //     "RegNo": this._ConsentService.myformSearch.get("uhidNo").value || '',
+  //     "OPIPType":this._ConsentService.myformSearch.get("IsIPOrOP").value || ''
+  //   };
+  
+  //   console.log("Request Payload:", D_data);
+  
+  //   this._ConsentService.getConsentPatientlist(D_data).subscribe(
+  //     (response) => {
+  //       console.log("API Response:", response);
+  
+  //       this.dsConsentList.data = response as OPIPMasterList[];
+  //       this.dsConsentList.sort = this.sort1;
+  //       this.dsConsentList.paginator = this.paginator1;
+  //       this.sIsLoading = '';
+  //     },
+  //     (error) => {
+  //       console.error("Error Fetching Data:", error);
+  //       this.sIsLoading = '';
+  //     }
+  //   );
+  // }
+
+  getConsentPatientInfoList() {
     this.sIsLoading = 'loading-data';
-    var D_data = {
-      "FromDate": this.datePipe.transform(this._ConsentService.myform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "ToDate ": this.datePipe.transform(this._ConsentService.myform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-    }
-    console.log("certificateList:", D_data);
-    this._ConsentService.getConsentPatientlist(D_data).subscribe(Visit => {
-    this.dsConsentList.data = Visit as OPIPMasterList[];
-    this.dsConsentList.sort = this.sort1;
-    this.dsConsentList.paginator = this.paginator1;
-    this.sIsLoading = '';
-    },
-      error => {
+  
+    // Retrieve form values and make sure default values are set
+    const FromDate = this._ConsentService.myformSearch.get("start").value;
+    const ToDate = this._ConsentService.myformSearch.get("end").value;
+    const PatientName = this._ConsentService.myformSearch.get("consentNameSearch").value;
+    const RegNo = this._ConsentService.myformSearch.get("uhidNo").value;
+    const OPIPType = this._ConsentService.myformSearch.get("IsIPOrOP").value;
+  
+    // Prepare request payload
+    const D_data = {
+      "FromDate": this.datePipe.transform(FromDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+      "ToDate": this.datePipe.transform(ToDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+      "PatientName": PatientName ? `${PatientName}%` : '%', // Add '%' if PatientName is not empty
+      "RegNo": RegNo || '', // Handle empty RegNo properly
+      "OPIPType": OPIPType || '' // Handle empty OPIPType properly
+    };
+  
+    console.log("Request Payload:", D_data);
+  
+    // Make API call
+    this._ConsentService.getConsentPatientlist(D_data).subscribe(
+      (response) => {
+        console.log("API Response:", response);
+        
+        if (response && Array.isArray(response)) {
+          // Update the data source and bind to the table
+          this.dsConsentList.data = response as OPIPMasterList[];
+          this.dsConsentList.sort = this.sort1;
+          this.dsConsentList.paginator = this.paginator1;
+        } else {
+          console.error("Invalid data format received:", response);
+        }
+  
+        // Clear loading state
         this.sIsLoading = '';
-      }); 
+      },
+      (error) => {
+        console.error("Error Fetching Data:", error);
+        this.sIsLoading = ''; // Clear loading state on error
+      }
+    );
   }
-
+  
+  
   currentOPIPID: any;
   getConsentPatientInfoDetailList(Param){
     this.currentOPIPID = Param.OPIPID;
@@ -161,12 +218,14 @@ debugger
   }
 
   onClear() {
-    this._ConsentService.myform.reset({
+    this._ConsentService.myformSearch.reset({
       start: new Date(),
       end: new Date(),
+      IsIPOrOP:'2'
     });
+    console.log("Form values after reset:", this._ConsentService.myform.value);
     this.getConsentPatientInfoList();
-  }
+  } 
 
 }
 export class OPIPMasterList {

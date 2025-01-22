@@ -25,6 +25,19 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxLayout="column" class="gap-12">
+                            <form [formGroup]="_OtManagementService.otreservationFormGroup">
+                            <div>
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getRequestListInReservation()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                            </div>
+                        </form>
 
                             <div fxlayout="row">
                                 <div style="width: 100%;">

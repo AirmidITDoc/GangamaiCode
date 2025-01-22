@@ -119,14 +119,6 @@
         <div fxLayout="column" class="gap-12">
 
           <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" style="margin-right: 10px;">
-            <div style="color: green;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-              <mat-icon class="pill green-600 s-16">circle</mat-icon>
-              <span class="green-600-fg">NotCancelled</span>
-            </div>
-            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-              <mat-icon class="pill red-600 s-16">circle</mat-icon>
-              <span class="red-600-fg">Cancelled</span>
-            </div>
 
             <div style="color: green;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
               <mat-icon class="pill green-600 s-16">circle</mat-icon>
@@ -229,7 +221,7 @@
                           SurgeonName1
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.SurgeonName ? contact.SurgeonName : '-'}}
+                          {{contact.SurgeonName1 ? contact.SurgeonName1 : '-'}}
                         </mat-cell>
                       </ng-container>
 
@@ -238,7 +230,7 @@
                           SurgeonName2
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
-                          {{contact.SurgeonName ? contact.SurgeonName : '-'}}
+                          {{contact.SurgeonName2 ? contact.SurgeonName2 : '-'}}
                         </mat-cell>
                       </ng-container>
 

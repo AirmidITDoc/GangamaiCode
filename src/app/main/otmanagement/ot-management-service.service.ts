@@ -109,7 +109,8 @@ export class OTManagementServiceService {
       AnestheticsDr:'',
       AnestheticsDr1:'',
       OTTableId:'',
-
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
      });
    }
 
@@ -209,8 +210,8 @@ export class OTManagementServiceService {
     this.otreservationFormGroup.patchValue(employee);
   }
 // otTable List in Reservation
-public getOTRequestListInReser(){
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist_EmergencyList", {})
+public getOTRequestListInReser(employee){
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist_EmergencyList", employee)
 }
   
   public CathLabBookInsert(employee){

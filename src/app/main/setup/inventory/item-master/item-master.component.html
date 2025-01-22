@@ -19,40 +19,56 @@
     </mat-toolbar>
 
     <div class="content">
-        <div class="center p-12 pb-56">
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+
+        <!--  -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <!-- SIDEBAR HEADER -->
+            <div class="sidebar-content">
+
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div class="nav material2">
+                    <form [formGroup]="_itemService.myformSearch">
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search Item Name</mat-label>
+                                <input matInput placeholder="Search Item Name" autocomplete="off" name="ItemNameSearch"
+                                    formControlName="ItemNameSearch" (keyup)="onSearch()" />
+                            </mat-form-field>
+                        
+                            <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                            value="2" fxLayoutAlign="center center">
+                            <mat-radio-button value="2">All</mat-radio-button>
+                            <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
+                            <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
+                        </mat-radio-group>
+
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button mat-raised-button (click)="onSearchClear()" class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;
+                            <button mat-raised-button class="searchButton" (click)="getItemMasterList()"
+                                matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </fuse-sidebar>
+        <!--  -->
+
+        <div class="center p-12 pb-56" fxFlexAlign="height: fit-content;">
+            <div class="content-card" style="border-radius:4px;">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <mat-card style="padding: 8px;">
-                            <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
-                                <form [formGroup]="_itemService.myformSearch">
-                                    <div class="dialog-content-wrapper">
-
-                                        <mat-form-field class="mr-sm-12" fxFlex>
-                                            <input matInput placeholder="Search   Item Name" autocomplete="off"
-                                                name="ItemNameSearch" formControlName="ItemNameSearch"
-                                                (keyup)="onSearch()" />
-                                            <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="onSearchClear()">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-
-                                        <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
-                                            value="2" fxLayoutAlign="center center">
-                                            <mat-radio-button value="2">All</mat-radio-button>
-                                            <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
-                                            <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
-                                        </mat-radio-group>
-
-                                        <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                            <mat-icon>search</mat-icon>
-                                            Search
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-
 
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSItemMasterList"

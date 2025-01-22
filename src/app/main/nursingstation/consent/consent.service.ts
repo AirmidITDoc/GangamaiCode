@@ -8,12 +8,16 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class ConsentService {
   myform: FormGroup;
+  myformSearch: FormGroup;
 
   constructor(
     public _frombuilder: FormBuilder,
     public _httpClient: HttpClient,
         public loaderService:LoaderService
-  ) { this.myform = this.CreateMyform() }
+  ) { 
+    this.myform = this.CreateMyform();
+    this.myformSearch = this.createSearchForm();
+  }
 
   CreateMyform() {
     return this._frombuilder.group({
@@ -28,7 +32,16 @@ export class ConsentService {
       Language: ['1'],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      IsIPOrOP:['2']
+    })
+  }
+
+  createSearchForm() {
+    return this._frombuilder.group({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      IsIPOrOP:['2'],
+      consentNameSearch:[''],
+      uhidNo:['']
     })
   }
 
