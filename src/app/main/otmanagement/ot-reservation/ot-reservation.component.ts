@@ -318,8 +318,8 @@ OPreOPrativenote(){
 
     const dialogRef = this._matDialog.open(NewReservationComponent,
       {
-        maxWidth: "70%",
-        height: '80%',
+        maxWidth: "80%",
+        height: '95%',
         width: '100%',
         data: {
           Obj: contact

@@ -42,7 +42,7 @@
                 <!-- / SIDEBAR HEADER -->
                 <!-- SIDEBAR CONTENT -->
                 <div class="nav material2">
-                    <form [formGroup]="_ConsentService.myform">
+                    <form [formGroup]="_ConsentService.myformSearch">
                         <div fxLayout="column" fxLayoutAlign="start none">
                         
                             <mat-form-field appearance="outline" fxFlex>
@@ -53,6 +53,26 @@
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search Patient Name</mat-label>
+                                <input name="consentNameSearch" formControlName="consentNameSearch" matInput
+                                    (keyup)="getConsentPatientInfoList()"
+                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                <!-- <span class="error" *ngIf="f.consentNameSearch.invalid && f.consentNameSearch.touched">
+                                   Enter only Alphabets
+                                </span> -->
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search UHID No</mat-label>
+                                <input name="uhidNo" formControlName="uhidNo" matInput
+                                    (keyup)="getConsentPatientInfoList()"
+                                    input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <!-- <span class="error" *ngIf="f.uhidNo.invalid && f.uhidNo.touched">
+                                    Enter only Numbers
+                                </span> -->
                             </mat-form-field>
                         
                             <mat-radio-group name="IsIPOrOP" formControlName="IsIPOrOP" (change)="getConsentPatientInfoList()"
@@ -115,10 +135,10 @@
                                                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
                 
                                                 <ng-container matColumnDef="IpOpType" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
                 
                                                     </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" class="w-60">
+                                                    <mat-cell *matCellDef="let element">
                                                         <div class="pill-icon">
                                                             <mat-icon style="border-radius:100% ;" *ngIf="!element.OPIPType=='0'"
                                                                 matTooltip="IP" class="green-600 s-16">circle
@@ -132,9 +152,9 @@
                                                 </ng-container>
                 
                                                 <ng-container matColumnDef="UHIDNO" sticky>
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                                        UHIDNO </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        UHID </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                         {{element.RegNo}} </mat-cell>
                                                 </ng-container>
                 
@@ -163,9 +183,9 @@
                                                 </ng-container>
                 
                                                 <ng-container matColumnDef="ConsentDesc">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-400">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Consent Desc</mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-400 ellipsis"
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-md class="ellipsis"
                                                         matTooltip="{{contact.ConsentText}}">
                                                         {{contact.ConsentText}}
                                                     </mat-cell>
@@ -202,10 +222,6 @@
                 
                                                         <button mat-icon-button matTooltip="Print"
                                                             (click)="viewgetConsentReportPdf(element)">
-                                                            <mat-icon>print</mat-icon>
-                                                        </button>
-
-                                                        <button mat-icon-button matTooltip="PrintAll">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </mat-cell>

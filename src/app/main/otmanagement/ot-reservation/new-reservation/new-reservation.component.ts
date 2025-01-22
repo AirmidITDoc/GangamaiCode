@@ -133,7 +133,8 @@ export class NewReservationComponent implements OnInit {
   selectedOtTable: string = '';
   isOtTableSelected: boolean = false;
 
-  screenFromString = 'registration';
+  screenFromString = 'otBooking-form';
+
   selectedPrefixId: any;
 
   matDialogRef: any;
@@ -883,7 +884,10 @@ debugger
   }
 
   onClose() {
-    this._OtManagementService.otreservationFormGroup.reset();
+    this._OtManagementService.otreservationFormGroup.reset({
+      start: new Date(),
+      end: new Date(),
+    });
     this.dialogRef.close();
   }
 
@@ -1029,8 +1033,8 @@ debugger
           "tranTime": formattedTime,
           "oP_IP_ID": this.vOPIP_ID || 0,
           "oP_IP_Type": opip_Type,
-          "opDate": formattedDate, //this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-          "opTime": formattedTime, //this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "opDate": this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "opTime": this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
           "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
           "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
           "surgeonId": this._OtManagementService.otreservationFormGroup.get('DoctorId').value.DoctorId || 0,

@@ -128,7 +128,7 @@ export class NewConsentComponent implements OnInit {
         this.vAdmissionID = this.registerObj1.OPIPID
         this.vAge = this.registerObj1.AgeYear;
         this.vRegNo = this.registerObj1.RegNo;
-        this.vIPDNo = this.registerObj1.OPDNo;
+        this.vIPDNo = this.registerObj1.IPDNo;
         this.vCompanyName = this.registerObj1.CompanyName;
         this.vTariffName = this.registerObj1.TariffName;
         this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
@@ -137,6 +137,7 @@ export class NewConsentComponent implements OnInit {
         this.vConsentName = this.registerObj1.ConsentName;
         this.vConsentId = this.registerObj1.ConsentId;
         this.vConsentText = this.registerObj1.ConsentText;
+        this.vDoctorName = this.registerObj1.DoctorName;
 
         this.selectedDepartment = this.registerObj1.ConsentDeptId;
         this.selectedTemplate = this.registerObj1.ConsentTempId;
@@ -612,7 +613,8 @@ debugger
     this._ConsentService.myform.reset({
       start: this._ConsentService.myform.get('start')?.value,
       end: this._ConsentService.myform.get('end')?.value,
-      Language: '1'
+      Language: '1',
+      IsIPOrOP:'2'
     });
     this.dialogRef.close();
   }

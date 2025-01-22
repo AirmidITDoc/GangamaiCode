@@ -43,7 +43,7 @@ export class GetOTRequetComponent implements OnInit {
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<GetOTRequetComponent>,
-    // public datePipe: DatePipe,
+    public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
   private _loggedService: AuthenticationService
@@ -67,9 +67,16 @@ export class GetOTRequetComponent implements OnInit {
   }
 
   getRequestListInReservation() {
+    const FromDate = this._OtManagementService.otreservationFormGroup.get("start").value;
+    const ToDate = this._OtManagementService.otreservationFormGroup.get("end").value;
+    const D_data = {
+      "FromDate": this.datePipe.transform(FromDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+      "ToDate": this.datePipe.transform(ToDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+    };
+    console.log("Request Payload:", D_data);
 
     this.sIsLoading = 'loading-data';
-    this._OtManagementService.getOTRequestListInReser().subscribe(Visit => {
+    this._OtManagementService.getOTRequestListInReser(D_data).subscribe(Visit => {
       this.dataSource.data = Visit as getRequestlist[];
       console.log(this.dataSource.data);
       this.dataSource.sort = this.sort;
@@ -88,6 +95,10 @@ export class GetOTRequetComponent implements OnInit {
   }
 
   onClose() {
+    this._OtManagementService.otreservationFormGroup.reset({
+      start: new Date(),
+      end: new Date(),
+    })
     this.dialogRef.close();
   }
 

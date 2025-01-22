@@ -18,13 +18,12 @@ export class OttableMasterService {
   createOtTableForm(): FormGroup {
     return this._formBuilder.group({
       OtTableId:[''],
-      OtRoomName:['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-   ]],
-      Locationid:['',
-        Validators.required
-      ],
+      OtRoomName:[''],
+  //     [
+  //       Validators.required,
+  //       Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+  //  ]
+      Locationid:[''],
       IsDeleted:[true]
     });
   }

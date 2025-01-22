@@ -35,14 +35,14 @@
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>OTRoom Name</mat-label>
-                                                <input name="OtRoomName" formControlName="OtRoomName" required
+                                                <input name="OtRoomName" formControlName="OtRoomName"
                                                     placeholder="OT Room Name" matInput type="text"
-                                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                                                    oninput="this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');"
                                                     [(ngModel)]="vOtRoomName ">
-                                                <mat-error
+                                                <!-- <mat-error
                                                     *ngIf="_otTableMasterService.myform.get('OtRoomName').invalid && _otTableMasterService.myform.get('OtRoomName').touched">
                                                     OtRoom Name is required Enter only
-                                                    Alphabets</mat-error>
+                                                    Alphabets</mat-error> -->
                                             </mat-form-field>
                                         </div>
 

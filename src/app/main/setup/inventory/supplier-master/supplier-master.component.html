@@ -21,29 +21,28 @@
     <div class="content">
 
         <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <!-- SIDEBAR HEADER -->
+            <div class="sidebar-content">
 
-        <!-- CENTER -->
-        <div class="center p-24 pb-56">
-            <!-- CONTENT -->
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card style="padding: 8px;">
-                            <div fxlayout="row" fxLayoutGap="3px">
-                                <form [formGroup]="_supplierService.myformSearch">
-                                    <div class="dialog-content-wrapper">
-                                        <mat-form-field class="mr-sm-12" fxFlex>
-                                            <input matInput placeholder="Search --> Supplier Name" autocomplete="off"
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div class="nav material2">
+                    <form [formGroup]="_supplierService.myformSearch">
+                        <div fxLayout="column" fxLayoutAlign="start none">
+                
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search Supplier Name</mat-label>
+                                <input matInput placeholder="Search Supplier Name" autocomplete="off"
                                                 name="SupplierNameSearch" formControlName="SupplierNameSearch"
                                                 (keyup)="onSearch()" />
-                                            <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="onSearchClear()" (keyup)="onSearch()">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-
-                                        <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
+                            </mat-form-field>
+                        
+                            <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch"
                                             (change)="onFilterChange()">
                                             <mat-radio-button (click)="toggle(2)" [checked]="true"
                                                 value="2">All</mat-radio-button>
@@ -53,13 +52,29 @@
                                                 value="0">IsDeactive</mat-radio-button>
                                         </mat-radio-group>
 
-                                        <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                            <mat-icon>search</mat-icon>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button mat-raised-button (click)="onSearchClear()" class="clearbutton" matTooltip="close">
+                                <mat-icon class="cleariconbutton">close</mat-icon>
+                            </button>&nbsp;
+                            <button mat-raised-button class="searchButton" (click)="getSupplierMasterList()"
+                                matTooltip="search">
+                                <mat-icon class="searchiconbutton">search</mat-icon>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
 
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+        <!-- CENTER -->
+        <div class="center p-12 pb-56" fxFlexAlign="height: fit-content;">
+            <!-- CONTENT -->
+            <div class="content-card" style="border-radius:4px;">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card style="padding: 8px;">
 
                             <div style="width: 100%;">
                                 <mat-table #table matSort [dataSource]="DSSupplierMaster"
