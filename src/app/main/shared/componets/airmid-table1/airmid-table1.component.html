@@ -72,8 +72,8 @@
                                         </ng>
 
                                         <ng *ngSwitchCase="GridColumnType.StatusBillcancle" fxHide fxShow.gt-sm>
-                                            <mat-icon title="Clse Menu" *ngIf="!getStatus(element[row.key])"
-                                                [disabled]="contact.disabled" class="disabled-icon">
+                                            <mat-icon title="Bill Cancle" *ngIf="getStatus(element[row.key])"
+                                            class="active-icon red-600 s-16">
                                                 close</mat-icon>
                                         </ng>
 

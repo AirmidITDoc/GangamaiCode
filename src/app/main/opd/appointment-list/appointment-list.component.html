@@ -13,9 +13,9 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
-            <button class="btn btn-primary " color="accent" (click)="getAppointmentrview()">
+            <!-- <button class="btn btn-primary " color="accent" (click)="getAppointmentrview()">
                 <span>Appointment List</span>
-            </button>
+            </button> -->
         </div>
 
 
@@ -49,7 +49,7 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <airmid-table [gridConfig]="gridConfig" class="content">
+        <app-airmid-table1 [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
 
@@ -180,7 +180,7 @@
 
 
             </ng-container>
-        </airmid-table>
+        </app-airmid-table1>
 
     </div>
     <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"

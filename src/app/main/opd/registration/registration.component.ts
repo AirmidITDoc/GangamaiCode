@@ -40,20 +40,18 @@ export class RegistrationComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
-            { heading: "Code", key: "regId", sort: true, align: 'left', emptySign: 'NA', },
-
-            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "RegDate", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Patient Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "AgeMonth", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "AgeDay", key: "ageDay", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "RegTime", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "CityeName", key: "city", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', },
+            // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
+            // { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', },
             {
                 heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action, actions: [
                     {
@@ -61,24 +59,20 @@ export class RegistrationComponent implements OnInit {
                             this.onEdit(data);
                         }
                     },
-                    // {
-                    //     action: gridActions.view, callback: (data: any) => {
-
-                    //     }
-                    // },
-                    {
+                   {
                         action: gridActions.print, callback: (data: any) => {
                             // this.getAdmittedPatientCasepaperview(data);
                         }
                     },
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
+                    // {
+                    //     action: gridActions.delete, callback: (data: any) => {
+                    //         this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
+                    //             this.toastr.success(response.message);
+                    //             this.grid.bindGridData();
+                    //         });
+                    //     }
+                    // }
+                    ]
             }
         ],
         sortField: "RegId",

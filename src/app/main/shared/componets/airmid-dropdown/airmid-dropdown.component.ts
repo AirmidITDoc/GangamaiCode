@@ -283,7 +283,7 @@ export class AirmidDropdownComponent implements OnInit {
 
     getOptionText(option) {
         console.log(option)
-        return this.ValueField//option && option.text ? option.text : '';
+        return "Rk"//option && option.text ? option.text : '';
     }
 
 

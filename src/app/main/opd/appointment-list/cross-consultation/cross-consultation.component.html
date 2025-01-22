@@ -126,25 +126,25 @@
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
-                                        <app-airmid-dropdown label="Departmentid" formControlName="departmentId"
+                                        <!-- <app-airmid-dropdown label="Departmentid" formControlName="departmentId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
                                             [validations]="getValidationMessages().Departmentid"
                                             [mode]="autocompleteModedepartment"
                                             (onSelectionChange)="onChangeDepartment($event)">
-                                        </app-airmid-dropdown>
+                                        </app-airmid-dropdown> -->
 
-                                        <!-- <airmid-autocomplete label="departmentId" formControlName="departmentId"
-                                        [formGroup]="crossconForm" [value]="registerObj?.departmentId"
+                                        <airmid-autocomplete label="Department Name" formControlName="departmentId"
+                                        [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
                                         [validations]="getValidationMessages().Departmentid" ValueField="departmentId"
                                         TextField="departmentName" (selectionChange)="selectChangedepartment($event)"
                                         ApiUrl="Prefix/get-prefixs">
-                                    </airmid-autocomplete> -->
+                                    </airmid-autocomplete>
 
-                                        <!-- <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
+                                        <airmid-autocomplete label="Doctor Name" formControlName="consultantDocId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
                                             [validations]="getValidationMessages().consultantDocId" #ddldoctor
                                             [mode]="autocompleteModedeptdoc">
-                                        </airmid-autocomplete> -->
+                                        </airmid-autocomplete>
                                     </div>
                                 </div>
                             </div>

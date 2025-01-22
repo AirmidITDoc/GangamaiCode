@@ -296,6 +296,8 @@ export class ParameterFormMasterComponent implements OnInit {
             PathParameterMasterInsert['updatedby'] = this.accountService.currentUserValue.user.id || 1;
             m_data['pathParameterMasterUpdate'] = PathParameterMasterInsert;
  
+
+            
             console.log(m_data)
             this._ParameterService.updateParameterMaster(m_data).subscribe((data) => {this.msg = data;if (data) {
                         this._ParameterService.myform.reset();
@@ -488,20 +490,20 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
     checkFields(event) {
-        debugger
-        const formValues = this.parameterForm.value
-        const fieldsTobeChecked =
-             formValues.SexID
-            && formValues.MinAge
-            && formValues.MaxAge
-            && formValues.AgeType
-            && formValues.MinValue
-            && formValues.MaxValue;
-        if (!fieldsTobeChecked) {
-            event.preventDefault;
-            this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
-        }
-        else
+        // debugger
+        // const formValues = this.parameterForm.value
+        // const fieldsTobeChecked =
+        //      formValues.SexID
+        //     && formValues.MinAge
+        //     && formValues.MaxAge
+        //     && formValues.AgeType
+        //     && formValues.MinValue
+        //     && formValues.MaxValue;
+        // if (!fieldsTobeChecked) {
+        //     event.preventDefault;
+        //     this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
+        // }
+        // else
          this.onAdd(event);
 
 
@@ -535,7 +537,7 @@ export class ParameterFormMasterComponent implements OnInit {
         let isNewRowUnique = true;
 debugger
         const newRow: any = {
-            GenderName: this.parameterForm.get('SexID').value || "",
+            GenderName: 'dd',//this.parameterForm.get('SexID').value || "",
             MinAge: this.vMinAge || 0,
             MaxAge: this.vMaxAge || 0,
             MinValue: this.vMinValue || 0,

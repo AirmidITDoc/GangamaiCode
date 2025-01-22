@@ -72,22 +72,24 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "visitId", sort: true, align: 'left', emptySign: 'NA' },
+           
             { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type:17},
             { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type:15 },
             { heading: "PhoneAppId", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 100, type:13 },
-            { heading: "visitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type:8 },
+            { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-            { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA',  type: 22 },
+            { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type:8 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA',  },
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "DoctorName", key: "consultantdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Ref DoctorName", key: "refdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA',  type: 22 },
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
-            { heading: "DoctorId", key: "doctorId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+            { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+          
             {
                 heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
                     {
@@ -120,13 +122,14 @@ export class AppointmentListComponent implements OnInit {
                             this.getAppointmentlistrview();
                         }
                     },
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
+                    // {
+                    //     action: gridActions.delete, callback: (data: any) => {
 
-                            this.AppointmentCancle(data);
+                    //         this.AppointmentCancle(data);
 
-                        }
-                    }]
+                    //     }
+                    // }
+                    ]
             } //Action 1-view, 2-Edit,3-delete
         ],
 
@@ -474,7 +477,7 @@ let param={
     EditOpBill(row) {
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewOPBillingComponent,
+        const dialogRef = this._matDialog.open(OPBillingComponent,
             {
                 maxWidth: "99vw",
                 height: '95%',
@@ -578,17 +581,19 @@ let param={
     selectChangedeptdoc(obj: any) {
         
         console.log(obj);
-        this.DoctorId = String(obj)
+        this.DoctorId = (obj.value)
         console.log(this.gridConfig.filters)
-        this.gridConfig.filters = [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        this.gridConfig.filters = [
+            //  { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        // { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        // { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+        // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        // { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+        // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+        // { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        ]
     }
     getValidationdoctorMessages() {
         return {

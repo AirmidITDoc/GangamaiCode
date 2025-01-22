@@ -45,18 +45,36 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            //   { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:50,type:16},
-            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 22 },
+            { heading: "Patient", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width:70,type:22 },
+            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:70,type:16},
+             { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+            { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "CashCounter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150},
+            // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-
+           
             {
                 heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                     {
@@ -98,24 +116,34 @@ export class NewOPListComponent implements OnInit {
         //       { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
         //   ],
-        row: 25
+        row: 250
     }
 
     gridConfig1: gridModel = {
         apiUrl: "VisitDetail/OPPaymentList",
         columnsList: [
-            { heading: "Code", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CashPay", key: "cashPay", sort: true, align: "center", width: 150 },
+            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "CardPay", key: "cardPay", sort: true, align: "center", width: 150 },
+            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", width: 150 },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "VisitDate", key: "visitdate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "OpdNo", key: "opdNo", sort: true, align: "center", width: 50 },
-            { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "CashPay", key: "cashPay", sort: true, align: "center", width: 50 },
-            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "CardPay", key: "cardPay", sort: true, align: "center", width: 50 },
-            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", width: 50 },
+            { heading: "Ref DoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+           
+            { heading: "CompantName", key: "companyName", sort: true, align: "center", width: 250 },
+          
             {
                 heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                     {
@@ -163,14 +191,24 @@ export class NewOPListComponent implements OnInit {
     gridConfig2: gridModel = {
         apiUrl: "VisitDetail/OPRefundList",
         columnsList: [
-            { heading: "Code", key: "RefundId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "RefundDate", key: "RefundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-            // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "OpdNo", key: "opdNo", sort: true, align: "center" },
-            // { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CashPay", key: "cashPay",sort: true, align: "center" },
+            { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+            { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA' },
+         
+            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA' },
+         
+            { heading: "PatientType", key: "patientType", sort: true, align: "center" },
+            
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CompanyName", key: "companyName",sort: true, align: "center" },
             // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
             // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },

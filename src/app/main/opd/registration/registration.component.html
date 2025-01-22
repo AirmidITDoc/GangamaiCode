@@ -10,9 +10,9 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onNewregistration()">New Registration
             </button>
-            <button class="btn btn-primary " color="accent" (click)="getRegistrationlistrview()">
+            <!-- <button class="btn btn-primary " color="accent" (click)="getRegistrationlistrview()">
                 <span>Registration List</span>
-            </button>
+            </button> -->
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -38,7 +38,7 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field> -->
-                <airmid-textbox label="LastName" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
+                <airmid-textbox label="Last Name" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
                 </airmid-textbox>
 
 

@@ -714,6 +714,7 @@ export class NewAppointmentComponent implements OnInit {
        
         
         let submitData = {
+            
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };

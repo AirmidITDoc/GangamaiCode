@@ -204,7 +204,7 @@ export class CrossConsultationComponent implements OnInit {
 
   }
 
-
+  selectChangedepartment($event){}
 
 }
 

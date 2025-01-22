@@ -47,19 +47,19 @@
                   </mat-form-field>
                   </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="firstName" formControlName="firstName" [formGroup]="phoneappForm"
+                  <airmid-textbox label="First Name" formControlName="firstName" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().firstName" [maxLength]="10">
                   </airmid-textbox>
                 </div>
                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="middleName" formControlName="middleName" [formGroup]="phoneappForm"
+                  <airmid-textbox label="Middle Name" formControlName="middleName" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().middleName" [maxLength]="10">
                   </airmid-textbox>
                 </div>
                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="lastName" formControlName="lastName" [formGroup]="phoneappForm"
+                  <airmid-textbox label="Last Name" formControlName="lastName" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().lastName" [maxLength]="10">
                   </airmid-textbox>
                 </div>
@@ -70,7 +70,7 @@
 
                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="address" formControlName="address" [formGroup]="phoneappForm"
+                  <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm"
                     [validations]="getValidationMessages().address" [maxLength]="10">
                   </airmid-textbox>
                 </div>
@@ -85,13 +85,13 @@
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                  <airmid-autocomplete label="departmentId" formControlName="departmentId" [value]="data?.departmentId"
+                  <airmid-autocomplete label="Department Name" formControlName="departmentId" [value]="data?.departmentId"
                     [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId"
                     [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
                   </airmid-autocomplete>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-autocomplete label="doctorId" formControlName="doctorId" [value]="data?.doctorId"
+                  <airmid-autocomplete label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
                     [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId"
                     [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
                   </airmid-autocomplete>

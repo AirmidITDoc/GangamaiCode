@@ -108,13 +108,13 @@
 
                                         <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
-                                        <airmid-autocomplete label="Departmentid" formControlName="departmentId"
+                                        <airmid-autocomplete label="Department Name" formControlName="departmentId"
                                             [formGroup]="ConsdrForm" [value]="data?.departmentId"
                                             [validations]="getValidationMessages().departmentId" 
                                              [mode]="autocompleteModedepartment">
                                         </airmid-autocomplete>
 
-                                        <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
+                                        <airmid-autocomplete label="Doctor Name" formControlName="consultantDocId"
                                             [formGroup]="ConsdrForm" [value]="data?.consultantDocId"
                                             [validations]="getValidationMessages().consultantDocId"
                                             [mode]="autocompleteModedeptdoc">

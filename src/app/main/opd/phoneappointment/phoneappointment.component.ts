@@ -38,12 +38,15 @@ export class PhoneappointmentComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-            { heading: "Code", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status,width: 150 },
+            { heading: "SeqNo", key: "SeqNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "AppDate", key: "RegTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 150 },
+            { heading: "Department", key: "departmentId", emptySign: 'NA', align: "center", width: 150 },
+            { heading: "Doctor", key: "doctorId",  emptySign: 'NA',align: "center", width: 150 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {

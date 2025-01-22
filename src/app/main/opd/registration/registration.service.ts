@@ -45,7 +45,7 @@ export class RegistrationService {
   createPesonalForm() {
     return this._formBuilder.group({
       regId: [0],
-      RegNo: '1',
+      RegNo: '',
       prefixId: ['', [Validators.required]],
       firstName:[""],
       //  ['', [
