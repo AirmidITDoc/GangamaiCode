@@ -96,28 +96,6 @@ export class ParametermasterComponent implements OnInit {
         this._ParameterService.initializeFormGroup();
     }
 
-    // onDeactive(parameterId) {
-    //     this.confirmDialogRef = this._matDialog.open(
-    //         FuseConfirmDialogComponent,
-    //         {
-    //             disableClose: false,
-    //         }
-    //     );
-    //     this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to deactive?";
-    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
-    //         if (result) {
-    //             this._ParameterService.deactivateTheStatus(parameterId).subscribe((response: any) => {
-    //                 if (response.StatusCode == 200) {
-    //                     this.toastr.success(response.Message);
-    //                     // this.getGenderMasterList();
-    //                     // How to refresh Grid.
-    //                 }
-    //             });
-    //         }
-    //         this.confirmDialogRef = null;
-    //     });
-    // }
-
     onEdit(row) {
         console.log()
         var m_data = {
@@ -218,31 +196,6 @@ export class ParametermasterComponent implements OnInit {
 
         }
     }
-    //     onFilterChange(){
-    //         ;
-    //         if(this.currentStatus==1){
-    //             this.tempList.data = []
-    //             for (let item of this.DSParameterList.data) {
-    //                 if(item.Isdeleted)this.tempList.data.push(item)
-
-    //                 }
-    //             }
-
-    //         else if(this.currentStatus==2){
-    //             
-    //             this.tempList.data = []
-    //             for (let item of this.DSParameterList.data) {
-    //                 if(!item.Isdeleted)this.tempList.data.push(item)
-    //             }
-    //         }
-    //         else{
-    //             this.tempList.data = this.DSParameterList.data;
-    //         }
-
-    // this.getParameterMasterList()
-    //     }
-
-
 }
 
 export class PathparameterMaster {

@@ -356,7 +356,6 @@ let param={
 
 
     Appointdetail(data) {
-        debugger
         this.Vtotalcount = 0;
         this.VNewcount = 0;
         this.VFollowupcount = 0;
