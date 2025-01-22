@@ -416,9 +416,9 @@ console.log(obj)
         this.registeredForm.get('DoctorID').disable();
       }
       if(this.vIsEditable == true){
-        this.Editableprice = 1
-      }else{
         this.Editableprice = 0
+      }else{
+        this.Editableprice = 1
       }
     }
     else { 
@@ -448,9 +448,9 @@ console.log(obj)
         this.registeredForm.get('DoctorID').disable();
       }
       if(this.vIsEditable == true){
-        this.Editableprice = 1
-      }else{
         this.Editableprice = 0
+      }else{
+        this.Editableprice = 1
       }
     } 
     this.getAdmittedDoctorCombo(); 
@@ -489,7 +489,7 @@ console.log(obj)
   }
 //add service
 onAddCharges() {
-
+  debugger
   if ((this.serviceId == 0 || this.serviceId == null || this.serviceId == undefined)) {
     this.toastr.warning('Please select Service', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
@@ -535,7 +535,7 @@ onAddCharges() {
       console.log(this.ChargesDoctorname)
     }
   }
-  debugger
+ 
   this.isLoading = 'save';
   this.dataSource.data = [];
   this.chargeslist.push(

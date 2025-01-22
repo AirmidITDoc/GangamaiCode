@@ -479,9 +479,9 @@ ServiceList:any=[];
       this.isDoctor = false;
     }
     if(this.vIsEditable == true){
-      this.Editableprice = 1
-    }else{
       this.Editableprice = 0
+    }else{
+      this.Editableprice = 1
     }
     this.getpackagedetList();
     this.getAdmittedDoctorCombo();
@@ -1282,8 +1282,8 @@ CalculateAdminCharge(){
           this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         } else {
-          this.vFinalDiscper = ((parseFloat(FinalDiscAmt) / parseFloat(FinalTotalAMt)) * 100).toFixed(2);
-          this.vNetBillAmount = Math.round(parseFloat(FinalTotalAMt) - parseFloat(FinalDiscAmt)).toFixed(2);
+          this.vFinalDiscper = ((parseInt(FinalDiscAmt) / parseInt(FinalTotalAMt)) * 100).toFixed(2);
+          this.vNetBillAmount = (parseInt(FinalTotalAMt) - parseInt(FinalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
         }
