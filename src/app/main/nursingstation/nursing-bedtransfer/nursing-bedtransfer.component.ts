@@ -7,12 +7,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj, Bed, Discharge } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { ReplaySubject, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NurBedTransferService } from './nur-bed-transfer.service';
 import { takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
   selector: 'app-nursing-bedtransfer',

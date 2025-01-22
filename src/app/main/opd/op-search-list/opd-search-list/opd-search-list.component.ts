@@ -2,7 +2,6 @@ import { Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation }
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AdvanceDetailObj, VisitMaster } from '../../appointment/appointment.component';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -23,6 +22,7 @@ import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.compon
 import { OpPaymentComponent } from '../op-payment/op-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OpPaymentVimalComponent } from '../op-payment-vimal/op-payment-vimal.component';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 
 

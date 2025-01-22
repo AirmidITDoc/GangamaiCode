@@ -126,12 +126,12 @@
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
 
-                                        <airmid-autocomplete label="Departmentid" formControlName="departmentId"
+                                        <app-airmid-dropdown label="Departmentid" formControlName="departmentId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
                                             [validations]="getValidationMessages().Departmentid"
                                             [mode]="autocompleteModedepartment"
-                                            (selectionChange)="onChangeDepartment($event)">
-                                        </airmid-autocomplete>
+                                            (onSelectionChange)="onChangeDepartment($event)">
+                                        </app-airmid-dropdown>
 
                                         <!-- <airmid-autocomplete label="departmentId" formControlName="departmentId"
                                         [formGroup]="crossconForm" [value]="registerObj?.departmentId"
@@ -140,11 +140,11 @@
                                         ApiUrl="Prefix/get-prefixs">
                                     </airmid-autocomplete> -->
 
-                                        <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
+                                        <!-- <airmid-autocomplete label="DoctorID" formControlName="consultantDocId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
                                             [validations]="getValidationMessages().consultantDocId" #ddldoctor
                                             [mode]="autocompleteModedeptdoc">
-                                        </airmid-autocomplete>
+                                        </airmid-autocomplete> -->
                                     </div>
                                 </div>
                             </div>
@@ -193,9 +193,9 @@
                 </app-airmid-dropdown>  -->
 
 
-                <app-airmid-dropdown  label="Department" formControlName="departmentId" [value]="Departmentid"
+                <!-- <app-airmid-dropdown  label="Department" formControlName="departmentId" [value]="Departmentid"
                     [formGroup]="crossconForm" [mode]="autocompleteModedepartment" (selectionChange)="selectChange($event)">
-                </app-airmid-dropdown>
+                </app-airmid-dropdown> -->
                 <span style="font-size: larger;color: blue;">{{selected}}</span>
             </form>
         </div>

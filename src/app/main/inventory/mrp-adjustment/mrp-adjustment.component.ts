@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
+
 
 @Component({
   selector: 'app-mrp-adjustment',

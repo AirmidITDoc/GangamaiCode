@@ -10,7 +10,6 @@ import { DatePipe } from '@angular/common';
 import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/operators';
@@ -23,6 +22,7 @@ import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrc
 import { SelectionModel } from '@angular/cdk/collections';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import * as XLSX from 'xlsx';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
     selector: 'app-good-receiptnote',

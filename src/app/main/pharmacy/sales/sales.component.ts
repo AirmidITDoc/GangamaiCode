@@ -25,7 +25,6 @@ import { element } from 'protractor';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
 import { map, startWith } from 'rxjs/operators';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToasterService } from 'app/main/shared/services/toaster.service';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
@@ -39,6 +38,7 @@ import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { D } from '@angular/cdk/keycodes';
 import { PrescriptionComponent } from './prescription/prescription.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
   selector: 'app-sales',
@@ -1270,7 +1270,7 @@ export class SalesComponent implements OnInit {
     var m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": this.MobileNo,
-        "smsString": 'PatientDetail' || '',
+        // "smsString": 'PatientDetail' || '',
         "isSent": 0,
         "smsType": 'bulk',
         "smsFlag": 0,

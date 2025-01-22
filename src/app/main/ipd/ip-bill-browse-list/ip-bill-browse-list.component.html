@@ -37,24 +37,13 @@
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                           
+                            <airmid-textbox label="First Name" formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" [validations]="getValidationMessages().FirstName" [formGroup]="myFilterform">
+                            </airmid-textbox>
+                            
+                            <airmid-textbox label="LastName" formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" [validations]="getValidationMessages().LastName" [formGroup]="myFilterform">
+                            </airmid-textbox>
+            
 
                             <form [formGroup]="_IPBrowseBillService.myFilterIpbillbrowseform">
 
@@ -97,25 +86,12 @@
                             </mat-form-field> -->
 
                          
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[5].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                          
+                            <airmid-textbox label="RegNo" formControlName="RegNo" [(ngModel)]="gridConfig.filters[4].fieldValue" [validations]="getValidationMessages().RegNo" [formGroup]="myFilterform">
+                            </airmid-textbox>
+                                       
+                            <airmid-textbox label="PBillNo" formControlName="PBillNo" [(ngModel)]="gridConfig.filters[5].fieldValue" [validations]="getValidationMessages().PBillNo" [formGroup]="myFilterform">
+                            </airmid-textbox>
+            
 
 
                             <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"

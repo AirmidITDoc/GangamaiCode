@@ -10,14 +10,12 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatStepper } from '@angular/material/stepper';
 import Swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
-import { AppointmentSreviceService } from '../../appointment/appointment-srevice.service';
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { Router } from '@angular/router';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { RegInsert } from '../../registration/registration.component';
 import { fuseAnimations } from '@fuse/animations';
-import { PatientDocument } from '../../appointment/appointment.component';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
 
@@ -917,33 +915,33 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onSubmitImgFiles() {
-        let data: PatientDocument[] = [];
-        for (let i = 0; i < this.imgDataSource.data.length; i++) {
-            if (this.imgDataSource.data[i].name.endsWith('.pdf')) {
-                let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
-                    type: "'application/pdf'"
-                });
-                data.push({
-                    Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
-                });
-            }
-            else {
-                let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
-                    type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
-                });
-                data.push({
-                    Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
-                });
-            }
-        }
-        const formData = new FormData();
-        let finalData = { Files: data };
-        this.CreateFormData(finalData, formData);
-        this._AppointmentlistService.documentuploadInsert(formData).subscribe((data) => {
-            if (data) {
-                Swal.fire("Images uploaded Successfully  ! ");
-            }
-        });
+        // let data: PatientDocument[] = [];
+        // for (let i = 0; i < this.imgDataSource.data.length; i++) {
+        //     if (this.imgDataSource.data[i].name.endsWith('.pdf')) {
+        //         let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+        //             type: "'application/pdf'"
+        //         });
+        //         data.push({
+        //             Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+        //         });
+        //     }
+        //     else {
+        //         let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+        //             type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
+        //         });
+        //         data.push({
+        //             Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+        //         });
+        //     }
+        // }
+        // const formData = new FormData();
+        // let finalData = { Files: data };
+        // this.CreateFormData(finalData, formData);
+        // this._AppointmentlistService.documentuploadInsert(formData).subscribe((data) => {
+        //     if (data) {
+        //         Swal.fire("Images uploaded Successfully  ! ");
+        //     }
+        // });
     }
 
 

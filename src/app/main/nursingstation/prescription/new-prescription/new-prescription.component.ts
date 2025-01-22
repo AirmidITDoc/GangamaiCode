@@ -6,14 +6,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdmissionPersonlModel, RegInsert } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
 

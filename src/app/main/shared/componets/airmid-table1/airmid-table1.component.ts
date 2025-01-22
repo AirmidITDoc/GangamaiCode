@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CrossConsultationComponent } from 'app/main/opd/appointment/cross-consultation/cross-consultation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -7,8 +6,8 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
-import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
 import { DatePipe } from '@angular/common';
+import { CrossConsultationComponent } from 'app/main/opd/appointment-list/cross-consultation/cross-consultation.component';
 
 @Component({
   selector: 'app-airmid-table1',
