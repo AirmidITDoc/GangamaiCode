@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -12,6 +12,8 @@ export class ParametermasterService {
     myformSearch: FormGroup;
     descform: FormGroup;
     formulaform: FormGroup;
+    numericform: FormGroup;
+
     is_numeric : Boolean = true;
     descriptiveList = [];
     numericList = [];
@@ -24,9 +26,9 @@ export class ParametermasterService {
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
-        this.descform=this.getmydescform();
+        this.descform=this.descForm();
         this.formulaform=this.createformulaForm();
-        
+        this.numericform = this.numericForm();
     }
     /**
      * {
@@ -65,78 +67,62 @@ export class ParametermasterService {
                 "",
                 [
                     // Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$")],
+                    // Validators.pattern("^[A-Za-z ]*$")
+                ],
             ],
             parameterName: [
                 "",
                 [
                     // Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$")],
+                    // Validators.pattern("^[A-Za-z ]*$")
+                ],
             ],
             
             printParameterName: [
                 "",
                 [
                     // Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$")],
+                    // Validators.pattern("^[A-Za-z ]*$")
+                ],
             ],
             unitId: ["",
                 // Validators.required
             ],
             isNumeric: ["1"],
             isPrintDisSummary: true,
-            mParameterDescriptiveMasters: [
-                {
-                    descriptiveId: 0,
-                    parameterId: 0,
-                    parameterValues: "String",
-                    isDefaultValue: true,
-                    defaultValue: "string"
-                }
+            IsBold:['0'],
+            IsDeleted: ["true"],
+            MethodName: ["",
+                // [Validators.pattern("^[A-Za-z ]*$")],
             ],
-            mPathParaRangeMasters: [
-                {
-                    pathparaRangeId: 0,
-                    paraId: 0,
-                    sexId: ["", 
-                        // Validators.required
-                    ],
-                    minValue: "string",
-                    maxvalue: "string"
-                }
-            ],
-
-            // MethodName: ["",
-            //     [Validators.pattern("^[A-Za-z ]*$")],
-            // ],
-            // UnitName: [""],
-            // IsDeleted: ["true"],
-            // AddedBy: ["0"],
-            // UpdatedBy: ["0"],
-            // ParaMultipleRange: [""],
-            // PathparaRangeId: [""],
-            // ParaId: [""],
-            // SexId: [""],
-            // IsDescriptive: [""],
-            // DefaultValue: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-            // parameterValues: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
-            // IsDefaultValue: [""],
-            // SexID:[""],
-            // MinAge:["",Validators.required],
-            // MaxAge: [""],
-            // MinValue: [""],
-            // MaxValue: [""],
-            // AgeType: [""],
-            // Formula:[""],
-            // IsBold:['0']
+            Formula:[""],
         });
     }
 
-    getmydescform():FormGroup{
+    numericForm():FormGroup{
         return this._formBuilder.group({
-            DefaultValue: [""],
-            ParaId: [""],
-            // IsDeletedSearch: ["2"],
+            pathparaRangeId: 0,
+            paraId: 0,
+            sexId: "",
+            minValue: [""],
+            maxvalue: [""],
+            minAge:[""],
+            maxAge:[""],
+            ageType:[""]
+        });
+    }
+
+    descForm():FormGroup{
+        return this._formBuilder.group({
+            descriptiveId: 0,
+            paraId: 0,
+            parameterValues: ["XYZ", 
+                // Validators.required
+            ],
+            isDefaultValue: true,
+            defaultValue: ["", 
+                // Validators.required
+            ]
         });
     }
 
@@ -206,15 +192,6 @@ export class ParametermasterService {
         return this._httpClient.PostData("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
     }
 
-    //detail of Range Master
-
-    // public getParameteragewiseMasterList() {
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=ps_Rtrv_PathParameteragewiseMaster",
-    //         { ParameterName: "" }
-    //     );
-    // }
-
     // Gender Master Combobox List
     public getParameterMaster1Combo() {
         return this._httpClient.PostData(
@@ -223,18 +200,10 @@ export class ParametermasterService {
         );
     }
 
-   
-
     public deleteAssignParameterToRange(param) {
         return this._httpClient.PostData("Pathology/ParameterUpdate", param);
     }
 
-    // public getNumericMasterItem(param){
-    //     return this._httpClient.post(
-    //         "Generic/GetByProc?procName=Rtrv_PathParameterRangeWithAge",
-    //         { ParameterID: param }
-    //     ); 
-    // }
     public getTableData(param){
         if(this.is_numeric) {
             return this._httpClient.PostData(
@@ -290,7 +259,5 @@ export class ParametermasterService {
         this.is_numeric = param.IsNumeric == 1? true : false;
         this.numericList = param.numericList;
         this.descriptiveList = param.descriptiveList;
-    //    if (this.descriptiveList[0]?.DefaultValue) this.myform.get("DefaultValue").setValue(this.descriptiveList[0]?.DefaultValue);
-        
-}
+    }
 }
