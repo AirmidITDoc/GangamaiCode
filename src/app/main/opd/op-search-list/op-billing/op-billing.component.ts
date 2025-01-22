@@ -20,7 +20,6 @@ import { IpPaymentInsert, OPAdvancePaymentComponent } from '../op-advance-paymen
 import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from '../op-payment-new/op-payment-new.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AdvanceDetailObj, RegInsert } from '../../appointment/appointment.component';
 import { ToastrService } from 'ngx-toastr';
 import { MatSelect } from '@angular/material/select';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
@@ -28,6 +27,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { BrowseOPDBill } from '../../new-oplist/new-oplist.component';
 import { Regdetail } from '../../appointment-list/appointment-list.component';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 type NewType = Observable<any[]>;
 export class ILookup {

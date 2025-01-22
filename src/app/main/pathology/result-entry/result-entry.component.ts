@@ -21,9 +21,9 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { ToastrService } from 'ngx-toastr';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/sampledetailtwo.component';
-import { AdvanceDetailObj } from 'app/main/opd/appointment/appointment.component';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 
 @Component({
     selector: 'app-result-entry',

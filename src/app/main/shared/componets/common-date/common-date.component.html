@@ -28,9 +28,11 @@
                     (timeChange)="timeChangeHandler($event)" (invalidInput)="invalidInputHandler()"> -->
 
                 <!-- An icon for the timepicker input that will open the timepicker dialog when clicked -->
-                <span class="material-icons" matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
+                <!-- <span class="material-icons" matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
                     access_time
-                </span>
+                </span> -->
+                
+                <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
             </mat-form-field>
         </div>
         <div class="time-field" *ngIf="screenFromString == 'appointment-form'">
@@ -40,9 +42,11 @@
                 <input matTimepicker #t="matTimepicker" mode="12h" formControlName="timeController2" [readonly]="true"
                 (timeChange)="onChangeTime2($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
                 <!-- An icon for the timepicker input that will open the timepicker dialog when clicked -->
-                <span class="material-icons" matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
+                <!-- <span class="material-icons" matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
                     access_time
-                </span>
+                </span> -->
+
+                <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
             </mat-form-field>
         </div>
     </div>

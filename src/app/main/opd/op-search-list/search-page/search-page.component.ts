@@ -8,7 +8,6 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { DatePipe } from '@angular/common';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
-import { EditRegistrationComponent } from '../../registration/edit-registration/edit-registration.component';
 import { RegInsert } from '../../registration/registration.component';
 import { RegistrationService } from '../../registration/registration.service';
 import { NewRegistrationComponent } from '../../registration/new-registration/new-registration.component';

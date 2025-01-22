@@ -20,7 +20,7 @@
 
 
     </div>
-    <div class="info-badge-top pb-2 border-bottom" style="padding-left: 400px;">
+    <div class="info-badge-top py-12 border-bottom" fxLayout="row" fxLayoutAlign="center center">
         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
             <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
@@ -96,15 +96,6 @@
                         </button> 
                     </mat-form-field>
 
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Doctor Id</mat-label>
-                    <input matInput placeholder="Search Doctor" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[3].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field> -->
 
                     <airmid-autocomplete label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
                         [(ngModel)]="gridConfig.filters[3].fieldValue"
@@ -113,13 +104,7 @@
                     </airmid-autocomplete>
 
 
-                    <!-- <airmid-autocomplete label="Doctor Name" formControlName="DoctorId"
-                        [formGroup]="myformSearch"
-                        [(ngModel)]="gridConfig.filters[3].fieldValue"
-                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
-                        (selectDdlObject)="selectChangedeptdoc($event)">
-                    </airmid-autocomplete> -->
-
+               
                      <mat-form-field appearance="outline">
                         <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
                             (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[4].fieldValue"

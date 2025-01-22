@@ -22,7 +22,7 @@ const appRoutes: Routes = [
         path: "ip-advance-browse",
         loadChildren: () =>
             // import("./ip-advance-browse/ip-advance.module").then((m) => m.IpAdvanceBrowseModule),
-            import("./browse-ipadvance/browse-ipadvance.module").then((m) => m.BrowseIPAdvanceModule),
+        import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
     {
         path: "ip-casepaper",
@@ -49,7 +49,7 @@ const appRoutes: Routes = [
         path: "ipd-browse-receipt",
         loadChildren: () =>
            // import("./ip-bill-browse/ip-bill-browse.module").then((m) => m.IpbillBrowseModule),
-           import("./browse-ipdpayment-receipt/payment-receipt.module").then((m) => m.PaymentReceiptModule),
+        import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
     {
         path: "discharge",

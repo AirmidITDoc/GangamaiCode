@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
 import { RequestforlabtestService } from '../requestforlabtest.service';
-import { RegInsert } from 'app/main/opd/appointment/appointment.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +13,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
  
  
 @Component({

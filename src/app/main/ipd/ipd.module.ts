@@ -52,11 +52,9 @@ import { IPRefundComponent } from './Refund/ip-refund/ip-refund.component';
 import { IPRefundofAdvanceComponent } from './Refund/ip-refund/ip-refundof-advance/ip-refundof-advance.component';
 import { IPBrowseRefundofAdvanceComponent } from './Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.component';
 import { IPBrowseRefundofBillComponent } from './Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
-import { BrowseIPAdvanceComponent } from './browse-ipadvance/browse-ipadvance.component';
 import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
 import { StockManagementComponent } from './stock-management/stock-management.component';
 import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
-import { ViewBrowseIPDPaymentComponent } from './browse-ipdpayment-receipt/view-browse-ipdpayment/view-browse-ipdpayment.component';
 import { CompanyInformationComponent } from './company-information/company-information.component';
 import { CompanyListComponent } from './company-list/company-list.component';
 
@@ -65,7 +63,7 @@ import { CompanyListComponent } from './company-list/company-list.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [IPDSearcPatienthComponent],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -114,10 +112,6 @@ import { CompanyListComponent } from './company-list/company-list.component';
 providers: [
   IPSearchListService,
     DatePipe
-    // NotificationServiceService
-],
-entryComponents: [
-  IPSearchListComponent
     // NotificationServiceService
 ]
 })

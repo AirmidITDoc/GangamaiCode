@@ -3,9 +3,9 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { Observable, Subject } from 'rxjs';
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 import { fuseAnimations } from '@fuse/animations';
-import { ImageViewComponent } from 'app/main/opd/appointment/image-view/image-view.component';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ImageCropComponent } from 'app/main/shared/componets/image-crop/image-crop.component';
+import { ImageViewComponent } from 'app/main/opd/appointment-list/image-view/image-view.component';
 // import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 // import {
 //     NgxSignaturePadComponent,
