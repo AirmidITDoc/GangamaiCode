@@ -1,5 +1,5 @@
 $modal-gap: 16px;
-$modalHeader: 70px;
+$modalHeader: 60px;
 .mat-typography {
     mat-dialog-container {
         .modal-wrapper {
@@ -17,7 +17,7 @@ $modalHeader: 70px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 8px $modal-gap;
+                    padding: 12px $modal-gap;
                     max-height: $modalHeader;
                     .modal-header-title {
                         @include font-size(18px);
@@ -76,6 +76,15 @@ $modalHeader: 70px;
             .modal-body {
                 padding: $modal-gap;
                 overflow: auto;
+                .card-header-container {
+                    padding-bottom: 12px;
+                    margin-bottom: 12px;
+                    border-bottom: 1px solid $gray-200;
+                    .card-title {
+                        @include font-size(18px);
+                        font-weight: 600;
+                    }
+                }
             }
             .modal-footer {
                 padding: 0 $modal-gap $modal-gap $modal-gap;

@@ -1,148 +1,103 @@
 <div class="modal-wrapper grid-container">
-  <!-- Modal header -->
-  <div class="modal-header accent">
-    <div class="modal-header-content">
-      <div class="modal-header-title">
-        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Schduled Phone Appointment</span>
-      </div>
-      <div class="modal-header-right">
-        <div class="close-icon">
-          <button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-            <mat-icon style="width: 10px;height: 10px;">close</mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal body -->
-  <div class="modal-body" fusePerfectScrollbar>
-    <div class="modal-body-container">
-
-      <form [formGroup]="phoneappForm">
-        <input type="hidden" name="phoneAppId" formControlName="phoneAppId" [(ngModel)]="phoneAppId">
-
-        <div layout="row" layout-xs="column" fxLayout="column" fxFlex="100" style="margin-top: 7px; ">
-          <div>
-
-            <div flex class="container" style="border-radius:4px;  width:98%;border: rgba(0,0,0,0.12) 1px solid; padding: 7px;  border-radius: 5px;
-               position: relative;">
-              <div class="header-container" style="padding: 5px;" fxLayout="column" fxLayout.gt-xs="row"
-                fxLayoutGap="4px" fxLayoutAlign="space-between">
-                <span style="font-size: 22px; font-weight: 500; color: #10c7c7;">Personal Details</span>
-
-              </div>
-
-             
-              <br />
-             
-           
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <mat-form-field appearance="outline">
-                    <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Choose a AppointmentDate"
-                      name="AppointmentDate" formControlName="phAppDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
-                  </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="First Name" formControlName="firstName" [formGroup]="phoneappForm"
-                    [validations]="getValidationMessages().firstName" [maxLength]="10">
-                  </airmid-textbox>
-                </div>
-               
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Middle Name" formControlName="middleName" [formGroup]="phoneappForm"
-                    [validations]="getValidationMessages().middleName" [maxLength]="10">
-                  </airmid-textbox>
-                </div>
-               
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Last Name" formControlName="lastName" [formGroup]="phoneappForm"
-                    [validations]="getValidationMessages().lastName" [maxLength]="10">
-                  </airmid-textbox>
-                </div>
-              </div>
-
-
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-               
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm"
-                    [validations]="getValidationMessages().address" [maxLength]="10">
-                  </airmid-textbox>
-                </div>
-               
-                <airmid-textbox label="MobileNo" formControlName="mobileNo"
-                [value]="vMobile" [formGroup]="phoneappForm"
-                [validations]="getValidationMessages().mobileNo" [maxLength]="10">
-            </airmid-textbox>
-              </div>
-
-              <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                  <airmid-autocomplete label="Department Name" formControlName="departmentId" [value]="data?.departmentId"
-                    [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId"
-                    [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
-                  </airmid-autocomplete>
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-autocomplete label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
-                    [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId"
-                    [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
-                  </airmid-autocomplete>
-                </div>
-              </div>
-            
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Schduled Phone Appointment</span>
             </div>
-        
-          
-            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-              <button class="btn btn-danger-outline" (click)="onClose()">Cancle</button>
-              <button class="btn btn-primary " color="accent" (click)="OnSubmit()" [disabled]="phoneappForm.invalid">
-                <span>Save</span>
-              </button>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <mat-icon tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">close</mat-icon>
+                    </div>
+                </div>
             </div>
-
-          </div>
-
-
         </div>
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-
-            
-
-          <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-            <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate"
-              name="AppointmentDate" formControlName="appDate">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-            <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate"
-              name="AppointmentDate" formControlName="appTime">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
-          </mat-form-field>
-
-        
-
-          <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-            <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime"
-              name="AppointmentDate" formControlName="phAppTime">
-            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-            <mat-datepicker #picker3></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </form>
     </div>
-  </div>
 
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="phoneappForm">
+                <input type="hidden" name="phoneAppId" formControlName="phoneAppId" [(ngModel)]="phoneAppId">
 
+                <div fxLayout="column" fxLayoutGap="8px grid">
+                    <div class="card-header-container border-bottom pb-4">
+                        <span class="card-title">Personal Details</span>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="phAppDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="First Name" formControlName="firstName" [formGroup]="phoneappForm" [validations]="getValidationMessages().firstName" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Middle Name" formControlName="middleName" [formGroup]="phoneappForm" [validations]="getValidationMessages().middleName" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Last Name" formControlName="lastName" [formGroup]="phoneappForm" [validations]="getValidationMessages().lastName" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm" [validations]="getValidationMessages().address" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="vMobile" [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Department Name" formControlName="departmentId" [value]="data?.departmentId" [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                            </airmid-autocomplete>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId" [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
+                            </airmid-autocomplete>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate" name="AppointmentDate" formControlName="appDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate" name="AppointmentDate" formControlName="appTime">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime" name="AppointmentDate" formControlName="phAppTime">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="phoneappForm.invalid">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
