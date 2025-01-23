@@ -5,21 +5,19 @@ import { RegInsert } from './registration.component';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RegistrationService {
 
-  myFilterform: FormGroup;
-  mySaveForm: FormGroup;
+  // myFilterform: FormGroup;
+  // mySaveForm: FormGroup;
   personalFormGroup: FormGroup;
- 
+
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService
   ) {
-    this.myFilterform = this.filterForm();
+    // this.myFilterform = this.filterForm();
     this.personalFormGroup = this.createPesonalForm1();
   }
 
@@ -42,16 +40,16 @@ export class RegistrationService {
       // ]],   
     });
   }
-  createPesonalForm() {
+
+  createPesonalForm(): FormGroup {
     return this._formBuilder.group({
       regId: [0],
       RegNo: '',
       prefixId: ['', [Validators.required]],
-      firstName:[""],
-      //  ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      // ]],
+      firstName: ['', [
+        Validators.required,
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+      ]],
       middleName: ['', [
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
@@ -100,7 +98,7 @@ export class RegistrationService {
       regTime: [(new Date()).toISOString()],
       Photo: [''],
       PinNo: [''],
-      isActive:[]
+      isActive: []
     });
 
   }
@@ -110,7 +108,7 @@ export class RegistrationService {
       RegId: [0],
       RegNo: '1',
       PrefixId: ['', [Validators.required]],
-      FirstName:['', [
+      FirstName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
@@ -143,19 +141,16 @@ export class RegistrationService {
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
       aadharCardNo: ['', [Validators.required,
-        Validators.minLength(12),
-        Validators.maxLength(12),
-        Validators.pattern("^[0-9]*$")
-        ]],
-      // aadharCardNo: ['', Validators.compose([Validators.minLength(12),
-      // Validators.maxLength(12), Validators.pattern("^[0-9]*$")
-      // ])],
-      panCardNo: 'ds',
+      Validators.minLength(12),
+      Validators.maxLength(12),
+      Validators.pattern("^[0-9]*$")
+      ]],
+      panCardNo: '',
       MaritalStatusId: '',
       ReligionId: 0,
       AreaId: '',
       CityId: '',
-      City: ['d'],
+      City: [''],
       StateId: '',
       CountryId: '',
       IsCharity: false,
@@ -170,27 +165,22 @@ export class RegistrationService {
     });
 
   }
- // new Api
- initializeFormGroup() {
-  this.createPesonalForm1();
-}
-
-
-  public getRegistrationList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RegistrationList", employee)
+  // new Api
+  initializeFormGroup() {
+    this.createPesonalForm1();
   }
 
 
- 
+
   public RegstrationtSaveData(Param: any, showLoader = true) {
-    
+
     if (Param.RegId) {
       debugger
-      return this._httpClient1.PostData("OutPatient/RegistrationUpdate",Param, showLoader);
+      return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param, showLoader);
     } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param, showLoader);
   }
 
- 
+
 
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("OutPatient/RegistrationInsert", m_data);
@@ -213,17 +203,17 @@ export class RegistrationService {
   }
   populateFormpersonal(param) { }
 
-  public getRegistraionById(Id,showLoader = true) {
-    return this._httpClient1.GetData("OutPatient/" + Id,showLoader);
-}
+  public getRegistraionById(Id, showLoader = true) {
+    return this._httpClient1.GetData("OutPatient/" + Id, showLoader);
+  }
 
-public getcitylist(version){
-  return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
-}
+  public getcitylist(version) {
+    return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
+  }
 
-public getPatientListView(mode){
-    return this._httpClient1.PostData("Report/ViewReport",mode);
- 
-}
+  public getPatientListView(mode) {
+    return this._httpClient1.PostData("Report/ViewReport", mode);
+
+  }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"

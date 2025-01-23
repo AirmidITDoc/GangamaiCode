@@ -61,7 +61,7 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field> -->
-                <form [formGroup]="myFilterform">
+                <!-- <form [formGroup]="myFilterform"> -->
 
                     <div fxLayout="column" fxLayoutAlign="start none">
                         <mat-form-field appearance="outline">
@@ -87,17 +87,20 @@
                             </button>
                         </mat-form-field> -->
 
-                        <mat-form-field appearance="outline" fxFlex>
+                        <!-- <mat-form-field appearance="outline" fxFlex>
                             <mat-label>MobileNo</mat-label>
                             <input matInput placeholder="Search MobileNo" autocomplete="off" formControlName="MobileNo" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[5].fieldValue" />
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[5].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
+                        <airmid-textbox label="MobileNo" formControlName="MobileNo" [(ngModel)]="gridConfig.filters[5].fieldValue" [validations]="getValidationMessages().MobileNo" [formGroup]="myFilterform">
+                        </airmid-textbox>
+        
                     </div>
 
-                </form>
+                <!-- </form> -->
             </ng-container>
         </airmid-table>
     </div>

@@ -28,27 +28,15 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="personalFormGroup">
+            
+                <form [formGroup]="personalFormGroup">
                 <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
 
                         <div class="form-container mat-form-field-auto">
-                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- <app-airmid-datepicker label="RegDate" formControlName="regDate"
-                                            [value]="registerObj.regDate"
-                                            [formGroup]="personalFormGroup"></app-airmid-datepicker> -->
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <input matInput [matDatepicker]="picker1" [min]="minDate" [(ngModel)]="registerObj.regDate" placeholder="Choose a Date" name="Date" formControlName="RegDate">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
-                                    </mat-form-field>
-
-                                </div>
-                            </div>
+                           
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -193,10 +181,15 @@
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-                                    <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+                                    <!-- <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
                                         <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a Date" name="Date" formControlName="appTime">
                                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                         <mat-datepicker #picker2></mat-datepicker>
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+                                        <input matInput [matDatepicker]="picker1" [min]="minDate" [(ngModel)]="registerObj.regDate" placeholder="Choose a Date" name="Date" formControlName="RegDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
                                 </div>
                             </div>
