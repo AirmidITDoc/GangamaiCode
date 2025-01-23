@@ -38,22 +38,35 @@ export class PhoneappointmentComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-            { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status,width: 150 },
+            { heading: "AppApproved", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status,width: 100 },
+            { heading: "New Patient", key: "regNo", sort: true, align: 'left', type: gridColumnTypes.status,width: 100 },
             { heading: "SeqNo", key: "SeqNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AppDate", key: "RegTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "App Time", key: "RegTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Department", key: "departmentId", emptySign: 'NA', align: "center", width: 150 },
             { heading: "Doctor", key: "doctorId",  emptySign: 'NA',align: "center", width: 150 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    // {
+                    //     action: gridActions.edit, callback: (data: any) => {
+                    //         this.onSave(data);
+                    //     }
+                    // },
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                        action: gridActions.print, callback: (data: any) => {
+                            this.Appprint(data);
                         }
-                    }, {
+                    },
+                    {
+                        action: gridActions.whatsapp, callback: (data: any) => {
+                            this.whatsappAppoitment(data);
+                        }
+                    },
+                                      
+                    {
                         action: gridActions.delete, callback: (data: any) => {
                             this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
@@ -106,4 +119,8 @@ export class PhoneappointmentComponent implements OnInit {
             }
         });
     }
+    Appprint(data){}
+
+    Appointmentcancle(data){}
+    whatsappAppoitment(data){}
 }
