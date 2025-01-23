@@ -195,8 +195,8 @@
                                                     Date&Time
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                                    {{contact.OTbookingDate | date: 'dd/MM/yyyy'}}-
-                                                    {{contact.OTbookingTime
+                                                    {{contact.OTRequestDate | date: 'dd/MM/yyyy'}}-
+                                                    {{contact.OTRequestTime
                                                     | date:'shortTime'}}
                                                 </mat-cell>
                                             </ng-container>
@@ -215,7 +215,7 @@
                                                     SurgeonName
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                                    {{ contact.SurgeonName ? contact.SurgeonName : '-' }}
+                                                    {{ contact.DoctorName ? contact.DoctorName : '-' }}
                                                 </mat-cell>
                                             </ng-container>
 

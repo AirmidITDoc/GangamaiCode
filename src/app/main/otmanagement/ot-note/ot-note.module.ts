@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule,DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -23,9 +23,22 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-
 import { OTManagementServiceService } from "../ot-management-service.service";
 import { OTNoteComponent } from "./ot-note.component";
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatGridListModule } from '@angular/material/grid-list';
+
 
 const routes: Routes = [
     {
@@ -38,7 +51,7 @@ const routes: Routes = [
     declarations: [OTNoteComponent],
     imports: [
         RouterModule.forChild(routes),
-
+        CommonModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -57,14 +70,26 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
-
         MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatListModule,
+        MatExpansionModule,
+        AngularEditorModule,
+        MatChipsModule,
+        MatSidenavModule,
+        MatGridListModule,
     ],
-    providers: [OTManagementServiceService],
+    providers: [DatePipe,OTManagementServiceService],
 
     entryComponents: [OTNoteComponent],
 })

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class OTManagementServiceService {
   otRequestForm:FormGroup;
   
   constructor(private _httpClient: HttpClient,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder,
+        private _loaderService: LoaderService,) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm1();
       this.otreservationFormGroup = this.createOtreservationForm();      
@@ -47,7 +49,7 @@ export class OTManagementServiceService {
         SiteDescId: '',
         SurgeryId: '',
         DoctorId: '',
-        SurgeryType: ['0'],
+        SurgeryType: ["0"],
 
         IsCancelled: '',
         WardName: '',
@@ -114,6 +116,41 @@ export class OTManagementServiceService {
      });
    }
 
+   createOtNoteForm() {
+    return this._formBuilder.group({
+      OTCathLabBokingID: '',
+      TranDate: [new Date().toISOString()],
+      TranTime: [new Date().toISOString()],
+      OP_IP_ID: '',
+      OP_IP_Type: '',
+      OPDate: [new Date().toISOString()],
+      OPTime: [new Date().toISOString()],
+      SurgeryId: '',
+      Duration: '',
+      OTTableId: '',
+      SurgeonId: '',
+      SurgeonId1: ' ',
+      AnestheticsDr: '',
+      AnestheticsDr1: '',
+      Surgeryname: '',
+      ProcedureId: '',
+      AnesthType: '',
+      UnBooking: '',
+      Instruction: '',
+      IsAddedBy: '',
+      OTBookingID: '',
+      Assistantscrub:'',
+      Circulatingstaff:'',
+      AnathesticNAme:'',
+      OtNote:'',
+      Extra:'',
+      Pre:'',
+
+      Description:'',
+      DoctorId:''
+
+    });
+  }
 
    filterForm1(): FormGroup {
     return this._formBuilder.group({
@@ -125,7 +162,13 @@ export class OTManagementServiceService {
   
     });
   }
-  
+  // Admitted Doctor Master Combobox List
+  public getDoctorMasterComboList(param) {
+  //   if (loader) {
+  //     this._loaderService.show();
+  // }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
+  } 
   // otbooking insert and update
   public otBookingRequestInsert(employee) {
     return this._httpClient.post("OT/SaveOTBookingRequest", employee);
@@ -140,7 +183,7 @@ export class OTManagementServiceService {
   }
 
   public getOTRequestList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_T_OTBooking_Request_List", employee)
   }
   public getOTtableCombo(){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OTTableMaster_ForCombo", {})
@@ -211,7 +254,7 @@ export class OTManagementServiceService {
   }
 // otTable List in Reservation
 public getOTRequestListInReser(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist_EmergencyList", employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_T_OTBooking_Request_List", employee)
 }
   
   public CathLabBookInsert(employee){

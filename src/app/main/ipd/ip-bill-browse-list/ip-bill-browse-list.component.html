@@ -278,7 +278,7 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             class="w-80">DOA</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-80">
-                                            <span> {{contact.BillDate | date:'shortDate'}}</span>
+                                            <span> {{contact.AdmissionTime | date:'shortDate'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -286,7 +286,7 @@
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             class="w-80">DOD</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" class="w-80">
-                                            <span> {{contact.BillDate | date:'shortDate'}}</span>
+                                            <span> {{contact.DischargeDate | date:'shortDate'}}</span>
                                         </mat-cell>
                                     </ng-container>
 

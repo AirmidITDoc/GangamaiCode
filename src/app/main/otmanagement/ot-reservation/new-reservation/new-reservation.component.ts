@@ -103,6 +103,7 @@ export class NewReservationComponent implements OnInit {
   PatientListfilteredOptionsOP: any;
   vOPIP_ID: any;
   vAnesthType:any;
+  vOtRequestId:any;
 
   isSurgerySelected: boolean = false;
   filteredOptionsSurgery: Observable<string[]>;
@@ -148,7 +149,7 @@ export class NewReservationComponent implements OnInit {
   constructor(
     public _OtManagementService: OTManagementServiceService,
     private formBuilder: FormBuilder,
-    private accountService: AuthenticationService,
+    private _loggedService: AuthenticationService,
     // public notification: NotificationServiceService,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
@@ -157,7 +158,6 @@ export class NewReservationComponent implements OnInit {
     // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
-  private _loggedService: AuthenticationService
 
 
   ngOnInit(): void {
@@ -184,7 +184,7 @@ debugger
         this.vAdmissionID = this.registerObj1.AdmissionID
         this.vAge = this.registerObj1.AgeYear;
         this.vRegNo = this.registerObj1.RegNo;
-        this.vIPDNo = this.registerObj1.Expr1;
+        this.vIPDNo = this.registerObj1.OPDNo;
         this.vCompanyName = this.registerObj1.CompanyName;
         this.vTariffName = this.registerObj1.TariffName;
         this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
@@ -199,6 +199,7 @@ debugger
         this.selectedAnestheticsDr=this.registerObj1.AnestheticsDr;        
         this.selectedAnestheticsDr2=this.registerObj1.AnestheticsDr1;
         this.vAnesthType=this.registerObj1.AnesthType;
+        this.vOtRequestId=this.registerObj1.OTRequestId;
 
         this.setDropdownObjs1();
         this.getSurgeryList();
@@ -235,6 +236,7 @@ debugger
         this.selectedAnestheticsDr=this.registerObj1.AnestheticsDr;        
         this.selectedAnestheticsDr2=this.registerObj1.AnestheticsDr1;
         this.vAnesthType=this.registerObj1.AnesthType;
+        this.vOtRequestId=this.registerObj1.OTRequestId;
 
         this.setDropdownObjs1();
         this.getSurgeryList();
@@ -466,9 +468,11 @@ debugger
   }
 
   closeDialog() {
-
-    // this.dialogRef.close();
-    // this.personalFormGroup.reset();
+    this.dialogRef.close();
+    this.personalFormGroup.reset({
+      start: new Date(),
+      end: new Date(),
+    });
   }
   createOtCathlabForm() {
     return this.formBuilder.group({
@@ -788,6 +792,7 @@ debugger
         this.selectedAnestheticsDr=result.AnestheticsDr;        
         this.selectedAnestheticsDr2=result.AnestheticsDr1;
         this.vAnesthType=result.AnesthType;
+        this.vOtRequestId=result.OTRequestId;
 
         this.setDropdownObjs1();
         this.getDoctorList1();
@@ -823,6 +828,7 @@ debugger
         this.selectedAnestheticsDr=result.AnestheticsDr;        
         this.selectedAnestheticsDr2=result.AnestheticsDr1;
         this.vAnesthType=result.AnesthType;
+        this.vOtRequestId=result.OTRequestId;
 
         this.setDropdownObjs1();
         this.getDoctorList1();
@@ -1047,7 +1053,8 @@ debugger
           "unBooking": false,
           "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
           "otTypeID": 0,
-          "createdBy": Number(this.accountService.currentUserValue.user.id),
+          "otRequestId":this.vOtRequestId,
+          "createdBy":Number(this._loggedService.currentUserValue.user.id)
         }
       }
       console.log("insertJson:",m_data);
@@ -1073,8 +1080,8 @@ debugger
           "tranTime": formattedTime, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
           "oP_IP_ID": this.vOPIP_ID || 0,
           "oP_IP_Type": opip_Type,
-          "opDate": formattedDate, //this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-          "opTime": formattedTime, //this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "opDate": this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+          "opTime": this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
           "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
           "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
           "surgeonId": this._OtManagementService.otreservationFormGroup.get('DoctorId').value.DoctorId || 0,
@@ -1087,7 +1094,8 @@ debugger
           "unBooking": false,
           "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
           "otTypeID": 0,
-          "modifiedBy": Number(this.accountService.currentUserValue.user.id),
+          "otRequestId":this.vOtRequestId,
+          "modifiedBy": Number(this._loggedService.currentUserValue.user.id)
         }
       }
       console.log("updateJson:",m_data1);

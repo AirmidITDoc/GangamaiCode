@@ -88,6 +88,7 @@ export class OTRequestComponent implements OnInit {
     return this.formBuilder.group({
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
+      SurgeryType: ['0'],
     });
   }
 
@@ -96,8 +97,8 @@ export class OTRequestComponent implements OnInit {
     
     this.sIsLoading = 'loading-data';
     var m_data = {
-      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
+      "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
     }
     console.log(m_data);
     this._OtManagementService.getOTRequestList(m_data).subscribe(Visit => {
@@ -133,7 +134,7 @@ export class OTRequestComponent implements OnInit {
       debugger
       if (flag.isConfirmed) {
         let bookingcancle = {};
-        bookingcancle['otBookingId'] = contact.OTBookingId;
+        bookingcancle['otBookingId'] = contact.OTRequestId;
         bookingcancle['isCancelled'] = 1;
         bookingcancle['isCancelledBy'] = this.accountService.currentUserValue.user.id;
   
@@ -233,8 +234,8 @@ export class OTRequestComponent implements OnInit {
       PatInforObj['PatientName'] = contact.PatientName,
       PatInforObj['GenderName'] = contact.GenderName,
 
-      PatInforObj['OTbookingDate'] = contact.OTbookingDate,
-      PatInforObj['OTbookingTime'] = contact.OTbookingTime,
+      PatInforObj['OTbookingDate'] = contact.OTRequestDate,
+      PatInforObj['OTbookingTime'] = contact.OTRequestTime,
       PatInforObj['RoomName'] = contact.RoomName,
       PatInforObj['BedId'] = contact.BedId,
       PatInforObj['OP_IP_Id'] = contact.OP_IP_Id,
@@ -247,7 +248,7 @@ export class OTRequestComponent implements OnInit {
       //  PatInforObj['DepartmentId'] = contact.CategoryId,
       PatInforObj['SurgeonId'] = contact.SurgeonId,
       PatInforObj['RoomId'] = contact.RoomId,
-      PatInforObj['OTBookingId'] = contact.OTBookingId,
+      PatInforObj['OTBookingId'] = contact.OTRequestId,
       PatInforObj['SurgeryId'] = contact.SurgeryId,
       PatInforObj['CategoryId'] = contact.SurgeryCategoryId,
 
@@ -280,6 +281,7 @@ export class OTRequestComponent implements OnInit {
     this.searchFormGroup.reset({
       start: new Date(),
       end: new Date(),
+
     });
     this.getRequestList();
   }
@@ -288,7 +290,7 @@ export class OTRequestComponent implements OnInit {
 
 
 export class Requestlist {
-  OTBookingId: any;
+  OTRequestId: any;
   RegNo: any;
   PatientName: String;
   FirstName:string;
@@ -297,7 +299,6 @@ export class Requestlist {
   RegID:any;
   AdmissionID:any;
   RoomName: any;
-  OTbookingDate: any;
   BedName: any;
   OP_IP_Id: any;
   SurgeonId: any;
@@ -314,7 +315,6 @@ export class Requestlist {
   AddedBy: any;
   UpdateBy: any;
   GenderName: any;
-  OTbookingTime: any;
   IsCancelledBy: any;
   WardName: any;
   WardId:any;
@@ -329,19 +329,20 @@ export class Requestlist {
   Age:any;
   SiteDescId:any;
   SurgeryCategoryId:any;
-
+  OTRequestDate:any;
+  OTRequestTime:any;
   IsCancelled:any;
-OP_IP_Type:any;
-SurgeryType:any;
-OTbookingDateTime:any;
-SurgeonName:any;
+  OP_IP_Type:any;
+  SurgeryType:any;
+  OTbookingDateTime:any;
+  SurgeonName:any;
 
   constructor(Requestlist) {
-    this.OTBookingId = Requestlist.OTBookingId || 0;
+    this.OTRequestId = Requestlist.OTRequestId || 0;
     this.RegNo = Requestlist.RegNo || '';
     this.PatientName = Requestlist.PatientName || '';
     this.RoomName = Requestlist.RoomName || '';
-    this.OTbookingDate = Requestlist.OTbookingDate || '';
+    this.OTRequestDate = Requestlist.OTRequestDate || '';
     this.BedName = Requestlist.BedName || 0;
     this.OP_IP_Id = Requestlist.OP_IP_Id || 0;
     this.OP_IP_Type = Requestlist.OP_IP_Type || '';
@@ -361,7 +362,7 @@ SurgeonName:any;
     this.UpdateBy = Requestlist.UpdateBy || '';
     this.IsCancelled = Requestlist.IsCancelled || '';
     this.GenderName = Requestlist.GenderName || '';
-    this.OTbookingTime = Requestlist.OTbookingTime || 0;
+    this.OTRequestTime = Requestlist.OTRequestTime || 0;
     this.IsCancelledBy = Requestlist.IsCancelledBy || 0;
     this.WardName = Requestlist.WardName || '';
     this.WardId = Requestlist.WardId || 0;

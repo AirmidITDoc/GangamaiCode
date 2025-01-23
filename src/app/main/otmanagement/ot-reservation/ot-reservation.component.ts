@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { OTNoteComponent } from '../ot-note/ot-note.component';
 
 @Component({
   selector: 'app-ot-reservation',
@@ -250,18 +251,23 @@ export class OTReservationComponent implements OnInit {
     //  if(row) this.dialogRef.close(m_data);
   }
 
-  Otnote(){
+  Otnote(contact) {
 
-  // const dialogRef = this._matDialog.open(OTNoteComponent,
-  //     {
-  //       maxWidth: "85%",
-  //       height: "630px !important ", width: '100%',
-  //     });
+    const dialogRef = this._matDialog.open(OTNoteComponent,
+      {
+        maxWidth: "80%",
+        height: '95%',
+        width: '100%',
+        data: {
+          Obj: contact
+        }
+      });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // console.log('The dialog was closed - Insert Action', result);
-  //     });
-}
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getOtreservationList();
+    });
+  }
 
 OPreOPrativenote(){
 
@@ -372,7 +378,7 @@ export class OTReservationDetail {
   OP_IP_ID: any;
   RegNo: number;
   PatientName: string;
-
+  OTRequestId:any;
   OPDate: any;
   OPTime: Date;
   Duration: number;
@@ -474,6 +480,7 @@ export class OTReservationDetail {
       this.AgeYear= OTReservationDetail.AgeYear || '';
       this.MobileNo= OTReservationDetail.MobileNo || '';
       this.Age= OTReservationDetail.Age || '';
+      this.OTRequestId=OTReservationDetail.OTRequestId || '';
 
     this.RoomName = OTReservationDetail.RoomName || '';
     this.OTbookingDate = OTReservationDetail.OTbookingDate || '';
