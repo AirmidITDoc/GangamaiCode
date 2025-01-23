@@ -39,7 +39,7 @@
                 &:not(:first-of-type) {
                     padding: 3px 10px;
                 }
-                .mat-icon-button {
+                .mat-icon-button,.mdc-icon-button  {
                     height: 25px;
                     width: 25px;
                     display: inline-flex;
@@ -47,7 +47,11 @@
                     align-items: center;
                     line-height: 25px;
                     .material-icons {
-                        @include font-size(16px);
+                        @include font-size(18px);
+                    }
+                    .mat-mdc-button-touch-target{
+                        height: 25px;
+                        width: 25px;
                     }
                 }
                 > span,
@@ -180,7 +184,8 @@
         .airmid-table {
             .action-list {
                 display: flex;
-            }
+                gap: 8px;
+            }   
         }
         .table-footer-wrapper {
             display: flex;

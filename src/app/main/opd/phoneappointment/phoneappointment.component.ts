@@ -96,7 +96,7 @@ export class PhoneappointmentComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
             {
                 maxWidth: "75vw",
-                height: '55%',
+                maxHeight: '60%',
                 width: '70%',
                 data: row
             });

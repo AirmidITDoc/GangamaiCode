@@ -195,7 +195,9 @@
 }
 
 mat-form-field {
-    @include font-size(13px);
+    input,mat-label,.mat-mdc-select {
+        font-size: $input-size !important;
+    }
     font-family: $font-primary;
     @include themed() {
         color: t(input-control-label);
@@ -205,6 +207,7 @@ mat-form-field {
                 }
                 .mat-form-field-infix {
                     // padding: 0.9em 0 0.9em 0;
+                    
                     .mat-select {
                         .mat-select-value {
                             .mat-select-value-text {

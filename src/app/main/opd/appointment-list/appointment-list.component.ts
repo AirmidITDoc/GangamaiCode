@@ -91,7 +91,7 @@ export class AppointmentListComponent implements OnInit {
             // { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
           
             {
-                heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 200 ,sticky:true, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
