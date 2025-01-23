@@ -52,6 +52,7 @@ export class GetOTRequetComponent implements OnInit {
 
     'SurgeryType',
     'OP_IP_Type',
+    'UHID',
     'OTbookingDateTime',
     'Patientname',
     'SurgeonName',

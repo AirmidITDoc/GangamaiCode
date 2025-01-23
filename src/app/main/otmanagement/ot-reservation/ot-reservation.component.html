@@ -91,11 +91,11 @@
                 <span style="font-weight: bold;"> Help :</span>&nbsp;
                 <div>
                   <mat-icon style="font-size: 50px;width: 10px !important; height:15px !important;border-radius:100% ;"
-                    class=" green-600 s-16">circle</mat-icon> &nbsp;Booking
+                    class=" grey s-16">circle</mat-icon> &nbsp;Booking
                 </div>
                 <div>
                   <mat-icon style="font-size: 50px;width: 10px !important; height:15px !important;border-radius:100% ;"
-                    class=" orange-600 s-16">circle</mat-icon>&nbsp;UnBooking
+                    class=" teal-600 s-16">circle</mat-icon>&nbsp;UnBooking
                 </div>
 
               </div>
@@ -129,13 +129,13 @@
               <span class="orange-600-fg">OP</span>
             </div>
 
-            <div style="color: green;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-              <mat-icon class="pill green-600 s-16">circle</mat-icon>
-              <span class="green-600-fg">Booking</span>
+            <div style="color: grey;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+              <mat-icon class="pill grey-600 s-16">circle</mat-icon>
+              <span class="grey-600-fg">Booking</span>
             </div>
-            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-              <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-              <span class="orange-600-fg">UnBooking</span>
+            <div style="color: teal" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+              <mat-icon class="pill teal-600 s-16">circle</mat-icon>
+              <span class="teal-600-fg">UnBooking</span>
             </div>
 
           </div>
@@ -191,9 +191,9 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact" class="w-60">
                           <mat-icon *ngIf="contact.UnBooking=='1' " matTooltip="UnBooking"
-                            class=" pill orange-600 s-16 ">circle</mat-icon>
+                            class=" pill teal s-16 ">circle</mat-icon>
                           <mat-icon *ngIf="contact.UnBooking=='0' " matTooltip="Booking"
-                            class="pill green-600 s-16 ">circle</mat-icon>
+                            class="pill grey-600 s-16 ">circle</mat-icon>
                         </mat-cell>
                       </ng-container>
 
@@ -301,7 +301,7 @@
                             <mat-icon title="Edit Menu">edit</mat-icon>
                           </button>
 
-                          <button mat-icon-button (click)="Otnote()" *ngIf="row.IsCancelled!= 1">
+                          <button mat-icon-button (click)="Otnote(row)" *ngIf="row.IsCancelled!= 1">
                             <mat-icon title="OTNote">note_add</mat-icon>
                           </button>
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import Swal from 'sweetalert2';
@@ -7,14 +7,21 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../ot-management-service.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { MatTableDataSource } from '@angular/material/table';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-ot-note',
   templateUrl: './ot-note.component.html',
-  styleUrls: ['./ot-note.component.scss']
+  styleUrls: ['./ot-note.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class OTNoteComponent implements OnInit {
 
@@ -32,10 +39,10 @@ export class OTNoteComponent implements OnInit {
   Doctor2List: any = [];
   SurgeryList: any = [];
   OTtableList: any = [];
-  CategoryList:any=[];
+  CategoryList: any = [];
   Anesthestishdoclist1: any = [];
   Anesthestishdoclist2: any = [];
-  Today: Date=new Date();
+  Today: Date = new Date();
   registerObj = new OPIPPatientModel({});
   isLoading: string = '';
   Prefix: any;
@@ -46,7 +53,7 @@ export class OTNoteComponent implements OnInit {
   IsPathRad: any;
   PatientName: any = '';
   OPIP: any = '';
-  
+
   Bedname: any = '';
 
   wardname: any = '';
@@ -59,48 +66,62 @@ export class OTNoteComponent implements OnInit {
   public dateValue: Date = new Date();
   options = [];
 
-  // @Input() panelWidth: string | number;
-  // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
+  vSelectedOption: any = '';
+  vPatientName: any = '';
+  vAgeYear: any = '';
+  vAge: any = '';
+  vGenderName: any = '';
+  vDepartmentName: any = '';
+  vOP_IP_MobileNo: any = '';
+  vDoctorName: any = '';
+  vTariffName: any = '';
+  vCompanyName: any = '';
+  vWardName: any = '';
+  vBedNo: any = '';
+  RegId: any = '';
+  vAdmissionID: any = '';
+  vRegNo: any = '';
+  vIPDNo: any = '';
+  vOPIP_ID: any = '';
+  OP_IPType: any = 2;
+  vOPDNo: any = '';
+  vDescription:any;
+  vDoctor:any;
+  isDoctorSelected: boolean = false;
+  DocDoctorName:any;
+  filteredOptionsDoctorsearch:any;
+  noOptionFound: boolean = false;
 
-
-  screenFromString = 'registration';
+  screenFromString = 'otBooking-form';
   selectedPrefixId: any;
+  selectedDoctor: any;
+  sIsLoading: string = '';
 
-  // @Input() childName: string[];
-  // @Output() parentFunction: EventEmitter<any> = new EventEmitter();
   matDialogRef: any;
 
   //doctorone filter
   public doctoroneFilterCtrl: FormControl = new FormControl();
   public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
   //doctorone filter
   public doctorFilterCtrl: FormControl = new FormControl();
   public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
 
   //doctortwo filter
   public doctortwoFilterCtrl: FormControl = new FormControl();
   public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
-
   //AnesthDoct filter
   public AnesthDoctFilterCtrl1: FormControl = new FormControl();
   public filteredAnesthDoctor1: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
 
   //Category filter
   public CategoryFilterCtrl1: FormControl = new FormControl();
   public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
   //AnesthDoct filter
   public AnesthDoctFilterCtrl2: FormControl = new FormControl();
   public filteredAnesthDoctor2: ReplaySubject<any> = new ReplaySubject<any>(1);
-
 
   private _onDestroy = new Subject<void>();
 
@@ -110,21 +131,102 @@ export class OTNoteComponent implements OnInit {
     private accountService: AuthenticationService,
     // public notification: NotificationServiceService,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<OtNotesComponent>,
+    public dialogRef: MatDialogRef<OTNoteComponent>,
     // public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
 
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '15rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+  onBlur(e: any) {
+    this.vDescription = e.target.innerHTML;
+  }
+  displayedColumns = [
+    'DoctorId',
+    'DoctorName',
+    'Amount'
+  ];
+  dataSource = new MatTableDataSource<OTNoteDetail>();
 
   ngOnInit(): void {
     console.log(this.data)
-    this.personalFormGroup = this.createOtCathlabForm();
+    this.personalFormGroup = this._OtManagementService.createOtNoteForm();
+
+    this.vSelectedOption = this.OP_IPType === true ? 'IP' : 'OP';
 
     if (this.data) {
+      debugger
+      this.registerObj1 = this.data.Obj;
 
-      this.registerObj1 = this.data.PatObj;
-    
+      // ip and op edit
+      if (this.registerObj1.OP_IP_Type === true) {
+        // Fetch IP-specific information
+        console.log("IIIIIIIIIIIIIPPPPPPPPP:", this.registerObj1);
+        this.vWardName = this.registerObj1.RoomName;
+        this.vBedNo = this.registerObj1.BedName;
+        this.vGenderName = this.registerObj1.GenderName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        this.vAdmissionID = this.registerObj1.AdmissionID
+        this.vAge = this.registerObj1.AgeYear;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vIPDNo = this.registerObj1.OPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+        this.vDoctorName = this.registerObj1.DoctorName;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vSelectedOption = 'IP';
+        this.vOPIP_ID = this.registerObj1.OP_IP_ID;
+
+        this.setDropdownObjs1();
+        this.getDoctorList();
+        this.getOttableList();
+        this.getDoctor2List();
+        this.getAnesthestishDoctorList1();
+        this.getAnesthestishDoctorList2();
+      } else if (this.registerObj1.OP_IP_Type === false) {
+        // Fetch OP-specific information
+        console.log("OOOOOOOPPPPPPPPP:", this.registerObj1);
+        this.vWardName = this.registerObj1.RoomName;
+        this.vBedNo = this.registerObj1.BedName;
+        this.vGenderName = this.registerObj1.GenderName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        this.vAdmissionID = this.registerObj1.AdmissionID
+        this.vAge = this.registerObj1.AgeYear;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vOPDNo = this.registerObj1.OPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+        this.vDoctorName = this.registerObj1.DoctorName;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vSelectedOption = 'OP';
+        this.vOPIP_ID = this.registerObj1.OP_IP_ID;
+
+        this.setDropdownObjs1();
+        this.getDoctorList();
+        this.getOttableList();
+        this.getDoctor2List();
+        this.getAnesthestishDoctorList1();
+        this.getAnesthestishDoctorList2();
+      }
+
       console.log(this.registerObj1);
 
       this.setDropdownObjs1();
@@ -154,7 +256,7 @@ export class OTNoteComponent implements OnInit {
       // this.Adm_Vit_ID = this.selectedAdvanceObj.OP_IP_ID;
     }
     console.log(this.selectedAdvanceObj);
-    
+
     this.doctorFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -180,12 +282,12 @@ export class OTNoteComponent implements OnInit {
         this.filterAnesthDoctor1();
       });
 
-      
+
     this.CategoryFilterCtrl1.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterCategory();
-    });
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterCategory();
+      });
 
     this.AnesthDoctFilterCtrl2.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -200,46 +302,95 @@ export class OTNoteComponent implements OnInit {
 
     }, 1000);
 
+    this.getDoctorNameCombobox();
+
+  }
+  // createOtCathlabForm() {
+  //   return this.formBuilder.group({
+  //     OTCathLabBokingID: '',
+  //     TranDate: [new Date().toISOString()],
+  //     TranTime: [new Date().toISOString()],
+  //     OP_IP_ID: '',
+  //     OP_IP_Type: '',
+  //     OPDate: [new Date().toISOString()],
+  //     OPTime: [new Date().toISOString()],
+  //     SurgeryId: '',
+  //     Duration: '',
+  //     OTTableId: '',
+  //     SurgeonId: '',
+  //     SurgeonId1: ' ',
+  //     AnestheticsDr: '',
+  //     AnestheticsDr1: '',
+  //     Surgeryname: '',
+  //     ProcedureId: '',
+  //     AnesthType: '',
+  //     UnBooking: '',
+  //     Instruction: '',
+  //     IsAddedBy: '',
+  //     OTBookingID: '',
+  //     Assistantscrub: '',
+  //     Circulatingstaff: '',
+  //     AnathesticNAme: '',
+  //     OtNote: '',
+  //     Extra: '',
+  //     Pre: ''
+
+  //   });
+  // }
+
+  onSave(){
+
+  }
+  onDoctorSelect(option){
+    debugger
+    console.log("selectedDoctorOption:", option)
+    this.selectedDoctor=option;
+  }
+  addDoctor() {
+    debugger
+    if (this.selectedDoctor) {
+      // Add the selected doctor to the data source
+      this.dataSource.data.push({
+        DoctorId: this.selectedDoctor.DoctorId,
+        DoctorName: this.selectedDoctor.Doctorname,
+        Amount:0
+      });
+      this.dataSource._updateChangeSubscription(); // Update the data source
+      this.clearSelection(); // Clear the selection after adding
+    }
+  }
+  clearSelection() {
+    this.personalFormGroup.get('DoctorId').setValue('');
+    this.selectedDoctor = null;
+  }
+  onAmountChange(contact: any, amount: number) {
+    contact.Amount = amount;
+  }
+    //Doctor list 
+    getDoctorNameCombobox() {
+      debugger
+      var vdata = {
+          "@Keywords": `${this.personalFormGroup.get('DoctorId').value}%`
+      }
+      console.log(vdata)
+      this._OtManagementService.getDoctorMasterComboList(vdata).subscribe(data => {
+          this.filteredOptionsDoctorsearch = data;
+          console.log(this.filteredOptionsDoctorsearch)
+          if (this.filteredOptionsDoctorsearch.length == 0) {
+              this.noOptionFound = true;
+          } else {
+              this.noOptionFound = false;
+          }
+      });
+  }
+  getOptionTextDoctor(option) {
+      return option && option.Doctorname ? option.Doctorname : '';
   }
 
   closeDialog() {
-    console.log("closed")
-    // this.dialogRef.close();
-    // this.personalFormGroup.reset();
+    this.personalFormGroup.reset();
+    this.dataSource.data=[];
   }
-  createOtCathlabForm() {
-    return this.formBuilder.group({
-      OTCathLabBokingID: '',
-      TranDate: [new Date().toISOString()],
-      TranTime: [new Date().toISOString()],
-      OP_IP_ID: '',
-      OP_IP_Type: '',
-      OPDate: [new Date().toISOString()],
-      OPTime: [new Date().toISOString()],
-      SurgeryId: '',
-      Duration: '',
-      OTTableId: '',
-      SurgeonId: '',
-      SurgeonId1: ' ',
-      AnestheticsDr: '',
-      AnestheticsDr1: '',
-      Surgeryname: '',
-      ProcedureId: '',
-      AnesthType: '',
-      UnBooking: '',
-      Instruction: '',
-      IsAddedBy: '',
-      OTBookingID: '',
-      Assistantscrub:'',
-      Circulatingstaff:'',
-      AnathesticNAme:'',
-      OtNote:'',
-      Extra:'',
-      Pre:''
-
-    });
-  }
-
 
   setDropdownObjs1() {
     debugger;
@@ -266,11 +417,7 @@ export class OTNoteComponent implements OnInit {
     const toSelectAnestheticsDr1 = this.Anesthestishdoclist2.find(c => c.Anesthestishdoclist2 == this.registerObj1.AnestheticsDr1);
     this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(toSelectAnestheticsDr1);
 
-
-
     this.personalFormGroup.updateValueAndValidity();
-
-
   }
 
   // doctorone filter code  
@@ -384,7 +531,7 @@ export class OTNoteComponent implements OnInit {
 
   }
 
-  
+
   // area filter code  
   private filterCategory() {
 
@@ -489,7 +636,7 @@ export class OTNoteComponent implements OnInit {
     })
   }
 
-  
+
   getCategoryList() {
     this._OtManagementService.getCategoryCombo().subscribe(data => {
       this.CategoryList = data;
@@ -499,39 +646,9 @@ export class OTNoteComponent implements OnInit {
     })
   }
 
-
-
-
-  searchPatientList() {
-    // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
-    //   {
-    //     maxWidth: "90%",
-    //     height: "530px !important ", width: '100%',
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     console.log(result);
-    //     this.registerObj = result as OPIPPatientModel;
-    //     if (result) {
-    //       this.PatientName = this.registerObj.PatientName;
-    //       this.OPIP = this.registerObj.IP_OP_Number;
-    //       this.AgeYear = this.registerObj.AgeYear;
-    //       this.classname = this.registerObj.ClassName;
-    //       this.tariffname = this.registerObj.TariffName;
-    //       this.ipno = this.registerObj.IPNumber;
-    //       this.Bedname = this.registerObj.Bedname;
-    //       this.wardname = this.registerObj.WardId;
-    //       this.Adm_Vit_ID = this.registerObj.Adm_Vit_ID;
-    //     }
-    //   }
-    //   // console.log(this.registerObj);
-    // });
-  }
-
   onClose() {
-    // this.dialogRef.close();
+    this.personalFormGroup.reset();
+    this.dialogRef.close();
   }
 
 
@@ -550,10 +667,10 @@ export class OTNoteComponent implements OnInit {
             "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
             "oP_IP_ID": this.Adm_Vit_ID,// this._OtManagementService.otreservationFormGroup.get('OP_IP_ID').value | 0,
             "oP_IP_Type": 1,
-            "opDate":this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-            "opTime":this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "opDate": this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
+            "opTime": this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
             "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
-            "otTableID":1,// this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
+            "otTableID": 1,// this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
             "surgeonId": 1,//this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
             "surgeonId1": 1,//this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
             "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
@@ -608,7 +725,7 @@ export class OTNoteComponent implements OnInit {
             // "PatientName": this.PatientName || '',
             "IsUpdatedBy": this.accountService.currentUserValue.user.id || 0,
             "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-            
+
 
           }
         }
@@ -628,9 +745,23 @@ export class OTNoteComponent implements OnInit {
       }
     }
   }
-
-
-
-
+}
+export class OTNoteDetail {
+  DoctorId:any;
+DoctorName: any;
+Amount:any;
+  
+  /**
+   * Constructor
+   *
+   * @param contact
+   */
+  constructor(OTNoteDetail) {
+    {     
+    this.DoctorId=OTNoteDetail.DoctorId || '',
+    this.DoctorName=OTNoteDetail.DoctorName || ''
+    this.Amount=OTNoteDetail.Amount || ''
+    }
+  }
 }
 

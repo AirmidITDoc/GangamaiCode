@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar dynamicTableHeight>
 
     <mat-toolbar class="top-header accent">
       <div fxLayout="row" fxLayoutAlign="start center">          
@@ -26,7 +26,7 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxLayout="column" class="gap-12">
                             <form [formGroup]="_OtManagementService.otreservationFormGroup">
-                            <div>
+                            <div fxLayout="row" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="20%">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
@@ -36,8 +36,52 @@
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" style="margin-right: 10px;">
+
+                                    <div style="color: green;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                      <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                      <span class="green-600-fg">IP</span>
+                                    </div>
+                                    <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                      <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                      <span class="orange-600-fg">OP</span>
+                                    </div>
+                        
+                                    <div style="color: red;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                      <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                      <span class="red-600-fg">Emergency</span>
+                                    </div>
+                                    <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                      <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                      <span class="blue-600-fg">Normal</span>
+                                    </div>
+                        
+                                  </div>
                             </div>
                         </form>
+
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" style="margin-right: 10px;">
+
+                            <div style="color: green;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                              <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                              <span class="green-600-fg">IP</span>
+                            </div>
+                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                              <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                              <span class="orange-600-fg">OP</span>
+                            </div>
+                
+                            <div style="color: red;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                              <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                              <span class="red-600-fg">Emergency</span>
+                            </div>
+                            <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                              <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                              <span class="blue-600-fg">Normal</span>
+                            </div>
+                
+                          </div> -->
 
                             <div fxlayout="row">
                                 <div style="width: 100%;">
@@ -54,9 +98,9 @@
 
                                         <ng-container matColumnDef="SurgeryType" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                class="w-60">
+                                                >
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-60">
+                                            <mat-cell *matCellDef="let contact">
                                                 <mat-icon *ngIf="contact.SurgeryType==1" matTooltip="Emergency"
                                                     class=" pill red-600 s-16 ">circle</mat-icon>
                                                 <mat-icon *ngIf="contact.SurgeryType==0" matTooltip="Normal"
@@ -66,14 +110,23 @@
 
                                         <ng-container matColumnDef="OP_IP_Type" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md
-                                                class="w-60">
+                                               >
 
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-60">
+                                            <mat-cell *matCellDef="let contact">
                                                 <mat-icon *ngIf="contact.OP_IP_Type=='1'" matTooltip="IP"
                                                     class=" pill green-600 s-16 ">circle</mat-icon>
                                                 <mat-icon *ngIf="contact.OP_IP_Type!='1'" matTooltip="OP"
                                                     class="pill orange-600 s-16 ">circle</mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="UHID" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                                UHID
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                                {{ contact.RegNo}}
                                             </mat-cell>
                                         </ng-container>
 
@@ -83,8 +136,8 @@
                                                 Date&Time
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                                {{contact.OTbookingDate | date: 'dd/MM/yyyy'}}-
-                                                {{contact.OTbookingTime
+                                                {{contact.OTRequestDate | date: 'dd/MM/yyyy'}}-
+                                                {{contact.OTRequestTime
                                                 | date:'shortTime'}}
                                             </mat-cell>
                                         </ng-container>
@@ -104,7 +157,7 @@
                                                 SurgeonName
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                                {{ contact.SurgeonName ? contact.SurgeonName : '-' }}
+                                                {{ contact.DoctorName ? contact.DoctorName : '-' }}
                                             </mat-cell>
                                         </ng-container>
 
@@ -173,11 +226,11 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent min-width-1000"
+                                        <mat-header-row class="accent min-width-1100"
                                             *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumns;"
                                         (click)="onRowClick(contact)"
-                                            class="min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}">
+                                            class="min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
                                         </mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">

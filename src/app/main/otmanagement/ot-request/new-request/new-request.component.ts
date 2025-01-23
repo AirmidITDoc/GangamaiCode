@@ -85,6 +85,7 @@ export class NewRequestComponent implements OnInit {
   GendercmbList: any = [];
   optionsGender: any[] = [];
   vSelectedOption: any = 'OP';
+  vSelectedSurgeryType:any="0";
   selectedType: any = '';
   vOtReqOPD: any;
   vOtReqIPD: any;
@@ -183,6 +184,7 @@ debugger
         this.vDoctorName = this.registerObj1.DoctorName;
         this.vDepartmentName = this.registerObj1.DepartmentName;
         this.vSelectedOption = 'IP';
+        this.vSelectedSurgeryType= this.registerObj1.SurgeryType.trim();
         this.vSiteDescId = this.registerObj1.SiteDescId
         this.vSurgeryCategoryId = this.registerObj1.SurgeryCategoryId;
         this.vSurgeryId = this.registerObj1.SurgeryId;
@@ -216,6 +218,7 @@ debugger
         this.vDoctorName = this.registerObj1.DoctorName;
         this.vDepartmentName = this.registerObj1.DepartmentName;
         this.vSelectedOption = 'OP';
+        this.vSelectedSurgeryType= this.registerObj1.SurgeryType.trim();
         this.vSiteDescId = this.registerObj1.SiteDescId
         this.vSurgeryCategoryId = this.registerObj1.SurgeryCategoryId;
         this.vSurgeryId = this.registerObj1.SurgeryId;
@@ -588,17 +591,17 @@ debugger
       opip_Type = 0;
     }
 
-  let otBookingID = this.registerObj1.OTBookingId;
+  let OTRequestId = this.registerObj1.OTRequestId;
 
   this.isLoading = 'submit';
 
   // if (this.Adm_Vit_ID)
-  if (!otBookingID) {
+  if (!OTRequestId) {
     var m_data = {
       "saveOTBookingRequestParam": {
-        "otBookingId": 0,
-        "otBookingDate": formattedDate,
-        "otBookingTime": formattedTime,
+        "otRequestId": 0,
+        "otRequestDate": formattedDate,
+        "otRequestTime": formattedTime,
         "oP_IP_Id": this.vOPIP_ID || 0,
         "oP_IP_Type": opip_Type,
         "surgeryType": this._OtManagementService.otRequestForm.get('SurgeryType').value, //Boolean(JSON.parse(this._OtManagementService.otRequestForm.get('SurgeryType').value) || 0),
@@ -628,9 +631,9 @@ debugger
 
     var m_data1 = {
       "updateOTBookingRequestParam": {
-       "otBookingId": otBookingID,
-        "otBookingDate": formattedDate,
-        "otBookingTime": formattedTime,
+       "otRequestId": OTRequestId,
+        "otRequestDate": formattedDate,
+        "otRequestTime": formattedTime,
         "oP_IP_Id": this.vOPIP_ID,
         "oP_IP_Type": opip_Type,
         "surgeryType": this._OtManagementService.otRequestForm.get('SurgeryType').value || 0,
@@ -639,7 +642,7 @@ debugger
         "siteDescId": this._OtManagementService.otRequestForm.get('SiteDescId').value.SiteDescId || 0,
         "surgeonId": this._OtManagementService.otRequestForm.get('DoctorId').value.DoctorId || 0,
         "surgeryId": this._OtManagementService.otRequestForm.get('SurgeryId').value.SurgeryId || 0,
-        "modifiedBy ":Number(this._loggedService.currentUserValue.user.id)
+        "modifiedBy":Number(this._loggedService.currentUserValue.user.id)
       }
     }
     console.log("updateJson:",m_data1);
@@ -711,9 +714,7 @@ debugger
    onSiteSelect(option: any){
     
     console.log("selectedSiteOption:", option)
-  }
-
-  
+  }  
    private _filterSite(value: any): string[] {
     if (value) {
       const filterValue = value && value.SiteDescriptionName ? value.SiteDescriptionName.toLowerCase() : value.toLowerCase();
