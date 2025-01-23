@@ -16,8 +16,8 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { MLCInformationComponent, MlcDetail } from './mlcinformation/mlcinformation.component';
-import { AdmissionNewComponent } from './admission-new/admission-new.component';
-import { AdmissionViewComponent } from './admission-view/admission-view.component';
+// import { AdmissionNewComponent } from './admission-new/admission-new.component';
+// import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
 import { OPIPPatientModel } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
@@ -30,8 +30,8 @@ import { ToastrService } from 'ngx-toastr';
 import { IPBillingComponent } from '../../ip-search-list/ip-billing/ip-billing.component';
 import { NewRegistrationComponent } from 'app/main/opd/registration/new-registration/new-registration.component';
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
-import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
-import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
+// import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
+// import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
@@ -39,6 +39,8 @@ import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component'
 import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedback.component';
 import { ParameterDescriptiveMasterComponent } from 'app/main/setup/department/parameter-descriptive-master/parameter-descriptive-master.component';
 import { OperatorComparer } from 'app/core/models/gridRequest';
+import { EditRefranceDoctorComponent } from 'app/main/opd/appointment-list/edit-refrance-doctor/edit-refrance-doctor.component';
+import { EditConsultantDoctorComponent } from 'app/main/opd/appointment-list/edit-consultant-doctor/edit-consultant-doctor.component';
 
 
 @Component({
@@ -813,7 +815,7 @@ export class AdmissionComponent implements OnInit {
         VisitId: contact.VisitId,
       };
       this._registrationService.populateFormpersonal(m_data3);
-      const dialogRef = this._matDialog.open(EditRefraneDoctorComponent, {
+      const dialogRef = this._matDialog.open(EditRefranceDoctorComponent, {
         maxWidth: "70vw",
         height: "410px",
         width: "70%",
