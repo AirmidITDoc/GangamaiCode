@@ -151,7 +151,7 @@ export class AirmidAutocompleteComponent implements OnInit {
         this.stateChanges.complete();
     }
     public comparer(o1: any, o2: any): boolean {
-        return o1 && o2 && (o1[this["ariaLabel"]].toString() === o2.toString() || o1[this["ariaLabel"]].toString() === o2[this["ariaLabel"]].toString());
+        return o1 && o2 && (o1[this["ariaLabel"]].toString() === o2.toString() || (o1[this["ariaLabel"]]?.toString()??'') === (o2[this["ariaLabel"]]?.toString()??''));
     }
     protected filterDdls() {
         if (!this.ddls) {
