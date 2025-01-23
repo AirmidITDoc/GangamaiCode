@@ -52,7 +52,7 @@
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" >
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>First Name</mat-label>
                             <input name="FirstName" formControlName="FirstName" placeholder="First Name"
@@ -156,7 +156,7 @@
                     </div>
                     
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <div fxLayout="row" class="gap-8">
+                        <div fxLayout="row" class="gap-8" fxLayoutGap="12px grid">
                             <mat-form-field appearance="outline" fxFlex="30%">
                                 <mat-label>Age (Y)</mat-label>
                                 <input name="AgeYear" formControlName="AgeYear" placeholder="Age (Y)" matInput
@@ -193,7 +193,7 @@
                         </div>
                     </div>
 
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="12px grid">
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Pan Card No</mat-label>
                             <input name="Pancardno" formControlName="Pancardno" placeholder="PanCardNo Number" matInput
@@ -296,7 +296,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>ESINO</mat-label>
-                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10" required
+                        <input name="ESINO" formControlName="ESINO" matInput placeholder="Enter ESINO" maxlength="10"
                             [(ngModel)]="registerObj.ESINO"   (keydown)="onEnterESINO($event)" #ESINO>
                         <mat-error>Please enter ESINO </mat-error>
                     </mat-form-field>
@@ -473,7 +473,6 @@
                         [(ngModel)]="registerObj.IsConsultant">
                         IsConsultant
                     </mat-slide-toggle>
-    
                     <mat-slide-toggle name="IsRefDoc" formControlName="IsRefDoc" [(ngModel)]="registerObj.IsRefDoc">
                         IsRefDoctor
                     </mat-slide-toggle>
@@ -486,7 +485,7 @@
 
             <div class="sales-footer-buttons gap-8" fxLayout="row">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" color="accent" (click)="onSubmit()" #savebutton>
+                <button class="btn btn-primary" color="accent" (click)="onSave()" #savebutton>
                     <span>Save</span>
                 </button>
             </div>

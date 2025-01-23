@@ -108,7 +108,6 @@ export class NewDoctorComponent implements OnInit {
         this.getDoctortypeNameCombobox();
 
         if (this.data) {
-            debugger
             if (this.data.registerObj.DateofBirth) {
                 const todayDate = new Date();
                 const dob = new Date(this.data.registerObj.DateofBirth);
@@ -213,12 +212,10 @@ export class NewDoctorComponent implements OnInit {
     @ViewChild('dept') dept: ElementRef;
 
 
-    
+
 
     public onEnterprefix(event, value): void {
-
         if (event.which === 13) {
-
             console.log(value)
             if (value == undefined) {
                 this.toastr.warning('Please Enter Valid Prefix.', 'Warning !', {
@@ -233,12 +230,12 @@ export class NewDoctorComponent implements OnInit {
 
     }
     public onEnterfname(event): void {
-        if (event.which === 13 && this._doctorService.myform.get("FirstName").valid ) {
+        if (event.which === 13 && this._doctorService.myform.get("FirstName").valid) {
             this.mname.nativeElement.focus();
         }
     }
     public onEntermname(event): void {
-        if (event.which === 13 && this._doctorService.myform.get("MiddleName").valid ) {
+        if (event.which === 13 && this._doctorService.myform.get("MiddleName").valid) {
             this.lname.nativeElement.focus();
         }
     }
@@ -308,10 +305,10 @@ export class NewDoctorComponent implements OnInit {
 
 
     public onEnterESINO(event): void {
-                
+
         console.log(this._doctorService.myform.get("ESINO").valid)
-        
-        if (event.which === 13 && this._doctorService.myform.get("ESINO").valid ) {
+
+        if (event.which === 13 && this._doctorService.myform.get("ESINO").valid) {
             this.RegNo.nativeElement.focus();
         }
     }
@@ -346,7 +343,7 @@ export class NewDoctorComponent implements OnInit {
             this.doctype.nativeElement.focus();
         }
     }
-    
+
 
     ageyearcheck(event) {
 
@@ -517,63 +514,62 @@ export class NewDoctorComponent implements OnInit {
         return option && option.departmentName ? option.departmentName : '';
     }
 
-    onSave(){
+    onSave() {
+      
+        if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
+            this.toastr.warning('Please select valid Prefix', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this._doctorService.myform.get("FirstName").value == '') {
+            this.toastr.warning('Please Enter FirstName', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (this._doctorService.myform.get("LastName").value == '') {
+            this.toastr.warning('Please Enter LastName', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (this._doctorService.myform.get("MobileNo").value == '') {
+            this.toastr.warning('Please Enter MobileNo', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
         if ((this.vCityId == '' || this.vCityId == null || this.vCityId == undefined)) {
             this.toastr.warning('Please select valid City ', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        if ((this.vPrefixID == '' || this.vPrefixID == null || this.vPrefixID == undefined)) {
-            this.toastr.warning('Please select valid City', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        if ((this.vDoctypeId == '' || this.vDoctypeId == null || this.vDoctypeId == undefined)) {
-            this.toastr.warning('Please select valid Doctor Type', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+       
         if (this._doctorService.myform.get("Education").value == '') {
             this.toastr.warning('Please Enter valid Doctor Education', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        if (this._doctorService.myform.get("ESINO").value == '') {
-            this.toastr.warning('Please Enter valid Doctor ESINO', 'Warning !', {
+       
+        if ((this.vDoctypeId == '' || this.vDoctypeId == null || this.vDoctypeId == undefined)) {
+            this.toastr.warning('Please select valid Doctor Type', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        if (this._doctorService.myform.get("RegNo").value == '') {
-            this.toastr.warning('Please Enter valid Doctor RegNo', 'Warning !', {
+        // Department validation chipset 
+        if (this.selectedItems.length == 0){
+            this.toastr.warning('Please select valid Department', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-
-        if (this._doctorService.myform.get("MahRegNo").value == '') {
-            this.toastr.warning('Please Enter valid Doctor MahRegNo', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        if (this._doctorService.myform.get("RegDate").value == '') {
-            this.toastr.warning('Please Enter valid Reg Date', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        if (this._doctorService.myform.get("MahRegDate").value == '') {
-            this.toastr.warning('Please Enter valid MahReg Date', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-
         Swal.fire({
             title: 'Do you want to Save the Doctor Master ',
             text: "You won't be able to revert this!",
@@ -581,81 +577,81 @@ export class NewDoctorComponent implements OnInit {
             showCancelButton: true,
             confirmButtonColor: '#28a745',
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Save it!" ,
+            confirmButtonText: "Yes, Save it!",
             cancelButtonText: "No, Cancel"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 this.onSubmit();
             }
-          });
+        });
 
     }
 
     onSubmit() {
 
         // if (this._doctorService.myform.valid) {
-            var data2 = [];
-            this.selectedItems.forEach((element) => {
-                let DocInsertObj = {};
-                DocInsertObj['DepartmentId'] = element.DepartmentId
-                DocInsertObj['DoctorId'] = !this._doctorService.myform.get("DoctorId").value ? "0" : this._doctorService.myform.get("DoctorId").value || "0";
-                data2.push(DocInsertObj);
+        var data2 = [];
+        this.selectedItems.forEach((element) => {
+            let DocInsertObj = {};
+            DocInsertObj['DepartmentId'] = element.DepartmentId
+            DocInsertObj['DoctorId'] = !this._doctorService.myform.get("DoctorId").value ? "0" : this._doctorService.myform.get("DoctorId").value || "0";
+            data2.push(DocInsertObj);
+        });
+        var m_data = {
+            doctorId: !this._doctorService.myform.get("DoctorId").value ? "0" : this._doctorService.myform.get("DoctorId").value || "0",
+            prefixID: this._doctorService.myform.get("PrefixID").value.PrefixID,
+            firstName: this._doctorService.myform.get("FirstName").value.trim() || "",
+            middleName: this._doctorService.myform.get("MiddleName").value.trim() || "",
+            lastName: this._doctorService.myform.get("LastName").value.trim() || "",
+            dateOfBirth: this.registerObj.DateofBirth,//this.datePipe.transform(this.registerObj.DateofBirth, 'MM/dd/yyyy') || '01/01/1900',
+            City: this._doctorService.myform.get("CityId").value.CityId || 0,
+            address: this._doctorService.myform.get("Address").value || "",
+            phone: this._doctorService.myform.get("Phone").value || "0",
+            mobile: this._doctorService.myform.get("MobileNo").value || "",
+            genderId: this._doctorService.myform.get("GenderId").value.GenderId || 0,
+            education: this._doctorService.myform.get("Education").value.trim() || "",
+            isConsultant: Boolean(JSON.parse(this._doctorService.myform.get("IsConsultant").value)),
+            isRefDoc: Boolean(JSON.parse(this._doctorService.myform.get("IsRefDoc").value)),
+            IsActive: Boolean(JSON.parse(this._doctorService.myform.get("isActive").value)),
+            doctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
+            passportNo: this._doctorService.myform.get("PassportNo").value || "0",
+            esino: this._doctorService.myform.get("ESINO").value || "0",
+            regNo: this._doctorService.myform.get("RegNo").value || "0",
+            regDate: this.datePipe.transform(this.registerObj.RegDate, "MM-dd-yyyy") || '01/01/1900',
+            mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
+            PanCardNo: this._doctorService.myform.get("Pancardno").value || "0",
+            AadharCardNo: this._doctorService.myform.get("AadharCardNo").value || "0",
+            mahRegDate: this.datePipe.transform(this.registerObj.MahRegDate, "MM-dd-yyyy") || '01/01/1900',
+            isInHouseDoctor: true,
+            isOnCallDoctor: true,
+            Addedby: this.accountService.currentUserValue.user.id,
+            updatedBy: this.accountService.currentUserValue.user.id,
+            Signature: this.signature || '',
+            Departments: data2
+        };
+        console.log(m_data)
+        debugger
+        if (!this._doctorService.myform.get("DoctorId").value) {
+            this._doctorService.doctortMasterInsert(m_data).subscribe((data) => {
+                if (data) {
+                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                }
+                this.onClose();
             });
-            var m_data = {
-                doctorId: !this._doctorService.myform.get("DoctorId").value ? "0" : this._doctorService.myform.get("DoctorId").value || "0",
-                prefixID: this._doctorService.myform.get("PrefixID").value.PrefixID,
-                firstName: this._doctorService.myform.get("FirstName").value.trim() || "",
-                middleName: this._doctorService.myform.get("MiddleName").value.trim() || "",
-                lastName: this._doctorService.myform.get("LastName").value.trim() || "",
-                dateOfBirth: this.registerObj.DateofBirth,//this.datePipe.transform(this.registerObj.DateofBirth, 'MM/dd/yyyy') || '01/01/1900',
-                City: this._doctorService.myform.get("CityId").value.CityId || 0,
-                address: this._doctorService.myform.get("Address").value || "",
-                phone: this._doctorService.myform.get("Phone").value || "0",
-                mobile: this._doctorService.myform.get("MobileNo").value || "",
-                genderId: this._doctorService.myform.get("GenderId").value.GenderId || 0,
-                education: this._doctorService.myform.get("Education").value.trim() || "",
-                isConsultant: Boolean(JSON.parse(this._doctorService.myform.get("IsConsultant").value)),
-                isRefDoc: Boolean(JSON.parse(this._doctorService.myform.get("IsRefDoc").value)),
-                IsActive: Boolean(JSON.parse(this._doctorService.myform.get("isActive").value)),
-                doctorTypeId: this._doctorService.myform.get("DoctorTypeId").value.Id || 0,
-                passportNo: this._doctorService.myform.get("PassportNo").value || "0",
-                esino: this._doctorService.myform.get("ESINO").value || "0",
-                regNo: this._doctorService.myform.get("RegNo").value || "0",
-                regDate: this.datePipe.transform(this.registerObj.RegDate, "MM-dd-yyyy") || '01/01/1900',
-                mahRegNo: this._doctorService.myform.get("MahRegNo").value || "0",
-                PanCardNo: this._doctorService.myform.get("Pancardno").value || "0",
-                AadharCardNo: this._doctorService.myform.get("AadharCardNo").value || "0",
-                mahRegDate: this.datePipe.transform(this.registerObj.MahRegDate, "MM-dd-yyyy") || '01/01/1900',
-                isInHouseDoctor: true,
-                isOnCallDoctor: true,
-                Addedby: this.accountService.currentUserValue.user.id,
-                updatedBy: this.accountService.currentUserValue.user.id,
-                Signature: this.signature || '',
-                Departments: data2
-            };
-            console.log(m_data)
-            debugger
-            if (!this._doctorService.myform.get("DoctorId").value) {
-                this._doctorService.doctortMasterInsert(m_data).subscribe((data) => {
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                        });
-                    }
-                    this.onClose();
-                });
-            } else {
+        } else {
 
-                this._doctorService.doctortMasterUpdate(m_data).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record updated Successfully.', 'updated !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                        });
-                    }
-                    this.onClose();
-                });
-            }
+            this._doctorService.doctortMasterUpdate(m_data).subscribe((data) => {
+                this.msg = data;
+                if (data) {
+                    this.toastr.success('Record updated Successfully.', 'updated !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                }
+                this.onClose();
+            });
+        }
         // }
         // else {
         //     this.toastr.warning('Please Enter All Valid Data ..', 'Warning !', {
