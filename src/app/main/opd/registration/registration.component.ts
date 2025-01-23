@@ -97,27 +97,27 @@ export class RegistrationComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
-        this.myFilterform = this._RegistrationService.filterForm();
+        // this.myFilterform = this._RegistrationService.filterForm();
 
 
     }
     onNewregistration(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+        // const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        // buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
-        const dialogRef = this._matDialog.open(NewRegistrationComponent,
-            {
-                maxWidth: "95vw",
-                maxHeight: '90%',
-                width: '90%',
+        // let that = this;
+        // const dialogRef = this._matDialog.open(NewRegistrationComponent,
+        //     {
+        //         maxWidth: "95vw",
+        //         maxHeight: '90%',
+        //         width: '90%',
 
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        // });
     }
 
     changeStatus(status: any) {
@@ -137,29 +137,29 @@ export class RegistrationComponent implements OnInit {
     }
 
     onEdit(row) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+        // const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        // buttonElement.blur(); // Remove focus from the button
 
-        console.log(row)
-        this._RegistrationService.populateForm(row);
+        // console.log(row)
+        // this._RegistrationService.populateForm(row);
 
-        const dialogRef = this._matDialog.open(
-            NewRegistrationComponent,
-            {
-                maxWidth: "95vw",
-                height: '95%',
-                width: '90%',
-                data: {
-                    data1: row,
-                    Submitflag: false
-                },
-            }
-        );
+        // const dialogRef = this._matDialog.open(
+        //     NewRegistrationComponent,
+        //     {
+        //         maxWidth: "95vw",
+        //         maxHeight: '90%',
+        //         width: '90%',
+        //         data: {
+        //             data1: row,
+        //             Submitflag: false
+        //         },
+        //     }
+        // );
 
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
+        // dialogRef.afterClosed().subscribe((result) => {
+        //     console.log("The dialog was closed - Insert Action", result);
 
-        });
+        // });
     }
 
     onDeactive(doctorId) {
@@ -250,7 +250,13 @@ export class RegistrationComponent implements OnInit {
                 // { name: "maxLength", Message: "Enter only upto 50 chars" },
                 { name: "pattern", Message: "only char allowed." }
             ],
-            RegNo: []
+            RegNo: [],
+            MobileNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+            ],
 
         }
     }
