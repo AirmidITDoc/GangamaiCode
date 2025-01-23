@@ -17,45 +17,44 @@ import { element } from 'protractor';
   selector: 'app-medicine-scheduler',
   templateUrl: './medicine-scheduler.component.html',
   styleUrls: ['./medicine-scheduler.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class MedicineSchedulerComponent implements OnInit {
   displayedItemColumn: string[] = [
-    'ItemName', 
+    'ItemName',
     'DoseName',
     'Route',
-    'Frequency', 
+    'Frequency',
     'NurseName',
     'Action'
   ]
 
   screenFromString = 'dose';
   isLoading = true;
-  sIsLoading: string = ''; 
-  MedicineItemForm:FormGroup
-  isItemIdSelected:boolean=false;
-  isDoseSelected:boolean=false
-  vRoute:any;
-  vFrequency:any;
-  vNurseName:any;
-  registerObj:any;
+  sIsLoading: string = '';
+  MedicineItemForm: FormGroup
+  isItemIdSelected: boolean = false;
+  isDoseSelected: boolean = false
+  vRoute: any;
+  vFrequency: any;
+  vNurseName: any;
+  registerObj: any;
   date: any;
 
-   dsItemList = new MatTableDataSource<MedicineItemList>();
+  dsItemList = new MatTableDataSource<MedicineItemList>();
 
   constructor(
-       public _NursingStationService: NursingnoteService,
-       private accountService: AuthenticationService, 
-       private advanceDataStored: AdvanceDataStored,
-       public datePipe: DatePipe,   
-       public toastr: ToastrService,
-       public _matDialog: MatDialog,  
-       private _formBuilder:FormBuilder,
-        public dialogRef: MatDialogRef<MedicineSchedulerComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-  ) 
-  {
+    public _NursingStationService: NursingnoteService,
+    private accountService: AuthenticationService,
+    private advanceDataStored: AdvanceDataStored,
+    public datePipe: DatePipe,
+    public toastr: ToastrService,
+    public _matDialog: MatDialog,
+    private _formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<MedicineSchedulerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
     let mydate = new Date()
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
     console.log(this.date)
@@ -67,37 +66,37 @@ export class MedicineSchedulerComponent implements OnInit {
 
   ngOnInit(): void {
     this.MedicineItemForm = this.createMedicineItemForm();
-    if(this.data){
-      this.registerObj= this.data.Obj
+    if (this.data) {
+      this.registerObj = this.data.Obj
       console.log(this.registerObj)
     }
   }
-  createMedicineItemForm(){
+  createMedicineItemForm() {
     return this._formBuilder.group({
       ItemId: '',
       DoseId: '',
       Route: '',
-      Frequency: '', 
-      NurseName: '', 
-      DoseDateTime:'',
-      Qty:''
+      Frequency: '',
+      NurseName: '',
+      DoseDateTime: '',
+      Qty: ''
     })
   }
-  
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
   onClose() {
     this.MedicineItemForm.reset();
-    this.dialogRef.close(); 
+    this.dialogRef.close();
   }
-  OnClear(){
+  OnClear() {
     this.MedicineItemForm.reset();
   }
-  vDoseId:any;
-  doseList:any=[];
-  filteredOptionsDosename:Observable<string[]>
+  vDoseId: any;
+  doseList: any = [];
+  filteredOptionsDosename: Observable<string[]>
   getDoseList() {
     this._NursingStationService.getDoseList().subscribe((data) => {
       this.doseList = data;
@@ -105,7 +104,7 @@ export class MedicineSchedulerComponent implements OnInit {
       this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterDosename(value) : this.doseList.slice()),
-      ); 
+      );
     });
   }
   private _filterDosename(value: any): string[] {
@@ -117,9 +116,9 @@ export class MedicineSchedulerComponent implements OnInit {
   getOptionTextDose(option) {
     return option && option.DoseName ? option.DoseName : '';
   }
-  
 
-  Chargelist:any=[];
+
+  Chargelist: any = [];
   onAddMedicine() {
     if (this.registerObj.Qty == this.dsItemList.data.length) {
       this.toastr.warning('selected item Qty is 0,You cannot add new scheduler', 'Warning !', {
@@ -129,8 +128,8 @@ export class MedicineSchedulerComponent implements OnInit {
       this.MedicineItemForm.get('Qty').setValue('')
       this.MedicineItemForm.get('Route').setValue('');
       this.MedicineItemForm.get('Frequency').setValue('');
-      this.MedicineItemForm.get('NurseName').setValue(''); 
-      this.MedicineItemForm.get('DoseDateTime').setValue(''); 
+      this.MedicineItemForm.get('NurseName').setValue('');
+      this.MedicineItemForm.get('DoseDateTime').setValue('');
       return;
     }
 
@@ -174,8 +173,9 @@ export class MedicineSchedulerComponent implements OnInit {
     console.log(this.dsItemList.data);
     this.MedicineItemForm.get('Route').setValue('');
     this.MedicineItemForm.get('Frequency').setValue('');
-    this.MedicineItemForm.get('NurseName').setValue('');  
-    this.MedicineItemForm.get('DoseDateTime').setValue(''); 
+    this.MedicineItemForm.get('NurseName').setValue('');
+    this.MedicineItemForm.get('DoseDateTime').setValue('');
+ 
   }
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
@@ -188,120 +188,151 @@ export class MedicineSchedulerComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
+ 
+
+ 
 
   onSubmit() {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
+debugger
     if (!this.dsItemList.data.length) {
       this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return
-    } 
+    }
 
     let saveTNursingMedicationChartParamsObj = [];
-    this.dsItemList.data.forEach(element=>{
-     let saveTNursingMedicationChartParams={ 
-        "admID": this.registerObj.AdmissionID,
-        "mDate": formattedDate,
-        "mTime": formattedTime,
-        "durgId": this.registerObj.ItemId || 0,
-        "doseID": 0,
-        "route": element.Route || '',
-        "freq": element.Frequency || '',
-        "nurseName":element.NurseName || '',
-        "doseName": this.datePipe.transform(this.MedicineItemForm.get('DoseDateTime').value,'h:mm a') ,
-        "createdBy": this.accountService.currentUserValue.user.id
-       }
-       saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
-    })
-    
+    this.dsItemList.data.forEach(element => {
+      // let saveTNursingMedicationChartParams = {}
+      // saveTNursingMedicationChartParams['medChartId'] = 0;
+      // saveTNursingMedicationChartParams['admID'] = this.registerObj.AdmissionID;
+      // saveTNursingMedicationChartParams['mDate'] = formattedDate;
+      // saveTNursingMedicationChartParams['mTime'] = formattedTime;
+      // saveTNursingMedicationChartParams['durgId'] = this.registerObj.ItemId || 0;
+      // saveTNursingMedicationChartParams['doseID'] = 0;
+      // saveTNursingMedicationChartParams['route'] = element.Route || '';
+      // saveTNursingMedicationChartParams['freq'] = element.Frequency || '';
+      // saveTNursingMedicationChartParams['nurseName'] = element.NurseName || '';
+      // saveTNursingMedicationChartParams['doseName'] = this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '';
+      // saveTNursingMedicationChartParams['createdBy'] = this.accountService.currentUserValue.user.id;
 
-      let submitData ={
-        "saveTNursingMedicationChartParams":saveTNursingMedicationChartParamsObj
-      } 
-      console.log(submitData);
-      this._NursingStationService.insertMedicationChart(submitData).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this._matDialog.closeAll();
-          this.onClose();
-        } else {
-          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        } 
-      }, error => {
-        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+
+      let saveTNursingMedicationChartParams = {
+
+        "medChartId": 0,
+
+        "admID":this.registerObj.AdmissionID,
+
+        "mDate": formattedDate, 
+
+        "mTime": formattedTime,
+
+        "durgId":  this.registerObj.ItemId,
+
+        "doseID": 0,
+
+        "route":element.Route || '',
+
+        "freq": element.Frequency || '',
+
+        "nurseName": element.NurseName || '',
+
+        "doseName":  this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',
+
+        "createdBy": this.accountService.currentUserValue.user.id,
+
+      }   
+      saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
+    })
+
+    let submitData = {
+      "saveTNursingMedicationChartParams": saveTNursingMedicationChartParamsObj
+    };
+    console.log(submitData);
+    this._NursingStationService.insertMedicationChart(submitData).subscribe(response=>{
+      console.log(response)
+      debugger
+      if (response) {
+        this.toastr.success('Record Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this._matDialog.closeAll();
+        this.onClose();
+      } else {
+        this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
-        });  
-      }); 
+        });
+      }
+    }, error => {
+      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });
   }
 
 
 
 
-      @ViewChild('itemid') itemid: ElementRef;
-      @ViewChild('dosename') dosename: ElementRef;
-      @ViewChild('Day') Day: ElementRef;
-      @ViewChild('Instruction') Instruction: ElementRef;
-      @ViewChild('NurseName') NurseName: ElementRef;
-      @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;  
-  
-      onEnterItem(event): void {
-        if (event.which === 13) {
-          this.dosename.nativeElement.focus();
-        }
-      }
-      public onEnterDose(event): void {
-        if (event.which === 13) {
-          this.Day.nativeElement.focus();
-        }
-      }
-      public onEnterqty(event): void {
-        if (event.which === 13) {
-          this.Instruction.nativeElement.focus();
-        }
-      }
-    
-      public onEnterremark(event): void {
-        if (event.which === 13) {
-          this.addbutton.focus;
-          this.NurseName.nativeElement.focus();
-        }
-      } 
-      keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-          return true;
-        } else {
-          event.preventDefault();
-          return false;
-        }
-      }
-      keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/^\d*\.?\d*$/.test(inp)) {
-          return true;
-        } else {
-          event.preventDefault();
-          return false;
-        }
-      }
-      ///[^a-zA-Z0-9]/
-      keyPressOk(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
-          return true;
-        } else {
-          event.preventDefault();
-          return false;
-        }
-      }
-    
+  @ViewChild('itemid') itemid: ElementRef;
+  @ViewChild('dosename') dosename: ElementRef;
+  @ViewChild('Day') Day: ElementRef;
+  @ViewChild('Instruction') Instruction: ElementRef;
+  @ViewChild('NurseName') NurseName: ElementRef;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
+  onEnterItem(event): void {
+    if (event.which === 13) {
+      this.dosename.nativeElement.focus();
+    }
+  }
+  public onEnterDose(event): void {
+    if (event.which === 13) {
+      this.Day.nativeElement.focus();
+    }
+  }
+  public onEnterqty(event): void {
+    if (event.which === 13) {
+      this.Instruction.nativeElement.focus();
+    }
+  }
+
+  public onEnterremark(event): void {
+    if (event.which === 13) {
+      this.addbutton.focus;
+      this.NurseName.nativeElement.focus();
+    }
+  }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  ///[^a-zA-Z0-9]/
+  keyPressOk(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
 }

@@ -240,13 +240,14 @@ export class NursingnoteComponent implements OnInit {
     this.vCompanyId = obj.CompanyId;
     this.vAdmissionID = obj.AdmissionID
     this.getNoteTablelist()
+    this.getItemlistforMedication();
     this.getHandOverNotelist(); 
     this.dsNursingNoteList.data = []
     this.dsHandOverNoteList.data = []
     this.dsItemList.data = []
     this.HandOverNoteList = []
     this._NursingStationService.myform.get('TemplateName').setValue('')
-    this.getItemlistforMedication();
+   
   }
   ///Template note list
     getTemplateNoteList() {
