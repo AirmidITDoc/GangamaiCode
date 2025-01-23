@@ -46,11 +46,11 @@ fuse-sidebar {
         }
     }
     .nav {
-        &.material2 {
-            form {
-                padding: $sidebar-gap;
-            }
-        }
+        // &.material2 {
+        //     form {
+        //         padding: $sidebar-gap;
+        //     }
+        // }
     }
     .mat-mdc-radio-group {
         display: flex !important;
