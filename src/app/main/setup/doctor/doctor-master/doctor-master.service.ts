@@ -30,12 +30,7 @@ export class DoctorMasterService {
                 // Validators.pattern("^[a-zA-Z._ -]*$"),
                 Validators.pattern('^[a-zA-Z () ]*$')
             ]],
-            MiddleName: ['', [
-                Validators.required,
-                Validators.maxLength(50),
-                // Validators.pattern("^[a-zA-Z._ -]*$"),
-                Validators.pattern('^[a-zA-Z () ]*$')
-            ]],
+            MiddleName: [''],
             LastName:['', [
                 Validators.required,
                 Validators.maxLength(50),
@@ -71,39 +66,12 @@ export class DoctorMasterService {
             DoctorTypeId: [""],
             DoctorType: [""],
             PassportNo: [""],
-            ESINO: [
-                "",
-                [
-                    Validators.required,
-                    //Validators.pattern("'^[a-zA-Z0-9]*$'"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                ],
-            ],
-            RegNo: [
-                "",
-                [
-                    Validators.required,
-                  //  Validators.pattern("'^[a-zA-Z0-9]*$'"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                ],
-            ],
+            ESINO: [""],
+            RegNo: [""],
             RegDate: [{ value: new Date() }],
-            MahRegNo: [
-                "",
-                [
-                    Validators.required,
-                  //  Validators.pattern("'^[a-zA-Z0-9]*$'"),
-                    Validators.minLength(10),
-                    Validators.maxLength(10),
-                ],
-            ],
+            MahRegNo: [""],
             MahRegDate: [{ value: new Date() }],
-            RefDocHospitalName: [
-                "",
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-            ],
+            RefDocHospitalName: [""],
             Departmentid: [""],
             DepartmentName: [""],
             AddedBy: [""],

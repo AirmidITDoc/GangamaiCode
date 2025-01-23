@@ -1282,7 +1282,7 @@ CalculateAdminCharge(){
           this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         } else {
-          this.vFinalDiscper = ((parseInt(FinalDiscAmt) / parseInt(FinalTotalAMt)) * 100).toFixed(2);
+          this.vFinalDiscper = ((parseInt(FinalDiscAmt) / parseInt(FinalTotalAMt)) * 100).toFixed(3);
           this.vNetBillAmount = (parseInt(FinalTotalAMt) - parseInt(FinalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('Percentage').setValue(this.vFinalDiscper);
