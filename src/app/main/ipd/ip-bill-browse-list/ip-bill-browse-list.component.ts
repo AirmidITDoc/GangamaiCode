@@ -855,8 +855,9 @@ console.log(PatientHeaderObj)
 
  
   exportBillDatewiseReportExcel() {
+    debugger
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['BillDate', 'PBillNo', 'RegNo', 'PatientName', 'Age', 'MobileNo', 'DOA', 'DOD', 'IPDNo', 'DoctorName','RefDoctorName', 'TariffName', 'CompanyName', 'UnitName', 'TotalAmt', 'ConcessionAmt','NetPayableAmt',
+    let exportHeaders = ['BillDate', 'PBillNo', 'RegNo', 'PatientName', 'PatientAge', 'MobileNo', 'AdmissionTime', 'DischargeDate', 'IPDNo', 'DoctorName','RefDoctorName', 'TariffName', 'CompanyName', 'UnitName', 'TotalAmt', 'ConcessionAmt','NetPayableAmt',
         'BalanceAmt', 'CashPay', 'CardPay', 'ChequePay', 'OnlinePay','AdvUsedPay', 'PayCount', 'RefundAmount','CashCounterName','UserName'];
     this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Ip Bill Datewise');
     this.dataSource.data = [];
