@@ -757,12 +757,12 @@ export class NursingnoteComponent implements OnInit {
       });
       return;
     } 
-    if (!this.dsHandOverNoteList.data.length) {
-      this.toastr.warning('Please add Patient HandOver Note', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (!this.dsHandOverNoteList.data.length) {
+    //   this.toastr.warning('Please add Patient HandOver Note', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
   
   this.isLoading = 'submit'; 
   if(!this._NursingStationService.PatientHandOverForm.get('PatHandId').value){  
