@@ -32,7 +32,7 @@
                                     </div>
 
                                     <input type="hidden" name="storeId" formControlName="storeId">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Store Name" formControlName="storeName"
                                                 [value]="registerObj?.storeName" [formGroup]="storeForm"
@@ -56,7 +56,7 @@
                                             Number Details</span>
                                     </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Indent Prefix" formControlName="indentPrefix"
                                                 [value]="registerObj?.indentPrefix" [formGroup]="storeForm"
@@ -86,7 +86,7 @@
                                     </div>
 
                                     <!-- //2 -->
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Purchase Prefix" formControlName="purchasePrefix"
                                                 [value]="registerObj?.purchasePrefix" [formGroup]="storeForm"
@@ -117,7 +117,7 @@
 
 
                                     <!-- //3 -->
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="GRN Prefix" formControlName="grnPrefix"
                                                 [value]="registerObj?.grnPrefix" [formGroup]="storeForm"
@@ -156,7 +156,7 @@
                                             Cash Counter Details</span>
                                     </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
 
@@ -177,7 +177,7 @@
                                             </airmid-autocomplete>
 
                                         </div>
-                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
 
 
                                             <airmid-autocomplete label="pharSalReturnCountId"
@@ -226,19 +226,17 @@
 
                 </mat-tab-group>
 
-
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-                    <mat-radio-group name="isActive" formControlName="isActive">
-                        <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                    </mat-radio-group>
-                    <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="storeForm"
-                        [value]="isActive"></app-airmid-slider> -->
-                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
-                        <span>Save</span>
-                    </button>
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="storeForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                    </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                            <span>Save</span>
+                        </button>
+                    </div>
                 </div>
 
             </form>

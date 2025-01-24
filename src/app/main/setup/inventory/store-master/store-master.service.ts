@@ -137,7 +137,7 @@ export class StoreMasterService {
                     // Validators.required
                 ]
             ],
-            isActive:[false,[Validators.required]],
+            isActive:[true,[Validators.required]],
             workOrderPrefix: "0",
             workOrderNo: "0",
             pharAdvId: 0,

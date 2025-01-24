@@ -26,7 +26,7 @@ export class ConcessionReasonMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

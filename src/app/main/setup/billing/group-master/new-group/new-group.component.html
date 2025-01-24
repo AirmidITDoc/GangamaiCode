@@ -19,8 +19,7 @@
         <div class="modal-body-container">
             <form [formGroup]="groupForm">
                 <input type="hidden" name="groupId" formControlName="groupId">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%"> 
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <airmid-textbox 
                             label="Group Name" 
                             formControlName="groupName" 
@@ -29,7 +28,6 @@
                             [validations]="getValidationMessages().groupName"
                             [maxLength]="50">
                         </airmid-textbox>
-                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
@@ -39,21 +37,15 @@
                             <!-- <label><input type="radio" name="option" value="isConsolidated"> Isconsolidated</label>
                             <label><input type="radio" name="option" value="isConsolidatedDR"> IsConsolidatedDR</label> -->
                             <!-- <label><input type="radio" name="option" value="isActive"> IsActive</label>  -->
-                            <mat-radio-group name="isActive" formControlName="">
+                            <!-- <mat-radio-group name="isActive" formControlName="">
                                 <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>Isconsolidated
                                 </mat-radio-button>
                                 <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsConsolidatedDR
                                 </mat-radio-button>
-                            </mat-radio-group>
+                            </mat-radio-group> -->
                         </div>
                     </div> 
                     <div>
-                        <!-- <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>Isconsolidated
-                            </mat-radio-button>
-                            <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsConsolidatedDR
-                            </mat-radio-button>
-                        </mat-radio-group> -->
                         <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="groupForm" [(ngModel)]="isActive" ></app-airmid-slider>
 
                     </div>

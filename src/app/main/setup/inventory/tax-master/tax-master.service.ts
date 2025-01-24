@@ -27,6 +27,7 @@ export class TaxMasterService {
                 ],
             ],
             IsDeleted: ["false"],
+            isActive:[true,[Validators.required]]
         });
     }
 

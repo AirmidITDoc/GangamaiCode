@@ -29,7 +29,7 @@ export class BedMasterService {
                 Validators.required
             ],
             isAvailible: true,
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
 

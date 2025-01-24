@@ -42,7 +42,7 @@ export class DosemasterService {
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
 

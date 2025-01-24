@@ -20,8 +20,8 @@
             <form [formGroup]="doseForm">
 
                 <input type="hidden" name="DoseId" formControlName="doseId">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="Dose Name" 
                                 formControlName="doseName" 
@@ -31,9 +31,7 @@
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
-                    </div>
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInEnglish" 
                                 formControlName="doseNameInEnglish" 
@@ -43,7 +41,7 @@
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInMarathi" 
                                 formControlName="doseNameInMarathi" 
@@ -54,7 +52,7 @@
                             </airmid-textbox>
                         </div>
                         
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseQtyPerDay" 
                                 formControlName="doseQtyPerDay" 

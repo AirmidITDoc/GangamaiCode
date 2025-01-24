@@ -19,7 +19,7 @@
     <div class="modal-body-container">
         <form [formGroup]="subTpaForm">
             <input type="hidden" name="SubCompanyId" formControlName="SubCompanyId">
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Company Name" 
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
@@ -56,7 +56,7 @@
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete 
-                        label="City" 
+                        label="City Name" 
                         formControlName="city" 
                         [value]="data?.city" 
                         [formGroup]="subTpaForm"
@@ -67,7 +67,7 @@
                 
             </div>
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Pin Code" 
@@ -88,7 +88,7 @@
                         [maxLength]="10">
                     </airmid-textbox>       
                 </div>
-                <div fxFlex="36%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Mobile Number" 
                         formControlName="mobileNo" 
@@ -104,14 +104,7 @@
             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                 <div>
-                    <!-- <mat-radio-group name="isActive" formControlName="isActive">
-                        <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                        <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                        </mat-radio-button>
-                    </mat-radio-group> -->
                     <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="subTpaForm" [(ngModel)]="isActive" ></app-airmid-slider>
-
                 </div>
      
                 <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">

@@ -20,8 +20,7 @@
         <div class="modal-body-container">
             <form [formGroup]="creditreasonForm">
                 <input type="hidden" name="creditId" formControlName="creditId">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                             <airmid-textbox 
                                 label="Credit Reason "
                                 formControlName="creditReason"
@@ -30,17 +29,10 @@
                                 [validations]="getValidationMessages().creditReason"
                                 [maxLength]="50">
                             </airmid-textbox> 
-                        </div>
                     </div>
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                     <div>
-                        <!-- <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                            </mat-radio-button>
-                            <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                            </mat-radio-button>
-                        </mat-radio-group> -->
                         <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="creditreasonForm" [(ngModel)]="isActive" ></app-airmid-slider>
 
                     </div>

@@ -26,7 +26,7 @@ export class InstructionmasterService {
                 ]
             ],
             instructioninMarathi: "string",
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     

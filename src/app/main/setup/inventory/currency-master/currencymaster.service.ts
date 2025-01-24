@@ -26,7 +26,7 @@ export class CurrencymasterService {
                 ]
             ],
             isDeleted: ["false"],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
 

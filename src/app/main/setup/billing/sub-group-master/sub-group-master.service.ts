@@ -28,7 +28,7 @@ export class SubGroupMasterService {
             groupId: ["",
                 Validators.required
             ],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

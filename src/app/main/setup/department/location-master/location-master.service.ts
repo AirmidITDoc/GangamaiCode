@@ -25,11 +25,12 @@ export class LocationMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[false,[Validators.required]],
+            isActive:[true,[Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
     }
+    
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             LocationNameSearch: [""],

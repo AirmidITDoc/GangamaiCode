@@ -61,8 +61,8 @@ export class ManufactureMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewManufactureComponent,
             {
                 maxWidth: "45vw",
-                height: '30%',
-                width: '60%',
+                height: '35%',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

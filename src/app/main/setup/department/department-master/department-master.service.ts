@@ -27,7 +27,7 @@ export class DepartmentMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[false,[Validators.required]],
+            isActive:[true,[Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });

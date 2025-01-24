@@ -26,7 +26,7 @@ export class CityMasterService {
             stateId: ["", 
                 Validators.required
             ],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

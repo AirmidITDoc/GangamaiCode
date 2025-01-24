@@ -27,7 +27,7 @@ export class GroupMasterService {
             ],
             isconsolidated: true,
             isConsolidatedDR: true,
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

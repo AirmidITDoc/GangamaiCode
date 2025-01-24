@@ -29,7 +29,7 @@ export class UomMasterService {
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

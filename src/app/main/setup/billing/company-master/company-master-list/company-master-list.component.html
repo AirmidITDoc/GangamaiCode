@@ -18,7 +18,7 @@
     <div class="modal-body-container">
         <form [formGroup]="companyForm">
             <input type="hidden" name="CompanyId" formControlName="companyId" >
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Company Name" 
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Address" 
@@ -75,7 +75,7 @@
                 
             </div>
 
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
                         label="Phone Number" 
@@ -96,7 +96,7 @@
                         [maxLength]="10">
                     </airmid-textbox> 
                 </div>
-                <div fxFlex="36%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-autocomplete 
                         label="Tariff Id" 
                         formControlName="traiffId" 
@@ -111,14 +111,7 @@
             <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                 <div>
-                    <!-- <mat-radio-group name="isActive" formControlName="isActive">
-                        <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                        </mat-radio-button>
-                        <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                        </mat-radio-button>
-                    </mat-radio-group> -->
                     <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="companyForm" [(ngModel)]="isActive" ></app-airmid-slider>
-
                 </div>
      
                 <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">

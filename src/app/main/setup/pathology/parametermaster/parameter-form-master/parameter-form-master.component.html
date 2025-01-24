@@ -28,7 +28,7 @@
                                 <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
                                     <input type="hidden" name="ParameterID" formControlName="parameterId">
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox 
                                                 label="Parameter Short Name" 
@@ -52,7 +52,7 @@
                                         </div> 
                                     </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox 
                                                 label="Print Parameter Name" 
@@ -76,7 +76,7 @@
                                         </div> 
                                     </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox 
                                                 label="Formula" 
@@ -150,7 +150,7 @@
                                         <form [formGroup]="numericForm">
                                             <mat-card-content>
                                                 <div>
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-autocomplete 
                                                                 label="SexID" 
@@ -181,7 +181,7 @@
                                                                 [maxLength]="3">
                                                             </airmid-textbox>    
                                                         </div>
-                                                        <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <!-- <airmid-autocomplete 
                                                                 label="Age Type" 
                                                                 formControlName="ageType"
@@ -339,7 +339,7 @@
                                             </mat-card-content>
                                             <form [formGroup]="descForm">
                                                 <mat-card-content>
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                                         <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                             <airmid-textbox 
                                                                 label="Parameter" 

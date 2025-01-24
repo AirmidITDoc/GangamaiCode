@@ -63,7 +63,7 @@ export class RelationshipMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRelationshipComponent,
             {
                 maxWidth: "45vw",
-                height: '30%',
+                height: '35%',
                 width: '70%',
                 data: row
             });

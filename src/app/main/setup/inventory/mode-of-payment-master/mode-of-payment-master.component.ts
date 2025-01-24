@@ -59,7 +59,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             const dialogRef = this._matDialog.open(NewModeofpaymentComponent,
                 {
                     maxWidth: "45vw",
-                    height: '30%',
+                    height: '35%',
                     width: '70%',
                     data: row
                 });

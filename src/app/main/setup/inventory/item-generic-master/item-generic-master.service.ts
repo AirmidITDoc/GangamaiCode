@@ -27,7 +27,7 @@ export class ItemGenericMasterService {
                 ]
             ],
             isDeleted: ["false"],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
     

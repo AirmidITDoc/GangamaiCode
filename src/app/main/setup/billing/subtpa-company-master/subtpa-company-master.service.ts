@@ -61,7 +61,7 @@ export class SubtpaCompanyMasterService {
                 ],
             ],
             faxNo: ["0"],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
 

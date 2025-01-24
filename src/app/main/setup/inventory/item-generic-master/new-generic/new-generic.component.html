@@ -18,8 +18,7 @@
         <div class="modal-body-container">
             <form [formGroup]="genericForm">
                 <input type="hidden" name="itemGenericNameId" formControlName="itemGenericNameId">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <airmid-textbox 
                             label="Generic Name"
                             formControlName="genericName"
@@ -28,21 +27,21 @@
                             [validations]="getValidationMessages().itemGenericName"
                             [maxLength]="50">
                         </airmid-textbox> 
+                </div>
+                
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="genericForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                    </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="Saveflag" >
+                            <span>Save</span>
+                        </button>
                     </div>
                 </div>
-                <div>
-                   
-                    <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="genericForm" [(ngModel)]="isActive" ></app-airmid-slider>
-
-                </div>
             </form>
-        </div>
-        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="end center">
-
-            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-            <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="Saveflag">
-                <span>Save</span>
-            </button>
         </div>
     </div>
 </div>

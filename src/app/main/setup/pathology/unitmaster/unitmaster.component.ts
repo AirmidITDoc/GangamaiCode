@@ -69,7 +69,7 @@ export class UnitmasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewUnitComponent,
             {
                 maxWidth: "45vw",
-                height: '30%',
+                height: '35%',
                 width: '70%',
                 data: row
             });

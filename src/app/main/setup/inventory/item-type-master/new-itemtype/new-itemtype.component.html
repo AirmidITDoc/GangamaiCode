@@ -18,8 +18,7 @@
         <div class="modal-body-container">
             <form [formGroup]="itemtypeForm">
                 <input type="hidden" name="itemTypeId" formControlName="itemTypeId">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <airmid-textbox 
                             label="Item Type Name"
                             formControlName="itemTypeName"
@@ -28,16 +27,11 @@
                             [validations]="getValidationMessages().itemTypeName"
                             [maxLength]="50">
                         </airmid-textbox> 
-                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-            
                     <div>
-                       
                         <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="itemtypeForm" [(ngModel)]="isActive" ></app-airmid-slider>
-
                     </div>
          
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
@@ -46,7 +40,6 @@
                             <span>Save</span>
                         </button>
                     </div>
-         
                 </div>
 
             </form>

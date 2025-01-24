@@ -20,22 +20,18 @@
             <form [formGroup]="drugForm">
 
                 <input type="hidden" name="DrugId" formControlName="drugId">
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="Drug Name" 
-                            formControlName="drugName" 
-                            [value]="data?.drugName"
-                            [formGroup]="drugForm"
-                            [validations]="getValidationMessages().drugName"
-                            [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-                </div>
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-
-                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxLayout="row wrap" fxLayoutGap="12px grid">   
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="Drug Name" 
+                                formControlName="drugName" 
+                                [value]="data?.drugName"
+                                [formGroup]="drugForm"
+                                [validations]="getValidationMessages().drugName"
+                                [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-autocomplete 
                                 label="Generic Name" 
                                 formControlName="genericId"
@@ -46,7 +42,7 @@
                             </airmid-autocomplete>
                         </div>
                         
-                        <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-autocomplete 
                                 label="Class Name" 
                                 formControlName="classId"
@@ -56,7 +52,6 @@
                                 [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
                             </airmid-autocomplete>
                         </div>
-                    
                     </div>
                
                 

@@ -30,35 +30,7 @@ export class ParametermasterService {
         this.formulaform=this.createformulaForm();
         this.numericform = this.numericForm();
     }
-    /**
-     * {
-        "parameterId": 0,
-        "parameterShortName": "abc",
-        "parameterName": "xyz",
-        "printParameterName": "shilpa",
-        "unitId": 123,
-        "isNumeric": 0,
-        "isPrintDisSummary": true,
-        "mParameterDescriptiveMasters": [
-            {
-            "descriptiveId": 0,
-            "parameterId": 0,
-            "parameterValues": "xyz",
-            "isDefaultValue": true,
-            "defaultValue": "string"
-            }
-        ],
-        "mPathParaRangeMasters": [
-            {
-            "pathparaRangeId": 0,
-            "paraId": 0,
-            "sexId": 1234,
-            "minValue": "string",
-            "maxvalue": "string"
-            }
-        ]
-        }
-     */
+
 
     createParameterForm(): FormGroup {
         return this._formBuilder.group({

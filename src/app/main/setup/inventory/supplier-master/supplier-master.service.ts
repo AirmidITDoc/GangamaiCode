@@ -24,7 +24,7 @@ export class SupplierMasterService {
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            ContactPerson:["Subhash Choughule", [ 
+            ContactPerson:["Hospital-Admin", [ 
                 // Validators.required,
                 // Validators.pattern("^[a-zA-Z._ -]+$"),
                 // Validators.maxLength(100),

@@ -67,7 +67,7 @@ export class CompanyMasterService {
                     // Validators.required
                 ]
             ],
-            isActive:[false,[Validators.required]]
+            isActive:[true,[Validators.required]]
         });
     }
 

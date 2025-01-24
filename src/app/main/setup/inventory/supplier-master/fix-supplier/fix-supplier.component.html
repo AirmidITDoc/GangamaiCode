@@ -30,7 +30,7 @@
                                     <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
                                         Personal Details</span>
                                 </div>
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Supplier Name" formControlName="supplierName"
                                             [value]="registerObj?.supplierName" [formGroup]="supplierForm"
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                         <airmid-autocomplete label="City" formControlName="cityId"
@@ -98,7 +98,7 @@
                                         Details</span>
                                 </div>
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Fax" formControlName="fax" [value]="registerObj.fax"
                                             [formGroup]="supplierForm" [validations]="getValidationMessages().fax">
@@ -124,7 +124,7 @@
                                     </div>
                                 </div>
 
-                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-autocomplete label="Mode Of Payment" formControlName="modeofPayment"
                                             [formGroup]="supplierForm" [value]="registerObj.modeofPayment"

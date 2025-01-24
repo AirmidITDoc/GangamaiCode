@@ -2,12 +2,23 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Ward Master</span>
+                <span
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '100ms', x: '-25px' }
+                    }"
+                    >New Ward Master</span
+                >
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
+                    <button
+                        mat-icon-button
+                        tabIndex="-1"
+                        [mat-dialog-close]="true"
+                        aria-label="Close dialog"
+                        matTooltip="Close"
+                    >
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
@@ -17,80 +28,86 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="roomForm">
-                <input type="hidden" name="roomId" formControlName="roomId">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="Room Name " 
-                                formControlName="roomName" 
-                                [value]="data?.roomName" 
-                                [formGroup]="roomForm"
-                                [validations]="getValidationMessages().roomName" 
-                                [maxLength]="50">
-                            </airmid-textbox>    
-                        </div>
+                <input type="hidden" name="roomId" formControlName="roomId" />
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox
+                            label="Room Name "
+                            formControlName="roomName"
+                            [value]="data?.roomName"
+                            [formGroup]="roomForm"
+                            [validations]="getValidationMessages().roomName"
+                            [maxLength]="50"
+                        >
+                        </airmid-textbox>
                     </div>
-                
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete 
-                                label="LocationId" 
-                                formControlName="locationId"
-                                [value]="data?.locationId" 
-                                [formGroup]="roomForm"
-                                [validations]="getValidationMessages().locationId"
-                                [mode]="autocompleteModelocation"
-                                (selectDdlObject)="selectChangelocation($event)">
-                            </airmid-autocomplete>
-                        </div>
-                
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete 
-                                label="ClassId" 
-                                formControlName="classId"
-                                [value]="data?.classId" 
-                                [formGroup]="roomForm"
-                                [validations]="getValidationMessages().classId"
-                                [mode]="autocompleteModeclass"
-                                (selectDdlObject)="selectChangeclass($event)">
-                            </airmid-autocomplete>
-                        </div>
-             
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete 
-                                label="RoomId" 
-                                formControlName="roomId"
-                                [value]="data?.roomId" 
-                                [formGroup]="roomForm"
-                                [validations]="getValidationMessages().roomId"
-                                [mode]="autocompleteModeroomId"
-                                (selectDdlObject)="selectChangeroomType($event)">
-                            </airmid-autocomplete>
-                        </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete
+                            label="LocationId"
+                            formControlName="locationId"
+                            [value]="data?.locationId"
+                            [formGroup]="roomForm"
+                            [validations]="getValidationMessages().locationId"
+                            [mode]="autocompleteModelocation"
+                            (selectDdlObject)="selectChangelocation($event)"
+                        >
+                        </airmid-autocomplete>
                     </div>
 
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete
+                            label="ClassId"
+                            formControlName="classId"
+                            [value]="data?.classId"
+                            [formGroup]="roomForm"
+                            [validations]="getValidationMessages().classId"
+                            [mode]="autocompleteModeclass"
+                            (selectDdlObject)="selectChangeclass($event)"
+                        >
+                        </airmid-autocomplete>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-autocomplete
+                            label="RoomId"
+                            formControlName="roomId"
+                            [value]="data?.roomId"
+                            [formGroup]="roomForm"
+                            [validations]="getValidationMessages().roomId"
+                            [mode]="autocompleteModeroomId"
+                            (selectDdlObject)="selectChangeroomType($event)"
+                        >
+                        </airmid-autocomplete>
+                    </div>
+                </div>
+
+                <div
+                    class="new-appointment-actions gap-8 mt-12"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between">
                     <div>
-                        <!-- <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                            </mat-radio-button>
-                            <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                            </mat-radio-button>
-                        </mat-radio-group> -->
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="roomForm" [(ngModel)]="isActive" ></app-airmid-slider>
-
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                            [formGroup]="roomForm"
+                            [(ngModel)]="isActive"></app-airmid-slider>
                     </div>
-         
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+
+                    <div
+                        class="new-appointment-actions gap-8"
+                        fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)" >
+                            Close
+                        </button>
+                        <button
+                            class="btn btn-primary"
+                            color="accent"
+                            (click)="onSubmit()"
+                            [disabled]="saveflag"
+                        >
                             <span>Save</span>
                         </button>
                     </div>
-         
                 </div>
-  
             </form>
         </div>
     </div>
