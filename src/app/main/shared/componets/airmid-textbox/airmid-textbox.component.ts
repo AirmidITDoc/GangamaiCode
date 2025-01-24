@@ -58,7 +58,7 @@ export class AirmidTextboxComponent implements
     @Input() validations: [] = [];
     @Input() label: string = "";
     @Input() type: string = "text";
-    @Input() appearance: string = "fill";//"outline";
+    @Input() appearance: string = "outline";
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
 
