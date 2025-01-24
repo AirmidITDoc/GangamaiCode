@@ -25,8 +25,8 @@ export class GroupMasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            // isconsolidated: ["false"],
-            // isConsolidatedDR: ["false"],
+            isconsolidated: true,
+            isConsolidatedDR: true,
             isActive:[false,[Validators.required]]
         });
     }

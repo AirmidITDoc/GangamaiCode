@@ -42,12 +42,14 @@
                     
                 </div>
                 <div>
-                    <mat-radio-group name="isActive" formControlName="isActive">
+                    <!-- <mat-radio-group name="isActive" formControlName="isActive">
                         <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
                         </mat-radio-button>
                         <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
                         </mat-radio-button>
-                    </mat-radio-group>
+                    </mat-radio-group> -->
+                    <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="prefixForm" [(ngModel)]="isActive" ></app-airmid-slider>
+
                 </div>
                 <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="prefixForm" [(ngModel)]="isActive" ></app-airmid-slider> -->
             </form>

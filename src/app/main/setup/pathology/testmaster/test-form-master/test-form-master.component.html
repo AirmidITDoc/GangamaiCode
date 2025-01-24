@@ -39,7 +39,7 @@
                                                 <airmid-textbox 
                                                     label="Test name" 
                                                     formControlName="TestName" 
-                                                    [value]=""
+                                                    [value]="data?.TestName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().TestName"
                                                     [maxLength]="50">
@@ -50,7 +50,7 @@
                                                 <airmid-textbox 
                                                     label="PrintTestName" 
                                                     formControlName="PrintTestName" 
-                                                    [value]=""
+                                                    [value]="data?.PrintTestName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().PrintTestName"
                                                     [maxLength]="50">
@@ -72,9 +72,9 @@
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-autocomplete 
                                                     label="ServiceName" 
-                                                    formControlName="ServiceID"
+                                                    formControlName="ServiceId"
                                                     [formGroup]="testForm"
-                                                    [validations]="getValidationServiceMessages().ServiceID"
+                                                    [validations]="getValidationServiceMessages().ServiceId"
                                                     [mode]="autocompleteModeServiceID" 
                                                     (selectDdlObject)="selectChangeServiceID($event)"
                                                     *ngIf="serviceflag">
@@ -343,7 +343,7 @@
                                                             <div fxFlex.gt-sm="100%" fxFlex>
                                                                 <div fxlayout="row"
                                                                     style=" background-color: white;padding: 5px 10px 5px 10px;">
-                                                                    <form [formGroup]="_TestmasterService.mytemplateform">
+                                                                    <form [formGroup]="_TestmasterService.templatedetailsForm">
                                                                         <input type="hidden" name="TemplateId"
                                                                             formControlName="TemplateId">
 
@@ -355,7 +355,7 @@
                                                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                                                         <airmid-autocomplete label="TemplateName" 
                                                                                             formControlName="TemplateName"
-                                                                                            [formGroup]="testForm"
+                                                                                            [formGroup]="templatedetailsForm"
                                                                                             [mode]="autocompleteModeTemplate"
                                                                                             (selectDdlObject)="selectChangeTemplateName($event)">
                                                                                         </airmid-autocomplete>
@@ -444,7 +444,10 @@
                                         <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestmasterService.is_templatetest">
 
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="TechniqueName" formControlName="TechniqueName" [value]=""
+                                                <airmid-textbox 
+                                                    label="TechniqueName" 
+                                                    formControlName="TechniqueName" 
+                                                    [value]="data?.TechniqueName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().TechniqueName"
                                                     [maxLength]="50">
@@ -452,7 +455,10 @@
                                             </div>
                         
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="MachineName" formControlName="MachineName" [value]=""
+                                                <airmid-textbox 
+                                                    label="MachineName" 
+                                                    formControlName="MachineName" 
+                                                    [value]="data?.MachineName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().MachineName"
                                                     [maxLength]="50">
@@ -504,6 +510,7 @@
                                             <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
                                             </mat-radio-button>
                                         </mat-radio-group>
+
                                     </div>
                     
                                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">

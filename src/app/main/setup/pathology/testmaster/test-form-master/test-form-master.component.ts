@@ -22,10 +22,12 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class TestFormMasterComponent implements OnInit {
-    testForm: FormGroup;    
+    testForm: FormGroup; 
+    templatedetailsForm: FormGroup;
+    testdetailsForm: FormGroup;
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    // DSTestdetailList = new MatTableDataSource<TestDetail>();
 
     subTestList = new MatTableDataSource<TestList>();
     DSsubTestListtemp = new MatTableDataSource<TestList>();
@@ -96,6 +98,7 @@ export class TestFormMasterComponent implements OnInit {
     @ViewChild('auto1') auto1: MatAutocomplete;
     @ViewChild('auto2') auto2: MatAutocomplete;
     Statusflag: any = false;
+isActive: any;
 // ///////////////////////
 
     constructor(
@@ -108,6 +111,8 @@ export class TestFormMasterComponent implements OnInit {
    
     ngOnInit(): void {
         this.testForm = this._TestmasterService.createPathtestForm();
+        this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
+        this.testdetailsForm = this._TestmasterService.testdetailsForm();
 
         if (this.data) {
             this.registerObj = this.data.registerObj;
@@ -313,16 +318,6 @@ export class TestFormMasterComponent implements OnInit {
             return option && option.CategoryName ? option.CategoryName : " ";
         }
 
-    //   getcategoryNameCombobox() {
-        // this._TestmasterService.getCategoryMasterCombo().subscribe(data => {
-        //     this.CategorycmbList = data;
-        //     this.optionscategory = this.CategorycmbList.slice();
-        //     this.filteredOptionsCategory = this._TestmasterService.myform.get('CategoryId').valueChanges.pipe(
-        //         startWith(''),
-        //         map(value => value ? this._filtercategory(value) : this.CategorycmbList.slice()),
-        //     );
-        // });
-    // }
 
     getSubTestMasterList() {
 
@@ -411,11 +406,11 @@ export class TestFormMasterComponent implements OnInit {
     onAddTemplate() {
         this.list.push(
             {
-                TemplateId: this._TestmasterService.mytemplateform.get("TemplateName").value.TemplateId,
-                TemplateName: this._TestmasterService.mytemplateform.get("TemplateName").value.TemplateName,
+                TemplateId: this.templatedetailsForm.get("TemplateId").value.TemplateId,
+                TemplateName: this.templatedetailsForm.get("TemplateName").value.TemplateName,
             });
         this.Templatetdatasource.data = this.list
-        this._TestmasterService.mytemplateform.get('TemplateName').reset();
+        this.templatedetailsForm.get('TemplateName').reset();
     }
 
     addParameter(Id) {

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators, Form } from "@angular/forms";
 import { LoaderService } from "app/core/components/loader/loader.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 
@@ -14,7 +14,9 @@ export class TestmasterService {
     myformSearch: FormGroup;
     myform: FormGroup;
     AddParameterFrom: FormGroup;
-    mytemplateform: FormGroup;
+    // mytemplateform: FormGroup;
+    // testdetailsForm: FormGroup;
+
     constructor(
         private _httpClient: ApiCaller,
         private _loaderService: LoaderService,
@@ -22,58 +24,129 @@ export class TestmasterService {
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createPathtestForm();
-        this.AddParameterFrom = this.createAddparaFrom();
-        this.mytemplateform = this.createTemplateForm();
+        // this.AddParameterFrom = this.createAddparaFrom();
+        // this.mytemplateform = this.createTemplateForm();
+        // this.templatedetailsForm = this.templatedetailsForm();
+        // this.testdetailsForm = this.testdetailsForm();
     }
 
     createPathtestForm(): FormGroup {
         return this._formBuilder.group({
-
-            TestId: [""],
-            TestName: ["",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                ]
-            ],
-            PrintTestName: ["",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                ]
-            ],
+            // TestId: [0],
+            // TestName: ["",
+            //     [
+            //         // Validators.required,
+            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+            //     ]
+            // ],
+            // PrintTestName: ["",
+            //     [
+            //         // Validators.required,
+            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+            //     ]
+            // ],
+            // CategoryId: [""],
+            // TechniqueName: ["",
+            //     [
+            //         // Validators.required,
+            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+            //     ]
+            // ],
+            // MachineName: ["",
+            //     [
+            //         // Validators.required,
+            //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+            //     ]
+            // ],
+            // SuggestionNote: ["", 
+            //     // Validators.required
+            // ],
+            // FootNote: ["", 
+            //     // Validators.required
+            // ],
+            // ServiceID: [""],
+            // ServiceName: [""],
+            // IsTemplateTest: ["0"],
+            // IsCategoryPrint: [""],
+            // IsPrintTestName: [""],
+            // ParameterId: [""],
+            // ParaId: [""],
+            // ParameterName: [""],
+            // IsDeleted: ["true"],
+            // UpdatedBy: [""],
+            // AddedBy: [""],
+            // action: [""],
+            // parametertxt: [""],
+            // PTemplateId: [""],
+            // IsSubTest: ["true"],
+            // Status:[1],
+            
+            TestId: [0],
+            TestName: [""],
+            PrintTestName: [""],
             CategoryId: [""],
-            TechniqueName: ["",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                ]
-            ],
-            MachineName: ["",
-                [
-                    Validators.required,
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                ]
-            ],
-            SuggestionNote: ["", Validators.required],
-            FootNote: ["", Validators.required],
-            ServiceID: [""],
-            ServiceName: [""],
-            IsTemplateTest: ["0"],
-            IsCategoryPrint: [""],
-            IsPrintTestName: [""],
-            ParameterId: [""],
-            ParaId: [""],
-            ParameterName: [""],
-            IsDeleted: ["true"],
-            UpdatedBy: [""],
-            AddedBy: [""],
-            action: [""],
-            parametertxt: [""],
-            PTemplateId: [""],
-            IsSubTest: ["true"],
-            Status:[1],
-            ParameterNameSearch:[""]
+            IsSubTest: true,
+            TechniqueName: [""],
+            MachineName: [""],
+            SuggestionNote: [""],
+            FootNote: [""],
+            IsDeleted: true,
+            ServiceId: [""],
+            IsTemplateTest: true,
+            TestTime: ["2022-09-10"],
+            TestDate: ["2022-07-11"],
+            isActive:[false,[Validators.required]],
+            ParameterNameSearch:[""],
+        });
+    }
+    /**
+     * {
+  "TestId": 0,
+  "TestName": "LUCY",
+  "PrintTestName": "STUFFY",
+  "CategoryId": 12,
+  "IsSubTest": true,
+  "TechniqueName": "Api",
+  "MachineName": "drill",
+  "SuggestionNote": "XYZ",
+  "FootNote": "ABC",
+  "IsDeleted": true,
+  "ServiceId": 15,
+  "IsTemplateTest": true,
+  "TestTime": "2022-09-10",
+  "TestDate": "2022-07-11",
+  "MPathTemplateDetails": [
+    {
+      "PtemplateId": 0,
+      "TestId": 11,
+      "TemplateId": 12
+    }
+  ],
+  "MPathTestDetailMasters": [
+    {
+      "TestDetId": 0,
+      "TestId": 16,
+      "SubTestId": 17,
+      "ParameterId": 19
+    }
+  ]
+}
+     * 
+     */
+    templatedetailsForm(): FormGroup{
+        return this._formBuilder.group({
+            PtemplateId: [0],
+            TestId: [""],
+            TemplateId: [""],
+            TemplateName:[""],
+        });
+    }
+    testdetailsForm(): FormGroup{
+        return this._formBuilder.group({
+            TestDetId: [0],
+            TestId: [""],
+            SubTestId: [""],
+            ParameterId: [""]
         });
     }
 
@@ -84,18 +157,18 @@ export class TestmasterService {
             IsSubTest: [" "],
         });
     }
-    createAddparaFrom(): FormGroup {
-        return this._formBuilder.group({
-            ParameterName: [""],
-            NewIsSubTest: [" "],
-        });
-    }
-    createTemplateForm(): FormGroup {
-        return this._formBuilder.group({
-            TemplateId:[""],
-            TemplateName:[""],
-        });
-    }
+    // createAddparaFrom(): FormGroup {
+    //     return this._formBuilder.group({
+    //         ParameterName: [""],
+    //         NewIsSubTest: [" "],
+    //     });
+    // }
+    // createTemplateForm(): FormGroup {
+    //     return this._formBuilder.group({
+    //         TemplateId:[""],
+    //         TemplateName:[""],
+    //     });
+    // }
       
     initializeFormGroup() {
         this.createPathtestForm();
