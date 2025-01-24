@@ -29,6 +29,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { AddformulaComponent } from './addformula/addformula.component';
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatListModule } from "@angular/material/list";
 
 const routes: Routes = [
     {
@@ -67,6 +68,7 @@ const routes: Routes = [
         MatTabsModule,
         SharedModule,
         MatDialogModule,
+        MatListModule
     ],
     providers: [ParametermasterService, DatePipe]
 })

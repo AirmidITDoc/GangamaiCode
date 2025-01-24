@@ -381,7 +381,6 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
     }
 
     checkFields(event) {
-        debugger
         const formValues = this.numericForm.value
         const fieldsTobeChecked =
             formValues.sexId
@@ -544,7 +543,6 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
   
 
     AddData(txt) {
-        debugger
         txt=this.descForm.get('paraId').value
         // if (txt.replace(/\s/g, '').length !== 0) {
 

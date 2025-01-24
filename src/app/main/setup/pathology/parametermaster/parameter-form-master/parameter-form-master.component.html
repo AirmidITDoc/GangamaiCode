@@ -1,425 +1,274 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <div class="modal-wrapper grid-container">
-        <div class="modal-header accent">
-            <div class="modal-header-content">
-                <div class="modal-header-title">
-                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Parameter Master</span>
-                </div>
-                <div class="modal-header-right">
+<!-- New -->
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Parameter Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="2px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style=" background-color: white;
-                             padding: 2px 2px 2px 2px;">
-                            <form [formGroup]="parameterForm">
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="form-container">
+                    <form [formGroup]="parameterForm">
+                        <input type="hidden" name="ParameterID" formControlName="parameterId">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Parameter Short Name" formControlName="parameterShortName" [value]="data?.parameterShortName" [formGroup]="parameterForm" [validations]="getValidationMessages().parameterShortName" [maxLength]="50">
+                                </airmid-textbox>
+                            </div>
 
-                                <div fxlayout="row" style=" padding: 1px 1px 1px 1px;">
-                                    <input type="hidden" name="ParameterID" formControlName="parameterId">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Parameter Name" formControlName="parameterName" [value]="data?.parameterName" [formGroup]="parameterForm" [validations]="getValidationMessages().parameterName" [maxLength]="50">
+                                </airmid-textbox>
+                            </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="Parameter Short Name" 
-                                                formControlName="parameterShortName" 
-                                                [value]="data?.parameterShortName"
-                                                [formGroup]="parameterForm"
-                                                [validations]="getValidationMessages().parameterShortName"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div> 
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Print Parameter Name" formControlName="printParameterName" [value]="data?.printParameterName" [formGroup]="parameterForm" [validations]="getValidationMessages().printParameterName" [maxLength]="50">
+                                </airmid-textbox>
+                            </div>
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="Parameter Name" 
-                                                formControlName="parameterName" 
-                                                [value]="data?.parameterName"
-                                                [formGroup]="parameterForm"
-                                                [validations]="getValidationMessages().parameterName"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div> 
-                                    </div>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Method Name" formControlName="MethodName" [value]="data?.MethodName" [formGroup]="parameterForm" [validations]="getValidationMessages().MethodName" [maxLength]="50">
+                                </airmid-textbox>
+                            </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="Print Parameter Name" 
-                                                formControlName="printParameterName" 
-                                                [value]="data?.printParameterName"
-                                                [formGroup]="parameterForm"
-                                                [validations]="getValidationMessages().printParameterName"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div> 
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Formula" formControlName="Formula" [value]="data?.Formula" [formGroup]="parameterForm" [validations]="getValidationMessages().Formula" [maxLength]="50">
+                                </airmid-textbox>
+                            </div>
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="Method Name" 
-                                                formControlName="MethodName" 
-                                                [value]="data?.MethodName"
-                                                [formGroup]="parameterForm"
-                                                [validations]="getValidationMessages().MethodName"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div> 
-                                    </div>
-
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox 
-                                                label="Formula" 
-                                                formControlName="Formula" 
-                                                [value]="data?.Formula"
-                                                [formGroup]="parameterForm"
-                                                [validations]="getValidationMessages().Formula"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div> 
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-autocomplete 
-                                                label="UnitId" 
-                                                formControlName="unitId"
-                                                [value]="data?.unitId" 
-                                                [formGroup]="parameterForm"
-                                                [validations]="getValidationMessages().unitId"
-                                                [mode]="autocompleteModeUnitId"
-                                                (selectDdlObject)="selectChangeUnitId($event)">
-                                            </airmid-autocomplete>
-                                        </div> 
-                                    
-                                    </div>
-
-                                    <div fxLayoutAlign="space-between">
-                                        <mat-radio-group name="IsNumeric" formControlName="isNumeric"
-                                            aria-label="Select an option" style="margin-top: 20px; margin-left: 20px;">
-                                            <mat-radio-button fxFlex (click)="toggle(1)" value="1"
-                                                [checked]='_ParameterService.is_numeric'>IsNumeric</mat-radio-button>
-                                            <mat-radio-button fxFlex (click)="toggle(2)" value="2"
-                                                [checked]='!_ParameterService.is_numeric'
-                                                style="margin-left: 20px;">IsDescriptive</mat-radio-button>
-                                        </mat-radio-group>
-
-                                        
-                                        <div style="margin-top: 20px;">
-                                            <section class="example-section">
-                                                <mat-checkbox class="example-margin" formControlName="IsDeleted"
-                                                name="IsDeleted">IsActive</mat-checkbox>
-                                                <mat-checkbox class="example-margin" formControlName="isPrintDisSummary"
-                                                    name="isPrintDisSummary" style="margin-left: 20px;">IsPrintDisSummary</mat-checkbox>
-                                                    <mat-checkbox class="example-margin" formControlName="IsBold"
-                                                    name="IsBold" style="margin-left: 20px;margin-right: 20px;">IsBold</mat-checkbox>
-                                            </section>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </form>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-autocomplete label="UnitId" formControlName="unitId" [value]="data?.unitId" [formGroup]="parameterForm" [validations]="getValidationMessages().unitId" [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
+                                </airmid-autocomplete>
+                            </div>
                         </div>
-                    </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between" class="mt-3">
+                            <mat-radio-group name="IsNumeric" formControlName="isNumeric" aria-label="Select an option">
+                                <mat-radio-button fxFlex (click)="toggle(1)" value="1" [checked]='_ParameterService.is_numeric'>IsNumeric</mat-radio-button>
+                                <mat-radio-button fxFlex (click)="toggle(2)" value="2" [checked]='!_ParameterService.is_numeric'>IsDescriptive</mat-radio-button>
+                            </mat-radio-group>
+                            <div>
+                                <section class="example-section">
+                                    <mat-checkbox class="example-margin" formControlName="IsDeleted" name="IsDeleted">IsActive</mat-checkbox>
+                                    <mat-checkbox class="example-margin" formControlName="isPrintDisSummary" name="isPrintDisSummary">IsPrintDisSummary</mat-checkbox>
+                                    <mat-checkbox class="example-margin" formControlName="IsBold" name="IsBold">IsBold</mat-checkbox>
+                                </section>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="2px">
-
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                        <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="2px">
-
-                            <div fxFlex.gt-sm="100%" fxFlex *ngIf="_ParameterService.is_numeric">
-                                <ng-container *ngIf="_ParameterService.is_numeric">
-                                    <mat-card class="example-card" name="m1" style="padding: 0%;">
-                                        <mat-card-content fxLayout="row" fxLayoutAlign="center center"
-                                            style="margin-bottom:5px !important;">
-                                            <mat-card-title>Numeric Info</mat-card-title>
-                                        </mat-card-content>
-                                        <form [formGroup]="numericForm">
-                                            <mat-card-content>
-                                                <div>
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-autocomplete 
-                                                                label="SexID" 
-                                                                formControlName="sexId"
-                                                                [formGroup]="numericForm"
-                                                                [validations]="getValidationMessages().sexId"
-                                                                [mode]="autocompleteModeGender"
-                                                                (selectDdlObject)="selectChangeGender($event)">
-                                                            </airmid-autocomplete>
-                                                        </div>
-                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-textbox 
-                                                                label="Min Age" 
-                                                                formControlName="minAge" 
-                                                                [value]="vMinAge" 
-                                                                [formGroup]="numericForm"
-                                                                [validations]="getValidationMessages().minAge" 
-                                                                [maxLength]="3">
-                                                            </airmid-textbox>    
-                                                        </div>
-                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-textbox 
-                                                                label="Max Age" 
-                                                                formControlName="maxAge" 
-                                                                [value]="vMaxAge" 
-                                                                [formGroup]="numericForm"
-                                                                [validations]="getValidationMessages().maxAge" 
-                                                                [maxLength]="3">
-                                                            </airmid-textbox>    
-                                                        </div>
-                                                        <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <!-- <airmid-autocomplete 
-                                                                label="Age Type" 
-                                                                formControlName="ageType"
-                                                                [formGroup]="numericForm"
-                                                                [validations]="getValidationMessages().ageType"
-                                                                [mode]="autocompleteModeGender"
-                                                                (selectDdlObject)="selectChangeGender($event)">
-                                                            </airmid-autocomplete> -->
-
-                                                            <mat-form-field appearance="outline" fxFlex="60%">
-                                                                <mat-label>Age Type</mat-label>
-                                                                <mat-select placeholder="Select Age Type"
-                                                                    formControlName="ageType" name="AgeType">
-                                                                    <mat-option *ngFor="let i of ageType" [value]="i">{{
-                                                                        i}}</mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-textbox 
-                                                                label="Min Value" 
-                                                                formControlName="minValue" 
-                                                                [value]="vMinValue" 
-                                                                [formGroup]="numericForm"
-                                                                [validations]="getValidationMessages().minValue" 
-                                                                [maxLength]="3">
-                                                            </airmid-textbox>    
-                                                        </div>
-                                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-textbox 
-                                                                label="Max Value" 
-                                                                formControlName="maxvalue" 
-                                                                [value]="vMaxValue" 
-                                                                [formGroup]="numericForm"
-                                                                [validations]="getValidationMessages().maxValue" 
-                                                                [maxLength]="3">
-                                                            </airmid-textbox>    
-                                                        </div>
-                                                        <div matTooltip="Select All Value to enable this button!!">
-                                                            <button mat-raised-button class="custom_add_button"
-                                                                (click)="checkFields($event)">
-                                                                Add <mat-icon> add_to_photos </mat-icon>
+                <div class="info-container">
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="2px">
+                        <div fxFlex.gt-sm="100%" fxFlex *ngIf="_ParameterService.is_numeric">
+                            <ng-container *ngIf="_ParameterService.is_numeric">
+                                <mat-card class="example-card" name="m1" style="padding: 0%;">
+                                    <mat-card-content fxLayout="row" fxLayoutAlign="center center" style="margin-bottom:5px !important;">
+                                        <mat-card-title>Numeric Info</mat-card-title>
+                                    </mat-card-content>
+                                    <form [formGroup]="numericForm">
+                                        <mat-card-content>
+                                            <div class="content-wrapper">
+                                                <div class="input-container" fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+                                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-autocomplete label="SexID" formControlName="sexId" [formGroup]="numericForm" [validations]="getValidationMessages().sexId" [mode]="autocompleteModeGender" (selectDdlObject)="selectChangeGender($event)">
+                                                        </airmid-autocomplete>
+                                                    </div>
+                                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Min Age" formControlName="minAge" [value]="vMinAge" [formGroup]="numericForm" [validations]="getValidationMessages().minAge" [maxLength]="3">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Max Age" formControlName="maxAge" [value]="vMaxAge" [formGroup]="numericForm" [validations]="getValidationMessages().maxAge" [maxLength]="3">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <mat-form-field appearance="outline" fxFlex>
+                                                            <mat-label>Age Type</mat-label>
+                                                            <mat-select placeholder="Select Age Type" formControlName="ageType" name="AgeType">
+                                                                <mat-option *ngFor="let i of ageType" [value]="i">{{
+                                                                    i}}</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Min Value" formControlName="minValue" [value]="vMinValue" [formGroup]="numericForm" [validations]="getValidationMessages().minValue" [maxLength]="3">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Max Value" formControlName="maxvalue" [value]="vMaxValue" [formGroup]="numericForm" [validations]="getValidationMessages().maxValue" [maxLength]="3">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div matTooltip="Select All Value to enable this button!!" fxLayout="row" fxLayoutAlign="end">
+                                                            <button class="btn btn-primary btn-with-icon " (click)="checkFields($event)">
+                                                                <span class="btn-icon">
+                                                                    <mat-icon> add_to_photos </mat-icon>
+                                                                </span>
+                                                                <span>Add</span>
                                                             </button>
                                                         </div>
                                                     </div>
-
-                                                   
-                                                    <div>
-                                                        <mat-table class="table" matSort
-                                                            [dataSource]="dsParameterAgeList"
-                                                            [@animateStagger]="{value:'50'}" style="overflow:auto">
-
-                                                            <ng-container matColumnDef="GenderName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>Gender Name
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.GenderName}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="MinAge">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                    MinAge
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                    {{element.MinAge}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="MaxAge">
-                                                                <mat-header-cell *matHeaderCellDef
-                                                                    mat-sort-header>MaxAge </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                    {{element.MaxAge}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="MinValue">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>Min Value
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.MinValue}} </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="MaxValue">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                    MaxValue </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                    {{element.MaxValue}}
-                                                                </mat-cell>
-                                                            </ng-container>
-                                                            <ng-container matColumnDef="AgeType">
-                                                                <mat-header-cell *matHeaderCellDef>Age
-                                                                    Type</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                                                    element.AgeType }}</mat-cell>
-                                                            </ng-container>
-
-
-                                                            <ng-container matColumnDef="Action">
-                                                                <mat-header-cell
-                                                                    *matHeaderCellDef>Action</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element">
-                                                                    <button mat-icon-button color="warn"
-                                                                        (click)="onDeleteRow(element)">
-                                                                        <mat-icon>delete</mat-icon>
-                                                                    </button>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-
-                                                            <ng-container matColumnDef="loading">
-                                                                <mat-header-cell *matFooterCellDef colspan="6"
-                                                                    style="display: none;">
-                                                                </mat-header-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="noData">
-                                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                    no data found...
-                                                                </mat-footer-cell>
-                                                            </ng-container>
-
-
-                                                            <mat-header-row class="accent"
-                                                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                                class="element"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                                [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-                                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                                [ngClass]="{'hide':!(dsParameterAgeList!=null && dsParameterAgeList.data.length==0)}"></mat-footer-row>
-
-                                                        </mat-table>
+                                                </div>
+                                                <div class="table-wrapper">
+                                                    <mat-table class="table airmid-table" matSort [dataSource]="dsParameterAgeList" [@animateStagger]="{value:'50'}">
+                                                        <ng-container matColumnDef="GenderName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Gender Name
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.GenderName}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="MinAge">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                MinAge
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                {{element.MinAge}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="MaxAge">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>MaxAge </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                {{element.MaxAge}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="MinValue">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Min Value
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.MinValue}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="MaxValue">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                                MaxValue
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                {{element.MaxValue}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="AgeType">
+                                                            <mat-header-cell *matHeaderCellDef>Age
+                                                                Type
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                                                                element.AgeType }}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="Action">
+                                                            <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <button mat-icon-button color="warn" (click)="onDeleteRow(element)">
+                                                                    <mat-icon>delete</mat-icon>
+                                                                </button>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsParameterAgeList!=null && dsParameterAgeList.data.length==0)}"></mat-footer-row>
+                                                    </mat-table>
+                                                </div>
+                                            </div>
+                                        </mat-card-content>
+                                    </form>
+                                </mat-card>
+                            </ng-container>
+                        </div>
+                        <div fxFlex.gt-sm="100%" fxFlex *ngIf="!_ParameterService.is_numeric">
+                            <ng-container *ngIf="!_ParameterService.is_numeric">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card class="example-card" name="m1" >
+                                        <mat-card-content fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-card-title>Descriptive Info</mat-card-title>
+                                        </mat-card-content>
+                                        <form [formGroup]="descForm">
+                                            <mat-card-content>
+                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+                                                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="45%">
+                                                        <airmid-textbox label="Parameter" formControlName="paraId" [value]="paraId" [formGroup]="descForm" [validations]="getValidationMessages().paraId" [maxLength]="50">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="45%">
+                                                        <airmid-textbox label="DefaultValue" formControlName="defaultValue" [value]="defaultValue" [formGroup]="descForm" [validations]="getValidationMessages().defaultValue" [maxLength]="50">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <div matTooltip="Select All Value to enable this button!!" fxLayout="row" fxLayoutAlign="end">
+                                                            <button class="btn btn-primary btn-with-icon " (click)="AddData(paraId)">
+                                                                <span class="btn-icon">
+                                                                    <mat-icon> add_to_photos </mat-icon>
+                                                                </span>
+                                                                <span>Add</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div flex="100%" >
+                                                        <mat-list formControlName="parameterValues">
+                                                            <div mat-subheader class="accent p-8 mx-0">
+                                                                Parameter Values List
+                                                            </div>
+                                                            <div class="list-container h-160" style="overflow: auto;">
+                                                                <mat-list-item placeholder="" #txt *ngFor="let item of selectedItems; let i = index" [ngValue]="parameterValue">
+                                                                    <!-- <div matListItemTitle>{{item}}</div>
+                                                                    <button mat-icon-button color="warn" (click)="removeItem(i)">
+                                                                        <mat-icon >delete</mat-icon>
+                                                                    </button> -->
+                                                                    <div class="list-item-content" fxLayout="row" fxLayoutAlign="space-between center">
+                                                                        <div class="list-item-title">{{ item }}
+                                                                        </div>
+                                                                        <button mat-icon-button color="warn" (click)="removeItem(i)">
+                                                                            <mat-icon>delete</mat-icon>
+                                                                        </button>
+                                                                    </div>
+                                                                </mat-list-item>
+                                                            </div>
+                                                        </mat-list>
                                                     </div>
                                                 </div>
                                             </mat-card-content>
                                         </form>
                                     </mat-card>
-
-                                </ng-container>
-                            </div>
-
-                            <div fxFlex.gt-sm="100%" fxFlex *ngIf="!_ParameterService.is_numeric">
-                                <ng-container *ngIf="!_ParameterService.is_numeric">
-                                    <div fxFlex.gt-sm="100%" fxFlex>
-
-                                        <mat-card class="example-card" name="m1"
-                                            style="padding: 0%;height: 310px !important;overflow: auto;">
-                                            <mat-card-content fxLayout="row" fxLayoutAlign="center center">
-                                                <mat-card-title>Descriptive Info</mat-card-title>
-                                            </mat-card-content>
-                                            <form [formGroup]="descForm">
-                                                <mat-card-content>
-                                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                                        <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-textbox 
-                                                                label="Parameter" 
-                                                                formControlName="paraId" 
-                                                                [value]="paraId" 
-                                                                [formGroup]="descForm"
-                                                                [validations]="getValidationMessages().paraId" 
-                                                                [maxLength]="50">
-                                                            </airmid-textbox>    
-                                                        </div>
-                                                        <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                            <airmid-textbox 
-                                                                label="DefaultValue" 
-                                                                formControlName="defaultValue" 
-                                                                [value]="defaultValue" 
-                                                                [formGroup]="descForm"
-                                                                [validations]="getValidationMessages().defaultValue" 
-                                                                [maxLength]="50">
-                                                            </airmid-textbox>    
-                                                        </div>
-                                                        <div matTooltip="Select All Value to enable this button!!">
-                                                                <button mat-raised-button class="custom_add_button"
-                                                                    (click)="AddData(paraId)"> Add
-                                                                    <mat-icon> add_to_photos </mat-icon>
-                                                                </button>
-                                                            </div>
-                                                    </div>
-
-                                                    <div style="display:block !important; width:100%;">
-                                                        <div flex="100%" style="overflow: auto; max-height: 100vh;">
-                                                            <mat-list style="background: cornflowerblue;"
-                                                                formControlName="parameterValues">
-                                                                <div mat-subheader
-                                                                    style="font-weight: bold; background: #5e35b1; padding: 8px; color: #fff; border-top-left-radius: 4px; border-top-right-radius: 4px;">
-                                                                    Parameter Values List
-                                                                </div>
-                                                                <mat-list-item placeholder="" #txt
-                                                                    *ngFor="let item of selectedItems; let i = index"
-                                                                    [ngValue]="parameterValue"
-                                                                    style="background-color: rgb(245, 237, 237); width: 100% !important; text-align: left;">
-                                                                    <div
-                                                                        style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                                                        <div style=" padding: 7px;" mat-line>{{ item }}
-                                                                        </div>
-                                                                        <button mat-icon-button color="warn"
-                                                                            (click)="removeItem(i)">
-                                                                            <mat-icon>delete</mat-icon>
-                                                                        </button>
-                                                                    </div>
-                                                                </mat-list-item>
-                                                            </mat-list>
-
-
-                                                        </div>
-                                                    </div>
-
-                                                </mat-card-content>
-                                            </form>
-                                        </mat-card>
-
-                                    </div>
-                                </ng-container>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end center">
-                        <div class="modal-footer-buttons" fxLayoutGap="6px">
-                            <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button type="button" class="btn btn-primary" (click)="OnSave()" >Save</button>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()">Save</button>
             </div>
         </div>
     </div>

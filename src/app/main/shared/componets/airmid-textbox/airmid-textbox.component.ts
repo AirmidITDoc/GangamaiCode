@@ -122,7 +122,7 @@ export class AirmidTextboxComponent implements
     }
     get activeErrors(): string[] {
         try {
-            if (!this.formGroup || this.formGroup[this.formControlName]) {
+            if (!this.formGroup || this.formGroup[this.formControlName] || !this.validations || this.validations.length <= 0) {
                 return [];
             }
             // Find active validation 

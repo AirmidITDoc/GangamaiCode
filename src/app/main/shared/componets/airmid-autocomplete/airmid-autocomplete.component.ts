@@ -64,6 +64,19 @@ export class AirmidAutocompleteComponent implements OnInit {
         return this.ngControl.control !== null ? !!this.ngControl.control : false;
     }
 
+    get activeErrors(): string[] {
+        try {
+            if (!this.formGroup || this.formGroup[this.formControlName] || !this.validations || this.validations.length <= 0) {
+                return [];
+            }
+            // Find active validation 
+            return this.validations
+                .filter((validation: any) => this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
+                .map((validation: any) => validation.Message);
+        } catch (error) {
+            console.log("Textbox Error => ", error);
+        }
+    }
     @Input()
     get value(): (string | []) {
         return this.control.value;
@@ -151,7 +164,7 @@ export class AirmidAutocompleteComponent implements OnInit {
         this.stateChanges.complete();
     }
     public comparer(o1: any, o2: any): boolean {
-        return o1 && o2 && (o1[this["ariaLabel"]].toString() === o2.toString() || (o1[this["ariaLabel"]]?.toString()??'') === (o2[this["ariaLabel"]]?.toString()??''));
+        return o1 && o2 && (o1[this["ariaLabel"]].toString() === o2.toString() || (o1[this["ariaLabel"]]?.toString() ?? '') === (o2[this["ariaLabel"]]?.toString() ?? ''));
     }
     protected filterDdls() {
         if (!this.ddls) {
