@@ -20,7 +20,7 @@ export class LocationMasterService {
         return this._formBuilder.group({
             LocationId: [""],
             LocationName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,10 +38,16 @@ export class LocationMasterService {
 
     public getLocationMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_LocationMaster",
+            "Generic/GetByProc?procName=m_Rtrv_LocationMaster",
             param
         );
     }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
 
     public locationMasterInsert(param) {
         return this._httpClient.post("DepartMentMaster/LocationSave", param);

@@ -66,34 +66,6 @@ export class ConsentComponent implements OnInit {
  // field validation 
  get f() { return this._ConsentService.myform.controls; }
 
-  // getConsentPatientInfoList() {
-  //   this.sIsLoading = 'loading-data';
-  //   const D_data = {
-  //     "FromDate": this.datePipe.transform(this._ConsentService.myformSearch.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-  //     "ToDate": this.datePipe.transform(this._ConsentService.myformSearch.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-  //     "PatientName": this._ConsentService.myformSearch.get("consentNameSearch").value + '%' || '%',
-  //     "RegNo": this._ConsentService.myformSearch.get("uhidNo").value || '',
-  //     "OPIPType":this._ConsentService.myformSearch.get("IsIPOrOP").value || ''
-  //   };
-  
-  //   console.log("Request Payload:", D_data);
-  
-  //   this._ConsentService.getConsentPatientlist(D_data).subscribe(
-  //     (response) => {
-  //       console.log("API Response:", response);
-  
-  //       this.dsConsentList.data = response as OPIPMasterList[];
-  //       this.dsConsentList.sort = this.sort1;
-  //       this.dsConsentList.paginator = this.paginator1;
-  //       this.sIsLoading = '';
-  //     },
-  //     (error) => {
-  //       console.error("Error Fetching Data:", error);
-  //       this.sIsLoading = '';
-  //     }
-  //   );
-  // }
-
   getConsentPatientInfoList() {
     this.sIsLoading = 'loading-data';
   
@@ -127,8 +99,7 @@ export class ConsentComponent implements OnInit {
           this.dsConsentList.paginator = this.paginator1;
         } else {
           console.error("Invalid data format received:", response);
-        }
-  
+        }  
         // Clear loading state
         this.sIsLoading = '';
       },
@@ -194,7 +165,8 @@ debugger
     setTimeout(() => {
       this.SpinLoading = true;
       this._ConsentService.getConsentReportview(
-        element.ConsentId
+        element.ConsentId,
+        element.OPIPType
       ).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {

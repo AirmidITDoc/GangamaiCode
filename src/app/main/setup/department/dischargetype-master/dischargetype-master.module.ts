@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe} from "@angular/common";
 import { DischargetypeMasterComponent } from "./dischargetype-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
@@ -23,6 +23,21 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { SharedModule } from "app/main/shared/shared.module";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { NewnewDischargetypeComponent } from './newnew-dischargetype/newnew-dischargetype.component';
+
 
 const routes: Routes = [
     {
@@ -32,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DischargetypeMasterComponent],
+    declarations: [DischargetypeMasterComponent, NewnewDischargetypeComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -58,8 +73,21 @@ const routes: Routes = [
         MatExpansionModule,
         MatCardModule,
         MatSlideToggleModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatStepperModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatListModule,
+        MatChipsModule        
     ],
-    providers: [DischargetypeMasterService],
+    providers: [DatePipe, DischargetypeMasterService],
     entryComponents: [DischargetypeMasterComponent],
 })
 export class DischargetypeMasterModule {}

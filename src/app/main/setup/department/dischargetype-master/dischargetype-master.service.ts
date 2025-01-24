@@ -21,7 +21,7 @@ export class DischargetypeMasterService {
         return this._formBuilder.group({
             DischargeTypeId: [""],
             DischargeTypeName: [""],
-            IsDeleted: ["true"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -42,7 +42,7 @@ export class DischargetypeMasterService {
     //get dischargetype Master list
     public getdischargetypeMasterList(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_DischargeTypeMaster",
+            "Generic/GetByProc?procName=m_Rtrv_DischargeTypeMasterList",
             m_data
         );
     }
@@ -50,10 +50,9 @@ export class DischargetypeMasterService {
     // Deactive the status
     public deactivateTheStatus(m_data) {
         return this._httpClient.post(
-            "Generic/ExecByQueryStatement?query=" + m_data,
-            {}
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
         );
-    }
+      }
 
     public dischargeTypeMasterInsert(param) {
         return this._httpClient.post(

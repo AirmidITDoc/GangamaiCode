@@ -1,68 +1,7 @@
-app-dischargetype-master {
-    .mat-header-row {
-        width: 850px;
-        max-width: 850px;
-        min-width: 850px;
-        font-weight: bold;
-    }
-
-    .mat-row {
-        width: 850px;
-        max-width: 850px;
-        min-width: 850px;
-    }
-
-    .mat-column-DischargeTypeId {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-    }
-
-    .mat-column-DischargeTypeName {
-        width: 220px;
-        max-width: 220px;
-        min-width: 220px;
-        text-align: left;
-        justify-content: left;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        overflow: hidden !important;
-        display: inline-flex;
-        display: inline;
-        margin-right: 20px;
-        margin-top: 20px;
-    }
-
-    .mat-column-AddedBy {
-        width: 120px;
-        max-width: 120px;
-        min-width: 120px;
-    }
-
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .mat-column-action {
-        // color: white !important;
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: right;
-        justify-content: right;
-    }
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
-    }
-}
+.ellipsis{
+    white-space: nowrap; 
+    overflow: hidden;    
+    text-overflow: ellipsis; 
+    display: block;    
+    max-width: 150px; 
+  }

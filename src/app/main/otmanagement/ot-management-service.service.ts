@@ -162,7 +162,10 @@ export class OTManagementServiceService {
   
     });
   }
-  // Admitted Doctor Master Combobox List
+  public getDoctorMasterList(Param) {
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_Rtrv_DoctorMasterList_Pagi", Param);
+}
+
   public getDoctorMasterComboList(param) {
   //   if (loader) {
   //     this._loaderService.show();
@@ -253,8 +256,12 @@ export class OTManagementServiceService {
     this.otreservationFormGroup.patchValue(employee);
   }
 // otTable List in Reservation
+// public getOTRequestListInReser(employee){
+//   return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_T_OTBooking_Request_List", employee)
+// }
+
 public getOTRequestListInReser(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_T_OTBooking_Request_List", employee)
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_OTBookingRequestlist_EmergencyList", employee)
 }
   
   public CathLabBookInsert(employee){

@@ -81,10 +81,11 @@ export class ConsentService {
     }
     return this._httpClient.post("OutPatient/TConsentInformationUpdate", employee);
   }
-  public getConsentReportview(ConsentId, loader = true) {
+  public getConsentReportview(ConsentId,OP_IP_Type, loader = true) {
+    debugger
     if(loader){
       this.loaderService.show();
     }
-    return this._httpClient.get("OT/view-TConsentInformation?ConsentId=" + ConsentId);
+    return this._httpClient.get("OT/view-TConsentInformation?ConsentId=" + ConsentId+"&OP_IP_Type=" +OP_IP_Type);
   }
 }
