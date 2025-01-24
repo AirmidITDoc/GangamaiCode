@@ -9,6 +9,9 @@ import { takeUntil } from "rxjs/operators";
 import { WardMasterService } from "./ward-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { MatDialog } from "@angular/material/dialog";
+import { NewwardComponent } from "./newward/newward.component";
 
 @Component({
     selector: "app-ward-master",
@@ -22,15 +25,16 @@ export class WardMasterComponent implements OnInit {
     LocationcmbList: any = [];
     ClasscmbList: any = [];
     msg: any;
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
 
     displayedColumns: string[] = [
         "RoomId",
         "RoomName",
         "LocationName",
         "ClassName",
-
         "IsAvailable",
-        "IsDeleted",
+        "IsActive",
         "action",
     ];
 
@@ -38,38 +42,37 @@ export class WardMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    //Class filter
-    public classFilterCtrl: FormControl = new FormControl();
-    public filteredClass: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    //location filter
-    public locationFilterCtrl: FormControl = new FormControl();
-    public filteredLocation: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
     constructor(public _wardService: WardMasterService,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,
+        private _fuseSidebarService: FuseSidebarService,
+        public _matDialog: MatDialog,
+    ) { }
 
     ngOnInit(): void {
         this.getwardMasterList();
-        this.getLocationNameCombobox();
-        this.getClassNameCombobox();
-
-        this.locationFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterLocation();
-            });
-
-        this.classFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterClass();
-            });
     }
+
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._wardService.myformSearch.controls; }
+
     onSearch() {
         this.getwardMasterList();
+    }
+
+    newward() {
+        const dialogRef = this._matDialog.open(NewwardComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "50%",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getwardMasterList();
+        });
     }
 
     onSearchClear() {
@@ -79,52 +82,11 @@ export class WardMasterComponent implements OnInit {
         });
         this.getwardMasterList();
     }
-    private filterLocation() {
-        // debugger;
-        if (!this.LocationcmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.locationFilterCtrl.value;
-        if (!search) {
-            this.filteredLocation.next(this.LocationcmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredLocation.next(
-            this.LocationcmbList.filter(
-                (bank) => bank.LocationName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    private filterClass() {
-        // debugger;
-        if (!this.ClasscmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.classFilterCtrl.value;
-        if (!search) {
-            this.filteredClass.next(this.ClasscmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredClass.next(
-            this.ClasscmbList.filter(
-                (bank) => bank.ClassName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
 
     getwardMasterList() {
         var param = {
-            RoomName:this._wardService.myformSearch.get("RoomNameSearch")
-                    .value.trim() + "%" || "%",
+            RoomName: this._wardService.myformSearch.get("RoomNameSearch")
+                .value.trim() + "%" || "%",
         };
         this._wardService.getwardMasterList(param).subscribe((Menu) => {
             this.DSWardMasterList.data = Menu as WardMaster[];
@@ -133,148 +95,71 @@ export class WardMasterComponent implements OnInit {
         });
     }
 
-    getLocationNameCombobox() {
-        this._wardService.getLocationMasterCombo().subscribe((data) => {
-            this.LocationcmbList = data;
-            this.filteredLocation.next(this.LocationcmbList.slice());
-            this._wardService.myform
-                .get("LocationId")
-                .setValue(this.LocationcmbList[0]);
-        });
-    }
-
-    getClassNameCombobox() {
-        this._wardService.getClassMasterCombo().subscribe((data) => {
-            this.ClasscmbList = data;
-            this.filteredClass.next(this.ClasscmbList.slice());
-            this._wardService.myform
-                .get("ClassId")
-                .setValue(this.ClasscmbList[0]);
-        });
-    }
-
-    onClear() {
-        this._wardService.myform.reset({ IsDeleted: "false" });
-        this._wardService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._wardService.myform.valid) {
-            if (!this._wardService.myform.get("RoomId").value) {
-                var m_data = {
-                    wardMasterInsert: {
-                        roomName_1: this._wardService.myform
-                            .get("RoomName")
-                            .value.trim(),
-                        roomType_2: "1",
-                        locationId_3:
-                            this._wardService.myform.get("LocationId").value
-                                .LocationId,
-                        isAvailible_4: Boolean(
-                            JSON.parse(
-                                this._wardService.myform.get("IsAvailable")
-                                    .value
-                            )
-                        ),
-                        //  addedBy: 1,
-                        isActive_5: 0,
-                        classId:
-                            this._wardService.myform.get("ClassId").value
-                                .ClassId,
-                    },
-                };
-
-                this._wardService.wardMasterInsert(m_data).subscribe((data) => {
-                    this.msg = data;
-                    if (data) {
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                          });
-                          this.getwardMasterList();
-                        // Swal.fire(
-                        //     "Saved !",
-                        //     "Record saved Successfully !",
-                        //     "success"
-                        // ).then((result) => {
-                        //     if (result.isConfirmed) {
-                        //         this.getwardMasterList();
-                        //     }
-                        // });
-                    } else {
-                        this.toastr.error('Ward Data not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                          });
-                    }
-                    this.getwardMasterList();
-                },error => {
-                    this.toastr.error('Ward Data not saved !, Please check API error..', 'Error !', {
-                     toastClass: 'tostr-tost custom-toast-error',
-                   });
-                 });
-            } else {
-                var m_dataUpdate = {
-                    wardMasterUpdate: {
-                        roomId_1: this._wardService.myform.get("RoomId").value,
-                        roomName_2: this._wardService.myform
-                            .get("RoomName")
-                            .value.trim(),
-                        roomType_3: "1",
-                        locationId_4:
-                            this._wardService.myform.get("LocationId").value
-                                .LocationId,
-                        //    isAvailable: 1,
-                        isActive_5: 0,
-                        //  updatedBy: 1,
-                        classID:
-                            this._wardService.myform.get("ClassId").value
-                                .ClassId,
-                    },
-                };
-                this._wardService
-                    .wardMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getwardMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getwardMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Ward Master Data not Updated !, Please check API error..', 'Updated !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getwardMasterList();
-                    },error => {
-                        this.toastr.error('Ward Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
-    }
-
     onEdit(row) {
-        var m_data = {
-            RoomId: row.RoomId,
-            RoomName: row.RoomName,
-            LocationId: row.LocationId,
-            IsAvailable: JSON.stringify(row.IsAvailible),
-            ClassId: row.ClassID,
-            IsDeleted: JSON.stringify(row.IsActive),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._wardService.populateForm(m_data);
+        // var m_data = {
+        //     RoomId: row.RoomId,
+        //     RoomName: row.RoomName,
+        //     LocationId: row.LocationId,
+        //     IsAvailable: JSON.stringify(row.IsAvailible),
+        //     ClassId: row.ClassID,
+        //     IsDeleted: JSON.stringify(row.IsActive),
+        //     UpdatedBy: row.UpdatedBy,
+        // };
+        // this._wardService.populateForm(m_data);
+        const dialogRef = this._matDialog.open(NewwardComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "50%",
+                data: {
+                    Obj: row
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getwardMasterList();
+        });
+    }
+
+    onDeactive(WardId) {
+        debugger
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            debugger
+
+            if (result.isConfirmed) {
+                let Query;
+                const tableItem = this.DSWardMasterList.data.find(item => item.WardId === WardId);
+                console.log("table:", tableItem)
+
+                if (tableItem.IsActive) {
+                    Query = "Update RoomMaster set IsActive=0 where RoomId=" + WardId;
+                } else {
+                    Query = "Update RoomMaster set IsActive=1 where RoomId=" + WardId;
+                }
+
+                console.log("query:", Query);
+
+                this._wardService.deactivateTheStatus(Query)
+                    .subscribe(
+                        (data) => {
+                            Swal.fire('Changed!', 'Ward Status has been Changed.', 'success');
+                            this.getwardMasterList();
+                        },
+                        (error) => {
+                            Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                        }
+                    );
+            }
+
+        });
     }
 }
 export class WardMaster {
@@ -283,10 +168,12 @@ export class WardMaster {
     LocationId: number;
     IsAvailable: boolean;
     IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
     ClassId: number;
     AddedByName: string;
+    WardId:any;
 
     /**
      * Constructor
@@ -299,10 +186,12 @@ export class WardMaster {
             this.RoomName = WardMaster.RoomName || "";
             this.LocationId = WardMaster.LocationId || "";
             this.IsAvailable = WardMaster.IsAvailable || "false";
-            this.IsDeleted = WardMaster.IsDeleted || "false";
+            this.IsDeleted = WardMaster.IsDeleted || "";
+            this.IsActive = WardMaster.IsActive || "";
             this.AddedBy = WardMaster.AddedBy || "";
             this.UpdatedBy = WardMaster.UpdatedBy || "";
             this.ClassId = WardMaster.ClassId || "";
+            this.WardId = WardMaster.WardId || "";
         }
     }
 }

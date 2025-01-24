@@ -1,0 +1,124 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                New Ward
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <form [formGroup]="_wardService.myform">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
+
+                                        <input type="hidden" name="RoomId" formControlName="RoomId">
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Room Name</mat-label>
+                                                <input name="RoomName" formControlName="RoomName"
+                                                    placeholder="Room Name" matInput type="text"
+                                                    oninput="this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');"
+                                                    [(ngModel)]="vRoomName">
+                                                <mat-error
+                                                    *ngIf="_wardService.myform.get('RoomName').invalid && _wardService.myform.get('RoomName').touched">
+                                                    Room Name is required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Location</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Location" matInput formControlName="LocationId" required
+                                                    required [(ngModel)]="vLocationid" [matAutocomplete]="autolocation">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_wardService.myform.get('LocationId').setValue(''); isLocationSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_wardService.myform.get('LocationId').setValue(''); isLocationSelected = false;">search</mat-icon>
+                                                </span>
+
+                                                <mat-autocomplete #autolocation="matAutocomplete" [displayWith]="getOptionTextLoc">
+                                                    <mat-option *ngFor="let option of filteredOptionsLocation | async" 
+                                                    [value]="option">
+                                                        {{option.LocationName}} || {{option.LocationId}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Class</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Class" matInput formControlName="ClassId" required
+                                                    required [(ngModel)]="vClassId" [matAutocomplete]="autoclass">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_wardService.myform.get('ClassId').setValue(''); isClassSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_wardService.myform.get('ClassId').setValue(''); isClassSelected = false;">search</mat-icon>
+                                                </span>
+                                                <mat-autocomplete #autoclass="matAutocomplete" [displayWith]="getOptionTextClass">
+                                                    <mat-option *ngFor="let option of filteredOptionsClass | async" 
+                                                    [value]="option">
+                                                        {{option.ClassName}} || {{option.ClassId}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="footer-navigation-container">
+                                
+                                    <!-- <mat-radio-group name="IsAvailable" formControlName="IsAvailable">
+                                                                        <mat-radio-button value='true' class="mr-sm-12"
+                                                                            fxFlex>IsAvailable</mat-radio-button>
+                                                                    </mat-radio-group> -->
+                                
+                                    <div fxLayout="row" fxLayoutGap="6px">
+                                        <mat-checkbox aria-label="IsAvailable" formControlName="IsAvailable" (checked)=true>IsAvailable
+                                        </mat-checkbox>
+                                
+                                        <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted" (checked)=true>IsActive
+                                        </mat-checkbox>
+                                    </div>
+                                
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                        <button class="btn btn-primary" (click)="onSave()">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

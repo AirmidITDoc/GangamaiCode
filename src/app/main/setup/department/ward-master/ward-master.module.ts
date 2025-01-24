@@ -25,6 +25,19 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { WardMasterService } from "./ward-master.service";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule, DatePipe } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { NewwardComponent } from './newward/newward.component';  
 
 const routes: Routes = [
     {
@@ -34,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [WardMasterComponent],
+    declarations: [WardMasterComponent, NewwardComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
@@ -64,8 +77,20 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatTabsModule,
+        MatCardModule,
+        CommonModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatStepperModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule
     ],
-    providers: [WardMasterService],
+    providers: [DatePipe,WardMasterService],
     entryComponents: [WardMasterComponent],
 })
 export class WardMasterModule {}
