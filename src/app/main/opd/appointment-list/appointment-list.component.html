@@ -51,141 +51,54 @@
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <!-- <form [formGroup]="myformSearch"> -->
+                <form [formGroup]="myformSearch">
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" formControlName="FirstName"
-                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear"
                             (click)="gridConfig.filters[0].fieldValue=''">
                             <mat-icon>close</mat-icon>
-                        </button> 
+                        </button>
                     </mat-form-field>
 
-                    
+
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" formControlName="LastName"
-                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear"
                             (click)="gridConfig.filters[1].fieldValue=''">
                             <mat-icon>close</mat-icon>
-                        </button> 
+                        </button>
                     </mat-form-field>
-
-
-                    <!-- <mat-form-field appearance="outline">
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                            placeholder="Start date">
-                        <input matEndDate formControlName="end" placeholder="End date"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field> -->
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off" formControlName="RegNo"
-                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
                         <button matSuffix mat-icon-button aria-label="Clear"
                             (click)="gridConfig.filters[2].fieldValue=''">
                             <mat-icon>close</mat-icon>
-                        </button> 
+                        </button>
                     </mat-form-field>
-
-
                     <airmid-autocomplete label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
                         [(ngModel)]="gridConfig.filters[3].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-autocomplete>
-
-
-               
-                     <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
-                            (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[4].fieldValue"
-                            placeholder="mm/dd/yyyy">
-                        <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #validFromPicker></mat-datepicker>
-                    </mat-form-field> 
-
-                    <!-- <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker1"
-                           placeholder="Choose a Date" [(ngModel)]="gridConfig.filters[4].fieldValue"
-                            name="Date" formControlName="fromDate">
-                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field> -->
-
-
                     <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
-                            (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[5].fieldValue"
-                            placeholder="mm/dd/yyyy">
-                        <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
-                        <mat-datepicker #validFromPicker1></mat-datepicker>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate placeholder="Start date" formControlName="fromDate"
+                                (dateChange)='onChangeStartDate($event.value)'>
+                            <input matEndDate placeholder="End date" formControlName="enddate"
+                                (dateChange)='onChangeEndDate($event.value)'>
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-
-                    <!--  <mat-form-field appearance="outline">
-                        <mat-label>From Date</mat-label>
-                        <input matInput placeholder="Search From Date" autocomplete="off" formControlName="fromDate"
-                            [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[4].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                     <app-airmid-datepicker label="enddate" formControlName="enddate" (dateChange)="onChangeDate1($event.value)"
-                        [(ngModel)]="gridConfig.filters[5].fieldValue" [value]=toDate
-                        [formGroup]="_AppointmentlistService.myformSearch"></app-airmid-datepicker>
-                     
-                        <mat-form-field appearance="outline">
-                        <mat-label>To Date</mat-label>
-                        <input matInput placeholder="Search To Date" autocomplete="off" formControlName="enddate"
-                            [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[5].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>-->
-
-                <!-- </form> -->
-                <!-- <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>From Date</mat-label>
-                    <input matInput placeholder="Search From Date" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[4].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field> -->
-
-
-                <!-- <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>To Date</mat-label>
-                    <input matInput placeholder="Search To Date" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[5].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field> -->
-                <!-- (dateChange)="onChangeDate1($event.value)" -->
-
-
-
+                </form>
             </ng-container>
         </airmid-table>
-
     </div>
-    <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"
-    class="gap-4">
-    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-    <span class="blue-600-fg">Total Result : {{resultsLength}}</span>
-</div> -->
 </div>
