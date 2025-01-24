@@ -120,7 +120,20 @@ export class AirmidTextboxComponent implements
     get errorState(): boolean {
         return this.ngControl.control !== null ? !!this.ngControl.control : false;
     }
+    get activeErrors(): string[] {
+        try {
+            if (!this.formGroup || this.formGroup[this.formControlName]) {
+                return [];
+            }
+            // Find active validation 
+            return this.validations
+                .filter((validation: any) => this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
+                .map((validation: any) => validation.Message);
+        } catch (error) {
+            console.log("Textbox Error => ", error);
+        }
 
+    }
     constructor(@Optional() @Self() public ngControl: NgControl | null) {
         if (ngControl) {
             // Set the value accessor directly (instead of providing NG_VALUE_ACCESSOR) to avoid running into a circular import
@@ -176,14 +189,13 @@ export class AirmidTextboxComponent implements
         const input = event.target as HTMLInputElement;
         this.valueChange.emit(input.value);
     }
-    onKeyUp(event:Event):void{
+    onKeyUp(event: Event): void {
         this.keyup.emit(event);
     }
-    onChange(event:Event):void{
+    onChange(event: Event): void {
         const input = event.target as HTMLInputElement;
         this.change.emit(input.value);
     }
-
 
     //constructor() { }
     // @Input() label: string = ""; // Dynamic placeholder

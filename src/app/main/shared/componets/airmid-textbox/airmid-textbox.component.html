@@ -1,11 +1,17 @@
 <mat-form-field [appearance]="appearance" [style.width.%]="width">
     <mat-label>{{ label }}</mat-label>
     <input matInput [formControl]="formGroup?.controls[formControlName]" [maxlength]="maxLength" (blur)="onTouched()" [type]="type" [value]="value" [placeholder]="placeholder" (keyup)="onKeyUp($event)" [readonly]="readonly" (input)="onValueChange($event)" (change)="onChange($event)" />
-    <mat-error>
+    <!-- <mat-error>
+        
         <ng-container *ngFor="let validation of validations">
             <ng-container *ngIf="formGroup?.controls[formControlName]?.hasError(validation.name.toLowerCase())">
                 {{ validation.Message }}
             </ng-container>
         </ng-container>
-    </mat-error>
+    </mat-error> -->
+    <mat-error>
+        <ng-container *ngFor="let error of activeErrors">
+          {{ error }}
+        </ng-container>
+      </mat-error>
 </mat-form-field>
