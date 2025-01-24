@@ -40,14 +40,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { EditAdmissionComponent } from './edit-admission/edit-admission.component';
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
-import { AdmissionNewComponent } from './admission-new/admission-new.component';
+// import { AdmissionNewComponent } from './admission-new/admission-new.component';
 import { IPDSearcPatienthComponent } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
-import { AdmissionViewComponent } from './admission-view/admission-view.component';
+// import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 const routes: Routes = [
@@ -59,14 +59,14 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        AdmissionNewComponent,
+        // AdmissionNewComponent,
         AdmissionComponent,
         EditAdmissionComponent,
         MLCInformationComponent,
         SubCompanyTPAInfoComponent, IPDSearcPatienthComponent, NewAdmissionComponent,
         RegAdmissionComponent,
         CompanyInformationComponent,
-        AdmissionViewComponent
+        // AdmissionViewComponent
     ],
     imports: [
         CommonModule,

@@ -76,7 +76,7 @@ export class AppointmentListComponent implements OnInit {
            
             { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type:17},
             { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type:15 },
-            { heading: "PhoneAppId", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 100, type:13 },
+            // { heading: "PhoneAppId", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', width: 100, type:13 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type:8 },
@@ -91,7 +91,7 @@ export class AppointmentListComponent implements OnInit {
             // { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
           
             {
-                heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", width: 200 ,sticky:true, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
@@ -231,7 +231,7 @@ export class AppointmentListComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '75%',
+                maxHeight: '90%',
                 width: '90%',
                 data: {
                     data1: row,

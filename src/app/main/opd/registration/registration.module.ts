@@ -29,8 +29,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { CharmaxLengthDirective } from './new-registration/charmax-length.directive';
-import { ChkCharlengthDirective } from './chk-charlength.directive';
+
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
@@ -47,8 +46,7 @@ const routes: Routes = [
     declarations: [
         RegistrationComponent,
         NewRegistrationComponent,
-        CharmaxLengthDirective,
-        ChkCharlengthDirective,
+         
     ],
     imports: [
         RouterModule.forChild(routes),

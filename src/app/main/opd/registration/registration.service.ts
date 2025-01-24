@@ -42,68 +42,6 @@ export class RegistrationService {
       // ]],   
     });
   }
-  createPesonalForm() {
-    return this._formBuilder.group({
-      regId: [0],
-      RegNo: '',
-      prefixId: ['', [Validators.required]],
-      firstName:[""],
-      //  ['', [
-      //   Validators.required,
-      //   Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      // ]],
-      middleName: ['', [
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      lastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
-      ]],
-      genderId: new FormControl('', [Validators.required]),
-      address: '',
-      dateOfBirth: [(new Date()).toISOString()],
-      age: ['2'],
-      ageYear: ['0', [
-        // Validators.required,
-        Validators.maxLength(3),
-        Validators.pattern("^[0-9]*$")]],
-      ageMonth: ['0', [
-        Validators.pattern("^[0-9]*$")]],
-      ageDay: ['0', [
-        Validators.pattern("^[0-9]*$")]],
-      phoneNo: ['', [Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      mobileNo: ['', [Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-
-      aadharCardNo: ['', Validators.compose([Validators.minLength(12),
-      Validators.maxLength(12)
-      ])],
-      panCardNo: 'ds',
-      maritalStatusId: '',
-      religionId: '',
-      areaId: '',
-      cityId: '',
-      city: ['d'],
-      stateId: '',
-      countryId: '',
-      isCharity: false,
-      isSeniorCitizen: false,
-      addedBy: 1,
-      updatedBy: 1,
-      regDate: [(new Date()).toISOString()],
-      regTime: [(new Date()).toISOString()],
-      Photo: [''],
-      PinNo: [''],
-      isActive:[]
-    });
-
-  }
 
   createPesonalForm1() {
     return this._formBuilder.group({
@@ -147,9 +85,7 @@ export class RegistrationService {
         Validators.maxLength(12),
         Validators.pattern("^[0-9]*$")
         ]],
-      // aadharCardNo: ['', Validators.compose([Validators.minLength(12),
-      // Validators.maxLength(12), Validators.pattern("^[0-9]*$")
-      // ])],
+      
       panCardNo: 'ds',
       MaritalStatusId: '',
       ReligionId: 0,

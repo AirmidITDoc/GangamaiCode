@@ -24,9 +24,10 @@
 </fuse-sidebar>
 <div class="center p-12 pb-56 airmid-table-container" fxFlexAlign="start center">
     <div class="content-card">
-        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"  class="airmid-table">
-            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key" >
-                <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef mat-sort-header [disabled]="!row.sort"> {{
+        <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()" class="airmid-table">
+            <ng-container *ngFor="let row of gridConfig?.columnsList" [matColumnDef]="row.key">
+                <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef
+                    mat-sort-header [disabled]="!row.sort"> {{
                     row?.heading }}
                 </mat-header-cell>
                 <mat-cell [style.min-width.px]="row.width || defaultColumnWidth" *matCellDef="let element; let i = index" fxShow.gt-sm>
@@ -40,7 +41,8 @@
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.image">
                             <div class="profile_image_wrapper">
-                                <img class="showImage" height="50px" width="50px" [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'">
+                                <img class="showImage" height="50px" width="50px"
+                                    [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'">
                             </div>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.date">
@@ -56,7 +58,7 @@
                             <span class="text-overflow">{{ element[row.key] ? (element[row.key] | date: dateType.DATE__TIME) : '-'}}</span>
                         </ng>
                         <ng *ngSwitchCase="GridColumnType.wordBreak">
-                            <a class="table-link bold break-spaces" test="{{element[row.key] | json}}" (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{ element[row.key]}}
+                            <a class="table-link bold break-spaces text-overflow" test="{{element[row.key] | json}}" (click)="$event.stopPropagation();actionLink.emit({action: row.actionType, data: element})">{{ element[row.key]}}
                             </a>
                         </ng>
                         <ng *ngSwitchDefault>
@@ -68,16 +70,20 @@
                                     <button mat-icon-button *ngIf="sta.action == GridAction.view" (click)="sta.callback(element)" style="color:blue;">
                                         <mat-icon title="View">remove_red_eye</mat-icon>
                                     </button>
-                                    <button mat-icon-button *ngIf="sta.action == GridAction.edit" (click)="sta.callback(element)" style="color:black;">
+                                    <button mat-icon-button *ngIf="sta.action == GridAction.edit"
+                                        (click)="sta.callback(element)" style="color:black;">
                                         <mat-icon title="Edit Menu">launch</mat-icon>
                                     </button>
-                                    <button mat-icon-button *ngIf="sta.action == GridAction.delete" (click)="onDelete(sta,element)" color="warn">
+                                    <button mat-icon-button *ngIf="sta.action == GridAction.delete"
+                                        (click)="onDelete(sta,element)" color="warn">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
-                                    <button mat-icon-button *ngIf="sta.action == GridAction.print" (click)="sta.callback(element)" color="#5e35b1">
+                                    <button mat-icon-button *ngIf="sta.action == GridAction.print"
+                                        (click)="sta.callback(element)" color="#5e35b1">
                                         <mat-icon>print</mat-icon>
                                     </button>
-                                    <button mat-icon-button *ngIf="sta.action == GridAction.CossConsult" (click)="sta.callback(element)" color="#5e35b1">
+                                    <button mat-icon-button *ngIf="sta.action == GridAction.CossConsult"
+                                        (click)="sta.callback(element)" color="#5e35b1">
                                         <mat-icon title="CrossConsultation">cached icon</mat-icon>
                                     </button>
                                 </ng>
@@ -97,7 +103,8 @@
                 <button mat-raised-button>Csv</button>
             </div>
             <div class="table-pagination-wrapper">
-                <mat-paginator class="paginator" [pageSizeOptions]="[25, 50, 100, 500]" [pageSize]="25" [length]="resultsLength" showFirstLastButtons (page)="bindGridData()"></mat-paginator>
+                <mat-paginator class="paginator" [pageSizeOptions]="[25, 50, 100, 500]" [pageSize]="25"
+                    [length]="resultsLength" showFirstLastButtons (page)="bindGridData()"></mat-paginator>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
 import { ToastrService } from 'ngx-toastr';
@@ -32,12 +32,20 @@ export class ApiCaller {
                     this.toastr.error(data.message, 'Error !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
+                    return of(null); // Avoid returning anything invalid
                 }
             }),
             catchError((err: any): any => {
-            this.toastr.error(err, 'Error !', {
+            let errorMessage = 'An unknown error occurred';
+            if (err.error instanceof ErrorEvent) {
+                errorMessage = `Error: ${err.error.message}`;
+            } else {
+                errorMessage = `Error Code: ${err.status}\nMessage: ${err.message}`;
+            }
+            this.toastr.error(errorMessage, 'Error !', {
                 toastClass: 'tostr-tost custom-toast-error',
             });
+            return of(null);  // Return an empty observable to continue without crashing
         }));
     }
 
@@ -60,6 +68,7 @@ export class ApiCaller {
                 this.toastr.error(data.message, 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
+                return of(null); // Avoid returning anything invalid
             }
         })));
     }

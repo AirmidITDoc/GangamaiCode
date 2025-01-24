@@ -49,9 +49,9 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <app-airmid-table1 [gridConfig]="gridConfig" class="content">
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <form [formGroup]="myformSearch">
+                <!-- <form [formGroup]="myformSearch"> -->
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
@@ -154,7 +154,7 @@
                         </button>
                     </mat-form-field>-->
 
-                </form>
+                <!-- </form> -->
                 <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
                     <input matInput placeholder="Search From Date" autocomplete="off"
@@ -180,7 +180,7 @@
 
 
             </ng-container>
-        </app-airmid-table1>
+        </airmid-table>
 
     </div>
     <!-- <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center"

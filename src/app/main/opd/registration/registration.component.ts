@@ -97,7 +97,7 @@ export class RegistrationComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
-        this.myFilterform = this._RegistrationService.filterForm();
+        // this.myFilterform = this._RegistrationService.filterForm();
 
 
     }
@@ -147,7 +147,7 @@ export class RegistrationComponent implements OnInit {
             NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                height: '95%',
+                maxHeight: '90%',
                 width: '90%',
                 data: {
                     data1: row,
@@ -250,7 +250,13 @@ export class RegistrationComponent implements OnInit {
                 // { name: "maxLength", Message: "Enter only upto 50 chars" },
                 { name: "pattern", Message: "only char allowed." }
             ],
-            RegNo: []
+            RegNo: [],
+            MobileNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+            ],
 
         }
     }

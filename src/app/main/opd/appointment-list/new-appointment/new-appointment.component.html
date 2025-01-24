@@ -1004,7 +1004,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <airmid-textbox label="aadharcardno" formControlName="aadharCardNo"
+                                        <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
                                             [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup"
                                             [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
                                         </airmid-textbox>
@@ -1051,7 +1051,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="MaritalStatusId" formControlName="MaritalStatusId"
+                                        <airmid-autocomplete label="MaritalStatus" formControlName="MaritalStatusId"
                                             [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup"
                                             [validations]="getValidationMessages().maritalStatusId"
                                             [mode]="autocompleteModemstatus">
@@ -1059,7 +1059,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="ReligionId" formControlName="ReligionId"
+                                        <airmid-autocomplete label="Religion Name" formControlName="ReligionId"
                                             [value]="registerObj?.religionId" [formGroup]="personalFormGroup"
                                             [validations]="getValidationMessages().religionId"
                                             [mode]="autocompleteModereligion">
@@ -1152,7 +1152,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <!-- [value]="PatientTypeID" -->
-                                    <airmid-autocomplete label="patientTypeId" formControlName="PatientTypeId"
+                                    <airmid-autocomplete label="patientType" formControlName="PatientTypeId"
                                         [value]="data?.patientTypeId" [formGroup]="VisitFormGroup"
                                         [validations]="getValidationMessages().patientTypeId"
                                         [mode]="autocompleteModepatienttype"
@@ -1162,7 +1162,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <!-- [value]="TrariffId" -->
-                                    <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                                    <airmid-autocomplete label="Tariff Name" formControlName="TariffId"
                                         [formGroup]="VisitFormGroup" [value]="data?.tariffId"
                                         [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff"
                                         (selectionChange)="selectChangetariff($event)">
@@ -1172,7 +1172,7 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
                                     <!-- [value]="CompanyId" -->
 
-                                    <airmid-autocomplete label="CompanyId" formControlName="CompanyId"
+                                    <airmid-autocomplete label="Company Name" formControlName="CompanyId"
                                         [formGroup]="VisitFormGroup" [value]="data?.companyId"
                                         [validations]="getValidationMessages().CompanyId"
                                         [mode]="autocompleteModecompany"
@@ -1185,7 +1185,7 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
                                     <!-- [value]="SubCompanyId" -->
 
-                                    <airmid-autocomplete label="SubCompanyId" formControlName="SubCompanyId"
+                                    <airmid-autocomplete label="SubCompany Name" formControlName="SubCompanyId"
                                         [formGroup]="VisitFormGroup"
                                         [validations]="getValidationMessages().SubCompanyId"
                                         [mode]="autocompleteModesubcompany">
@@ -1196,7 +1196,7 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                     <!-- [value]="Departmentid" -->
-                                    <airmid-autocomplete label="Departmentid" formControlName="DepartmentId"
+                                    <airmid-autocomplete label="Department Name" formControlName="DepartmentId"
                                         [formGroup]="VisitFormGroup" [value]="data?.departmentId"
                                         [validations]="getValidationMessages().departmentId"
                                         [mode]="autocompleteModedepartment"
@@ -1207,7 +1207,7 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                     <!-- [value]="DoctorID" -->
-                                    <airmid-autocomplete label="DoctorID" formControlName="ConsultantDocId"
+                                    <airmid-autocomplete label="Doctor Name" formControlName="ConsultantDocId"
                                         [formGroup]="VisitFormGroup" [value]="data?.doctorID"
                                         [validations]="getValidationMessages().DoctorID"
                                         [mode]="autocompleteModedeptdoc"
@@ -1217,7 +1217,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <!-- [value]="RefDocId" -->
-                                    <airmid-autocomplete label="RefDocId" formControlName="RefDocId"
+                                    <airmid-autocomplete label="RefDoctor Name" formControlName="RefDocId"
                                         [formGroup]="VisitFormGroup" [value]="data?.refDocId"
                                         [validations]="getValidationMessages().refDocId"
                                         [mode]="autocompleteModedeptdoc">
@@ -1227,7 +1227,7 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                     <!-- [value]="PurposeId" -->
-                                    <airmid-autocomplete label="PurposeId" formControlName="AppPurposeId"
+                                    <airmid-autocomplete label="Purpose" formControlName="AppPurposeId"
                                         [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId"
                                         [mode]="autocompleteModepurpose">
                                     </airmid-autocomplete>

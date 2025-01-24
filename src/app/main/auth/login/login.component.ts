@@ -81,10 +81,13 @@ export class LoginComponent implements OnInit {
         }
         this.authenticationService.login(this.obj).subscribe(
             (data) => {
-                if (data) {
+                if ((data?.userId??0) >0) {
                     this.router.navigate([this.returnUrl]);
                 }
-                else { this.loadCaptcha(); }
+                else {
+                    this.errorMessage = "Invalid username or password.";
+                    this.loadCaptcha();
+                }
             }, (error) => {
                 this.serverMonitoringService.showServerDownMessage();
                 this.errorMessage = error.error.message;

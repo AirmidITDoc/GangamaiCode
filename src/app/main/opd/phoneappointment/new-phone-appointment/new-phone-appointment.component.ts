@@ -119,7 +119,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
 
-  onClose() { }
+  onClose() {this.dialogRef.close(); }
 
 
   Phappcancle(data) {
