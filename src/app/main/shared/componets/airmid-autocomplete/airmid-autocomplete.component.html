@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" fxFlex *ngIf="!IsMultiPle">
+<!-- <mat-form-field appearance="outline" fxFlex *ngIf="!IsMultiPle">
     <mat-label>{{label}}</mat-label>
     <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled"
         [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll >
@@ -17,24 +17,20 @@
             </mat-error>
         </div>
     </div>
-</mat-form-field>
-<mat-form-field appearance="outline" fxFlex *ngIf="IsMultiPle">
+</mat-form-field> -->
+<mat-form-field appearance="outline" fxFlex>
     <mat-label>{{label}}</mat-label>
-    <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled"
-        [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'"  [compareWith]="comparer" msInfiniteScroll multiple>
+    <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle">
         <mat-option>
-            <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
-                noEntriesFoundLabel="No results found"></ngx-mat-select-search>
+            <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..." noEntriesFoundLabel="No results found"></ngx-mat-select-search>
         </mat-option>
         <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
             {{ddl[TextField]}}
         </mat-option>
     </mat-select>
-    <div *ngIf="formGroup.controls[formControlName]?.invalid&& control?.touched && validations?.length>0">
-        <div *ngFor="let item of validations">
-            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
-                {{item.Message}}
-            </mat-error>
-        </div>
-    </div>
+    <mat-error>
+        <ng-container *ngFor="let error of activeErrors">
+            {{ error }}
+        </ng-container>
+    </mat-error>
 </mat-form-field>
