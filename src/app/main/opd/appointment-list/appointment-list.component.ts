@@ -395,7 +395,7 @@ export class AppointmentListComponent implements OnInit {
         const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
             {
                 maxWidth: "55vw",
-                height: '55%',
+                height: '45%',
                 width: '80%',
                 data: row
             });
@@ -414,7 +414,7 @@ export class AppointmentListComponent implements OnInit {
         const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
             {
                 maxWidth: "55vw",
-                height: '55%',
+                height: '45%',
                 width: '80%',
                 data: row
             });
@@ -433,7 +433,7 @@ export class AppointmentListComponent implements OnInit {
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
                 maxWidth: "65vw",
-                height: '70%',
+                height: '50%',
                 width: '80%',
                 data: row
             });
@@ -652,6 +652,7 @@ export class AppointmentListComponent implements OnInit {
 export class VisitMaster1 {
     visitId: Number;
     regId: number;
+    RegID: number;
     visitDate: any;
     visitTime: any;
     unitId: number;
@@ -679,6 +680,7 @@ export class VisitMaster1 {
         {
             this.visitId = VisitMaster1.visitId || 0;
             this.regId = VisitMaster1.regId || 0;
+            this.RegID=VisitMaster1.RegID || 0;
             this.visitDate = VisitMaster1.visitDate || "";
             this.visitTime = VisitMaster1.visitTime || "";
             this.unitId = VisitMaster1.unitId || 1;

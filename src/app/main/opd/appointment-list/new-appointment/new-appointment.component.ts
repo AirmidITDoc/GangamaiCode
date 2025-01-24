@@ -647,13 +647,11 @@ export class NewAppointmentComponent implements OnInit {
     }
     Saveflag: boolean = false;
     onNewSave() {
-        debugger
+        
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-            this.Saveflag=true;
+         
             if (this.searchFormGroup.get('regRadio').value == "registration") {
-                //if (this.vPhoneAppId == 0 && this.Regflag == false) {
-                this.OnsaveNewRegister();
-
+              this.OnsaveNewRegister();
             }
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
                 this.onSaveRegistered();

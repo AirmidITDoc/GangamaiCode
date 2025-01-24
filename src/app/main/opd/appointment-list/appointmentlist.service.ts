@@ -50,7 +50,7 @@ createSearchForm(): FormGroup {
 createConsultatDrForm() {
   return this._formBuilder.group({
     visitId:0,
-    // regId:0,
+    regId:0,
     consultantDocId: '',
     departmentId: ''
   });

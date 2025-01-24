@@ -22,19 +22,18 @@ import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-au
 export class CrossConsultationComponent implements OnInit {
   crossconForm: FormGroup;
   date = new Date().toISOString();
-  // date: Date;
+  
   screenFromString = 'admission-form';
   Departmentid = 0;
   DoctorID = 0;
   DoctorID1 = 0
   registerObj1 = new VisitMaster1({});
-
+  
 
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
+  @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
 
-  // DD from old code ?
-  // filteredOptionsDoc: any;
   docList: any = [];
   optionsDoctor: any[] = [];
   filteredOptionsdoc: Observable<string[]>;
@@ -53,7 +52,7 @@ export class CrossConsultationComponent implements OnInit {
         this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
           this.registerObj1 = response;
           this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
-          console.log(this.registerObj1)
+          console.log(response)
         });
       }, 500);
     }
@@ -65,13 +64,6 @@ export class CrossConsultationComponent implements OnInit {
     if (this.data)
 
       this.getdoctorList1();
-
-    // this.filteredOptionsdoc = this.crossconForm.get('DoctorID1').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterDoctor(value)),
-
-    // );
-
 
   }
 
@@ -110,13 +102,7 @@ export class CrossConsultationComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
 
-   @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
-  onChangeDepartment(e) {
    
-   let Id=this.crossconForm.get("departmentId").value;
-  // this.ddldoctor.SetSelection(Id);
-}
-
   getValidationMessages() {
     return {
       Departmentid: [
@@ -129,16 +115,15 @@ export class CrossConsultationComponent implements OnInit {
   }
   selected=""
   selectChange(obj){
-    
     this.selected=obj
     console.log(obj)
   }
 
   onSubmit() {
     console.log(this.crossconForm.value);
-   debugger
+   
     let data=this.crossconForm.value;
-    data.departmentId=this.crossconForm.get('departmentId').value.value
+    data.departmentId=this.crossconForm.get('departmentId').value
     data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
     data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
     data.visitId=0;
@@ -204,7 +189,9 @@ export class CrossConsultationComponent implements OnInit {
 
   }
 
-  selectChangedepartment($event){}
+  selectChangedepartment(e){
+    this.ddldoctor.SetSelection(e.departmentId);
+  }
 
 }
 

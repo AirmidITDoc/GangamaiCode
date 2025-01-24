@@ -27,7 +27,7 @@ export class EditRefranceDoctorComponent implements OnInit {
   filteredOptionsRefrenceDoc: any;
   RefDoctorList: any = [];
   isRefDoctorSelected: boolean = false;
-
+  screenFromString = 'admission-form';
   
   constructor(
     public _AppointmentlistService: AppointmentlistService,

@@ -3,20 +3,23 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Ref Doctor Name Update </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Ref. Doctor Update</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Modal body -->
+    
     <mat-card>
         <div class="modal-body" fusePerfectScrollbar>
             <div class="modal-body-container">
@@ -100,15 +103,12 @@
                         <div class="modal-card-container">
 
                             <div fxLayout="column" class="gap-8">
-                                <div class="form-title mb-2 border-bottom pb-2">
+                                <!-- <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600"> Ref Doctor Information</span>
-                                </div>
+                                </div> -->
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-
-                                        <!-- <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="data.regId"> -->
-
-                                        <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
+                                    <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
                                         <airmid-autocomplete label="Doctor Name" formControlName="refDocId"
                                             [formGroup]="RefrancedrForm" [value]="data?.refDocId"
@@ -116,31 +116,10 @@
                                             [mode]="autocompleteModerefdoc">
                                         </airmid-autocomplete>
                                       
-                                        <!-- <mat-form-field appearance="outline" fxFlex="40%" fxFlex.xs="100%"
-                                        fxFlex.sm="40%">
-                                        <mat-label>Ref Doctor Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text"
-                                            placeholder="Select Ref Doctor " matInput formControlName="DoctorID"
-                                            [matAutocomplete]="autorefdoc" required>
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="RefrancedrForm.get('DoctorID').setValue(''); isRefDoctorSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="RefrancedrForm.get('DoctorID').setValue(''); isRefDoctorSelected = false;">search</mat-icon>
-                                        </span>
-
-                                        <mat-autocomplete #autorefdoc="matAutocomplete"
-                                            [displayWith]="getOptionTextRefDoc">
-                                            <mat-option *ngFor="let option of filteredOptionsRefrenceDoc | async"
-                                                [value]="option" >
-                                                {{option.DoctorName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field> -->
-                                    </div>
+                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:640px;">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:720px;">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">
@@ -154,6 +133,6 @@
             </div>
         </div>
     </mat-card>
-    <!-- Modal footer -->
+    
 
 </div>

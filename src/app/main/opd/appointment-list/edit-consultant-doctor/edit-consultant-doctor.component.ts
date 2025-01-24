@@ -25,7 +25,7 @@ export class EditConsultantDoctorComponent implements OnInit {
   DoctorID = 0;
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
-
+  screenFromString = 'admission-form';
 
   constructor(
     public _AppointmentlistService: AppointmentlistService,

@@ -3,14 +3,18 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cons.Doctor Name Update </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cons.Doctor Update</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,13 +103,12 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
-                                <div class="form-title mb-2 border-bottom pb-2">
+                                <!-- <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600"> Consultation Doctor Information</span>
-                                </div>
+                                </div> -->
                                 <div class="form-body">
-                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                        <!-- <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="data.regId"> -->
-
+                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8" style="margin-left: 30px;">
+                                      
                                         <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
                                         <airmid-autocomplete label="Department Name" formControlName="departmentId"
@@ -124,7 +127,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:600px;">
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:720px;">
 
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">

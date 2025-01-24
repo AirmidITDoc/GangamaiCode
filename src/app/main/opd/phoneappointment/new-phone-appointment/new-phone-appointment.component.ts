@@ -25,15 +25,15 @@ export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
   hasSelectedContacts: boolean;
 
- 
+
   public now: Date = new Date();
-  
+
   screenFromString = 'admission-form';
   submitted = false;
   isChecked = true;
   minDate: Date;
   vMobile: any;
-  phoneAppId:any=0;
+  phoneAppId: any = 0;
   vDepartmentid: any = '1';
   vDoctorId: any = '2';
 
@@ -58,12 +58,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.minDate = new Date();
 
     this.phoneappForm = this._phoneAppointListService.createphoneForm();
-     }
+  }
 
 
 
   getValidationMessages() {
-    
+
     return {
       firstName: [
         { name: "required", Message: "First Name is required" },
@@ -71,18 +71,18 @@ export class NewPhoneAppointmentComponent implements OnInit {
         { name: "pattern", Message: "only char allowed." }
       ],
       middleName: [
-        // { name: "required", Message: "Middle Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
         { name: "pattern", Message: "only char allowed." }
       ],
       lastName: [
         { name: "required", Message: "Last Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
         { name: "pattern", Message: "only char allowed." }
       ],
       address: [
         { name: "required", Message: "Address is required" },
-       
+
       ],
       departmentId: [
         { name: "required", Message: "Department Name is required" }
@@ -96,22 +96,25 @@ export class NewPhoneAppointmentComponent implements OnInit {
         { name: "minLength", Message: "10 digit required." },
         { name: "maxLength", Message: "More than 10 digits not allowed." }
 
-    ]
+      ]
     };
   }
 
 
 
   OnSubmit() {
-   
+
     console.log(this.phoneappForm.value);
-    debugger
-   this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
-      this.toastr.success(response.message);
-      this.onClear(true);
-    }, (error) => {
-      this.toastr.error(error.message);
-    });
+    if (!this.phoneappForm.invalid) {
+      this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    } else {
+      Swal.fire("Form is Invalid !.......")
+    }
   }
   onClear(val: boolean) {
     this.phoneappForm.reset();
@@ -119,7 +122,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
 
-  onClose() {this.dialogRef.close(); }
+  onClose() { this.dialogRef.close(); }
 
 
   Phappcancle(data) {
@@ -129,7 +132,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     });
   }
 
-// new Api
+  // new Api
 
   selectChangedepartment(obj: any) {
     console.log(obj);
