@@ -794,6 +794,7 @@ export class NursingnoteComponent implements OnInit {
           toastClass: 'tostr-tost custom-toast-success',
         });  
         this.getHandOverNotelist();
+        this.getPatientHandprint(this.vAdmissionID)
         this.onClose() 
       }
       else {
@@ -835,6 +836,7 @@ export class NursingnoteComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-success',
       });
       this.getHandOverNotelist(); 
+      this.getPatientHandprint(this.vAdmissionID)
       this.onClose()  
     }
     else {
@@ -921,7 +923,29 @@ export class NursingnoteComponent implements OnInit {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "DOCTORNOTE REPORT Viewer"
+              title: "NURSING NOTE REPORT Viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+      });
+
+    }, 100);
+
+  }
+  getPatientHandprint(AdmID) { 
+    setTimeout(() => {
+      this._NursingStationService.getPatientHandprint(
+        AdmID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "NURSING PATIENT HANDOVER REPORT Viewer"
             }
           });
         dialogRef.afterClosed().subscribe(result => {

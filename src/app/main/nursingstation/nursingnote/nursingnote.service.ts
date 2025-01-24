@@ -116,6 +116,13 @@ export class NursingnoteService {
   } 
     return this._httpClient.get("Nursing/View-NursingNotes?AdmID=" + AdmID)
   }
+
+  public getPatientHandprint(AdmID, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.get("Nursing/View-DoctorPatientHandover?AdmID=" + AdmID)
+  }
  
 
   public insertMedicationChart(employee, loader = true) {

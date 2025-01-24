@@ -33,8 +33,7 @@
                                     <mat-form-field appearance="outline" fxFlex="15%">
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="grnPicker">
-                                            <input matStartDate formControlName="start" placeholder="Start date"
-                                            (dateChange)="getSupplierPayStatusList()">
+                                            <input matStartDate formControlName="start" placeholder="Start date" >
                                             <input matEndDate formControlName="end" placeholder="End date"
                                                 (dateChange)="getSupplierPayStatusList()">
                                         </mat-date-range-input>
@@ -62,7 +61,8 @@
                                             <mat-icon class="mat-icon-close"
                                                 (click)="_SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                         </span>
-                                        <mat-autocomplete #autoSupllier="matAutocomplete" [displayWith]="getOptionTextSupplier">
+                                        <mat-autocomplete #autoSupllier="matAutocomplete" [displayWith]="getOptionTextSupplier"
+                                        (optionSelected)='getSelectedSupplierObj($event.option.value)'>
                                             <mat-option *ngFor="let option of filteredSupplier" [value]="option">
                                                 {{option.SupplierName}} || {{option.SupplierId}}
                                             </mat-option>
@@ -102,14 +102,28 @@
                                 
                                             <ng-container matColumnDef="CheckBox">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
-                                                    <span class="material-icons">
+                                                    <!-- <span class="material-icons">
                                                         cached
-                                                    </span>
+                                                    </span> --> 
+                                                    <!-- <mat-checkbox aria-label="Checked" [(ngModel)]="masterSelected" 
+                                                    (change)="checkUncheckAll()">
+                                                    </mat-checkbox> -->
+
+                                                    <mat-checkbox (change)="$event ? masterToggle() : null" 
+                                                    [checked]="selection.hasValue()" 
+                                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                </mat-checkbox>
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" required class="w-60">  
-                                                    <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
+                                                    <!-- <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
                                                     *ngIf="!contact.PaidAmount">
-                                                    </mat-checkbox>
+                                                    </mat-checkbox> -->
+
+
+                                                    <mat-checkbox (click)="$event.stopPropagation()" (change)="OnSelectSUpplier($event,contact)"
+                                                    (change)="$event ? selection.toggle(contact) : null" 
+                                                    [checked]="selection.isSelected(contact)" *ngIf="!contact.PaidAmount">
+                                                </mat-checkbox> 
                                                 </mat-cell>
                                             </ng-container>
                                 

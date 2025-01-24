@@ -15,6 +15,7 @@ import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advanc
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { element } from 'protractor';
 import { error } from 'console';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -97,6 +98,9 @@ export class SupplierPaymentStatusComponent implements OnInit {
   getOptionTextSupplier(option) {
     return option && option.SupplierName ? option.SupplierName : '';
   }
+  getSelectedSupplierObj(obj){
+    this.getSupplierPayStatusList();
+  }
                                 
   getSupplierPayStatusList(){
     this.sIsLoading = '';
@@ -124,26 +128,118 @@ export class SupplierPaymentStatusComponent implements OnInit {
       this.vBalanceAmount = 0;
   } 
 
-  tableElementChecked(event, element) {
-    this.vSupplierName = element.SupplierName;
-    this.vInvoiceNo =  element.InvoiceNo;
-    this.GRNID =  element.GRNID;
-    if (event.checked) {
-      console.log(element) 
-      this.SelectedList.push(element)
-      this.vNetAmount += element.NetAmount
-      this.vPaidAmount += element.PaidAmount
-      this.vBalanceAmount += element.BalAmount 
-    }
-    else{
-      this.vNetAmount -= element.NetAmount
-      this.vPaidAmount -= element.PaidAmount
-      this.vBalanceAmount -= element.BalAmount
-    }
-    console.log(this.SelectedList) 
+
+    selection = new SelectionModel<SupplierPayStatusList>(true, []);
+    masterToggle() {
+      debugger
+        // if there is a selection then clear that selection
+        if(this._SupplierPaymentStatusService.SearchFormGroup.get('Status').value == 1){
+          this.toastr.warning('Please select unpaid list', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        } 
+        if(!this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value){
+          this.toastr.warning('Please select supplier Name', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        } 
+        if(this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value){
+          if(!this.filteredSupplier.some(item=> item.SupplierId == this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value.SupplierId)){
+            this.toastr.warning('Please select valid supplier Name', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          } 
+        }  
+      if (this.isSomeSelected()) {
+      this.vNetAmount = 0;
+      this.vPaidAmount = 0;
+      this.vBalanceAmount = 0;
+      this.selection.clear();
+      this.SelectedList=[];
+      } else {
+        this.isAllSelected()
+          ? this.selection.clear()
+          : this.dsSupplierpayList.data.forEach(row => this.selection.select(row)); 
+
+        this.dsSupplierpayList.data.forEach(element => {
+          console.log(element)
+          this.vSupplierName = element.SupplierName;
+          this.vInvoiceNo = element.InvoiceNo;
+          this.GRNID = element.GRNID;
+          this.vNetAmount += element.NetAmount
+          this.vPaidAmount += element.PaidAmount
+          this.vBalanceAmount += element.BalAmount
+        })
+      } 
+        this.SelectedList.push(this.selection.selected); 
+        console.log(this.selection)   
+    } 
+    isAllSelected() {
+      const numSelected = this.selection.selected.length;
+      const numRows = this.dsSupplierpayList.data.length;
+
+      return numSelected === numRows;
   }
 
+    isSomeSelected() { 
+        return this.selection.selected.length > 0;
+    }
+
+ 
+    OnSelectSUpplier(event, element) {   
+    
+      this.vSupplierName = element.SupplierName;
+      this.vInvoiceNo =  element.InvoiceNo;
+      this.GRNID =  element.GRNID;
+        if (event.checked) {
+          this.SelectedList.push(element)
+          this.vNetAmount += element.NetAmount
+          this.vPaidAmount += element.PaidAmount
+          this.vBalanceAmount += element.BalAmount   
+        }  
+        else{
+          let index = this.SelectedList.indexOf(element);
+          if (index >= 0) {
+              this.SelectedList.splice(index, 1); 
+          } 
+          this.vNetAmount -= element.NetAmount
+          this.vPaidAmount -= element.PaidAmount
+          this.vBalanceAmount -= element.BalAmount
+
+         
+        }
+        console.log(this.SelectedList)
+    }
+ 
+ 
+  // tableElementChecked(event, element) {
+  //   this.vSupplierName = element.SupplierName;
+  //   this.vInvoiceNo =  element.InvoiceNo;
+  //   this.GRNID =  element.GRNID;
+  //   if (event.checked) {
+  //     console.log(element) 
+  //     this.SelectedList.push(element)
+  //     this.vNetAmount += element.NetAmount
+  //     this.vPaidAmount += element.PaidAmount
+  //     this.vBalanceAmount += element.BalAmount 
+  //   }
+  //   else{
+  //     let index = this.SelectedList.indexOf(element);
+  //     if (index >= 0) {
+  //         this.SelectedList.splice(index, 1); 
+  //     } 
+  //     this.vNetAmount -= element.NetAmount
+  //     this.vPaidAmount -= element.PaidAmount
+  //     this.vBalanceAmount -= element.BalAmount
+  //   }
+  //   console.log(this.SelectedList) 
+  // }
+
   OnSave() { 
+    debugger
     if (!this.dsSupplierpayList.data.length) {
       this.toastr.warning('Please add Supplier list in table', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -226,13 +322,19 @@ export class SupplierPaymentStatusComponent implements OnInit {
     });
   }
   onClear(){
-
+    this._SupplierPaymentStatusService.SearchFormGroup.reset({
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      SupplierId:[''],
+      Status:['0'],
+    });
   }
   OnReset(){
     this.getSupplierList();
     this.vNetAmount = 0;
     this.vPaidAmount = 0;
     this.vBalanceAmount = 0;
+    this.SelectedList = [];
   }
   getSupplierPaymentList() {  
     this.dsSupplierpayList.data = []; 

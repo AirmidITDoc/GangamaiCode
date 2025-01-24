@@ -109,7 +109,13 @@ export class DoctornoteService {
   } 
     return this._httpClient.get("Nursing/View-DoctorNotes?AdmID="+ AdmID)
   }
-
+  public getPatientHandprint(AdmID, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.get("Nursing/View-DoctorPatientHandover?AdmID=" + AdmID)
+  }
+ 
 
 
   DoctorNotepoppulateForm(param){
