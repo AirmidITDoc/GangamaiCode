@@ -21,22 +21,18 @@ export class PhoneAppointListService {
 
   filterForm(): FormGroup {
     return this._formBuilder.group({
-     
-      FirstNameSearch:['', [
-           Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      RegNo:'',
+      FirstName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
-      LastNameSearch:['', [
-        
+      LastName:['', [
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       DoctorId:'',
-      DoctorName:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
     });
   }
-
 
   filterForms(): FormGroup {
     return this._formBuilder.group({

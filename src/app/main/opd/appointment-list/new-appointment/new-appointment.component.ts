@@ -183,7 +183,7 @@ export class NewAppointmentComponent implements OnInit {
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
-            dateOfBirth: [(new Date()).toISOString()],
+            DateOfBirth:[(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['0', [
                 // Validators.required,
@@ -207,14 +207,14 @@ export class NewAppointmentComponent implements OnInit {
             Validators.maxLength(12),
             Validators.pattern("^[0-9]*$")
             ]],
-            panCardNo: 'ds',
-            MaritalStatusId: '',
+            panCardNo: '',
+            MaritalStatusId: 0,
             ReligionId: 0,
-            AreaId: '',
-            CityId: '',
-            City: ['d'],
-            StateId: '',
-            CountryId: '',
+            AreaId: 0,
+            CityId: 0,
+            City: '',
+            StateId: 0,
+            CountryId: 0,
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: 1,
@@ -820,10 +820,7 @@ export class NewAppointmentComponent implements OnInit {
         // });
     }
 
-    // field validation
-    // get f() {
-    //     return this._AppointmentlistService.myFilterform.controls;
-    // }
+    
     selectRow(row) {
         this.selectRow = row;
     }
@@ -1280,8 +1277,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     selectChangedeptdoc(obj: any) {
-        console.log(obj);
-        // this.doctorID = obj
+        
     }
 
     selectChangerefdoc(obj: any) {

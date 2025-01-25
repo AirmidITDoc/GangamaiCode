@@ -124,7 +124,8 @@
                                     </div>
 
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                      <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                   
                                     </div>
 
 
@@ -269,15 +270,29 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                     <!-- [value]="Departmentid" -->
-                                    <airmid-autocomplete label="Department Name" formControlName="DepartmentId" [formGroup]="VisitFormGroup" [value]="data?.departmentId" [validations]="getValidationMessages().departmentId" [mode]="autocompleteModedepartment" (selectionChange)="selectChangedepartment($event)">
-                                    </airmid-autocomplete>
+                                    <!-- <airmid-autocomplete label="Department Name" formControlName="DepartmentId" [formGroup]="VisitFormGroup" [value]="data?.departmentId" [validations]="getValidationMessages().departmentId" [mode]="autocompleteModedepartment" (selectionChange)="selectChangedepartment($event)">
+                                    </airmid-autocomplete> -->
+                                    <airmid-autocomplete label="Department Name" formControlName="DepartmentId"
+                                    [formGroup]="VisitFormGroup" [value]="data?.departmentId"
+                                    [validations]="getValidationMessages().departmentId"
+                                    ValueField="departmentId" TextField="departmentName"
+                                    (selectionChange)="selectChangedepartment($event)" ApiUrl="DepartmentMaster/get-departments">
+                                </airmid-autocomplete>
+
+                            
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                     <!-- [value]="DoctorID" -->
-                                    <airmid-autocomplete label="Doctor Name" formControlName="ConsultantDocId" [formGroup]="VisitFormGroup" [value]="data?.doctorID" [validations]="getValidationMessages().DoctorID" [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
-                                    </airmid-autocomplete>
+                                    <!-- <airmid-autocomplete label="Doctor Name" formControlName="ConsultantDocId" [formGroup]="VisitFormGroup" [value]="data?.doctorID" [validations]="getValidationMessages().DoctorID" [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
+                                    </airmid-autocomplete> -->
+
+                                    <airmid-autocomplete label="Doctor Name" formControlName="ConsultantDocId"
+                                    [formGroup]="VisitFormGroup" [value]="data?.doctorID"
+                                    [validations]="getValidationMessages().DoctorID" #ddldoctor
+                                    [mode]="autocompleteModedeptdoc">
+                                </airmid-autocomplete>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

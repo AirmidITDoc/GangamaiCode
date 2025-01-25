@@ -108,7 +108,7 @@ export class RegistrationService {
   }
  // new Api
  initializeFormGroup() {
-  this.createPesonalForm1();
+  // this.createPesonalForm1();
 }
 
 

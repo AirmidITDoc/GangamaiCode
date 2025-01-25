@@ -56,15 +56,9 @@ export class CrossConsultationComponent implements OnInit {
         });
       }, 500);
     }
-    // else {
-    //   this.crossconForm.reset();
-
-    // }
+   
     this.crossconForm = this.createCrossConForm();
-    if (this.data)
-
-      this.getdoctorList1();
-
+   
   }
 
 
@@ -145,48 +139,6 @@ export class CrossConsultationComponent implements OnInit {
   }
   onClose() {
     this.dialogRef.close();
-  }
-  //
-
-  getOptionTextDoc(option) {
-    return option && option.firstName ? option.firstName : '';
-  }
-
-  getdoctorList1() {
-    var d = {
-      "first": 0,
-      "rows": 25,
-      sortField: "doctorId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ],
-      "exportType": "JSON"
-
-    }
-
-
-    this._AppointmentlistService.getdoctorList(d).subscribe(data => {
-      this.docList = data.data;
-      console.log(this.docList)
-      this.optionsDoctor = this.docList.slice();
-      this.filteredOptionsdoc = this.docList.slice();
-      // this.filteredOptionsdoc = this.crossconForm.get('DoctorID').valueChanges.pipe(
-      //   startWith(''),
-      //   map(value => value ? this._filterDoctor(value) : this.docList.slice()),
-      // );
-
-    });
-
-  }
-
-  private _filterDoctor(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.firstName ? value.firstName.toLowerCase() : value.toLowerCase();
-      return this.optionsDoctor.filter(option => option.firstName.toLowerCase().includes(filterValue));
-    }
-
   }
 
   selectChangedepartment(e){

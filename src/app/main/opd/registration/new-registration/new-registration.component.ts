@@ -97,7 +97,7 @@ export class NewRegistrationComponent implements OnInit {
     OnSubmit() {
         console.log(this.personalFormGroup.value)
         
-        if (this.personalFormGroup.valid) {
+        // if (this.personalFormGroup.valid) {
           
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                this.toastr.success(response.message);
@@ -105,9 +105,9 @@ export class NewRegistrationComponent implements OnInit {
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        } else {
-            this.toastr.warning("Form Is Invalid !...");
-        }
+        // } else {
+        //     this.toastr.warning("Form Is Invalid !...");
+        // }
     }
 
     onClose() {

@@ -11,9 +11,9 @@
     <mat-label *ngIf="label">{{ label }}</mat-label>
     <mat-date-range-input [rangePicker]="picker">
         <input matStartDate placeholder="Start date" [formControlName]="formStartControlName"
-            (dateChange)='onStartDateChange($event)'>
+            (dateChange)='onStartDateChange($event)' [value]="date">
         <input matEndDate placeholder="End date" [formControlName]="formEndControlName"
-            (dateChange)='onEndDateChange($event)'>
+            (dateChange)='onEndDateChange($event)' [value]="date">
     </mat-date-range-input>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>

@@ -20,12 +20,12 @@ export class OPListService {
   myFilterbillbrowseform(): FormGroup {
     return this._formBuilder.group({
      
-    //   FirstName: ['', [
-    //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    //   ]],
-    //   LastName:['', [
-    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    //  ]],
+      FirstName: ['', [
+         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
      fromDate: [(new Date()).toISOString()],
      enddate: [(new Date()).toISOString()],
       PBillNo: '', 
@@ -36,12 +36,12 @@ export class OPListService {
   myFilterpaymentbrowseform(): FormGroup {
     return this._formBuilder.group({
      
-    //   FirstName: ['', [
-    //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    //   ]],
-    //   LastName:['', [
-    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    //  ]],
+      FirstName: ['', [
+         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
      fromDate: [(new Date()).toISOString()],
      enddate: [(new Date()).toISOString()],
       PBillNo: '', 
@@ -52,12 +52,12 @@ export class OPListService {
   myFilterrefundbrowseform(): FormGroup {
     return this._formBuilder.group({
      
-    //   FirstName: ['', [
-    //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    //   ]],
-    //   LastName:['', [
-    //     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-    //  ]],
+      FirstName: ['', [
+         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+      ]],
+      LastName:['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+     ]],
      fromDate: [(new Date()).toISOString()],
      enddate: [(new Date()).toISOString()],
       PBillNo: '', 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PhoneAppointListService } from './phone-appoint-list.service';
 import { DatePipe } from '@angular/common';
@@ -30,21 +30,26 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class PhoneappointmentComponent implements OnInit {
+    myformSearch:FormGroup;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     fromDate = "01/01/2022"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-    toDate = "18/10/2025"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-  
+    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+
+
+    DoctorId = "0";
+    autocompleteModedeptdoc: string = "ConDoctor";
 
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
             { heading: "AppApproved", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status,width: 100 },
             { heading: "New Patient", key: "regNo", sort: true, align: 'left', type: gridColumnTypes.status,width: 100 },
-            { heading: "SeqNo", key: "SeqNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "App Time", key: "RegTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+            { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Department", key: "departmentId", emptySign: 'NA', align: "center", width: 150 },
             { heading: "Doctor", key: "doctorId",  emptySign: 'NA',align: "center", width: 150 },
@@ -82,8 +87,8 @@ export class PhoneappointmentComponent implements OnInit {
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:"11/11/2025", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
             
@@ -95,10 +100,18 @@ export class PhoneappointmentComponent implements OnInit {
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
+        public datePipe: DatePipe
     ) { }
 
     ngOnInit(): void {
+        this.myformSearch=this._PhoneAppointListService.filterForm();
+    }
 
+    onChangeStartDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
 
     onSave(row: any = null) {
@@ -119,6 +132,20 @@ export class PhoneappointmentComponent implements OnInit {
             }
         });
     }
+
+    selectChangedeptdoc(obj: any) {
+
+        this.gridConfig.filters[2].fieldValue = obj.value
+
+    }
+    getValidationdoctorMessages() {
+        return {
+            DoctorId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
+
     Appprint(data){}
 
     Appointmentcancle(data){}

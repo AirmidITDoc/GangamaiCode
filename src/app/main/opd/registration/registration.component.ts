@@ -31,21 +31,21 @@ export class RegistrationComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    hasSelectedContacts: boolean;
+   
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
-    toDate = this.datePipe.transform(Date.now(), 'dd/MM/yyyy');
-    fromDate = this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    fromDate ='2021-01-01'// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
             { heading: "RegDate", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6 },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Patient Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
             { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
@@ -76,15 +76,13 @@ export class RegistrationComponent implements OnInit {
             }
         ],
         sortField: "RegId",
-        sortOrder: 1,
+        sortOrder: 0,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
-            // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            // { fieldName: "To_Dt", fieldValue:  this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -97,9 +95,15 @@ export class RegistrationComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
-        // this.myFilterform = this._RegistrationService.filterForm();
+        this.myFilterform = this._RegistrationService.filterForm();
+        }
 
 
+    onChangeStartDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -261,50 +265,7 @@ export class RegistrationComponent implements OnInit {
         }
     }
 
-    onChangeDate(selectDate) {
-        if (selectDate) {
-
-            this.gridConfig.filters[3].fieldValue = this.datePipe.transform(selectDate, "dd-MM-yyyy")// this.fromDate
-            this.fromDate = this.datePipe.transform(selectDate, "dd-MM-yyyy")
-            debugger
-            this.gridConfig.filters = [
-                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
-                // { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.getVisitList();
-    }
-    onChangeDate1(selectDate) {
-        if (selectDate) {
-
-            this.toDate = this.datePipe.transform(selectDate, "dd-MM-yyyy")
-            console.log(this.toDate);
-            // this.gridConfig.filters[5].fieldValue = this.toDate
-
-            this.gridConfig.filters = [
-                { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-                // { fieldName: "From_Dt", fieldValue: "01/11/2021", opType: OperatorComparer.Equals },
-                // { fieldName: "To_Dt", fieldValue: "12/11/2025", opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
-                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-
-            ]
-        }
-        // this.getVisitList();
-    }
+ 
 }
 
 

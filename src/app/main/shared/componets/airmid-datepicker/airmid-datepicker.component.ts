@@ -53,7 +53,7 @@ export class AirmidDatepickerComponent implements
     @Output() dateChange = new EventEmitter<any>();
     @Output() fromValueChange = new EventEmitter<string>();
     @Output() toValueChange = new EventEmitter<string>();
-
+date=new Date();
 
     minDate = new Date();
     get disabled(): boolean {

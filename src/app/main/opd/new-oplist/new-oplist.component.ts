@@ -24,12 +24,16 @@ import { FormGroup } from '@angular/forms';
 })
 export class NewOPListComponent implements OnInit {
     myFilterbillform:FormGroup;
+    myFilterpayform:FormGroup;
+    myFilterrefundform:FormGroup;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-    //   fromDate=new Date().toISOString();
+    nowdate = new Date();
+    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
+    fromDate = "2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
-    fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-    toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -45,43 +49,38 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Patient", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width:50,type:22 },
-            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:70,type:16},
+            { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:150,type:22 },
+            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:16},
              { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+            { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 110 },
             { heading: "CashCounter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250},
-            // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
            
             {
                 heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    },
+                   
                     {
                         action: gridActions.print, callback: (data: any) => {
                             this.viewgetOPBillReportPdf(data);
@@ -91,32 +90,13 @@ export class NewOPListComponent implements OnInit {
                         action: gridActions.view, callback: (data: any) => {
                             this.getWhatsappshareBill(data);
                         }
-                    },
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._OPListService.deactivateTheStatus(data.PbillNo).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PbillNo",
         sortOrder: 0,
         filters: this.allfilters,
-        //   [
-        //       { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //       { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //       { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
-        //       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        //       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        //       { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-        //       { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        //       { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-
-        //   ],
-        row: 250
+               row: 250
     }
 
     gridConfig1: gridModel = {
@@ -146,11 +126,7 @@ export class NewOPListComponent implements OnInit {
           
             {
                 heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    },
+                   
                     {
                         action: gridActions.print, callback: (data: any) => {
                             this.viewgetOPPaymentReportPdf(data);
@@ -160,13 +136,6 @@ export class NewOPListComponent implements OnInit {
                         action: gridActions.whatsapp, callback: (data: any) => {
                             this.getWhatsappsharePaymentReceipt(data);
                         }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._OPListService.deactivateTheStatuspayment(data.visitId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
@@ -175,8 +144,8 @@ export class NewOPListComponent implements OnInit {
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "From_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "12/12/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Contains },
             { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains },
@@ -215,11 +184,7 @@ export class NewOPListComponent implements OnInit {
             // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    },
+                   
                     {
                         action: gridActions.print, callback: (data: any) => {
                             this.viewgetOPRefundBillReportPdf(data);
@@ -228,13 +193,6 @@ export class NewOPListComponent implements OnInit {
                     {
                         action: gridActions.view, callback: (data: any) => {
                             this.getWhatsappshareRefundBill(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._OPListService.deactivateTheStatus(data.RefundId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -256,15 +214,24 @@ export class NewOPListComponent implements OnInit {
 
     constructor(public _OPListService: OPListService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
-    ngOnInit(): void {
-        // this.gridConfig.filters[2].fieldValue=this.fromDate;
 
-        this.myFilterbillform=this._OPListService.myFilterbillbrowseform();
+        
+    ngOnInit(): void {
+             this.myFilterbillform=this._OPListService.myFilterbillbrowseform();
+        this.myFilterpayform=this._OPListService.myFilterpaymentbrowseform();
+         this.myFilterrefundform=this._OPListService.myFilterrefundbrowseform();
     }
 
     onSave(row: any = null) {
     }
 
+
+    onChangeStartDate(value) {
+        this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
     viewgetOPBillReportPdf(Id) { }
     getWhatsappshareBill(Id) { }
 
