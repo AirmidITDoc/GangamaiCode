@@ -24,8 +24,9 @@ export class CompanyTypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CompanyTypeMaster/List",
         columnsList: [
-            { heading: "Code", key: "companyTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Company Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "Code", key: "companyTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Company Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [

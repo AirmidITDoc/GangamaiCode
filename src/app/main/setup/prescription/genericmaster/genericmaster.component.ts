@@ -22,8 +22,9 @@ export class GenericmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [

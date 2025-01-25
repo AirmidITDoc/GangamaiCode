@@ -28,12 +28,12 @@
                     </button>
                 </mat-form-field>
 
-                <mat-radio-group name="isActive" formControlName="isActive" >
-                    <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                    </mat-radio-button>
-                    <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                    </mat-radio-button>
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                 </mat-radio-group>
+                
             </ng-container>
         </airmid-table>
     </div>

@@ -28,9 +28,10 @@ export class SubtpaCompanyMasterComponent implements OnInit {
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [

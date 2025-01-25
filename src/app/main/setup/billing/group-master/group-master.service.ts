@@ -26,7 +26,7 @@ export class GroupMasterService {
                 ]
             ],
             isconsolidated: true,
-            isConsolidatedDR: true,
+            isConsolidatedDr: true,
             isActive:[true,[Validators.required]]
         });
     }

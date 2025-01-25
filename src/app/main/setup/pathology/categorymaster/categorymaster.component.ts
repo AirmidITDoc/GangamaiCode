@@ -21,8 +21,9 @@ export class CategorymasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathCategoryMaster/List",
         columnsList: [
-            { heading: "Code", key: "categoryId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "categoryName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "categoryId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "categoryName", width: 700, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [

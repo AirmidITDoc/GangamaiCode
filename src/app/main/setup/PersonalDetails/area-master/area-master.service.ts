@@ -13,7 +13,7 @@ export class AreaMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
-        // this.myform = this.createAreaForm();
+        this.myform = this.createAreaForm();
         this.myformSearch = this.createSearchForm();
     }
 
@@ -22,11 +22,12 @@ export class AreaMasterService {
             areaId: [0],
             areaName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    Validators.required, 
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            cityId: [""],
+            cityId: ["",Validators.required],
             cityName: [""],
             isActive:[true,[Validators.required]]
         });
@@ -40,16 +41,6 @@ export class AreaMasterService {
 
     initializeFormGroup() {
         this.createAreaForm();
-    }
-
-    getValidationMessages() {
-        return {
-            areaName: [
-                { name: "required", Message: "Area Name is required" },
-                { name: "maxlength", Message: "Area name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
     }
 
     public AreaMasterSave(Param: any, showLoader = true) {

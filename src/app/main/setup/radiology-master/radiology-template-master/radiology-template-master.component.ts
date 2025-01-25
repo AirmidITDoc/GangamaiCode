@@ -26,10 +26,11 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "RadiologyTemplate/List",
         columnsList: [
-            { heading: "Code", key: "templateId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Name", key: "templateName", width: 400, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Desc", key: "templateDesc", width: 400, sort: true, align: 'left', emptySign: 'NA' },
-
+            { heading: "Code", key: "templateId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Name", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Desc", key: "templateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [

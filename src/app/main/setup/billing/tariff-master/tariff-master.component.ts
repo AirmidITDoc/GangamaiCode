@@ -21,7 +21,7 @@ export class TariffMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "TarrifMaster/List",
         columnsList: [
-            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {

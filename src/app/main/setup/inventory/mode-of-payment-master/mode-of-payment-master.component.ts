@@ -22,8 +22,9 @@ export class ModeOfPaymentMasterComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "ModeOfPayment/List",
             columnsList: [
-                { heading: "Code", key: "id", width:150, sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Mode Of Payment Name", width:800, key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Code", key: "id", width:100, sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Mode Of Payment Name", width:700, key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "IsActive", key: "isActive", width:100, type: gridColumnTypes.status, align: "center" },
                 { heading: "Action", key: "action", width:100, align: "right", type: gridColumnTypes.action, actions: [
                         {

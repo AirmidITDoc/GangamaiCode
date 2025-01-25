@@ -15,14 +15,15 @@ import { NewAreaComponent } from "./new-area/new-area.component";
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-
 export class AreaMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "AreaMaster/List",
         columnsList: [
-            { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [

@@ -25,7 +25,7 @@ export class InstructionmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "InstructionMastere/List",
         columnsList: [
-            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA', width: 800 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {

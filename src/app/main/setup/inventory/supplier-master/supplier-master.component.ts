@@ -30,17 +30,16 @@ export class SupplierMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "Supplier", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Fax", key: "fax", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 50 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [

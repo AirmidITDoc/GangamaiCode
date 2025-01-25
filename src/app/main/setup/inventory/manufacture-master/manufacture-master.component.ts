@@ -23,8 +23,10 @@ export class ManufactureMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "ItemManufactureMaster/List",
         columnsList: [
-            { heading: "Code", key: "itemManufactureId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ManuFatcure Name", key: "manufactureName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "itemManufactureId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ManuFatcure Name", key: "manufactureName", width: 350, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Manufacture Short Name", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "User Name", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [

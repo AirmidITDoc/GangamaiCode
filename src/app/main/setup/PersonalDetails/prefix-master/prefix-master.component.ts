@@ -25,10 +25,10 @@ export class PrefixMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
         columnsList: [
-            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 170 },
+            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {

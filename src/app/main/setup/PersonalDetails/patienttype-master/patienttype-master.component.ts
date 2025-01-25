@@ -20,7 +20,7 @@ export class PatienttypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PatientType/List",
         columnsList: [
-            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 800 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {

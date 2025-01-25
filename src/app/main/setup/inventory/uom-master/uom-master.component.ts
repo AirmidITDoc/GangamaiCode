@@ -23,8 +23,9 @@ export class UomMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "UnitOfMeasurement/List",
         columnsList: [
-            { heading: "Code", key: "unitofMeasurementId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Unit Name", key: "unitofMeasurementName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "unitofMeasurementId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Unit Name", key: "unitofMeasurementName", width: 700, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [

@@ -26,8 +26,9 @@ export class TaxMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "TaxMaster/List",
         columnsList: [
-            { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "TaxNature", key: "taxNature", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             { heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {

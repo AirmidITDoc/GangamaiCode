@@ -24,8 +24,9 @@ export class TermsOfPaymentMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "TermsOfPayment/List",
         columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Terms Of Payment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Terms Of Payment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [

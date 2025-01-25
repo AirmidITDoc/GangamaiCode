@@ -22,7 +22,7 @@ export class StateMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "StateMaster/List",
         columnsList: [
-            { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },

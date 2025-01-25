@@ -23,9 +23,9 @@ export class GenderMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Gender/List",
         columnsList: [
-            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-            { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center", width: 200 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {

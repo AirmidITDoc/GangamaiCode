@@ -22,8 +22,9 @@ export class BankMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "BankMaster/List",
         columnsList: [
-            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+            { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [

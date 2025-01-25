@@ -22,7 +22,7 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="Category Name" 
+                            label="Item Category Name" 
                             formControlName="itemCategoryName" 
                             [value]="data?.itemCategoryName"
                             [formGroup]="categoryForm"
@@ -33,7 +33,7 @@
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-autocomplete 
-                            label="Item Name" 
+                            label="Item Type Name" 
                             formControlName="itemTypeId"
                             [value]="data?.itemTypeId"
                             [formGroup]="categoryForm"

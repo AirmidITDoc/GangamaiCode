@@ -23,19 +23,20 @@ export class PrescriptionclassmasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
+            templatedescname: ["",Validators.required],
             isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-          TemplateNameSearch: [""],
+            TemplateNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
+
     initializeFormGroup() {
         this.createPrescriptionclassForm();
     }
-
 
     public prescriptionClassMasterSave(Param: any, showLoader = true) {
         if (Param.classId) {

@@ -30,10 +30,10 @@ export class DosemasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            doseNameInMarathi :["",
+            doseNameInMarathi :["0",
                 [
-                    Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.required, Validators.maxLength(50),
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             doseQtyPerDay: ["",

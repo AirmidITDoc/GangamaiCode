@@ -22,9 +22,10 @@ export class ItemCategoryMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "ItemCategoryMaster/List",
         columnsList: [
-            { heading: "Code", key: "itemCategoryId", sort: true, width: 150, align: 'left', emptySign: 'NA' },
-            { heading: "Category Name", key: "itemCategoryName", sort: true, width: 400, align: 'left', emptySign: 'NA' },
-            { heading: "Item Type ID", key: "itemTypeId", sort: true, width: 400, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "itemCategoryId", sort: true, width: 100, align: 'left', emptySign: 'NA' },
+            { heading: "Item Category Name", key: "itemCategoryName", sort: true, width: 350, align: 'left', emptySign: 'NA' },
+            { heading: "Item Type Name", key: "itemTypeId", sort: true, width: 350, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [

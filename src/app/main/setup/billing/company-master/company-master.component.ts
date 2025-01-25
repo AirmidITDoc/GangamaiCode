@@ -24,11 +24,15 @@ export class CompanyMasterComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompTypeId", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Company Type", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 120 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "pinNo", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "City Name", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "AssignToServ", key: "assigntoserv", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Tariff Name", key: "traiffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [

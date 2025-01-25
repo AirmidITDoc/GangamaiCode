@@ -27,7 +27,14 @@ export class TestmasterComponent implements OnInit {
         apiUrl: "PathTestMaster/TestMasterList",
         columnsList: [
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 850 },
+            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },            
+            { heading: "Print Test Name", key: "PrintTestName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Category Name", key: "CategoryId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Billing Service Name", key: "ServiceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Technique Name", key: "TechniqueName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Machine Name", key: "MachineName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsSub Test", key: "IsSubTest", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [

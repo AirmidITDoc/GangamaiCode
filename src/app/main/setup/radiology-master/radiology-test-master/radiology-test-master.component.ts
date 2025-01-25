@@ -23,13 +23,13 @@ export class RadiologyTestMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "RadiologyTest/RadiologyList",
         columnsList: [
-            { heading: "Code", key: "testId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TestName", key: "testName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "printTest Name", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CategoryName", key: "categoryId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ServiceName", key: "serviceId",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            
-            { heading: "IsDeleted", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "testId",width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Test Name", key: "testName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Print Test Name", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "categoryId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Service Name", key: "serviceId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {

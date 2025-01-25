@@ -21,7 +21,7 @@
 
                 <input type="hidden" name="DoseId" formControlName="doseId">
                     <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="Dose Name" 
                                 formControlName="doseName" 
@@ -31,9 +31,9 @@
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
-                                label="DoseNameInEnglish" 
+                                label="Dose Name In English" 
                                 formControlName="doseNameInEnglish" 
                                 [value]="data?.doseNameInEnglish"
                                 [formGroup]="doseForm"
@@ -41,7 +41,7 @@
                                 [maxLength]="50">
                             </airmid-textbox>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="DoseNameInMarathi" 
                                 formControlName="doseNameInMarathi" 
@@ -50,11 +50,11 @@
                                 [validations]="getValidationMessages().doseNameInMarathi"
                                 [maxLength]="50">
                             </airmid-textbox>
-                        </div>
+                        </div> -->
                         
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
-                                label="DoseQtyPerDay" 
+                                label="Dose Qty Per Day" 
                                 formControlName="doseQtyPerDay" 
                                 [value]="data?.doseQtyPerDay"
                                 [formGroup]="doseForm"

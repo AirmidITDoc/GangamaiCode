@@ -19,14 +19,26 @@
             <form [formGroup]="manufForm">
                 <input type="hidden" name="itemManufactureId" formControlName="itemManufactureId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="manufacture Name"
+                            label="Manufacture Name"
                             formControlName="manufactureName"
                             [value]="data?.manufactureName"
                             [formGroup]="manufForm"
                             [validations]="getValidationMessages().manufactureName"
                             [maxLength]="50">
                         </airmid-textbox> 
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="Manufacture Short Name" 
+                            formControlName="manufShortName" 
+                            [value]="data?.manufShortName"
+                            [formGroup]="manufForm"
+                            [validations]="getValidationMessages().manufShortName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
                 </div>
             
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

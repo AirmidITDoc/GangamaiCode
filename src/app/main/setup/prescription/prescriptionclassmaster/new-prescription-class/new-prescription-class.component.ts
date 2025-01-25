@@ -69,6 +69,9 @@ export class NewPrescriptionClassComponent implements OnInit {
                 { name: "required", Message: "Class Name is required" },
                 { name: "maxlength", Message: "Class Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special Char Not Allowed." }
+            ],
+            templatedescname:[
+                { name: "required", Message: "Class Name is required" },
             ]
         };
     }

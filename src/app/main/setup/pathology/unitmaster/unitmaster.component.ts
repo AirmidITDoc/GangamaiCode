@@ -22,7 +22,7 @@ export class UnitmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathUnitMaster/List",
         columnsList: [
-            { heading: "Code", key: "unitId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "unitId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Unit Name", key: "unitName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {

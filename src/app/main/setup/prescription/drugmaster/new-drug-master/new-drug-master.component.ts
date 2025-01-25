@@ -11,28 +11,28 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewDrugMasterComponent implements OnInit {
 
-  drugForm:FormGroup;
-  isActive:boolean=true;
-  saveflag:boolean=false;
+    drugForm:FormGroup;
+    isActive:boolean=true;
+    saveflag:boolean=false;
 
-  autocompleteModeClass: string = "Class";  
-  autocompleteModeGenericName: string = "GenericName";
+    autocompleteModeClass: string = "Class";  
+    autocompleteModeGenericName: string = "ItemGeneric";
 
-  constructor(
-      public _durgMasterService: DrugmasterService,
-      public dialogRef: MatDialogRef<NewDrugMasterComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    constructor(
+        public _durgMasterService: DrugmasterService,
+        public dialogRef: MatDialogRef<NewDrugMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
-  ngOnInit(): void {
-    this.drugForm=this._durgMasterService.createDrugForm();
-    if((this.data?.drugId??0) > 0)
-        {
-        this.isActive=this.data.isActive
-        this.drugForm.patchValue(this.data);
+    ngOnInit(): void {
+        this.drugForm=this._durgMasterService.createDrugForm();
+        if((this.data?.drugId??0) > 0)
+            {
+            this.isActive=this.data.isActive
+            this.drugForm.patchValue(this.data);
+        }
     }
-  }
 
   
     onSubmit() {
@@ -84,7 +84,7 @@ export class NewDrugMasterComponent implements OnInit {
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             classId: [
-                // { name: "required", Message: "Class Name is required" },
+                { name: "required", Message: "Class Name is required" },
             ],
             genericId : [
                 { name: "required", Message: "Generic Name is required" },

@@ -24,7 +24,7 @@ export class LocationMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "LocationMaster/List",
         columnsList: [
-            { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Location Name", key: "locationName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {

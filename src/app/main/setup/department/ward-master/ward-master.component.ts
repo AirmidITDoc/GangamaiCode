@@ -20,11 +20,10 @@ export class WardMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
-            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            // { heading: "Room Type", key: "roomType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "ClassId", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width: 130 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 110 },
             {

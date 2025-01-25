@@ -23,7 +23,7 @@ export class CityMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: [
-            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },

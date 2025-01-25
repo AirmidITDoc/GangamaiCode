@@ -24,8 +24,10 @@ export class PrescriptionclassmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Priscriptionclass/List",
         columnsList: [
-            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:150 },
-            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:800 },
+            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:100 },
+            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:350 },
+            { heading: "TemplateDesc Name", key: "templatedescname", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [

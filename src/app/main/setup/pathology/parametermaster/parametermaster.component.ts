@@ -27,7 +27,7 @@ export class ParametermasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathParameterMaster/List",
         columnsList: [
-            { heading: "Code", key: "parameterId", width: 150, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
             { heading: "Parameter Name", key: "parameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -40,6 +40,10 @@ export class ParametermasterComponent implements OnInit {
             { heading: "IsNumeric", key: "isNumeric", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
             { heading: "IsPrintDisSummary", key: "isPrintDisSummary", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            
+            { heading: "Formula", key: "Formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            
+            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
             {

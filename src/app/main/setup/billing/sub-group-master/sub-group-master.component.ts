@@ -21,9 +21,10 @@ export class SubGroupMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "SubGroupMaster/List",
         columnsList: [
-            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [

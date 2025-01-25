@@ -24,7 +24,7 @@ export class DrugmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DrugMaster/List",
         columnsList: [
-            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:150 },
+            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA', width:400 },
             { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:200  },
             { heading: "Class Name", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:200},

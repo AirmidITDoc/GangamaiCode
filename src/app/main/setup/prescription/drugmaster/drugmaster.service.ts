@@ -27,8 +27,8 @@ export class DrugmasterService {
             genericId: ["",
                 Validators.required
             ],
-            classId: [0,
-                // Validators.required
+            classId: ["",
+                Validators.required
             ],
             isActive:[true,[Validators.required]]
         });

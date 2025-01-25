@@ -23,7 +23,7 @@ export class CashCounterMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CashCounter/List",
         columnsList: [
-            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
