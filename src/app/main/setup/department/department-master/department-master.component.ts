@@ -6,6 +6,9 @@ import { fuseAnimations } from "@fuse/animations";
 import { DepartmentMasterService } from "./department-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { MatDialog } from "@angular/material/dialog";
+import { NewdepartmentComponent } from "./newdepartment/newdepartment.component";
 
 @Component({
     selector: "app-department-master",
@@ -17,11 +20,13 @@ import { ToastrService } from "ngx-toastr";
 export class DepartmentMasterComponent implements OnInit {
     DepartmentMasterList: any;
     msg: any;
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
 
     displayedColumns: string[] = [
         "DepartmentId",
         "DepartmentName",
-        "AddedBy",
+        // "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -31,11 +36,20 @@ export class DepartmentMasterComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(public _departmentService: DepartmentMasterService,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,
+        private _fuseSidebarService: FuseSidebarService,
+        public _matDialog: MatDialog,
+    ) { }
 
     ngOnInit(): void {
         this.getDepartmentMasterList();
     }
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._departmentService.myformSearch.controls; }
+
     onSearch() {
         this.getDepartmentMasterList();
     }
@@ -49,8 +63,8 @@ export class DepartmentMasterComponent implements OnInit {
     }
     getDepartmentMasterList() {
         var param = {
-            DepartmentName:this._departmentService.myformSearch.get("DepartmentNameSearch")
-                    .value.trim() + "%" || "%",
+            DepartmentName: this._departmentService.myformSearch.get("DepartmentNameSearch")
+                .value.trim() + "%" || "%",
         };
         this._departmentService
             .getDepartmentMasterList(param)
@@ -61,113 +75,81 @@ export class DepartmentMasterComponent implements OnInit {
             });
     }
 
-    onClear() {
-        this._departmentService.myform.reset({ IsDeleted: "false" });
-        this._departmentService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._departmentService.myform.valid) {
-            if (!this._departmentService.myform.get("DepartmentId").value) {
-                var m_data = {
-                    departmentMasterInsert: {
-                        departmentName: this._departmentService.myform
-                            .get("DepartmentName")
-                            .value.trim(),
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._departmentService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._departmentService
-                    .departmentMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getDepartmentMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getDepartmentMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Department Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getDepartmentMasterList();
-                    },error => {
-                        this.toastr.error('Department Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    departmentMasterUpdate: {
-                        departmentID:
-                            this._departmentService.myform.get("DepartmentId")
-                                .value,
-                        departmentName: this._departmentService.myform
-                            .get("DepartmentName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._departmentService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._departmentService
-                    .departmentMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getDepartmentMasterList();
-                          
-                        } else {
-                        
-                                this.toastr.error('Department Master Data not Updated !, Please check API error..', 'Updated !', {
-                                    toastClass: 'tostr-tost custom-toast-error',
-                                  });
-                        
-                        }
-                        this.getDepartmentMasterList();
-                    },error => {
-                        this.toastr.error('Department Data not Updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
+    newDepartment() {
+        const dialogRef = this._matDialog.open(NewdepartmentComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "35%",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getDepartmentMasterList();
+        });
     }
 
     onEdit(row) {
-        var m_data = {
-            DepartmentId: row.DepartmentId,
-            DepartmentName: row.DepartmentName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._departmentService.populateForm(m_data);
+        // var m_data = {
+        //     DepartmentId: row.DepartmentId,
+        //     DepartmentName: row.DepartmentName.trim(),
+        //     IsDeleted: JSON.stringify(row.IsDeleted),
+        //     UpdatedBy: row.UpdatedBy,
+        // };
+        // this._departmentService.populateForm(m_data);
+        const dialogRef = this._matDialog.open(NewdepartmentComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "35%",
+                data: {
+                    Obj: row
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getDepartmentMasterList();
+        });
+    }
+
+    onDeactive(DepartmentId) {
+        debugger
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            debugger
+
+            if (result.isConfirmed) {
+                let Query;
+                const tableItem = this.DSDepartmentMasterList.data.find(item => item.DepartmentId === DepartmentId);
+                console.log("table:", tableItem)
+
+                if (tableItem.IsDeleted) {
+                    Query = "Update M_DepartmentMaster set IsDeleted=0 where DepartmentId=" + DepartmentId;
+                } else {
+                    Query = "Update M_DepartmentMaster set IsDeleted=1 where DepartmentId=" + DepartmentId;
+                }
+
+                console.log("query:", Query);
+
+                this._departmentService.deactivateTheStatus(Query)
+                    .subscribe(
+                        (data) => {
+                            Swal.fire('Changed!', 'Department Status has been Changed.', 'success');
+                            this.getDepartmentMasterList();
+                        },
+                        (error) => {
+                            Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                        }
+                    );
+            }
+
+        });
     }
 }
 
@@ -175,6 +157,7 @@ export class DepartmentMaster {
     DepartmentId: number;
     DepartmentName: string;
     IsDeleted: boolean;
+    IsActive: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -188,6 +171,7 @@ export class DepartmentMaster {
             this.DepartmentId = DepartmentMaster.DepartmentId || "";
             this.DepartmentName = DepartmentMaster.DepartmentName || "";
             this.IsDeleted = DepartmentMaster.IsDeleted || "false";
+            this.IsActive = DepartmentMaster.IsActive || "false";
             this.AddedBy = DepartmentMaster.AddedBy || "";
             this.UpdatedBy = DepartmentMaster.UpdatedBy || "";
         }

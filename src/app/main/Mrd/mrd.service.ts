@@ -9,12 +9,14 @@ export class MrdService {
 
   
   Otserachform:FormGroup;
+  icdForm:FormGroup;
   otreservationFormGroup:FormGroup;
   
   constructor(private _httpClient: HttpClient,
     private _formBuilder: FormBuilder) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm();
+      this.icdForm=this.createIcdForm();
       // this.otreservationFormGroup = this.createOtreservationForm();
      }
  
@@ -29,8 +31,24 @@ export class MrdService {
   
       });
     }
-  
-
+    
+    createIcdForm(): FormGroup {
+      return this._formBuilder.group({
+          F_Name: [""],
+          L_Name: [""],
+          M_Name: [""],
+          IpdNo: [""],
+          MobileNo: [""],
+          RegNo: [""],
+          RegID: [""],
+          IPOP_Type: [""],
+          WardName: [""],
+          DOA: [""],
+          DOD: [""],
+          start: [(new Date()).toISOString()],
+          end: [(new Date()).toISOString()],
+      });
+  }
 
 
   public getdischargepatientcasepaper(employee){
