@@ -94,12 +94,12 @@ export class InitiateProcessComponent implements OnInit {
   }
   private _filterDep(value: any): string[] {
     if (value) {
-      const filterValue = value && value.DepartmentName ? value.DepartmentName.toLowerCase() : value.toLowerCase();
-      return this.DepartmentList.filter(option => option.DepartmentName.toLowerCase().includes(filterValue));
+      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
+      return this.DepartmentList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
     }
   }
   getOptionText(option) {
-    return option && option.DepartmentName ? option.DepartmentName : '';
+    return option && option.StoreName ? option.StoreName : '';
   }
   onAddDepartment() {
     const currentDate = new Date();
@@ -108,14 +108,14 @@ export class InitiateProcessComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     if ((this.vDepartmentName == 0 || this.vDepartmentName == null || this.vDepartmentName == undefined)) {
-      this.toastr.warning('Please select DepartmentName', 'Warning !', {
+      this.toastr.warning('Please select StoreName', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
     if (this.InitiateForm.get('DepartmentName').value) {
-      if (!this.DepartmentList.find(item => item.DepartmentName == this.InitiateForm.get('DepartmentName').value.DepartmentName)) {
-        this.toastr.warning('Please select valid DepartmentName', 'Warning !', {
+      if (!this.DepartmentList.find(item => item.StoreName == this.InitiateForm.get('DepartmentName').value.StoreName)) {
+        this.toastr.warning('Please select valid StoreName', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
@@ -123,7 +123,7 @@ export class InitiateProcessComponent implements OnInit {
     }
 
     if (this.dsDepartmentlist.data.length > 0) {
-      if (this.dsDepartmentlist.data.find(item => item.DepartmentName == this.InitiateForm.get('DepartmentName').value.DepartmentName)) {
+      if (this.dsDepartmentlist.data.find(item => item.StoreName == this.InitiateForm.get('DepartmentName').value.StoreName)) {
         this.toastr.warning('selected  Department Name already added', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -135,8 +135,8 @@ export class InitiateProcessComponent implements OnInit {
     this.Chargelist.push(
       {
 
-        DepartmentID: this.InitiateForm.get('DepartmentName').value.DepartmentId,
-        DepartmentName: this.InitiateForm.get('DepartmentName').value.DepartmentName || '',
+        DepartmentID: this.InitiateForm.get('DepartmentName').value.StoreId,
+        DepartmentName: this.InitiateForm.get('DepartmentName').value.StoreName || '',
         AddedBy: this.accountService.currentUserValue.user.id || 0,
         AddedByDatetime: formattedDate || 0, 
 
@@ -220,6 +220,8 @@ export class ApprovList {
   AddedByDate: any
   DepartmentID: any;
   AddedByDatetime: any;
+  StoreName:any;
+  StoreId:any;
 
   constructor(ApprovList) {
     {
@@ -231,6 +233,8 @@ export class ApprovList {
       this.DepartmentID = ApprovList.DepartmentID || 0;
       this.AddedByDate = ApprovList.AddedByDate || '';
       this.AddedByDatetime = ApprovList.AddedByDatetime || '';
+      this.StoreName = ApprovList.StoreName || 0;
+      this.StoreId = ApprovList.StoreId || '';
     }
   }
 }

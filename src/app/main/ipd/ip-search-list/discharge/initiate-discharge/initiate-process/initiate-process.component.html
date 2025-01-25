@@ -50,7 +50,7 @@
                                     <mat-autocomplete #autoDep="matAutocomplete" [displayWith]="getOptionText">
                                         <mat-option *ngFor="let option of filteredOptionDepartment | async"
                                             [value]="option">
-                                            {{option.DepartmentName}}
+                                            {{option.StoreName}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>

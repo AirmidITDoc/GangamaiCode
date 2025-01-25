@@ -795,8 +795,10 @@ public updateIPDDischargSummaryTemplate(employee)
   } 
     return this._httpClient.post("InPatient/IPInterimBillInsertWithCashCounter",employee)
   }
-  public BillDiscountAfter(employee)
-  {    
+  public BillDiscountAfter(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
     return this._httpClient.post("InPatient/BillDiscountAfter",employee);
   }
   public getClassList(employee){
@@ -982,7 +984,7 @@ return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
   public getDepartmentNameCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_InitiateDiscToStoreName", {})
   
   }
   // public xyz()
@@ -1252,7 +1254,7 @@ public getDoseList() {
   }
     return this._httpClient.post("Nursing/SaveDischargeInitiate", employee)
   }
-  public getRtrvDepartmentlist(loader = true) {
+  public getRtrvDepartmentlist(loader = true) { 
     if (loader) {
       this._loaderService.show();
   }

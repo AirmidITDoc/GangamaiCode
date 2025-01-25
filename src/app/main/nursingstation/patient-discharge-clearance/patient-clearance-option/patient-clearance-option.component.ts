@@ -74,7 +74,7 @@ export class PatientClearanceOptionComponent implements OnInit {
 //Approvved popup
 getapprovelist(Obj){
   var vdata={
-    "DepartmentId": this.accountService.currentUserValue.user.id || 0,
+    "DepartmentId": this.accountService.currentUserValue.user.storeId || 0,
     "AdmId": Obj.AdmID
   }
   console.log(vdata)

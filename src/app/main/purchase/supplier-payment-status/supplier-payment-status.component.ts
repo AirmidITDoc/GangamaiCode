@@ -165,17 +165,17 @@ export class SupplierPaymentStatusComponent implements OnInit {
           : this.dsSupplierpayList.data.forEach(row => this.selection.select(row)); 
 
         this.dsSupplierpayList.data.forEach(element => {
-          console.log(element)
-          this.vSupplierName = element.SupplierName;
-          this.vInvoiceNo = element.InvoiceNo;
+          console.log(element)  
           this.GRNID = element.GRNID;
           this.vNetAmount += element.NetAmount
           this.vPaidAmount += element.PaidAmount
           this.vBalanceAmount += element.BalAmount
+          this.SelectedList.push(element)
         })
+     
       } 
-        this.SelectedList.push(this.selection.selected); 
-        console.log(this.selection)   
+        //this.SelectedList.push(this.selection.selected); 
+        console.log(this.SelectedList)   
     } 
     isAllSelected() {
       const numSelected = this.selection.selected.length;
@@ -189,35 +189,44 @@ export class SupplierPaymentStatusComponent implements OnInit {
     }
 
  
-    OnSelectSUpplier(event, element) {   
-    
-      this.vSupplierName = element.SupplierName;
-      this.vInvoiceNo =  element.InvoiceNo;
-      this.GRNID =  element.GRNID;
-        if (event.checked) {
-          this.SelectedList.push(element)
-          this.vNetAmount += element.NetAmount
-          this.vPaidAmount += element.PaidAmount
-          this.vBalanceAmount += element.BalAmount   
+  OnSelectSUpplier(event, element) {   
+    this.GRNID = element.GRNID;
+    if (event.checked) {
+      if (this.SelectedList.length > 0) {
+        if (!this.SelectedList.some(item => item.SupplierName == element.SupplierName)) {
+          this.toastr.warning('Please select same supplier Name', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          }); 
+          this.SelectedList = [];
+          this.selection.clear()
+          this.getSupplierPayStatusList();
+          return;
         }  
-        else{
-          let index = this.SelectedList.indexOf(element);
-          if (index >= 0) {
-              this.SelectedList.splice(index, 1); 
-          } 
-          this.vNetAmount -= element.NetAmount
-          this.vPaidAmount -= element.PaidAmount
-          this.vBalanceAmount -= element.BalAmount
+        this.SelectedList.push(element) 
+      } else {
+        this.SelectedList.push(element)
+      }
 
-         
-        }
-        console.log(this.SelectedList)
+      this.vNetAmount += element.NetAmount
+      this.vPaidAmount += element.PaidAmount
+      this.vBalanceAmount += element.BalAmount
     }
+    else {
+      let index = this.SelectedList.indexOf(element);
+      if (index >= 0) {
+        this.SelectedList.splice(index, 1);
+      }
+      this.vNetAmount -= element.NetAmount
+      this.vPaidAmount -= element.PaidAmount
+      this.vBalanceAmount -= element.BalAmount
+
+
+    }
+    console.log(this.SelectedList)
+  }
  
  
-  // tableElementChecked(event, element) {
-  //   this.vSupplierName = element.SupplierName;
-  //   this.vInvoiceNo =  element.InvoiceNo;
+  // tableElementChecked(event, element) { 
   //   this.GRNID =  element.GRNID;
   //   if (event.checked) {
   //     console.log(element) 
@@ -335,6 +344,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.vPaidAmount = 0;
     this.vBalanceAmount = 0;
     this.SelectedList = [];
+    this.selection.clear();
   }
   getSupplierPaymentList() {  
     this.dsSupplierpayList.data = []; 

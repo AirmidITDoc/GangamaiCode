@@ -64,8 +64,7 @@ getClearancelist(){
       this.getPatietnapprovelist(this.dspatientlist_1.data[0])
     })  
 }
-DepartmentList:any=[];
-chkEditOpt:any;
+DepartmentList:any=[]; 
 //patietn click approve side list 
 getPatietnapprovelist(contact){
   console.log(contact)
@@ -77,9 +76,7 @@ getPatietnapprovelist(contact){
     this._PatientDischargeClearanceService.getPatietnapprovelist(vdata).subscribe(data =>{
       this.dspatientlist_2.data =data as ClearanceList[];
       this.DepartmentList = data as ClearanceList[];
-      console.log(this.dspatientlist_2.data)
-      this.chkEditOpt = this.DepartmentList.some(item=> item.DepartmentID == this.accountService.currentUserValue.user.id)
-      console.log(this.chkEditOpt) 
+      console.log(this.dspatientlist_2.data) 
     }) 
   }, 1000);
 }

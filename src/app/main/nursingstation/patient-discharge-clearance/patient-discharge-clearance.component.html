@@ -176,7 +176,7 @@
                                                 </span> 
                                                 <span class="step-icon">
                                                     <button mat-icon-button matTooltip="Give Approval"  (click)="PatietnClearanceOption(department)"
-                                                    *ngIf="department.ApprovedByName === '' && department.DepartmentID === accountService.currentUserValue.user.id">
+                                                    *ngIf="department.ApprovedByName === '' && department.DepartmentID === accountService.currentUserValue.user.storeId">
                                                     <mat-icon>edit</mat-icon></button>
                                                 </span>
                                              

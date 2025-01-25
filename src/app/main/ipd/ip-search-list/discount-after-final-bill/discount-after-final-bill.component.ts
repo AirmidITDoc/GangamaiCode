@@ -31,6 +31,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   ConcessionReasonList:any=[];
   vFinalCompanyDiscAmt:any;
   CompanyName:any = '';
+  vAdminAmt:any;
 
   constructor(
     public _matDialog: MatDialog,
@@ -48,10 +49,11 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       this.selectedAdvanceObj = this.data
       console.log(this.selectedAdvanceObj)
       this.vDiscAmount = Math.round(this.selectedAdvanceObj.ConcessionAmt);
-      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.TotalAmt);
+      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.TotalAmt + this.selectedAdvanceObj.SpeTaxAmt);
       this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
       this.vNetamount =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
       this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.ConcessionAmt);
+      this.vAdminAmt = this.selectedAdvanceObj.SpeTaxAmt
       this.CompanyName = this.selectedAdvanceObj.CompanyName || '';
       console.log(this.CompanyName)
     }
@@ -210,6 +212,12 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     // let submitData={
     //   'billDiscountAfterUpdate': billDiscountAfterUpdateObj
     // }
+    let balAmount = 0;
+    if(this.selectedAdvanceObj.PaidAmt > 0){
+      balAmount = this.vNetamount - this.selectedAdvanceObj.PaidAmt;
+    }else{
+      balAmount = this.vNetamount ;
+    }
 
     var m_data1 = {
       "billDiscountAfterUpdate": {
@@ -217,7 +225,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
         "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0,
         "compDiscAmt": this.MyFrom.get('CompanyDiscAmt').value || 0,
-        "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,
+        "balanceAmt": balAmount || 0,
         "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
       }
     }
