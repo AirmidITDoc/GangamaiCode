@@ -156,18 +156,23 @@ export class NewbedComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
+      },
+      error => {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       });
     }
     else{
       debugger
       var m_dataUpdate={
           "bedMasterUpdate": {
-            "bedID":this.vBedId,
-            "bedName": this._bedService.myform.get("BedName").value || '',
-            "roomId": parseInt(this._bedService.myform.get("RoomId").value.RoomId).toString(),
-            "isAvailable":Boolean(JSON.parse(this._bedService.myform.get("IsAvailable").value) || 0),
-            "isDeleted": Boolean(JSON.parse(this._bedService.myform.get("IsDeleted").value) || 0),
-            "updatedBy":this._loggedService.currentUserValue.user.id
+            "bedID_1":this.vBedId,
+            "bedName_2": this._bedService.myform.get("BedName").value || '',
+            "roomId_3": parseInt(this._bedService.myform.get("RoomId").value.RoomId).toString(),
+            // "isAvailable":Boolean(JSON.parse(this._bedService.myform.get("IsAvailable").value) || 0),
+            "isActive_4": Boolean(JSON.parse(this._bedService.myform.get("IsDeleted").value) || 0),
+            // "updatedBy":this._loggedService.currentUserValue.user.id
           }
       }
       console.log("UpdateJson:", m_dataUpdate);

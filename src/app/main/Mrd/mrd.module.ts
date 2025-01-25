@@ -29,7 +29,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
-
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -39,7 +38,11 @@ import { NotificationServiceService } from 'app/core/notification-service.servic
 import { MatBadgeModule } from '@angular/material/badge';
 import { SharedModule } from '../shared/shared.module';
 import { NewCertificateComponent } from './certificate/new-certificate/new-certificate.component';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { IcdComponent } from './icd/icd.component';
+import { NewicdComponent } from './icd/newicd/newicd.component';
 
 
 const approutes : Routes =[
@@ -47,6 +50,10 @@ const approutes : Routes =[
     path: 'certificates',
     component: CertificateComponent
   },
+  {
+    path: 'icd',
+    component: IcdComponent
+  }
   // {
   //   path: 'prescription',
   //   component: MedicalCasepaperComponent
@@ -54,7 +61,7 @@ const approutes : Routes =[
 ];
 
 @NgModule({
-  declarations: [CertificateComponent, NewCertificateComponent],
+  declarations: [CertificateComponent, NewCertificateComponent, IcdComponent, NewicdComponent],
   imports: [
     MatCheckboxModule,
     MatDatepickerModule,
@@ -93,11 +100,14 @@ const approutes : Routes =[
     MatTooltipModule,
     SharedModule,
     MatBadgeModule,
-    // AngularEditorModule,
     //  NgxPrintModule,
     //  RichTextEditorModule,
     //  DateTimePickerModule,
+    MatButtonModule,
+    MatTabsModule,
+    AngularEditorModule,
     MatIconModule,
+    CommonModule,
   RouterModule.forChild(approutes)
   ],
    providers:[MrdService,

@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-new-certificate',
@@ -50,7 +51,7 @@ export class NewCertificateComponent implements OnInit {
   Doctor2List: any = [];
   createMrdcertificate: FormGroup;
 
-  // registerObj1 = new DischargePatientDetail({});
+  registerObj1 : any;
   options = [];
   filteredOptions: any;
   noOptionFound: boolean = false;
@@ -85,9 +86,39 @@ export class NewCertificateComponent implements OnInit {
   vAdmissionID:any;
   isRegIdSelected :boolean=false;
 
+  vRegNo:any;
+  vIPDNo:any;
+  vPatientName:any;
+  vAge:any;
+  vGenderName:any;
+  vDepartmentName:any;
+  vMobileNo:any;
+  vDoctorName:any;
+  vTariffName:any;
+  vCompanyName:any;
+  selectedTemplate:any;
+  IP_Id:any;
+  vAgeYear:any;
+  vCertificateText:any;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+   editorConfig: AngularEditorConfig = {
+      // color:true,
+      editable: true,
+      spellcheck: true,
+      height: '15rem',
+      minHeight: '15rem',
+      translate: 'yes',
+      placeholder: 'Enter text here...',
+      enableToolbar: true,
+      showToolbar: true,
+  
+    };
+    onBlur(e: any) {
+      this.vCertificateText= e.target.innerHTML;
+    }
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _MrdService: MrdService,
@@ -119,7 +150,29 @@ export class NewCertificateComponent implements OnInit {
 
   ngOnInit(): void {
     this.myForm = this.createMyForm();
+    if (this.data) {
+      debugger
+      this.registerObj1 = this.data.PatObj;
+      console.log("Consent RegisterObj:", this.registerObj1)
 
+        this.vGenderName = this.registerObj1.GenderName;
+        // this.vPatientName = this.registerObj1.FirstName + ' ' +this.registerObj1.MiddleName+ ' ' + this.registerObj1.LastName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        this.vAdmissionID = this.registerObj1.OPIPID
+        this.vAge = this.registerObj1.AgeYear;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vIPDNo = this.registerObj1.IPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vMobileNo = this.registerObj1.MobileNo;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vCertificateText = this.registerObj1.ConsentName;
+        this.vDoctorName = this.registerObj1.DoctorName;
+        this.selectedTemplate = this.registerObj1.ConsentTempId;
+
+    }
     this.createMrdcertificate = this.createMrdcertificateForm();
     this.getDepartmentList();
     this.getDoctorList();
@@ -143,13 +196,16 @@ export class NewCertificateComponent implements OnInit {
       console.log(this.selectedAdvanceObj);
       this.PatientHeaderObj = this.advanceDataStored.storage;
     }
-
   }
-
 
   createMyForm() {
     return this.formBuilder.group({
       RegID: '',
+      Template:'',
+      Language: ['1'],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      CertificateText: [''],
       // PatientName: '',
       // WardName: '',
       // StoreId: '',
@@ -159,8 +215,6 @@ export class NewCertificateComponent implements OnInit {
 
     })
   }
-
-
 
   getSearchList() {
     var m_data = {
@@ -179,8 +233,6 @@ export class NewCertificateComponent implements OnInit {
 
       });
     }
-
-
   }
 
   getSelectedObj(obj) {
@@ -190,16 +242,28 @@ export class NewCertificateComponent implements OnInit {
     this.RegId = obj.RegID;
     this.vAdmissionID = obj.AdmissionID
 
-    console.log(obj);
+    console.log("AdmittedListIP:", obj)
+    this.registerObj = obj;
+    this.vPatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+    this.RegId = obj.RegID;
+    this.IP_Id = this.registerObj.AdmissionID;
+    this.vIPDNo = obj.IPDNo;
+    this.vRegNo = obj.RegNo;
+    this.vDoctorName = obj.DoctorName;
+    this.vTariffName = obj.TariffName
+    this.vCompanyName = obj.CompanyName;
+    this.vAgeYear = obj.AgeYear;
+    this.vMobileNo = obj.MobileNo;
+    this.vDepartmentName = obj.DepartmentName;
+    this.vAge = obj.Age;
+    this.vGenderName = obj.GenderName;
+    this.vAdmissionID = obj.AdmissionID;
   }
 
   getOptionText(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
-
-
-  // get f() { return this.personalFormGroup.controls; }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -229,6 +293,13 @@ export class NewCertificateComponent implements OnInit {
     });
   }
 
+  onSave(){
+
+  }
+
+  onClear(){
+    this.myForm.reset({Language: '1'})
+  }
 
 
   private filterDepartment() {
@@ -381,6 +452,7 @@ export class NewCertificateComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   onClose() {
+    this.myForm.reset({ Language: '1' });
     this.dialogRef.close();
    }
 }

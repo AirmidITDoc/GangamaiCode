@@ -972,6 +972,7 @@ debugger
 
    
    viewSupplierwiseGRNreportPdf() {
+    debugger
     this.sIsLoading = 'loading-data';
  
     let StoreId =0
@@ -983,7 +984,7 @@ debugger
 
     if (this._OPReportsService.userForm.get('SupplierName').value)
       SupplierId = this._OPReportsService.userForm.get('SupplierName').value.SupplierId
-    debugger
+   
      setTimeout(() => {
      
        this._OPReportsService.getSupplierwiseGRNReport(StoreId,SupplierId,
@@ -1887,20 +1888,31 @@ debugger
       return this.ItemList.filter(option => option.ItemName.toLowerCase().includes(filterValue));
     }
   }
+
+  
+  filteredOptionsItemdemo:any;  
+  noOptionFoundItem:any;
 getSearchItemList() {   
-      var m_data = {
-        "ItemName": `${this._OPReportsService.userForm.get('ItemId').value}%`,
-      //  "StoreId": this._loggedUser.currentUserValue.user.storeId
+  var m_data = {
+    "ItemName": `${this._OPReportsService.userForm.get('ItemId').value?.trim() || ''}%`,
+    // "StoreId": this._loggedUser.currentUserValue.user.storeId
+};    
+    //   this._OPReportsService.getItemlist(m_data).subscribe(data => {
+    //      this.ItemList = data;
+    //    this.optionsSearchItem = this.ItemList.slice();
+    //   this.filteredOptionsItem = this._OPReportsService.userForm.get('ItemId').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filtersearchItem(value) : this.ItemList.slice()),
+    //   );
+    // });
+    this._OPReportsService.getItemlist(m_data).subscribe(data => {
+      this.filteredOptionsItemdemo = data;
+      if (this.filteredOptionsItemdemo.length == 0) {
+        this.noOptionFoundItem = true;
+      } else {
+        this.noOptionFoundItem = false;
       }
-    
-      this._OPReportsService.getItemlist(m_data).subscribe(data => {
-         this.ItemList = data;
-       this.optionsSearchItem = this.ItemList.slice();
-      this.filteredOptionsItem = this._OPReportsService.userForm.get('ItemId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filtersearchItem(value) : this.ItemList.slice()),
-      );
-    });
+    })
     }
 
     getOptionItemText(option) {

@@ -42,6 +42,8 @@ export class CertificateComponent implements OnInit {
 
   displayedColumns = [
     
+  // 'Ischarity',
+  // 'IsIndientOrWeaker',
   'RegNo',
   'IPDNo',
   'PatientName',
@@ -54,13 +56,11 @@ export class CertificateComponent implements OnInit {
   'TotalAmt',
   'ConcessionAmt',
   'NetPayableAmt',
-  'Ischarity',
   'PaidAmount',
   'PBillNo',
   'ConcessionReason',
   'AnnualIncome',
   'RationCardNo',
-  'IsIndientOrWeaker',
   'BillNo',
   'buttons'
 
@@ -134,7 +134,6 @@ export class CertificateComponent implements OnInit {
       "L_Name": (this.searchFormGroup.get("L_Name").value ).trim() + '%' || '%',
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "ToDate":  this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-     
     }
 
     console.log(m_data);

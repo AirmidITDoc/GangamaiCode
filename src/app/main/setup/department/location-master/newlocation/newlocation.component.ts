@@ -95,10 +95,10 @@ export class NewlocationComponent implements OnInit {
       debugger
       var m_dataUpdate={
           "locationMasterUpdate": {
-          "locationID": this.vLocationId,
-          "locationName": this._locationService.myform.get("LocationName").value || '',
-          "isDeleted": Boolean(JSON.parse(this._locationService.myform.get("IsDeleted").value) || 0),
-          "updatedBy": this._loggedService.currentUserValue.user.id,
+          "locationID_1": this.vLocationId,
+          "locationName_2": this._locationService.myform.get("LocationName").value || '',
+          "isActive_3": Boolean(JSON.parse(this._locationService.myform.get("IsDeleted").value) || 0),
+          // "updatedBy": this._loggedService.currentUserValue.user.id,
         }
       }
       console.log("UpdateJson:", m_dataUpdate);
@@ -114,6 +114,11 @@ export class NewlocationComponent implements OnInit {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
+      },
+      error => {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       });
     }
   }

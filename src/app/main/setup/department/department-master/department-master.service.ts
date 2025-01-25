@@ -21,7 +21,7 @@ export class DepartmentMasterService {
         return this._formBuilder.group({
             DepartmentId: [""],
             DepartmentName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,10 +38,16 @@ export class DepartmentMasterService {
 
     public getDepartmentMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_M_DepartmentMaster",
+            "Generic/GetByProc?procName=m_Rtrv_M_DepartmentMaster", 
+ 
             param
         );
     }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
 
     public departmentMasterInsert(employee) {
         return this._httpClient.post(

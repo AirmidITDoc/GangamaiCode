@@ -271,7 +271,7 @@
                                                     (click)="_OPReportsService.userForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                             </span>
                                             <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText">
-                                                <mat-option *ngFor="let option of filteredOptionsItem"
+                                                <mat-option *ngFor="let option of filteredOptionsItemdemo"
                                                     [value]="option">
                                                     {{option.ItemName}}
                                                 </mat-option>

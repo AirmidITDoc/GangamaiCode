@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { DepartmentMasterComponent } from "./department-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { DepartmentMasterService } from "./department-master.service";
@@ -20,6 +20,24 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { NewdepartmentComponent } from './newdepartment/newdepartment.component';  
+
 
 const routes: Routes = [
     {
@@ -29,10 +47,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DepartmentMasterComponent],
+    declarations: [DepartmentMasterComponent, NewdepartmentComponent],
     imports: [
         RouterModule.forChild(routes),
 
+        MatTabsModule,
+        MatCardModule,
+        CommonModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        ReactiveFormsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -51,8 +76,18 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        SharedModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule
     ],
-    providers: [DepartmentMasterService],
+    providers: [DatePipe,DepartmentMasterService],
     entryComponents: [DepartmentMasterComponent],
 })
 export class DepartmentMasterModule {}

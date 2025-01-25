@@ -654,6 +654,7 @@ return this._httpClient.get("OPReport/view-OPDoctorWiseNewOldPatientReport?FromD
 
   
   public getSupplierwiseGRNReport(StoreId,SupplierID,FromDate,ToDate,loader = true){
+    debugger
     if (loader) {
       this._loaderService.show();
   }

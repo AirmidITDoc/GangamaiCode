@@ -11,23 +11,18 @@
         <mat-icon>account_box</mat-icon>
       </button>
       <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-        Certificate List
+        ICD List
       </span>
     </div>
 
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" class="left-icon">
 
-      <button mat-raised-button (click)="addNewCertificate()"
+      <button mat-raised-button (click)="addNewICD()"
         style="background-color: aliceblue;margin-left:10% !important">
         <mat-icon title="Request New Test">how_to_reg</mat-icon>
-        New Certificate
+        New ICD
       </button>
 
-      <!-- <button mat-raised-button (click)="OPreprtsDisplay()"
-          style="background-color: aliceblue;color: brown;margin-left:10% !important">
-          <mat-icon title="Request New Test">how_to_reg</mat-icon>
-          New Casepaper
-      </button> -->
     </div>
 
   </mat-toolbar>
@@ -46,14 +41,14 @@
         </div>
         <!-- / SIDEBAR HEADER -->
         <div class="nav material2">
-          <form [formGroup]="searchFormGroup">
+          <form [formGroup]="_MrdService.icdForm">
             <div fxLayout="column" fxLayoutAlign="start none">
 
               <mat-form-field appearance="outline" style="margin-top: 5px;">
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
                   <input matStartDate formControlName="start" placeholder="Start date">
-                  <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getCharityPatientList()">
+                  <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getIcdList()">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -61,7 +56,7 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>Search F_Name</mat-label>
-                <input name="F_Name" formControlName="F_Name" matInput (keyup)="getCharityPatientList()"
+                <input name="F_Name" formControlName="F_Name" matInput (keyup)="getIcdList()"
                   oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                 <!-- <span class="error" *ngIf="f.F_Name.invalid && f.F_Name.touched">
                                Enter only Alphabets
@@ -70,7 +65,7 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>Search L_Name</mat-label>
-                <input name="L_Name" formControlName="L_Name" matInput (keyup)="getCharityPatientList()"
+                <input name="L_Name" formControlName="L_Name" matInput (keyup)="getIcdList()"
                   oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
                 <!-- <span class="error" *ngIf="f.L_Name.invalid && f.L_Name.touched">
                              Enter only Alphabets
@@ -82,11 +77,10 @@
               <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
                 <mat-icon class="cleariconbutton">close</mat-icon>
               </button>&nbsp;
-              <button mat-raised-button class="searchButton" (click)="getCharityPatientList()" matTooltip="search">
+              <button mat-raised-button class="searchButton" (click)="getIcdList()" matTooltip="search">
                 <mat-icon class="searchiconbutton">search</mat-icon>
               </button>
             </div>
-
           </form>
         </div>
       </div>
@@ -97,7 +91,7 @@
     <div class="center p-12 pb-56" style="height: fit-content;">
 
       <div class="content-card" style="border-radius:4px;">
-        <!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
+        
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
           <div fxFlex.gt-sm="100%" fxFlex>
             <div fxLayout="column" class="gap-12">
@@ -124,58 +118,29 @@
                             </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="IPDNo" sticky>
+                          <ng-container matColumnDef="PatientName" sticky>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                                Patient Name
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                              {{contact.PatientName}}
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="DoctorName" fxLayoutAlign="start center">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                              Doctor Name</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                              {{contact.DoctorName}}
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="IPDNo">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
                               IPDNo
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
                               {{contact.IPDNo}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="PatientName" fxLayoutAlign="start center">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                              PatientName</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md class="ellipsis"
-                            matTooltip="{{contact.PatientName}}">
-                              {{contact.PatientName}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="Address">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              Address
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md class="ellipsis"
-                            matTooltip="{{contact.Address}}">
-                              {{contact.Address}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="GenderName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              Gender
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.GenderName}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="AgeYear">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              AgeYear
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.AgeYear}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="DepartmentName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              DepartmentName
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.DepartmentName}}
                             </mat-cell>
                           </ng-container>
 
@@ -197,94 +162,16 @@
                             </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="TotalAmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              TotalAmt
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.TotalAmt}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="ConcessionAmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              ConcessionAmt
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.ConcessionAmt}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="NetPayableAmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              NetPayableAmt
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.NetPayableAmt}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="PaidAmount">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              PaidAmount
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.PaidAmount}}
-                            </mat-cell>
-                          </ng-container>
-                          <ng-container matColumnDef="PBillNo">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              PBillNo
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.PBillNo}}
-                            </mat-cell>
-                          </ng-container>
-                          <ng-container matColumnDef="ConcessionReason">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              ConcessionReason
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.ConcessionReason}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="AnnualIncome">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              AnnualIncome
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.AnnualIncome}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="RationCardNo">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              RationCardNo
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.RationCardNo}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="BillNo">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              BillNo
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.BillNo}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="buttons" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">Action
+                          <ng-container matColumnDef="action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef>
+                                Action
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact">
-                              <span class="material-icons" (click)="getPrint(contact)">
-                                print
-                              </span>
+                                <span class="material-icons">
+                                    print
+                                  </span>
                               <span class="material-icons" (click)="onEdit(contact)">
-                                launch
+                                edit
                               </span>
                             </mat-cell>
                           </ng-container>
@@ -300,10 +187,10 @@
                             </mat-footer-cell>
                           </ng-container>
 
-                          <mat-header-row class="accent min-width-2500"
+                          <mat-header-row class="accent"
                             *matHeaderRowDef="displayedColumns; sticky: true">
                           </mat-header-row>
-                          <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-2500"
+                          <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
                             [@animate]="{value:'*',params:{y:'100%'}}">
                           </mat-row>
                           <mat-footer-row *matFooterRowDef="['loading']"
