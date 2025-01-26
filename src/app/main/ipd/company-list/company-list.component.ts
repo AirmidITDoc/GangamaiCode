@@ -9,12 +9,12 @@ import { CompanyListService } from './company-list.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Admission } from '../Admission/admission/admission.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { CompanyBillComponent } from '../ip-search-list/company-bill/company-bill.component';
 import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 
 @Component({
   selector: 'app-company-list',
@@ -51,7 +51,7 @@ export class CompanyListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
   
-  dataSource = new MatTableDataSource<Admission>();
+  dataSource = new MatTableDataSource<AdmissionPersonlModel>();
   dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
   
   menuActions: Array<string> = [];
@@ -97,7 +97,7 @@ export class CompanyListComponent implements OnInit {
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._CompanyListService.getAdmittedPatientList_1(D_data).subscribe(data => {
-          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
            //console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength = data["Table"][0]["total_row"];
@@ -126,7 +126,7 @@ export class CompanyListComponent implements OnInit {
         this.isLoadingStr = 'loading';
         this._CompanyListService.getDischargedPatientList_1(Params).subscribe(data => {
           // this.dataSource.data = data as Admission[];
-          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
           console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength = data["Table"][0]["total_row"];

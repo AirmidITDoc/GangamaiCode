@@ -18,7 +18,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 // import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { Admission, AdmissionPersonlModel } from '../Admission/admission/admission.component';
+import {  AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
@@ -184,7 +184,7 @@ export class IPSearchListComponent implements OnInit {
 
     private _onDestroy = new Subject<void>();
 
-    dataSource = new MatTableDataSource<Admission>();
+    dataSource = new MatTableDataSource<AdmissionPersonlModel>();
     @Output() showClicked = new EventEmitter();
     sIsLoading: string = '';
 
@@ -272,7 +272,7 @@ export class IPSearchListComponent implements OnInit {
         this.click = !this.click;
         setTimeout(() => {
             {
-                this.dataSource.data = changes.dataArray.currentValue as Admission[];
+                this.dataSource.data = changes.dataArray.currentValue as AdmissionPersonlModel[];
                 this.dataSource.sort = this.sort;
                 this.dataSource.paginator = this.paginator;
                 this.click = false;
@@ -308,7 +308,7 @@ export class IPSearchListComponent implements OnInit {
             setTimeout(() => {
                 this.isLoadingStr = 'loading';
                 this._IpSearchListService.getAdmittedPatientList_1(D_data).subscribe(data => {
-                    this.dataSource.data = data["Table1"] ?? [] as Admission[];
+                    this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
                     // console.log(this.dataSource.data)
                     this.dataSource.sort = this.sort;
                     this.resultsLength = data["Table"][0]["total_row"];
@@ -338,7 +338,7 @@ export class IPSearchListComponent implements OnInit {
                 this.isLoadingStr = 'loading';
                 this._IpSearchListService.getDischargedPatientList_1(Params).subscribe(data => {
                     // this.dataSource.data = data as Admission[];
-                    this.dataSource.data = data["Table1"] ?? [] as Admission[];
+                    this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
                     console.log(this.dataSource.data)
                     this.dataSource.sort = this.sort;
                     this.resultsLength = data["Table"][0]["total_row"];

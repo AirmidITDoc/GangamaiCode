@@ -21,11 +21,12 @@ import { E } from '@angular/cdk/keycodes';
 import * as XLSX from 'xlsx';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable');
-import { Admission } from 'app/main/ipd/Admission/admission/admission.component';
+
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -152,7 +153,7 @@ export class BrowsSalesBillComponent implements OnInit {
   Store1List: any = [];
   hasSelectedContacts: boolean;
 
-  dataSource = new MatTableDataSource<Admission>();
+  dataSource = new MatTableDataSource<AdmissionPersonlModel>();
   dssaleList1 = new MatTableDataSource<SaleList>();
   dssalesList2 = new MatTableDataSource<SalesDetList>();
 
@@ -268,7 +269,7 @@ export class BrowsSalesBillComponent implements OnInit {
       setTimeout(() => {
         this.isLoadingStr = 'loading';
         this._AdmissionService.getAdmittedPatientList_1(D_data).subscribe(data => {
-          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
           // console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength = data["Table"][0]["total_row"];
@@ -299,7 +300,7 @@ export class BrowsSalesBillComponent implements OnInit {
         this.isLoadingStr = 'loading';
         this._AdmissionService.getDischargedPatientList_1(Params).subscribe(data => {
           // this.dataSource.data = data as Admission[];
-          this.dataSource.data = data["Table1"] ?? [] as Admission[];
+          this.dataSource.data = data["Table1"] ?? [] as AdmissionPersonlModel[];
           console.log(this.dataSource.data)
           this.dataSource.sort = this.sort;
           this.resultsLength = data["Table"][0]["total_row"];

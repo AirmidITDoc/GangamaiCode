@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
-import { Admission, AdmissionPersonlModel } from '../admission.component';
+import {  AdmissionPersonlModel } from '../admission.component';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';

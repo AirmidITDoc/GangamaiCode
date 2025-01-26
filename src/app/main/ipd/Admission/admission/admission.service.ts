@@ -81,7 +81,7 @@ export class AdmissionService {
         Validators.maxLength(15),
       ]],
       MobileNo: ['', [
-        Validators.required,
+        // Validators.required,
         Validators.pattern("^[0-9]*$"),
         Validators.minLength(10),
         Validators.maxLength(10),
@@ -101,7 +101,7 @@ export class AdmissionService {
       DoctorID: '',
       PatientName: '',
       FirstName: ['', [
-        Validators.required,
+        // Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       MiddleName: ['', [
@@ -109,7 +109,7 @@ export class AdmissionService {
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       LastName: ['', [
-        Validators.required,
+        // Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
       DoctorId: '',
@@ -166,7 +166,7 @@ export class AdmissionService {
       PatientWeight: '',
       AreaName: '',
       AadharCardNo: ['', [
-        Validators.required,
+        // Validators.required,
         Validators.pattern("^[0-9]*$"),
         Validators.minLength(12),
         Validators.maxLength(12),
@@ -187,7 +187,7 @@ export class AdmissionService {
 
 
   public AdmissionNewInsert(employee) {
-    return this._httpClient.post("InPatient/AdmissionNewInsert", employee);
+    return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
   }
 
   public AdmissionRegisteredInsert(employee) {

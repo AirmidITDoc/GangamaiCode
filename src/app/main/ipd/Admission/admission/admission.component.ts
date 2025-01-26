@@ -16,8 +16,6 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { MLCInformationComponent, MlcDetail } from './mlcinformation/mlcinformation.component';
-// import { AdmissionNewComponent } from './admission-new/admission-new.component';
-// import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
 import { OPIPPatientModel } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
@@ -30,17 +28,17 @@ import { ToastrService } from 'ngx-toastr';
 import { IPBillingComponent } from '../../ip-search-list/ip-billing/ip-billing.component';
 import { NewRegistrationComponent } from 'app/main/opd/registration/new-registration/new-registration.component';
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
-// import { EditRefraneDoctorComponent } from 'app/main/opd/appointment/edit-refrane-doctor/edit-refrane-doctor.component';
-// import { EditConsultantDoctorComponent } from 'app/main/opd/appointment/edit-consultant-doctor/edit-consultant-doctor.component';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
 import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
 import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedback.component';
 import { ParameterDescriptiveMasterComponent } from 'app/main/setup/department/parameter-descriptive-master/parameter-descriptive-master.component';
-import { OperatorComparer } from 'app/core/models/gridRequest';
-import { EditRefranceDoctorComponent } from 'app/main/opd/appointment-list/edit-refrance-doctor/edit-refrance-doctor.component';
-import { EditConsultantDoctorComponent } from 'app/main/opd/appointment-list/edit-consultant-doctor/edit-consultant-doctor.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
+import { User } from 'app/core/models/user';
 
 
 @Component({
@@ -54,25 +52,22 @@ export class AdmissionComponent implements OnInit {
 
 
   currentDate = new Date();
-  // reportPrintObj: Admission;
   searchFormGroup: FormGroup;
-
+  myFilterform: FormGroup;
   screenFromString = 'admission-form';
   selectedAdvanceObj: AdmissionPersonlModel;
   newRegSelected: any = 'registration';
 
+  filteredOptions: any;
   hasSelectedContacts: boolean;
   SpinLoading: boolean = false;
   isLoadings = false;
   disabled = false;
   isAlive = false;
   isOpen = false;
-
-  filteredOptions: any;
   showtable: boolean = false;
   noOptionFound: boolean = false;
   Regdisplay: boolean = false;
-
   isLinear = true;
   submitted = false;
   AdList: boolean = false;
@@ -94,12 +89,6 @@ export class AdmissionComponent implements OnInit {
   DoctorId: any = 0;
   AdmittedPatientList: any;
   msg: any;
-  sIsLoading: string = '';
-  savedValue: number = null;
-  loadID = 0;
-  Todate: any;
-  ConfigCityId = 2;
-
 
 
   options = [];
@@ -107,83 +96,13 @@ export class AdmissionComponent implements OnInit {
 
 
   registerObj = new AdmissionPersonlModel({});
-  MlcObj = new MlcDetail({})
-  bedObj = new Bed({});
-
-
-
-  filteredOptionssearchDoctor: Observable<string[]>;
-
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() dataArray: any;
   @Output() sentCountsToParent = new EventEmitter<any>();
-
-  @Input() panelWidth: string | number;
-  @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
-  @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
-
-  // filter for doctor
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  @Inject(MAT_DIALOG_DATA) public data: any;
-
-  private _onDestroy = new Subject<void>();
-
-  displayedColumns = [
-    // "useraction",
-    // "IsMLC",
-
-
-    "regNo",
-    "patientName",
-    'admissionTime',
-
-    'doctorname',
-    'refDocName',
-    'ipdno',
-    'patientTypeID',
-    'roomName',
-    'tariffName',
-    'className',
-    'companyName',
-    'relativeName',
-    'buttons'
-  ];
-
-
-  dataSource = new MatTableDataSource<Admission>();
-  searchDoctorList: any = [];
-  // dataSource1 = new MatTableDataSource<OPIPPatientModel>();
-
+  
+  
   menuActions: Array<string> = [];
   centered = false;
   unbounded = false;
-
-  // Checking dropdown validation
-  vPrefixID: any = 0;
-  vMaritalStatusId: any = 0;
-  vReligionId: any = 0;
-  vAreaId: any = 0;
-  vCityId: any = 0;
-
-  vPatientTypeID: any = 0;
-  vTariffId: any = 0;
-  vDoctorId: any = 0;
-  vDoctorID: any = 0;
-  vDepartmentid: any = 0;
-  vCompanyId: any = 0;
-  vSubCompanyId: any = 0;
-  vadmittedDoctor1: any = 0;
-  vadmittedDoctor2: any = 0;
-  vrefDoctorId: any = 0;
-  vRoomId: any = 0;
-  vBedId: any = 0;
-  vClassId: any = 0;
-  vRelationshipId: any = 0;
-
 
   radius: number;
   color: string;
@@ -193,8 +112,101 @@ export class AdmissionComponent implements OnInit {
   Regflag: boolean = false;
 
   // new Api
+    @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
+    appUser$: Observable<User>;
+
+      nowdate = new Date();
+      firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
+    
+      fromDate ="2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+      toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+      
   autocompleteModedeptdoc: string = "ConDoctor";
   optionsSearchDoc: any[] = [];
+
+   gridConfig: gridModel = {
+          apiUrl: "Admission/AdmissionList",
+          columnsList: [
+              { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width: 50, type: 22 },
+             { heading: "IsOpToIpconv", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', width: 50, type:18},
+            // { heading: "IsBillGenerated", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', width: 50, type:15 },
+              { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', width: 100, type:12 },
+              { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+              { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+              { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type:8 },
+              { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+              { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+              { heading: "IPDNO", key: "IPDNo", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+              { heading: "RoomName", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+              { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+              { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+              { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+              { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+              { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+              { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+              { heading: "RelatvieMobileNo", key: "relatvieMobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
+              {
+                  heading: "Action", key: "action", align: "right", width: 400 ,sticky:true, type: gridColumnTypes.action, actions: [
+                      {
+                          action: gridActions.edit, callback: (data: any) => {
+                              this.EditRegistration(data);
+                          }
+                      },
+                      
+                      {
+                          action: gridActions.edit, callback: (data: any) => {
+                              this.onEdit(data);
+                          }
+                      },
+                      {
+                          action: gridActions.print , callback: (data: any) => {
+                              this.getAdmittedPatientCasepaperview(data);
+                          }
+                      },
+                      {
+                          action: gridActions.print , callback: (data: any) => {
+                              this.getAdmittedPatientCasepaperTempview(data);
+                          }
+                      },
+                      {
+                          action: gridActions.edit, callback: (data: any) => {
+                              this.getEditAdmission(data);
+                          }
+                      },
+                      {
+                        action: gridActions.Mlc, callback: (data: any) => {
+                            this.NewMLc(data);
+                        }
+                    },
+                      // {
+                      //     action: gridActions.delete, callback: (data: any) => {
+  
+                      //         // this.AppointmentCancle(data);
+  
+                      //     }
+                      // }
+                    ]
+              } //Action 1-view, 2-Edit,3-delete
+          ],
+  
+          sortField: "AdmissionId",
+          sortOrder: 0,
+          filters: [ { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+          { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Doctor_Id", fieldValue:"0", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+          { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+          { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "M_Name", fieldValue:"%", opType: OperatorComparer.Equals },
+          { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+          ],
+          row: 25
+          
+      }
+  
 
   constructor(public _AdmissionService: AdmissionService,
     public _registrationService: RegistrationService,
@@ -207,31 +219,18 @@ export class AdmissionComponent implements OnInit {
     private reportDownloadService: ExcelDownloadService,
     private formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
-    private advanceDataStored: AdvanceDataStored) {
-
-    // this.getRegSearchList();
+   
+  ) {
+    
   }
 
   ngOnInit(): void {
-    this.getAdmittedPatientList_1()
-
-    if (this.data) {
-
-      this.registerObj = this.data.registerObj;
-      this.DoctorId = this.data.registerObj.DoctorId;
-
-    }
 
     this.isAlive = true;
-
-
     this.searchFormGroup = this.createSearchForm();
-
-    this.getDoctorList();
+    this.myFilterform=this._AdmissionService.filterForm();
 
   }
-
-
 
   Admissiondetail(data) {
     this.Vtotalcount = 0;
@@ -256,29 +255,33 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-  getOptionTextsearchDoctor(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
-  }
 
-  getDoctorList() {
-    this._AdmissionService.getDoctorMaster().subscribe(data => {
-      this.searchDoctorList = data;
-      this.optionsSearchDoc = this.searchDoctorList.slice();
-      this.filteredOptionssearchDoctor = this._AdmissionService.myFilterform.get('searchDoctorId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterSearchdoc(value) : this.searchDoctorList.slice()),
-      );
+  onEdit(row) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    console.log(row)
+    this._AdmissionService.populateForm(row);
+
+    const dialogRef = this._matDialog.open(
+        NewRegistrationComponent,
+        {
+            maxWidth: "95vw",
+            maxHeight: '90%',
+            width: '90%',
+            data: {
+                data1: row,
+                Submitflag: false
+            },
+        }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+        console.log("The dialog was closed - Insert Action", result);
+
     });
-  }
-
-  private _filterSearchdoc(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-      return this.optionsSearchDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-    }
-
-  }
-
+}
+ 
   selectChangedeptdoc(obj: any) {
     console.log(obj);
 
@@ -306,162 +309,65 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
-    }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        this.V_SearchRegList = this.filteredOptions;
-        console.log(this.V_SearchRegList)
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-
-  }
-
-
-
-
-
-  getSelectedObj(obj) {
-
-    this.registerObj = new AdmissionPersonlModel({});
-
-    obj.AgeDay = obj.AgeDay.trim();
-    obj.AgeMonth = obj.AgeMonth.trim();
-    obj.AgeYear = obj.AgeYear.trim();
-    this.registerObj = obj;
-    console.log(this.registerObj);
-
-    this.PatientName = obj.PatientName;
-    this.RegId = obj.RegId;
-    this.RegNo = obj.RegNo;
-
-
-  }
-
-  AdmittedRegId: any = 0;
-  chekAdmittedpatient(obj) {
-
-    this.AdmittedRegId = obj.RegId;
-
-    let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
-    console.log(Query)
-    this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
-      this.registerObj = data[0];
-      console.log(this.registerObj);
-      if (this.registerObj != undefined) {
-        this.AdmittedRegId = 0;
-        Swal.fire("selected patient is already admitted!!..")
-
-      } else {
-        this.getSelectedObj(obj);
-      }
-    });
-
-  }
-
-
-  // onChangeReg(event) {
-  //   if (event.value == 'registration') {
-  //     this.Regflag = false;
-  //     this.personalFormGroup.get('RegId').reset();
-  //     this.personalFormGroup.get('RegId').disable();
-  //     this.isRegSearchDisabled = true;
-  //     this.registerObj = new AdmissionPersonlModel({});
-  //     this.personalFormGroup.reset();
-
-  //     this.personalFormGroup = this.createPesonalForm();
-  //     this.personalFormGroup.markAllAsTouched();
-
-  //     this.hospitalFormGroup = this.createHospitalForm();
-  //     this.hospitalFormGroup.markAllAsTouched();
-
-  //     this.wardFormGroup = this.wardForm();
-  //     this.wardFormGroup.markAllAsTouched();
-
-  //     this.otherFormGroup = this.otherForm();
-  //     this.otherFormGroup.markAllAsTouched()
-
-  //     this.getPrefixList();
-  //     this.getHospitalList();
-  //     this.getPrefixList();
-  //     this.getPatientTypeList();
-  //     this.getTariffList();
-  //     this.getAreaList();
-  //     this.getMaritalStatusList();
-  //     this.getReligionList();
-  //     this.getDepartmentList();
-  //     this.getRelationshipList();
-
-  //     this.getDoctorList();
-  //     this.getDoctor1List();
-  //     this.getDoctor2List();
-  //     this.getWardList();
-  //     this.getCompanyList();
-  //     this.getSubTPACompList();
-  //     this.getcityList1();
-
-
-  //     this.Regdisplay = false;
-  //     this.showtable = false;
-
-  //   } else {
-  //     this.Regdisplay = true;
-  //     this.Regflag = true;
-  //     this.searchFormGroup.get('RegId').enable();
-  //     this.isRegSearchDisabled = false;
-
-  //     this.personalFormGroup = this.createPesonalForm();
-  //     this.personalFormGroup.markAllAsTouched();
-
-  //     this.hospitalFormGroup = this.createHospitalForm();
-  //     this.hospitalFormGroup.markAllAsTouched();
-
-  //     this.wardFormGroup = this.wardForm();
-  //     this.wardFormGroup.markAllAsTouched();
-
-  //     this.otherFormGroup = this.otherForm();
-  //     this.otherFormGroup.markAllAsTouched();
-
-  //     this.getPrefixList();
-  //     this.getHospitalList();
-  //     this.getPrefixList();
-  //     this.getPatientTypeList();
-  //     this.getTariffList();
-  //     this.getAreaList();
-  //     this.getMaritalStatusList();
-  //     this.getReligionList();
-  //     this.getDepartmentList();
-  //     this.getRelationshipList();
-
-  //     this.getDoctorList();
-  //     this.getDoctor1List();
-  //     this.getDoctor2List();
-  //     this.getWardList();
-  //     this.getCompanyList();
-  //     this.getSubTPACompList();
-  //     this.getcityList1();
-
-  //        this.showtable = true;
+  // getSearchList() {
+  //   var m_data = {
+  //     "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
+  //   }
+  //   if (this.searchFormGroup.get('RegId').value.length >= 1) {
+  //     this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
+  //       this.filteredOptions = resData;
+  //       this.V_SearchRegList = this.filteredOptions;
+  //       console.log(this.V_SearchRegList)
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       }
+  //     });
   //   }
 
-  //   const todayDate = new Date();
-  //   const dob = new Date(this.currentDate);
-  //   const timeDiff = Math.abs(Date.now() - dob.getTime());
-  //   this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-  //   this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-  //   this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-  //   this.registerObj.DateofBirth = this.currentDate;
-  //   this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
+  // }
+
+
+  // getSelectedObj(obj) {
+
+  //   this.registerObj = new AdmissionPersonlModel({});
+
+  //   obj.AgeDay = obj.AgeDay.trim();
+  //   obj.AgeMonth = obj.AgeMonth.trim();
+  //   obj.AgeYear = obj.AgeYear.trim();
+  //   this.registerObj = obj;
+  //   console.log(this.registerObj);
+
+  //   this.PatientName = obj.PatientName;
+  //   this.RegId = obj.RegId;
+  //   this.RegNo = obj.RegNo;
+
 
   // }
+
+  // AdmittedRegId: any = 0;
+  // chekAdmittedpatient(obj) {
+
+  //   this.AdmittedRegId = obj.RegId;
+
+  //   let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
+  //   console.log(Query)
+  //   this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
+  //     this.registerObj = data[0];
+  //     console.log(this.registerObj);
+  //     if (this.registerObj != undefined) {
+  //       this.AdmittedRegId = 0;
+  //       Swal.fire("selected patient is already admitted!!..")
+
+  //     } else {
+  //       this.getSelectedObj(obj);
+  //     }
+  //   });
+
+  // }
+
+
 
   item1: any;
   item2: any;
@@ -471,8 +377,6 @@ export class AdmissionComponent implements OnInit {
   }
 
 
-
-
   onClose() {
 
     this.searchFormGroup.get('RegId').reset();
@@ -480,194 +384,32 @@ export class AdmissionComponent implements OnInit {
 
 
   }
-  onEdit(row) {
-
-    this.registerObj = row;
-    this.getSelectedObj(row);
-  }
-
-
-
+  
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
   ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
-
-
-  resultsLength = 0;
-  fname = "%"
-  lname = "%"
-  mname = "%"
-  fromdate = "11/11/2022"
-  todate = "11/11/2024"
-  IPNo = "0"
-  Doctor = 0
-  searchDoctorId = "0";
-  getAdmittedPatientList_1() {
-    // this.fname=this._AdmissionService.myFilterform.get("FirstName").value
-    // this.lname=this._AdmissionService.myFilterform.get("LastName").value
-    // this.mname=this._AdmissionService.myFilterform.get("MiddleName").value
-    // this.fromdate=this._AdmissionService.myFilterform.get("start").value
-    // this.todate=this._AdmissionService.myFilterform.get("end").value
-    // this.RegNo=this._AdmissionService.myFilterform.get("RegNo").value
-    // this.DoctorId=this._AdmissionService.myFilterform.get("DoctorId").value
-    // this.IPNo=this._AdmissionService.myFilterform.get("IPDNo").value
-
-
-    var Param = {
-      sortField: "AdmissionId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
-        { fieldName: "Reg_No", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
-        { fieldName: "Doctor_Id", fieldValue: this.searchDoctorId, opType: OperatorComparer.Equals },
-        { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
-        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "M_Name", fieldValue: this.lname, opType: OperatorComparer.Contains },
-        { fieldName: "IPNo", fieldValue: this.IPNo, opType: OperatorComparer.Equals },
-        { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-
-      ],
-      "exportType": "JSON"
-    }
-    console.log(Param);
-    this._AdmissionService.getAdmittedPatientListNew(Param).subscribe(data => {
-      this.dataSource.data = data.data as Admission[];
-      if (this.dataSource.data.length > 0) {
-        this.Admissiondetail(this.dataSource.data);
-      }
-      this.dataSource.sort = this.sort;
-      console.log(data)
-      this.resultsLength = data.data.length;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+   
   }
 
 
 
-
-  getAdmittedPatientListview() {
-    // this.sIsLoading = 'loading-data';
-
-    // setTimeout(() => {
-
-    //   this.AdList = true;
-    //   this._AdmissionService.getAdmittedPatientListView(
-
-    //     this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-    //     this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-    //     0, 0,0
-    //   ).subscribe(res => {
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "Admission List  Viewer"
-    //         }
-    //       });
-
-    //     matDialog.afterClosed().subscribe(result => {
-    //       this.AdList = false;
-    //       this.sIsLoading = ' ';
-    //     });
-    //   });
-
-    // }, 100);
-
+   getAdmittedPatientListview() {
+   
   }
 
 
 
-  getAdmittedPatientCasepaperview(AdmissionId, flag) {
-    this.sIsLoading = 'loading-data';
-    
-    let AdmissionID
-    if (flag) {
-      AdmissionID = AdmissionId
-    } else {
-      AdmissionID = AdmissionId.AdmissionID
-    }
-
-    setTimeout(() => {
-      this.SpinLoading = true;
-      this.AdList = true;
-      this._AdmissionService.getAdmittedPatientCasepaaperView(
-        AdmissionID
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Admission Paper  Viewer"
-            }
-          });
-
-        matDialog.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = ' ';
-        });
-      });
-
-    }, 100);
-
-
-
-
+  getAdmittedPatientCasepaperview(AdmissionId) {
+  
   }
 
 
 
-  getAdmittedPatientCasepaperTempview(AdmissionId, flag) {
-    this.sIsLoading = 'loading-data';
-    
-    let AdmissionID
-    if (flag) {
-      AdmissionID = AdmissionId
-    } else {
-      AdmissionID = AdmissionId.AdmissionID
-    }
-
-    // setTimeout(() => {
-    //   this.SpinLoading = true;
-    //   this.AdList = true;
-    //   this._AdmissionService.getAdmittedPatientCasepaapertemplateView(
-    //     AdmissionID
-    //   ).subscribe(res => {
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "Admission Paper  Viewer"
-    //         }
-    //       });
-
-    //     matDialog.afterClosed().subscribe(result => {
-    //       this.AdList = false;
-    //       this.sIsLoading = ' ';
-    //     });
-    //   });
-
-    // }, 100);
+  getAdmittedPatientCasepaperTempview(AdmissionId) {
+ 
   }
 
   onClear() {
@@ -679,18 +421,10 @@ export class AdmissionComponent implements OnInit {
     );
   }
 
-  // toggle sidebar
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-  // field validation 
-  get f() { return this._AdmissionService.myFilterform.controls; }
-
-
+  
   NewMLc(contact) {
 
-    this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
+   
     this._AdmissionService.populateForm(contact);
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
@@ -726,8 +460,7 @@ export class AdmissionComponent implements OnInit {
           });
 
         matDialog.afterClosed().subscribe(result => {
-          // this.AdList = false;
-          // this.sIsLoading = ' ';
+         
         });
       });
 
@@ -735,108 +468,8 @@ export class AdmissionComponent implements OnInit {
 
   }
 
-
-
-  getRecord(contact, m): void {
-
-    if (m == "Edit Admission") {
-      let Regdata;
-      this._AdmissionService.getRegdata(contact.RegID).subscribe(data => {
-        Regdata = data as RegInsert[];
-
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-
-      const dialogRef = this._matDialog.open(RegAdmissionComponent,
-        {
-          maxWidth: '95vw',
-
-          height: '900px', width: '100%',
-          data: {
-            PatObj: Regdata
-          }
-        });
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      });
-    }
-
-    else if (m == "Update TPA Company Information") {
-
-
-      this.advanceDataStored.storage = new AdmissionPersonlModel(contact);
-      this._AdmissionService.populateForm(contact);
-      const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
-        {
-          maxWidth: '85vw',
-          height: '600px', width: '100%',
-        });
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      });
-    } else if (m == "Update Consultant Doctor") {
-
-      var m_data2 = {
-        RegId: contact.RegID,
-        PatientName: contact.PatientName,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_Id: contact.AdmissionID,
-        DoctorId: contact.DoctorId,
-        DoctorName: contact.Doctorname,
-      };
-      this._registrationService.populateFormpersonal(m_data2);
-      const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
-        {
-          maxWidth: "70vw",
-          height: "410px",
-          width: "70%",
-          data: {
-            registerObj: m_data2,
-            FormName: "Admission"
-          },
-        }
-      );
-      dialogRef.afterClosed().subscribe((result) => {
-
-      });
-    } else if (m == "Update Referred Doctor") {
-
-      var m_data3 = {
-        RegId: contact.RegID,
-        PatientName: contact.PatientName,
-        AdmissionID: contact.AdmissionID,
-        OPD_IPD_Id: contact.AdmissionID,
-        RefDoctorId: contact.RefDocId,
-        RefDocName: contact.RefDocName,
-        VisitId: contact.VisitId,
-      };
-      this._registrationService.populateFormpersonal(m_data3);
-      const dialogRef = this._matDialog.open(EditRefranceDoctorComponent, {
-        maxWidth: "70vw",
-        height: "410px",
-        width: "70%",
-        data: {
-          registerObj: m_data3,
-          FormName: "Admission"
-        },
-      });
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log("The dialog was closed - Insert Action", result);
-      });
-    }
-
-  }
-
-
-
-  EditRegistration(row) {
-
-    this.advanceDataStored.storage = new AdmissionPersonlModel(row);
-    console.log(row)
+   EditRegistration(row) {
+ console.log(row)
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"] = row.RegID;
     this.registerObj["RegID"] = row.RegID;
@@ -845,7 +478,7 @@ export class AdmissionComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "90vw",
-        height: '450px',
+        height: '750px',
         width: '100%',
         data:row
         //  {
@@ -855,14 +488,13 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      // this.getAdmittedPatientList_1();
+      
 
     });
 
   }
   getEditAdmission(row) {
 
-    this.advanceDataStored.storage = new AdmissionPersonlModel(row);
     console.log(row)
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"] = row.RegID;
@@ -878,16 +510,13 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getAdmittedPatientList_1();
-
+      
     });
 
   }
 
   getEditCompany(row) {
 
-    this.advanceDataStored.storage = new AdmissionPersonlModel(row);
-    console.log(row)
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"] = row.RegID;
     this.registerObj["RegID"] = row.RegID;
@@ -904,7 +533,7 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getAdmittedPatientList_1();
+      
 
     });
   }
@@ -913,10 +542,9 @@ export class AdmissionComponent implements OnInit {
     this.dateStyle = e.value;
   }
 
-
+  getAdmissionview(){}
   feedback(contact) {
 
-    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
     this._AdmissionService.populateForm(contact);
     const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
       {
@@ -933,247 +561,25 @@ export class AdmissionComponent implements OnInit {
 
 
   }
-}
 
-export class Admission {
-  AdmissionID: Number;
-  RegID: number;
-  AdmissionDate: any;
-  RegNo: number;
-  AdmissionTime: any;
-  PatientTypeID: number;
-  HospitalID: number;
-  HospitalName: any;
-  HospitalAddress: any;
 
-  Phone: number;
-  EmailId: any;
-  DocNameID: number;
-  RefDocNameID: number;
-  RefDoctorName: any;
-  RoomId: number;
-  BedId: number;
-  DischargeDate: Date;
-  DischargeTime: Time;
-  IsDischarged: number;
-  IsBillGenerated: number;
-  CompanyId: number;
-  TariffId: number;
-  ClassId: number;
-  DepartmentId: number;
-  RelativeName: string;
-  RelativeAddress: string;
-  RelativePhoneNo: string;
-  PhoneNo: string;
-  RelationshipId: number;
-  AdmittedDoctor1: number;
-  AdmittedDoctor2: number;
-  SubTPAComp: number;
-  IsReimbursement: boolean;
-  MobileNo: number;
-  PrefixID: number;
-  PrefixName: string;
-  AddedBy: number;
-  PatientName: string;
-  FirstName: string;
-  MiddleName: string;
-  LastName: string;
-  DoctorId: number;
-  DoctorName: string;
-  IPDNo: number;
-  DOA: any;
-  DOT: Time;
-  IsMLC: boolean;
-  MotherName: string;
-  RefDocName: string;
-  PatientType: string;
-  RegNoWithPrefix: number;
-  CompanyName: string;
-  AdmittedDoctor1ID: number;
-  TariffName: string;
-  RelationshipName: string;
-  RoomName: string;
-  DepartmentName: any;
-  BedName: string;
-  GenderId: number;
-  GenderName: string;
-  AdmDateTime: Date;
-  ChargesAmount: number;
-  AdvanceAmount: number;
-  AdmittedPatientBalanceAmount: number;
-  Age: number;
-  AgeDay: number;
-  AgeMonth: number;
-  SubCompanyId: any;
-  AdmittedDoctorName: any;
-  PatientTypeId: any;
-  IsOpToIPconv: any;
+  onSave() {
 
-  /**
-* Constructor
-*
-* @param Admission
-*/
-  constructor(Admission) {
-    {
-      this.AdmissionID = Admission.AdmissionID || '';
-      this.RegID = Admission.RegID || '';
-      this.AdmissionDate = Admission.AdmissionDate || '';
-      this.AdmissionTime = Admission.AdmissionTime || '';
-      this.PatientTypeID = Admission.PatientTypeID || '';
-      this.HospitalID = Admission.HospitalID || '';
-      this.EmailId = Admission.EmailId || '';
-      this.Phone = Admission.Phone || 0;
-      this.DocNameID = Admission.DocNameID || '';
-      this.RefDocNameID = Admission.RefDocNameID || '';
-      this.DischargeDate = Admission.DischargeDate || '';
-      this.DischargeTime = Admission.DischargeTime || '';
-      this.IsDischarged = Admission.IsDischarged || '';
-      this.IsBillGenerated = Admission.IsBillGenerated || '';
-      this.CompanyId = Admission.CompanyId || 0;
-      this.ClassId = Admission.ClassId || 0;
-      this.DepartmentId = Admission.DepartmentId || 0;
-      this.RelativeName = Admission.RelativeName || '';
-      this.RelativeAddress = Admission.RelativeAddress || '';
-      this.RelativePhoneNo = Admission.RelativePhoneNo || 0;
-      this.PhoneNo = Admission.PhoneNo || '';
-      this.MobileNo = Admission.MobileNo || '';
-      this.RelationshipId = Admission.RelationshipId || '';
-      this.AddedBy = Admission.AddedBy || '';
-      this.IsMLC = Admission.IsMLC || '';
-      this.MotherName = Admission.MotherName || '';
-      this.AdmittedDoctor1 = Admission.AdmittedDoctor1 || '';
-      this.AdmittedDoctor2 = Admission.AdmittedDoctor2 || '';
-      this.SubTPAComp = Admission.SubTPAComp || '';
-      this.IsReimbursement = Admission.IsReimbursement || '';
-      this.RefDoctorName = Admission.RefDoctorName || '';
-      this.PrefixID = Admission.PrefixID || 0;
-      this.PrefixName = Admission.PrefixName || '';
-      this.PatientName = Admission.PatientName || '';
-      this.FirstName = Admission.FirstName || '';
-      this.MiddleName = Admission.MiddleName || '';
-      this.LastName = Admission.LastName || '';
-      this.DoctorId = Admission.DoctorId || '';
-      this.DoctorName = Admission.DoctorName || '';
-      this.IPDNo = Admission.IPDNo || '';
+    const dialogRef = this._matDialog.open(NewAdmissionComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: "115vh", width: '100%', height: "100%",
+            });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
 
-      this.GenderId = Admission.GenderId || '';
-      this.GenderName = Admission.GenderName || '';
+    });
 
-      this.DOA = Admission.DOA || '';
-      this.DOT = Admission.DOT || '';
-      // this.PatientTypeId = Admission.PatientTypeId || '';
-      this.PatientType = Admission.PatientType || '';
 
-      this.RefDocName = Admission.RefDocName || '';
-      this.RegNoWithPrefix = Admission.RegNoWithPrefix || '';
-      this.HospitalName = Admission.HospitalName || '';
-      this.DepartmentName = Admission.DepartmentName || '';
-      this.AdmittedDoctor1ID = Admission.AdmittedDoctor1ID || '';
-      this.AdmittedDoctor1 = Admission.AdmittedDoctor1 || '';
-      this.TariffId = Admission.TariffId || '';
-      this.TariffName = Admission.TariffName || '';
-      this.RoomId = Admission.WardId || '';
-      this.RoomName = Admission.RoomName || '';
-      this.BedId = Admission.BedId || '';
-      this.BedName = Admission.BedName || '';
-      this.AdmDateTime = Admission.AdmDateTime || '';
-      this.CompanyName = Admission.CompanyName || '';
-      this.RelationshipName = Admission.RelationshipName || '';
-      this.HospitalAddress = Admission.HospitalAddress || '';
-      this.ChargesAmount = Admission.ChargesAmount || '';
-      this.AdvanceAmount = Admission.AdvanceAmount || '';
-      this.AdmittedPatientBalanceAmount = Admission.AdmittedPatientBalanceAmount || '';
-      this.RegNo = Admission.RegNo || '';
-      this.Age = Admission.Age || '';
-      this.AgeDay = Admission.AgeDay || '';
-      this.AgeMonth = Admission.AgeMonth || '';
-      this.SubCompanyId = Admission.SubCompanyId || 0;
-      this.AdmittedDoctorName = Admission.AdmittedDoctorName || ''
-      this.PatientTypeId = Admission.PatientTypeId || ''
-      this.IsOpToIPconv = Admission.IsOpToIPconv || 0;
-    }
   }
 }
 
-export class RegInsert {
-  RegId: Number;
-  RegDate: Date;
-  RegTime: Time;
-  PrefixId: number;
-  FirstName: string;
-  MiddleName: string;
-  LastName: string;
-  Address: string;
-  City: string;
-  CityName: string;
-  PinNo: string;
-  DateofBirth: Date;
-  Age: string;
-  GenderId: Number;
-  PhoneNo: string;
-  MobileNo: string;
-  AddedBy: number;
-  AgeYear: string;
-  AgeMonth: string;
-  AgeDay: string;
-  CountryId: number;
-  StateId: number;
-  CityId: number;
-  MaritalStatusId: number;
-  IsCharity: Boolean;
-  ReligionId: number;
-  AreaId: number;
-  VillageId: number;
-  TalukaId: number;
-  PatientWeight: number;
-  AreaName: string;
-  AadharCardNo: string;
-  PanCardNo: string;
 
-  /**
-   * Constructor
-   *
-   * @param RegInsert
-   */
-
-  constructor(RegInsert) {
-    {
-      this.RegId = RegInsert.RegId || '';
-      this.RegDate = RegInsert.RegDate || '';
-      this.RegTime = RegInsert.RegTime || '';
-      this.PrefixId = RegInsert.PrefixId || '';
-      this.FirstName = RegInsert.FirstName || '';
-      this.MiddleName = RegInsert.MiddleName || '';
-      this.LastName = RegInsert.LastName || '';
-      this.Address = RegInsert.Address || '';
-      this.City = RegInsert.City || '';
-      this.PinNo = RegInsert.PinNo || '';
-      this.DateofBirth = RegInsert.DateofBirth || '';
-      this.Age = RegInsert.Age || '';
-      this.GenderId = RegInsert.GenderId || '';
-      this.PhoneNo = RegInsert.PhoneNo || '';
-      this.MobileNo = RegInsert.MobileNo || '';
-      this.AddedBy = RegInsert.AddedBy || '';
-      this.AgeYear = RegInsert.AgeYear || '';
-      this.AgeMonth = RegInsert.AgeMonth || '';
-      this.AgeDay = RegInsert.AgeDay || '';
-      this.CountryId = RegInsert.CountryId || '';
-      this.StateId = RegInsert.StateId || '';
-      this.CityId = RegInsert.CityId || '';
-      this.MaritalStatusId = RegInsert.MaritalStatusId || '';
-      this.IsCharity = RegInsert.IsCharity || '';
-      this.ReligionId = RegInsert.ReligionId || '';
-      this.AreaId = RegInsert.AreaId || '';
-      this.VillageId = RegInsert.VillageId || '';
-      this.TalukaId = RegInsert.TalukaId || '';
-      this.PatientWeight = RegInsert.PatientWeight || '';
-      this.AreaName = RegInsert.AreaName || '';
-      this.AadharCardNo = RegInsert.AadharCardNo || '';
-      this.PanCardNo = RegInsert.PanCardNo || '';
-    }
-  }
-}
 
 export class Bed {
   BedId: Number;
@@ -1195,6 +601,7 @@ export class Bed {
 export class AdmissionPersonlModel {
   AadharCardNo: any;
   Address: any;
+  PrefixId:any;
   opD_IPD_Type: any;
   Age: Number;
   AgeDay: any;
@@ -1261,7 +668,7 @@ export class AdmissionPersonlModel {
   VisitId: any;
   CompanyId: any;
   HospitalId: any;
-  PatientTypeID: any;
+  patientTypeId: any;
   PatientType: any;
   SubCompanyId: any;
   Aadharcardno: any;
@@ -1337,6 +744,8 @@ export class AdmissionPersonlModel {
   PathTestID: any;
   Adm_Visit_docId: any;
   TemplateResultInHTML: any;
+  DocNameId:any;
+  regId:any;
   /**
 * Constructor
 *
@@ -1344,6 +753,7 @@ export class AdmissionPersonlModel {
 */
   constructor(AdmissionPersonl) {
     {
+      this.PrefixId=AdmissionPersonl.PrefixId || 0;
       this.Departmentid = AdmissionPersonl.Departmentid || 0;
       this.AadharCardNo = AdmissionPersonl.AadharCardNo || '';
       this.opD_IPD_Type = AdmissionPersonl.opD_IPD_Type || 0
@@ -1409,7 +819,7 @@ export class AdmissionPersonlModel {
       this.VisitId = AdmissionPersonl.VisitId || 0;
       this.HospitalId = AdmissionPersonl.HospitalId || 0;
       this.CompanyId = AdmissionPersonl.CompanyId || 0;
-      this.PatientTypeID = AdmissionPersonl.PatientTypeID || 0;
+      this.patientTypeId = AdmissionPersonl.patientTypeId || 0;
       this.PatientType = AdmissionPersonl.PatientType || '';
       this.SubCompanyId = AdmissionPersonl.SubCompanyId || 0;
       this.Aadharcardno = AdmissionPersonl.Aadharcardno || ''
@@ -1488,45 +898,157 @@ export class AdmissionPersonlModel {
       this.PathTestID = AdmissionPersonl.PathTestID || 0
       this.Adm_Visit_docId = AdmissionPersonl.Adm_Visit_docId || 0;
       this.TemplateResultInHTML = AdmissionPersonl.TemplateResultInHTML || ''
+      this.DocNameId = AdmissionPersonl.DocNameId || ''
+      this.regId=AdmissionPersonl.regId || 0
+
+      
     }
   }
 }
 
-export class Editdetail {
-  Departmentid: Number;
-  CityId: Number;
+export class RegInsert {
+  RegId: Number;
+  regId: Number;
+  RegID: Number;
+  RegDate: Date;
+  regDate: Date;
   PatientName: string;
-  RegNo: any;
-  AdmDateTime: string;
-  AgeYear: number;
-  ClassId: number;
-  ClassName: String;
-  TariffName: String;
-  TariffId: number;
-  IsDischarged: boolean;
-  opD_IPD_Type: number;
-  AdmissionDate: Date;
-  OPD_IPD_ID: any;
+  RegTime: Time;
+  prefixId: number;
+  PrefixId: number;
+  PrefixID: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  FirstName: string;
+  MiddleName: string;
+  LastName: string;
+  Address: string;
+  address: string;
+  City: string;
+  city: string;
+  PinNo: string;
+  regNo: string;
+  RegNo: string;
+  dateOfBirth: Date;
+  dateofBirth: Date;
+  DateofBirth: Date;
+  Age: any;
+  age: any;
+  GenderId: Number;
+  genderId: any;
+  PhoneNo: string;
+  phoneNo: string;
+  MobileNo: string;
+  mobileNo: string;
+  AddedBy: number;
+  AgeYear: any;
+  AgeMonth: any;
+  AgeDay: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  CountryId: number;
+  countryId: number;
+  StateId: number;
+  stateId: number;
+  CityId: number;
+  cityId: number;
+  MaritalStatusId: number;
+  maritalStatusId: number;
+  IsCharity: Boolean;
+  ReligionId: number;
+  religionId: number;
+  AreaId: number;
+  areaId: number;
+  VillageId: number;
+  TalukaId: number;
+  PatientWeight: number;
+  AreaName: string;
+  AadharCardNo: string;
+  aadharCardNo: string;
+  PanCardNo: string;
+  currentDate = new Date();
+  AdmissionID: any;
+  VisitId: any;
+  isSeniorCitizen: boolean
+  // addedBy:any;
+  // updatedBy:any;
+
+
   /**
-  * Constructor
-  *
-  * @param Editdetail
-  */
-  constructor(Editdetail) {
-    {
-      this.Departmentid = Editdetail.Departmentid || '';
-      this.CityId = Editdetail.CityId || '';
-      this.TariffId = Editdetail.TariffId || '';
-      this.AdmissionDate = Editdetail.AdmissionDate || '';
-      this.RegNo = Editdetail.RegNo || '';
-      this.OPD_IPD_ID = Editdetail.OPD_IPD_ID || '';
-      //  this.AgeYear = AdmissionPersonl.AgeYear || '';
-      //  this.ClassId = AdmissionPersonl.ClassId || '';
-      //  this.ClassName = AdmissionPersonl.ClassName || '';
-      //  this.TariffName = AdmissionPersonl.TariffName || '';
-      //  this.TariffId = AdmissionPersonl.TariffId || '';
-      //  this.IsDischarged =AdmissionPersonl.IsDischarged || 0 ;
-      //  this.opD_IPD_Type = AdmissionPersonl.opD_IPD_Type | 0;
-    }
+   * Constructor
+   *
+   * @param RegInsert
+   */
+
+  constructor(RegInsert) {
+      {
+          this.RegId = RegInsert.RegId || 0;
+          this.regId = RegInsert.regId || 0;
+          this.RegID = RegInsert.RegID || 0;
+          this.RegDate = RegInsert.RegDate || this.currentDate;
+          this.regDate = RegInsert.regDate || this.currentDate;
+
+
+          this.RegTime = RegInsert.RegTime || this.currentDate;
+
+          this.prefixId = RegInsert.prefixId || 0;
+          this.PrefixId = RegInsert.PrefixId || 0;
+          this.PrefixID = RegInsert.PrefixID || 0;
+          this.PrefixID = RegInsert.PrefixID || 0;
+          this.firstName = RegInsert.firstName || '';
+          this.middleName = RegInsert.middleName || '';
+          this.lastName = RegInsert.lastName || '';
+          this.FirstName = RegInsert.FirstName || '';
+          this.MiddleName = RegInsert.MiddleName || '';
+          this.LastName = RegInsert.LastName || '';
+          this.Address = RegInsert.Address || '';
+          this.RegNo = RegInsert.RegNo || '';
+          this.City = RegInsert.City || 'SS';
+          this.PinNo = RegInsert.PinNo || '';
+          this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
+          this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
+          this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
+          this.Age = RegInsert.Age || '';
+          this.GenderId = RegInsert.GenderId || 0;
+          this.genderId = RegInsert.genderId || 0;
+          this.PhoneNo = RegInsert.PhoneNo || '';
+          this.phoneNo = RegInsert.phoneNo || '';
+          this.MobileNo = RegInsert.MobileNo || '';
+          this.mobileNo = RegInsert.mobileNo || '';
+          this.AddedBy = RegInsert.AddedBy || '';
+          this.AgeYear = RegInsert.AgeYear || '0';
+          this.AgeMonth = RegInsert.AgeMonth || '0';
+          this.AgeDay = RegInsert.AgeDay || '0';
+          this.ageYear = RegInsert.ageYear || '0';
+          this.ageMonth = RegInsert.ageMonth || '0';
+          this.ageDay = RegInsert.ageDay || '0';
+          this.CountryId = RegInsert.CountryId || 0;
+          this.countryId = RegInsert.countryId || 0;
+          this.StateId = RegInsert.StateId || 0;
+          this.stateId = RegInsert.stateId || 0;
+          this.CityId = RegInsert.CityId || 0;
+          this.cityId = RegInsert.cityId || 0;
+          this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
+          this.IsCharity = RegInsert.IsCharity || false;
+          this.ReligionId = RegInsert.ReligionId || 0;
+          this.religionId = RegInsert.religionId || 0;
+          this.AreaId = RegInsert.AreaId || 0;
+          this.areaId = RegInsert.areaId || 0;
+          this.VillageId = RegInsert.VillageId || '';
+          this.TalukaId = RegInsert.TalukaId || '';
+          this.PatientWeight = RegInsert.PatientWeight || '';
+          this.AreaName = RegInsert.AreaName || '';
+          this.AadharCardNo = RegInsert.AadharCardNo || '';
+          this.aadharCardNo = RegInsert.aadharCardNo || '';
+          this.PanCardNo = RegInsert.PanCardNo || '';
+          this.AdmissionID = RegInsert.AdmissionID || '';
+          this.VisitId = RegInsert.VisitId || 0;
+          this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
+          // this.addedBy = RegInsert.addedBy || 0 ;
+          // this.updatedBy = RegInsert.updatedBy || 0 ;
+
+      }
   }
 }

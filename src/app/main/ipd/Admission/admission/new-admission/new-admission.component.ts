@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { Admission, AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
+import {  AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -29,21 +29,21 @@ export class NewAdmissionComponent implements OnInit {
   wardFormGroup: FormGroup;
   otherFormGroup: FormGroup;
   searchFormGroup: FormGroup;
+ 
 
-
-  
-  registration: any;
-  matDialogRef: any;
-
+  options = [];
   msg: any = [];
   optionRegSearch: any[] = [];
   subscriptionArr: Subscription[] = [];
 
-  filteredOptionsRegSearch: Observable<string[]>;
+  
  
   filteredOptions: any;
+  registration: any;
+  matDialogRef: any;
+  patienttype:any;
+  capturedImage: any;
 
- 
   saveflag: boolean = false;
   isCompanySelected: boolean = false;
   Regflag: boolean = false;
@@ -56,20 +56,15 @@ export class NewAdmissionComponent implements OnInit {
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
 
-  reportPrintObj: Admission;
+  
   printTemplate: any;
   selectedAdvanceObj: AdvanceDetailObj;
   registerObj = new AdmissionPersonlModel({});
-  registerObj1=new RegInsert({});
-  bedObj = new Bed({});
+  
   newRegSelected: any = 'registration';
+  filteredOptionsRegSearch: Observable<string[]>;
 
-
-  capturedImage: any;
-  options = [];
-
-  patienttype:any;
-
+ 
   currentDate = new Date();
   public now: Date = new Date();
   isLoading: string = '';
@@ -100,9 +95,9 @@ export class NewAdmissionComponent implements OnInit {
   autocompleteModearea: string = "Area";
   autocompleteModecity: string = "City";
   autocompleteModereligion: string = "Religion";
-  autocompleteModegender: string = "GenderByPrefix";
+  autocompleteModegender: string = "Gender";
   autocompleteModestatus: string = "StateByCity";
-  autocompleteModecountry: string = "CountryByState";
+  autocompleteModecountry: string = "Country";
   autocompleteModerelationship: string = "Relationship";
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModetariff: string = "Tariff";
@@ -128,6 +123,8 @@ export class NewAdmissionComponent implements OnInit {
     this.isAlive = true;
     this.personalFormGroup = this.createPesonalForm();
     this.admissionFormGroup = this.createAdmissionForm();
+ 
+    this.searchFormGroup=this.createSearchForm();
 
     if (this.data) {
       console.log(this.data)
@@ -141,7 +138,7 @@ export class NewAdmissionComponent implements OnInit {
   createPesonalForm() {
     return this.formBuilder.group({
       RegId: [0],
-      RegNo: '1',
+      RegNo: '',
       PrefixId: ['', [Validators.required]],
       FirstName: ['', [
         Validators.required,
@@ -154,9 +151,9 @@ export class NewAdmissionComponent implements OnInit {
         Validators.required,
         Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
       ]],
-      GenderId: new FormControl('', [Validators.required]),
+      GenderID: new FormControl('', [Validators.required]),
       Address: '',
-      dateOfBirth: [(new Date()).toISOString()],
+      DateofBirth: [(new Date()).toISOString()],
       Age: ['0'],
       AgeYear: ['0', [
         // Validators.required,
@@ -201,60 +198,47 @@ export class NewAdmissionComponent implements OnInit {
   }
   createAdmissionForm() {
     return this.formBuilder.group({
-      AdmissionId: '',
-      RegId: '',
-      AdmissionDate: "2024-08-10",
-      AdmissionTime: "2024-09-18T11:24:02.655Z",
+      AdmissionId: 0,
+      RegId: 0,
+      AdmissionDate:  [(new Date()).toISOString()],
+      AdmissionTime:  [(new Date()).toISOString()],
       PatientTypeId: 1,
-      HospitalID: 230,
-      DocNameId: 130,
-      RefDocNameId: 2320,
-      WardId: 30,
-      Bedid: 80,
+      HospitalID: 1,
+      DocNameId: 0,
+      RefDocNameId: 0,
       DischargeDate: "2024-08-10",
       DischargeTime: "2024-09-18T11:24:02.655Z",
       IsDischarged: 0,
       IsBillGenerated: 0,
-      CompanyId: 310,
-      TariffId: 310,
-      ClassId: 310,
-      DepartmentId: 810,
-      RelativeName: "SHAM",
+      CompanyId: 0,
+      TariffId: 0,
+      ClassId: 0,
+      DepartmentId: 0,
+      RelativeName: "",
       RelativeAddress: "string",
-      PhoneNo: "11211111",
-      MobileNo: "string",
+      PhoneNo: "",
+      MobileNo: "",
       RelationshipId: 0,
-      AddedBy: 20,
+      AddedBy: 1,
       IsMlc: true,
-      MotherName: "string",
-      AdmittedDoctor1: 20,
-      AdmittedDoctor2: 110,
+      MotherName: "",
+      AdmittedDoctor1: 0,
+      AdmittedDoctor2: 0,
       RefByTypeId: 0,
       RefByName: 0,
       SubTpaComId: 0,
       PolicyNo: "string",
-      AprovAmount: 12110,
-      compDOd: "2024-08-10",
+      AprovAmount: 0,
+      compDOd: [(new Date()).toISOString()],
       IsOpToIpconv: true,
       RefDoctorDept: "string",
-      AdmissionType: 1
-    });
-  }
+      AdmissionType: 1,
 
-  wardForm() {
-    return this.formBuilder.group({
-      RoomId: '',
-      BedId: ['', [Validators.required]],
-      ClassId: ['', [Validators.required]],
-    });
-  }
+      wardId: '',
+      bedId: ['', [Validators.required]],
+      // ClassId: ['', [Validators.required]],
 
-  otherForm() {
-    return this.formBuilder.group({
-      RelativeName: '',
-      RelativeAddress: '',
-      RelatvieMobileNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      RelationshipId: '',
+     
       IsMLC: [false],
       OPIPChange: [false],
       IsCharity: [false],
@@ -264,10 +248,35 @@ export class NewAdmissionComponent implements OnInit {
       template: [false]
     });
   }
+
+  // wardForm() {
+  //   return this.formBuilder.group({
+  //     RoomId: '',
+  //     BedId: ['', [Validators.required]],
+  //     ClassId: ['', [Validators.required]],
+  //   });
+  // }
+
+  // otherForm() {
+  //   return this.formBuilder.group({
+  //     RelativeName: '',
+  //     RelativeAddress: '',
+  //     MobileNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+  //     RelationshipId: '',
+  //     IsMLC: [false],
+  //     OPIPChange: [false],
+  //     IsCharity: [false],
+  //     IsSenior: [false],
+  //     Citizen: [false],
+  //     Emergancy: [false],
+  //     template: [false]
+  //   });
+  // }
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }]
+      RegId: [{ value: '', disabled: this.isRegSearchDisabled }],
+      HospitalId:''
     });
   }
 
@@ -346,10 +355,10 @@ export class NewAdmissionComponent implements OnInit {
       SubTpaComId: [
         { name: "pattern", Message: "Only numbers allowed" },
         ],
-      bedId: [
+        bedId: [
         { name: "required", Message: "Bedid is required" }
       ],
-     wardId: [
+      wardId: [
         { name: "required", Message: "wardId is required" }
       ],
       ClassId: [
@@ -379,14 +388,16 @@ export class NewAdmissionComponent implements OnInit {
       ],
       HospitalId:[
         { name: "required", Message: "HospitalId Name is required" }
+      ],
+      RelatvieMobileNo:[
+        { name: "required", Message: "RelatvieMobileNo Name is required" }
       ]
     };
   }
 
 
 
-
-
+  chkHealthcard(e){}
   ///New Admission 
   //Radio btn
   onChangeReg(event) {
@@ -400,9 +411,7 @@ export class NewAdmissionComponent implements OnInit {
 
       this.personalFormGroup = this.createPesonalForm();
       this.admissionFormGroup = this.createAdmissionForm();
-      this.wardFormGroup = this.wardForm();
-      this.otherFormGroup = this.otherForm();
-
+     
       this.Regdisplay = false;
       this.showtable = false;
 
@@ -452,51 +461,10 @@ export class NewAdmissionComponent implements OnInit {
   //Date 
   dateStyle?: string = 'Date';
 
-  onBedChange(value) {
-    this.bedObj = value;
-  }
 
-  AdmittedRegId: any = 0;
-  chekAdmittedpatient(obj) {
-
-    this.AdmittedRegId = obj.RegId;
-
-    let Query = "select isnull(RegID,0) as RegID from Admission where RegID =  " + this.AdmittedRegId + " and Admissionid not in(select Admissionid from Discharge) "
-    console.log(Query)
-    this._AdmissionService.getRegIdDetailforAdmission(Query).subscribe(data => {
-      this.registerObj = data[0];
-      console.log(this.registerObj);
-      if (this.registerObj != undefined) {
-        this.AdmittedRegId = 0;
-        Swal.fire("selected patient is already admitted!!..")
-        this.onReset();
-        this.personalFormGroup.get('RegId').reset();
-        // this.regno.nativeElement.focus();
-      } else {
-        this.getSelectedObj(obj);
-      }
-    });
-
-  }
-  getSelectedObj(obj) {
-    this.registerObj = new AdmissionPersonlModel({});
-    obj.AgeDay = obj.AgeDay.trim();
-    obj.AgeMonth = obj.AgeMonth.trim();
-    obj.AgeYear = obj.AgeYear.trim();
-    this.registerObj = obj;
-    console.log(this.registerObj);
-    // this.PatientName = obj.PatientName;
-    // this.RegId = obj.RegId;
-    // this.RegNo = obj.RegNo;
-    // this.vReligionId = obj.ReligionId;
-    // this.vAreaId = obj.AreaId
-    // this.vMaritalStatusId = obj.MaritalStatusId;
-  
-  }
- 
   onNewSave() {
 
-    if ((!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
+    // if ((!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
 
       Swal.fire({
         title: 'Do you want to Save the Admission ',
@@ -513,7 +481,7 @@ export class NewAdmissionComponent implements OnInit {
           this.OnSaveAdmission();
         }
       })
-    }
+    // }
   }
 
   CompanyId: any = 0;
@@ -538,12 +506,7 @@ export class NewAdmissionComponent implements OnInit {
     // if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
     if (this.searchFormGroup.get('regRadio').value == "registration") {
       //Api
-      this.isLoading = 'submit';
-      let submissionObj = {};
-      let regInsert = {};
-      let admissionNewInsert = {};
-
-      // this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
+          // this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
       // this.VisitFormGroup.get("patientOldNew").setValue(2)
 
 
@@ -552,27 +515,13 @@ export class NewAdmissionComponent implements OnInit {
         "ADMISSION": this.admissionFormGroup.value
       };
       console.log(submitData);
-
-      let BedStatusUpdate = {};
-      BedStatusUpdate['BedId'] = this.wardFormGroup.get('BedId').value.value ? this.wardFormGroup.get('BedId').value.value : 0;
-
-      submissionObj['bedStatusUpdate'] = BedStatusUpdate;
-
-      console.log(submissionObj);
-      this._AdmissionService.AdmissionNewInsert(submissionObj).subscribe(response => {
-
-        if (response) {
-          this.toastr.success('Admission save Successfully !', 'Congratulations !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.getAdmittedPatientCasepaperview(response, true);
-          this.onReset();
-        } else {
-          this.toastr.success('Admission not saved', 'error', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-        }
-        this.isLoading = '';
+      debugger
+      this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+        this.toastr.success(response.message);
+        this.onClear();
+    }, (error) => {
+        this.toastr.error(error.message);
+      
       });
 
 
@@ -601,7 +550,7 @@ export class NewAdmissionComponent implements OnInit {
     
   }
 
-
+  onClear(){}
   onClose() {
 
     this.searchFormGroup.get('RegId').reset();
@@ -635,11 +584,7 @@ export class NewAdmissionComponent implements OnInit {
     this.admissionFormGroup = this.createAdmissionForm();
     this.admissionFormGroup.markAllAsTouched();
 
-    this.wardFormGroup = this.wardForm();
-    this.wardFormGroup.markAllAsTouched();
-
-    this.otherFormGroup = this.otherForm();
-    this.otherFormGroup.markAllAsTouched()
+   
 
     // this.admissionFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
     this.admissionFormGroup.get('CompanyId').clearValidators();
@@ -710,4 +655,3 @@ getDateTime(dateTimeObj) {
 
 
 }
-

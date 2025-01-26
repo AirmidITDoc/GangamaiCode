@@ -10,7 +10,8 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { Admission } from '../admission.component';
+import { AdmissionPersonlModel } from '../admission.component';
+
 
 
 @Component({
@@ -23,7 +24,7 @@ export class SubCompanyTPAInfoComponent implements OnInit {
   SubcompanyFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
-  selectedAdvanceObj: Admission;
+  selectedAdvanceObj: AdmissionPersonlModel;
   submitted: any;
   isLoading: any;
   AdmissionId: any;
