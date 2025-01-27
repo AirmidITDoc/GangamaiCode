@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewInstructionMasterComponent implements OnInit {
   instructionForm:FormGroup;
   isActive:boolean=true;
-  saveflag:boolean=false;
+
   constructor(
     public _InstructionMasterService: InstructionmasterService,
     public dialogRef: MatDialogRef<NewInstructionMasterComponent>,
@@ -36,7 +36,6 @@ export class NewInstructionMasterComponent implements OnInit {
         
       if(!this.instructionForm.invalid)
       {
-        this.saveflag = true;
       
         console.log("Instruction json:", this.instructionForm.value);
   

@@ -18,7 +18,6 @@ export class NewSubgroupComponent implements OnInit {
 
   subgroupForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _SubGroupMasterService: SubGroupMasterService,
@@ -41,7 +40,6 @@ export class NewSubgroupComponent implements OnInit {
       
         if(!this.subgroupForm.invalid)
         {
-            this.saveflag = true;
             
             console.log("sub group:", this.subgroupForm.value);
   

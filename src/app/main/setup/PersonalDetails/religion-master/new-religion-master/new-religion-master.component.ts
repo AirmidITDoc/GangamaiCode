@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewReligionMasterComponent implements OnInit {
   religionForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false ;
 
     constructor(   public _ReligionMasterService: ReligionMasterService,
         public dialogRef: MatDialogRef<NewReligionMasterComponent>,
@@ -35,7 +34,6 @@ export class NewReligionMasterComponent implements OnInit {
     
     if(this.religionForm.valid) 
     {
-        this.saveflag = true;
         console.log("JSON :-",this.religionForm.value);
 
         this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {

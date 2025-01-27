@@ -13,7 +13,6 @@ export class NewItemtypeComponent implements OnInit {
 
   itemtypeForm: FormGroup;
   isActive:boolean=true;
-  Saveflag: boolean= false;
 
   constructor(
       public _ItemTypeMasterService: ItemTypeMasterService,
@@ -37,7 +36,6 @@ export class NewItemtypeComponent implements OnInit {
   {
     if (!this.itemtypeForm.invalid) 
     {
-        this.Saveflag=true
 
         console.log("itemtype json :-",this.itemtypeForm.value);
 

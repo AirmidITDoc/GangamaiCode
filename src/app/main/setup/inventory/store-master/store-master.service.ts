@@ -22,100 +22,100 @@ export class StoreMasterService {
             storeId: [0],
             storeShortName: ["",
                 [
-                    // Validators.required, 
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             storeName: ["",
                 [
-                    // Validators.required, 
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             indentPrefix: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             indentNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             purchasePrefix: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],  
             purchaseNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             grnPrefix: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],  
             grnNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             grnreturnNoPrefix: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             grnreturnNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             issueToDeptPrefix: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             issueToDeptNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             returnFromDeptNoPrefix: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             returnFromDeptNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.maxLength(30),
-                    // Validators.pattern('^[0-9]*$')
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.pattern('^[0-9]*$')
                 ]
             ],
             isDeleted: ["true"],
@@ -124,17 +124,17 @@ export class StoreMasterService {
             Header:[""],
             pharSalCountId:["",
                 [
-                    // Validators.required
+                    Validators.required
                 ]
             ],
             pharSalRecCountId:["",
                 [
-                    // Validators.required
+                    Validators.required
                 ]
             ],
             pharSalReturnCountId:["",
                 [
-                    // Validators.required
+                    Validators.required
                 ]
             ],
             isActive:[true,[Validators.required]],
@@ -145,17 +145,17 @@ export class StoreMasterService {
             pharAdvRefId: 0,
             pharAdvRefReptId: 0,
             printStoreName: ["trying"],
-            dlNo: [""],
-            gstin: [""],
+            dlNo: ["try"],
+            gstin: ["try"],
             storeAddress:["trying"],
             hospitalMobileNo: "1111111110",
             hospitalEmailId: ["try@gmail.com"],
             printStoreUnitName: ["trying"],
             isPharStore: true,
             isWhatsAppMsg: true,
-            whatsAppTemplateId: [""],
+            whatsAppTemplateId: ["try"],
             isSmsmsg: true,
-            smstemplateId: [""],
+            smstemplateId: ["try"],
         });
     }
 

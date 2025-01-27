@@ -16,7 +16,6 @@ export class NewCashCounterComponent implements OnInit {
 
     cashcounterForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
     
     constructor(
         public _CashCounterMasterService: CashCounterMasterService,
@@ -38,7 +37,6 @@ export class NewCashCounterComponent implements OnInit {
         
         if (!this.cashcounterForm.invalid) 
         {
-            this.saveflag = true;
             
             console.log("cashcounter JSON :-",this.cashcounterForm.value);
 

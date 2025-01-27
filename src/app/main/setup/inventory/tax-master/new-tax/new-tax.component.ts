@@ -16,7 +16,6 @@ export class NewTaxComponent implements OnInit {
 
   taxForm: FormGroup;
   isActive:boolean=true;
-  saveflag:boolean=false;
   
   constructor(
       public _TaxMasterService: TaxMasterService,
@@ -37,7 +36,6 @@ export class NewTaxComponent implements OnInit {
     onSubmit() {
         ;
         if (!this.taxForm.invalid) {
-            this.saveflag = true;
 
             console.log("TaxMaster Insert:", this.taxForm.value);
 

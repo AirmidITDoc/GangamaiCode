@@ -19,7 +19,6 @@
             <form [formGroup]="relationshipForm">
                 <input type="hidden" name="relationshipId" formControlName="relationshipId">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                    <!-- <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
                     <airmid-textbox 
                         label="Relationship Name "
                         formControlName="relationshipName"
@@ -28,25 +27,18 @@
                         [validations]="getValidationMessages().relationshipName"
                         [maxLength]="50">
                     </airmid-textbox> 
-                <!-- </div> -->
                 </div>
                 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                     <div>
-                        <!-- <mat-radio-group name="isActive" formControlName="isActive">
-                            <mat-radio-button [value]="true"  class="mr-sm-12" fxFlex>IsActive
-                            </mat-radio-button>
-                            <mat-radio-button [value]="false" class="mr-sm-12" fxFlex>IsDeactive
-                            </mat-radio-button>
-                        </mat-radio-group> -->
                         <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="relationshipForm" [(ngModel)]="isActive" ></app-airmid-slider>
 
                     </div>
          
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="saveflag">
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>

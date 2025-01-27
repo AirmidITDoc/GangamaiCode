@@ -16,7 +16,6 @@ export class NewDoseMasterComponent implements OnInit {
 
     doseForm:FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor(
         public _doseMasterService: DosemasterService,
@@ -39,7 +38,6 @@ export class NewDoseMasterComponent implements OnInit {
     onSubmit() {
     
     if(!this.doseForm.invalid){
-        this.saveflag = true
    
       console.log("dose json:", this.doseForm.value);
 

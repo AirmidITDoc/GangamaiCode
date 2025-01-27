@@ -16,7 +16,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
     isActive:boolean=false;
-    saveflag: boolean = false;
     autocompleteModegender: string = "Gender";
 
     constructor(
@@ -40,7 +39,6 @@ export class NewPrefixComponent implements OnInit {
         
         if(!this.prefixForm.invalid)
         {
-            this.saveflag = true;
             console.log("JSON :- ", this.prefixForm.value);
 
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {

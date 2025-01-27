@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor( public _WardMasterService: WardMasterService,
     public dialogRef: MatDialogRef<NewWardComponent>,
@@ -42,7 +41,6 @@ export class NewWardComponent implements OnInit {
     onSubmit() {
         if(!this.roomForm.invalid) 
         {
-            this.saveflag = true;
         
             console.log("WardMaster Insert:",this.roomForm.value)
 

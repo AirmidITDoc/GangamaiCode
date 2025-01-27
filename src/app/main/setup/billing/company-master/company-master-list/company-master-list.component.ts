@@ -16,7 +16,6 @@ export class CompanyMasterListComponent implements OnInit {
   
     companyForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
@@ -41,7 +40,6 @@ export class CompanyMasterListComponent implements OnInit {
                
         if(!this.companyForm.invalid)
         {
-            this.saveflag = true;
 
             console.log("Company Insert:-",this.companyForm.value);
 

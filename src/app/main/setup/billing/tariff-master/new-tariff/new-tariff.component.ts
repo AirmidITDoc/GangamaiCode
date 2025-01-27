@@ -16,7 +16,6 @@ export class NewTariffComponent implements OnInit {
 
     tariffForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor(
         public _TariffMasterService: TariffMasterService,
@@ -37,7 +36,6 @@ export class NewTariffComponent implements OnInit {
         
         if(!this.tariffForm.invalid)
         {
-            this.saveflag = true;
         
             console.log("insert tariff:", this.tariffForm.value);
             

@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewCountryMasterComponent implements OnInit {
   countryForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor( public _CountryMasterService: CountryMasterService,
     public dialogRef: MatDialogRef<NewCountryMasterComponent>,
@@ -33,7 +32,6 @@ export class NewCountryMasterComponent implements OnInit {
   onSubmit() {
     if(!this.countryForm.invalid)
     {
-            this.saveflag = true;
    
             console.log("Country json :-",this.countryForm.value);
 

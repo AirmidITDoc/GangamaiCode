@@ -16,7 +16,6 @@ export class NewPatientTypeComponent implements OnInit {
 
   patienttypeForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _PatienttypeMasterService: PatienttypeMasterService,
@@ -46,7 +45,6 @@ export class NewPatientTypeComponent implements OnInit {
       return;
     }else{
         if (this.patienttypeForm.valid) {
-            this.saveflag = true;
             console.log("json :- ",this.patienttypeForm.value);
             this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
                 this.toastr.success(response.message);

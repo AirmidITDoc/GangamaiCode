@@ -19,7 +19,6 @@ export class ItemFormMasterComponent implements OnInit {
 
     itemForm: FormGroup;
     isActive:boolean=true;
-    Saveflag: boolean= false;
 
 
     // new api
@@ -146,7 +145,6 @@ export class ItemFormMasterComponent implements OnInit {
             
             if (!this.itemForm.invalid) 
             {
-                this.Saveflag = true;
 
                 console.log("Item JSON :-", this.itemForm.value);
                debugger

@@ -13,7 +13,6 @@ export class NewDischargetypeComponent implements OnInit {
 
   dischargetypeForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _DischargetypeMasterService: DischargetypeMasterService,
@@ -34,7 +33,6 @@ export class NewDischargetypeComponent implements OnInit {
     onSubmit() {
         if(!this.dischargetypeForm.invalid)
         {
-            this.saveflag = true;
             
             console.log("dischragetype JSON :",this.dischargetypeForm.value);
 

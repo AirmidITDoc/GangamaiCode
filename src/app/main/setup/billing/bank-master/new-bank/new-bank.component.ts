@@ -17,7 +17,6 @@ export class NewBankComponent implements OnInit {
   
   bankForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
     public _BankMasterService: BankMasterService,
@@ -37,9 +36,7 @@ export class NewBankComponent implements OnInit {
 
   onSubmit(){
       if(!this.bankForm.invalid){
-        
-        this.saveflag = true;
-   
+           
         console.log("bank json:", this.bankForm.value);
 
         this._BankMasterService.bankMasterSave(this.bankForm.value).subscribe((response)=>{

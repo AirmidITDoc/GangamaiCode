@@ -16,7 +16,6 @@ export class NewSubtapComponent implements OnInit {
 
   subTpaForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   autocompleteModetypeName:string="CompanyType";
   autocompleteModecity:string="City";
@@ -40,7 +39,6 @@ export class NewSubtapComponent implements OnInit {
         
         if(!this.subTpaForm.invalid)
         {
-        this.saveflag = true;
      
         console.log("SubTpa Json:", this.subTpaForm.value);
   

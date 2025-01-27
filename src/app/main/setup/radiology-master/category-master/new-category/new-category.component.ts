@@ -16,7 +16,6 @@ export class NewCategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _CategorymasterService: CategoryMasterService,
@@ -38,7 +37,6 @@ export class NewCategoryComponent implements OnInit {
   onSubmit() {
         
       if(!this.categoryForm.invalid) {
-        this.saveflag = true;
         
           this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
               this.toastr.success(response.message);

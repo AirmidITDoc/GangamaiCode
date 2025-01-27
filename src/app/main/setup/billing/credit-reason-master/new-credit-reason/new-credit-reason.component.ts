@@ -16,7 +16,6 @@ export class NewCreditReasonComponent implements OnInit {
 
   creditreasonForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _CreditreasonService: CreditreasonService,
@@ -36,7 +35,6 @@ export class NewCreditReasonComponent implements OnInit {
   onSubmit() {
     if(!this.creditreasonForm.invalid)
             {
-            this.saveflag = true;
 
             console.log("JSON: ", this.creditreasonForm.value);
 

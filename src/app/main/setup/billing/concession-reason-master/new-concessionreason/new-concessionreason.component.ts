@@ -17,7 +17,6 @@ export class NewConcessionreasonComponent implements OnInit {
 
   concessionForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _ConcessionReasonMasterService: ConcessionReasonMasterService,
@@ -39,7 +38,6 @@ export class NewConcessionreasonComponent implements OnInit {
         
         if(!this.concessionForm.invalid) 
             {
-                this.saveflag = true;
 
                 console.log("JSON :- ",this.concessionForm.value);
 

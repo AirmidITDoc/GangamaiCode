@@ -16,7 +16,6 @@ export class NewUMOComponent implements OnInit {
 
   unitForm: FormGroup;
   isActive:boolean=true;
-  Saveflag: boolean= false;
 
   constructor(
     public _UomMasterService: UomMasterService,
@@ -39,7 +38,6 @@ export class NewUMOComponent implements OnInit {
     
     if(!this.unitForm.invalid)
     {
-        this.Saveflag=true;
 
         console.log("UMO JSON :-",this.unitForm.value);
    

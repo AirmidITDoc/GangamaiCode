@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewMaritalstatusComponent implements OnInit {
   maritalForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
   
   constructor( public _MaritalstatusMasterService: MaritalstatusMasterService,
     public dialogRef: MatDialogRef<NewMaritalstatusComponent>,
@@ -33,7 +32,6 @@ export class NewMaritalstatusComponent implements OnInit {
   onSubmit() {
     if(!this.maritalForm.invalid)
         {
-        this.saveflag = true;
         this._MaritalstatusMasterService.MaritalStatusMasterSave(this.maritalForm.value).subscribe((response) => {
             this.toastr.success(response.message);
             this.onClear(true);

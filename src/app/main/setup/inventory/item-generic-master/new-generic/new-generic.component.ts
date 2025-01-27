@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewGenericComponent implements OnInit {
   genericForm: FormGroup;
   isActive:boolean=true;
-  Saveflag:boolean=false;
 
     constructor(
       public _ItemGenericMasterService: ItemGenericMasterService,
@@ -37,7 +36,6 @@ export class NewGenericComponent implements OnInit {
     onSubmit() {
       if(this.genericForm.valid) 
        {
-        this.Saveflag = true;
 
         console.log(this.genericForm.value);
         

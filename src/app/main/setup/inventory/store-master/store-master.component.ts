@@ -22,32 +22,32 @@ export class StoreMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "StoreMaster/List",
         columnsList: [
-            { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Short Name", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Indent Prefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Purchase Prefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Purchase No", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "GRN Prefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "GRN No", key: "grnNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "GRN Return Prefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "GRN Ret No", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Issue To Dept Prefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Issue To Dept no", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Return From Dept Prefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Return From Dept No", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "StoreShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IndentPrefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "PurchasePrefix", key: "purchasePrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "PurchaseNo", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "GRNPrefix", key: "grnPrefix", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "GRNNo", key: "grnNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "GRNReturnPrefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "GRNRetNo", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IssueToDeptPrefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "IssueToDeptNo", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120},
+            { heading: "ReturnFromDeptPrefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "ReturnFromDeptNo", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._StoreMasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
+                            this._StoreMasterService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
