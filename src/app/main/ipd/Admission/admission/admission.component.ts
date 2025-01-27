@@ -173,11 +173,11 @@ export class AdmissionComponent implements OnInit {
                               this.getEditAdmission(data);
                           }
                       },
-                      {
-                        action: gridActions.Mlc, callback: (data: any) => {
-                            this.NewMLc(data);
-                        }
-                    },
+                      // {
+                      //   action: gridActions.Mlc, callback: (data: any) => {
+                      //       this.NewMLc(data);
+                      //   }
+                    // },
                       // {
                       //     action: gridActions.delete, callback: (data: any) => {
   
