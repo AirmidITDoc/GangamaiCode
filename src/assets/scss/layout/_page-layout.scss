@@ -44,6 +44,11 @@ $layout-gap: 12px;
         }
         .top-header-right {
         }
+        .title{
+            @include font-size(15px);
+            padding: 8px;
+            font-weight: 600;
+        }
         .date-time-container,
         .comman-date-container {
             .mat-form-field {

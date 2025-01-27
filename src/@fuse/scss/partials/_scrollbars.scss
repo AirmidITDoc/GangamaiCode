@@ -3,21 +3,25 @@ body:not(.is-mobile) {
     ::-webkit-scrollbar {
         width: 12px;
         height: 12px;
-        background-color: rgba(30, 9, 223, 0);
+        // background-color: rgba(30, 9, 223, 0);
+        background-color: #e8eaf6;
     }
 
     ::-webkit-scrollbar:hover {
-        background-color: rgba(52, 12, 230, 0.12);
+        // background-color: rgba(52, 12, 230, 0.12);
+        background-color: #c5cae9;
     }
 
     ::-webkit-scrollbar-thumb {
         border: 2px solid transparent;
-        box-shadow: inset 0 0 0 12px rgba(64, 10, 151, 0.37);
+        // box-shadow: inset 0 0 0 12px rgba(64, 10, 151, 0.37);
+        box-shadow: inset 0 0 0 12px #7986cb;
         border-radius: 12px;
     }
 
     ::-webkit-scrollbar-thumb:active {
-        box-shadow: inset 0 0 0 12px rgba(85, 7, 211, 0.54);
+        // box-shadow: inset 0 0 0 12px rgba(85, 7, 211, 0.54);
+        box-shadow: inset 0 0 0 12px #5c6bc0;
         border-radius: 12px;
     }
 }

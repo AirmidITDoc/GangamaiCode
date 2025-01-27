@@ -74,7 +74,7 @@ export class StoreMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(StoreFormMasterComponent,
             {
                 maxWidth: "90vw",
-                height: '100%',
+                maxHeight: '95vh',
                 width: '90%',
                 data: row
             });
