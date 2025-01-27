@@ -12,6 +12,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReplaySubject, Subject } from 'rxjs';
 import { NewCertificateComponent } from './new-certificate/new-certificate.component';
 import { fuseAnimations } from '@fuse/animations';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { NewMedicalComponent } from './new-medical/new-medical.component';
 
 @Component({
   selector: 'app-certificate',
@@ -39,8 +41,13 @@ export class CertificateComponent implements OnInit {
   minDate:Date;
   hasSelectedContacts: boolean;
   AnesthType:any ='';
+  selectedTab: number = 0;
 
-  displayedColumns = [
+  onTabChange(event: MatTabChangeEvent): void {
+    this.selectedTab = event.index;
+  }
+
+  displayedColumnsCertificate = [
     
   // 'Ischarity',
   // 'IsIndientOrWeaker',
@@ -65,7 +72,34 @@ export class CertificateComponent implements OnInit {
   'buttons'
 
   ];
+
+  displayedColumnsMedical = [
+    
+    // 'Ischarity',
+    // 'IsIndientOrWeaker',
+    'RegNo',
+    'IPDNo',
+    'PatientName',
+    'Address',
+    'GenderName',
+    'AgeYear',
+    'DepartmentName',
+    'AdmissionDate',
+    'DischargeDate',
+    'TotalAmt',
+    'ConcessionAmt',
+    'NetPayableAmt',
+    'PaidAmount',
+    'PBillNo',
+    'ConcessionReason',
+    'AnnualIncome',
+    'RationCardNo',
+    'BillNo',
+    'buttons'
+  
+    ];
   dataSource = new MatTableDataSource<CharityPatientdetail>();
+  DSMedicalLegalList = new MatTableDataSource<CharityPatientdetail>();
   isChecked = true;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -99,16 +133,11 @@ export class CertificateComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.searchFormGroup = this.createSearchForm();
-    debugger;
     this.minDate = new Date();
      
       this.getCharityPatientList();
   }
-
-
-  // get f() { return this.personalFormGroup.controls; }
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -127,7 +156,7 @@ export class CertificateComponent implements OnInit {
 
    
   getCharityPatientList() {
-    debugger;
+    
     // this.sIsLoading = 'loading-data';
     var m_data ={
       "F_Name": (this.searchFormGroup.get("F_Name").value).trim() + '%' || '%',
@@ -152,35 +181,20 @@ export class CertificateComponent implements OnInit {
   }
 
  
-  addNewCertificate(){
-
-debugger;   
-    // let m_data ={
-    //   Regno:
-    // }
-const dialogRef = this._matDialog.open(NewCertificateComponent,
-     {
-       maxWidth: "85%",
-       height: '95%',
-       width: '100%',
-     });
-     dialogRef.afterClosed().subscribe(result => {
+  addNewCertificate() {
+    const dialogRef = this._matDialog.open(NewCertificateComponent,
+      {
+        maxWidth: "85%",
+        height: '95%',
+        width: '100%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      // this._MrdService.getcathlabBooking(this.D_data1).subscribe(reg=> {
-      //     this.dataArray = reg;
-      //     this.dataSource.data =  reg as CharityPatientdetail[];
-      //     console.log( this.dataSource.data);
-      //     console.log( this.dataArray);
-      //     this.sIsLoading = '';
-      //   },
-      //   error => {
-      //     this.sIsLoading = '';
-      //   });
     });
-}
+  }
 
-addNewCasepaper(){
-  const dialogRef = this._matDialog.open(NewCertificateComponent,
+addNewMedicalCasepaper(){
+  const dialogRef = this._matDialog.open(NewMedicalComponent,
     {
       maxWidth: "85%",
       height: '115%',
@@ -188,17 +202,23 @@ addNewCasepaper(){
     });
     dialogRef.afterClosed().subscribe(result => {
      console.log(result);
-     // this._MrdService.getcathlabBooking(this.D_data1).subscribe(reg=> {
-     //     this.dataArray = reg;
-     //     this.dataSource.data =  reg as CharityPatientdetail[];
-     //     console.log( this.dataSource.data);
-     //     console.log( this.dataArray);
-     //     this.sIsLoading = '';
-     //   },
-     //   error => {
-     //     this.sIsLoading = '';
-     //   });
    });
+}
+
+onEditMedicalRecord(contact){
+  const dialogRef = this._matDialog.open(NewMedicalComponent,
+    {
+      maxWidth: "90%",
+      height: '96%',
+      width: '100%',
+      data: {
+        PatObj: contact 
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result);
+  
+  });
 }
 
 
@@ -211,7 +231,7 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 onEdit(contact){
-  debugger;
+  
  console.log(contact);
 
  if(contact.AnesthType)
@@ -269,8 +289,6 @@ dialogRef.afterClosed().subscribe(result => {
 });
 //   if(contact) this.dialogRef.close(PatInforObj);
 }
-
-
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {

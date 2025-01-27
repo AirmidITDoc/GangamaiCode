@@ -43,7 +43,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { IcdComponent } from './icd/icd.component';
 import { NewicdComponent } from './icd/newicd/newicd.component';
-
+import { NewMedicalComponent } from './certificate/new-medical/new-medical.component';
+import { NewgroupMasterComponent } from './icd/newgroup-master/newgroup-master.component';
+import { NewicdCodingMasterComponent } from './icd/newicd-coding-master/newicd-coding-master.component';
+import { GroupformComponent } from './icd/newgroup-master/groupform/groupform.component';
+import { IcdcodeFormComponent } from './icd/newicd-coding-master/icdcode-form/icdcode-form.component';
 
 const approutes : Routes =[
   {
@@ -61,7 +65,17 @@ const approutes : Routes =[
 ];
 
 @NgModule({
-  declarations: [CertificateComponent, NewCertificateComponent, IcdComponent, NewicdComponent],
+  declarations: [
+    CertificateComponent, 
+    NewCertificateComponent,
+     IcdComponent, 
+     NewicdComponent, 
+     NewMedicalComponent, 
+     NewgroupMasterComponent, 
+     NewicdCodingMasterComponent,
+     GroupformComponent,
+     IcdcodeFormComponent
+    ],
   imports: [
     MatCheckboxModule,
     MatDatepickerModule,

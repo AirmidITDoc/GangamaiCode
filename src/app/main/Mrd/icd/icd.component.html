@@ -16,13 +16,22 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" class="left-icon">
-
-      <button mat-raised-button (click)="addNewICD()"
-        style="background-color: aliceblue;margin-left:10% !important">
+    
+      <button mat-raised-button (click)="addGroupmaster()" style="background-color: aliceblue;margin-left:10% !important">
+        <mat-icon title="Request New Test">how_to_reg</mat-icon>
+        Group Master
+      </button>
+    
+      <button mat-raised-button (click)="addNewICDCodeMaster()" style="background-color: aliceblue;margin-left:10% !important">
+        <mat-icon title="Request New Test">how_to_reg</mat-icon>
+        ICD Code Master
+      </button>
+    
+      <button mat-raised-button (click)="addNewICD()" style="background-color: aliceblue;margin-left:10% !important">
         <mat-icon title="Request New Test">how_to_reg</mat-icon>
         New ICD
       </button>
-
+    
     </div>
 
   </mat-toolbar>
@@ -48,36 +57,25 @@
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
                   <input matStartDate formControlName="start" placeholder="Start date">
-                  <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getIcdList()">
+                  <input matEndDate formControlName="end" placeholder="End date" (dateChange)="getPatientICDList()">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>Search F_Name</mat-label>
-                <input name="F_Name" formControlName="F_Name" matInput (keyup)="getIcdList()"
-                  oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
-                <!-- <span class="error" *ngIf="f.F_Name.invalid && f.F_Name.touched">
-                               Enter only Alphabets
-                            </span> -->
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Search L_Name</mat-label>
-                <input name="L_Name" formControlName="L_Name" matInput (keyup)="getIcdList()"
-                  oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
-                <!-- <span class="error" *ngIf="f.L_Name.invalid && f.L_Name.touched">
-                             Enter only Alphabets
-                          </span> -->
-              </mat-form-field>
+                <mat-label>Search UHID No</mat-label>
+                <input name="uhidNo" formControlName="uhidNo" matInput
+                    (keyup)="getPatientICDList()"
+                    input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            </mat-form-field>
 
             </div>
             <div style="margin-top: 10px;">
               <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
                 <mat-icon class="cleariconbutton">close</mat-icon>
               </button>&nbsp;
-              <button mat-raised-button class="searchButton" (click)="getIcdList()" matTooltip="search">
+              <button mat-raised-button class="searchButton" (click)="getPatientICDList()" matTooltip="search">
                 <mat-icon class="searchiconbutton">search</mat-icon>
               </button>
             </div>
@@ -127,11 +125,29 @@
                             </mat-cell>
                           </ng-container>
 
+                          <ng-container matColumnDef="AdmissionDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                              AdmissionDate
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                              {{contact.DOA}}
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="DischargeDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
+                              DischargeDate
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                              {{contact.DOD}}
+                            </mat-cell>
+                          </ng-container>
+
                           <ng-container matColumnDef="DoctorName" fxLayoutAlign="start center">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                               Doctor Name</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.DoctorName}}
+                              {{contact.AdmDoctorName}}
                             </mat-cell>
                           </ng-container>
 
@@ -144,21 +160,12 @@
                             </mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="AdmissionDate">
+                          <ng-container matColumnDef="WardName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              AdmissionDate
+                              WardName
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.AdmissionDate}}
-                            </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="DischargeDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                              DischargeDate
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.DischargeDate}}
+                              {{contact.WardName}}
                             </mat-cell>
                           </ng-container>
 

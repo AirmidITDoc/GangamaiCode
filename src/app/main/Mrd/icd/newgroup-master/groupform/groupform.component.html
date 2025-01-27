@@ -1,15 +1,8 @@
 <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="color: white;">
-                <mat-icon>account_box</mat-icon>
-            </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                New Department
+                New ICD Code Main Group Master Form
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
@@ -19,28 +12,28 @@
         </div>
     </mat-toolbar>
 
-    <div class="content">
+     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
-                            <form [formGroup]="_departmentService.myform">
+                            <form [formGroup]="_newGroupService.myGroupForm">
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
 
-                                        <input type="hidden" name="DepartmentId" formControlName="DepartmentId">
+                                        <input type="hidden" name="ICDCdeMId" formControlName="ICDCdeMId">
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Department Name</mat-label>
-                                                <input name="DepartmentName" formControlName="DepartmentName"
-                                                    placeholder="Department Name" matInput type="text"
+                                                <mat-label>ICD Name</mat-label>
+                                                <input name="ICDName" formControlName="ICDName"
+                                                    placeholder="ICD Name" matInput type="text"
                                                     oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
-                                                    [(ngModel)]="vDepartmentName">
+                                                    [(ngModel)]="vIcdCodeName">
                                                 <mat-error
-                                                    *ngIf="_departmentService.myform.get('DepartmentName').invalid && _departmentService.myform.get('DepartmentName').touched">
-                                                    Department Name is required</mat-error>
+                                                    *ngIf="_newGroupService.myGroupForm.get('ICDName').invalid && _newGroupService.myGroupForm.get('ICDName').touched">
+                                                    ICD Name is required</mat-error>
                                             </mat-form-field>
                                         </div>
 
@@ -54,7 +47,8 @@
                                     </mat-checkbox>
 
                                     <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
-                                        <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
+                                        <button class="btn btn-danger-outline" (click)="onClose()">
+                                            Close</button>
                                         <button class="btn btn-primary" (click)="onSave()">
                                             Save</button>
                                     </div>

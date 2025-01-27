@@ -55,7 +55,7 @@ export class NewdepartmentComponent implements OnInit {
     }
 
     Swal.fire({
-      title: 'Do you want to Save the vDepartment Recode ',
+      title: 'Do you want to Save the Department Recode ',
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,

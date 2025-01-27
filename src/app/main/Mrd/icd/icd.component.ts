@@ -12,6 +12,8 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { AdvanceDataStored } from "app/main/ipd/advance";
 import { DatePipe } from "@angular/common";
 import { NewicdComponent } from "./newicd/newicd.component";
+import { NewgroupMasterComponent } from "./newgroup-master/newgroup-master.component";
+import { NewicdCodingMasterComponent } from "./newicd-coding-master/newicd-coding-master.component";
 
 @Component({
   selector: 'app-icd',
@@ -24,13 +26,16 @@ export class IcdComponent implements OnInit {
 
   sIsLoading: string = '';
   hasSelectedContacts: boolean;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns = [
     'RegNo',
     'PatientName',
-    'DoctorName',
-    'IPDNo',
     'AdmissionDate',
     'DischargeDate',
+    'DoctorName',
+    'IPDNo',
+    'WardName',
     'action'
   ];
 
@@ -46,15 +51,62 @@ export class IcdComponent implements OnInit {
     public datePipe: DatePipe) { }
 
   ngOnInit(): void {
-
+    this.getPatientICDList();
   }
 
-  getIcdList() {
+  getPatientICDList() {
+    debugger
+    this.sIsLoading = 'loading-data';
+    const FromDate = this._MrdService.icdForm.get("start").value;
+    const ToDate = this._MrdService.icdForm.get("end").value;
+    const RegNo = this._MrdService.icdForm.get("uhidNo").value;
 
+    // Prepare request payload
+    const D_data = {
+      "FromDate": this.datePipe.transform(FromDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+      "ToDate": this.datePipe.transform(ToDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+      "Reg_No": RegNo || '',
+    };
+
+    console.log("Request Payload:", D_data);
+
+    // Make API call
+    this._MrdService.getPatienticdList(D_data).subscribe(
+      (response) => {
+        console.log("API Response:", response);
+
+        if (response && Array.isArray(response)) {
+          // Update the data source and bind to the table
+          this.dataSource.data = response as Icddetail[];
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        } else {
+          console.error("Invalid data format received:", response);
+        }
+        // Clear loading state
+        this.sIsLoading = '';
+      },
+      (error) => {
+        console.error("Error Fetching Data:", error);
+        this.sIsLoading = ''; // Clear loading state on error
+      }
+    );
   }
 
   addNewICD() {
     const dialogRef = this._matDialog.open(NewicdComponent,
+      {
+        maxWidth: "90%",
+        width: "100%",
+        height: "90%",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getPatientICDList();
+    });
+  }
+  addGroupmaster() {
+    const dialogRef = this._matDialog.open(NewgroupMasterComponent,
       {
         maxWidth: "80%",
         width: "100%",
@@ -62,13 +114,25 @@ export class IcdComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getIcdList();
+      this.getPatientICDList();
+    });
+  }
+  addNewICDCodeMaster() {
+    const dialogRef = this._matDialog.open(NewicdCodingMasterComponent,
+      {
+        maxWidth: "80%",
+        width: "100%",
+        height: "90%",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getPatientICDList();
     });
   }
   onEdit(row) {
     const dialogRef = this._matDialog.open(NewicdComponent,
       {
-        maxWidth: "80%",
+        maxWidth: "90%",
         width: "100%",
         height: "90%",
         data: {
@@ -77,7 +141,7 @@ export class IcdComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.getIcdList();
+      this.getPatientICDList();
     });
   }
   onClear() {
@@ -85,7 +149,7 @@ export class IcdComponent implements OnInit {
       start: new Date(),
       end: new Date(),
     });
-    this.getIcdList();
+    this.getPatientICDList();
   }
 }
 export class Icddetail {

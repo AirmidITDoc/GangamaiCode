@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,9 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { DatePipe } from '@angular/common';
 import { MrdService } from '../../mrd.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { Icddetail } from '../icd.component';
 
 @Component({
   selector: 'app-newicd',
@@ -44,6 +47,8 @@ export class NewicdComponent implements OnInit {
   vCertificateText:any;
   filteredOptions: any;
   noOptionFound: boolean = false;
+  hasSelectedContacts: boolean;
+  sIsLoading: string = '';
 
 
   displayedColumns: string[] = [
@@ -58,6 +63,9 @@ displayedColumns1: string[] = [
 ];
 
 DSIcdMasterList=new MatTableDataSource();
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public _MrdService: MrdService,
@@ -75,6 +83,7 @@ DSIcdMasterList=new MatTableDataSource();
       this.registerObj1 = this.data.Obj;
       console.log("Icd RegisterObj:", this.registerObj1)
     }
+    this.getICDCodelist();
   }
 
   getSelectedObj(obj) {
@@ -123,6 +132,48 @@ DSIcdMasterList=new MatTableDataSource();
     }
   }
 
+  getICDCodelist(){
+this.sIsLoading = 'loading-data';
+  
+    const ICDCodeName = this._MrdService.icdForm.get("ICDNameSearch").value;
+    const ICDCode = this._MrdService.icdForm.get("ICDCodeSearch").value;
+  
+    // Prepare request payload
+    const D_data = {
+      "ICDCodeName": ICDCode || '',
+      "ICDCode": ICDCodeName ? `${ICDCodeName}%` : '%',
+    };
+  
+    console.log("Request Payload:", D_data);
+  
+    // Make API call
+    this._MrdService.geticdCodelist(D_data).subscribe(
+      (response) => {
+        console.log("API Response:", response);
+        
+        if (response && Array.isArray(response)) {
+          this.DSIcdMasterList.data = response as Icddetail[];
+          this.DSIcdMasterList.sort = this.sort;
+          this.DSIcdMasterList.paginator = this.paginator;
+        } else {
+          console.error("Invalid data format received:", response);
+        }  
+        this.sIsLoading = '';
+      },
+      (error) => {
+        console.error("Error Fetching Data:", error);
+        this.sIsLoading = '';
+      }
+    );
+  }
+
+  onClear() {
+    this._MrdService.icdForm.reset({
+      ICDNameSearch:"",
+      ICDCodeSearch:"",
+    });
+    this.getICDCodelist();
+  }
   onSave(){
 
   }

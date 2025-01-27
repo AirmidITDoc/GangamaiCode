@@ -11,12 +11,14 @@ export class MrdService {
   Otserachform:FormGroup;
   icdForm:FormGroup;
   otreservationFormGroup:FormGroup;
+  MedicalForm:FormGroup;
   
   constructor(private _httpClient: HttpClient,
     private _formBuilder: FormBuilder) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm();
       this.icdForm=this.createIcdForm();
+      this.MedicalForm=this.createMedicalForm();
       // this.otreservationFormGroup = this.createOtreservationForm();
      }
  
@@ -47,10 +49,52 @@ export class MrdService {
           DOD: [""],
           start: [(new Date()).toISOString()],
           end: [(new Date()).toISOString()],
+          uhidNo:'',
+          ICDNameSearch:'',
+          ICDCodeSearch:'',
       });
   }
 
+  createMedicalForm() {
+    return this._formBuilder.group({
+      MedicalDate: [new Date().toISOString()],
+      MedicalTime: [new Date().toISOString()],
+      OP_IP_ID: '',
+      OP_IP_Type: '',    
+      RegID: '',
+      PatientType: ['OP'],
+      MLCNo:'',
+      NameAuthority:'',
+      BuckleNo:'',
+      PoliceStation:'',
+      Departmentid:'',
+      DoctorId:'',
+      DoctorId1:'',
+      DoctorId2:'',
+      CertificateNo:'',
+      AccidentDateTime:'',
+      AgeInjuries:'',
+      CauseInjuries:'',
+      vAccidentDetails:'',
+    });
+  }
 
+  public getPatienticdList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PatientICDList", employee)
+  }
+
+  // icdcode list
+  public geticdCodelist(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_M_ICDCdeMst_by_Name", employee)
+  }
+ // ip
+ public getAdmittedPatientList(employee){
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
+}
+// op
+public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+}
   public getdischargepatientcasepaper(employee){
     return this._httpClient.post("Generic/GetByProc?procName=rptDischargePatientListforMRD", employee)
   }
@@ -84,17 +128,16 @@ export class MrdService {
   }
 
   //Doctor Master Combobox List
-  public getDoctorMasterCombo(Id) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
-  }
+  public getDoctorMasterCombo(param) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", param)
+}
 
-  public getDoctorMaster() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo", {})
-  }
-
-  public getDoctorMaster1(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_DoctorMasterForCombo", {})
-  }
+public getDoctorMaster() {
+  return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+}
+public getDoctorMaster1Combo() {
+  return this._httpClient.post("Generic/GetByProc?procName=RetrieveDoctorMasterForCombo", {})
+}
 
   public populateFormpersonal(employee){
     this.otreservationFormGroup.patchValue(employee);
