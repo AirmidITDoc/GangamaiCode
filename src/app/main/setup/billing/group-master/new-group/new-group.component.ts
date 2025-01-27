@@ -13,7 +13,6 @@ export class NewGroupComponent implements OnInit {
   
     groupForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor(
         public _GroupMasterService: GroupMasterService,
@@ -34,7 +33,6 @@ export class NewGroupComponent implements OnInit {
         
         if(!this.groupForm.invalid)
         {  
-            this.saveflag = true;
 
             console.log("bank json:", this.groupForm.value);
 

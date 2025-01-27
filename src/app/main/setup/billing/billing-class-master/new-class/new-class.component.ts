@@ -16,7 +16,6 @@ export class NewClassComponent implements OnInit {
 
     classForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor(
         public _BillingClassMasterService: BillingClassMasterService,
@@ -37,7 +36,6 @@ export class NewClassComponent implements OnInit {
    
       if (this.classForm.valid) {
 
-        this.saveflag = true;
         
         console.log("JSON :-",this.classForm.value)
         

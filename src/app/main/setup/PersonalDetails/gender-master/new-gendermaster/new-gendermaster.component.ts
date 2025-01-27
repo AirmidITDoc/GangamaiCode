@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewGendermasterComponent implements OnInit {
     genderForm: FormGroup;
     isActive:boolean=true
-    saveflag : boolean = false;
+    
     constructor(
         public _GenderMasterService: GenderMasterService,
         public dialogRef: MatDialogRef<NewGendermasterComponent>,
@@ -37,7 +37,6 @@ export class NewGendermasterComponent implements OnInit {
     onSubmit() {
         
         if (this.genderForm.valid) {
-            this.saveflag = true;
             console.log("json :- ",this.genderForm.value);
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
                 this.toastr.success(response.message);

@@ -11,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class NewCurrencyComponent implements OnInit {
 
-    Saveflag: boolean= false;
+    
     currencyForm: FormGroup;
     isActive:boolean=true;
 
@@ -34,7 +34,6 @@ export class NewCurrencyComponent implements OnInit {
     onSubmit() {
       if (!this.currencyForm.invalid) 
       {
-        this.Saveflag=true;
 
         console.log("Currency JSON :-",this.currencyForm.value);
 

@@ -33,12 +33,11 @@ export class NewPrescriptionClassComponent implements OnInit {
     }
   }
 
-  Saveflag: boolean= false;
+
   onSubmit() {
         
       if(!this.prescriptionForm.invalid)
         {
-            this.Saveflag=true
        
         console.log("class json:", this.prescriptionForm.value);
   

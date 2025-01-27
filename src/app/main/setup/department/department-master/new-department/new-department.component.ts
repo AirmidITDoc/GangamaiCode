@@ -16,7 +16,6 @@ export class NewDepartmentComponent implements OnInit {
 
   departmentForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _DepartmentMasterService: DepartmentMasterService,
@@ -35,7 +34,6 @@ export class NewDepartmentComponent implements OnInit {
   onSubmit() {
     if (!this.departmentForm.invalid) 
     {
-        this.saveflag = true;
         
         console.log("JSON :-",this.departmentForm.value);
 

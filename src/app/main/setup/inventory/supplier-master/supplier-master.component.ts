@@ -28,45 +28,58 @@ export class SupplierMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Supplier/SupplierList",
         columnsList: [
-            { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Supplier", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80 },
+            { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "StateName", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+            { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 50 },
+            { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+            { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                // heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                //     {
+                //         action: gridActions.edit, callback: (data: any) => {
+                //             let that = this;
+                //             const dialogRef = this._matDialog.open(FixSupplierComponent,
+                //                 {
+                //                     maxWidth: "95vw",
+                //                     height: '85%',
+                //                     width: '70%',
+                //                     data: { supplierId: data.supplierId }
+                //                 });
+                //             dialogRef.afterClosed().subscribe(result => {
+                //                 if (result) {
+                //                     that.grid.bindGridData();
+                //                 }
+                //             });
+                //         }
+                //     }, {
+                //         action: gridActions.delete, callback: (data: any) => {
+
+                //         }
+                //     }]
+                heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            let that = this;
-                            const dialogRef = this._matDialog.open(FixSupplierComponent,
-                                {
-                                    maxWidth: "95vw",
-                                    height: '85%',
-                                    width: '70%',
-                                    data: { supplierId: data.supplierId }
-                                });
-                            dialogRef.afterClosed().subscribe(result => {
-                                if (result) {
-                                    that.grid.bindGridData();
-                                }
-                            });
+                            this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-
+                            this._supplierService.deactivateTheStatus(data.supplierId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "SupplierId",
+        sortField: "SupplierId", //SupplierName
         sortOrder: 0,
         filters: [
             { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -89,8 +102,8 @@ export class SupplierMasterComponent implements OnInit {
 
     onSearchClear() {
         this._supplierService.myformSearch.reset({
-            SupplierNameSearch: "",
-            IsDeletedSearch: "2",
+            SupplierNameSearch: [""],
+            IsDeletedSearch: ["2"],
         });
 
     }

@@ -13,7 +13,6 @@ export class NewDrugMasterComponent implements OnInit {
 
     drugForm:FormGroup;
     isActive:boolean=true;
-    saveflag:boolean=false;
 
     autocompleteModeClass: string = "Class";  
     autocompleteModeGenericName: string = "ItemGeneric";
@@ -38,8 +37,7 @@ export class NewDrugMasterComponent implements OnInit {
     onSubmit() {
         
       if(!this.drugForm.invalid)
-      {
-        this.saveflag = true    
+      { 
       
         console.log("drug json:", this.drugForm.value);
   

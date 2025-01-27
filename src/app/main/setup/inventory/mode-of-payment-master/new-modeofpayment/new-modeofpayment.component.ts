@@ -35,11 +35,9 @@ export class NewModeofpaymentComponent implements OnInit {
       }
   }
 
-  saveflag : boolean = false;
   onSubmit() {
       if(!this.modeofpayForm.invalid)
         {
-            this.saveflag = true;
 
             console.log("TaxMaster Insert:",this.modeofpayForm.value);
 

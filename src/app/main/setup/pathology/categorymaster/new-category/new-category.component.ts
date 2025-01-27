@@ -16,7 +16,6 @@ export class NewCategoryComponent implements OnInit {
   
     categoryForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
 
   constructor(
@@ -39,7 +38,6 @@ export class NewCategoryComponent implements OnInit {
    onSubmit() {
     
       if (!this.categoryForm.invalid) {
-        this.saveflag = true;
 
         console.log("Category JSON :", this.categoryForm.value);
         

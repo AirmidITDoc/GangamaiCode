@@ -13,7 +13,6 @@ export class NewManufactureComponent implements OnInit {
 
   manufForm: FormGroup;
   isActive:boolean=true;
-  saveflag:boolean=false;
 
     constructor(
       public _ManufactureMasterService: ManufactureMasterService,
@@ -35,7 +34,6 @@ export class NewManufactureComponent implements OnInit {
     onSubmit() {
       if (!this.manufForm.invalid) 
         {
-        this.saveflag = true
         this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {
               this.toastr.success(response.message);
               this.onClear(true);

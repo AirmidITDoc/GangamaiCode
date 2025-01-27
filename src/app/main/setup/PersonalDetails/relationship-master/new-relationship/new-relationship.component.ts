@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewRelationshipComponent implements OnInit {
   relationshipForm: FormGroup;
   isActive: boolean = true;
-  saveflag: boolean = false;
 
   constructor(
     public _RelationshipMasterService: RelationshipMasterService,
@@ -35,7 +34,6 @@ export class NewRelationshipComponent implements OnInit {
   onSubmit() {
 
     if (!this.relationshipForm.invalid) {
-      this.saveflag = true;
       console.log("json :-", this.relationshipForm.value);
       this._RelationshipMasterService.relationshipMasterSave(this.relationshipForm.value).subscribe((response) => {
         this.toastr.success(response.message);

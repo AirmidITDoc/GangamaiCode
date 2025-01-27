@@ -13,7 +13,6 @@ export class NewItemcategoryComponent implements OnInit {
 
   categoryForm: FormGroup;
   isActive:boolean=true;
-  Saveflag: boolean= false;
 
   autocompleteModeItem: string = "Item";
 
@@ -37,7 +36,6 @@ export class NewItemcategoryComponent implements OnInit {
     onSubmit() {
         if(!this.categoryForm.invalid)
         {
-            this.Saveflag=true
 
             console.log("ItemCategoryMaster Insert:",this.categoryForm.value)
         

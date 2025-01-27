@@ -16,7 +16,6 @@ export class NewBedComponent implements OnInit {
 
   bedForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
   
   constructor(
       public _BedMasterService: BedMasterService,
@@ -54,7 +53,6 @@ export class NewBedComponent implements OnInit {
   onSubmit() {
     if(!this.bedForm.invalid) 
     {
-        this.saveflag = true;
 
         console.log("BedMaster Insert:",this.bedForm.value)
 

@@ -16,7 +16,6 @@ export class NewGnericMasterComponent implements OnInit {
 
   genericForm:FormGroup;
   isActive:boolean=true;
-  saveflag:boolean=false;
 
     constructor(
         public _GenericMasterService: GenericmasterService,
@@ -38,7 +37,6 @@ export class NewGnericMasterComponent implements OnInit {
         
       if(!this.genericForm.invalid)
       {  
-        this.saveflag=true
        
         console.log("generic json:", this.genericForm.value);
   

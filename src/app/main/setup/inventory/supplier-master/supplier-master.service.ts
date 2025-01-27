@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable()
@@ -20,8 +20,8 @@ export class SupplierMasterService {
             supplierId: [0],
             supplierName:["", 
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             ContactPerson:["Hospital-Admin", [ 
@@ -30,41 +30,41 @@ export class SupplierMasterService {
                 // Validators.maxLength(100),
             ]],
             address: ["", 
-                // Validators.required,
-                // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                Validators.required,
+                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ],
             cityId: [0, 
-                // Validators.required
+                Validators.required
             ],
             // CityName: [""],
             stateId: [0, 
-                // Validators.required
+                Validators.required
             ],
             // StateName: [""],
             countryId: [0,
-                // Validators.required
+                Validators.required
             ],
             // CountryName: [""],
             CreditPeriod: ["",
                 [
-                    // Validators.required
+                    Validators.required
                 ]
             ],
             mobile: ["", 
                 [
-                    // Validators.required,
-                    // Validators.maxLength(10),
-                    // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    Validators.required,
+                    Validators.maxLength(10),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
             phone:["", 
                 [
-                //     Validators.required,
-                //     Validators.maxLength(10),
-                //     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    Validators.required,
+                    Validators.maxLength(10),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
-            fax: ['',
+            fax: ["0",
                 [
                     // Validators.required,
                     // Validators.maxLength(10),
@@ -73,15 +73,15 @@ export class SupplierMasterService {
             ],
             email: ["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
+                    Validators.required,
+                    Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
                 ]
             ],
             modeofPayment: ["", 
-                // Validators.required
+                Validators.required
             ],
             termofPayment: ["", 
-                // Validators.required
+                Validators.required
             ],
             CurrencyId: [1],// Validators.pattern("[0-9]+")
             Octroi: [0],//Validators.pattern("[0-9]+")
@@ -94,14 +94,14 @@ export class SupplierMasterService {
             ],
             gstNo: ["", 
                 [
-                    // Validators.required,
-                    // Validators.maxLength(15)
+                    Validators.required,
+                    Validators.maxLength(15)
                 ]
             ], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
             panNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+                    Validators.required,
+                    Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
                 ]
             ],
             supplierTime: [(new Date()).toISOString()],
@@ -128,11 +128,14 @@ export class SupplierMasterService {
     }
 
     
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.PostData(
+    //         "Generic/ExecByQueryStatement?query=" + m_data,
+    //         {}
+    //     );
+    // }
     public deactivateTheStatus(m_data) {
-        return this._httpClient.PostData(
-            "Generic/ExecByQueryStatement?query=" + m_data,
-            {}
-        );
+        return this._httpClient.DeleteData("Supplier/Cancel?Id=" + m_data.toString());
     }
 
    

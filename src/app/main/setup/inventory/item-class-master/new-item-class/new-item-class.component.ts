@@ -16,7 +16,6 @@ export class NewItemClassComponent implements OnInit {
 
   classForm: FormGroup;
   isActive:boolean=true;
-  Saveflag: boolean= false;
 
   constructor(
       public _ItemClassMasterService: ItemClassMasterService,
@@ -39,7 +38,6 @@ export class NewItemClassComponent implements OnInit {
   onSubmit() {
       if (!this.classForm.invalid) 
       {
-            this.Saveflag=true
 
             console.log("Item JSON :-",this.classForm.value);
 

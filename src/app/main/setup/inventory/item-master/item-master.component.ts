@@ -25,38 +25,37 @@ export class ItemMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "ItemMaster/ItemMasterList",
         columnsList: [
-            { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "HsNcode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Type Name", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Class Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Generic Name", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PuchaseUOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "StockUOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "MinQty", key: "minQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "MaxQty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Cgst", key: "cgst", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Sgst", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Igst", key: "igst", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Manufacture Name", key: "manufId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ProdLocation", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsNarcotic", key: "isNarcotic", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsActive", key: "isActive", width: 50 , type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "HsNcode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "ItemTypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+            { heading: "ItemClassName", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "ItemGenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "PuchaseUOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "StockUOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "ConversionFactor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "CurrencyName", key: "currencyName", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+            { heading: "MinQty", key: "minQty", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+            { heading: "MaxQty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+            { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+            { heading: "Cgst", key: "cgst", sort: true, align: 'left', emptySign: 'NA', width: 40 },
+            { heading: "Sgst", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 40 },
+            { heading: "Igst", key: "igst", sort: true, align: 'left', emptySign: 'NA', width: 40 },
+            { heading: "ManufactureName", key: "manufId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+            { heading: "ProdLocation", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            { heading: "IsNarcotic", key: "isNarcotic", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "IsActive", key: "isActive", width: 80 , type: gridColumnTypes.status, align: "center" },
+            { heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._itemService.deactivateTheStatus(data.stockId).subscribe((response: any) => {
+                            this._itemService.deactivateTheStatus(data.itemID).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -67,7 +66,7 @@ export class ItemMasterComponent implements OnInit {
         sortField: "ItemID",
         sortOrder: 0,
         filters: [
-            { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }

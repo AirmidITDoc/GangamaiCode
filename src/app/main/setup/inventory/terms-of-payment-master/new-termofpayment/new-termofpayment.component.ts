@@ -16,7 +16,6 @@ export class NewTermofpaymentComponent implements OnInit {
 
     termsofpaymentForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor(
       public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
@@ -38,7 +37,6 @@ export class NewTermofpaymentComponent implements OnInit {
         
         if(!this.termsofpaymentForm.invalid)
         {
-            this.saveflag = true;
             
             console.log("TermsOfPaymentMaster Insert:",this.termsofpaymentForm.value)
             

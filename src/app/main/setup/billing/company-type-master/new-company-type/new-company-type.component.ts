@@ -16,7 +16,6 @@ export class NewCompanyTypeComponent implements OnInit {
 
   companttypeForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor(
       public _CompanyTypeMasterService: CompanyTypeMasterService,
@@ -37,7 +36,6 @@ export class NewCompanyTypeComponent implements OnInit {
         
       if(!this.companttypeForm.invalid)
         {
-            this.saveflag = true;
 
             console.log("newComp JSON :-", this.companttypeForm.value);
             

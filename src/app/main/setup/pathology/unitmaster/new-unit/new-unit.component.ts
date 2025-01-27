@@ -16,7 +16,6 @@ export class NewUnitComponent implements OnInit {
   
     unitForm: FormGroup;
     isActive:boolean=true;
-    saveflag : boolean = false;
 
     constructor(
         public _UnitmasterService: UnitmasterService,
@@ -38,7 +37,6 @@ export class NewUnitComponent implements OnInit {
     onSubmit() {
         
     if (!this.unitForm.invalid){
-        this.saveflag = true;
     
         console.log("unit JSON :-",this.unitForm.value);
 

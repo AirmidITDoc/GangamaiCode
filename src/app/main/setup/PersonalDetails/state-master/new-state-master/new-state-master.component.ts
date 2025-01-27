@@ -16,7 +16,7 @@ export class NewStateMasterComponent implements OnInit {
 
   stateForm: FormGroup;
   isActive:boolean=true;
-  saveflag:boolean=false;
+  
   constructor(
       public _StateMasterService: StateMasterService,
       public dialogRef: MatDialogRef<NewStateMasterComponent>,
@@ -45,7 +45,6 @@ export class NewStateMasterComponent implements OnInit {
     onSubmit() {
     if(!this.stateForm.invalid)
         {
-        this.saveflag = true;
         console.log(this.stateForm.value);
           this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
               this.toastr.success(response.message);

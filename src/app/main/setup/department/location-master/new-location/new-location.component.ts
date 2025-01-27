@@ -15,7 +15,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewLocationComponent implements OnInit {
   locationForm: FormGroup;
   isActive:boolean=true;
-  saveflag : boolean = false;
 
   constructor( public _LocationMasterService: LocationMasterService,
     public dialogRef: MatDialogRef<NewLocationComponent>,
@@ -34,7 +33,6 @@ export class NewLocationComponent implements OnInit {
   onSubmit() {
     if(!this.locationForm.invalid) 
     {
-        this.saveflag = true;
         
         console.log("location JSON :-",this.locationForm.value);
         

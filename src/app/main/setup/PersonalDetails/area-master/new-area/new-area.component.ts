@@ -16,7 +16,7 @@ export class NewAreaComponent implements OnInit {
 
   areaForm: FormGroup;
   isActive:boolean=true
-  saveflag:boolean=false;
+ 
   constructor(
       public _AreaMasterService: AreaMasterService,
       public dialogRef: MatDialogRef<NewAreaComponent>,
@@ -40,7 +40,6 @@ export class NewAreaComponent implements OnInit {
     onSubmit() {
         if (this.areaForm.valid) {
 
-            this.saveflag = true;
             console.log("area json :- ",this.areaForm.value);
 
             this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {
