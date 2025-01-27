@@ -1,6 +1,4 @@
-
-    
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container" *ngIf="false">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -8,8 +6,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
@@ -19,304 +16,157 @@
 
     <div class="content">
         <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card"> 
+            <div class="content-card">
                 <div style="padding: 10px; height: 50%;" fxLayoutGap="2px">
                     <div class="dialog-content-wrapper" style="align-items: flex-end;margin-right:10px;">
                         <form [formGroup]="itemForm">
-                          <input type="hidden" name="itemID" formControlName="itemId" [(ngModel)]="registerObj.itemId">
+                            <input type="hidden" name="itemID" formControlName="itemId" [(ngModel)]="registerObj.itemId">
                             <div>
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    
+
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="HSN Code"
-                                            formControlName="hsNcode"
-                                            [value]="registerObj?.hsNcode"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().hsNcode"
-                                            [maxLength]="30">
-                                        </airmid-textbox> 
+                                        <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsNcode" [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30">
+                                        </airmid-textbox>
                                     </div>
-                                    
+
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Item Short Name"
-                                            formControlName="itemShortName"
-                                            [value]="registerObj?.itemShortName"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().itemShortName"
-                                            [maxLength]="50">
-                                        </airmid-textbox> 
+                                        <airmid-textbox label="Item Short Name" formControlName="itemShortName" [value]="registerObj?.itemShortName" [formGroup]="itemForm" [validations]="getValidationMessages().itemShortName" [maxLength]="50">
+                                        </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                      <airmid-textbox 
-                                          label="Item Name"
-                                          formControlName="itemName"
-                                          [value]="registerObj?.itemName"
-                                          [formGroup]="itemForm"
-                                          [validations]="getValidationMessages().itemName"
-                                          [maxLength]="50">
-                                      </airmid-textbox> 
-                                  </div>
-                                
-                                </div> 
+                                        <airmid-textbox label="Item Name" formControlName="itemName" [value]="registerObj?.itemName" [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="50">
+                                        </airmid-textbox>
+                                    </div>
+
+                                </div>
 
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Item Type Name"
-                                            formControlName="itemTypeId"
-                                            [value]="registerObj?.itemTypeId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().itemTypeId"
-                                            [mode]="autocompleteModeItemType"
-                                            (selectDdlObject)="selectChangeItemType($event)">
-                                        </airmid-autocomplete> 
+                                        <airmid-autocomplete label="Item Type Name" formControlName="itemTypeId" [value]="registerObj?.itemTypeId" [formGroup]="itemForm" [validations]="getValidationMessages().itemTypeId" [mode]="autocompleteModeItemType" (selectDdlObject)="selectChangeItemType($event)">
+                                        </airmid-autocomplete>
                                     </div>
-                                    
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Item Category Name"
-                                            formControlName="itemCategaryId"
-                                            [value]="registerObj?.itemCategaryId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().itemCategaryId"
-                                            [mode]="autocompleteModeItemCategory"
-                                            (selectDdlObject)="selectChangeItemCategory($event)">
-                                        </airmid-autocomplete> 
+                                        <airmid-autocomplete label="Item Category Name" formControlName="itemCategaryId" [value]="registerObj?.itemCategaryId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCategaryId" [mode]="autocompleteModeItemCategory" (selectDdlObject)="selectChangeItemCategory($event)">
+                                        </airmid-autocomplete>
                                     </div>
-                                    
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Item Generic Name"
-                                            formControlName="itemGenericNameId"
-                                            [value]="registerObj?.itemGenericNameId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().itemGenericNameId"
-                                            [mode]="autocompleteModeItemGenericName"
-                                            (selectDdlObject)="selectChangeItemGenericName($event)">
-                                        </airmid-autocomplete> 
+                                        <airmid-autocomplete label="Item Generic Name" formControlName="itemGenericNameId" [value]="registerObj?.itemGenericNameId" [formGroup]="itemForm" [validations]="getValidationMessages().itemGenericNameId" [mode]="autocompleteModeItemGenericName" (selectDdlObject)="selectChangeItemGenericName($event)">
+                                        </airmid-autocomplete>
                                     </div>
-                                    
+
                                     <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Item Class Name"
-                                            formControlName="itemClassId"
-                                            [value]="registerObj?.itemClassId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().itemClassId"
-                                            [mode]="autocompleteModeItemClass"
-                                            (selectDdlObject)="selectChangeItemClass($event)">
-                                        </airmid-autocomplete> 
-                                    </div>
-                                    
-                                </div>
-
-                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Currency Id"
-                                            formControlName="currencyId"
-                                            [value]="registerObj?.currencyId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().currencyId"
-                                            [mode]="autocompleteModeCurrency"
-                                            (selectDdlObject)="selectChangeCurrency($event)">
-                                        </airmid-autocomplete> 
-                                    </div>
-
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Unit Of Measurement ID"
-                                            formControlName="purchaseUomid"
-                                            [value]="registerObj?.purchaseUomid"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().purchaseUomid"
-                                            [mode]="autocompleteModePurchaseUOM"
-                                            (selectDdlObject)="selectChangePurchaseUOM($event)">
-                                        </airmid-autocomplete> 
-                                    </div>
-                                    
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Stock Unit Of Measurement ID"
-                                            formControlName="stockUomid"
-                                            [value]="registerObj?.stockUomid"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().stockUomid"
-                                            [mode]="autocompleteModeStockUOM"
-                                            (selectDdlObject)="selectChangeStockUOM($event)">
-                                        </airmid-autocomplete> 
+                                        <airmid-autocomplete label="Item Class Name" formControlName="itemClassId" [value]="registerObj?.itemClassId" [formGroup]="itemForm" [validations]="getValidationMessages().itemClassId" [mode]="autocompleteModeItemClass" (selectDdlObject)="selectChangeItemClass($event)">
+                                        </airmid-autocomplete>
                                     </div>
 
                                 </div>
 
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                   
+
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Conversion Factor"
-                                            formControlName="conversionFactor"
-                                            [value]="registerObj?.conversionFactor"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().conversionFactor"
-                                            [maxLength]="50">
-                                        </airmid-textbox> 
+                                        <airmid-autocomplete label="Currency Id" formControlName="currencyId" [value]="registerObj?.currencyId" [formGroup]="itemForm" [validations]="getValidationMessages().currencyId" [mode]="autocompleteModeCurrency" (selectDdlObject)="selectChangeCurrency($event)">
+                                        </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="reOrder"
-                                            formControlName="reOrder"
-                                            [value]="registerObj?.reOrder"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().reOrder"
-                                            [maxLength]="5">
-                                        </airmid-textbox> 
+                                        <airmid-autocomplete label="Unit Of Measurement ID" formControlName="purchaseUomid" [value]="registerObj?.purchaseUomid" [formGroup]="itemForm" [validations]="getValidationMessages().purchaseUomid" [mode]="autocompleteModePurchaseUOM" (selectDdlObject)="selectChangePurchaseUOM($event)">
+                                        </airmid-autocomplete>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-autocomplete label="Stock Unit Of Measurement ID" formControlName="stockUomid" [value]="registerObj?.stockUomid" [formGroup]="itemForm" [validations]="getValidationMessages().stockUomid" [mode]="autocompleteModeStockUOM" (selectDdlObject)="selectChangeStockUOM($event)">
+                                        </airmid-autocomplete>
+                                    </div>
+
+                                </div>
+
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Conversion Factor" formControlName="conversionFactor" [value]="registerObj?.conversionFactor" [formGroup]="itemForm" [validations]="getValidationMessages().conversionFactor" [maxLength]="50">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="reOrder" formControlName="reOrder" [value]="registerObj?.reOrder" [formGroup]="itemForm" [validations]="getValidationMessages().reOrder" [maxLength]="5">
+                                        </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Storage Location"
-                                            formControlName="prodLocation"
-                                            [value]="registerObj?.prodLocation"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().prodLocation"
-                                            [maxLength]="50">
-                                        </airmid-textbox> 
+                                        <airmid-textbox label="Storage Location" formControlName="prodLocation" [value]="registerObj?.prodLocation" [formGroup]="itemForm" [validations]="getValidationMessages().prodLocation" [maxLength]="50">
+                                        </airmid-textbox>
                                     </div>
 
                                 </div>
 
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                   
+
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="C-GST"
-                                            formControlName="cgst"
-                                            [value]="registerObj?.cgst"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().cgst"
-                                            [maxLength]="10">
-                                        </airmid-textbox> 
+                                        <airmid-textbox label="C-GST" formControlName="cgst" [value]="registerObj?.cgst" [formGroup]="itemForm" [validations]="getValidationMessages().cgst" [maxLength]="10">
+                                        </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="S-GST"
-                                            formControlName="sgst"
-                                            [value]="registerObj?.sgst"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().sgst"
-                                            [maxLength]="10">
-                                        </airmid-textbox> 
-                                    </div>
-                                
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="I-GST"
-                                            formControlName="igst"
-                                            [value]="registerObj?.igst"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().igst"
-                                            [maxLength]="10">
-                                        </airmid-textbox> 
-                                    </div>
-                                
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Min-Qty"
-                                            formControlName="minQty"
-                                            [value]="registerObj?.minQty"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().minQty"
-                                            [maxLength]="5">
-                                        </airmid-textbox> 
+                                        <airmid-textbox label="S-GST" formControlName="sgst" [value]="registerObj?.sgst" [formGroup]="itemForm" [validations]="getValidationMessages().sgst" [maxLength]="10">
+                                        </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox 
-                                            label="Max-Qty"
-                                            formControlName="maxQty"
-                                            [value]="registerObj?.maxQty"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().maxQty"
-                                            [maxLength]="5">
-                                        </airmid-textbox> 
+                                        <airmid-textbox label="I-GST" formControlName="igst" [value]="registerObj?.igst" [formGroup]="itemForm" [validations]="getValidationMessages().igst" [maxLength]="10">
+                                        </airmid-textbox>
                                     </div>
-                                
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Min-Qty" formControlName="minQty" [value]="registerObj?.minQty" [formGroup]="itemForm" [validations]="getValidationMessages().minQty" [maxLength]="5">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Max-Qty" formControlName="maxQty" [value]="registerObj?.maxQty" [formGroup]="itemForm" [validations]="getValidationMessages().maxQty" [maxLength]="5">
+                                        </airmid-textbox>
+                                    </div>
+
                                 </div>
 
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
- 
+
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Drug Type"
-                                            formControlName="drugType"
-                                            [value]="registerObj?.drugType"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().drugType"
-                                            [mode]="autocompleteModeDrugType"
-                                            (selectDdlObject)="selectChangeDrugType($event)">
-                                        </airmid-autocomplete> 
-                                    </div>
-                                    
-                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Manufacture Name"
-                                            formControlName="manufId"
-                                            [value]="registerObj?.manufId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().manufId"
-                                            [mode]="autocompleteModeMenu"
-                                            (selectDdlObject)="selectChangeMenu($event)">
-                                        </airmid-autocomplete> 
+                                        <airmid-autocomplete label="Drug Type" formControlName="drugType" [value]="registerObj?.drugType" [formGroup]="itemForm" [validations]="getValidationMessages().drugType" [mode]="autocompleteModeDrugType" (selectDdlObject)="selectChangeDrugType($event)">
+                                        </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete 
-                                            label="Company Name"
-                                            formControlName="itemCompnayId"
-                                            [value]="registerObj?.itemCompnayId"
-                                            [formGroup]="itemForm"
-                                            [validations]="getValidationMessages().itemCompnayId"
-                                            [mode]="autocompleteModeCompany"
-                                            (selectDdlObject)="selectChangeCompany($event)">
-                                        </airmid-autocomplete> 
+                                        <airmid-autocomplete label="Manufacture Name" formControlName="manufId" [value]="registerObj?.manufId" [formGroup]="itemForm" [validations]="getValidationMessages().manufId" [mode]="autocompleteModeMenu" (selectDdlObject)="selectChangeMenu($event)">
+                                        </airmid-autocomplete>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-autocomplete label="Company Name" formControlName="itemCompnayId" [value]="registerObj?.itemCompnayId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeCompany" (selectDdlObject)="selectChangeCompany($event)">
+                                        </airmid-autocomplete>
                                     </div>
                                 </div>
-                                
-                                <div fxLayout="row">                            
+
+                                <div fxLayout="row">
                                     <div fxFlex>
                                         <form [formGroup]="itemForm">
                                             <div fxLayout="row">
                                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete 
-                                                        label="Store" 
-                                                        formControlName="mAssignItemToStores"
-                                                        [formGroup]="itemForm" 
-                                                        [IsMultiPle]="true" 
-                                                        [value]="registerObj.mAssignItemToStores"
-                                                        [validations]="getValidationMessages().storeId" #ddlStore
-                                                        ValueField="storeId" 
-                                                        TextField="storeName"
-                                                        ApiUrl="StoreMaster/get-store" 
-                                                        [ReqFullObj]="true">
+                                                    <airmid-autocomplete label="Store" formControlName="mAssignItemToStores" [formGroup]="itemForm" [IsMultiPle]="true" [value]="registerObj.mAssignItemToStores" [validations]="getValidationMessages().storeId" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
                                                     </airmid-autocomplete>
                                                 </div>
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip *ngFor="let item of itemForm.value.mAssignItemToStores">
-                                                        {{ item.storeName }} <mat-icon
-                                                            (click)="removestore(item)">close</mat-icon>
+                                                        {{ item.storeName }} <mat-icon (click)="removestore(item)">close</mat-icon>
                                                     </mat-chip>
                                                 </mat-chip-listbox>
                                             </div>
                                         </form>
                                     </div>
-                                </div>                        
+                                </div>
 
                                 <div>
                                     <!-- <mat-checkbox aria-label="Mode" formControlName="IsDeleted" [(ngModel)]="vchkactive"
@@ -330,14 +180,14 @@
                             </div>
 
                         </form>
-                        
-                        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end" style="padding: 20px;"> 
+
+                        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end" style="padding: 20px;">
                             <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
                                 <button mat-raised-button (click)="onSave()">+ New Generic Item
                                 </button>
                             </div>
-                              <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                              <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Saveflag">Save</button> 
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Saveflag">Save</button>
                         </div>
                     </div>
                 </div>
@@ -345,5 +195,174 @@
         </div>
     </div>
 </div>
+<!-- New -->
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Item Master</span>
+            </div>
+            <div class="modal-header-right" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button (click)="onSave()">+ New Generic Item </button>
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="itemForm">
+                <input type="hidden" name="itemID" formControlName="itemId" [(ngModel)]="registerObj.itemId">
+                <div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsNcode" [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Item Short Name" formControlName="itemShortName" [value]="registerObj?.itemShortName" [formGroup]="itemForm" [validations]="getValidationMessages().itemShortName" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Item Name" formControlName="itemName" [value]="registerObj?.itemName" [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Item Type Name" formControlName="itemTypeId" [value]="registerObj?.itemTypeId" [formGroup]="itemForm" [validations]="getValidationMessages().itemTypeId" [mode]="autocompleteModeItemType" (selectDdlObject)="selectChangeItemType($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Item Category Name" formControlName="itemCategaryId" [value]="registerObj?.itemCategaryId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCategaryId" [mode]="autocompleteModeItemCategory" (selectDdlObject)="selectChangeItemCategory($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Item Generic Name" formControlName="itemGenericNameId" [value]="registerObj?.itemGenericNameId" [formGroup]="itemForm" [validations]="getValidationMessages().itemGenericNameId" [mode]="autocompleteModeItemGenericName" (selectDdlObject)="selectChangeItemGenericName($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Item Class Name" formControlName="itemClassId" [value]="registerObj?.itemClassId" [formGroup]="itemForm" [validations]="getValidationMessages().itemClassId" [mode]="autocompleteModeItemClass" (selectDdlObject)="selectChangeItemClass($event)">
+                            </airmid-autocomplete>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Currency Id" formControlName="currencyId" [value]="registerObj?.currencyId" [formGroup]="itemForm" [validations]="getValidationMessages().currencyId" [mode]="autocompleteModeCurrency" (selectDdlObject)="selectChangeCurrency($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Unit Of Measurement ID" formControlName="purchaseUomid" [value]="registerObj?.purchaseUomid" [formGroup]="itemForm" [validations]="getValidationMessages().purchaseUomid" [mode]="autocompleteModePurchaseUOM" (selectDdlObject)="selectChangePurchaseUOM($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Stock Unit Of Measurement ID" formControlName="stockUomid" [value]="registerObj?.stockUomid" [formGroup]="itemForm" [validations]="getValidationMessages().stockUomid" [mode]="autocompleteModeStockUOM" (selectDdlObject)="selectChangeStockUOM($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Conversion Factor" formControlName="conversionFactor" [value]="registerObj?.conversionFactor" [formGroup]="itemForm" [validations]="getValidationMessages().conversionFactor" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="reOrder" formControlName="reOrder" [value]="registerObj?.reOrder" [formGroup]="itemForm" [validations]="getValidationMessages().reOrder" [maxLength]="5">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Storage Location" formControlName="prodLocation" [value]="registerObj?.prodLocation" [formGroup]="itemForm" [validations]="getValidationMessages().prodLocation" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="C-GST" formControlName="cgst" [value]="registerObj?.cgst" [formGroup]="itemForm" [validations]="getValidationMessages().cgst" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="S-GST" formControlName="sgst" [value]="registerObj?.sgst" [formGroup]="itemForm" [validations]="getValidationMessages().sgst" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="I-GST" formControlName="igst" [value]="registerObj?.igst" [formGroup]="itemForm" [validations]="getValidationMessages().igst" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Min-Qty" formControlName="minQty" [value]="registerObj?.minQty" [formGroup]="itemForm" [validations]="getValidationMessages().minQty" [maxLength]="5">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Max-Qty" formControlName="maxQty" [value]="registerObj?.maxQty" [formGroup]="itemForm" [validations]="getValidationMessages().maxQty" [maxLength]="5">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Drug Type" formControlName="drugType" [value]="registerObj?.drugType" [formGroup]="itemForm" [validations]="getValidationMessages().drugType" [mode]="autocompleteModeDrugType" (selectDdlObject)="selectChangeDrugType($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-autocomplete label="Manufacture Name" formControlName="manufId" [value]="registerObj?.manufId" [formGroup]="itemForm" [validations]="getValidationMessages().manufId" [mode]="autocompleteModeMenu" (selectDdlObject)="selectChangeMenu($event)">
+                            </airmid-autocomplete>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                            <airmid-autocomplete label="Company Name" formControlName="itemCompnayId" [value]="registerObj?.itemCompnayId" [formGroup]="itemForm" [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeCompany" (selectDdlObject)="selectChangeCompany($event)">
+                            </airmid-autocomplete>
+                        </div>
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                            <airmid-autocomplete label="Store" formControlName="mAssignItemToStores" [formGroup]="itemForm" [IsMultiPle]="true" [value]="registerObj.mAssignItemToStores" [validations]="getValidationMessages().storeId" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
+                            </airmid-autocomplete>
+                        </div>
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            <mat-chip-listbox #chipList>
+                                <mat-chip *ngFor="let item of itemForm.value.mAssignItemToStores">
+                                    {{ item.storeName }} <mat-icon (click)="removestore(item)">close</mat-icon>
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div>
+                    </div>
+                    <!-- <div fxLayout="row">
+                        <div fxFlex>
+                            <form [formGroup]="itemForm">
+                                <div fxLayout="row">
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-autocomplete label="Store" formControlName="mAssignItemToStores" [formGroup]="itemForm" [IsMultiPle]="true" [value]="registerObj.mAssignItemToStores" [validations]="getValidationMessages().storeId" #ddlStore ValueField="storeId" TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
+                                        </airmid-autocomplete>
+                                    </div>
+                                    <mat-chip-listbox #chipList>
+                                        <mat-chip *ngFor="let item of itemForm.value.mAssignItemToStores">
+                                            {{ item.storeName }} <mat-icon (click)="removestore(item)">close</mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-listbox>
+                                </div>
+                            </form>
+                        </div>
+                    </div> -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary " (click)="onSubmit()" [disabled]="Saveflag">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

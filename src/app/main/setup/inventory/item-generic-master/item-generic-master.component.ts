@@ -74,7 +74,6 @@ export class ItemGenericMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewGenericComponent,
             {
                 maxWidth: "45vw",
-                height: '35%',
                 width: '70%',
                 data: row
             });

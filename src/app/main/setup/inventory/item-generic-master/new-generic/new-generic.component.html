@@ -1,47 +1,47 @@
-<div class="modal-wrapper grid-container">
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Item Generic Master</span>
+<form [formGroup]="genericForm">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Item Generic Master</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <input type="hidden" name="itemGenericNameId" formControlName="itemGenericNameId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <airmid-textbox label="Generic Name" formControlName="genericName" [value]="data?.genericName" [formGroup]="genericForm" [validations]="getValidationMessages().itemGenericName" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="modal-footer-actins">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="genericForm" [(ngModel)]="isActive"></app-airmid-slider>
+                </div>
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                    <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="Saveflag">
+                        <span>Save</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            <form [formGroup]="genericForm">
-                <input type="hidden" name="itemGenericNameId" formControlName="itemGenericNameId">
-                <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                        <airmid-textbox 
-                            label="Generic Name"
-                            formControlName="genericName"
-                            [value]="data?.genericName"
-                            [formGroup]="genericForm"
-                            [validations]="getValidationMessages().itemGenericName"
-                            [maxLength]="50">
-                        </airmid-textbox> 
-                </div>
-                
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
-                    <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="genericForm" [(ngModel)]="isActive" ></app-airmid-slider>
-                    </div>
-         
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="Saveflag" >
-                            <span>Save</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+</form>

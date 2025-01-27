@@ -76,9 +76,7 @@ export class ItemFormMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
             {
-                maxWidth: "85%",
-                height: '85%',
-                width: '90%',
+                width: '80%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

@@ -46,7 +46,6 @@ $layout-gap: 12px;
         }
         .title{
             @include font-size(15px);
-            padding: 8px;
             font-weight: 600;
         }
         .date-time-container,

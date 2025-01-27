@@ -96,7 +96,7 @@ $modalHeader: 60px;
             }
         }
         @include themed() {
-            background-color: t($bg-color-light);
+            // background-color: t($bg-color-light);
             color: t($text-color);
             .modal-wrapper {
                 &.grid-container {
