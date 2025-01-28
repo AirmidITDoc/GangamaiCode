@@ -44,10 +44,11 @@ import { AirmidSliderComponent } from './componets/airmid-slider/airmid-slider.c
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AirmidDatepickerComponent } from './componets/airmid-datepicker/airmid-datepicker.component';
 import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.component';
+import { AirmidAutoCompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
 
 
 @NgModule({
-    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent,AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
          AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
     imports: [
         CommonModule,
@@ -91,6 +92,7 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
         AirmidTableComponent,
         AirmidTextboxComponent,
         AirmidDropDownComponent,
+        AirmidAutoCompleteComponent,
         AirmidTable1Component,
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,
