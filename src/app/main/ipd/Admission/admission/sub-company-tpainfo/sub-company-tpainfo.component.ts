@@ -135,15 +135,15 @@ export class SubCompanyTPAInfoComponent implements OnInit {
   }
   
   getCompanyList() {
-    this._AdmissionService.getCompanyCombo().subscribe(data => {
-      this.CompanyList = data;
-      this.optionsCompany = this.CompanyList.slice();
-      this.filteredOptionsCompany = this.SubcompanyFormGroup.get('CompanyId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
-      );
+    // this._AdmissionService.getCompanyCombo().subscribe(data => {
+    //   this.CompanyList = data;
+    //   this.optionsCompany = this.CompanyList.slice();
+    //   this.filteredOptionsCompany = this.SubcompanyFormGroup.get('CompanyId').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterCompany(value) : this.CompanyList.slice()),
+    //   );
       
-    });
+    // });
   }
   private _filterCompany(value: any): string[] {
     if (value) {
@@ -158,14 +158,14 @@ export class SubCompanyTPAInfoComponent implements OnInit {
 
   
   getCityList() {
-    this._AdmissionService.getCityList().subscribe(data => {
-      this.cityList = data;
-      this.optionsCity = this.cityList.slice();
-      this.filteredOptionsCity = this.SubcompanyFormGroup.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCity(value) : this.cityList.slice()),
-      );
-    });
+    // this._AdmissionService.getCityList().subscribe(data => {
+    //   this.cityList = data;
+    //   this.optionsCity = this.cityList.slice();
+    //   this.filteredOptionsCity = this.SubcompanyFormGroup.get('CityId').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterCity(value) : this.cityList.slice()),
+    //   );
+    // });
 
   }
 
@@ -216,19 +216,19 @@ export class SubCompanyTPAInfoComponent implements OnInit {
 
   }
     console.log(m_data);
-  this._AdmissionService.subcompanyTPAInsert(m_data).subscribe(response => {
-    if (response) {
-      Swal.fire('Congratulations !', 'SubcompanyTPA Information save Successfully !', 'success').then((result) => {
-        if (result.isConfirmed) {
-          let m = response;
-          this._matDialog.closeAll();
-        }
-      });
-    } else {
-      Swal.fire('Error !', 'SubcompanyTPA Information  not saved', 'error');
-    }
-    this.isLoading = '';
-  });
+  // this._AdmissionService.subcompanyTPAInsert(m_data).subscribe(response => {
+  //   if (response) {
+  //     Swal.fire('Congratulations !', 'SubcompanyTPA Information save Successfully !', 'success').then((result) => {
+  //       if (result.isConfirmed) {
+  //         let m = response;
+  //         this._matDialog.closeAll();
+  //       }
+  //     });
+  //   } else {
+  //     Swal.fire('Error !', 'SubcompanyTPA Information  not saved', 'error');
+  //   }
+  //   this.isLoading = '';
+  // });
 
 
 }
@@ -254,19 +254,19 @@ else{
 
   }
     console.log(m_data1);
-  this._AdmissionService.subcompanyTPAUpdate(m_data1).subscribe(response => {
-    if (response) {
-      Swal.fire('Congratulations !', 'SubcompanyTPA Information Update Successfully !', 'success').then((result) => {
-        if (result.isConfirmed) {
-          let m = response;
-          this._matDialog.closeAll();
-        }
-      });
-    } else {
-      Swal.fire('Error !', 'SubcompanyTPA Information  not Update', 'error');
-    }
-    this.isLoading = '';
-  });
+  // this._AdmissionService.subcompanyTPAUpdate(m_data1).subscribe(response => {
+  //   if (response) {
+  //     Swal.fire('Congratulations !', 'SubcompanyTPA Information Update Successfully !', 'success').then((result) => {
+  //       if (result.isConfirmed) {
+  //         let m = response;
+  //         this._matDialog.closeAll();
+  //       }
+  //     });
+  //   } else {
+  //     Swal.fire('Error !', 'SubcompanyTPA Information  not Update', 'error');
+  //   }
+  //   this.isLoading = '';
+  // });
 }
 
 }

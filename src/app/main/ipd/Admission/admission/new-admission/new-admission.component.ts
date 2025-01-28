@@ -334,24 +334,12 @@ AdmissionId:any=0;
   }
   //register patient list
 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%` || '%'
-    }
-    if (this.searchFormGroup.get('RegId').value.length >= 1) {
-      this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(this.filteredOptions)
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
-  }
+  getSearchList(e: any) {
+    this._AdmissionService.getRegistrations(e.target.value).subscribe(data => {
+        this.filteredOptions = data;
+    });
 
-
+}
   //Date 
   dateStyle?: string = 'Date';
 
@@ -559,6 +547,9 @@ AdmissionId:any=0;
     }, 100);
   }
 
+  displayFn(user: any): string {
+    return user.text;
+}
   onChangePrefix(e) {
     this.ddlGender.SetSelection(e.sexId);
 }

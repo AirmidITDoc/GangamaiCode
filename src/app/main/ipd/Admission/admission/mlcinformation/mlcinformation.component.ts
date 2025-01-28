@@ -97,39 +97,39 @@ export class MLCInformationComponent implements OnInit {
 
   
   getMlcdetail(AdmissionId){
-    let Query = "Select * from T_MLCInformation where  AdmissionId=" + AdmissionId + " ";
-    this._AdmissionService.getMLCDetail(Query).subscribe(data => {
-      this.MlcObj = data[0];
-      console.log(this.MlcObj);
+    // let Query = "Select * from T_MLCInformation where  AdmissionId=" + AdmissionId + " ";
+    // this._AdmissionService.getMLCDetail(Query).subscribe(data => {
+    //   this.MlcObj = data[0];
+    //   console.log(this.MlcObj);
       
-      if(data){
-        if(this.MlcObj.MLCId)
-        this.MLCId=this.MlcObj.MLCId;
+    //   if(data){
+    //     if(this.MlcObj.MLCId)
+    //     this.MLCId=this.MlcObj.MLCId;
       
-        this.Mlcno=this.MlcObj.MLCNo;
-        this.Mlcdate=this.MlcObj.ReportingTime;
-        this.AuthorityName=this.MlcObj.AuthorityName;
-        this.ABuckleNo=this.MlcObj.BuckleNo;
-        this.PoliceStation=this.MlcObj.PoliceStation;
-        this.Remark=this.MlcObj.Remark;
-        this.DetailGiven=this.MlcObj.DetailGiven;
+    //     this.Mlcno=this.MlcObj.MLCNo;
+    //     this.Mlcdate=this.MlcObj.ReportingTime;
+    //     this.AuthorityName=this.MlcObj.AuthorityName;
+    //     this.ABuckleNo=this.MlcObj.BuckleNo;
+    //     this.PoliceStation=this.MlcObj.PoliceStation;
+    //     this.Remark=this.MlcObj.Remark;
+    //     this.DetailGiven=this.MlcObj.DetailGiven;
 
         
-      }
-    });
+    //   }
+    // });
 
   }
 
   getReligionList() {
-    this._AdmissionService.getMLCCombo().subscribe(data => {
-      this.MLCList = data;
-      this.optionsMLC = this.MLCList.slice();
-      this.filteredOptionsMLC = this.MlcInfoFormGroup.get('MlcType').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterMLC(value) : this.MLCList.slice()),
-      );
+    // this._AdmissionService.getMLCCombo().subscribe(data => {
+    //   this.MLCList = data;
+    //   this.optionsMLC = this.MLCList.slice();
+    //   this.filteredOptionsMLC = this.MlcInfoFormGroup.get('MlcType').valueChanges.pipe(
+    //     startWith(''),
+    //     map(value => value ? this._filterMLC(value) : this.MLCList.slice()),
+    //   );
 
-    });
+    // });
 
   }
   private _filterMLC(value: any): string[] {
@@ -212,20 +212,20 @@ public onEnterpolic(event): void {
 
   }
     console.log(m_data);
-  this._AdmissionService.GetMLCInsert(m_data).subscribe(response => {
-    if (response) {
-      Swal.fire('Congratulations !', 'MLC Information save Successfully !', 'success').then((result) => {
-        if (result.isConfirmed) {
-          let m = response;
-          this._matDialog.closeAll();
-          this.getMLCdetailview(this.AdmissionId,);
-        }
-      });
-    } else {
-      Swal.fire('Error !', 'MLC Information  not saved', 'error');
-    }
-    this.isLoading = '';
-  });
+  // this._AdmissionService.GetMLCInsert(m_data).subscribe(response => {
+  //   if (response) {
+  //     Swal.fire('Congratulations !', 'MLC Information save Successfully !', 'success').then((result) => {
+  //       if (result.isConfirmed) {
+  //         let m = response;
+  //         this._matDialog.closeAll();
+  //         this.getMLCdetailview(this.AdmissionId,);
+  //       }
+  //     });
+  //   } else {
+  //     Swal.fire('Error !', 'MLC Information  not saved', 'error');
+  //   }
+  //   this.isLoading = '';
+  // });
 
 
 }
@@ -247,20 +247,20 @@ else{
     }
   }
     console.log(m_data1);
-  this._AdmissionService.GetMLCUpdate(m_data1).subscribe(response => {
-    if (response) {
-      Swal.fire('Congratulations !', 'MLC Information Update Successfully !', 'success').then((result) => {
-        if (result.isConfirmed) {
-          let m = response;
-          this._matDialog.closeAll();
-          this.getMLCdetailview(this.selectedAdvanceObj.AdmissionID);
-        }
-      });
-    } else {
-      Swal.fire('Error !', 'MLC Information  not Update', 'error');
-    }
-    this.isLoading = '';
-  });
+  // this._AdmissionService.GetMLCUpdate(m_data1).subscribe(response => {
+  //   if (response) {
+  //     Swal.fire('Congratulations !', 'MLC Information Update Successfully !', 'success').then((result) => {
+  //       if (result.isConfirmed) {
+  //         let m = response;
+  //         this._matDialog.closeAll();
+  //         this.getMLCdetailview(this.selectedAdvanceObj.AdmissionID);
+  //       }
+  //     });
+  //   } else {
+  //     Swal.fire('Error !', 'MLC Information  not Update', 'error');
+  //   }
+  //   this.isLoading = '';
+  // });
 }
 
 }
@@ -271,28 +271,28 @@ else{
 getMLCdetailview(Id) {
   // this.sIsLoading = 'loading-data';
 
-  setTimeout(() => {
+  // setTimeout(() => {
 
-    this._AdmissionService.getMLCDetailView(Id
-    ).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "MLC Detail Viewer"
-          }
-        });
+  //   this._AdmissionService.getMLCDetailView(Id
+  //   ).subscribe(res => {
+  //     const matDialog = this._matDialog.open(PdfviewerComponent,
+  //       {
+  //         maxWidth: "85vw",
+  //         height: '750px',
+  //         width: '100%',
+  //         data: {
+  //           base64: res["base64"] as string,
+  //           title: "MLC Detail Viewer"
+  //         }
+  //       });
 
-      matDialog.afterClosed().subscribe(result => {
-        // this.AdList = false;
-        // this.sIsLoading = ' ';
-      });
-    });
+  //     matDialog.afterClosed().subscribe(result => {
+  //       // this.AdList = false;
+  //       // this.sIsLoading = ' ';
+  //     });
+  //   });
 
-  }, 100);
+  // }, 100);
 
 }
 

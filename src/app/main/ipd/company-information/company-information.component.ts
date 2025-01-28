@@ -54,16 +54,16 @@ export class CompanyInformationComponent implements OnInit {
   ngOnInit(): void {
     this.companyFormGroup = this.createCompanyForm();
 
-    if (this.data) {
-      this.registerObj1 = this.data.registerObj;
-    let Query = "Select * from Admission where  AdmissionID=" + this.AdmissionID + " ";
-    this._AdmissionService.getCompanyIdDetail(Query).subscribe(data => {
-      this.registerObj1 = data[0];
-      console.log(this.registerObj1);
-    });
+    // if (this.data) {
+    //   this.registerObj1 = this.data.registerObj;
+    // let Query = "Select * from Admission where  AdmissionID=" + this.AdmissionID + " ";
+    // this._AdmissionService.getCompanyIdDetail(Query).subscribe(data => {
+    //   this.registerObj1 = data[0];
+    //   console.log(this.registerObj1);
+    // });
 
     
-    }
+    // }
     this.companyFormGroup = this.createCompanyForm();
   }
 
@@ -133,49 +133,49 @@ export class CompanyInformationComponent implements OnInit {
     }
     console.log(m_data)
 
-    this._AdmissionService.CompanyUpdate(m_data).subscribe(response => {
-      if (response) {
-        Swal.fire('Congratulations !', 'Company Data Updated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-            this.getCompanydetailview(this.AdmissionID);
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Company Data  not Updated', 'error');
-      }
-      // this.isLoading = '';
+    // this._AdmissionService.CompanyUpdate(m_data).subscribe(response => {
+    //   if (response) {
+    //     Swal.fire('Congratulations !', 'Company Data Updated Successfully !', 'success').then((result) => {
+    //       if (result.isConfirmed) {
+    //         this._matDialog.closeAll();
+    //         this.getCompanydetailview(this.AdmissionID);
+    //       }
+    //     });
+    //   } else {
+    //     Swal.fire('Error !', 'Company Data  not Updated', 'error');
+    //   }
+    //   // this.isLoading = '';
 
-    });
+    // });
   }
 
 
   getCompanydetailview(AdmissionId) {
     // this.sIsLoading = 'loading-data';
 
-    setTimeout(() => {
+    // setTimeout(() => {
 
-      this._AdmissionService.getCompanyDetailsView(
-        AdmissionId
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Company Detail Viewer"
-            }
-          });
+    //   this._AdmissionService.getCompanyDetailsView(
+    //     AdmissionId
+    //   ).subscribe(res => {
+    //     const matDialog = this._matDialog.open(PdfviewerComponent,
+    //       {
+    //         maxWidth: "85vw",
+    //         height: '750px',
+    //         width: '100%',
+    //         data: {
+    //           base64: res["base64"] as string,
+    //           title: "Company Detail Viewer"
+    //         }
+    //       });
 
-        matDialog.afterClosed().subscribe(result => {
-          // this.AdList = false;
-          // this.sIsLoading = ' ';
-        });
-      });
+    //     matDialog.afterClosed().subscribe(result => {
+    //       // this.AdList = false;
+    //       // this.sIsLoading = ' ';
+    //     });
+    //   });
 
-    }, 100);
+    // }, 100);
 
   }
 

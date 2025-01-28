@@ -95,51 +95,7 @@ export class IPDSearcPatienthComponent implements OnInit {
   ngOnInit(): void {
     // this.myFilterform=this.filterForm();
 
-    ;
-    this.sIsLoading = 'loading-data';
-
-    var m_data = {
-      "OP_IP_Type": 1,
-      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value).trim() + '%' || '%',
-      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value).trim() + '%' || '%',
-      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt": this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag": 0,
-      "IPNumber": 0
-    }
-
-    console.log(m_data);
-    this.sIsLoading = 'loading-data';
-    this._AdmissionService.getOPIPPatientList(m_data).subscribe(Visit => {
-      console.log(this.dataSource.data);
-      this.dataSource.data = Visit as OPIPPatientModel[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-
-      this.sIsLoading = ' ';
-
-
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-
-    // this.getSearchList();
-
-    // if (this.PatientType) {
-    //   this._AdmissionService.myFilterform.get('start').value.enable();
-    //   this._AdmissionService.myFilterform.get('end').value.enable();
-    //   this.Range = false;
-
-    // } else {
-
-    //   this._AdmissionService.myFilterform.get('start').value.updateValueAndValidity();
-    //   this._AdmissionService.myFilterform.get('end').value.updateValueAndValidity();
-    //   this._AdmissionService.myFilterform.get('PatientType').value.disable();
-    //   this.Range = true;
-
-    // }
+      
   }
 
   getOPIPPatientList() {
@@ -167,32 +123,32 @@ export class IPDSearcPatienthComponent implements OnInit {
       this.OP_IP_Type = 0;
     }
 
-    var m_data = {
-      "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
-      "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%' || '%',
-      "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
-      "From_Dt": this.Fromdate,// this.Fromdate this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
-      "To_Dt": this.Todate,//this.Todate this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
-      "AdmDisFlag": 0,
-      "OP_IP_Type": this.OP_IP_Type,
-      // "IPNumber": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
-    }
-    console.log(m_data);
-    setTimeout(() => {
-      this.sIsLoading = 'loading-data';
-      this._AdmissionService.getOPIPPatientList(m_data).subscribe(Visit => {
-        console.log(this.dataSource.data);
-        this.dataSource.data = Visit as OPIPPatientModel[];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+    // var m_data = {
+    //   "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
+    //   "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%' || '%',
+    //   "Reg_No": this._AdmissionService.myFilterform.get("RegNo").value || 0,
+    //   "From_Dt": this.Fromdate,// this.Fromdate this.datePipe.transform(this._AdmissionService.myFilterform.get("start").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900', 
+    //   "To_Dt": this.Todate,//this.Todate this.datePipe.transform(this._AdmissionService.myFilterform.get("end").value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',  
+    //   "AdmDisFlag": 0,
+    //   "OP_IP_Type": this.OP_IP_Type,
+    //   // "IPNumber": this._AdmissionService.myFilterform.get("IPDNo").value || 0,
+    // }
+    // console.log(m_data);
+    // setTimeout(() => {
+    //   this.sIsLoading = 'loading-data';
+    //   this._AdmissionService.getOPIPPatientList(m_data).subscribe(Visit => {
+    //     console.log(this.dataSource.data);
+    //     this.dataSource.data = Visit as OPIPPatientModel[];
+    //     this.dataSource.sort = this.sort;
+    //     this.dataSource.paginator = this.paginator;
 
-        this.sIsLoading = ' ';
+    //     this.sIsLoading = ' ';
 
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    }, 50);
+    //   },
+    //     error => {
+    //       this.sIsLoading = '';
+    //     });
+    // }, 50);
   }
 
 
@@ -201,28 +157,28 @@ export class IPDSearcPatienthComponent implements OnInit {
 
 
   getSearchList() {
-    var m_data = {
-      "F_Name": `${this._AdmissionService.myFilterform.get('RegId').value}%`,
-      "L_Name": '%',
-      "Reg_No": '0',
-      "From_Dt": '01/01/1900',
-      "To_Dt": '01/01/1900',
-      "MobileNo": '%'
-    }
-    if (this._AdmissionService.myFilterform.get('RegId').value.length >= 1) {
-      this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
-        // ;
+    // var m_data = {
+    //   "F_Name": `${this._AdmissionService.myFilterform.get('RegId').value}%`,
+    //   "L_Name": '%',
+    //   "Reg_No": '0',
+    //   "From_Dt": '01/01/1900',
+    //   "To_Dt": '01/01/1900',
+    //   "MobileNo": '%'
+    // }
+    // if (this._AdmissionService.myFilterform.get('RegId').value.length >= 1) {
+    //   this._AdmissionService.getRegistrationList(m_data).subscribe(resData => {
+    //     // ;
 
-        this.filteredOptions = resData;
-        console.log(resData);
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
+    //     this.filteredOptions = resData;
+    //     console.log(resData);
+    //     if (this.filteredOptions.length == 0) {
+    //       this.noOptionFound = true;
+    //     } else {
+    //       this.noOptionFound = false;
+    //     }
 
-      });
-    }
+    //   });
+    // }
 
   }
 

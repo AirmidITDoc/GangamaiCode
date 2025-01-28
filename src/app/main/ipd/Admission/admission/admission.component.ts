@@ -17,7 +17,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { MLCInformationComponent, MlcDetail } from './mlcinformation/mlcinformation.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
-import { RegAdmissionComponent } from '../reg-admission/reg-admission.component';
 import { OPIPPatientModel } from '../../ipdsearc-patienth/ipdsearc-patienth.component';
 import { MatStepper } from '@angular/material/stepper';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -452,27 +451,27 @@ onChangeEndDate(value) {
   getMLCdetailview(Id) {
     // this.sIsLoading = 'loading-data';
 
-    setTimeout(() => {
+    // setTimeout(() => {
 
-      this._AdmissionService.getMLCDetailView(Id
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "MLC Detail Viewer"
-            }
-          });
+    //   this._AdmissionService.getMLCDetailView(Id
+    //   ).subscribe(res => {
+    //     const matDialog = this._matDialog.open(PdfviewerComponent,
+    //       {
+    //         maxWidth: "85vw",
+    //         height: '750px',
+    //         width: '100%',
+    //         data: {
+    //           base64: res["base64"] as string,
+    //           title: "MLC Detail Viewer"
+    //         }
+    //       });
 
-        matDialog.afterClosed().subscribe(result => {
+    //     matDialog.afterClosed().subscribe(result => {
          
-        });
-      });
+    //     });
+    //   });
 
-    }, 100);
+    // }, 100);
 
   }
 
