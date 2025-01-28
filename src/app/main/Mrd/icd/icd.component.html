@@ -65,9 +65,9 @@
 
               <mat-form-field appearance="outline">
                 <mat-label>Search UHID No</mat-label>
-                <input name="uhidNo" formControlName="uhidNo" matInput
+                <input name="RegNo" formControlName="RegNo" matInput
                     (keyup)="getPatientICDList()"
-                    input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');">
             </mat-form-field>
 
             </div>
@@ -130,7 +130,7 @@
                               AdmissionDate
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.DOA}}
+                              {{contact.DOA | date: 'dd/MM/yyyy'}}
                             </mat-cell>
                           </ng-container>
 
@@ -139,7 +139,7 @@
                               DischargeDate
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                              {{contact.DOD}}
+                              {{contact.DOD | date: 'dd/MM/yyyy'}}
                             </mat-cell>
                           </ng-container>
 
@@ -174,12 +174,12 @@
                                 Action
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact">
-                                <span class="material-icons">
-                                    print
-                                  </span>
-                              <span class="material-icons" (click)="onEdit(contact)">
-                                edit
-                              </span>
+                                  <button mat-icon-button matTooltip="Print">
+                                    <mat-icon>print</mat-icon>
+                                </button>
+                                  <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
                             </mat-cell>
                           </ng-container>
 

@@ -36,4 +36,12 @@ public deactivateTheStatus(m_data) {
       "Generic/ExecByQueryStatement?query=" + m_data,{}
   );
 }
+public groupMasterInsert(employee)
+{    
+  return this._httpClient.post("MRD/SaveMICDCdeheadMaster",employee);
+}
+public groupMasterUpdate(employee)
+{    
+  return this._httpClient.post("MRD/UpdateMICDCdeheadMaster",employee);
+}
 }

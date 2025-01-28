@@ -55,43 +55,25 @@ export class IcdComponent implements OnInit {
   }
 
   getPatientICDList() {
-    debugger
-    this.sIsLoading = 'loading-data';
-    const FromDate = this._MrdService.icdForm.get("start").value;
-    const ToDate = this._MrdService.icdForm.get("end").value;
-    const RegNo = this._MrdService.icdForm.get("uhidNo").value;
+        debugger
+    
+        var D_data = {
+          "FromDate":this.datePipe.transform(this._MrdService.icdForm.get("start").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+          "ToDate": this.datePipe.transform(this._MrdService.icdForm.get("end").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900",
+          "Reg_No":this._MrdService.icdForm.get("RegNo").value || 0
+        };
+    
+        console.log("PatientList:", D_data);
 
-    // Prepare request payload
-    const D_data = {
-      "FromDate": this.datePipe.transform(FromDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
-      "ToDate": this.datePipe.transform(ToDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
-      "Reg_No": RegNo || '',
-    };
-
-    console.log("Request Payload:", D_data);
-
-    // Make API call
-    this._MrdService.getPatienticdList(D_data).subscribe(
-      (response) => {
-        console.log("API Response:", response);
-
-        if (response && Array.isArray(response)) {
-          // Update the data source and bind to the table
-          this.dataSource.data = response as Icddetail[];
+        console.log("FromDate:", this.datePipe.transform(this._MrdService.icdForm.get("start").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900");
+        console.log("todate:", this.datePipe.transform(this._MrdService.icdForm.get("end").value, "yyyy-MM-dd 00:00:00.000") || "01/01/1900");
+        this._MrdService.getPatienticdList(D_data).subscribe(Menu=>{      
+          this.dataSource.data = Menu as Icddetail[];
           this.dataSource.sort = this.sort;
+          console.log("PatientList:", this.dataSource.data);
           this.dataSource.paginator = this.paginator;
-        } else {
-          console.error("Invalid data format received:", response);
-        }
-        // Clear loading state
-        this.sIsLoading = '';
-      },
-      (error) => {
-        console.error("Error Fetching Data:", error);
-        this.sIsLoading = ''; // Clear loading state on error
+        });
       }
-    );
-  }
 
   addNewICD() {
     const dialogRef = this._matDialog.open(NewicdComponent,
@@ -157,6 +139,7 @@ export class Icddetail {
   PatientName: any;
   DoctorName: string;
   IPDNo: any;
+  WardName:any;
   AdmissionDate: any;
   DischargeDate: any;
 
@@ -172,8 +155,9 @@ export class Icddetail {
       this.PatientName = Icddetail.PatientName || '';
       this.DoctorName = Icddetail.DoctorName || 0;
       this.IPDNo = Icddetail.IPDNo || '';
-      this.AdmissionDate = Icddetail.AdmissionDate || '';
-      this.DischargeDate = Icddetail.DischargeDate || '';
+      this.WardName = Icddetail.WardName || '';
+      this.AdmissionDate = Icddetail.DOA || '';
+      this.DischargeDate = Icddetail.DOD || '';
 
     }
   }

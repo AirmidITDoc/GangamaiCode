@@ -45,7 +45,7 @@ export class GroupformComponent implements OnInit {
       }
     }
   }
-  
+
   onSave() {
     if (this.vIcdCodeName == '' || this.vIcdCodeName == null || this.vIcdCodeName == undefined) {
       this.toastr.warning('Please enter Icd Name  ', 'Warning !', {
@@ -55,7 +55,7 @@ export class GroupformComponent implements OnInit {
     }
 
     Swal.fire({
-      title: 'Do you want to Save the vDepartment Recode ',
+      title: 'Do you want to Save the Group Master Recode ',
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
@@ -69,9 +69,63 @@ export class GroupformComponent implements OnInit {
       }
     });
   }
-  onSubmit(){
+ 
+  onSubmit() {
+debugger
+    if (!this.vIcdCodeId) {
+
+      let m_dataInsert = {
+        "saveMICDCdeheadMasterParam": {
+          "icdCdeMId": 0,
+          "icdCodeName": this._newGroupService.myGroupForm.get("ICDName").value || '',
+          "isActive": Boolean(JSON.parse(this._newGroupService.myGroupForm.get("IsDeleted").value) || 0),
+          "createdBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+
+      console.log("insertJson:", m_dataInsert);
+
+      this._newGroupService.groupMasterInsert(m_dataInsert).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+    else {
+      let m_dataUpdate = {
+        "updateMICDCdeheadMasterParam": {
+          "icdCdeMId": this.vIcdCodeId,
+          "icdCodeName": this._newGroupService.myGroupForm.get("ICDName").value || '',
+          "isActive": Boolean(JSON.parse(this._newGroupService.myGroupForm.get("IsDeleted").value)) ? 1 : 0,
+          "modifiedBy": this._loggedService.currentUserValue.user.id,
+        }
+      }
+
+      console.log("UpdateJson:", m_dataUpdate);
+
+      this._newGroupService.groupMasterUpdate(m_dataUpdate).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
 
   }
+
   onClose() {
     this._newGroupService.myGroupForm.reset({ IsDeleted: true });
     this.dialogRef.close();

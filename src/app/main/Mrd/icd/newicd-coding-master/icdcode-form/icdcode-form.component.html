@@ -1,1 +1,100 @@
-<p>icdcode-form works!</p>
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                New ICD Coding Master Form
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+     <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <form [formGroup]="_newCodingService.myCodingForm">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
+
+                                        <input type="hidden" name="ICDCodingId" formControlName="ICDCodingId">
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>ICD Code</mat-label>
+                                                <input name="ICDCode" formControlName="ICDCode"
+                                                    placeholder="ICD Code" matInput
+                                                    oninput="this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');"
+                                                    [(ngModel)]="vICDCode">
+                                                <mat-error
+                                                    *ngIf="_newCodingService.myCodingForm.get('ICDCode').invalid && _newCodingService.myCodingForm.get('ICDCode').touched">
+                                                    ICD Code is required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>ICD Code Name</mat-label>
+                                                <input name="ICDCodeName" formControlName="ICDCodeName"
+                                                    placeholder="ICD Code Name" matInput type="text"
+                                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                                                    [(ngModel)]="vICDCodeName">
+                                                <mat-error
+                                                    *ngIf="_newCodingService.myCodingForm.get('ICDCodeName').invalid && _newCodingService.myCodingForm.get('ICDCodeName').touched">
+                                                    ICD Code Name is required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Group</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Group" matInput formControlName="ICDCdeMId" required
+                                                    required [(ngModel)]="vICDCdeMId" [matAutocomplete]="autogroup">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_newCodingService.myCodingForm.get('ICDCdeMId').setValue(''); isGroupSelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_newCodingService.myCodingForm.get('ICDCdeMId').setValue(''); isGroupSelected = false;">search</mat-icon>
+                                                </span>
+
+                                                <mat-autocomplete #autogroup="matAutocomplete" [displayWith]="getOptionTextGroup">
+                                                    <mat-option *ngFor="let option of filteredOptionsGroup | async" 
+                                                    [value]="option">
+                                                        {{option.ICDCdeMId}} || {{option.ICDCodeName}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="footer-navigation-container">
+
+                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
+                                        (checked)=true>IsActive
+                                    </mat-checkbox>
+
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                                        <button class="btn btn-danger-outline" (click)="onClose()">
+                                            Close</button>
+                                        <button class="btn btn-primary" (click)="onSave()">
+                                            Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

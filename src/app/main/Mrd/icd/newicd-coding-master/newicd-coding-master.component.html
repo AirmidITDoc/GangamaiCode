@@ -56,6 +56,16 @@
                                    Enter only Alphabets
                                 </span> -->
                             </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search ICD Code</mat-label>
+                                <input name="ICDCodeSearch" formControlName="ICDCodeSearch" matInput
+                                    (keyup)="getCodingMasterList()"
+                                    oninput="this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');">
+                                <!-- <span class="error" *ngIf="f.ICDCodeSearch.invalid && f.ICDCodeSearch.touched">
+                                   Enter only Alphabets
+                                </span> -->
+                            </mat-form-field>
                         </div>
                         <div style="margin-top: 10px;">
                             <button mat-raised-button (click)="onClear()" class="clearbutton" matTooltip="close">
@@ -92,34 +102,41 @@
                                             <mat-table #table class="table1" matSort [dataSource]="dsCodingMaster"
                                                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
                 
-                                                <ng-container matColumnDef="ICDCode">
+                                                <ng-container matColumnDef="Code">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                         Code </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                        {{element.ICDCode}} </mat-cell>
+                                                        {{element.ICDCodingId}} </mat-cell>
                                                 </ng-container>
                                 
-                                                <ng-container matColumnDef="MainName">
+                                                <ng-container matColumnDef="ICDCode">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        Main Name </mat-header-cell>
+                                                        ICD Code </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                        {{element.MainName}} </mat-cell>
+                                                        {{element.ICDCode}} </mat-cell>
                                                 </ng-container>
 
-                                                <ng-container matColumnDef="ICDDescription">
+                                                <ng-container matColumnDef="ICDCodeName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        ICD Description </mat-header-cell>
+                                                        ICDCode Name </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                        {{element.ICDDescription}} </mat-cell>
+                                                        {{element.ICDCodeName}} </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="MainCName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                        MainC Name </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                        {{element.MainCName}} </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="isActive">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                        <mat-icon *ngIf="element.isActive==1"
+                                                        <mat-icon *ngIf="element.IsActive==1"
                                                             class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                        <mat-icon *ngIf="element.isActive==0"
+                                                        <mat-icon *ngIf="element.IsActive==0"
                                                             class="active-icon red-500 s-16">close</mat-icon>
                                                     </mat-cell>
                                                 </ng-container>
@@ -131,7 +148,7 @@
                                                         <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
                                                             <mat-icon>edit</mat-icon>
                                                         </button>
-                                                        <button mat-icon-button (click)="onDeactive(element.ICDCode)" color="warn">
+                                                        <button mat-icon-button (click)="onDeactive(element.ICDCodingId)" color="warn">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </mat-cell>
