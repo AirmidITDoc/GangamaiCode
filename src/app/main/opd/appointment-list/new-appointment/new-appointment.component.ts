@@ -76,7 +76,7 @@ export class NewAppointmentComponent implements OnInit {
     PatientName: any = '';
     RegId: any = 0;
     OPIP: any = '';
-    VisitId=0;
+    VisitId = 0;
 
     @ViewChild('attachments') attachment: any;
 
@@ -183,7 +183,7 @@ export class NewAppointmentComponent implements OnInit {
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
-            DateOfBirth:[(new Date()).toISOString()],
+            DateOfBirth: [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['0', [
                 // Validators.required,
@@ -236,10 +236,10 @@ export class NewAppointmentComponent implements OnInit {
             visitDate: [(new Date()).toISOString()],
             visitTime: [(new Date()).toISOString()],
             UnitId: 1,
-            PatientTypeId:  [Validators.required,],
+            PatientTypeId: [Validators.required,],
             ConsultantDocId: [Validators.required,],
-            RefDocId:[Validators.required,],
-            TariffId:[Validators.required,],
+            RefDocId: [Validators.required,],
+            TariffId: [Validators.required,],
             CompanyId: 0,
             addedBy: 0,
             updatedBy: 0,
@@ -314,9 +314,9 @@ export class NewAppointmentComponent implements OnInit {
     }
 
 
-    patienttype=0
+    patienttype = 0
     onChangePatient(value) {
-        
+
         var mode = "Company"
         if (value.text == "Company") {
             this._AppointmentlistService.getMaster(mode, 1);
@@ -345,15 +345,15 @@ export class NewAppointmentComponent implements OnInit {
             this.isRowDisabled = false
     }
 
-    getregdetails(){
-        
-        let RegId=this.searchFormGroup.get("RegId").value
+    getregdetails() {
+
+        let RegId = this.searchFormGroup.get("RegId").value
         if (RegId > 0) {
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(RegId).subscribe((response) => {
                     this.registerObj = response;
-                   console.log( this.registerObj)
-                   });
+                    console.log(this.registerObj)
+                });
             }, 500);
         }
         else {
@@ -404,43 +404,18 @@ export class NewAppointmentComponent implements OnInit {
 
 
     editor: string;
-
-
-    getSearchList() {
-        var m_data = {
-            "Keyword": `${this.searchFormGroup.get('RegId').value}`
-        }
-        // this._AppointmentlistService.getRegistrationList(m_data).subscribe(data => {
-        //     this.PatientListfilteredOptions = data;
-        //     if (this.PatientListfilteredOptions.length == 0) {
-        //         this.noOptionFound = true;
-        //     } else {
-        //         this.noOptionFound = false;
-        //     }
-        // });
+    filteredOptions: Array<any[]> = [];
+    regId: Number;
+    getSearchList(e: any) {
+        this._AppointmentlistService.getRegistrations(e.target.value).subscribe(data => {
+            this.filteredOptions = data;
+        });
 
     }
-
-
-    getSearchDocuploadPatientList() {
-
-        var m_data = {
-            "Keyword": `${this.personalFormGroup.get('RegId').value}%`
-        }
-
-        // this._AppointmentlistService.getDocPatientRegList(m_data).subscribe(data => {
-        //     this.filteredOptions = data;
-        //     if (this.filteredOptions.length == 0) {
-        //         this.noOptionFound1 = true;
-        //     } else {
-        //         this.noOptionFound1 = false;
-        //     }
-        // });
+    displayFn(user: any): string {
+        return user.text;
     }
-
-
-
-
+    
     WhatsAppAppointmentSend(el, vmono) {
         var m_data = {
             "insertWhatsappsmsInfo": {
@@ -497,9 +472,9 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     RegOrPhoneflag = '';
-    vPhoneFlage=0;
-    vPhoneAppId:any;
-    RegNo=0;
+    vPhoneFlage = 0;
+    vPhoneAppId: any;
+    RegNo = 0;
     getSelectedObjPhone(obj) {
         this.RegOrPhoneflag = 'Entry From Phone Appointment'
         this.vPhoneFlage = 1;
@@ -544,7 +519,7 @@ export class NewAppointmentComponent implements OnInit {
 
     getValidationMessages() {
         return {
-            RegId:[],
+            RegId: [],
             firstName: [
                 { name: "required", Message: "First Name is required" },
                 { name: "maxLength", Message: "Enter only upto 50 chars" },
@@ -641,17 +616,17 @@ export class NewAppointmentComponent implements OnInit {
             wardId: [
                 { name: "required", Message: "wardId Name is required" }
             ],
-            
-            
+
+
         };
     }
     Saveflag: boolean = false;
     onNewSave() {
-        
+
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-         
+
             if (this.searchFormGroup.get('regRadio').value == "registration") {
-              this.OnsaveNewRegister();
+                this.OnsaveNewRegister();
             }
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
                 this.onSaveRegistered();
@@ -668,15 +643,15 @@ export class NewAppointmentComponent implements OnInit {
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
             // if (this.registerObj.ageYear != 0 || this.registerObj.ageMonth != 0 || this.registerObj.ageDay != 0) {
 
-                if (this.searchFormGroup.get('regRadio').value == "registration") {
-                    //if (this.vPhoneAppId == 0 && this.Regflag == false) {
-                    this.OnsaveNewRegister();
+            if (this.searchFormGroup.get('regRadio').value == "registration") {
+                //if (this.vPhoneAppId == 0 && this.Regflag == false) {
+                this.OnsaveNewRegister();
 
-                }
-                else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                    this.onSaveRegistered();
-                    this.onClose();
-                }
+            }
+            else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                this.onSaveRegistered();
+                this.onClose();
+            }
 
             // } else {
             //     Swal.fire("Enter Age Properly ..")
@@ -709,10 +684,10 @@ export class NewAppointmentComponent implements OnInit {
     onSaveRegistered() {
         this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
-       
-        
+
+
         let submitData = {
-            
+
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
@@ -820,7 +795,7 @@ export class NewAppointmentComponent implements OnInit {
         // });
     }
 
-    
+
     selectRow(row) {
         this.selectRow = row;
     }
@@ -1216,11 +1191,11 @@ export class NewAppointmentComponent implements OnInit {
         this.ddlCountry.SetSelection(e.stateId);
     }
 
-    
+
 
     departmentId: any;
     DosctorId: any;
-    DoctorId:any;
+    DoctorId: any;
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
         this.DosctorId = row.DoctorId;
@@ -1242,14 +1217,14 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-   
-   
+
+
     selectChangecity(obj: any) {
         console.log(obj);
         // this.cityId = obj
         // this.cityName = obj.text
     }
-   
+
     selectChangepatienttype(obj: any) {
         console.log(obj);
         // this.patientTypeId = obj
@@ -1277,7 +1252,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     selectChangedeptdoc(obj: any) {
-        
+
     }
 
     selectChangerefdoc(obj: any) {

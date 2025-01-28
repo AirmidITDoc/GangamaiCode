@@ -34,9 +34,20 @@
                         </mat-radio-group>
                     </div>
                     <div class="form-right-container input-error-hidden" *ngIf="Regflag">
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>RgId</mat-label>
                                 <input matInput name="RegId" placeholder="Enter RegId" (keypress)="getregdetails()" formControlName="RegId" onlyNumber>
+                            </mat-form-field> -->
+                            <mat-form-field appearance="outline">
+                                <mat-label>RgId</mat-label>
+                                <input matInput name="RegId" placeholder="Enter RegId"
+                                    formControlName="RegId" onlyNumber [matAutocomplete]="auto" (input)="getSearchList($event)" (focus)="getSearchList($event)">
+                                <mat-autocomplete requireSelection #auto="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                        {{option.text}}
+                                      </mat-option>
+                                </mat-autocomplete>
+                                {{searchFormGroup.controls["RegId"].value.value}}
                             </mat-form-field>
                         <!-- <mat-form-field class=searchRegId appearance="outline" fxflex="30" *ngIf="Regflag">
                             <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto" (input)="getSearchList()" maxlength="10">
