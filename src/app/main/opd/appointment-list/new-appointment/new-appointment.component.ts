@@ -415,7 +415,10 @@ export class NewAppointmentComponent implements OnInit {
     displayFn(user: any): string {
         return user.text;
     }
-    
+    selectedOption(e:any){
+        let RegId=e.value;
+        // from here you need to bind form.
+    }
     WhatsAppAppointmentSend(el, vmono) {
         var m_data = {
             "insertWhatsappsmsInfo": {
