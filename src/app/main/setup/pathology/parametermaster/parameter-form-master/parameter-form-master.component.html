@@ -52,8 +52,8 @@
                             </div>
 
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-autocomplete label="UnitId" formControlName="unitId" [value]="data?.unitId" [formGroup]="parameterForm" [validations]="getValidationMessages().unitId" [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
-                                </airmid-autocomplete>
+                                <airmid-dropdown label="UnitId" formControlName="unitId" [value]="data?.unitId" [formGroup]="parameterForm" [validations]="getValidationMessages().unitId" [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
+                                </airmid-dropdown>
                             </div>
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between" class="mt-3">
@@ -84,8 +84,8 @@
                                             <div class="content-wrapper">
                                                 <div class="input-container" fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-autocomplete label="SexID" formControlName="sexId" [formGroup]="numericForm" [validations]="getValidationMessages().sexId" [mode]="autocompleteModeGender" (selectDdlObject)="selectChangeGender($event)">
-                                                        </airmid-autocomplete>
+                                                        <airmid-dropdown label="SexID" formControlName="sexId" [formGroup]="numericForm" [validations]="getValidationMessages().sexId" [mode]="autocompleteModeGender" (selectDdlObject)="selectChangeGender($event)">
+                                                        </airmid-dropdown>
                                                     </div>
                                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Min Age" formControlName="minAge" [value]="vMinAge" [formGroup]="numericForm" [validations]="getValidationMessages().minAge" [maxLength]="3">

@@ -32,7 +32,7 @@
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete 
+                        <airmid-dropdown 
                             label="Item Type Name" 
                             formControlName="itemTypeId"
                             [value]="data?.itemTypeId"
@@ -40,7 +40,7 @@
                             [validations]="getValidationMessages().itemTypeId"
                             (selectDdlObject)="selectChangeItem($event)"
                             [mode]="autocompleteModeItem">
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
                 </div>
 

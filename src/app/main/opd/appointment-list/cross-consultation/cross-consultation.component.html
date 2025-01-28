@@ -124,18 +124,18 @@
                                                 formControlName="visitTime"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
-                                        <airmid-autocomplete label="Department Name" formControlName="departmentId"
+                                        <airmid-dropdown label="Department Name" formControlName="departmentId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
                                             [validations]="getValidationMessages().Departmentid"
                                             ValueField="departmentId" TextField="departmentName"
                                             (selectionChange)="selectChangedepartment($event)" ApiUrl="DepartmentMaster/get-departments">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
 
-                                        <airmid-autocomplete label="Doctor Name" formControlName="consultantDocId"
+                                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
                                             [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
                                             [validations]="getValidationMessages().consultantDocId" #ddldoctor
                                             [mode]="autocompleteModedeptdoc">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                     </div>
                                 </div>
                             </div>

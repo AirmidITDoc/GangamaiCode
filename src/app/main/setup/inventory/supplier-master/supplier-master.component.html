@@ -29,14 +29,14 @@
                     </button>
                 </mat-form-field>
                
-                <airmid-autocomplete 
+                <airmid-dropdown 
                     label="Store Name" 
                     formControlName="StoreId"
                     [formGroup]="myformSearch" 
                     [(ngModel)]="gridConfig.filters[1].fieldValue"
                     [mode]="autocompleteModestoreName"
                     (selectionChange)="selectChangestoreName($event)"  >
-                </airmid-autocomplete>
+                </airmid-dropdown>
 
                 <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
                     <mat-radio-button value="">All</mat-radio-button>

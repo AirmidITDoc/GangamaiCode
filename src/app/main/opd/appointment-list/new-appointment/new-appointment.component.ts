@@ -17,7 +17,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { RegInsert } from '../../registration/registration.component';
 import { fuseAnimations } from '@fuse/animations';
 import { ImageViewComponent } from '../image-view/image-view.component';
-import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -124,9 +124,9 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
-    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
-    @ViewChild('ddlState') ddlState: AirmidAutocompleteComponent;
-    @ViewChild('ddlCountry') ddlCountry: AirmidAutocompleteComponent;
+    @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+    @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
+    @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
 
 

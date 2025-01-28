@@ -6,7 +6,7 @@ import { SupplierMasterService } from '../supplier-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
@@ -21,7 +21,7 @@ export class NewSupplierComponent implements OnInit {
   supplierForm: FormGroup;
   
     submitted = false;
-    @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
+    @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
     registerObj = new SupplierMaster({});
   
   

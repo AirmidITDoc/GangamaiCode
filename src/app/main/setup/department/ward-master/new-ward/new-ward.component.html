@@ -43,7 +43,7 @@
                         </airmid-textbox>
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete
+                        <airmid-dropdown
                             label="LocationId"
                             formControlName="locationId"
                             [value]="data?.locationId"
@@ -52,11 +52,11 @@
                             [mode]="autocompleteModelocation"
                             (selectDdlObject)="selectChangelocation($event)"
                         >
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete
+                        <airmid-dropdown
                             label="ClassId"
                             formControlName="classId"
                             [value]="data?.classId"
@@ -65,11 +65,11 @@
                             [mode]="autocompleteModeclass"
                             (selectDdlObject)="selectChangeclass($event)"
                         >
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete
+                        <airmid-dropdown
                             label="RoomId"
                             formControlName="roomId"
                             [value]="data?.roomId"
@@ -78,7 +78,7 @@
                             [mode]="autocompleteModeroomId"
                             (selectDdlObject)="selectChangeroomType($event)"
                         >
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
                 </div>
 

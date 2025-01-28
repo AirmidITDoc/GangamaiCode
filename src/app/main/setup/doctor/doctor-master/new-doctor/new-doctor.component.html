@@ -28,11 +28,11 @@
                 <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
+                        <airmid-dropdown label="Prefix" formControlName="PrefixID" [formGroup]="myForm"
                             [(value)]="registerObj.prefixId" [validations]="getValidationMessages().PrefixID"
                             ValueField="prefixId" TextField="prefixName" (selectionChange)="onChangePrefix($event)"
                             ApiUrl="Prefix/get-prefixs" #ddlPrefix>
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -54,10 +54,10 @@
                         </airmid-textbox>
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete label="Gender" formControlName="GenderId" [formGroup]="myForm"
+                        <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="myForm"
                             [(value)]="registerObj.genderId" [validations]="getValidationMessages().GenderId"
                             [mode]="autocompleteModegender" [disabled]="true" #ddlGender>
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
                         <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
@@ -123,10 +123,10 @@
 
             <div fxFlex="100" fxLayout="row wrap">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete label="City" formControlName="City" [formGroup]="myForm"
+                    <airmid-dropdown label="City" formControlName="City" [formGroup]="myForm"
                         [(value)]="registerObj.city" [validations]="getValidationMessages().City"
                         [mode]="autocompleteModecity">
-                    </airmid-autocomplete>
+                    </airmid-dropdown>
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -182,10 +182,10 @@
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                    
-                    <airmid-autocomplete label="DoctorTypeId" formControlName="DoctorTypeId" [formGroup]="myForm"
+                    <airmid-dropdown label="DoctorTypeId" formControlName="DoctorTypeId" [formGroup]="myForm"
                     [(value)]="registerObj.doctorTypeId" [validations]="getValidationMessages().DoctorTypeId"
                     [mode]="autocompleteModedoctorty">
-                </airmid-autocomplete>
+                </airmid-dropdown>
                 </div>
             </div>
         </mat-card>
@@ -205,12 +205,12 @@
                     <form [formGroup]="myForm">
                         <div fxLayout="row">
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-autocomplete label="Department" formControlName="MDoctorDepartmentDets"
+                                <airmid-dropdown label="Department" formControlName="MDoctorDepartmentDets"
                                     [formGroup]="myForm" [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                     [validations]="getValidationMessages().Departmentid" #ddlDepartment
                                     ValueField="departmentId" TextField="departmentName"
                                     ApiUrl="DepartmentMaster/get-departments" [ReqFullObj]="true">
-                                </airmid-autocomplete>
+                                </airmid-dropdown>
                             </div>
                             <mat-chip-listbox #chipList>
                                 <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">

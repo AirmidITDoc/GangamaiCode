@@ -7,12 +7,12 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: "airmid-autocomplete",
-    templateUrl: "./airmid-autocomplete.component.html",
-    styleUrls: ["./airmid-autocomplete.component.scss"],
+    selector: "airmid-dropdown",
+    templateUrl: "./airmid-dropdown.component.html",
+    styleUrls: ["./airmid-dropdown.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AirmidAutocompleteComponent implements OnInit {
+export class AirmidDropDownComponent implements OnInit {
     //@Input() label: string;
     //@Input() ddlCtrl: FormControl = new FormControl();
     //@Input() selectedValue: string;

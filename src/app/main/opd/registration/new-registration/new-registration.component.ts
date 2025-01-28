@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
-import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -54,9 +54,9 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModecountry: string = "Country";
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
-    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
-    @ViewChild('ddlState') ddlState: AirmidAutocompleteComponent;
-    @ViewChild('ddlCountry') ddlCountry: AirmidAutocompleteComponent;
+    @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+    @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
+    @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
     constructor(public _registerService: RegistrationService,
         private accountService: AuthenticationService,

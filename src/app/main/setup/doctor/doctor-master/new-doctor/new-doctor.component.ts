@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dial
 import { DoctorMasterService } from "../doctor-master.service";
 import { ToastrService } from "ngx-toastr";
 import { SignatureViewComponent } from "../signature-view/signature-view.component";
-import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox/airmid-textbox.component";
 
 @Component({
@@ -19,8 +19,8 @@ import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox
 export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     myForm: FormGroup
-    @ViewChild('ddlDepartment') ddlDepartment: AirmidAutocompleteComponent;
-    @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
+    @ViewChild('ddlDepartment') ddlDepartment: AirmidDropDownComponent;
+    @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     registerObj = new DoctorMaster({});
     signature: any;
     autocompleteModeprefix: string = "Prefix";

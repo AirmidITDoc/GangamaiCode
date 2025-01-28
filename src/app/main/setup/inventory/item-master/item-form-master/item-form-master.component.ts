@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dial
 import { ItemMaster, ItemMasterComponent} from "../item-master.component";
 import { ToastrService } from "ngx-toastr";
 import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
-import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -35,7 +35,7 @@ export class ItemFormMasterComponent implements OnInit {
     autocompleteModeMenu:string="ItemManufacture";
 
     registerObj = new ItemMaster({});
-    @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
+    @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
     ItemId:any=0;
 
     vchkactive: any=true;

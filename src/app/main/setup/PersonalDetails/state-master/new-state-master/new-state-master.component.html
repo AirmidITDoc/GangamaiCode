@@ -31,14 +31,14 @@
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete 
+                        <airmid-dropdown 
                             label="CountryId" 
                             [value]="data?.countryId" 
                             formControlName="countryId"
                             [formGroup]="stateForm" 
                             [validations]="getValidationMessages().countryId"
                             [mode]="autocompleteModecountry">
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
 
                 </div>

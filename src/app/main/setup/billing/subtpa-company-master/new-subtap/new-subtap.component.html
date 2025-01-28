@@ -31,14 +31,14 @@
                     </airmid-textbox>       
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete 
+                    <airmid-dropdown 
                         label="Company Type Name" 
                         formControlName="compTypeId" 
                         [value]="data?.compTypeId" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().compTypeId" 
                         [mode]="autocompleteModetypeName">
-                    </airmid-autocomplete>       
+                    </airmid-dropdown>       
                 </div>
             </div>
 
@@ -55,14 +55,14 @@
                     </airmid-textbox> 
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete 
+                    <airmid-dropdown 
                         label="City Name" 
                         formControlName="city" 
                         [value]="data?.city" 
                         [formGroup]="subTpaForm"
                         [validations]="getValidationMessages().city" 
                         [mode]="autocompleteModecity">
-                    </airmid-autocomplete>       
+                    </airmid-dropdown>       
                 </div>
                 
             </div>

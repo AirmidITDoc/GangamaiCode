@@ -9,7 +9,7 @@ import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { VisitMaster1 } from '../appointment-list.component';
-import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 
 @Component({
@@ -32,7 +32,7 @@ export class CrossConsultationComponent implements OnInit {
 
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
-  @ViewChild('ddldoctor') ddldoctor: AirmidAutocompleteComponent;
+  @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
 
   docList: any = [];
   optionsDoctor: any[] = [];

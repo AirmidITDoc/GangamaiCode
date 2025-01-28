@@ -110,11 +110,11 @@
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                     <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
-                                        <airmid-autocomplete label="Doctor Name" formControlName="refDocId"
+                                        <airmid-dropdown label="Doctor Name" formControlName="refDocId"
                                             [formGroup]="RefrancedrForm" [value]="data?.refDocId"
                                             [validations]="getValidationMessages().refDocId" 
                                             [mode]="autocompleteModerefdoc">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                       
                                      </div>
                                 </div>

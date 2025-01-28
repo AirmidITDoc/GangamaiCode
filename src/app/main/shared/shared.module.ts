@@ -32,7 +32,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.module";
 import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbox.component';
-import { AirmidAutocompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -47,8 +47,8 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
 
 
 @NgModule({
-    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidAutocompleteComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
+    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -90,7 +90,7 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
         DyanmicTableHeightDirective,
         AirmidTableComponent,
         AirmidTextboxComponent,
-        AirmidAutocompleteComponent,
+        AirmidDropDownComponent,
         AirmidTable1Component,
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,
