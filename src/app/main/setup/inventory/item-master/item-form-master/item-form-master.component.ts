@@ -159,7 +159,7 @@ export class ItemFormMasterComponent implements OnInit {
                   });
                   return;
             }
-        }
+    }
 
         onClear(val: boolean) 
         {
