@@ -128,11 +128,16 @@
                                                                     <span
                                                                         class="patient-col-value">{{vTariffName}}</span>
                                                                 </div>
-                                                                <div class="patient-col">
+                                                                <!-- <div class="patient-col">
                                                                     <span class="patient-col-key">Company Name</span>
                                                                     <span>:</span>
                                                                     <span
                                                                         class="patient-col-value">{{vCompanyName}}</span>
+                                                                </div> -->
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Ward Name</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{vWardName}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -143,67 +148,69 @@
                                     </div>
                                 </mat-card>
 
-                                <mat-card style="padding: 10px;" fxLayout="row" fxLayoutGap="15px"
-                                    fxLayoutAlign="center">
+                                <mat-card fxLayout="column" fxLayoutGap="15px" fxLayoutAlign="center">
 
-                                    <div fxLayout="column">
+                                    <div class="nav material2" fxLayout="row" style="height: 35px;">
+                                        <form [formGroup]="_MrdService.icdForm" fxLayout="row" style="height: 100%;">
 
-                                        <!-- <div fxlayout="row" style="background-color: white;padding: 5px 10px 5px 10px; ">
-                                            <form [formGroup]="_MrdService.icdForm">
-                                                <div class="dialog-content-wrapper">
-                                        
-                                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                                        <input matInput placeholder="Search ICD Name" autocomplete="off" name="ICDNameSearch"
-                                                            formControlName="ICDNameSearch" />
-                                                        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClear()">
-                                                            <mat-icon>close</mat-icon>
-                                                        </button>
-                                                    </mat-form-field>
-                                        
-                                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                                        <input matInput placeholder="Search ICD Code" autocomplete="off" name="ICDCodeSearch"
-                                                            formControlName="ICDCodeSearch" />
-                                                        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClear()">
-                                                            <mat-icon>close</mat-icon>
-                                                        </button>
-                                                    </mat-form-field>
-                                        
-                                                    <button mat-raised-button (click)="getICDCodelist()" fxLayoutAlign="center center">
-                                                        <mat-icon>search</mat-icon>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div> -->
+                                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Search ICD Name</mat-label>
+                                                    <input name="ICDCodeNameSearch" formControlName="ICDCodeNameSearch"
+                                                        matInput (keyup)="getICDCodelist()"
+                                                        oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Search ICD Code</mat-label>
+                                                    <input name="ICDCodeSearch" formControlName="ICDCodeSearch" matInput
+                                                        (keyup)="getICDCodelist()"
+                                                        oninput="this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');">
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxLayoutAlign="start center" style="margin-left: 10px;">
+                                                <button mat-raised-button (click)="onClear()" class="clearbutton"
+                                                    matTooltip="close">
+                                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                                </button>&nbsp;
+                                                <button mat-raised-button class="searchButton"
+                                                    (click)="getICDCodelist()" matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutGap="15px">
 
                                         <mat-table #table matSort [dataSource]="DSIcdMasterList"
-                                            [@animateStagger]="{value:'50'}" style="overflow:auto">
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto" fxFlex>
+
                                             <ng-container matColumnDef="mainCName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
-                                                    MainCName
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    MainICDCode
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180">
-                                                    {{element.MainCName}}
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    {{element.MainICDCdeId}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="ICDCode">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     ICD Code
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180">
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                     {{element.ICDCode}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="ICDName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-200">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     ICD Name
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
-                                                    {{element.ICDName}}
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    {{element.ICDCodeName}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -221,65 +228,76 @@
 
                                             <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
                                             <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                [@animate]="{value:'*',params:{y:'100%'}}"
+                                                (click)="getICDCodeDetailList(row)"></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{'hide':DSIcdMasterList!=null}"></mat-footer-row>
                                         </mat-table>
 
+                                        <mat-table #table matSort [dataSource]="dataSource2"
+                                            [@animateStagger]="{value:'50'}" style="overflow:auto" fxFlex>
+
+                                            <ng-container matColumnDef="mainCName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    MainCName
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    {{element.MainCName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="ICDCode">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    ICD Code
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    {{element.ICDCode}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Description">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Description
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    {{element.ICDCodeName}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="action" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="w-150">
+                                                    Action </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="w-150">
+                                                    <button mat-icon-button matTooltip="Remove"
+                                                        (click)="removeRow(element)">
+                                                        <mat-icon>delete_outline</mat-icon>
+                                                    </button>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    loading data...
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    no data found...
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent"
+                                                *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
+                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{'hide':dataSource2!=null}"></mat-footer-row>
+                                        </mat-table>
+
                                     </div>
-
-                                    <mat-table #table matSort [dataSource]="DSIcdMasterList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto">
-                                        <ng-container matColumnDef="mainCName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-180">
-                                                MainCName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180">
-                                                {{element.MainCName}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ICDCode">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-180">
-                                                ICD Code
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-180">
-                                                {{element.ICDCode}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="Description">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-200">
-                                                Description
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">
-                                                {{element.Description}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':DSIcdMasterList!=null}"></mat-footer-row>
-                                    </mat-table>
 
                                 </mat-card>
 

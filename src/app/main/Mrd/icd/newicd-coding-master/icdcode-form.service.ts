@@ -19,11 +19,47 @@ export class IcdcodeFormService {
   }
   CreateMyGroupform() {
     return this._frombuilder.group({
+      ICDCodingId:[''],
       ICDCode:[''],
+      ICDCodeName:[''],
+      ICDGroupCode:[''],
+      ICDCdeMId:[''],
       MainName: [''],
       ICDDescription: [''],
       IsDeleted: [true],
+      ICDCodeSearch:[''],
       ICDCodeNameSearch:[''],
     })
   }
+  // 
+  public getPatienticdList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PatientICDList", employee)
+  }
+  // 
+
+  public geticdCodingMasterList(param) {
+    return this._httpClient.post(
+        "Generic/GetByProc?procName=m_Rtrv_M_ICDCdeMst_by_Name",param
+    );
+}
+public deactivateTheStatus(m_data) {
+  return this._httpClient.post(
+      "Generic/ExecByQueryStatement?query=" + m_data,{}
+  );
+}
+public getICDGroupMasterCombo() {
+  debugger
+  return this._httpClient.post(
+      "Generic/GetByProc?procName=m_rtrv_ICdheadMasterForCombo",
+      {}
+  );
+}
+public ICDCodingInsert(employee)
+{    
+  return this._httpClient.post("MRD/SaveMICDCodingMaster",employee);
+}
+public ICDCodingUpdate(employee)
+{    
+  return this._httpClient.post("MRD/UpdateMICDCodingMaster",employee);
+}
 }

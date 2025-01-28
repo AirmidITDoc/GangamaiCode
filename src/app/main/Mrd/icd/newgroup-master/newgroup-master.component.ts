@@ -50,11 +50,14 @@ export class NewgroupMasterComponent implements OnInit {
 }
 
   getGroupMasterList() {
-    var param = {
-      ICDCodeName: this._groupService.myGroupForm.get("ICDCodeNameSearch")
-        .value.trim() + "%" || "%",
+    const icdCodeName = this._groupService.myGroupForm.get("ICDCodeNameSearch").value || '';
+  
+    const D_data = {
+      "ICDCodeName": icdCodeName.trim() ? icdCodeName + '%' : '%', // Use '%' if search is empty
     };
-    this._groupService.geticdGroupMasterList(param).subscribe((Menu) => {
+  
+    console.log("TypeList:", D_data);
+    this._groupService.geticdGroupMasterList(D_data).subscribe((Menu) => {
       this.dsGroupMasterList.data = Menu as IcdgroupMaster[];
       this.dsGroupMasterList.sort = this.sort;
       this.dsGroupMasterList.paginator = this.paginator;

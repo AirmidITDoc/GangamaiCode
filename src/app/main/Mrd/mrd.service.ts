@@ -50,7 +50,7 @@ export class MrdService {
           start: [(new Date()).toISOString()],
           end: [(new Date()).toISOString()],
           uhidNo:'',
-          ICDNameSearch:'',
+          ICDCodeNameSearch:'',
           ICDCodeSearch:'',
       });
   }
@@ -77,6 +77,20 @@ export class MrdService {
       CauseInjuries:'',
       vAccidentDetails:'',
     });
+  }
+
+  public icdInsert(employee, loader = true) {
+    // if(loader){
+    //   this.loaderService.show();
+    // }
+    return this._httpClient.post("MRD/InsertPatICDCode", employee);
+  }
+
+  public icdUpdate(employee, loader = true) {
+    // if(loader){
+    //   this.loaderService.show();
+    // }
+    return this._httpClient.post("MRD/UpdatePatICDCode", employee);
   }
 
   public getPatienticdList(employee) {
