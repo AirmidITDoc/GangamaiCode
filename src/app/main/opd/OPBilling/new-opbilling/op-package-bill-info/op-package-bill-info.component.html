@@ -26,74 +26,84 @@
             <div class="content-card" style="border-radius:4px;">
                 <div fxLayout="column" fxFlexFill fxLayoutGap="5px"> 
                         <form [formGroup]="PackageForm">
-                            <div fxLayout="row" fxLayoutGap="5px">
-                                <mat-form-field appearance="outline" fxFlex="35%">
-                                    <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
-                                        placeholder="Service Name" matInput [matAutocomplete]="autoService"
-                                        (keydown)="onEnterservice($event)" (input)="getServiceListCombobox()" required
-                                        id="myInput" [(ngModel)]="vServiceId">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionText"
-                                        (optionSelected)='getSelectedObj($event.option.value)'>
 
-                                        <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
-                                            {{option.ServiceName}} | Price {{option.Price}} |
-                                            <span fxLayoutGap="4px">
-                                                <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
-                                                    <img width="10px" height="6px" src="assets/images/logos/doctor.png">
-                                                </mat-icon> |
-                                                <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
-                                                    <img width="10px" height="6px"
-                                                        src="assets/images/logos/radiology.png">
-                                                </mat-icon>
-                                                <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
-                                                    <img width="10px" height="6px"
-                                                        src="assets/images/logos/pathology.png">
-                                                </mat-icon>
-                                                <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
-                                                    <img width="10px" height="6px"
-                                                        src="assets/images/logos/package.png">
-                                                </mat-icon>
-                                            </span>
-                                        </mat-option>
-                                    </mat-autocomplete>
+                            <div fxLayout="column" fxLayoutGap="6px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <input matInput name="MainServiceName" type="text" required readonly
+                                    [(ngModel)]="registerObj.ServiceName" formControlName="MainServiceName">
                                 </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="22%" *ngIf="isDoctor">
-                                    <mat-label>Doctor Name</mat-label>
-                                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
-                                        matInput formControlName="DoctorID" [(ngModel)]="vDoctor"
-                                        [matAutocomplete]="autoSearchDoctor1" #doctorname
-                                        (input)="getAdmittedDoctorCombo()">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
-                                        [displayWith]="getOptionTextDoctor">
-                                        <mat-option *ngFor="let option of filteredOptionsDoctors" [value]="option">
-                                            {{option.Doctorname}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                                <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
-                                    style="padding: 8px 20px 0px 20px;">
-                                    <button (click)="onAddPackageService()" class="btn btn-primary btn-with-icon py-8"
-                                        #addbutton>
-                                        <span class="btn-icon">
-                                            <mat-icon> add </mat-icon>
+                                <div fxLayout="row" fxLayoutGap="5px">   
+    
+                                    <mat-form-field appearance="outline" fxFlex="35%">
+                                        <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
+                                            placeholder="Service Name" matInput [matAutocomplete]="autoService"
+                                            (keydown)="onEnterservice($event)" (input)="getServiceListCombobox()" required
+                                            id="myInput" [(ngModel)]="vServiceId">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
                                         </span>
-                                    </button>
+                                        <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionText"
+                                            (optionSelected)='getSelectedObj($event.option.value)'>
+    
+                                            <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
+                                                {{option.ServiceName}} | Price {{option.Price}} |
+                                                <span fxLayoutGap="4px">
+                                                    <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
+                                                        <img width="10px" height="6px" src="assets/images/logos/doctor.png">
+                                                    </mat-icon> |
+                                                    <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
+                                                        <img width="10px" height="6px"
+                                                            src="assets/images/logos/radiology.png">
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
+                                                        <img width="10px" height="6px"
+                                                            src="assets/images/logos/pathology.png">
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
+                                                        <img width="10px" height="6px"
+                                                            src="assets/images/logos/package.png">
+                                                    </mat-icon>
+                                                </span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+    
+                                    <mat-form-field appearance="outline" fxFlex="22%" *ngIf="isDoctor">
+                                        <mat-label>Doctor Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
+                                            matInput formControlName="DoctorID" [(ngModel)]="vDoctor"
+                                            [matAutocomplete]="autoSearchDoctor1" #doctorname
+                                            (input)="getAdmittedDoctorCombo()">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
+                                            [displayWith]="getOptionTextDoctor">
+                                            <mat-option *ngFor="let option of filteredOptionsDoctors" [value]="option">
+                                                {{option.Doctorname}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+    
+                                    <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
+                                        style="padding: 8px 20px 0px 20px;">
+                                        <button (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
+                                            #addbutton>
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+
+                            
                         </form> 
 
                     <mat-card style="padding: 5px;">
@@ -105,6 +115,9 @@
                                     <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row">
+                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                        </buttom>
                                         <button mat-icon-button (click)="deleteTableRowPackage(row)" color="warn">
                                             <mat-icon>delete_outline</mat-icon>
                                         </button>
@@ -224,16 +237,46 @@
                                     [ngClass]="{'hide':!(dsPackageDet!=null && dsPackageDet.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
+                            <div class="amt-container py-4">
+                                <div class="amount-box w-100-p gap-28" fxLayout="row">
+                            
+                                    <div class="net-amount" fxLayout="row" fxLayoutGap="20px" fxLayoutALign="start center">
+                                    
+                                        <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
+                                            Item:
+                                        </span>&nbsp;
+                                        <span class="net-amt-value"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{dsPackageDet.data.length}}</span>
+                                    
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Total
+                                            Amount :
+                                        </span>&nbsp;
+                                        <span class="net-amt-value text-primary"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalAmtSum(dsPackageDet.data)
+                                            | currency:'INR' }}</span> 
+                                    
+                                        <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Net
+                                            Amount :
+                                        </span>&nbsp;
+                                        <span class="net-amt-value text-primary"
+                                            style="margin-left:10px;font-weight:bolder;color: blue;">{{getNetAmtSum(dsPackageDet.data)
+                                            | currency:'INR' }}</span>
+                                    
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </mat-card>
 
                   
                     <div fxLayout="row" fxLayoutAlign="start">
-                        <div style="padding: 10px 15px 5px 10px;">
-                            <mat-checkbox fxFlex="15%" [(ngModel)]="vBillWiseTotal" [checked]
-                                formControlName="BillWiseTotal" (change)="getBillwiseAmt($event)">BillWiseTotalAmt
-                            </mat-checkbox>
-                        </div>
+                        <form [formGroup]="PackageForm"> 
+                            <div style="padding: 10px 15px 5px 10px;">
+                                <mat-checkbox fxFlex="15%" [(ngModel)]="vBillWiseTotal" [checked] formControlName="BillWiseTotal"
+                                    (change)="getBillwiseAmt($event)">BillWiseTotalAmt
+                                </mat-checkbox>
+                            </div>
+                        </form>
 
                         <mat-form-field appearance="outline" fxFlex="40%" *ngIf="isChkbillwiseAmt">
                             <mat-label>BillWise TotalAmt</mat-label>

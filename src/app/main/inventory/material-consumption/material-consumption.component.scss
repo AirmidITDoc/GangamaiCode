@@ -36,6 +36,17 @@
 // }
 
 .mat-column-Remark {
+    width:150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }
+  .mat-column-ItemName {
     width:200px;
     max-width: 200px;
     min-width: 200px;
@@ -45,4 +56,4 @@
     text-overflow: ellipsis; 
     overflow: hidden !important;
    justify-content:left; 
-  }
+  } 

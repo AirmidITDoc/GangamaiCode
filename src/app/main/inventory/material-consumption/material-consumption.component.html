@@ -27,8 +27,7 @@
             </div>
 
             <div>
-                <div class="nav material2">
-
+                <div class="nav material2"> 
                     <form [formGroup]="_MaterialConsumptionService.SearchGroup" style="padding: 6px 6px 5px 5px;"
                         fusePerfectScrollbar>
                         <div fxLayout="column" fxLayoutAlign="start none">
@@ -68,29 +67,51 @@
             </div>
 
         </fuse-sidebar>
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
 
-            <div class="content-card" style="border-radius:4px; ">
-
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-
+        <div class="center p-12 pb-56" fxFlexAlign="start center"> 
+            <div class="content-card" style="border-radius:4px; "> 
+                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex> 
                         <div fxlayout="row">
                             <div style="width: 100%;">
+                                <div class="table-header-right">
+                                    <div class="export-buttons">
+                                        <div fxLayout="row" fxLayoutAlign="start" class="gap-8">  
+                                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                <span >: PatientWise Material Comsumption </span>
+                                            </div>
+                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                                <mat-icon class="pill green s-16">circle</mat-icon>
+                                                <span >: DepartmentWise Material Comsumption </span>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-
+                                    <div class="spinner-border text-danger"></div> 
                                 </div>
 
                                 <mat-table #table class="table1" matSort [dataSource]="dsMaterialConLList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="ConsumptionNo">
+                                    <!-- <ng-container matColumnDef="ConsumptionNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                             Con.No </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.ConsumptionNo || '-'}}
+                                        </mat-cell>
+                                    </ng-container>  -->
+
+                                    <ng-container matColumnDef="Status">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">
+                                            </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60"> 
+                                            <mat-icon *ngIf="contact.AdmId" class="pill orange-600 s-16"
+                                                matTooltip="PatientWise Material Comsumption">circle</mat-icon>
+                                            <mat-icon  *ngIf="!contact.AdmId" class="pill green s-16"
+                                                matTooltip="DepartmentWise Material Comsumption">circle</mat-icon>
                                         </mat-cell>
                                     </ng-container> 
 
@@ -159,7 +180,7 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="getMaterialConDetList(contact)"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                                     </mat-footer-row>
@@ -173,11 +194,159 @@
                                     showFirstLastButtons>
                                 </mat-paginator>
                             </div>
+                        </div> 
+                    </div>
+
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <div style="width: 100%;">
+                    
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
+                                    <div class="spinner-border text-danger"></div>
+                                </div>
+                    
+                                <mat-table #table class="table1" matSort [dataSource]="dsMaterialConDetLList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                    
+                                    <ng-container matColumnDef="StartDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            Start Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.StartDate | date:'dd/MM/YYYY'}} 
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="EndDate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            End Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                           {{contact.EndDate | date:'dd/MM/YYYY'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="ItemName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            ItemName </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.ItemName}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="BatchNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            BatchNo </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.BatchNo}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="BatchExpDate" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            BatchExpDate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.BatchExpDate | date:'dd/MM/YYYY'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="Qty" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            Qty </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.Qty}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="PerUnitPurchaseRate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            PerUnitPurchaseRate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PerUnitPurchaseRate | currency:'INR'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="PerUnitLandedRate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            PerUnitLandedRate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PerUnitLandedRate | currency:'INR'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="PerUnitMRPRate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            PerUnitMRPRate </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PerUnitMRPRate | currency:'INR'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="PurTotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            PurTotalAmt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.PurTotalAmount | currency:'INR'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="LandedTotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            LandedTotalAmt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.LandedTotalAmount | currency:'INR'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="MRPTotalAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            MRPTotalAmt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.MRPTotalAmount | currency:'INR'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="Remark">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                            Remark </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150" matTooltip="{{contact.Remark}}">
+                                            {{contact.Remark || '-'}}
+                                        </mat-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="AddedBy" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
+                                            AddedBy </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.AddedBy}}
+                                        </mat-cell>
+                                    </ng-container>  
+                    
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+                    
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+                    
+                                    <mat-header-row class="accent min-width-1600" *matHeaderRowDef="displayedNewMaterialList; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedNewMaterialList;" class="contact min-width-1600"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" ></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsMaterialConDetLList!=null && dsMaterialConDetLList.data.length==0)}">
+                                    </mat-footer-row>
+                    
+                                </mat-table>
+                    
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                                </mat-paginator>
+                            </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
 

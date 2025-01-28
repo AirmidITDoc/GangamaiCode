@@ -1542,7 +1542,7 @@ getPacakgeDetail(contact){
   const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
     {
       maxWidth: "100%",
-      height: '70%',
+      height: '75%',
       width: '70%' ,
       data: {
         Obj:contact

@@ -123,7 +123,7 @@ getSearchListIP() {
     var m_data = {
       "Keyword": `${this._MaterialConsumptionService.userFormGroup.get('RegID').value}%`
     }
-    if (this._MaterialConsumptionService.userFormGroup.get('PatientType').value == 'OP'){
+    if (this._MaterialConsumptionService.userFormGroup.get('PatientType').value == '0'){
       if (this._MaterialConsumptionService.userFormGroup.get('RegID').value.length >= 1) {
         this._MaterialConsumptionService.getPatientVisitedListSearch(m_data).subscribe(resData => {
           this.filteredOptions = resData;
@@ -136,7 +136,7 @@ getSearchListIP() {
           } 
         });
       }
-    }else if (this._MaterialConsumptionService.userFormGroup.get('PatientType').value == 'IP') {
+    }else if (this._MaterialConsumptionService.userFormGroup.get('PatientType').value == '1') {
       if (this._MaterialConsumptionService.userFormGroup.get('RegID').value.length >= 1) {
         this._MaterialConsumptionService.getAdmittedPatientList(m_data).subscribe(resData => {
           this.filteredOptions = resData;
@@ -153,6 +153,7 @@ getSearchListIP() {
   } 
   registerObjOP:any;
   registerObjIP:any;
+  vAdmissionId:any;
   getSelectedObjRegIP(obj) {
     let IsDischarged = 0;
     IsDischarged = obj.IsDischarged 
@@ -162,11 +163,13 @@ getSearchListIP() {
     else{
       console.log(obj) 
       this.registerObjIP = obj; 
+      this.vAdmissionId = this.registerObjIP.AdmissionID
     }  
   } 
   getSelectedObjOP(obj) { 
       console.log(obj) 
       this.registerObjOP = obj; 
+      this.vAdmissionId = this.registerObjIP.this.VisitId 
   }
   getOptionTextIPObj(option) { 
     return option && option.FirstName + " " + option.LastName; 
@@ -263,9 +266,9 @@ getSearchListIP() {
           LandedRate:this.vLandedRate,
           PurchaseRate:this.vPurchaseRate,
           UnitMRP: this.vUnitMRP,
-          MRPTotalAmt: this.vUsedQty *  this.vUnitMRP|| 0,
+          MRPTotalAmt: this.vUsedQty *  this.vUnitMRP || 0,
           LandedTotalAmt :this.vUsedQty * this.vLandedRate  || 0,
-          PurTotalAmt:  this.vUsedQty * this.vPurchaseRate || 0,
+          PurTotalAmt: this.vUsedQty * this.vPurchaseRate || 0,
           Remark: this.vRemark ||  " ",
           StockId:this.vStockId || 0,
           StoreId:this.vStoreId , 
@@ -319,6 +322,8 @@ getSearchListIP() {
 
   getTotalamt(element) {
     this.vMRPTotalAmount = (element.reduce((sum, { MRPTotalAmt }) => sum += +(MRPTotalAmt || 0), 0)).toFixed(2);
+    this.vPurTotalAmount = (element.reduce((sum, { PurTotalAmt }) => sum += +(PurTotalAmt || 0), 0)).toFixed(2);
+    this.vLandedTotalAmount = (element.reduce((sum, { LandedTotalAmt }) => sum += +(LandedTotalAmt || 0), 0)).toFixed(2);
     return this.vMRPTotalAmount;
   }
   OnSave(){
@@ -332,19 +337,22 @@ getSearchListIP() {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
+    }  
     this.Savebtn=true;
     let materialConsumptionObj = {};
     materialConsumptionObj['materialConsumptionId'] = 0;
+    materialConsumptionObj['consumptionNo'] =  0;
     materialConsumptionObj['consumptionDate'] =  formattedDate;
     materialConsumptionObj['consumptionTime'] = formattedTime;
     materialConsumptionObj['fromStoreId'] =this._loggedService.currentUserValue.user.storeId;
-    materialConsumptionObj['landedTotalAmount'] = parseInt(this.vLandedTotalAmount) || 0;
-    materialConsumptionObj['purchaseTotal'] = parseInt(this.vPurTotalAmount) || 0;
-    materialConsumptionObj['mrpTotal'] =parseInt(this.vMRPTotalAmount) || 0;
+    materialConsumptionObj['landedTotalAmount'] = this.vLandedTotalAmount || 0;
+    materialConsumptionObj['purchaseTotal'] = this.vPurTotalAmount || 0;
+    materialConsumptionObj['mrpTotalAmount'] =this.vMRPTotalAmount || 0;
     materialConsumptionObj['remark'] = this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value;
-    materialConsumptionObj['addedby'] =this.accountService.currentUserValue.user.id || 0;
-
+    materialConsumptionObj['oP_IP_Type'] = this._MaterialConsumptionService.userFormGroup.get('PatientType').value;
+    materialConsumptionObj['admId'] =  this.vAdmissionId || 0;
+    materialConsumptionObj['createdBy'] =this.accountService.currentUserValue.user.id || 0; 
+    
     let insertMaterialConsDetail =[];
     this.dsNewmaterialList.data.forEach((element) =>{
       let insertMaterialConstDetailObj = {};
@@ -362,6 +370,7 @@ getSearchListIP() {
       insertMaterialConstDetailObj['startDate'] = element.StartDate || 0;
       insertMaterialConstDetailObj['endDate'] = element.EndDate || 0;
       insertMaterialConstDetailObj['remark'] =element.Remark || 0;
+      insertMaterialConstDetailObj['admId'] =this.vAdmissionId || 0;
       insertMaterialConsDetail.push(insertMaterialConstDetailObj);
     })
 
@@ -478,6 +487,9 @@ getSearchListIP() {
    this.dsNewmaterialList.data = []; 
    this.chargeslist.data = [];
    this.dsTempItemNameList.data =[];
+   this._MaterialConsumptionService.FinalMaterialForm.get('Remark').setValue('')
+   this._MaterialConsumptionService.userFormGroup.get('RegID').setValue('');
+   
   }
 }
 export class ItemList {

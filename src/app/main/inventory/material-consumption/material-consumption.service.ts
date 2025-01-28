@@ -44,7 +44,7 @@ export class MaterialConsumptionService {
       end: [(new Date()).toISOString()],
       IsPatientWiseConsumption:[true],
       RegID:[''],
-      PatientType:['IP']
+      PatientType:['1']
     });
   }
   createfinalform() {
@@ -91,6 +91,13 @@ export class MaterialConsumptionService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_MaterialConsumption_ByName",Param);
   }
+  public getMaterialConDetList(Param,loader = true){
+    if(loader){
+      this._loaderService.show()
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_MaterialConsumptionDetails_ByName",Param);
+  }
+  
   public getItemlist(Param,loader = true){
     if(loader){
       this._loaderService.show()

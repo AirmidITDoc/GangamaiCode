@@ -22,10 +22,11 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class MaterialConsumptionComponent implements OnInit {
   displayedColumns = [
-    'ConsumptionNo',
+    //'ConsumptionNo',
+    'Status',
     'ConsumptionDate', 
-    'LandedTotalAmount',
     'StoreName',
+    'LandedTotalAmount',
     'Remark',
     'AddedBy',
     'action',
@@ -33,13 +34,18 @@ export class MaterialConsumptionComponent implements OnInit {
   displayedNewMaterialList = [
     'ItemName',
     'BatchNo',
-    'ExpDate',
-    'BalQty',
-    'UsedQty',
-    'Rate',
-    'TotalAmount',
+    'BatchExpDate',
+    'Qty',
+    'PerUnitPurchaseRate',
+    'PerUnitLandedRate',
+    'PerUnitMRPRate',
+    'PurTotalAmount',
+    'LandedTotalAmount',
+    'MRPTotalAmount', 
+    'StartDate',
+    'EndDate',
     'Remark',
-    'StkId'
+    'AddedBy'
   ];
 
   SpinLoading: boolean = false;
@@ -55,7 +61,7 @@ export class MaterialConsumptionComponent implements OnInit {
 
   
   dsMaterialConLList = new MatTableDataSource<MaterialConList>();
-  dsNewMaterialConList = new MatTableDataSource<NewMaterialList>();
+  dsMaterialConDetLList = new MatTableDataSource<NewMaterialList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -95,6 +101,23 @@ export class MaterialConsumptionComponent implements OnInit {
       this.dsMaterialConLList.paginator = this.paginator;
       this.sIsLoading = '';
       console.log(this.dsMaterialConLList.data)
+    },
+    error => {
+      this.sIsLoading = '';
+    });
+  }
+  getMaterialConDetList(Obj) {
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      "MaterialConsumptionId": Obj.MaterialConsumptionId || 0,
+     }
+    console.log(vdata);
+      this._MaterialConsumptionService.getMaterialConDetList(vdata).subscribe(data => {
+      this.dsMaterialConDetLList.data = data as NewMaterialList[];
+      this.dsMaterialConDetLList.sort = this.sort;
+      this.dsMaterialConDetLList.paginator = this.paginator;
+      this.sIsLoading = '';
+      console.log(this.dsMaterialConDetLList.data)
     },
     error => {
       this.sIsLoading = '';
@@ -154,25 +177,43 @@ export class MaterialConsumptionComponent implements OnInit {
 export class NewMaterialList {
   ItemName: string;
   BatchNo: number;
-  ExpDate:number;
+  BatchExpDate:number;
   BalQty:number;
   UsedQty:any;
   Rate:any;
   TotalAmount:any;
   Remark:any;
-  StkId:any;
+  StkId:any; 
+  PerUnitPurchaseRate:any;
+  PerUnitLandedRate:any;
+  PerUnitMRPRate:any;
+  PurTotalAmount:any; 
+  LandedTotalAmount:any;
+  MRPTotalAmount:any;
+  AddedBy:any;
+  StartEndDate:any;
+  Qty:any;
+
+ 
  
   constructor(NewMaterialList) {
     {
       this.ItemName = NewMaterialList.ItemName || "";
       this.BatchNo = NewMaterialList.BatchNo || 0;
-      this.ExpDate = NewMaterialList.ExpDate || 0;
+      this.BatchExpDate = NewMaterialList.BatchExpDate || 0;
       this.BalQty = NewMaterialList.BalQty|| 0;
       this.UsedQty = NewMaterialList.UsedQty || 0;
       this.Rate =NewMaterialList.Rate || 0;
       this.TotalAmount = NewMaterialList.TotalAmount|| 0;
       this.Remark = NewMaterialList.Remark || ' ';
-      this.StkId =NewMaterialList.StkId || 0;
+      this.PerUnitPurchaseRate =NewMaterialList.PerUnitPurchaseRate || 0;
+      this.PerUnitLandedRate = NewMaterialList.PerUnitLandedRate || 0;
+      this.PerUnitMRPRate = NewMaterialList.PerUnitMRPRate || 0;
+      this.LandedTotalAmount = NewMaterialList.LandedTotalAmount|| 0;
+      this.MRPTotalAmount = NewMaterialList.MRPTotalAmount || 0;
+      this.AddedBy =NewMaterialList.AddedBy || 0;
+      this.StartEndDate = NewMaterialList.StartEndDate || 0;
+      this.Qty =NewMaterialList.Qty || 0;
     }
   }
 }
@@ -184,6 +225,7 @@ export class MaterialConList {
   TotalVatAmount:any;
   Addedby:number;
   Remark:any;
+  
   
   constructor(MaterialConList) {
     {
