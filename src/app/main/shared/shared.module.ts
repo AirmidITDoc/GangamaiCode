@@ -36,7 +36,6 @@ import { AirmidAutocompleteComponent } from './componets/airmid-autocomplete/air
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { AirmidDropdownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTable1Component } from './componets/airmid-table1/airmid-table1.component';
 import { AirmidTextbox1Component } from './componets/airmid-textbox1/airmid-textbox1.component';
 import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmid-dateofbirth.component';
@@ -49,7 +48,7 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
+        AirmidAutocompleteComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -92,7 +91,6 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
         AirmidTableComponent,
         AirmidTextboxComponent,
         AirmidAutocompleteComponent,
-        AirmidDropdownComponent,
         AirmidTable1Component,
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,
