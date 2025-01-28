@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
@@ -23,7 +23,7 @@ export class AdmissionService {
     public _formBuilder: UntypedFormBuilder,  private _loaderService: LoaderService,
   ) {
     this.myFilterform = this.filterForm();
-    this.mySaveForm = this.saveForm();
+    // this.mySaveForm = this.saveForm();
   }
 
   filterForm(): FormGroup {
@@ -34,7 +34,7 @@ export class AdmissionService {
       MiddleName: '',
       LastName: '',
       MobileNo: '',
-      searchDoctorId: '',
+      searchDoctorId: 0,
       DoctorId: '0',
       DoctorID: '0',
       DoctorName: '',
@@ -42,141 +42,128 @@ export class AdmissionService {
       RoomName: '',
       PatientType: '',
       patientstatus: '',
-      start: [ ],
-      end: [ ],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
 
     });
   }
 
-  saveForm(): FormGroup {
+  createPesonalForm() {
     return this._formBuilder.group({
-
-      AdmissionID: '',
-      RegID: '',
-      AdmissionDate: '',
-      AdmissionTime: '',
-      PatientTypeID: '',
-      HospitalID: '',
-      DocNameID: '',
-      RefDocNameID: '',
-      RoomId: '',
-      BedId: '',
-
-      DischargeDate: '',
-      DischargeTime: '',
-      IsDischarged: '',
-      IsBillGenerated: '',
-      CompanyId: '',
-      TariffId: '',
-      ClassId: '',
-      HospitalId: '',
-      DepartmentId: '',
-      Departmentid: '',
-      RelativeName: '',
-      RelativeAddress: '',
-      PhoneNo: ['', [
-
-        Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(15),
-      ]],
-      MobileNo: ['', [
-        // Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]],
-      RelationshipId: '',
-      AddedBy: '',
-      IsMLC: '',
-      MotherName: '',
-      AdmittedDoctor1: '',
-      AdmittedDoctor2: '',
-      SubCompanyId: '',
-      SubTPAComp: '',
-      IsReimbursement: '',
-      RelatvieMobileNo: 0,
-      PrefixID: '',
-      PrefixName: '',
-      DoctorID: '',
-      PatientName: '',
+      RegId: [0],
+      RegNo: '',
+      PrefixId: ['', [Validators.required]],
       FirstName: ['', [
-        // Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.required,
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
       MiddleName: ['', [
-
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
       ]],
       LastName: ['', [
-        // Validators.required,
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        Validators.required,
+        Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
       ]],
-      DoctorId: '',
-      DoctorName: '',
-      IPDNo: '',
-      DOA: '',
-      DOT: '',
-      RefDocName: '',
-      PatientType: '',
-      HospitalName: '',
-      RegNoWithPrefix: '',
-      AdmittedDoctor1ID: '',
-      AdmittedDoctorId: '',
-      AdmittedDoctorId1: '',
-      // AdmittedDoctor1: string;
-      // TariffId: number;
-      TariffName: '',
-      RoomName: '',
-      BedName: '',
-      GenderId: '',
-      GenderName: '',
-      //----Admission end
-
-      //---Regi starrt-------
-
-      RegId: '',
-      RegDate: '',
-      RegTime: '',
-      //PrefixId : '',
-      //FirstName : '',
-      //MiddleName : '',
-      //LastName : '',
+      GenderID: new FormControl('', [Validators.required]),
       Address: '',
-      City: '',
-      PinNo: '',
-      DateOfBirth: '',
-      Age: '',
-      //GenderId : '',
-      //PhoneNo: '',
-      //MobileNo: '',
-      //AddedBy: '',
-      AgeYear: '',
-      AgeMonth: '',
-      AgeDay: '',
-      CountryId: '',
-      StateId: '',
-      CityId: '',
-      MaritalStatusId: '',
-      IsCharity: '',
-      ReligionId: '',
-      AreaId: '',
-      VillageId: '',
-      TalukaId: '',
-      PatientWeight: '',
-      AreaName: '',
-      AadharCardNo: ['', [
+      DateofBirth: [(new Date()).toISOString()],
+      Age: ['0'],
+      AgeYear: ['0', [
         // Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(12),
-        Validators.maxLength(12),
+        Validators.maxLength(3),
+        Validators.pattern("^[0-9]*$")]],
+      AgeMonth: ['0', [
+        Validators.pattern("^[0-9]*$")]],
+      AgeDay: ['0', [
+        Validators.pattern("^[0-9]*$")]],
+      PhoneNo: ['', [Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
-      PanCardNo: '',
-      //-----------End Regis-----
+      MobileNo: ['', [Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
+      aadharCardNo: ['', [Validators.required,
+      Validators.minLength(12),
+      Validators.maxLength(12),
+      Validators.pattern("^[0-9]*$")
+      ]],
+      panCardNo: '',
+      MaritalStatusId: '',
+      ReligionId: 0,
+      AreaId: 0,
+      CityId: 0,
+      City: ['d'],
+      StateId: 0,
+      CountryId: 0,
+      IsCharity: false,
+      IsSeniorCitizen: false,
+      AddedBy: 1,
+      updatedBy: 1,
+      RegDate: [(new Date()).toISOString()],
+      RegTime: [(new Date()).toISOString()],
+      Photo: [''],
+      PinNo: [''],
+      IsHealthCard: 0
+    });
+  }
 
-      //----bed----
+  createAdmissionForm() {
+    return this._formBuilder.group({
+      AdmissionId: 0,
+      RegId: 0,
+      AdmissionDate:  [(new Date()).toISOString()],
+      AdmissionTime:  [(new Date()).toISOString()],
+      PatientTypeId: 1,
+      HospitalID: 1,
+      DocNameId:['', [Validators.required]],
+      RefDocNameId: 0,
+      DischargeDate: "2024-08-10",
+      DischargeTime: "2024-09-18T11:24:02.655Z",
+      IsDischarged: 0,
+      IsBillGenerated: 0,
+      CompanyId: 0,
+      TariffId: ['', [Validators.required]],
+      ClassId:['', [Validators.required]],
+      DepartmentId: ['', [Validators.required]],
+      RelativeName: "",
+      RelativeAddress: "",
+      PhoneNo: "",
+      MobileNo: ['', [Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+        ]],
+      RelationshipId: 0,
+      AddedBy: 1,
+      IsMlc: true,
+      MotherName: "",
+      AdmittedDoctor1:['', [Validators.required]],
+      AdmittedDoctor2: 0,
+      RefByTypeId: 0,
+      RefByName: 0,
+      SubTpaComId: 0,
+      PolicyNo: "",
+      AprovAmount: 0,
+      compDOd: [(new Date()).toISOString()],
+      IsOpToIpconv: true,
+      RefDoctorDept: "",
+      AdmissionType: 1,
 
-      //BedId: ''
+      wardId: ['', [Validators.required]],
+      bedId: ['', [Validators.required]],
+      // ClassId: ['', [Validators.required]],
+
+     
+      IsMLC: [false],
+      OPIPChange: [false],
+      IsCharity: [false],
+      IsSenior: [false],
+      Citizen: [false],
+      Emergancy: [false],
+      template: [false]
     });
   }
   //-------------------Insert methods-----------
@@ -196,7 +183,7 @@ export class AdmissionService {
 
 
   public AdmissionUpdate(employee) {
-    return this._httpClient.post("InPatient/AdmissionUpdate", employee);
+    return this._httpClient1.PostData("Admission/AdmissionUpdateSP", employee);
   }
 
 
@@ -512,11 +499,13 @@ public getAdmittedPatientListNew(employee) {
   return this._httpClient1.PostData("Admission/AdmissionList", employee)
 }  
 
+
+public getRegistraionById(Id,showLoader = true) {
+  return this._httpClient1.GetData("OutPatient/" + Id,showLoader);
 }
 
+public getAdmissionById(Id,showLoader = true) {
+  return this._httpClient1.GetData("Admission/" + Id,showLoader);
+}
+}
 
-// exec rptIPRefundofBillPrint 10268
-// exec rptIPRefundofAdvancePrint 10043
-// exec rptIPDPaymentReceiptPrint 156754
-
-// exec rptAdmissionPrint1 10694

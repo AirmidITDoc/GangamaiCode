@@ -158,7 +158,7 @@ public getcitylist(version){
 }
 
 public getPatientListView(mode){
-    return this._httpClient1.PostData("Report/ViewReport",mode);
+    return this._httpClient1.PostData("Report/NewViewReport",mode);
  
 }
 }

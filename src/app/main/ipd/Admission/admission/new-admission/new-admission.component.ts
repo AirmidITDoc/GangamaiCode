@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import {  AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
@@ -16,11 +16,14 @@ import { MatSelect } from '@angular/material/select';
 import { ToastrService } from 'ngx-toastr';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-admission',
   templateUrl: './new-admission.component.html',
-  styleUrls: ['./new-admission.component.scss']
+  styleUrls: ['./new-admission.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class NewAdmissionComponent implements OnInit {
 
@@ -55,11 +58,11 @@ export class NewAdmissionComponent implements OnInit {
   isLinear = true;
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
-
+  registredflag: boolean = true;
   
   printTemplate: any;
   selectedAdvanceObj: AdvanceDetailObj;
-  registerObj = new AdmissionPersonlModel({});
+  // registerObj = new AdmissionPersonlModel({});
   
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
@@ -70,6 +73,9 @@ export class NewAdmissionComponent implements OnInit {
   isLoading: string = '';
   screenFromString = 'admission-form';
 
+  registerObj1 = new AdmissionPersonlModel({});
+  registerObj = new RegInsert({});
+AdmissionId:any=0;
   @Input() panelWidth: string | number;
   @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
@@ -121,157 +127,42 @@ export class NewAdmissionComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAlive = true;
-    this.personalFormGroup = this.createPesonalForm();
-    this.admissionFormGroup = this.createAdmissionForm();
+    // this.personalFormGroup = this._AdmissionService.createPesonalForm();
+    // this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
  
     this.searchFormGroup=this.createSearchForm();
 
-    if (this.data) {
+    if ((this.data?.regId ?? 0) > 0) {
+      debugger
       console.log(this.data)
-      this.registerObj = this.data.row;
-      
-    }
-
-  }
-
-
-  createPesonalForm() {
-    return this.formBuilder.group({
-      RegId: [0],
-      RegNo: '',
-      PrefixId: ['', [Validators.required]],
-      FirstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      MiddleName: ['', [
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      LastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
-      ]],
-      GenderID: new FormControl('', [Validators.required]),
-      Address: '',
-      DateofBirth: [(new Date()).toISOString()],
-      Age: ['0'],
-      AgeYear: ['0', [
-        // Validators.required,
-        Validators.maxLength(3),
-        Validators.pattern("^[0-9]*$")]],
-      AgeMonth: ['0', [
-        Validators.pattern("^[0-9]*$")]],
-      AgeDay: ['0', [
-        Validators.pattern("^[0-9]*$")]],
-      PhoneNo: ['', [Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      MobileNo: ['', [Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      aadharCardNo: ['', [Validators.required,
-      Validators.minLength(12),
-      Validators.maxLength(12),
-      Validators.pattern("^[0-9]*$")
-      ]],
-      panCardNo: 'ds',
-      MaritalStatusId: '',
-      ReligionId: 0,
-      AreaId: '',
-      CityId: '',
-      City: ['d'],
-      StateId: '',
-      CountryId: '',
-      IsCharity: false,
-      IsSeniorCitizen: false,
-      AddedBy: 1,
-      updatedBy: 1,
-      RegDate: [(new Date()).toISOString()],
-      RegTime: [(new Date()).toISOString()],
-      Photo: [''],
-      PinNo: [''],
-      IsHealthCard: 0
-    });
-  }
-  createAdmissionForm() {
-    return this.formBuilder.group({
-      AdmissionId: 0,
-      RegId: 0,
-      AdmissionDate:  [(new Date()).toISOString()],
-      AdmissionTime:  [(new Date()).toISOString()],
-      PatientTypeId: 1,
-      HospitalID: 1,
-      DocNameId: 0,
-      RefDocNameId: 0,
-      DischargeDate: "2024-08-10",
-      DischargeTime: "2024-09-18T11:24:02.655Z",
-      IsDischarged: 0,
-      IsBillGenerated: 0,
-      CompanyId: 0,
-      TariffId: 0,
-      ClassId: 0,
-      DepartmentId: 0,
-      RelativeName: "",
-      RelativeAddress: "string",
-      PhoneNo: "",
-      MobileNo: "",
-      RelationshipId: 0,
-      AddedBy: 1,
-      IsMlc: true,
-      MotherName: "",
-      AdmittedDoctor1: 0,
-      AdmittedDoctor2: 0,
-      RefByTypeId: 0,
-      RefByName: 0,
-      SubTpaComId: 0,
-      PolicyNo: "string",
-      AprovAmount: 0,
-      compDOd: [(new Date()).toISOString()],
-      IsOpToIpconv: true,
-      RefDoctorDept: "string",
-      AdmissionType: 1,
-
-      wardId: '',
-      bedId: ['', [Validators.required]],
-      // ClassId: ['', [Validators.required]],
-
+      this.AdmissionId=this.data.admissionId;
+      this.registredflag=false;
      
-      IsMLC: [false],
-      OPIPChange: [false],
-      IsCharity: [false],
-      IsSenior: [false],
-      Citizen: [false],
-      Emergancy: [false],
-      template: [false]
-    });
+      setTimeout(() => {
+        this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+
+        });
+
+        this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+          this.registerObj1 = response;
+          console.log(this.registerObj1)
+
+        });
+
+
+      }, 500);
+    }
+    this.personalFormGroup = this._AdmissionService.createPesonalForm();
+    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+    if(this.AdmissionId)
+      this.searchFormGroup.get("regRadio").setValue("registrered")
   }
 
-  // wardForm() {
-  //   return this.formBuilder.group({
-  //     RoomId: '',
-  //     BedId: ['', [Validators.required]],
-  //     ClassId: ['', [Validators.required]],
-  //   });
-  // }
 
-  // otherForm() {
-  //   return this.formBuilder.group({
-  //     RelativeName: '',
-  //     RelativeAddress: '',
-  //     MobileNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-  //     RelationshipId: '',
-  //     IsMLC: [false],
-  //     OPIPChange: [false],
-  //     IsCharity: [false],
-  //     IsSenior: [false],
-  //     Citizen: [false],
-  //     Emergancy: [false],
-  //     template: [false]
-  //   });
-  // }
+ 
+  
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
@@ -389,9 +280,12 @@ export class NewAdmissionComponent implements OnInit {
       HospitalId:[
         { name: "required", Message: "HospitalId Name is required" }
       ],
-      RelatvieMobileNo:[
+      phoneNo:[
         { name: "required", Message: "RelatvieMobileNo Name is required" }
-      ]
+      ],
+      docNameId:[
+        { name: "required", Message: "RelatvieMobileNo Name is required" }
+      ],
     };
   }
 
@@ -406,11 +300,11 @@ export class NewAdmissionComponent implements OnInit {
       this.personalFormGroup.get('RegId').reset();
       this.personalFormGroup.get('RegId').disable();
       // this.isRegSearchDisabled = true;
-      this.registerObj = new AdmissionPersonlModel({});
+      this.registerObj1 = new AdmissionPersonlModel({});
       this.personalFormGroup.reset();
 
-      this.personalFormGroup = this.createPesonalForm();
-      this.admissionFormGroup = this.createAdmissionForm();
+      this.personalFormGroup = this._AdmissionService.createPesonalForm();
+      this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
      
       this.Regdisplay = false;
       this.showtable = false;
@@ -421,7 +315,7 @@ export class NewAdmissionComponent implements OnInit {
       this.searchFormGroup.get('RegId').enable();
       // this.isRegSearchDisabled = false;
 
-      this.personalFormGroup = this.createPesonalForm();
+      this.personalFormGroup = this._AdmissionService.createPesonalForm();
       this.personalFormGroup.markAllAsTouched();
 
 
@@ -504,21 +398,19 @@ export class NewAdmissionComponent implements OnInit {
     }
 
     // if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
-    if (this.searchFormGroup.get('regRadio').value == "registration") {
-      //Api
-          // this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
-      // this.VisitFormGroup.get("patientOldNew").setValue(2)
-
-
+  debugger
+    if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId==0) {
+    
       let submitData = {
         "AdmissionReg": this.personalFormGroup.value,
         "ADMISSION": this.admissionFormGroup.value
       };
       console.log(submitData);
-      debugger
+      
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
         this.toastr.success(response.message);
         this.onClear();
+        this._matDialog.closeAll();
     }, (error) => {
         this.toastr.error(error.message);
       
@@ -526,28 +418,64 @@ export class NewAdmissionComponent implements OnInit {
 
 
     }
-      else { 
+    //   else { 
 
   
-        let submitData = {
-          "AdmissionReg": this.personalFormGroup.value,
-          "ADMISSION": this.admissionFormGroup.value
-        };
-        console.log(submitData);
+    //     let submitData = {
+    //       "AdmissionReg": this.personalFormGroup.value,
+    //       "ADMISSION": this.admissionFormGroup.value
+    //     };
+    //     console.log(submitData);
       
-        this._AdmissionService.InsertNewAdmission(submitData).subscribe((response) => {
-          this.toastr.success(response.message); 
-          this.onClose();
-          this._matDialog.closeAll();
-          this.getAdmittedPatientCasepaperview(response, true);
-          this.onReset();
+    //     this._AdmissionService.InsertNewAdmission(submitData).subscribe((response) => {
+    //       this.toastr.success(response.message); 
+    //       this.onClose();
+    //       this._matDialog.closeAll();
+    //       this.getAdmittedPatientCasepaperview(response, true);
+    //       this.onReset();
 
-        }, (error) => {
-          this.toastr.error(error.message);
-        });
+    //     }, (error) => {
+    //       this.toastr.error(error.message);
+    //     });
 
-     }
-    
+    //  }
+    else{
+      console.log(this.registerObj1)
+    console.log(this.admissionFormGroup.value)
+
+    this.registerObj1.departmentId = this.admissionFormGroup.get("DepartmentId").value
+    this.registerObj1.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
+    this.registerObj1.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
+    this.registerObj1.relationshipId = this.admissionFormGroup.get("RelationshipId").value
+    this.registerObj1.relativeName = this.admissionFormGroup.get("RelativeName").value
+    this.registerObj1.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
+    this.registerObj1.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
+    this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
+    this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
+    this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
+    if (this.admissionFormGroup.get("CompanyId").value)
+      this.registerObj1.companyId = this.admissionFormGroup.get("CompanyId").value
+
+    this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
+    this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
+    this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
+
+
+    let submitData = {
+      "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
+      "ADMISSION": this.registerObj1,// this.admissionFormGroup.value
+    };
+    console.log(submitData);
+
+    this._AdmissionService.AdmissionUpdate(submitData).subscribe(response => {
+      this.toastr.success(response.message);
+      this.onClear();
+      this._matDialog.closeAll();
+    }, (error) => {
+      this.toastr.error(error.message);
+
+    });
+    }
   }
 
   onClear(){}
@@ -575,13 +503,13 @@ export class NewAdmissionComponent implements OnInit {
       this.searchFormGroup.get('RegId').enable();
 
 
-    this.registerObj = new AdmissionPersonlModel({});
+    this.registerObj1 = new AdmissionPersonlModel({});
     this.personalFormGroup.reset();
 
-    this.personalFormGroup = this.createPesonalForm();
+    this.personalFormGroup = this._AdmissionService.createPesonalForm();
     this.personalFormGroup.markAllAsTouched();
 
-    this.admissionFormGroup = this.createAdmissionForm();
+    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
     this.admissionFormGroup.markAllAsTouched();
 
    

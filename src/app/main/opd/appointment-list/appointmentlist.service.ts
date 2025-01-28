@@ -133,7 +133,7 @@ public getdoctorList(employee) {
 public getVisitById(Id,showLoader = true) {
   return this._httpClient1.GetData("VisitDetail/" + Id,showLoader);
 }
-public getPatientListView(mode){
+public getPatientcasepaperView(mode){
   return this._httpClient1.PostData("Report/ViewReport",mode);
 
 }

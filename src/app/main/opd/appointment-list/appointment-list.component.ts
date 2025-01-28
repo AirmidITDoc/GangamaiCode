@@ -116,7 +116,7 @@ export class AppointmentListComponent implements OnInit {
                     },
                     {
                         action: gridActions.print, callback: (data: any) => {
-                            this.getAppointmentlistrview();
+                            this.getAppointmentcasepaperview(data);
                         }
                     },
                     // {
@@ -197,8 +197,52 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-       getAppointmentlistrview() {
+    //    getAppointmentlistrview() {
 
+    //     setTimeout(() => {
+
+    //         let param = {
+
+    //             "searchFields": [
+    //                 {
+    //                     "fieldName": "FromDate",
+    //                     "fieldValue": this.fromDate,
+    //                     "opType": "13"
+    //                 },
+    //                 {
+    //                     "fieldName": "ToDate",
+    //                     "fieldValue": this.toDate,
+    //                     "opType": "13"
+    //                 }
+    //             ],
+    //             "mode": "AppointmentListReport"
+    //         }
+
+    //         console.log(param)
+    //         this._AppointmentlistService.getPatientListView(param).subscribe(res => {
+    //             console.log(res)
+    //             const matDialog = this._matDialog.open(PdfviewerComponent,
+    //                 {
+    //                     maxWidth: "85vw",
+    //                     height: '750px',
+    //                     width: '100%',
+    //                     data: {
+    //                         base64: res["base64"] as string,
+    //                         title: "Appointment List  Viewer"
+
+    //                     }
+
+    //                 });
+
+    //             matDialog.afterClosed().subscribe(result => {
+
+    //             });
+    //         });
+
+    //     }, 100);
+    // }
+
+    getAppointmentcasepaperview(data) {
         setTimeout(() => {
 
             let param = {
@@ -206,21 +250,21 @@ export class AppointmentListComponent implements OnInit {
                 "searchFields": [
                     {
                         "fieldName": "FromDate",
-                        "fieldValue": this.fromDate,
+                        "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
                         "opType": "13"
                     },
                     {
                         "fieldName": "ToDate",
-                        "fieldValue": this.toDate,
+                        "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
                         "opType": "13"
                     }
                 ],
-                "mode": "AppointmentListReport"
+                "mode": "RegistrationReport"
             }
 
+            debugger
             console.log(param)
-            this._AppointmentlistService.getPatientListView(param).subscribe(res => {
-                console.log(res)
+            this._AppointmentlistService.getPatientcasepaperView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
                     {
                         maxWidth: "85vw",
@@ -228,7 +272,7 @@ export class AppointmentListComponent implements OnInit {
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Appointment List  Viewer"
+                            title: "Registration List  Viewer"
 
                         }
 
@@ -241,6 +285,8 @@ export class AppointmentListComponent implements OnInit {
 
         }, 100);
     }
+
+
     Vtotalcount = 0;
     VNewcount = 0;
     VFollowupcount = 0;

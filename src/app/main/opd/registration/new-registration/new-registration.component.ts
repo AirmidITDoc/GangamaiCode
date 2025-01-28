@@ -75,13 +75,13 @@ export class NewRegistrationComponent implements OnInit {
        
         this.minDate = new Date();
       
-        if((this.data?.Submitflag?? true)==true)
-            this.registerObj.regId=this.data.data1.regId
-        
-        if ((this.data.data1?.regId?? 0) > 0) {
-          
+        // if((this.data?.Submitflag?? true)==true)
+        //     this.registerObj.regId=this.data.data1.regId
+        debugger
+        // if ((this.data.data1?.regId?? 0) > 0) {
+            if ((this.data?.regId?? 0) > 0) {
             setTimeout(() => {
-                this._registerService.getRegistraionById(this.data.data1.regId).subscribe((response) => {
+                this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
                    

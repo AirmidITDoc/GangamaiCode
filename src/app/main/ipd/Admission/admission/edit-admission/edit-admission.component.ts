@@ -22,7 +22,7 @@ import { RegistrationService } from 'app/main/opd/registration/registration.serv
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import {  AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
+import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
 import { Console } from 'console';
 
 
@@ -34,24 +34,22 @@ import { Console } from 'console';
   animations: fuseAnimations
 })
 export class EditAdmissionComponent implements OnInit {
-personalFormGroup: FormGroup;
+  personalFormGroup: FormGroup;
   admissionFormGroup: FormGroup;
   wardFormGroup: FormGroup;
   otherFormGroup: FormGroup;
   searchFormGroup: FormGroup;
- 
+
 
   options = [];
   msg: any = [];
   optionRegSearch: any[] = [];
   subscriptionArr: Subscription[] = [];
 
-  
- 
   filteredOptions: any;
   registration: any;
   matDialogRef: any;
-  patienttype:any;
+  patienttype: any;
   capturedImage: any;
 
   saveflag: boolean = false;
@@ -70,21 +68,16 @@ personalFormGroup: FormGroup;
   printTemplate: any;
   selectedAdvanceObj: AdvanceDetailObj;
   registerObj = new AdmissionPersonlModel({});
-  registerObj1=new RegInsert({});
+  registerObj1 = new RegInsert({});
   bedObj = new Bed({});
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
 
- 
+
   currentDate = new Date();
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
-
-  @Input() panelWidth: string | number;
-  @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
-  @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
-
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -99,216 +92,47 @@ personalFormGroup: FormGroup;
     dialogRef.disableClose = true;
   }
 
-  
+
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModetariff: string = "Tariff";
   autocompleteModeDepartment: string = "Department";
   autocompleteModeRefDoctor: string = "RefDoctor";
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
-  autocompleteModeSubCompany: string = "SubCompany";
-  autocompleteModeWardName: string = "Room";
-  autocompleteModeBedName: string = "Bed";
-  autocompleteModeClass: string = "Class";
-  autocompleteModemstatus: string = "MaritalStatus";
-  autocompleteModestate: string = "State";
   autocompleteModerelationship: string = "Relationship";
-  autocompleteModehospital: string = "Hospital";
 
   ngOnInit(): void {
     this.isAlive = true;
-    this.admissionFormGroup = this.createAdmissionForm();
-    this.otherFormGroup = this.otherForm();
-    this.searchFormGroup=this.createSearchForm();
-
-    if (this.data) {
+    debugger
+    if ((this.data?.regId ?? 0) > 0) {
+      debugger
       console.log(this.data)
-      this.registerObj = this.data.row;
-      
+      setTimeout(() => {
+        this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
+          this.registerObj1 = response;
+          console.log(this.registerObj1)
+
+        });
+
+        this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+
+        });
+
+
+      }, 500);
     }
+    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
 
   }
 
 
- 
-  createAdmissionForm() {
-    return this.formBuilder.group({
-      AdmissionId: 0,
-      RegId: 0,
-      AdmissionDate:  [(new Date()).toISOString()],
-      AdmissionTime:  [(new Date()).toISOString()],
-      PatientTypeId: 1,
-      HospitalID: 0,
-      DocNameId: 0,
-      RefDocNameId: 0,
-      WardId: 0,
-      Bedid: 0,
-      DischargeDate: "2024-08-10",
-      DischargeTime: "2024-09-18T11:24:02.655Z",
-      IsDischarged: 0,
-      IsBillGenerated: 0,
-      CompanyId: 0,
-      TariffId: 0,
-      ClassId: 0,
-      DepartmentId: 0,
-      RelativeName: "",
-      RelativeAddress: "string",
-      PhoneNo: "",
-      MobileNo: "",
-      RelationshipId: 0,
-      AddedBy: 1,
-      IsMlc: true,
-      MotherName: "",
-      AdmittedDoctor1: 0,
-      AdmittedDoctor2: 0,
-      RefByTypeId: 0,
-      RefByName: 0,
-      SubTpaComId: 0,
-      PolicyNo: "string",
-      AprovAmount: 0,
-      compDOd: [(new Date()).toISOString()],
-      IsOpToIpconv: true,
-      RefDoctorDept: "string",
-      AdmissionType: 1
-    });
-  }
-
- 
-  otherForm() {
-    return this.formBuilder.group({
-      RelativeName: '',
-      RelativeAddress: '',
-      RelatvieMobileNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      RelationshipId: '',
-      IsMLC: [false],
-      OPIPChange: [false],
-      IsCharity: [false],
-      IsSenior: [false],
-      Citizen: [false],
-      Emergancy: [false],
-      template: [false]
-    });
-  }
-  createSearchForm() {
-    return this.formBuilder.group({
-      regRadio: ['registration'],
-      RegId: [{ value: '', disabled: this.isRegSearchDisabled }]
-    });
-  }
 
 
-  getValidationMessages() {
-    return {
-      RegId: [],
-      firstName: [
-        { name: "required", Message: "First Name is required" },
-        { name: "maxLength", Message: "Enter only upto 50 chars" },
-        { name: "pattern", Message: "only char allowed." }
-      ],
-      middleName: [
-        // { name: "required", Message: "Middle Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
-        { name: "pattern", Message: "only char allowed." }
-      ],
-      lastName: [
-        { name: "required", Message: "Last Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
-        { name: "pattern", Message: "only char allowed." }
-      ],
-      address: [
-        { name: "required", Message: "Address is required" },
 
-      ],
-      prefixId: [
-        { name: "required", Message: "Prefix Name is required" }
-      ],
-      genderId: [
-        { name: "required", Message: "Gender is required" }
-      ],
-      areaId: [
-        { name: "required", Message: "Area Name is required" }
-      ],
-      cityId: [
-        { name: "required", Message: "City Name is required" }
-      ],
-      religionId: [
-        { name: "required", Message: "Religion Name is required" }
-      ],
-      countryId: [
-        { name: "required", Message: "Country Name is required" }
-      ],
-      stateId: [
-        { name: "required", Message: "State Name is required" }
-      ],
-      mobileNo: [
-        { name: "required", Message: "mobileNo Name is required" }
-      ],
-      PhoneNo: [
-        { name: "required", Message: "Phone is required" }
-      ],
-      aadharCardNo: [
-        { name: "required", Message: "aadharCardNo is required" }
-      ],
-
-      maritalStatusId: [
-        { name: "required", Message: "Mstatus Name is required" }
-      ],
-
-      AdmittedDoctor1: [
-        { name: "required", Message: "AdmittedDoctor1 is required" }
-      ],
-      AdmittedDoctor2: [
-        { name: "required", Message: "AdmittedDoctor2 is required" }
-      ],
-      RefDocNameId: [
-        { name: "pattern", Message: "RefDocNameId allowed" },
-       
-      ],
-      CompanyId: [
-        { name: "pattern", Message: "CompanyId Only numbers allowed" },
-       
-      ],
-      SubTpaComId: [
-        { name: "pattern", Message: "Only numbers allowed" },
-        ],
-      bedId: [
-        { name: "required", Message: "Bedid is required" }
-      ],
-     wardId: [
-        { name: "required", Message: "wardId is required" }
-      ],
-      ClassId: [
-        { name: "required", Message: "ClassId is required" }
-      ],
-      RelativeName: [
-        { name: "required", Message: "RelativeName is required" }
-      ],
-      RelativeAddress: [
-        { name: "required", Message: "RelativeAddress is required" }
-      ],
-     
-      RelationshipId: [
-        { name: "required", Message: "RelationshipId is required" }
-      ],
-      DepartmentId: [
-        { name: "required", Message: "DepartmentId is required" }
-      ],
-      DocNameId: [
-        { name: "required", Message: "DocNameId Name is required" }
-      ],
-      TariffId: [
-        { name: "required", Message: "TariffId Name is required" }
-      ],
-      PatientTypeId: [
-        { name: "required", Message: "PatientTypeId Name is required" }
-      ],
-      HospitalId:[
-        { name: "required", Message: "HospitalId Name is required" }
-      ]
-    };
-  }
-  CompanyId=0;
-  SubCompanyId=0;
+  CompanyId = 0;
+  SubCompanyId = 0;
   OnSaveAdmission() {
     if (this.patienttype != 2) {
       this.CompanyId = 0;
@@ -325,47 +149,121 @@ personalFormGroup: FormGroup;
         return;
       }
     }
-
+    debugger
     // if (!this.admissionFormGroup.invalid &&  !this.otherFormGroup.invalid) {
-    
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
-      console.log(submitData);
+    console.log(this.registerObj)
+    console.log(this.admissionFormGroup.value)
 
-          this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        this.onClear();
+    this.registerObj.departmentId = this.admissionFormGroup.get("DepartmentId").value
+    this.registerObj.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
+    this.registerObj.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
+    this.registerObj.relationshipId = this.admissionFormGroup.get("RelationshipId").value
+    this.registerObj.relativeName = this.admissionFormGroup.get("RelativeName").value
+    this.registerObj.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
+    this.registerObj.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
+    this.registerObj.tariffId = this.admissionFormGroup.get("TariffId").value
+    this.registerObj.docNameId = this.admissionFormGroup.get("DocNameId").value
+    this.registerObj.phoneNo = this.admissionFormGroup.get("MobileNo").value
+    if (this.admissionFormGroup.get("CompanyId").value)
+      this.registerObj.companyId = this.admissionFormGroup.get("CompanyId").value
+
+    this.registerObj.tariffId = this.admissionFormGroup.get("TariffId").value
+    this.registerObj.docNameId = this.admissionFormGroup.get("DocNameId").value
+    this.registerObj.phoneNo = this.admissionFormGroup.get("MobileNo").value
+
+
+
+
+    let submitData = {
+      "AdmissionReg": this.registerObj1,// this.personalFormGroup.value,
+      "ADMISSION": this.registerObj,// this.admissionFormGroup.value
+    };
+    console.log(submitData);
+
+    this._AdmissionService.AdmissionUpdate(submitData).subscribe(response => {
+      this.toastr.success(response.message);
+      this.onClear();
+      this._matDialog.closeAll();
     }, (error) => {
-        this.toastr.error(error.message);
-      
-      });
+      this.toastr.error(error.message);
 
-    
+    });
+
+
   }
-  Close(){}
-  onClear(){}
 
 
-dateTimeObj: any;
-getDateTime(dateTimeObj) {
-  console.log('dateTimeObj==', dateTimeObj);
-  this.dateTimeObj = dateTimeObj;
-}
+  getValidationMessages() {
+    return {
+      RegId: [],
 
-onReset() {
-   this.admissionFormGroup = this.createAdmissionForm();
-   this.otherFormGroup = this.otherForm();
- 
-  this.isCompanySelected = false;
-  // this.admissionFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
-  this.admissionFormGroup.get('CompanyId').clearValidators();
-  this.admissionFormGroup.get('SubCompanyId').clearValidators();
-  this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-  this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+      AdmittedDoctor1: [
+        { name: "required", Message: "AdmittedDoctor1 is required" }
+      ],
+      AdmittedDoctor2: [
+        { name: "required", Message: "AdmittedDoctor2 is required" }
+      ],
+      RefDocNameId: [
+        { name: "pattern", Message: "RefDocNameId allowed" },
+
+      ],
+      CompanyId: [
+        { name: "pattern", Message: "CompanyId Only numbers allowed" },
+
+      ],
+      SubTpaComId: [
+        { name: "pattern", Message: "Only numbers allowed" },
+      ],
+      RelativeName: [
+        { name: "required", Message: "RelativeName is required" }
+      ],
+      RelativeAddress: [
+        { name: "required", Message: "RelativeAddress is required" }
+      ],
+
+      RelationshipId: [
+        { name: "required", Message: "RelationshipId is required" }
+      ],
+      DepartmentId: [
+        { name: "required", Message: "DepartmentId is required" }
+      ],
+      DocNameId: [
+        { name: "required", Message: "DocNameId Name is required" }
+      ],
+      TariffId: [
+        { name: "required", Message: "TariffId Name is required" }
+      ],
+      PatientTypeId: [
+        { name: "required", Message: "PatientTypeId Name is required" }
+      ],
+      HospitalId: [
+        { name: "required", Message: "HospitalId Name is required" }
+      ],
+      RelatvieMobileNo: [
+        { name: "required", Message: "RelatvieMobileNo Name is required" }
+      ]
+    };
+  }
+  Close() { }
+  onClear() { }
 
 
-}
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    console.log('dateTimeObj==', dateTimeObj);
+    this.dateTimeObj = dateTimeObj;
+  }
+
+  onReset() {
+    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+    this.isCompanySelected = false;
+    // this.admissionFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
+    this.admissionFormGroup.get('CompanyId').clearValidators();
+    this.admissionFormGroup.get('SubCompanyId').clearValidators();
+    this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
+    this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+
+
+  }
 
 }
