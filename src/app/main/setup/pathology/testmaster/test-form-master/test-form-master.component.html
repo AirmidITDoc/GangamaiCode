@@ -58,19 +58,19 @@
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete 
+                                                <airmid-dropdown 
                                                     label="CategoryName" 
                                                     formControlName="CategoryId"
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationCategoryMessages().CategoryId"
                                                     [mode]="autocompleteModeCategoryId" 
                                                     (selectDdlObject)="selectChangeCategoryId($event)">
-                                                </airmid-autocomplete>
+                                                </airmid-dropdown>
 
                                             </div>
                         
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-autocomplete 
+                                                <airmid-dropdown 
                                                     label="ServiceName" 
                                                     formControlName="ServiceId"
                                                     [formGroup]="testForm"
@@ -78,7 +78,7 @@
                                                     [mode]="autocompleteModeServiceID" 
                                                     (selectDdlObject)="selectChangeServiceID($event)"
                                                     *ngIf="serviceflag">
-                                                </airmid-autocomplete>
+                                                </airmid-dropdown>
                                             </div>
 
                                         </div>
@@ -353,12 +353,12 @@
                                                                                 <div fxLayout="row" fxLayoutGap="5px">
 
                                                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                                        <airmid-autocomplete label="TemplateName" 
+                                                                                        <airmid-dropdown label="TemplateName" 
                                                                                             formControlName="TemplateName"
                                                                                             [formGroup]="templatedetailsForm"
                                                                                             [mode]="autocompleteModeTemplate"
                                                                                             (selectDdlObject)="selectChangeTemplateName($event)">
-                                                                                        </airmid-autocomplete>
+                                                                                        </airmid-dropdown>
                                                                                     </div>
 
                                                                                     <button (click)="onAddTemplate()"

@@ -7,7 +7,7 @@ import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 
 @Component({
   selector: "app-supplier-form-master",
@@ -19,7 +19,7 @@ import { AirmidAutocompleteComponent } from "app/main/shared/componets/airmid-au
 export class SupplierFormMasterComponent implements OnInit {
 
   supplierForm: FormGroup;
-  @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
+  @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
   submitted = false;
   registerObj = new SupplierMaster({});
 

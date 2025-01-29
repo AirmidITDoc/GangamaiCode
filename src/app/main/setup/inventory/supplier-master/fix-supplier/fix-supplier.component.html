@@ -61,27 +61,27 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <airmid-autocomplete label="City" formControlName="cityId"
+                                        <airmid-dropdown label="City" formControlName="cityId"
                                             [formGroup]="supplierForm" [value]="registerObj.cityId"
                                             [validations]="getValidationMessages().cityId" [mode]="autocompleteModecity"
                                             (selectionChange)="selectChangecity($event)">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                     </div>
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="State" formControlName="stateId"
+                                        <airmid-dropdown label="State" formControlName="stateId"
                                             [formGroup]="supplierForm" [value]="registerObj.stateId"
                                             [validations]="getValidationMessages().stateId"
                                             [mode]="autocompleteModestate"
                                             (selectionChange)="selectChangestate($event)">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                     </div>
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Country" formControlName="countryId"
+                                        <airmid-dropdown label="Country" formControlName="countryId"
                                             [formGroup]="supplierForm" [value]="registerObj.countryId"
                                             [validations]="getValidationMessages().countryId"
                                             [mode]="autocompleteModecountry"
                                             (selectionChange)="selectChangecountry($event)">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                     </div>
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Pan No" formControlName="panNo"
@@ -126,20 +126,20 @@
 
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Mode Of Payment" formControlName="modeofPayment"
+                                        <airmid-dropdown label="Mode Of Payment" formControlName="modeofPayment"
                                             [formGroup]="supplierForm" [value]="registerObj.modeofPayment"
                                             [validations]="getValidationMessages().modeofPayment"
                                             [mode]="autocompleteModeofpayment"
                                             (selectionChange)="selectChangemodeofpayment($event)">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-autocomplete label="Term Of Payment" formControlName="termofPayment"
+                                        <airmid-dropdown label="Term Of Payment" formControlName="termofPayment"
                                             [formGroup]="supplierForm" [value]="registerObj.termofPayment"
                                             [validations]="getValidationMessages().termofPayment"
                                             [mode]="autocompleteModetermofpayment"
                                             (selectionChange)="selectChangetermofpayment($event)">
-                                        </airmid-autocomplete>
+                                        </airmid-dropdown>
                                     </div>
                                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="GST No" formControlName="gstNo"
@@ -161,14 +161,14 @@
                                         <mat-card>
                                             <div fxLayout="row">
                                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-autocomplete label="Store"
+                                                    <airmid-dropdown label="Store"
                                                         formControlName="mAssignSupplierToStores"
                                                         [formGroup]="supplierForm" [IsMultiPle]="true"
                                                         [value]="registerObj.mAssignSupplierToStores"
                                                         [validations]="getValidationMessages().storeId" #ddlStore
                                                         ValueField="storeId" TextField="storeName"
                                                         ApiUrl="StoreMaster/get-store" [ReqFullObj]="true">
-                                                    </airmid-autocomplete>
+                                                    </airmid-dropdown>
                                                 </div>
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip

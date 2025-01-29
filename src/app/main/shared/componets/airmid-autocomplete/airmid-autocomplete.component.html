@@ -1,33 +1,12 @@
-<!-- <mat-form-field appearance="outline" fxFlex *ngIf="!IsMultiPle">
-    <mat-label>{{label}}</mat-label>
-    <mat-select [formControl]="control" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled"
-        [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll >
-        <mat-option>
-            <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
-                noEntriesFoundLabel="No results found"></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
-            {{ddl[TextField]}}
-        </mat-option>
-    </mat-select>
-    <div *ngIf="formGroup.controls[formControlName]?.invalid&& control?.touched && validations?.length>0">
-        <div *ngFor="let item of validations">
-            <mat-error *ngIf="formGroup.get(formControlName).hasError(item.name)">
-                {{item.Message}}
-            </mat-error>
-        </div>
-    </div>
-</mat-form-field> -->
 <mat-form-field appearance="outline" fxFlex>
     <mat-label>{{label}}</mat-label>
-    <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle">
-        <mat-option>
-            <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..." noEntriesFoundLabel="No results found"></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
-            {{ddl[TextField]}}
-        </mat-option>
-    </mat-select>
+    <input matInput [placeholder]="placeholderText" [formControl]="formGroup.controls[formControlName]" [disabled]="disabled" [(ngModel)]="value" 
+        [formControlName]="formControlName" onlyNumber [matAutocomplete]="auto" (input)="onSearchData($event.target.value)" (focus)="onSearchData($event.target.value)">
+    <mat-autocomplete requireSelection (optionSelected)="selectedOption($event.option.value)" #auto="matAutocomplete" [displayWith]="displayFn" aria-label="{{TextField}}">
+        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+            {{option[TextField]}}
+          </mat-option>
+    </mat-autocomplete>
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">
             {{ error }}

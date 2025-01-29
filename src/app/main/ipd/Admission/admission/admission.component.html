@@ -122,11 +122,11 @@
                         
 
 
-                        <airmid-autocomplete label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
+                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
                         [(ngModel)]="gridConfig.filters[3].fieldValue"
                         [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
-                    </airmid-autocomplete>
+                    </airmid-dropdown>
 
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
                     formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"

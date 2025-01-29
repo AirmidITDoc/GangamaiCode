@@ -132,24 +132,24 @@
                                     <div fxlayout="row">
                                     <div fxLayoutGap="4px">
                                       
-                                        <airmid-autocomplete label="DoctorID" formControlName="DoctorID"
+                                        <airmid-dropdown label="DoctorID" formControlName="DoctorID"
                                         [formGroup]="DischargeForm"
                                         [validations]="getValidationConDoc().DoctorID"
                                         [mode]="autocompletcondoc"
                                         (selectDdlObject)="selectChangecondoc($event)">
-                                    </airmid-autocomplete>
-                                        <airmid-autocomplete label="DischargeTypeId" formControlName="DischargeTypeId"
+                                    </airmid-dropdown>
+                                        <airmid-dropdown label="DischargeTypeId" formControlName="DischargeTypeId"
                                         [formGroup]="DischargeForm"
                                         [validations]="getValidationdisChargetypeMessages().DischargeTypeId"
                                         [mode]="autocompletedichargetype"
                                         (selectDdlObject)="selectChangedichargetype($event)">
-                                    </airmid-autocomplete>
-                                        <airmid-autocomplete label="Modeofdischarge" formControlName="Modeofdischarge"
+                                    </airmid-dropdown>
+                                        <airmid-dropdown label="Modeofdischarge" formControlName="Modeofdischarge"
                                         [formGroup]="DischargeForm"
                                         [validations]="getValidationModeMessages().Modeofdischarge"
                                         [mode]="autocompletemode"
                                         (selectDdlObject)="selectChangemode($event)">
-                                    </airmid-autocomplete>
+                                    </airmid-dropdown>
 
                                       
                                     </div>

@@ -12,12 +12,8 @@ import { take, takeUntil } from 'rxjs/operators';
     styleUrls: ["./airmid-autocomplete.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AirmidAutocompleteComponent implements OnInit {
-    //@Input() label: string;
-    //@Input() ddlCtrl: FormControl = new FormControl();
-    //@Input() selectedValue: string;
-    @Input() options: any[] = [];
-    @Input() mode: string;
+export class AirmidAutoCompleteComponent implements OnInit {
+    @Input() filteredOptions: any[] = [];
     @Output() selectionChange = new EventEmitter<any>();
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
@@ -25,15 +21,12 @@ export class AirmidAutocompleteComponent implements OnInit {
     @Input() formControlName: string;
     @Input() validations: [] = [];
     @Input() label: string = "";
-    @Input() IsMultiPle: boolean;
     @Input() TextField: string = "text";
     @Input() ValueField: string = "value";
     @Input() ApiUrl: string = "";
-    @Input() ReqFullObj: boolean = false;
-
+    @Input() placeholderText: string = "Enter string";
     private _disabled: boolean = false;
-    private _focused: boolean = false;
-    private _placeholder: string = '';
+    //private _placeholder: string = '';
     private _required: boolean = false;
 
     @Input()
@@ -46,10 +39,10 @@ export class AirmidAutocompleteComponent implements OnInit {
     }
     @Input()
     get placeholder(): string {
-        return this._placeholder ?? this.label;
+        return this.placeholderText ?? this.label;
     }
     set placeholder(value: string) {
-        this._placeholder = value;
+        this.placeholderText = value;
         this.stateChanges.next();
     }
     @Input()
@@ -106,110 +99,32 @@ export class AirmidAutocompleteComponent implements OnInit {
         }
     }
 
-    protected ddls: any[] = [];
-    //public ddlCtrl: FormControl = new FormControl();
-    public ddlFilterCtrl: FormControl = new FormControl();
-    public filteredDdls: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-    @ViewChild("singleSelect", { static: true }) singleSelect: MatSelect;
     protected _onDestroy = new Subject<void>();
     stateChanges: Subject<void> = new Subject();
     ngOnInit() {
-        this.bindGridAutoComplete();
-        // listen for search field value changes
-        this.ddlFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterDdls();
-            });
-
-
+        //this.onSearchData("");
     }
-    bindGridAutoComplete() {
-        if (this.options?.length > 0) {
-            this.ddls = this.options as [];
-            this.filteredDdls.next(this.ddls.slice());
-        } else {
-            if (this.ApiUrl == "")
-                this._httpClient
-                    .GetData('Dropdown/GetBindDropDown?mode=' + this.mode)
-                    .subscribe((data: any) => {
-                        this.ddls = data as [];
-                        this.filteredDdls.next(this.ddls.slice());
-                        if (this.value) {
-                            this.SetSelection(this.value);
-                        }
-                    });
+    onSearchData(e: string) {
+        if ((this.ApiUrl ?? "") != "") {
+            if (e.length > 0) {
+                this._httpClient.GetData(this.ApiUrl + e).subscribe((data: any) => {
+                    this.filteredOptions = data as [];
+                });
+            }
             else
-                this._httpClient
-                    .GetData(this.ApiUrl)
-                    .subscribe((data: any) => {
-                        this.ddls = data as [];
-                        this.filteredDdls.next(this.ddls.slice());
-                        if (this.value) {
-                            if (this.IsMultiPle) {
-                                if (this.value instanceof Array) {
-                                    this.value = this.value.map(x => x[this.ValueField] ?? x) as [];
-                                }
-                            }
-                            this.SetSelection(this.value);
-                        }
-                    });
+                this.filteredOptions = [];
         }
-
     }
-
+    displayFn(user: any): string {
+        return user[this["ariaLabel"]];
+    }
+    selectedOption(e: any) {
+        this.selectionChange.emit(e);
+        // from here you need to bind form.
+    }
     ngOnDestroy() {
         this._onDestroy.next();
         this._onDestroy.complete();
         this.stateChanges.complete();
     }
-    public comparer(o1: any, o2: any): boolean {
-        return o1 && o2 && (o1[this["ariaLabel"]].toString() === o2.toString() || (o1[this["ariaLabel"]]?.toString() ?? '') === (o2[this["ariaLabel"]]?.toString() ?? ''));
-    }
-    protected filterDdls() {
-        if (!this.ddls) {
-            return;
-        }
-        let search = this.ddlFilterCtrl.value;
-        if (!search) {
-            this.filteredDdls.next(this.ddls.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        this.filteredDdls.next(
-            this.ddls.filter(
-                (ddl) => ddl[this.TextField].toLowerCase().indexOf(search) > -1
-            )
-        );
-
-    }
-    public onDdlChange($event) {
-        if (this.ReqFullObj)
-            this.formGroup.controls[this.formControlName].setValue($event.value);
-        else
-            this.formGroup.controls[this.formControlName].setValue($event.value[this.ValueField]);
-        this.selectionChange.emit($event.value);
-    }
-    SetSelection(value) {
-        if (this.IsMultiPle) {
-            this.control.setValue(value);
-            if (this.ddls.length > 0)
-                this.formGroup.get(this.formControlName).setValue(this.ddls.filter(x => value.indexOf(x[this.ValueField]) >= 0));
-        }
-        else {
-            this.control.setValue(this.ddls.find(x => x[this.ValueField] == value.toString()));
-            this.formGroup.get(this.formControlName).setValue(value.toString());
-        }
-        this.stateChanges.next();
-        this.changeDetectorRefs.detectChanges();
-        // this.selectDdlObject.emit(value);
-    }
-    ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.value?.firstChange && changes.value?.currentValue) {
-            this.SetSelection(changes.value.currentValue);
-        }
-        this.changeDetectorRefs.detectChanges();
-    }
-
 }

@@ -137,24 +137,24 @@
                 </div>
                 <hr>
                 <div fxLayout="row" fxLayoutGap="8px">
-                    <!-- <airmid-autocomplete [mode]="autocompleteroom" (selectDdlObject)="selectChangeward($event)"></airmid-autocomplete> -->
-                    <airmid-autocomplete label="RoomId" formControlName="RoomId"
+                    <!-- <airmid-dropdown [mode]="autocompleteroom" (selectDdlObject)="selectChangeward($event)"></airmid-dropdown> -->
+                    <airmid-dropdown label="RoomId" formControlName="RoomId"
                     [formGroup]="Bedtransfer"  [value]="RoomId"
                     [validations]="getValidationroomMessages().RoomId"
                     [mode]="autocompleteroom" (selectDdlObject)="selectChangeward($event)">
-                </airmid-autocomplete>
-                    <!-- <airmid-autocomplete [mode]="autocompletebed" (selectDdlObject)="selectChangebed($event)"></airmid-autocomplete> -->
-                    <airmid-autocomplete label="BedId" formControlName="BedId"
+                </airmid-dropdown>
+                    <!-- <airmid-dropdown [mode]="autocompletebed" (selectDdlObject)="selectChangebed($event)"></airmid-dropdown> -->
+                    <airmid-dropdown label="BedId" formControlName="BedId"
                     [formGroup]="Bedtransfer"  [value]="BedId"
                     [validations]="getValidationbedMessages().BedId"
                     [mode]="autocompletebed" (selectDdlObject)="selectChangebed($event)">
-                </airmid-autocomplete>
-                    <!-- <airmid-autocomplete [mode]="autocompleteclass" (selectDdlObject)="selectChangeclass($event)"></airmid-autocomplete> -->
-                    <airmid-autocomplete label="ClassId" formControlName="ClassId"
+                </airmid-dropdown>
+                    <!-- <airmid-dropdown [mode]="autocompleteclass" (selectDdlObject)="selectChangeclass($event)"></airmid-dropdown> -->
+                    <airmid-dropdown label="ClassId" formControlName="ClassId"
                     [formGroup]="Bedtransfer"  [value]="ClassId"
                     [validations]="getValidationclassMessages().ClassId"
                     [mode]="autocompleteclass" (selectDdlObject)="selectChangeclass($event)">
-                </airmid-autocomplete>
+                </airmid-dropdown>
        
                 </div>
                 <div fxLayout="row" fxLayoutGap="8px">

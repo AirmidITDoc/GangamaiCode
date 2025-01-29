@@ -12,7 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTreeModule } from '@angular/material/tree';
-import { SharedModule } from '../shared/shared.module'; 
+import { SharedModule } from '../shared/shared.module';
+import { ReportConfigurationComponent } from './report-configuration/report-configuration.component'; 
 
 
 const appRoutes: Routes = [
@@ -35,7 +36,7 @@ const appRoutes: Routes = [
   },
   {
     path: "cancellation",
-    loadChildren: () => import("./cancellation/cancellation.module").then((m) => m.CancellationModule),
+    loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
    {
     path:"dischargecancel",
@@ -69,7 +70,9 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ ],
+  declarations: [ 
+    ReportConfigurationComponent
+  ],
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,

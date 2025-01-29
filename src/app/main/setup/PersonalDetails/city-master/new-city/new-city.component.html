@@ -29,14 +29,14 @@
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete 
+                        <airmid-dropdown 
                             label="State Name" 
                             formControlName="stateId" 
                             [formGroup]="cityForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages().stateId"
                             [mode]="autocompleteModestatus">
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
                 </div>
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

@@ -82,13 +82,13 @@
                                     [(ngModel)]="reportId">
 
                                
-                             <airmid-autocomplete label="ReportName" formControlName="ReportName" [value]="ReportName"
+                             <airmid-dropdown label="ReportName" formControlName="ReportName" [value]="ReportName"
                                 [formGroup]="ReportFormGroup" [validations]="getValidationMessages().ReportName"
                                 [mode]="autocompleteMode">
-                            </airmid-autocomplete> -->
+                            </airmid-dropdown> -->
 
-                                <airmid-autocomplete [options]="autocompleteOptions" (selectionChange)="selectChange($event)" formControlName="ReportName"
-                                [formGroup]="ReportFormGroup" [value]="ReportName" [mode]="autocompleteOptions"></airmid-autocomplete>
+                                <airmid-dropdown [options]="autocompleteOptions" (selectionChange)="selectChange($event)" formControlName="ReportName"
+                                [formGroup]="ReportFormGroup" [value]="ReportName" [mode]="autocompleteOptions"></airmid-dropdown>
                           
                             </form>
                         </div>

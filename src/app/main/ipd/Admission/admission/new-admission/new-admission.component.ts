@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import { MatSelect } from '@angular/material/select';
 import { ToastrService } from 'ngx-toastr';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { fuseAnimations } from '@fuse/animations';
 
 @Component({
@@ -120,9 +120,9 @@ AdmissionId:any=0;
 
   autocompleteModehospital: string = "Hospital";
 
-  @ViewChild('ddlGender') ddlGender: AirmidAutocompleteComponent;
-      @ViewChild('ddlState') ddlState: AirmidAutocompleteComponent;
-      @ViewChild('ddlCountry') ddlCountry: AirmidAutocompleteComponent;
+  @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+      @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
+      @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   
 
   ngOnInit(): void {

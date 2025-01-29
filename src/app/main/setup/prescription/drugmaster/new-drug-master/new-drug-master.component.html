@@ -32,25 +32,25 @@
                             </airmid-textbox>
                         </div>
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete 
+                            <airmid-dropdown 
                                 label="Generic Name" 
                                 formControlName="genericId"
                                 [value]="data?.genericId"
                                 [formGroup]="drugForm"
                                 [validations]="getValidationMessages().genericId"
                                 [mode]="autocompleteModeGenericName" (selectDdlObject)="selectChangeGeneric($event)">
-                            </airmid-autocomplete>
+                            </airmid-dropdown>
                         </div>
                         
                         <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete 
+                            <airmid-dropdown 
                                 label="Class Name" 
                                 formControlName="classId"
                                 [value]="data?.classId"
                                 [formGroup]="drugForm"
                                 [validations]="getValidationMessages().classId"
                                 [mode]="autocompleteModeClass" (selectDdlObject)="selectChangeClass($event)">
-                            </airmid-autocomplete>
+                            </airmid-dropdown>
                         </div>
                     </div>
                

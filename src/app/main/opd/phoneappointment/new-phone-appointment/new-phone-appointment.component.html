@@ -56,12 +56,12 @@
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete label="Department Name" formControlName="departmentId" [value]="data?.departmentId" [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
-                            </airmid-autocomplete>
+                            <airmid-dropdown label="Department Name" formControlName="departmentId" [value]="data?.departmentId" [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                            </airmid-dropdown>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-autocomplete label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId" [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
-                            </airmid-autocomplete>
+                            <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId" [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
+                            </airmid-dropdown>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
                             <mat-form-field appearance="outline" fxFlex>

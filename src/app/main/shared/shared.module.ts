@@ -32,11 +32,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { FuseSidebarModule } from "../../../@fuse/components/sidebar/sidebar.module";
 import { AirmidTextboxComponent } from './componets/airmid-textbox/airmid-textbox.component';
-import { AirmidAutocompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { AirmidDropdownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTable1Component } from './componets/airmid-table1/airmid-table1.component';
 import { AirmidTextbox1Component } from './componets/airmid-textbox1/airmid-textbox1.component';
 import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmid-dateofbirth.component';
@@ -45,11 +44,12 @@ import { AirmidSliderComponent } from './componets/airmid-slider/airmid-slider.c
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AirmidDatepickerComponent } from './componets/airmid-datepicker/airmid-datepicker.component';
 import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.component';
+import { AirmidAutoCompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
 
 
 @NgModule({
-    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidAutocompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidAutocompleteComponent, AirmidDropdownComponent, AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
+    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent,AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -91,8 +91,8 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
         DyanmicTableHeightDirective,
         AirmidTableComponent,
         AirmidTextboxComponent,
-        AirmidAutocompleteComponent,
-        AirmidDropdownComponent,
+        AirmidDropDownComponent,
+        AirmidAutoCompleteComponent,
         AirmidTable1Component,
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,

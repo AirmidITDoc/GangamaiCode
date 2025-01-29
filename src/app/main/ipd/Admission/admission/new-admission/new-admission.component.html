@@ -74,9 +74,9 @@
               </mat-autocomplete>
               {{searchFormGroup.controls["RegId"].value.value}}
           </mat-form-field>
-            <airmid-autocomplete label="HospitalId" formControlName="HospitalId" [formGroup]="searchFormGroup"
+            <airmid-dropdown label="HospitalId" formControlName="HospitalId" [formGroup]="searchFormGroup"
               [validations]="getValidationMessages().HospitalId" [mode]="autocompleteModehospital">
-            </airmid-autocomplete>
+            </airmid-dropdown>
 
             <div class="common-date">
               <app-common-date [screenFrom]="screenFromString" style="float:right"
@@ -95,10 +95,10 @@
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Prefix" formControlName="PrefixId" [formGroup]="personalFormGroup"
+              <airmid-dropdown label="Prefix" formControlName="PrefixId" [formGroup]="personalFormGroup"
                 [value]="registerObj?.PrefixId" [validations]="getValidationMessages().prefixId" ValueField="prefixId"
                 TextField="prefixName" (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -121,10 +121,10 @@
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="Gender" formControlName="GenderID" [formGroup]="personalFormGroup"
+              <airmid-dropdown label="Gender" formControlName="GenderID" [formGroup]="personalFormGroup"
                 [value]="registerObj?.GenderId" [validations]="getValidationMessages().genderId" #ddlGender
                 [disabled]="true" [mode]="autocompleteModegender">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -148,45 +148,45 @@
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="Area" formControlName="AreaId" [value]="registerObj?.AreaId"
+              <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.AreaId"
                 [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId"
                 [mode]="autocompleteModearea">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="City" formControlName="CityId" [formGroup]="personalFormGroup"
+              <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup"
                 [value]="registerObj?.CityId" [validations]="getValidationMessages().cityId" ValueField="cityId"
                 TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="State" formControlName="StateId" [value]="registerObj?.StateId"
+              <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.StateId"
                 [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId"
                 #ddlState [mode]="autocompleteModestate">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="Country" formControlName="CountryId" [value]="registerObj?.CountryId"
+              <airmid-dropdown label="Country" formControlName="CountryId" [value]="registerObj?.CountryId"
                 [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().countryId"
                 #ddlCountry [mode]="autocompleteModecountry">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="MaritalStatus" formControlName="MaritalStatusId"
+              <airmid-dropdown label="MaritalStatus" formControlName="MaritalStatusId"
                 [value]="registerObj?.MaritalStatusId" [formGroup]="personalFormGroup"
                 [validations]="getValidationMessages().maritalStatusId" [mode]="autocompleteModemstatus">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-autocomplete label="Religion Name" formControlName="ReligionId" [value]="registerObj?.ReligionId"
+              <airmid-dropdown label="Religion Name" formControlName="ReligionId" [value]="registerObj?.ReligionId"
                 [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId"
                 [mode]="autocompleteModereligion">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -222,72 +222,72 @@
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="PatientType" formControlName="PatientTypeId"
+              <airmid-dropdown label="PatientType" formControlName="PatientTypeId"
                 [value]="registerObj1?.patientTypeId" [formGroup]="admissionFormGroup"
                 [validations]="getValidationMessages().PatientTypeId" [mode]="autocompleteModepatienttype">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Tariff Name" formControlName="TariffId" [value]="registerObj1?.tariffId"
+              <airmid-dropdown label="Tariff Name" formControlName="TariffId" [value]="registerObj1?.tariffId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().TariffId"
                 [mode]="autocompleteModetariff">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Department Name" formControlName="DepartmentId"
+              <airmid-dropdown label="Department Name" formControlName="DepartmentId"
                 [value]="registerObj1?.departmentId" [formGroup]="admissionFormGroup"
                 [validations]="getValidationMessages().DepartmentId" [mode]="autocompleteModeDepartment">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Doctor Name " formControlName="DocNameId" [value]="registerObj1?.docNameId"
+              <airmid-dropdown label="Doctor Name " formControlName="DocNameId" [value]="registerObj1?.docNameId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().docNameId"
                 [mode]="autocompleteModeDoctor">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
 
-            <airmid-autocomplete label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
+            <airmid-dropdown label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
               [value]="registerObj1?.admittedDoctor1" [formGroup]="admissionFormGroup"
               [validations]="getValidationMessages().AdmittedDoctor1" [mode]="autocompleteModeDoctor">
-            </airmid-autocomplete>
+            </airmid-dropdown>
 
-            <airmid-autocomplete label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
+            <airmid-dropdown label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
               [value]="registerObj1?.admittedDoctor2" [formGroup]="admissionFormGroup"
               [validations]="getValidationMessages().AdmittedDoctor2" [mode]="autocompleteModeDoctor">
-            </airmid-autocomplete>
+            </airmid-dropdown>
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Ref.Doctor Name" formControlName="RefDocNameId"
+              <airmid-dropdown label="Ref.Doctor Name" formControlName="RefDocNameId"
                 [value]="registerObj1?.refDocNameId" [formGroup]="admissionFormGroup"
                 [validations]="getValidationMessages().RefDocNameId" [mode]="autocompleteModeRefDoctor">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <ng-container *ngIf="isCompanySelected">
 
               <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                <airmid-autocomplete label="Company Name" formControlName="CompanyId" [value]="registerObj1?.companyId"
+                <airmid-dropdown label="Company Name" formControlName="CompanyId" [value]="registerObj1?.companyId"
                   [formGroup]="admissionFormGroup" [validations]="getValidationMessages().CompanyId"
                   [mode]="autocompleteModeCompany">
-                </airmid-autocomplete>
+                </airmid-dropdown>
 
               </div>
 
               <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                <airmid-autocomplete label="SubTpaCom" formControlName="SubTpaComId" [value]="registerObj1?.subTpaComId"
+                <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId" [value]="registerObj1?.subTpaComId"
                   [formGroup]="admissionFormGroup" [validations]="getValidationMessages().SubTpaComId"
                   [mode]="autocompleteModeSubCompany">
-                </airmid-autocomplete>
+                </airmid-dropdown>
 
               </div>
             </ng-container>
@@ -306,26 +306,26 @@
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Ward Name" formControlName="wardId" [value]="registerObj1?.wardId"
+              <airmid-dropdown label="Ward Name" formControlName="wardId" [value]="registerObj1?.wardId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().wardId"
                 [mode]="autocompleteModeWardName">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Bed Name" formControlName="bedId" [value]="registerObj1?.bedId"
+              <airmid-dropdown label="Bed Name" formControlName="bedId" [value]="registerObj1?.bedId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().bedId"
                 [mode]="autocompleteModeBedName">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
 
             <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Class Name" formControlName="ClassId" [value]="registerObj1?.classId"
+              <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="registerObj1?.classId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().ClassId"
                 [mode]="autocompleteModeClass">
-              </airmid-autocomplete>
+              </airmid-dropdown>
             </div>
           </div>
         </mat-card>
@@ -356,10 +356,10 @@
 
             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-autocomplete label="Relationship" formControlName="RelationshipId"
+              <airmid-dropdown label="Relationship" formControlName="RelationshipId"
                 [value]="registerObj1?.relationshipId" [formGroup]="admissionFormGroup"
                 [validations]="getValidationMessages().RelationshipId" [mode]="autocompleteModerelationship">
-              </airmid-autocomplete>
+              </airmid-dropdown>
 
             </div>
 

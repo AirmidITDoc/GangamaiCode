@@ -5,7 +5,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { SupplierMaster, SupplierMasterComponent } from '../supplier-master.component';
 import { SupplierMasterService } from '../supplier-master.service';
-import { AirmidAutocompleteComponent } from 'app/main/shared/componets/airmid-autocomplete/airmid-autocomplete.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -20,7 +20,7 @@ export class FixSupplierComponent implements OnInit
    supplierForm: FormGroup;
      
        submitted = false;
-       @ViewChild('ddlStore') ddlStore: AirmidAutocompleteComponent;
+       @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
        registerObj = new SupplierMaster({});
      
      

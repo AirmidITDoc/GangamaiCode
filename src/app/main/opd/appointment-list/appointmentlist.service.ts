@@ -113,7 +113,9 @@ export class AppointmentlistService {
 
 
 
-
+    public getPatientcasepaperView(Param, showLoader = true) {
+        return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+    }
 
     // new API?
 

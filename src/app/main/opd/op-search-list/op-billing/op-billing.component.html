@@ -60,11 +60,11 @@
  -->
 
 
-                                    <airmid-autocomplete label="CashCounterID" formControlName="CashCounterID"
+                                    <airmid-dropdown label="CashCounterID" formControlName="CashCounterID"
                                         [formGroup]="searchFormGroup" [(value)]="registerObj.CashCounterID"
                                         [validations]="getValidationMessages().CashCounterID"
                                         [mode]="autocompleteModeCashcounter">
-                                    </airmid-autocomplete>
+                                    </airmid-dropdown>
 
                                     <span style="margin-right: 40px;">
                                         <app-common-date [screenFrom]="screenFromString"
@@ -293,12 +293,12 @@
                                                 </mat-autocomplete>
                                             </mat-form-field> -->
                                             <div *ngIf="isDoctor">
-                                                <airmid-autocomplete label="Doctor Name" formControlName="DoctorID"
+                                                <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                     [formGroup]="registeredForm"
                                                     [validations]="getValidationMessages().DoctorId"
                                                     [mode]="autocompleteModedeptdoc"
                                                     (selectionChange)="selectChangedeptdoc($event)">
-                                                </airmid-autocomplete>
+                                                </airmid-dropdown>
                                             </div>
 
                                             <!-- <mat-form-field appearance="outline" fxFlex="5%">
@@ -831,12 +831,12 @@
                                             [value]="vFinalConcessionAmt" [formGroup]="BillingForm">
                                         </airmid-textbox>
                                         <div *ngIf="Consessionres">
-                                            <airmid-autocomplete label="Concession Reason"
+                                            <airmid-dropdown label="Concession Reason"
                                                 formControlName="ConcessionId" [formGroup]="BillingForm"
                                                 [validations]="getValidationMessages().ConcessionId"
                                                 [mode]="autocompleteModeConcession"
                                                 (selectionChange)="selectChangeConcession($event)">
-                                            </airmid-autocomplete>
+                                            </airmid-dropdown>
                                         </div>
                                         <!-- <mat-form-field appearance="outline" class="Consession-field" fxFlex>
                                             <mat-label>Net Amount</mat-label>

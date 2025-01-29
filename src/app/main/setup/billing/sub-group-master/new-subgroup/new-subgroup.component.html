@@ -32,13 +32,13 @@
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-autocomplete 
+                        <airmid-dropdown 
                             label="Group Name" 
                             formControlName="groupId"
                             [formGroup]="subgroupForm"
                             [validations]="getValidationMessages().groupId"
                             [mode]="autocompleteModegroupName">
-                        </airmid-autocomplete>
+                        </airmid-dropdown>
                     </div>
                     
                 </div>

@@ -30,14 +30,14 @@
                     </airmid-textbox>       
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete 
+                    <airmid-dropdown 
                         label="Company Type Name" 
                         formControlName="compTypeId" 
                         [value]="data?.compTypeId" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().compTypeId" 
                         [mode]="autocompleteModetypeName">
-                    </airmid-autocomplete>       
+                    </airmid-dropdown>       
                 </div>
             </div>
 
@@ -63,14 +63,14 @@
                     </airmid-textbox> 
                 </div>
                 <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete 
+                    <airmid-dropdown 
                         label="City" 
                         formControlName="city" 
                         [value]="data?.city" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().city" 
                         [mode]="autocompleteModecity">
-                    </airmid-autocomplete> 
+                    </airmid-dropdown> 
                 </div>
                 
             </div>
@@ -97,14 +97,14 @@
                     </airmid-textbox> 
                 </div>
                 <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-autocomplete 
+                    <airmid-dropdown 
                         label="Tariff Id" 
                         formControlName="traiffId" 
                         [value]="data?.traiffId" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().traiffId" 
                         [mode]="autocompleteModetariff">
-                    </airmid-autocomplete> 
+                    </airmid-dropdown> 
                 </div>
             </div>
 

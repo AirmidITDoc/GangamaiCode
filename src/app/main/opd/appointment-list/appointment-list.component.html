@@ -82,11 +82,11 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                    <airmid-autocomplete label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
                         [(ngModel)]="gridConfig.filters[3].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
-                    </airmid-autocomplete>
+                    </airmid-dropdown>
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
                         [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>

@@ -18,19 +18,19 @@
 
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-autocomplete label="Group Name" formControlName="GroupId"
+            <airmid-dropdown label="Group Name" formControlName="GroupId"
                 [formGroup]="serviceForm"
                 [validations]="getValidationGroupMessages().GroupId"
                 [mode]="autocompleteModesubGroupName">
-            </airmid-autocomplete>
+            </airmid-dropdown>
             </div>
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-autocomplete label="SubGroup Name" formControlName="SubGroupId"
+            <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId"
                 [formGroup]="serviceForm"
                 [validations]="getValidationSubGroupNameMessages().SubGroupId"
                 [mode]="autocompleteModegroupName">
-            </airmid-autocomplete>
+            </airmid-dropdown>
             </div>
 
         </div>
@@ -89,11 +89,11 @@
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             <!-- [value]="TariffId" -->
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-autocomplete label="TariffId" formControlName="TariffId"
+                <airmid-dropdown label="TariffId" formControlName="TariffId"
                     [formGroup]="serviceForm" 
                     [validations]="getValidationTariffMessages().TariffId"
                     [mode]="autocompleteModetariff">
-                </airmid-autocomplete>            
+                </airmid-dropdown>            
             </div> 
 
             <mat-form-field appearance="outline" fxFlex>
