@@ -46,10 +46,10 @@ export class ModeOfPaymentMasterService {
 
     
 
-    public modeofpayMasterSave(Param: any, showLoader = true) {
+    public modeofpayMasterSave(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("ModeOfPayment/" + Param.id, Param, showLoader);
-        } else return this._httpClient.PostData("ModeOfPayment", Param, showLoader);
+            return this._httpClient.PutData("ModeOfPayment/" + Param.id, Param);
+        } else return this._httpClient.PostData("ModeOfPayment", Param);
     }
 
     public deactivateTheStatus(m_data) {

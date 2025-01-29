@@ -40,10 +40,10 @@ export class RelationshipMasterService {
         this.createRelationshipForm();
     }
 
-    public relationshipMasterSave(Param: any, showLoader = true) {
+    public relationshipMasterSave(Param: any) {
         if (Param.relationshipId) {
-            return this._httpClient.PutData("RelationshipMaster/" + Param.relationshipId, Param, showLoader);
-        } else return this._httpClient.PostData("RelationshipMaster", Param, showLoader);
+            return this._httpClient.PutData("RelationshipMaster/" + Param.relationshipId, Param);
+        } else return this._httpClient.PostData("RelationshipMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -80,10 +80,10 @@ export class ServiceMasterService {
         return this._httpClient.DeleteData("bank?Id=" + m_data.toString());
     }
 
-    public serviceMasterInsert(Param: any, showLoader = true) {
+    public serviceMasterInsert(Param: any) {
         if (Param.serviceId) {
-            return this._httpClient.PutData("BillingService/InsertEDMX" + Param.serviceId, Param, showLoader);
-        } else return this._httpClient.PostData("BillingService/InsertEDMX", Param, showLoader);
+            return this._httpClient.PutData("BillingService/InsertEDMX" + Param.serviceId, Param);
+        } else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
     }
 
     public getClassMasterList(param) {

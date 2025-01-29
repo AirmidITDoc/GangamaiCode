@@ -41,10 +41,10 @@ export class CountryMasterService {
 
    
 
-    public countryMasterSave(Param: any, showLoader = true) {
+    public countryMasterSave(Param: any) {
         if (Param.countryId) {
-            return this._httpClient.PutData("CountryMaster/" + Param.countryId, Param, showLoader);
-        } else return this._httpClient.PostData("CountryMaster", Param, showLoader);
+            return this._httpClient.PutData("CountryMaster/" + Param.countryId, Param);
+        } else return this._httpClient.PostData("CountryMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

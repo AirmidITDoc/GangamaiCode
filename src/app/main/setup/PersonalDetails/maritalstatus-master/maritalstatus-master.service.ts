@@ -41,10 +41,10 @@ export class MaritalstatusMasterService {
 
   
 
-    public MaritalStatusMasterSave(Param: any, showLoader = true) {
+    public MaritalStatusMasterSave(Param: any) {
         if (Param.maritalStatusId) {
-            return this._httpClient.PutData("MaritalStatus/" + Param.maritalStatusId, Param, showLoader);
-        } else return this._httpClient.PostData("MaritalStatus", Param, showLoader);
+            return this._httpClient.PutData("MaritalStatus/" + Param.maritalStatusId, Param);
+        } else return this._httpClient.PostData("MaritalStatus", Param);
     }
 
     public deactivateTheStatus(m_data) {

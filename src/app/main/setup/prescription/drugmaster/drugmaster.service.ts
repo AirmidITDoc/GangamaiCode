@@ -45,10 +45,10 @@ export class DrugmasterService {
         this.createDrugForm();
     } 
 
-    public drugMasterSave(Param: any, showLoader = true) {
+    public drugMasterSave(Param: any) {
         if (Param.drugId) {
-            return this._httpClient.PutData("DrugMaster/" + Param.drugId, Param, showLoader);
-        } else return this._httpClient.PostData("DrugMaster", Param, showLoader);
+            return this._httpClient.PutData("DrugMaster/" + Param.drugId, Param);
+        } else return this._httpClient.PostData("DrugMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

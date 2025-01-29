@@ -41,14 +41,14 @@ export class PrefixMasterService {
         this.createPrefixForm();
     }
 
-    public getPrefixMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("PrefixMaster/List", param, showLoader);
+    public getPrefixMasterList(param: gridRequest) {
+        return this._httpClient.PostData("PrefixMaster/List", param);
     }
 
-    public prefixMasterSave(Param: any, showLoader = true) {
+    public prefixMasterSave(Param: any) {
         if (Param.prefixId) {
-            return this._httpClient.PutData("PrefixMaster/" + Param.prefixId, Param, showLoader);
-        } else return this._httpClient.PostData("PrefixMaster", Param, showLoader);
+            return this._httpClient.PutData("PrefixMaster/" + Param.prefixId, Param);
+        } else return this._httpClient.PostData("PrefixMaster", Param);
     }
 
 

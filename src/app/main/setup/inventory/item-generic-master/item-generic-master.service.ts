@@ -42,10 +42,10 @@ export class ItemGenericMasterService {
         this.createItemgenericForm();
     }
  
-    public genericMasterSave(Param: any, showLoader = true) {
+    public genericMasterSave(Param: any) {
         if (Param.genericId) {
-            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param, showLoader);
-        } else return this._httpClient.PostData("GenericMaster", Param, showLoader);
+            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param);
+        } else return this._httpClient.PostData("GenericMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -41,11 +41,11 @@ export class InstructionmasterService {
         this.createInstructionForm();
     }
 
-    public instructionMasterInsert(Param: any, showLoader = true) {
+    public instructionMasterInsert(Param: any) {
         if (Param.instructionId) {
-            return this._httpClient.PutData("InstructionMastere/" + Param.instructionId, Param, showLoader);
+            return this._httpClient.PutData("InstructionMastere/" + Param.instructionId, Param);
         } else
-        return this._httpClient.PostData("InstructionMastere", Param, showLoader);
+        return this._httpClient.PostData("InstructionMastere", Param);
     }
 
     public deactivateTheStatus(m_data) {

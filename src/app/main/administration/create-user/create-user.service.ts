@@ -58,10 +58,10 @@ export class CreateUserService {
         this.createuserForm();
     }
 
-    public insertuser(Param: any, showLoader = true) {
+    public insertuser(Param: any) {
         if (Param.userId) {
-            return this._httpClient.PutData("MReportConfig/" + Param.userId, Param, showLoader);
-        } else return this._httpClient.PostData("MReportConfig", Param, showLoader);
+            return this._httpClient.PutData("MReportConfig/" + Param.userId, Param);
+        } else return this._httpClient.PostData("MReportConfig", Param);
     }
 
     public deactivateTheStatus(m_data) {

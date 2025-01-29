@@ -42,14 +42,14 @@ export class DepartmentMasterService {
         this.createDepartmentForm();
     }
 
-    public getdepartmentMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("DepartmentMaster/List", param, showLoader);
+    public getdepartmentMasterList(param: gridRequest) {
+        return this._httpClient.PostData("DepartmentMaster/List", param);
     }
     
-    public departmentMasterSave(Param: any, showLoader = true) {
+    public departmentMasterSave(Param: any) {
         if (Param.departmentId) {
-            return this._httpClient.PutData("DepartmentMaster/" + Param.departmentId, Param, showLoader);
-        } else return this._httpClient.PostData("DepartmentMaster", Param, showLoader);
+            return this._httpClient.PutData("DepartmentMaster/" + Param.departmentId, Param);
+        } else return this._httpClient.PostData("DepartmentMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

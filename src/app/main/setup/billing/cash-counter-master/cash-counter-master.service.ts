@@ -53,10 +53,10 @@ export class CashCounterMasterService {
         this.createcashcounterForm();
     }
 
-    public cashcounterMasterSave(Param: any, showLoader = true) {
+    public cashcounterMasterSave(Param: any) {
         if (Param.cashCounterId) {
-            return this._httpClient.PutData("CashCounter/" + Param.cashCounterId, Param, showLoader);
-        } else return this._httpClient.PostData("CashCounter", Param, showLoader);
+            return this._httpClient.PutData("CashCounter/" + Param.cashCounterId, Param);
+        } else return this._httpClient.PostData("CashCounter", Param);
     }
 
     public deactivateTheStatus(m_data) {

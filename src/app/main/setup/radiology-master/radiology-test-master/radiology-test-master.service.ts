@@ -72,14 +72,14 @@ export class RadiologyTestMasterService {
   }
   
 
-  public gettestMasterList(param: gridRequest, showLoader = true) {
-    return this._httpClient.PostData("RadiologyTest/List", param, showLoader);
+  public gettestMasterList(param: gridRequest) {
+    return this._httpClient.PostData("RadiologyTest/List", param);
 }
 
-public testMasterSave(Param: any, showLoader = true) {
+public testMasterSave(Param: any) {
   if (Param.TestId) {
-      return this._httpClient.PutData("RadiologyTest/InsertEDMX" + Param.TestId, Param, showLoader);
-  } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param, showLoader);
+      return this._httpClient.PutData("RadiologyTest/InsertEDMX" + Param.TestId, Param);
+  } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param);
 }
 
 // public deactivateTheStatus(m_data) {

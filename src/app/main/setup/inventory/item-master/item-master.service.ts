@@ -30,22 +30,22 @@ export class ItemMasterService {
             itemId: 0,
             itemShortName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             itemName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             itemTypeId: ["",
                 [
-                Validators.required,
-                ] 
+                    Validators.required,
+                ]
             ],
             itemCategaryId: ["",
                 [
@@ -74,7 +74,7 @@ export class ItemMasterService {
             ],
             conversionFactor: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
@@ -109,7 +109,7 @@ export class ItemMasterService {
             ],
             hsNcode: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
@@ -183,18 +183,18 @@ export class ItemMasterService {
     }
 
     //insert update of item master
-    public insertItemMaster(Param: any, showLoader = true) {
+    public insertItemMaster(Param: any) {
         if (Param.itemId) {
 
-            return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemId, Param, showLoader);
-        } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param, showLoader);
+            return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemId, Param);
+        } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param);
     }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("itemMaster?Id=" + m_data.toString());
     }
 
-    public getstoreById(Id, showLoader = true) {
-        return this._httpClient.GetData("ItemMaster/" + Id, showLoader);
+    public getstoreById(Id) {
+        return this._httpClient.GetData("ItemMaster/" + Id);
     }
 }

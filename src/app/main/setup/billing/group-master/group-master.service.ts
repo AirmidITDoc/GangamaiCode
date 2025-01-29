@@ -41,10 +41,10 @@ export class GroupMasterService {
         this.createGroupForm();
     }
 
-    public GroupMasterSave(Param: any, showLoader = true) {
+    public GroupMasterSave(Param: any) {
         if (Param.groupId) {
-            return this._httpClient.PutData("GroupMaster/" + Param.groupId, Param, showLoader);
-        } else return this._httpClient.PostData("GroupMaster", Param, showLoader);
+            return this._httpClient.PutData("GroupMaster/" + Param.groupId, Param);
+        } else return this._httpClient.PostData("GroupMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

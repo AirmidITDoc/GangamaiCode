@@ -42,10 +42,10 @@ export class CityMasterService {
 
    
 
-    public cityMasterSave(Param: any, showLoader = true) {
+    public cityMasterSave(Param: any) {
         if (Param.cityId) {
-            return this._httpClient.PutData("CityMaster/" + Param.cityId, Param, showLoader);
-        } else return this._httpClient.PostData("CityMaster", Param, showLoader);
+            return this._httpClient.PutData("CityMaster/" + Param.cityId, Param);
+        } else return this._httpClient.PostData("CityMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -43,10 +43,10 @@ export class PatienttypeMasterService {
     
     
 
-    public patienttypeMasterSave(Param: any, showLoader = true) {
+    public patienttypeMasterSave(Param: any) {
         if (Param.patientTypeId) {
-            return this._httpClient.PutData("PatientType/" + Param.patientTypeId, Param, showLoader);
-        } else return this._httpClient.PostData("PatientType", Param, showLoader);
+            return this._httpClient.PutData("PatientType/" + Param.patientTypeId, Param);
+        } else return this._httpClient.PostData("PatientType", Param);
     }
 
     public deactivateTheStatus(m_data) {

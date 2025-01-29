@@ -43,10 +43,10 @@ export class UnitmasterService {
         this.createUnitmasterForm();
     }
 
-    public unitMasterSave(Param: any, showLoader = true) {
+    public unitMasterSave(Param: any) {
         if (Param.unitId) {
-            return this._httpClient.PutData("PathUnitMaster/" + Param.unitId, Param, showLoader);
-        } else return this._httpClient.PostData("PathUnitMaster", Param, showLoader);
+            return this._httpClient.PutData("PathUnitMaster/" + Param.unitId, Param);
+        } else return this._httpClient.PostData("PathUnitMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

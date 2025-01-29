@@ -43,10 +43,10 @@ export class AreaMasterService {
         this.createAreaForm();
     }
 
-    public AreaMasterSave(Param: any, showLoader = true) {
+    public AreaMasterSave(Param: any) {
         if (Param.areaId) {
-            return this._httpClient.PutData("AreaMaster/" + Param.areaId, Param, showLoader);
-        } else return this._httpClient.PostData("AreaMaster", Param, showLoader);
+            return this._httpClient.PutData("AreaMaster/" + Param.areaId, Param);
+        } else return this._httpClient.PostData("AreaMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

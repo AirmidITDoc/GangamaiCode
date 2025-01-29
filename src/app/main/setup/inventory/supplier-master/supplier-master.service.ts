@@ -6,7 +6,7 @@ import { ApiCaller } from "app/core/services/apiCaller";
 export class SupplierMasterService {
     supplierForm: FormGroup;
     myformSearch: FormGroup;
-    
+
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
@@ -18,26 +18,26 @@ export class SupplierMasterService {
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
             supplierId: [0],
-            supplierName:["", 
+            supplierName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            ContactPerson:["Hospital-Admin", [ 
+            ContactPerson: ["Hospital-Admin", [
                 // Validators.required,
                 // Validators.pattern("^[a-zA-Z._ -]+$"),
                 // Validators.maxLength(100),
             ]],
-            address: ["", 
+            address: ["",
                 Validators.required,
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
             ],
-            cityId: [0, 
+            cityId: [0,
                 Validators.required
             ],
             // CityName: [""],
-            stateId: [0, 
+            stateId: [0,
                 Validators.required
             ],
             // StateName: [""],
@@ -50,14 +50,14 @@ export class SupplierMasterService {
                     Validators.required
                 ]
             ],
-            mobile: ["", 
+            mobile: ["",
                 [
                     Validators.required,
                     Validators.maxLength(10),
                     Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
-            phone:["", 
+            phone: ["",
                 [
                     Validators.required,
                     Validators.maxLength(10),
@@ -77,22 +77,22 @@ export class SupplierMasterService {
                     Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
                 ]
             ],
-            modeofPayment: ["", 
+            modeofPayment: ["",
                 Validators.required
             ],
-            termofPayment: ["", 
+            termofPayment: ["",
                 Validators.required
             ],
             CurrencyId: [1],// Validators.pattern("[0-9]+")
             Octroi: [0],//Validators.pattern("[0-9]+")
-            Freight: [0, 
+            Freight: [0,
                 [
                     // Validators.required,
                     // Validators.pattern("^[0-9]*$"),
                     // Validators.maxLength(10),
                 ]
             ],
-            gstNo: ["", 
+            gstNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(15)
@@ -121,13 +121,13 @@ export class SupplierMasterService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            StoreId:0,
+            StoreId: 0,
             SupplierNameSearch: [""],
             // IsDeletedSearch: ["2"],
         });
     }
 
-    
+
     // public deactivateTheStatus(m_data) {
     //     return this._httpClient.PostData(
     //         "Generic/ExecByQueryStatement?query=" + m_data,
@@ -138,21 +138,21 @@ export class SupplierMasterService {
         return this._httpClient.DeleteData("Supplier/Cancel?Id=" + m_data.toString());
     }
 
-   
-    public SupplierSave(Param: any, showLoader = true) {
-        
+
+    public SupplierSave(Param: any) {
+
         if (Param.supplierId) {
-            return this._httpClient.PutData("Supplier/Edit/" + Param.supplierId,Param, showLoader);
-        } else return this._httpClient.PostData("Supplier/InsertEDMX", Param, showLoader);
+            return this._httpClient.PutData("Supplier/Edit/" + Param.supplierId, Param);
+        } else return this._httpClient.PostData("Supplier/InsertEDMX", Param);
     }
-   
+
     public deleteAssignSupplierToStore(param) {
         return this._httpClient.PostData("Inventory/SupplierUpdate", param);
     }
 
-    public getsupplierId(Id, showLoader = true) {
-        return this._httpClient.GetData("Supplier/" + Id,showLoader);
-    }   
+    public getsupplierId(Id) {
+        return this._httpClient.GetData("Supplier/" + Id);
+    }
 
     populateForm(param) {
         this.supplierForm.patchValue(param);

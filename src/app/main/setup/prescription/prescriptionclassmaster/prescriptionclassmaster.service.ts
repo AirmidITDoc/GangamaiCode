@@ -38,11 +38,11 @@ export class PrescriptionclassmasterService {
         this.createPrescriptionclassForm();
     }
 
-    public prescriptionClassMasterSave(Param: any, showLoader = true) {
+    public prescriptionClassMasterSave(Param: any) {
         if (Param.classId) {
             debugger
-            return this._httpClient.PutData("Priscriptionclass/" + Param.classId, Param, showLoader);
-        } else return this._httpClient.PostData("Priscriptionclass", Param, showLoader);
+            return this._httpClient.PutData("Priscriptionclass/" + Param.classId, Param);
+        } else return this._httpClient.PostData("Priscriptionclass", Param);
     }
 
     public deactivateTheStatus(m_data) {

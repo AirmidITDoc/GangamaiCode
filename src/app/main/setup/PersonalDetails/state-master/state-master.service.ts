@@ -41,10 +41,10 @@ export class StateMasterService {
     }
 
 
-    public stateMasterSave(Param: any, showLoader = true) {
+    public stateMasterSave(Param: any) {
         if (Param.stateId) {
-            return this._httpClient.PutData("StateMaster/" + Param.stateId, Param, showLoader);
-        } else return this._httpClient.PostData("StateMaster", Param, showLoader);
+            return this._httpClient.PutData("StateMaster/" + Param.stateId, Param);
+        } else return this._httpClient.PostData("StateMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

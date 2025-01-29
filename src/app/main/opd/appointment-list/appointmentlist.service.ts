@@ -79,44 +79,37 @@ export class AppointmentlistService {
         return this._httpClient1.PutData("InPatient/DocAttachment", employee);
     }
 
-    public NewappointmentSave(Param: any, showLoader = true) {
+    public NewappointmentSave(Param: any) {
         // if (Param.visitID) {
-        return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
+        return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param);
         // } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
     }
 
-    public RregisteredappointmentSave(Param: any, showLoader = true) {
+    public RregisteredappointmentSave(Param: any) {
 
-        return this._httpClient1.PostData("VisitDetail/Update", Param, showLoader);
+        return this._httpClient1.PostData("VisitDetail/Update", Param);
 
         // else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
     }
 
-    public EditConDoctor(Param: any, showLoader = true) {
+    public EditConDoctor(Param: any) {
 
-        return this._httpClient1.PutData("ConsRefDoctor/Edit/" + Param.visitId, Param, showLoader);
+        return this._httpClient1.PutData("ConsRefDoctor/Edit/" + Param.visitId, Param);
     }
 
-    public EditRefDoctor(Param: any, showLoader = true) {
+    public EditRefDoctor(Param: any) {
 
-        return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param, showLoader);
+        return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param);
     }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("VisitDetail", m_data);
     }
 
-    public crossconsultSave(Param: any, showLoader = true) {
-        return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param, showLoader);
+    public crossconsultSave(Param: any) {
+        return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param);
 
     }
-
-
-
-    // public getPatientcasepaperView(Param, showLoader = true) {
-    //     return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
-    // }
-
     // new API?
 
     public getAppointmentList(employee) {
@@ -132,8 +125,8 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("DoctoreMaster/List", employee)
     }
 
-    public getVisitById(Id, showLoader = true) {
-        return this._httpClient1.GetData("VisitDetail/" + Id, showLoader);
+    public getVisitById(Id) {
+        return this._httpClient1.GetData("VisitDetail/" + Id);
     }
     public getPatientListView(mode) {
         return this._httpClient1.PostData("Report/ViewReport", mode);
@@ -144,22 +137,22 @@ export class AppointmentlistService {
         return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
     }
 
-    public getAppointmenttemplateReport(Param: any, showLoader = true) {
-        return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+    public getAppointmenttemplateReport(Param: any) {
+        return this._httpClient1.PostData("Report/ViewReport", Param);
     }
 
-    public getRegistraionById(Id, showLoader = true) {
-        return this._httpClient1.GetData("OutPatient/" + Id, showLoader);
+    public getRegistraionById(Id) {
+        return this._httpClient1.GetData("OutPatient/" + Id);
     }
-    public getRegistrations(keyword, showLoader = true) {
-        return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword, showLoader);
+    public getRegistrations(keyword) {
+        return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
     }
 
-    public getPatientcasepaperView(Param, showLoader = true) {
-        return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+    public getPatientcasepaperView(Param) {
+        return this._httpClient1.PostData("Report/ViewReport", Param);
     }
-    
-      
+
+
 }
 
 //192.168.2.100:

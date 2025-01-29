@@ -22,14 +22,14 @@ export class StoreMasterService {
             storeId: [0],
             storeShortName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             storeName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
@@ -54,7 +54,7 @@ export class StoreMasterService {
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
-            ],  
+            ],
             purchaseNo: ["",
                 [
                     Validators.required,
@@ -68,7 +68,7 @@ export class StoreMasterService {
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
-            ],  
+            ],
             grnNo: ["",
                 [
                     Validators.required,
@@ -121,23 +121,23 @@ export class StoreMasterService {
             isDeleted: ["true"],
             UpdatedBy: ["0"],
             AddedByName: ["0"],
-            Header:[""],
-            pharSalCountId:["",
+            Header: [""],
+            pharSalCountId: ["",
                 [
                     Validators.required
                 ]
             ],
-            pharSalRecCountId:["",
+            pharSalRecCountId: ["",
                 [
                     Validators.required
                 ]
             ],
-            pharSalReturnCountId:["",
+            pharSalReturnCountId: ["",
                 [
                     Validators.required
                 ]
             ],
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
             workOrderPrefix: "0",
             workOrderNo: "0",
             pharAdvId: 0,
@@ -147,7 +147,7 @@ export class StoreMasterService {
             printStoreName: ["trying"],
             dlNo: ["try"],
             gstin: ["try"],
-            storeAddress:["trying"],
+            storeAddress: ["trying"],
             hospitalMobileNo: "1111111110",
             hospitalEmailId: ["try@gmail.com"],
             printStoreUnitName: ["trying"],
@@ -170,16 +170,16 @@ export class StoreMasterService {
         this.createStoremasterForm();
     }
 
-    public getStoreById(Id, showLoader = true) {
-        
-        return this._httpClient.GetData("StoreMaster/" + Id,showLoader);
+    public getStoreById(Id) {
+
+        return this._httpClient.GetData("StoreMaster/" + Id);
     }
 
-    public storeMasterSave(Param: any, showLoader = true) {
+    public storeMasterSave(Param: any) {
         if (Param.storeId) {
             debugger
-            return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param, showLoader);
-        } else return this._httpClient.PostData("StoreMaster",Param,showLoader);
+            return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param);
+        } else return this._httpClient.PostData("StoreMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -45,10 +45,10 @@ export class ItemCategoryMasterService {
         this.createItemCategoryForm();
     }
 
-    public categoryMasterSave(Param: any, showLoader = true) {
+    public categoryMasterSave(Param: any) {
         if (Param.itemCategoryId) {
-            return this._httpClient.PutData("ItemCategoryMaster/" + Param.itemCategoryId, Param, showLoader);
-        } else return this._httpClient.PostData("ItemCategoryMaster", Param, showLoader);
+            return this._httpClient.PutData("ItemCategoryMaster/" + Param.itemCategoryId, Param);
+        } else return this._httpClient.PostData("ItemCategoryMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

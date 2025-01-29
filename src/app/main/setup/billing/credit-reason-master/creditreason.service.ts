@@ -40,10 +40,10 @@ export class CreditreasonService {
       this.createCreditreasonForm();
   }
   
-  public creditreasonMasterSave(Param: any, showLoader = true) {
+  public creditreasonMasterSave(Param: any) {
       if (Param.creditId) {
-          return this._httpClient.PutData("CreditReasonMaster/" + Param.creditId, Param, showLoader);
-      } else return this._httpClient.PostData("CreditReasonMaster", Param, showLoader);
+          return this._httpClient.PutData("CreditReasonMaster/" + Param.creditId, Param);
+      } else return this._httpClient.PostData("CreditReasonMaster", Param);
   }
 
   public deactivateTheStatus(m_data) {

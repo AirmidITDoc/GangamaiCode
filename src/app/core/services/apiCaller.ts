@@ -5,24 +5,15 @@ import { catchError, map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: "root" })
 export class ApiCaller {
-    ApiUrl=environment.API_BASE_PATH;
-    constructor(public _httpClient: HttpClient, public toastr: ToastrService) {
+    ApiUrl = environment.API_BASE_PATH;
+    constructor(public _httpClient: HttpClient, public toastr: ToastrService, private router: Router) {
     }
-    GetData(url: string, passToken: boolean = true): Observable<any> {
-        let httpOptions = {};
-        if (passToken) {
-            let currentUser=JSON.parse(localStorage.getItem("currentUser"));
-            httpOptions = {
-                headers: new HttpHeaders({
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${currentUser.token}`
-                })
-            };
-        };
-        return this._httpClient.get(`${this.ApiUrl}${url}`, httpOptions).pipe(
+    GetData(url: string): Observable<any> {
+        return this._httpClient.get(`${this.ApiUrl}${url}`).pipe(
             map((data: apiResponse) => {
                 if (data.statusCode == 200) {
                     return data.data;
@@ -36,31 +27,21 @@ export class ApiCaller {
                 }
             }),
             catchError((err: any): any => {
-            let errorMessage = 'An unknown error occurred';
-            if (err.error instanceof ErrorEvent) {
-                errorMessage = `Error: ${err.error.message}`;
-            } else {
-                errorMessage = `Error Code: ${err.status}\nMessage: ${err.message}`;
-            }
-            this.toastr.error(errorMessage, 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
-            });
-            return of(null);  // Return an empty observable to continue without crashing
-        }));
+                let errorMessage = 'An unknown error occurred';
+                if (err.error instanceof ErrorEvent) {
+                    errorMessage = `Error: ${err.error.message}`;
+                } else {
+                    errorMessage = `Error Code: ${err.status}\nMessage: ${err.message}`;
+                }
+                this.toastr.error(errorMessage, 'Error !', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+                return of(null);  // Return an empty observable to continue without crashing
+            }));
     }
 
-    PostData(url: string, data: any,passToken: boolean = true) {
-        let httpOptions = {};
-        if (passToken) {
-            let currentUser=JSON.parse(localStorage.getItem("currentUser"));
-            httpOptions = {
-                headers: new HttpHeaders({
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${currentUser.token}`
-                })
-            };
-        };
-        return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
+    PostData(url: string, data: any) {
+        return (this._httpClient.post<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
                 return data?.data || data;
             }
@@ -73,18 +54,8 @@ export class ApiCaller {
         })));
     }
 
-    PutData(url: string, data: any,passToken: boolean = true) {
-        let httpOptions = {};
-        if (passToken) {
-            let currentUser=JSON.parse(localStorage.getItem("currentUser"));
-            httpOptions = {
-                headers: new HttpHeaders({
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${currentUser.token}`
-                })
-            };
-        };
-        return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data,httpOptions).pipe(map((data: apiResponse) => {
+    PutData(url: string, data: any) {
+        return (this._httpClient.put<any>(`${this.ApiUrl}${url}`, data).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
                 return data?.data || data;
             }
@@ -96,18 +67,8 @@ export class ApiCaller {
         })));
     }
 
-    DeleteData(url: string,passToken: boolean = true) {
-        let httpOptions = {};
-        if (passToken) {
-            let currentUser=JSON.parse(localStorage.getItem("currentUser"));
-            httpOptions = {
-                headers: new HttpHeaders({
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${currentUser.token}`
-                })
-            };
-        };
-        return (this._httpClient.delete<any>(`${this.ApiUrl}${url}`, httpOptions).pipe(map((data: apiResponse) => {
+    DeleteData(url: string) {
+        return (this._httpClient.delete<any>(`${this.ApiUrl}${url}`).pipe(map((data: apiResponse) => {
             if (data.statusCode == 200) {
                 return data?.data || data;
 
@@ -118,5 +79,5 @@ export class ApiCaller {
                 });
             }
         })));
-    }    
+    }
 }

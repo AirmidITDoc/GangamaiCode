@@ -116,10 +116,10 @@ export class ReportConfigurationService {
     }
 
      //insert update of Report Configuration
-    public insertReportConfig(Param: any, showLoader = true) {
+    public insertReportConfig(Param: any) {
         if (Param.reportId) {
-            return this._httpClient.PutData("MReportConfig/" + Param.reportId, Param, showLoader);
-        } else return this._httpClient.PostData("MReportConfig", Param, showLoader);
+            return this._httpClient.PutData("MReportConfig/" + Param.reportId, Param);
+        } else return this._httpClient.PostData("MReportConfig", Param);
     }
 
     public deactivateTheStatus(m_data) {

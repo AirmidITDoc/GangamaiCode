@@ -43,10 +43,10 @@ export class UomMasterService {
     }
     
 
-    public unitMasterSave(Param: any, showLoader = true) {
+    public unitMasterSave(Param: any) {
         if (Param.unitofMeasurementId) {
-            return this._httpClient.PutData("UnitOfMeasurement/" + Param.unitofMeasurementId, Param, showLoader);
-        } else return this._httpClient.PostData("UnitOfMeasurement", Param, showLoader);
+            return this._httpClient.PutData("UnitOfMeasurement/" + Param.unitofMeasurementId, Param);
+        } else return this._httpClient.PostData("UnitOfMeasurement", Param);
     }
 
     public deactivateTheStatus(m_data) {

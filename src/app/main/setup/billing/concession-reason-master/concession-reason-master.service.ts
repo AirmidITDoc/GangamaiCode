@@ -40,10 +40,10 @@ export class ConcessionReasonMasterService {
         this.createConcessionreasonForm();
     }
     
-    public concessionreasonMasterSave(Param: any, showLoader = true) {
+    public concessionreasonMasterSave(Param: any) {
         if (Param.concessionId) {
-            return this._httpClient.PutData("ConcessionReasonMaster/" + Param.concessionId, Param, showLoader);
-        } else return this._httpClient.PostData("ConcessionReasonMaster", Param, showLoader);
+            return this._httpClient.PutData("ConcessionReasonMaster/" + Param.concessionId, Param);
+        } else return this._httpClient.PostData("ConcessionReasonMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

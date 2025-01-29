@@ -33,11 +33,11 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }p
     getCaptcha(): Observable<any> {
-        return this.http.GetData('Login/GetCaptcha',false);
+        return this.http.GetData('Login/GetCaptcha');
     }
     
     login(data: any): Observable<any> {
-        return (this.http.PostData('Login/Authenticate', data,false).pipe(map((user) => {
+        return (this.http.PostData('Login/Authenticate', data).pipe(map((user) => {
             if (user) {
                 localStorage.setItem("currentUser", JSON.stringify(user));
                 this.currentUserSubject.next(user);

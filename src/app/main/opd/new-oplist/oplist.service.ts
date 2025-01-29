@@ -77,11 +77,11 @@ public deactivateTheStatuspayment(m_data) {
   return this._httpClient.PostData("VisitDetail", m_data);
 }
 
-public getBilllistReport(Param: any, showLoader = true) {
-  return this._httpClient.PostData("Report/ViewReport",Param,showLoader);
+public getBilllistReport(Param: any) {
+  return this._httpClient.PostData("Report/ViewReport",Param);
 }
 
-public getReportView(Param, showLoader = true) {
-  return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+public getReportView(Param) {
+  return this._httpClient1.PostData("Report/ViewReport", Param);
 }
 }

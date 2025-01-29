@@ -38,10 +38,10 @@ export class CategoryMasterService {
         this.createCategoryForm();
     }
 
-    public categoryMasterSave(Param: any, showLoader = true) {
+    public categoryMasterSave(Param: any) {
         if (Param.categoryId) {
-            return this._httpClient.PutData("RadiologyCategoryMaster/" + Param.categoryId, Param, showLoader);
-        } else return this._httpClient.PostData("RadiologyCategoryMaster", Param, showLoader);
+            return this._httpClient.PutData("RadiologyCategoryMaster/" + Param.categoryId, Param);
+        } else return this._httpClient.PostData("RadiologyCategoryMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -41,10 +41,10 @@ export class TermsOfPaymentMasterService {
         this.createtermsofpaymentForm();
     }
 
-    public termofpayMasterSave(Param: any, showLoader = true) {
+    public termofpayMasterSave(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("TermsOfPayment/" + Param.id, Param, showLoader);
-        } else return this._httpClient.PostData("TermsOfPayment", Param, showLoader);
+            return this._httpClient.PutData("TermsOfPayment/" + Param.id, Param);
+        } else return this._httpClient.PostData("TermsOfPayment", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -264,10 +264,10 @@ export class TestmasterService {
         };
     }
 
-    public unitMasterSave(Param: any, showLoader = true) {
+    public unitMasterSave(Param: any) {
         if (Param.TestId) {
-            return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param, showLoader);
-        } else return this._httpClient.PostData("PathTestMaster/Insert", Param, showLoader);
+            return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param);
+        } else return this._httpClient.PostData("PathTestMaster/Insert", Param);
     }
 
     public deactivateTheStatus(m_data) {

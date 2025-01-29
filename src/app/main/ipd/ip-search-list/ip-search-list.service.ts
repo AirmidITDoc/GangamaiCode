@@ -1099,22 +1099,22 @@ public getDoseList() {
 
 
 //  new Api
-public BedtransferUpdate(Param: any, showLoader = true) {
+public BedtransferUpdate(Param: any) {
   if (Param.transferId) {
-      return this._httpClient1.PutData("BedTransfer/InsertSP" + Param.transferId, Param, showLoader);
-  } else return this._httpClient1.PostData("BedTransfer/InsertSP", Param, showLoader);
+      return this._httpClient1.PutData("BedTransfer/InsertSP" + Param.transferId, Param);
+  } else return this._httpClient1.PostData("BedTransfer/InsertSP", Param);
 }
 
-public DichargeInsert(Param: any, showLoader = true) {
+public DichargeInsert(Param: any) {
   if (Param.dischargeId) {
-      return this._httpClient1.PutData("DischargeSP/IPDischargeInsert" + Param.dischargeId, Param, showLoader);
-  } else return this._httpClient1.PostData("DischargeSP/IPDischargeInsert", Param, showLoader);
+      return this._httpClient1.PutData("DischargeSP/IPDischargeInsert" + Param.dischargeId, Param);
+  } else return this._httpClient1.PostData("DischargeSP/IPDischargeInsert", Param);
 }
 
-public DichargeUpdate(Param: any, showLoader = true) {
+public DichargeUpdate(Param: any) {
   if (Param.dischargeId) {
-      return this._httpClient1.PutData("DischargeSP/IPDischargeUpdate" + Param.dischargeId, Param, showLoader);
-  } else return this._httpClient1.PostData("DischargeSP/IPDischargeUpdate", Param, showLoader);
+      return this._httpClient1.PutData("DischargeSP/IPDischargeUpdate" + Param.dischargeId, Param);
+  } else return this._httpClient1.PostData("DischargeSP/IPDischargeUpdate", Param);
 }
 
 public getMaster(mode,Id) {

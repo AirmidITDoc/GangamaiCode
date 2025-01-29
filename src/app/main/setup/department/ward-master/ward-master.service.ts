@@ -47,11 +47,11 @@ export class WardMasterService {
         this.createWardForm();
     }
     
-    public roomMasterSave(Param: any, showLoader = true) {
+    public roomMasterSave(Param: any) {
         debugger
         if (Param.roomId) {
-            return this._httpClient.PutData("WardMaster/" + Param.roomId, Param, showLoader);
-        } else return this._httpClient.PostData("WardMaster", Param, showLoader);
+            return this._httpClient.PutData("WardMaster/" + Param.roomId, Param);
+        } else return this._httpClient.PostData("WardMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

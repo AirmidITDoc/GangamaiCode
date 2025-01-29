@@ -57,10 +57,10 @@ export class DosemasterService {
         this.createDoseForm();
     }
 
-    public doseMasterInsert(Param: any, showLoader = true) {
+    public doseMasterInsert(Param: any) {
         if (Param.doseId) {
-            return this._httpClient.PutData("DoseMaster/" + Param.doseId, Param, showLoader);
-        } else return this._httpClient.PostData("DoseMaster", Param, showLoader);
+            return this._httpClient.PutData("DoseMaster/" + Param.doseId, Param);
+        } else return this._httpClient.PostData("DoseMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

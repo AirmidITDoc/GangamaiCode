@@ -152,12 +152,12 @@ export class ParametermasterService {
             "Generic/ExecByQueryStatement?query=" + m_data, {});
     }
 
-    public insertParameterMaster(Param: any, showLoader = true) {
+    public insertParameterMaster(Param: any) {
         if (Param.parameterId) {
-            return this._httpClient.PutData("PathParameterMaster/" + Param.parameterId, Param, showLoader);
+            return this._httpClient.PutData("PathParameterMaster/" + Param.parameterId, Param);
         } else 
         
-        return this._httpClient.PostData("PathParameterMaster", Param, showLoader);
+        return this._httpClient.PostData("PathParameterMaster", Param);
     }
 
     public updateParameterMaster(param) {

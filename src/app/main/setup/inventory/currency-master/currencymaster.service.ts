@@ -41,10 +41,10 @@ export class CurrencymasterService {
         this.createCurrencyForm();
     }
 
-    public currencyMasterSave(Param: any, showLoader = true) {
+    public currencyMasterSave(Param: any) {
         if (Param.currencyId) {
-            return this._httpClient.PutData("CurrencyMaster/" + Param.currencyId, Param, showLoader);
-        } else return this._httpClient.PostData("CurrencyMaster", Param, showLoader);
+            return this._httpClient.PutData("CurrencyMaster/" + Param.currencyId, Param);
+        } else return this._httpClient.PostData("CurrencyMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -38,15 +38,11 @@ export class GenericmasterService {
         this.createGenericForm();
     }
 
-    public genericMasterInsert(Param: any, showLoader = true) {
+    public genericMasterInsert(Param: any) {
         if (Param.genericId) {
-            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param, showLoader);
-        } else return this._httpClient.PostData("GenericMaster", Param, showLoader);
+            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param);
+        } else return this._httpClient.PostData("GenericMaster", Param);
     }
-
-    // public genericMasterUpdate(id: number , Param: any, showLoader = true) {
-    //     return this._httpClient.PostData("generic", Param, showLoader);
-    // }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("GenericMaster?Id=" + m_data.toString());

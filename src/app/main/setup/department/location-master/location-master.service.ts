@@ -42,10 +42,10 @@ export class LocationMasterService {
         this.createLocationForm();
     }
 
-    public locationMasterSave(Param: any, showLoader = true) {
+    public locationMasterSave(Param: any) {
         if (Param.locationId) {
-            return this._httpClient.PutData("LocationMaster/" + Param.locationId, Param, showLoader);
-        } else return this._httpClient.PostData("LocationMaster", Param, showLoader);
+            return this._httpClient.PutData("LocationMaster/" + Param.locationId, Param);
+        } else return this._httpClient.PostData("LocationMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

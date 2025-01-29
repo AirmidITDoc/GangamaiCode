@@ -44,10 +44,10 @@ export class ItemTypeMasterService {
         this.createItemtypeForm();
     }
 
-    public itemtypeMasterSave(Param: any, showLoader = true) {
+    public itemtypeMasterSave(Param: any) {
         if (Param.itemTypeId) {
-            return this._httpClient.PutData("ItemType/" + Param.itemTypeId, Param, showLoader);
-        } else return this._httpClient.PostData("ItemType", Param, showLoader);
+            return this._httpClient.PutData("ItemType/" + Param.itemTypeId, Param);
+        } else return this._httpClient.PostData("ItemType", Param);
     }
 
     public deactivateTheStatus(m_data) {

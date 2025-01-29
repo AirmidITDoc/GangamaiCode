@@ -42,10 +42,10 @@ export class TaxMasterService {
         this.createTaxMasterForm();
     }
 
-    public taxMasterSave(Param: any, showLoader = true) {
+    public taxMasterSave(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("TaxMaster/" + Param.id,Param,showLoader);
-        } else return this._httpClient.PostData("TaxMaster", Param, showLoader);
+            return this._httpClient.PutData("TaxMaster/" + Param.id,Param);
+        } else return this._httpClient.PostData("TaxMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -42,14 +42,14 @@ export class BankMasterService {
         this.createBankForm();
     }
 
-    public getbankMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("BankMaster/List", param, showLoader);
+    public getbankMasterList(param: gridRequest) {
+        return this._httpClient.PostData("BankMaster/List", param);
     }
 
-    public bankMasterSave(Param: any, showLoader = true) {
+    public bankMasterSave(Param: any) {
         if (Param.bankId) {
-            return this._httpClient.PutData("BankMaster/" + Param.bankId, Param, showLoader);
-        } else return this._httpClient.PostData("BankMaster", Param, showLoader);
+            return this._httpClient.PutData("BankMaster/" + Param.bankId, Param);
+        } else return this._httpClient.PostData("BankMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

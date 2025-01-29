@@ -82,10 +82,10 @@ export class CompanyMasterService {
         this.createCompanymasterForm();
     }
     
-    public companyMasterSave(Param: any, showLoader = true) {
+    public companyMasterSave(Param: any) {
         if (Param.companyId) {
-            return this._httpClient.PutData("CompanyMaster/" + Param.companyId, Param, showLoader);
-        } else return this._httpClient.PostData("CompanyMaster", Param, showLoader);
+            return this._httpClient.PutData("CompanyMaster/" + Param.companyId, Param);
+        } else return this._httpClient.PostData("CompanyMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

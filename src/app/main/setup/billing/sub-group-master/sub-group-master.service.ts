@@ -42,10 +42,10 @@ export class SubGroupMasterService {
         this.createSubgroupForm();
     }
 
-    public SubGroupMasterSave(Param: any, showLoader = true) {
+    public SubGroupMasterSave(Param: any) {
         if (Param.subGroupId) {
-            return this._httpClient.PutData("SubGroupMaster/" + Param.subGroupId, Param, showLoader);
-        } else return this._httpClient.PostData("SubGroupMaster", Param, showLoader);
+            return this._httpClient.PutData("SubGroupMaster/" + Param.subGroupId, Param);
+        } else return this._httpClient.PostData("SubGroupMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

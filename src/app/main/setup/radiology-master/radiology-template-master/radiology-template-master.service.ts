@@ -51,10 +51,10 @@ export class RadiologyTemplateMasterService {
     };
   }
   
-  public templateMasterSave(Param: any, showLoader = true) {
+  public templateMasterSave(Param: any) {
     if (Param.templateId) {
-        return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param, showLoader);
-    } else return this._httpClient.PostData("RadiologyTemplate", Param, showLoader);
+        return this._httpClient.PutData("RadiologyTemplate/" + Param.templateId, Param);
+    } else return this._httpClient.PostData("RadiologyTemplate", Param);
   }
 
     public deactivateTheStatus(m_data) {

@@ -43,14 +43,14 @@ export class DischargetypeMasterService {
         this.createDischargetypeForm();
     }
 
-    public getDischargeTypeMasterList(param: any, showLoader = true) {
-        return this._httpClient.PostData("DischargeType/List", param, showLoader);
+    public getDischargeTypeMasterList(param: any) {
+        return this._httpClient.PostData("DischargeType/List", param);
     }
 
-    public dischargeTypeMasterSave(Param: any, showLoader = true) {
+    public dischargeTypeMasterSave(Param: any) {
         if (Param.dischargeTypeId) {
-            return this._httpClient.PutData("DischargeType/" + Param.dischargeTypeId, Param, showLoader);
-        } else return this._httpClient.PostData("DischargeType", Param, showLoader);
+            return this._httpClient.PutData("DischargeType/" + Param.dischargeTypeId, Param);
+        } else return this._httpClient.PostData("DischargeType", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -42,10 +42,10 @@ export class CategorymasterService {
         this.createCategorymasterForm();
     }
 
-    public categoryMasterSave(Param: any, showLoader = true) {
+    public categoryMasterSave(Param: any) {
         if (Param.categoryId) {
-            return this._httpClient.PutData("PathCategoryMaster/" + Param.categoryId, Param, showLoader);
-        } else return this._httpClient.PostData("PathCategoryMaster", Param, showLoader);
+            return this._httpClient.PutData("PathCategoryMaster/" + Param.categoryId, Param);
+        } else return this._httpClient.PostData("PathCategoryMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

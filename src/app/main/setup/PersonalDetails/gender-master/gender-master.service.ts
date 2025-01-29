@@ -30,10 +30,10 @@ export class GenderMasterService {
     }
   
 
-    public genderMasterSave(Param: any, showLoader = true) {
+    public genderMasterSave(Param: any) {
         if (Param.genderId) {
-            return this._httpClient.PutData("Gender/" + Param.genderId, Param, showLoader);
-        } else return this._httpClient.PostData("Gender", Param, showLoader);
+            return this._httpClient.PutData("Gender/" + Param.genderId, Param);
+        } else return this._httpClient.PostData("Gender", Param);
     }
 
     public deactivateTheStatus(m_data) {

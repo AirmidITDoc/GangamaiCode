@@ -33,10 +33,10 @@ createTemplateForm(): FormGroup {
   });
 }
 
-public templateMasterSave(Param: any, showLoader = true) {
+public templateMasterSave(Param: any) {
   if (Param.templateId) {
-      return this._httpClient.PutData("PathologyTemplate/" + Param.templateId, Param, showLoader);
-  } else return this._httpClient.PostData("PathologyTemplate", Param, showLoader);
+      return this._httpClient.PutData("PathologyTemplate/" + Param.templateId, Param);
+  } else return this._httpClient.PostData("PathologyTemplate", Param);
 }
 
 public deactivateTheStatus(m_data) {

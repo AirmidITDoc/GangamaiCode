@@ -36,14 +36,14 @@ export class ReligionMasterService {
         this.CreateReligionForm();
     }
 
-    public getreligionMasterList(param: gridRequest, showLoader = true) {
-        return this._httpClient.PostData("ReligionMaster/List", param, showLoader);
+    public getreligionMasterList(param: gridRequest) {
+        return this._httpClient.PostData("ReligionMaster/List", param);
     }
 
-    public religionMasterSave(Param: any, showLoader = true) {
+    public religionMasterSave(Param: any) {
         if (Param.religionId) {
-            return this._httpClient.PutData("ReligionMaster/" + Param.religionId, Param, showLoader);
-        } else return this._httpClient.PostData("ReligionMaster", Param, showLoader);
+            return this._httpClient.PutData("ReligionMaster/" + Param.religionId, Param);
+        } else return this._httpClient.PostData("ReligionMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

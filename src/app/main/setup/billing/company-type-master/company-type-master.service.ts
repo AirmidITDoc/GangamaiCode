@@ -42,10 +42,10 @@ export class CompanyTypeMasterService {
         this.createcompanytypeForm();
     }
 
-    public companytypeMasterSave(Param: any, showLoader = true) {
+    public companytypeMasterSave(Param: any) {
         if (Param.companyTypeId) {
-            return this._httpClient.PutData("CompanyTypeMaster/" + Param.companyTypeId, Param, showLoader);
-        } else return this._httpClient.PostData("CompanyTypeMaster", Param, showLoader);
+            return this._httpClient.PutData("CompanyTypeMaster/" + Param.companyTypeId, Param);
+        } else return this._httpClient.PostData("CompanyTypeMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

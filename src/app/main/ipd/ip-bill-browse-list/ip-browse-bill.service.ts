@@ -168,7 +168,7 @@ public deactivateTheStatuspayment(m_data) {
 
 // newApi
 
-public getReportView(Param, showLoader = true) {
-  return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+public getReportView(Param) {
+  return this._httpClient1.PostData("Report/ViewReport", Param);
 }
 }

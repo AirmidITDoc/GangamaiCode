@@ -174,22 +174,15 @@ export class DoctorMasterService {
         );
     }
 
-    public doctortMasterInsert(Param: any, showLoader = true) {
+    public doctortMasterInsert(Param: any) {
         if (Param.DoctorId) {
-            return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param, showLoader);
-        } else return this._httpClient.PostData("Doctor/InsertEDMX", Param, showLoader);
+            return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param);
+        } else return this._httpClient.PostData("Doctor/InsertEDMX", Param);
     }
 
     public doctortMasterUpdate(param) {
         return this._httpClient.PostData("DoctorMaster/DoctorUpdate", param);
     }
-
-    //     public doctortMasterUpdate(Param: any, showLoader = true) {
-    //       if (Param.regId) {
-    //           return this._httpClient.PutData("DoctorMaster/DoctorUpdate" + Param.regId, Param, showLoader);
-    //       } else return this._httpClient.PostData("DoctorMaster/DoctorUpdate", Param, showLoader);
-    //   }
-
     public assignDoctorDepartmentDet(param) {
         return this._httpClient.PostData("Doctor/InsertEDMX", param);
     }

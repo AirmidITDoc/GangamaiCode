@@ -41,10 +41,10 @@ export class BillingClassMasterService {
         this.createClassForm();
     }
 
-    public classMasterSave(Param: any, showLoader = true) {
+    public classMasterSave(Param: any) {
         if (Param.classId) {
-            return this._httpClient.PutData("ClassMaster/" + Param.classId, Param, showLoader);
-        } else return this._httpClient.PostData("ClassMaster", Param, showLoader);
+            return this._httpClient.PutData("ClassMaster/" + Param.classId, Param);
+        } else return this._httpClient.PostData("ClassMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

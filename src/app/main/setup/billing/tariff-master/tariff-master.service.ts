@@ -45,9 +45,9 @@ export class TariffMasterService {
         return this._httpClient.DeleteData("TarrifMaster?Id=" + m_data.toString());
     }
 
-    public tariffMasterSave(Param: any, showLoader = true) {
+    public tariffMasterSave(Param: any) {
         if (Param.tariffId) {
-            return this._httpClient.PutData("TarrifMaster/" + Param.tariffId, Param, showLoader);
-        } else return this._httpClient.PostData("TarrifMaster", Param, showLoader);
+            return this._httpClient.PutData("TarrifMaster/" + Param.tariffId, Param);
+        } else return this._httpClient.PostData("TarrifMaster", Param);
     }
 }

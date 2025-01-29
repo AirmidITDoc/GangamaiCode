@@ -50,10 +50,10 @@ export class MenuMasterService {
             this.createMenuForm();
     }
 
-      public menuMasterSave(Param: any, showLoader = true) {
+      public menuMasterSave(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("MenuMaster" + Param.id, Param, showLoader);
-        } else return this._httpClient.PostData("MenuMaster", Param, showLoader);
+            return this._httpClient.PutData("MenuMaster" + Param.id, Param);
+        } else return this._httpClient.PostData("MenuMaster", Param);
     }
 
     getValidationMessages() {

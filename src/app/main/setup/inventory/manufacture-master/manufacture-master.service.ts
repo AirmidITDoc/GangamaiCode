@@ -49,10 +49,10 @@ export class ManufactureMasterService {
         this.createManufactureForm();
     }
 
-    public manufactureMasterSave(Param: any, showLoader = true) {
+    public manufactureMasterSave(Param: any) {
         if (Param.itemManufactureId) {
-            return this._httpClient.PutData("ItemManufactureMaster/" + Param.itemManufactureId, Param, showLoader);
-        } else return this._httpClient.PostData("ItemManufactureMaster", Param, showLoader);
+            return this._httpClient.PutData("ItemManufactureMaster/" + Param.itemManufactureId, Param);
+        } else return this._httpClient.PostData("ItemManufactureMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

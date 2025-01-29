@@ -44,10 +44,10 @@ export class BedMasterService {
         this.createBedForm();
     }
 
-    public bedMasterSave(Param: any, showLoader = true) {
+    public bedMasterSave(Param: any) {
         if (Param.bedId) {
-            return this._httpClient.PutData("BedMaster/" + Param.bedId, Param, showLoader);
-        } else return this._httpClient.PostData("BedMaster", Param, showLoader);
+            return this._httpClient.PutData("BedMaster/" + Param.bedId, Param);
+        } else return this._httpClient.PostData("BedMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {

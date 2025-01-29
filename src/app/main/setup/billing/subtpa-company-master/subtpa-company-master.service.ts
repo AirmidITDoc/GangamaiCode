@@ -76,10 +76,10 @@ export class SubtpaCompanyMasterService {
         this.createsubtpacompanyForm();
     }
 
-    public subTpaCompanyMasterInsert(Param: any, showLoader = true) {
+    public subTpaCompanyMasterInsert(Param: any) {
         if (Param.subCompanyId) {
-            return this._httpClient.PutData("SubTpaCompany/" + Param.subCompanyId, Param, showLoader);
-        } else return this._httpClient.PostData("SubTpaCompany", Param, showLoader);
+            return this._httpClient.PutData("SubTpaCompany/" + Param.subCompanyId, Param);
+        } else return this._httpClient.PostData("SubTpaCompany", Param);
     }
 
     public deactivateTheStatus(m_data) {
