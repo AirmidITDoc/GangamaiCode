@@ -31,7 +31,6 @@ export class JwtInterceptor implements HttpInterceptor {
         this._ls.show();
         return next.handle(request).pipe(map(event => {
             if (event instanceof HttpResponse) {
-                debugger
                 this._ls.hide();
             }
             return event;
