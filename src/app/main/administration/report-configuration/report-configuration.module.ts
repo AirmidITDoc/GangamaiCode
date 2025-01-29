@@ -20,6 +20,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { ReportConfigurationService } from './report-configuration.service';
 import { ReportConfigurationComponent } from './report-configuration.component';
 import { Routes, RouterModule } from '@angular/router';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [
@@ -48,6 +49,7 @@ const routes: Routes = [
     FuseSharedModule,
     FuseSidebarModule,
     MatDialogModule,
+    SharedModule,
   ],
   providers: [ReportConfigurationService, DatePipe]
 })
