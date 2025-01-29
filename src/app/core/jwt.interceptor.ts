@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from "@angular/common/http";
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { AppConfig, APP_CONFIG } from './../app-config.module';
 import { AuthenticationService } from "./services/authentication.service";
@@ -28,6 +28,14 @@ export class JwtInterceptor implements HttpInterceptor {
                 },
             });
         }
-        return next.handle(request);
+        this._ls.show();
+        return next.handle(request).pipe(map(event => {
+            if (event instanceof HttpResponse) {
+                debugger
+                this._ls.hide();
+            }
+            return event;
+        }));
+        //return next.handle(request);
     }
 }

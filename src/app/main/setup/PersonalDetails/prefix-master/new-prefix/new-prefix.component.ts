@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
-    isActive:boolean=false;
+    isActive: boolean = false;
     autocompleteModegender: string = "Gender";
 
     constructor(
@@ -27,20 +27,16 @@ export class NewPrefixComponent implements OnInit {
 
 
     ngOnInit(): void {
-        
+
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
-        if((this.data?.prefixId??0) > 0)
-           this.prefixForm.patchValue(this.data);
-        
+        if ((this.data?.prefixId ?? 0) > 0)
+            this.prefixForm.patchValue(this.data);
+
     }
 
- 
-    onSubmit() {
-        
-        if(!this.prefixForm.invalid)
-        {
-            console.log("JSON :- ", this.prefixForm.value);
 
+    onSubmit() {
+        if (!this.prefixForm.invalid) {
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
@@ -48,8 +44,7 @@ export class NewPrefixComponent implements OnInit {
                 this.toastr.error(error.message);
             });
         }
-        else
-        {
+        else {
             this.toastr.warning('please check from is invalid', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -57,7 +52,7 @@ export class NewPrefixComponent implements OnInit {
         }
 
     }
-   
+
 
     getValidationMessages() {
         return {

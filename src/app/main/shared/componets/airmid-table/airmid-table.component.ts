@@ -36,7 +36,6 @@ export class AirmidTableComponent implements OnInit {
     headers = [];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     public defaultColumnWidth = 120;
-    public isLoading = false;
     ngOnInit(): void {
         this.bindGridData();
     }
@@ -58,9 +57,7 @@ export class AirmidTableComponent implements OnInit {
             rows: (this.paginator?.pageSize ?? this.gridConfig.row),
             exportType: gridResponseType.JSON
         };
-        this.isLoading = true;
         this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
-            this.isLoading = false;
             this.dataSource.data = data.data as [];
             this.dataSource.sort = this.sort;
             this.resultsLength = data["recordsFiltered"];

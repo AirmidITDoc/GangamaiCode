@@ -42,17 +42,17 @@ export class PrefixMasterService {
     }
 
     public getPrefixMasterList(param: gridRequest) {
-        return this._httpClient.PostData("PrefixMaster/List", param);
+        return this._httpClient.PostData("Prefix/List", param);
     }
 
     public prefixMasterSave(Param: any) {
         if (Param.prefixId) {
-            return this._httpClient.PutData("PrefixMaster/" + Param.prefixId, Param);
-        } else return this._httpClient.PostData("PrefixMaster", Param);
+            return this._httpClient.PutData("Prefix/" + Param.prefixId, Param);
+        } else return this._httpClient.PostData("Prefix", Param);
     }
 
 
     public deactivateTheStatus(m_data) {
-      return this._httpClient.DeleteData("PrefixMaster?Id=" + m_data.toString());
+      return this._httpClient.DeleteData("Prefix?Id=" + m_data.toString());
     }
 }
