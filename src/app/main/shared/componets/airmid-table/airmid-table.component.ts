@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -16,7 +17,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog) {
+    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService:FuseSidebarService) {
     }
     dateType = DATE_TYPES;
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
@@ -59,9 +60,9 @@ export class AirmidTableComponent implements OnInit {
         };
         this.isLoading = true;
         this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
+            this.isLoading = false;
             this.dataSource.data = data.data as [];
             this.dataSource.sort = this.sort;
-            this.isLoading = false;
             this.resultsLength = data["recordsFiltered"];
         });
     }

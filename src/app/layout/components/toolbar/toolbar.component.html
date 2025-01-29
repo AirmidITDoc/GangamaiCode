@@ -7,6 +7,7 @@
                         <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
                             <mat-icon class="secondary-text">menu</mat-icon>
                         </button>
+                        <!-- <button  (click)="toggleSidebarOpen('app-main')" fxHide.gt-md><mat-icon>menu</mat-icon></button> -->
 
                         <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
 
@@ -29,7 +30,7 @@
                     </div>
                 </button> -->
                     <!-- Dashboard ------------- -->
-                    <div class="nav-menu" *ngIf="!false">
+                    <div class="nav-menu">
                         <!--fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center"-->
                         <div fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center center">
                             <div class="nav-item">
@@ -87,7 +88,7 @@
                         </button> -->
                                     <button mat-menu-item class="">
                                         <mat-icon>mail</mat-icon>
-                                        <span (click)="addchangePassword()">Change Password</span>
+                                        <!-- <span (click)="addchangePassword()">Change Password</span> -->
                                     </button>
 
                                     <!-- <button mat-menu-item class="" (click)="logout()">
