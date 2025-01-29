@@ -152,6 +152,12 @@ export class AppointmentlistService {
     public getRegistrations(keyword, showLoader = true) {
         return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword, showLoader);
     }
+
+    public getPatientcasepaperView(Param, showLoader = true) {
+        return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+    }
+    
+      
 }
 
 //192.168.2.100:

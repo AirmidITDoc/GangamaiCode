@@ -464,7 +464,7 @@ onChangeEndDate(value) {
               "searchFields": [
                 {
                   "fieldName": "AdmissionId",
-                  "fieldValue": AdmissionId,
+                  "fieldValue": "111",
                   "opType": "13"
                 }
               ],

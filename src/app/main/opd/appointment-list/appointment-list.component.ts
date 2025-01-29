@@ -249,17 +249,12 @@ export class AppointmentListComponent implements OnInit {
 
                 "searchFields": [
                     {
-                        "fieldName": "FromDate",
-                        "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
-                        "opType": "13"
-                    },
-                    {
-                        "fieldName": "ToDate",
-                        "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
+                        "fieldName": "VisitId",
+                        "fieldValue": "226480",//data.visitId
                         "opType": "13"
                     }
                 ],
-                "mode": "RegistrationReport"
+                "mode": "AppointmentReceipt"
             }
 
             debugger
@@ -272,7 +267,7 @@ export class AppointmentListComponent implements OnInit {
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Registration List  Viewer"
+                            title: "Op CasePaper  Viewer"
 
                         }
 
