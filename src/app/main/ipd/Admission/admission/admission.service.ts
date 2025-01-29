@@ -232,5 +232,8 @@ public getAdmittedPatientCasepaaperView(Param, showLoader = true) {
   return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
 }
 
+public getReportView(Param, showLoader = true) {
+  return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+}
 }
 

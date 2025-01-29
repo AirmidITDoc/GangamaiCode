@@ -399,6 +399,7 @@ AdmissionId:any=0;
         this.toastr.success(response.message);
         this.onClear();
         this._matDialog.closeAll();
+        this.getAdmittedPatientCasepaperview(response);
     }, (error) => {
         this.toastr.error(error.message);
       
@@ -512,39 +513,42 @@ AdmissionId:any=0;
   }
   AdList: boolean = false;
   SpinLoading: boolean = false;
-  getAdmittedPatientCasepaperview(AdmissionId, flag) {
-    
-    let AdmissionID
-    if (flag) {
-      AdmissionID = AdmissionId
-    } else {
-      AdmissionID = AdmissionId.AdmissionID
-    }
-
+  getAdmittedPatientCasepaperview(AdmissionId) {
     setTimeout(() => {
-      this.SpinLoading = true;
-      this.AdList = true;
-      this._AdmissionService.getAdmittedPatientCasepaaperView(
-        AdmissionID
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Admission Paper  Viewer"
-            }
-          });
 
-        matDialog.afterClosed().subscribe(result => {
-          this.AdList = false;
-          
-        });
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "AdmissionId",
+            "fieldValue": "111",
+            "opType": "13"
+          }
+        ],
+        "mode": "IpCasepaperReport"
+      }
+
+         debugger
+      console.log(param)
+      this._AdmissionService.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "Op Bill  Viewer"
+
+                  }
+
+              });
+
+          matDialog.afterClosed().subscribe(result => {
+
+          });
       });
 
-    }, 100);
+  }, 100);
   }
 
   displayFn(user: any): string {

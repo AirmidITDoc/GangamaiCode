@@ -475,45 +475,55 @@ export class NewAppointmentComponent implements OnInit {
     vPhoneFlage = 0;
     vPhoneAppId: any;
     RegNo = 0;
-    getSelectedObjPhone(obj) {
-        this.RegOrPhoneflag = 'Entry From Phone Appointment'
-        this.vPhoneFlage = 1;
-        // this.registerObj = obj;
-        // this.registerObj.MobileNo = obj.MobileNo.trim();
-        // this.registerObj.DateofBirth = this.currentDate;
-        this.PatientName = obj.PatientName;
-        this.RegId = obj.RegId;
-        this.RegNo = obj.RegNo;
-        this.vPhoneAppId = obj.PhoneAppId;
-        // this.vReligionId = obj.ReligionId;
-        // this.vAreaId = obj.AreaId
-        // this.vMaritalStatusId = obj.MaritalStatusId;
+    // getSelectedObjPhone(obj) {
+    //     this.RegOrPhoneflag = 'Entry From Phone Appointment'
+    //     this.vPhoneFlage = 1;
+    //     // this.registerObj = obj;
+    //     // this.registerObj.MobileNo = obj.MobileNo.trim();
+    //     // this.registerObj.DateofBirth = this.currentDate;
+    //     this.PatientName = obj.PatientName;
+    //     this.RegId = obj.RegId;
+    //     this.RegNo = obj.RegNo;
+    //     this.vPhoneAppId = obj.PhoneAppId;
+    //     // this.vReligionId = obj.ReligionId;
+    //     // this.vAreaId = obj.AreaId
+    //     // this.vMaritalStatusId = obj.MaritalStatusId;
 
 
 
-        // this.setDropdownObjs();
+    //     // this.setDropdownObjs();
 
-        this.VisitFlagDisp = true;
-        let todayDate = new Date();
-        const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-        // this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        // this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - this.registerObj.dateofBirth.getMonth());
-        // this.registerObj.ageDay = Math.abs(todayDate.getDate() - this.registerObj.dateofBirth.getDate());
-    }
+    //     this.VisitFlagDisp = true;
+    //     let todayDate = new Date();
+    //     const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
+    //     // this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    //     // this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - this.registerObj.dateofBirth.getMonth());
+    //     // this.registerObj.ageDay = Math.abs(todayDate.getDate() - this.registerObj.dateofBirth.getDate());
+    // }
 
     getSelectedObj(obj) {
         console.log(obj)
         this.RegOrPhoneflag = 'Entry from Registration';
         let todayDate = new Date();
         const d = new Date(obj.DateofBirth);
-        const timeDiff = Math.abs(Date.now() - d.getTime());
-        obj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-        obj.ageMonth = Math.abs(todayDate.getMonth() - d.getMonth());
-        obj.ageDay = Math.abs(todayDate.getDate() - d.getDate());
-        //this.registerObj = obj;
+      
         this.PatientName = obj.PatientName;
-        this.RegId = obj.RegId;
+        this.RegId = obj.value;
         this.VisitFlagDisp = true;
+debugger
+        if ((this.RegId ?? 0) > 0) {
+            debugger
+            console.log(this.data)
+           setTimeout(() => {
+              this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                this.registerObj = response;
+                console.log(this.registerObj)
+      
+              });
+      
+            }, 500);
+        }
+
     }
 
 
@@ -621,30 +631,16 @@ export class NewAppointmentComponent implements OnInit {
         };
     }
     Saveflag: boolean = false;
-    onNewSave() {
-
-        if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-
-            if (this.searchFormGroup.get('regRadio').value == "registration") {
-                this.OnsaveNewRegister();
-            }
-            else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                this.onSaveRegistered();
-                this.onClose();
-            }
-        }
-
-    }
+   
 
     onSave() {
 
         var Ageflag = false
 
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-            // if (this.registerObj.ageYear != 0 || this.registerObj.ageMonth != 0 || this.registerObj.ageDay != 0) {
-
+           
             if (this.searchFormGroup.get('regRadio').value == "registration") {
-                //if (this.vPhoneAppId == 0 && this.Regflag == false) {
+             
                 this.OnsaveNewRegister();
 
             }
@@ -652,10 +648,6 @@ export class NewAppointmentComponent implements OnInit {
                 this.onSaveRegistered();
                 this.onClose();
             }
-
-            // } else {
-            //     Swal.fire("Enter Age Properly ..")
-            // }
 
         } else {
             Swal.fire("Form Invalid chk....")
@@ -664,8 +656,8 @@ export class NewAppointmentComponent implements OnInit {
 
     OnsaveNewRegister() {
 
-        console.log(this.VisitFormGroup.value);
-        console.log(this.personalFormGroup.value);
+        // console.log(this.VisitFormGroup.value);
+        // console.log(this.personalFormGroup.value);
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -704,102 +696,9 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-    // OnsaveNewRegister1() {
-
-    //     var m_data = {
-
-    //         "Registration":this.personalFormGroup.value,
-    //         "Visit": this.VisitFormGroup.value
-    //     }
-
-
-    //     console.log(m_data);
-    //     // console.log(this.personalFormGroup.value);
-    //     // console.log(this.VisitFormGroup.value);
-    //     // this.personalFormGroup.get("Visit").setValue(this.VisitFormGroup.value);
-    //     // console.log(this.personalFormGroup.value);
-    //     // this._AppointmentlistService.NewappointmentSave(this.personalFormGroup.value).subscribe((response) => {
-    //     this._AppointmentlistService.NewappointmentSave(m_data).subscribe((response) => {
-    //         this.toastr.success(response.message);
-    //         this.onClear(true);
-    //         this._matDialog.closeAll();
-    //     }, (error) => {
-    //         this.toastr.error(error.message);
-    //     });
-    // }
-
-    // onSaveRegistered1() {
-
-    //     let Areaid = 0;
-    //     if (this.personalFormGroup.get('AreaId').value)
-    //         Areaid = this.personalFormGroup.get('AreaId').value.value;
-
-    //     let MaritalStatusId = 0;
-    //     if (this.personalFormGroup.get('MaritalStatusId').value)
-    //         MaritalStatusId = this.personalFormGroup.get('MaritalStatusId').value.value;
-
-    //     let ReligionId = 0;
-    //     if (this.personalFormGroup.get('ReligionId').value)
-    //         ReligionId = this.personalFormGroup.get('ReligionId').value.value;
-
-    //     let RefDocId = 0;
-    //     if (this.VisitFormGroup.get('RefDocId').value)
-    //         RefDocId = this.VisitFormGroup.get('RefDocId').value.value;
-
-    //     let PurposeId = 0;
-    //     if (this.VisitFormGroup.get('PurposeId').value)
-    //         PurposeId = this.VisitFormGroup.get('PurposeId').value.value;
-
-
-    //     if (this.patienttype != 2) {
-    //         this.CompanyId = 0;
-
-    //     } else if (this.patienttype == 2) {
-    //         this.CompanyId = this.VisitFormGroup.get('CompanyId').value.value;
-    //     }
-
-    //     var m_data = {
-
-    //         "Registration": this.personalFormGroup.value,
-    //         "Visit": this.VisitFormGroup.value
-    //     }
-
-
-    //     console.log(m_data);
-
-    //     this._AppointmentlistService.RregisteredappointmentSave(m_data).subscribe((response) => {
-    //         this.toastr.success(response.message);
-    //         this.onClear(true);
-    //         this._matDialog.closeAll();
-    //     }, (error) => {
-    //         this.toastr.error(error.message);
-    //     });
-    // }
-
-
 
     objICard = {};
     QrCode = "";
-
-
-
-    PatientAppointment() {
-        // const dialogRef = this._matDialog.open(PatientAppointmentComponent,
-        //     {
-        //         maxWidth: "95vw",
-        //         maxHeight: "95vh", width: '100%', height: "100%"
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     console.log('The dialog was closed - Insert Action', result);
-
-        // });
-    }
-
-
-    selectRow(row) {
-        this.selectRow = row;
-    }
-
 
 
 

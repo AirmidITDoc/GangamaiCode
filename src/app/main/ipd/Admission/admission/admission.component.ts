@@ -403,14 +403,97 @@ onChangeEndDate(value) {
 
 
 
-   getAdmittedPatientListview() {
-   
+  getAdmittedPatientListview() {
+    setTimeout(() => {
+
+      let param = {
+          
+              "searchFields": [
+                {
+                  "fieldName": "DoctorId",
+                  "fieldValue": "4",
+                  "opType": "13"
+                },
+                {
+                  "fieldName": "WardId",
+                  "fieldValue": "4",
+                  "opType": "13"
+                },
+                {
+                  "fieldName": "CompanyId",
+                  "fieldValue": "0",
+                  "opType": "13"
+                }
+
+              ],
+              "mode": "AdmissionList"
+            }
+      
+
+      debugger
+      console.log(param)
+      this._AdmissionService.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "IP Admission List  Viewer"
+
+                  }
+
+              });
+
+          matDialog.afterClosed().subscribe(result => {
+
+          });
+      });
+
+  }, 100);
   }
 
 
 
   getAdmittedPatientCasepaperview(AdmissionId) {
-  
+    setTimeout(() => {
+
+      let param = {
+          
+              "searchFields": [
+                {
+                  "fieldName": "AdmissionId",
+                  "fieldValue": AdmissionId,
+                  "opType": "13"
+                }
+              ],
+              "mode": "IpCasepaperReport"
+            }
+      
+
+      debugger
+      console.log(param)
+      this._AdmissionService.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "IP CASEPAPER  Viewer"
+
+                  }
+
+              });
+
+          matDialog.afterClosed().subscribe(result => {
+
+          });
+      });
+
+  }, 100);
   }
 
 

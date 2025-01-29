@@ -131,9 +131,20 @@
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
                     formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
                     [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                  
+                  
+                    <div class="addmision-list mt-12">
+                        <button mat-raised-button class="btn btn-primary w-100-p"
+                            (click)="getAdmittedPatientListview()" matTooltip="search">
+                            Dr Wise Admission List
+                        </button>
 
 
                     </div>
+
+                    </div>
+
+
                 </form>
 
 

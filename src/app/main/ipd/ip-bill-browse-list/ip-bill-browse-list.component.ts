@@ -45,11 +45,11 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class IPBillBrowseListComponent implements OnInit {
-    myFilterform:FormGroup;
+    myFilterform: FormGroup;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-    
+
     fromDate = "01/01/2021"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     toDate = "12/10/2024"//this.datePipe.transform(new Date(), "mm/ddyyyy")
     allfilters = [
@@ -68,28 +68,45 @@ export class IPBillBrowseListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Billing/IPBillList",
         columnsList: [
-            { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150,type:8 },
-            { heading: "OpdIpdId", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "OpdIpdType", key: "opdIpdType", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:8  },
-            { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+
+            { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+            { heading: "Code", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            // { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Mobile", key: "Mobileno", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            // { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+            // { heading: "DOD", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+            // { heading: "IPDNO", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "Unit", key: "unitName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "DiscAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Comp DiscAmt ", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Balance ", key: "balanceAmt ", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+
+            // { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Neft Pay", key: "neftPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Adv USed Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "PayCount", key: "paycount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Refund Amout", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "Cashcounter", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._IPBrowseBillService.deactivateTheStatus(data.PbillNo).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
+                        action: gridActions.print, callback: (data: any) => {
+                            this.getFinalBillview(data);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -116,30 +133,30 @@ export class IPBillBrowseListComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "Billing/IPPaymentList",
         columnsList: [
-            { heading: "Code", key: "paymentId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "PaymentTime", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 150 ,type:8 },
+            { heading: "UHID", key: "RegNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
             { heading: "AdvanceId", key: "advanceId", sort: true, align: "center", width: 150 },
             { heading: "RefundId", key: "refundId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CashPay", key: "cashPay",sort: true, align: "center" },
+
+            // { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
             // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
+            // { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
             // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "NEFT Pay", key: "nEFTPayAmount", sort: true, align: "center" },
             // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
+            // { heading: "Remark ", key: "remark ", sort: true, align: "center" },
+            // { heading: "User Name", key: "userName ", sort: true, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._IPBrowseBillService.deactivateTheStatuspayment(data.paymentId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
+                        action: gridActions.print, callback: (data: any) => {
+                            this.getPaymentreceiptview(data);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -167,28 +184,21 @@ export class IPBillBrowseListComponent implements OnInit {
         columnsList: [
             { heading: "Code", key: "refundId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150 ,type:8 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
             { heading: "BillId", key: "billId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "AdvanceId", key: "advanceId", sort: true, align: "center", width: 150 },
-            // { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CashPay", key: "cashPay",sort: true, align: "center" },
-            // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
-            // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
+            { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CashPay", key: "cashPay", sort: true, align: "center" },
+            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CardPay", key: "cardPay", sort: true, align: "center" },
+            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._IPBrowseBillService.deactivateTheStatus(data.RefundId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
+                        action: gridActions.print, callback: (data: any) => {
+                            this.getRefundreceiptview(data);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -211,7 +221,7 @@ export class IPBillBrowseListComponent implements OnInit {
     constructor(public _IPBrowseBillService: IPBrowseBillService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
     ngOnInit(): void {
-        this.myFilterform=this._IPBrowseBillService.filterForm_IpdBrowse();
+        this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
     }
 
     onSave(row: any = null) {
@@ -236,7 +246,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
     onChangeDate(selectDate) {
         if (selectDate) {
-            
+
             this.fromDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.fromDate);
             this.gridConfig.filters[2].fieldValue = this.fromDate
@@ -255,7 +265,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     onChangeDate1(selectDate) {
         if (selectDate) {
-            
+
             this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
             console.log(this.toDate);
             this.gridConfig.filters[3].fieldValue = this.toDate
@@ -269,6 +279,123 @@ export class IPBillBrowseListComponent implements OnInit {
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
         }
+    }
+
+
+    getFinalBillview(Id) {
+        setTimeout(() => {
+
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "BillNo",
+                        "fieldValue": Id,
+                        "opType": "13"
+                    }
+                ],
+                "mode": "IpFinalBill"
+            }
+
+            debugger
+            console.log(param)
+            this._IPBrowseBillService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Bill  Viewer"
+
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
+    }
+
+    getPaymentreceiptview(Id) {
+        debugger
+        setTimeout(() => {
+
+            let param = {
+
+                "searchFields": [
+                    {
+                        "fieldName": "PaymentId",
+                        "fieldValue": Id,
+                        "opType": "13"
+                    }
+                ],
+                "mode": "IpPaymentReceipt"
+            }
+
+            debugger
+            console.log(param)
+            this._IPBrowseBillService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Payment  Viewer"
+
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
+    }
+
+    getRefundreceiptview(AdmissionId) {
+        setTimeout(() => {
+
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "BillNo",
+                        "fieldValue": "50848",
+                        "opType": "13"
+                    }
+                ],
+                "mode": "IpFinalBill"
+            }
+
+            debugger
+            console.log(param)
+            this._IPBrowseBillService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Bill  Viewer"
+
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
     }
 
 }

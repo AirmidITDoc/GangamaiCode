@@ -232,7 +232,46 @@ export class NewOPListComponent implements OnInit {
     onChangeEndDate(value) {
         this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
-    viewgetOPBillReportPdf(Id) { }
+   
+    viewgetOPBillReportPdf(data) {
+        setTimeout(() => {
+
+            let param = {
+                
+                    "searchFields": [
+                      {
+                        "fieldName": "BillNo",
+                        "fieldValue": "7940",
+                        "opType": "13"
+                      }
+                    ],
+                    "mode": "OpBillReceipt"
+                  }
+            
+
+            debugger
+            console.log(param)
+            this._OPListService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Op Bill  Viewer"
+
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
+    }
     getWhatsappshareBill(Id) { }
 
     viewgetOPPaymentReportPdf(Id) { }

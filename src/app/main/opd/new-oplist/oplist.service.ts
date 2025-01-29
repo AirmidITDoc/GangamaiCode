@@ -9,7 +9,7 @@ export class OPListService {
   myFilterbillform:FormGroup
   myFilterpayform:FormGroup
   myFilterrefundform:FormGroup
-  constructor(public _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder) {
+  constructor(public _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder, public _httpClient1:ApiCaller) {
     this.myFilterbillform=this.myFilterbillbrowseform();
     this.myFilterpayform=this.myFilterpaymentbrowseform();
     this.myFilterrefundform=this.myFilterrefundbrowseform();
@@ -79,5 +79,9 @@ public deactivateTheStatuspayment(m_data) {
 
 public getBilllistReport(Param: any, showLoader = true) {
   return this._httpClient.PostData("Report/ViewReport",Param,showLoader);
+}
+
+public getReportView(Param, showLoader = true) {
+  return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
 }
 }
