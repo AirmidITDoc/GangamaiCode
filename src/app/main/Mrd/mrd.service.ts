@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class MrdService {
   MedicalForm:FormGroup;
   
   constructor(private _httpClient: HttpClient,
-    private _formBuilder: FormBuilder) {
+    private _formBuilder: FormBuilder,
+  public loaderService:LoaderService
+) {
       // this.Otserachform= this.filterForm();
       this.Otserachform=this.filterForm();
       this.icdForm=this.createIcdForm();
@@ -75,8 +78,22 @@ export class MrdService {
       AccidentDateTime:'',
       AgeInjuries:'',
       CauseInjuries:'',
-      vAccidentDetails:'',
+      AccidentDetails:'',
     });
+  }
+
+  public medicalRecordInsert(employee, loader = true) {
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("MRD/InsertMrdMedicolegalCertificate", employee);
+  }
+
+  public medicalRecordUpdate(employee, loader = true) {
+    if(loader){
+      this.loaderService.show();
+    }
+    return this._httpClient.post("MRD/UpdateMrdMedicolegalCertificate", employee);
   }
 
   public icdInsert(employee, loader = true) {
@@ -119,6 +136,10 @@ public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
   
   public getCharitypatientList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_CharityPatientList",employee)
+  }
+
+  public getMedicalLegallist(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_T_MedicolegalCertificate_List", employee)
   }
 
   public MrdcasepaperInsert(employee) {

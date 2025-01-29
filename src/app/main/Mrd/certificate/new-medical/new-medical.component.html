@@ -396,10 +396,6 @@
                                         placeholder="Age of Injuries" matInput type="number"
                                         [(ngModel)]="vAgeInjuries"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <!-- <mat-error
-                                        *ngIf="_MrdService.MedicalForm.get('AgeInjuries').invalid && _MrdService.MedicalForm.get('AgeInjuries').touched">
-                                        First Name is required Enter only
-                                        Alphabets</mat-error> -->
                                 </mat-form-field>
     
                                 <mat-form-field appearance="outline" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -407,11 +403,6 @@
                                     <input name="CauseInjuries" formControlName="CauseInjuries" placeholder="Cause of Injuries" 
                                         matInput [(ngModel)]="vCauseInjuries" type="text"
                                         oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
-                                    <!-- <mat-error class="error"
-                                        *ngIf="_MrdService.MedicalForm.get('CauseInjuries').invalid && _MrdService.MedicalForm.get('CauseInjuries').touched">
-                                        Middle Name is required
-                                        Enter
-                                        only Alphabets</mat-error> -->
                                 </mat-form-field>
                             </div>
                             <div>

@@ -74,29 +74,18 @@ export class CertificateComponent implements OnInit {
   ];
 
   displayedColumnsMedical = [
-    
-    // 'Ischarity',
-    // 'IsIndientOrWeaker',
+    'IpOpType',
     'RegNo',
-    'IPDNo',
+    'Accident_Date',
+    'Accident_Time',
     'PatientName',
-    'Address',
-    'GenderName',
-    'AgeYear',
-    'DepartmentName',
-    'AdmissionDate',
-    'DischargeDate',
-    'TotalAmt',
-    'ConcessionAmt',
-    'NetPayableAmt',
-    'PaidAmount',
-    'PBillNo',
-    'ConcessionReason',
-    'AnnualIncome',
-    'RationCardNo',
-    'BillNo',
-    'buttons'
-  
+    'AgeofInjuries',
+    'CauseofInjuries',
+    'Details_Injuries',
+    'AdmDoctor',
+    'DoctorName1',
+    'DoctorName2',  
+    'action'
     ];
   dataSource = new MatTableDataSource<CharityPatientdetail>();
   DSMedicalLegalList = new MatTableDataSource<CharityPatientdetail>();
@@ -137,6 +126,7 @@ export class CertificateComponent implements OnInit {
     this.minDate = new Date();
      
       this.getCharityPatientList();
+      this.getMedicalLegalCaseList();
   }
 
   toggleSidebar(name): void {
@@ -150,6 +140,7 @@ export class CertificateComponent implements OnInit {
       end: [new Date().toISOString()],
       F_Name: [''],
       L_Name: [''],
+      IsIPOrOP:['2']
     });
   }
      
@@ -180,6 +171,44 @@ export class CertificateComponent implements OnInit {
       });
   }
 
+    getMedicalLegalCaseList() {
+      debugger
+      this.sIsLoading = 'loading-data';    
+      const FromDate = this.searchFormGroup.get("start").value;
+      const ToDate = this.searchFormGroup.get("end").value;
+      const OPIPType = this.searchFormGroup.get("IsIPOrOP").value;
+    
+      // Prepare request payload
+      const D_data = {
+        "FromDate": this.datePipe.transform(FromDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+        "ToDate": this.datePipe.transform(ToDate, "MM-dd-yyyy") || "01/01/1900", // Default date if not set
+        "OPIPType": OPIPType || ''
+      };
+    
+      console.log("Request Payload:", D_data);
+    
+      // Make API call
+      this._MrdService.getMedicalLegallist(D_data).subscribe(
+        (response) => {
+          console.log("API Response:", response);
+          
+          if (response && Array.isArray(response)) {
+            // Update the data source and bind to the table
+            this.DSMedicalLegalList.data = response as CharityPatientdetail[];
+            this.DSMedicalLegalList.sort = this.sort;
+            this.DSMedicalLegalList.paginator = this.paginator;
+          } else {
+            console.error("Invalid data format received:", response);
+          }  
+          // Clear loading state
+          this.sIsLoading = '';
+        },
+        (error) => {
+          console.error("Error Fetching Data:", error);
+          this.sIsLoading = ''; // Clear loading state on error
+        }
+      );
+    }
  
   addNewCertificate() {
     const dialogRef = this._matDialog.open(NewCertificateComponent,
@@ -202,6 +231,7 @@ addNewMedicalCasepaper(){
     });
     dialogRef.afterClosed().subscribe(result => {
      console.log(result);
+     this.getMedicalLegalCaseList();
    });
 }
 
@@ -217,7 +247,7 @@ onEditMedicalRecord(contact){
     });
   dialogRef.afterClosed().subscribe(result => {
     console.log('The dialog was closed - Insert Action', result);
-  
+    this.getMedicalLegalCaseList();
   });
 }
 
@@ -334,6 +364,14 @@ export class CharityPatientdetail {
   RationCardNo: any;
   IsIndientOrWeaker: any;
 
+  Accident_Date:any;
+  Accident_Time:any;
+  AgeofInjuries:any;
+  CauseofInjuries:any;
+  Details_Injuries:any;
+  AdmDoctor:any;
+  DoctorName1:any;
+  DoctorName2:any;
   BillNo: any;
 
   /**
@@ -363,6 +401,15 @@ export class CharityPatientdetail {
       this. RationCardNo = CharityPatientdetail. RationCardNo || '';
       this.IsIndientOrWeaker = CharityPatientdetail.IsIndientOrWeaker || '';
       this.BillNo = CharityPatientdetail.BillNo || '';
+      
+      this.Accident_Date = CharityPatientdetail.Accident_Date || '';
+      this.Accident_Time = CharityPatientdetail.Accident_Time || '';
+      this.AgeofInjuries = CharityPatientdetail.AgeofInjuries || '';
+      this.CauseofInjuries = CharityPatientdetail.CauseofInjuries || '';
+      this.Details_Injuries = CharityPatientdetail.Details_Injuries || '';
+      this.AdmDoctor = CharityPatientdetail. AdmDoctor || '';
+      this.DoctorName1 = CharityPatientdetail.DoctorName1 || '';
+      this.DoctorName2 = CharityPatientdetail.DoctorName2 || '';
      
     }
   }

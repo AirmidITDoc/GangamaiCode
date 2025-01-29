@@ -61,7 +61,7 @@ export class NewMedicalComponent implements OnInit {
   vNameAuthority: any;
   vBuckleNo: any;
   vPoliceStation: any;
-  vCertificateNo:any;
+  vCertificateNo: any;
   selectedDepartment: string = '';
   selectedDoctor: string = '';
   isDepartmentSelected: boolean = false;
@@ -72,14 +72,14 @@ export class NewMedicalComponent implements OnInit {
   filteredOptionsDoc: Observable<string[]>;
   DepartmentList: any = [];
   DoctorList: any = [];
-  isDoctor1Selected:boolean = false;
-  isDoctor2Selected:boolean = false;
+  isDoctor1Selected: boolean = false;
+  isDoctor2Selected: boolean = false;
   selectedDoctor1: string = '';
   selectedDoctor2: string = '';
-  vAccidentDateTime:any;
-  date:any;
-  vAgeInjuries:any;
-  vCauseInjuries:any;
+  vAccidentDateTime: any;
+  date: any;
+  vAgeInjuries: any;
+  vCauseInjuries: any;
 
   DoctorList1: any = [];
   optionsDoctor1: any[] = [];
@@ -87,7 +87,10 @@ export class NewMedicalComponent implements OnInit {
   DoctorList2: any = [];
   optionsDoctor2: any[] = [];
   filteredOptionsDoctor2: Observable<string[]>;
-  vAccidentDetails:any;
+  vAccidentDetails: any;
+  vDocId: any;
+  datePart: any;
+  timePart: any;
 
   constructor(
     public _MrdService: MrdService,
@@ -101,31 +104,99 @@ export class NewMedicalComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     private router: Router) { }
 
-    editorConfig: AngularEditorConfig = {
-        // color:true,
-        editable: true,
-        spellcheck: true,
-        height: '15rem',
-        minHeight: '15rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    
-      };
-      onBlur(e: any) {
-        this.vAccidentDetails = e.target.innerHTML;
-      }
-      
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '15rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+  onBlur(e: any) {
+    this.vAccidentDetails = e.target.innerHTML;
+  }
+
   ngOnInit(): void {
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if (this.data) {
       debugger
-      this.registerObj1 = this.data.Obj;
+      this.registerObj1 = this.data.PatObj;
+      console.log("Medical legal case:", this.registerObj1)
+      if (this.registerObj1.OP_IP_Type === 1) {
+        // Fetch IP-specific information
+        console.log("IIIIIIIIIIIIIPPPPPPPPP:", this.registerObj1.OP_IP_Type);
+        this.vWardName = this.registerObj1.RoomName;
+        this.vBedNo = this.registerObj1.BedName;
+        this.vGenderName = this.registerObj1.GenderName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        this.vAdmissionID = this.registerObj1.OP_IP_Id
+        this.vAge = this.registerObj1.AgeYear;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vIPDNo = this.registerObj1.IPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vSelectedOption = 'IP';
+        this.vCertificateNo = this.registerObj1.CertificateNo;
+        this.vAgeInjuries = this.registerObj1.AgeofInjuries;
+        this.vCauseInjuries = this.registerObj1.CauseofInjuries;
+        this.vDocId = this.registerObj1.DocId;
+        this.vAccidentDetails = this.registerObj1.Details_Injuries;
+        this.vDoctorName = this.registerObj1.PatientDoctorName;
+
+        this.selectedDepartment = this.registerObj1.ConsentDeptId;
+        this.selectedDoctor = this.registerObj1.TreatingDoctorId;
+        this.selectedDoctor1 = this.registerObj1.TreatingDoctorId1;
+        this.selectedDoctor2 = this.registerObj1.TreatingDoctorId2;
+
+        this.getDepartmentList();
+        this.setAccidentDateTime();
+      } else if (this.registerObj1.OP_IP_Type === 0) {
+        // Fetch OP-specific information
+        console.log("OOOOOOOPPPPPPPPP:", this.registerObj1.OP_IP_Type);
+        this.vWardName = this.registerObj1.RoomName;
+        this.vBedNo = this.registerObj1.BedName;
+        this.vGenderName = this.registerObj1.GenderName;
+        this.vPatientName = this.registerObj1.PatientName;
+        this.vAgeYear = this.registerObj1.AgeYear;
+        this.RegId = this.registerObj1.RegID;
+        // this.vvisi = this.registerObj1.OP_IP_Id
+        this.vAdmissionID = this.registerObj1.OP_IP_Id
+        this.vAge = this.registerObj1.Age;
+        this.vRegNo = this.registerObj1.RegNo;
+        this.vOPDNo = this.registerObj1.IPDNo;
+        this.vCompanyName = this.registerObj1.CompanyName;
+        this.vTariffName = this.registerObj1.TariffName;
+        this.vOP_IP_MobileNo = this.registerObj1.MobileNo;
+        this.vDoctorName = this.registerObj1.PatientDoctorName;
+        this.vDepartmentName = this.registerObj1.DepartmentName;
+        this.vSelectedOption = 'OP';
+        this.vCertificateNo = this.registerObj1.CertificateNo;
+        this.vAgeInjuries = this.registerObj1.AgeofInjuries;
+        this.vCauseInjuries = this.registerObj1.CauseofInjuries;
+        this.vDocId = this.registerObj1.DocId;
+        this.vAccidentDetails = this.registerObj1.Details_Injuries;
+
+        this.selectedDepartment = this.registerObj1.ConsentDeptId;
+        this.selectedDoctor = this.registerObj1.TreatingDoctorId;
+        this.selectedDoctor1 = this.registerObj1.TreatingDoctorId1;
+        this.selectedDoctor2 = this.registerObj1.TreatingDoctorId2;
+
+        this.getDepartmentList();
+        this.setAccidentDateTime();
+      }
     }
     this.getDepartmentList();
     this.getDoctorList1();
     this.getDoctorList2();
+    this.setAccidentDateTime();
   }
 
   onChangePatientType(event) {
@@ -142,17 +213,25 @@ export class NewMedicalComponent implements OnInit {
     }
   }
 
+  setAccidentDateTime() {
+    debugger
+    if (this.registerObj1.Accident_Date && this.registerObj1.Accident_Time) {
+      let datePart = this.registerObj1.Accident_Date.split("T")[0]; // Extract "YYYY-MM-DD"
+      let timePart = this.registerObj1.Accident_Time.split("T")[1].slice(0, 5); // Extract "HH:MM"
+      this.vAccidentDateTime = `${datePart}T${timePart}`;
+    }
+  }
+
   onDateChange(event: any) {
     // Capture the selected date and time
     const selectedDateTime = event.target.value;
     console.log('Selected Date and Time:', selectedDateTime);
-    
-    // Optionally, you can extract date and time separately
-    const datePart = selectedDateTime.split('T')[0]; // 'YYYY-MM-DD'
-    const timePart = selectedDateTime.split('T')[1]; // 'HH:MM'
 
-    console.log('Date:', datePart);
-    console.log('Time:', timePart);
+    // Optionally, you can extract date and time separately
+    this.datePart = selectedDateTime.split('T')[0]; // 'YYYY-MM-DD'
+    this.timePart = selectedDateTime.split('T')[1]; // 'HH:MM'
+    console.log('Date:', this.datePart);
+    console.log('Time:', this.timePart);
   }
 
   PatientInformReset() {
@@ -276,7 +355,7 @@ export class NewMedicalComponent implements OnInit {
   }
   // department dropdown
   onDepartmentSelected(event: MatAutocompleteSelectedEvent) {
-    debugger
+    
     const selectedDepartment = event.option.value;
     if (selectedDepartment) {
       this.OnChangeDoctorList(selectedDepartment);
@@ -293,6 +372,7 @@ export class NewMedicalComponent implements OnInit {
   }
 
   getDepartmentList() {
+    debugger
     this._MrdService.getDepartmentCombo().subscribe(data => {
       this.DepartmentList = data;
       this.optionsDep = this.DepartmentList.slice();
@@ -301,8 +381,8 @@ export class NewMedicalComponent implements OnInit {
         map(value => value ? this._filterDep(value) : this.DepartmentList.slice()),
       );
       if (this.registerObj) {
-
-        const DValue = this.DepartmentList.filter(item => item.DepartmentName == this.registerObj.DepartmentName);
+        debugger
+        const DValue = this.DepartmentList.filter(item => item.DepartmentName == this.registerObj1.DepartmentName);
         console.log("Departmentid:", DValue)
         this._MrdService.MedicalForm.get('Departmentid').setValue(DValue[0]);
         this._MrdService.MedicalForm.updateValueAndValidity();
@@ -314,8 +394,7 @@ export class NewMedicalComponent implements OnInit {
   // department dropdown end
 
   // doctor dropdown
-  onDoctorSelect(option: any) {
-    debugger
+  onDoctorSelect(option: any) {    
     console.log("selectedDoctorOption:", option)
   }
   getOptionTextDoc(option) {
@@ -331,12 +410,10 @@ export class NewMedicalComponent implements OnInit {
     var vdata = {
       "Id": this.DepartmentId
     }
-
     this.isDepartmentSelected = true;
     this._MrdService.getDoctorMasterCombo(vdata).subscribe(
       data => {
         this.DoctorList = data;
-
         this.optionsDoc = this.DoctorList.slice();
         this.filteredOptionsDoc = this._MrdService.MedicalForm.get('DoctorId').valueChanges.pipe(
           startWith(''),
@@ -344,7 +421,7 @@ export class NewMedicalComponent implements OnInit {
         );
         if (this.registerObj) {
           debugger
-          const dVaule = this.DoctorList.filter(item => item.DoctorId == this.registerObj.ConsultantDocId)
+          const dVaule = this.DoctorList.filter(item => item.DoctorId == this.registerObj1.AdmDoctor)
           this._MrdService.MedicalForm.get('DoctorId').setValue(dVaule[0])
         }
         console.log("doctor ndfkdf:", this._MrdService.MedicalForm.get('DoctorId').value)
@@ -357,74 +434,279 @@ export class NewMedicalComponent implements OnInit {
       return this.optionsDoc.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
     }
   }
-// doctor dropdown end
+  // doctor dropdown end
 
-// doctor 1 dropdown start
-getDoctorList1() {
+  // doctor 1 dropdown start
+  getDoctorList1() {
     debugger
-  this._MrdService.getDoctorMaster().subscribe(data => {
-    this.DoctorList1 = data;
-    this.optionsDoctor1 = this.DoctorList1.slice();
-    this.filteredOptionsDoctor1 = this._MrdService.MedicalForm.get('DoctorId1').valueChanges.pipe(
-      startWith(''),
-      map(value => value ? this._filterDoctor1(value) : this.DoctorList1.slice()),
-    );
-    if (this.data) {
-      
-      const DValue = this.DoctorList1.filter(item => item.DoctorId == this.registerObj1.DoctorId);
-      console.log("DoctorId1:", DValue)
-      this._MrdService.MedicalForm.get('DoctorId1').setValue(DValue[0]);
-      this._MrdService.MedicalForm.updateValueAndValidity();
+    this._MrdService.getDoctorMaster().subscribe(data => {
+      this.DoctorList1 = data;
+      this.optionsDoctor1 = this.DoctorList1.slice();
+      this.filteredOptionsDoctor1 = this._MrdService.MedicalForm.get('DoctorId1').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor1(value) : this.DoctorList1.slice()),
+      );
+      if (this.data) {
+        debugger
+        const DValue = this.DoctorList1.filter(item => item.DoctorId == this.registerObj1.TreatingDoctorId1);
+        console.log("DoctorId1:", DValue)
+        this._MrdService.MedicalForm.get('DoctorId1').setValue(DValue[0]);
+        this._MrdService.MedicalForm.updateValueAndValidity();
+        return;
+      }
+    });
+  }
+  private _filterDoctor1(value: any): string[] {    
+    if (value) {
+      const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
+      return this.optionsDoctor1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextDoctorId1(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+  // doctor 1 dropdown end
+
+  // doctor 2 dropdown start
+  getDoctorList2() {
+    debugger
+    this._MrdService.getDoctorMaster1Combo().subscribe(data => {
+      this.DoctorList2 = data;
+      this.optionsDoctor2 = this.DoctorList2.slice();
+      this.filteredOptionsDoctor2 = this._MrdService.MedicalForm.get('DoctorId2').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterDoctor2(value) : this.DoctorList2.slice()),
+      );
+      if (this.data) {
+        debugger
+        const DValue = this.DoctorList2.filter(item => item.DoctorId == this.registerObj1.TreatingDoctorId2);
+        console.log("DoctorId2:", DValue)
+        this._MrdService.MedicalForm.get('DoctorId2').setValue(DValue[0]);
+        this._MrdService.MedicalForm.updateValueAndValidity();
+        return;
+      }
+    });
+  }
+  private _filterDoctor2(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
+      return this.optionsDoctor2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
+    }
+  }
+  getOptionTextDoctorId2(option) {
+    return option && option.DoctorName ? option.DoctorName : '';
+  }
+  // doctor 2 dropdown end
+  onSave() {
+    //   if (!this._MrdService.MedicalForm.get('RegID')?.value && !this.registerObj1?.RegId) {
+    //     this.toastr.warning('Please Select Patient', 'Warning!', {
+    //         toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    // }
+    if (this.selectedDepartment == '' || this.selectedDepartment == null || this.selectedDepartment == undefined) {
+      this.toastr.warning('Please select Department ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
       return;
     }
-  });
-}
-private _filterDoctor1(value: any): string[] {
-  debugger
-  if (value) {
-    const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-    return this.optionsDoctor1.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-  }
-}
-getOptionTextDoctorId1(option) {
-  return option && option.Doctorname ? option.Doctorname : '';
-}
-// doctor 1 dropdown end
+    if (this._MrdService.MedicalForm.get('Departmentid').value) {
+      if (!this.DepartmentList.find(item => item.DepartmentName == this._MrdService.MedicalForm.get('Departmentid').value.DepartmentName)) {
+        this.toastr.warning('Please select Valid Department Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
 
-// doctor 2 dropdown start
-getDoctorList2() {
-  debugger
-this._MrdService.getDoctorMaster1Combo().subscribe(data => {
-  this.DoctorList2 = data;
-  this.optionsDoctor2 = this.DoctorList2.slice();
-  this.filteredOptionsDoctor2 = this._MrdService.MedicalForm.get('DoctorId2').valueChanges.pipe(
-    startWith(''),
-    map(value => value ? this._filterDoctor2(value) : this.DoctorList2.slice()),
-  );
-  if (this.data) {
-    
-    const DValue = this.DoctorList2.filter(item => item.DoctorId == this.registerObj1.DoctorId);
-    console.log("DoctorId2:", DValue)
-    this._MrdService.MedicalForm.get('DoctorId2').setValue(DValue[0]);
-    this._MrdService.MedicalForm.updateValueAndValidity();
-    return;
-  }
-});
-}
-private _filterDoctor2(value: any): string[] {
-  debugger
-if (value) {
-  const filterValue = value && value.DoctorName ? value.DoctorName.toLowerCase() : value.toLowerCase();
-  return this.optionsDoctor2.filter(option => option.DoctorName.toLowerCase().includes(filterValue));
-}
-}
-getOptionTextDoctorId2(option) {
-return option && option.DoctorName ? option.DoctorName : '';
-}
-// doctor 2 dropdown end
-  onSave() {
+    if (this.selectedDoctor == '' || this.selectedDoctor == null || this.selectedDoctor == undefined) {
+      this.toastr.warning('Please select Admitted Doctor ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._MrdService.MedicalForm.get('DoctorId').value) {
+      if (!this.DoctorList.find(item => item.DoctorId == this._MrdService.MedicalForm.get('DoctorId').value.DoctorId)) {
+        this.toastr.warning('Please select Valid Doctor Name 1', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    if (this.selectedDoctor1 == '' || this.selectedDoctor1 == null || this.selectedDoctor1 == undefined) {
+      this.toastr.warning('Please select Doctor 1 ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._MrdService.MedicalForm.get('DoctorId1').value) {
+      if (!this.DoctorList1.find(item => item.DoctorId == this._MrdService.MedicalForm.get('DoctorId1').value.DoctorId)) {
+        this.toastr.warning('Please select Valid Doctor Name 1', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    if (this.selectedDoctor2 == '' || this.selectedDoctor2 == null || this.selectedDoctor2 == undefined) {
+      this.toastr.warning('Please select Doctor 2 ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._MrdService.MedicalForm.get('DoctorId2').value) {
+      if (!this.DoctorList2.find(item => item.DoctorId == this._MrdService.MedicalForm.get('DoctorId2').value.DoctorId)) {
+        this.toastr.warning('Please select Valid Doctor Name 2', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
+    if (this.vAccidentDateTime == '' || this.vAccidentDateTime == null || this.vAccidentDateTime == undefined) {
+      this.toastr.warning('Please select Date and Time', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.vCertificateNo == '' || this.vCertificateNo == null || this.vCertificateNo == undefined) {
+      this.toastr.warning('Please Enter CertificateNo', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.vAgeInjuries == '' || this.vAgeInjuries == null || this.vAgeInjuries == undefined) {
+      this.toastr.warning('Please Enter Age of Injuries', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.vCauseInjuries == '' || this.vCauseInjuries == null || this.vCauseInjuries == undefined) {
+      this.toastr.warning('Please Enter Cause of Injuries', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.vAccidentDetails == '' || this.vAccidentDetails == null || this.vAccidentDetails == undefined) {
+      this.toastr.warning('Please Enter Accident Details', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Do you want to Save the Medical Legal Case Recode ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save it!",
+      cancelButtonText: "No, Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.onSubmit();
+      }
+    });
 
   }
+
+  onSubmit() {
+debugger
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    let opip_Type;
+    if (this._MrdService.MedicalForm.get('PatientType').value == 'IP') {
+      opip_Type = 1;
+    }
+    else {
+      opip_Type = 0;
+    }
+    if (!this.vDocId) {
+
+      let insertMrdMedicolegalCertificate = {
+        "mlcDate": formattedDate,
+        "mlcTime": formattedTime,
+        "certificateNo": this._MrdService.MedicalForm.get("CertificateNo").value || 0,
+        "op_IP_ID": this.vOPIP_ID,
+        "op_IP_Type": opip_Type,
+        "accidentDate": this.datePart,
+        "accidentTime": this.timePart,
+        "details_Injuries": this._MrdService.MedicalForm.get("AccidentDetails").value || 0,
+        "ageofInjuries": this._MrdService.MedicalForm.get("AgeInjuries").value || 0,
+        "causeofInjuries": this._MrdService.MedicalForm.get("CauseInjuries").value || 0,
+        "treatingDoctorId": this._MrdService.MedicalForm.get("DoctorId").value.DoctorId || 0,
+        "treatingDoctorId1": this._MrdService.MedicalForm.get("DoctorId1").value.DoctorId || 0,
+        "treatingDoctorId2": this._MrdService.MedicalForm.get("DoctorId2").value.DoctorId || 0,
+        "createdBy": this._loggedService.currentUserValue.user.id,
+        "docId": 0
+      }
+
+      let submitData = {
+        "insertMrdMedicolegalCertificate": insertMrdMedicolegalCertificate
+      }
+      console.log("insertJson:", submitData);
+
+      this._MrdService.medicalRecordInsert(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+    else {
+
+      let updateMrdMedicolegalCertificate = {
+        "docId": this.vDocId,
+        "mlcDate": formattedDate,
+        "mlcTime": formattedTime,
+        "certificateNo": this._MrdService.MedicalForm.get("CertificateNo").value || 0,
+        "op_IP_ID": this.vAdmissionID,
+        "op_IP_Type": opip_Type,
+        "accidentDate": this.registerObj1.Accident_Date,
+        "accidentTime": this.registerObj1.Accident_Time,
+        "details_Injuries": this._MrdService.MedicalForm.get("AccidentDetails").value || 0,
+        "ageofInjuries": this._MrdService.MedicalForm.get("AgeInjuries").value || 0,
+        "causeofInjuries": this._MrdService.MedicalForm.get("CauseInjuries").value || 0,
+        "treatingDoctorId": this._MrdService.MedicalForm.get("DoctorId").value.DoctorId || 0,
+        "treatingDoctorId1": this._MrdService.MedicalForm.get("DoctorId1").value.DoctorId || 0,
+        "treatingDoctorId2": this._MrdService.MedicalForm.get("DoctorId2").value.DoctorId || 0,
+        "modifiedBy": this._loggedService.currentUserValue.user.id,
+
+      }
+
+      let updateData = {
+        "updateMrdMedicolegalCertificate": updateMrdMedicolegalCertificate
+      }
+
+      console.log("UpdateJson:", updateData);
+
+      this._MrdService.medicalRecordUpdate(updateData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
+
+  }
+
   onClose() {
     this._MrdService.MedicalForm.reset()
     this.dialogRef.close();

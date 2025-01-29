@@ -91,7 +91,16 @@ export class NewicdComponent implements OnInit {
       this.registerObj1 = this.data.Obj;
       console.log("Icd RegisterObj:", this.registerObj1)
 
-      // this.dataSource2.data = [this.registerObj1];
+      // this.dataSource2.data = Array.isArray(this.registerObj1) ? [...this.registerObj1] : [this.registerObj1];
+
+    //   if (this.registerObj1 && this.registerObj1.length > 0) {
+    //     this.tablelist = [...this.registerObj1]; 
+    //     this.dataSource2.data = [...this.tablelist]; 
+    // }
+
+    this.tablelist = Array.isArray(this.registerObj1) ? [...this.registerObj1] : [this.registerObj1];
+this.dataSource2.data = [...this.tablelist];
+
       this.vpatICDCodeId=this.registerObj1.PatICDCodeId
       this.vdId=this.registerObj1.DId
       this.RegId = this.registerObj1.RegId;
@@ -112,9 +121,6 @@ export class NewicdComponent implements OnInit {
       this.vGenderName = this.registerObj1.GenderName;
       this.vAdmissionID = this.registerObj1.AdmissionID;
       this.vWardName=this.registerObj1.WardName;
-
-      // this.vShowData = this.registerObj1.PatientName;
-
     }
     this.getICDCodelist();
   }
@@ -183,110 +189,42 @@ export class NewicdComponent implements OnInit {
     });
   }
 
-  // imp
-  // getICDCodeDetailList(row: any) {
-  //   console.log('Selected Row Data:', row);
-
-  //   this.selectedRow = row;
-
-  //   const currentData = this.dataSource2.data;
-
-  //   const isRowExists = currentData.some(data => data.ICDCodingId === row.ICDCodingId);
-
-  //   if (isRowExists) {
-  //     console.log('Row already exists in Table 2:', row);
-  //   } else {
-  //     currentData.push(row);
-  //     this.dataSource2.data = [...currentData];
-
-  //     console.log('Updated DataSource for Table 2:', this.dataSource2.data);
-  //   }
-  // }
-
-  // demo
-//   getICDCodeDetailList(row: any) {
-//     console.log('Selected Row Data:', row);
-//     this.selectedRow = row;
-//     if (this.dataSource2.data.length > 0) {
-//         this.dataSource2.data = [];
-//         console.log('Existing data cleared from Table 2');
-//     }
-//     this.dataSource2.data = [row];
-//     console.log('Added new row to Table 2:', this.dataSource2.data);
-
-//     if (this.registerObj1) {
-//       this.dataSource2.data = [this.registerObj1];
-//     }
-// }
-
 tablelist:any=[];
-// 1
-// getICDCodeDetailList(row: any) {
-//   debugger
-//   console.log('Selected Row Data:', row);
-
-//   // If `this.registerObj1` exists, restore its data
-//   if (this.registerObj1) {
-//       this.dataSource2.data = [this.registerObj1];
-//       console.log('Restored data from registerObj1:', this.dataSource2.data);
-//   } else {
-//       // Otherwise, handle the newly selected row
-//       if (this.dataSource2.data.length > 0) {
-//           this.dataSource2.data = [];
-//           console.log('Existing data cleared from Table 2');
-//       }
-//       this.dataSource2.data = [row];
-//       console.log('Added new row to Table 2:', this.dataSource2.data);
-//   }
-// }
-
 getICDCodeDetailList(row: any) {
-  debugger
-  this.tablelist=[];
-  this.selectedRow=row;
-  if(this.tablelist.length){
-    if(this.tablelist.some(item=>item.ICDCode==row.ICDCode)){
-      this.toastr.warning('Record Saved Successfully.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-Warning',
-      });
-      return
-    }
-    this.tablelist.push(
-      {
-        MainCName:row.MainCName,
-        ICDCode:row.ICDCode,
-        ICDCodeName:row.ICDCodeName
-      }
-    )
+  debugger;
+  if (!this.tablelist) {
+    this.tablelist = [];
   }
-  else{
-    this.tablelist.push(
-      {
-        MainCName:row.MainCName,
-        ICDCode:row.ICDCode,
-        ICDCodeName:row.ICDCodeName
-      }
-    )
-  }  
-  this.dataSource2.data=this.tablelist
-}
+  // Check if the record already exists
+  if (this.tablelist.some(item => item.ICDCodingId === row.ICDCodingId)) {
+    this.toastr.warning('Record Already Exist.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-Warning',
+    });
+    return;
+  }
+  // Add the new row to tablelist
+  this.tablelist.push({
+    ICDCodingId: row.ICDCodingId,  // Ensure unique identifier is added
+    MainCName: row.MainCName,
+    ICDCode: row.ICDCode,
+    ICDCodeName: row.ICDCodeName
+  });
 
+  // Update dataSource2 with the updated tablelist
+  this.dataSource2.data = [...this.tablelist];
+}
 
 // demo end
 
   removeRow(row: any) {
-    // Get the current data from dataSource2
-    const currentData = this.dataSource2.data;
-
+    debugger
+    if (!this.tablelist) return;
     // Filter out the row to be removed
-    const updatedData = currentData.filter(data => data.ICDCodingId !== row.ICDCodingId);
-
-    // Update dataSource2 with the new data
-    this.dataSource2.data = updatedData;
-
+    this.tablelist = this.tablelist.filter(data => data.ICDCodingId !== row.ICDCodingId);
+    // Update dataSource2 with the new list
+    this.dataSource2.data = [...this.tablelist];  
     console.log('Updated DataSource after Deletion:', this.dataSource2.data);
   }
-
 
   onClear() {
     this._MrdService.icdForm.reset({
@@ -346,26 +284,34 @@ getICDCodeDetailList(row: any) {
         "createdBy": this._loggedService.currentUserValue.user.id,
       }
 
-      let insertPatICDCodeDetails = {
+      // let insertPatICDCodeDetails = {
+      //   "dId": 0,
+      //   "hId": 0,
+      //   "icdCode": this.selectedRow.ICDCode,
+      //   "icdCodeDesc": this.selectedRow.ICDCodeName,
+      //   "icdCdeMainName": this.selectedRow.MainCName,
+      //   "mainICDCdeId": this.selectedRow.MainICDCdeId,
+      //   "createdBy": this._loggedService.currentUserValue.user.id,
+      // }
+
+      let insertPatICDCodeDetailsArray = this.dataSource2.data.map((row: any) => ({
         "dId": 0,
         "hId": 0,
-        "icdCode": this.selectedRow.ICDCode,
-        "icdCodeDesc": this.selectedRow.ICDCodeName,
-        "icdCdeMainName": this.selectedRow.MainCName,
-        "mainICDCdeId": this.selectedRow.MainICDCdeId,
+        "icdCode": row.ICDCode,
+        "icdCodeDesc": row.ICDCodeName,
+        "icdCdeMainName": row.MainCName,
+        "mainICDCdeId": row.MainICDCdeId,
         "createdBy": this._loggedService.currentUserValue.user.id,
-      }
+      }));
 
       let submitData = {
         "insertPatICDCodeParamHeader": insertPatICDCodeHeader,
-        "insertPatICDCodeParamDetails": insertPatICDCodeDetails
+        "insertPatICDCodeParamDetails": insertPatICDCodeDetailsArray
       }
       console.log("insertJson:", submitData);
 
       this._MrdService.icdInsert(submitData).subscribe(response => {
         console.log("API Response:", response);
-  //       let generatedPatICDCodeId = response?.PatICDCodeId || 0; 
-  // insertPatICDCodeDetails.hId = generatedPatICDCodeId;
 
         if (response) {
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -390,19 +336,29 @@ getICDCodeDetailList(row: any) {
         "modifiedBy": this._loggedService.currentUserValue.user.id
       }
 
-      let updatePatICDCodeDetails = {
-        "dId": this.vdId,
+      let updatePatICDCodeDetailsArray = this.dataSource2.data.map((row: any) => ({
+        "dId": row.dId || this.vdId, // Use existing dId if available, otherwise use vdId
         "hId": 0,
-        "icdCode": this.selectedRow.ICDCode,
-        "icdCodeDesc": this.selectedRow.ICDCodeName,
-        "icdCdeMainName": this.selectedRow.MainCName,
-        "mainICDCdeId": this.selectedRow.MainICDCdeId,
+        "icdCode": row.ICDCode,
+        "icdCodeDesc": row.ICDCodeName,
+        "icdCdeMainName": row.MainCName,
+        "mainICDCdeId": row.MainICDCdeId,
         "modifiedBy": this._loggedService.currentUserValue.user.id
-      }
+      }));
+
+      // let updatePatICDCodeDetails = {
+      //   "dId": this.vdId,
+      //   "hId": 0,
+      //   "icdCode": this.selectedRow.ICDCode,
+      //   "icdCodeDesc": this.selectedRow.ICDCodeName,
+      //   "icdCdeMainName": this.selectedRow.MainCName,
+      //   "mainICDCdeId": this.selectedRow.MainICDCdeId,
+      //   "modifiedBy": this._loggedService.currentUserValue.user.id
+      // }
 
       let updateData = {
         "updatePatICDCodeParamHeader": updatePatICDCodeHeader,
-        "updatePatICDCodeParamDetails": updatePatICDCodeDetails
+        "updatePatICDCodeParamDetails": updatePatICDCodeDetailsArray
       }
 
       console.log("UpdateJson:", updateData);
@@ -425,8 +381,10 @@ getICDCodeDetailList(row: any) {
 
   onClose() {
     this._MrdService.icdForm.reset({
-      start: new Date(),
-      end: new Date(),
+      // start: new Date(),
+      // end: new Date(),
+      start: this._MrdService.icdForm.get('start')?.value,
+      end: this._MrdService.icdForm.get('end')?.value,
     });
     this.dialogRef.close();
   }
