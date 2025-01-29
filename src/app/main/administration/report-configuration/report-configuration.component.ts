@@ -23,7 +23,7 @@ export class ReportConfigurationComponent implements OnInit{
                 { }
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
-            apiUrl: "StoreMaster/List",
+            apiUrl: "MReportConfig/List",
             columnsList: [
                 { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
                 { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -59,8 +59,8 @@ export class ReportConfigurationComponent implements OnInit{
             sortField: "ReportName",
             sortOrder: 0,
             filters: [
-                { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                // { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
+                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25
         }
