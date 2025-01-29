@@ -71,8 +71,8 @@ export class ReportConfigurationService {
      //insert update of Report Configuration
      public insertReportConfig(Param: any, showLoader = true) {
         if (Param.reportId) {
-            return this._httpClient.PutData("ItemMaster/Edit/" + Param.reportId, Param, showLoader);
-        } else return this._httpClient.PostData("ItemMaster/InsertEDMX", Param, showLoader);
+            return this._httpClient.PutData("MReportConfig/" + Param.reportId, Param, showLoader);
+        } else return this._httpClient.PostData("MReportConfig", Param, showLoader);
     }
 
     public deactivateTheStatus(m_data) {
