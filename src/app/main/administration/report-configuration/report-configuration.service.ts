@@ -17,42 +17,89 @@ export class ReportConfigurationService {
             this.myform = this.createForm();
         }
 
-        /**
-         * 
-         * {
-  "reportId": 3,
-  "reportSection": "reportSection",
-  "reportName": "report",
-  "parentid": 13,
-  "reportTitle": "reportTitle",
-  "reportHeader": "Header",
-  "reportColumn": "Column",
-  "reportHeaderFile": "HeaderFile",
-  "reportBodyFile": "BodyFile",
-  "reportFolderName": "FolderName",
-  "reportFileName": "FileName",
-  "reportSpname": "Spname",
-  "reportPageOrientation": "PageOrientation",
-  "reportPageSize": "PageSize"
-}
-         */
-    
+
     createForm(): FormGroup {
         return this._formBuilder.group({
             reportId:[0],
-            reportSection:[""],
-            reportName:[""],
-            parentid:[""],
-            reportTitle:[""],
-            reportHeader:[""],
-            reportColumn:[""],
-            reportHeaderFile:[""],
-            reportBodyFile:[""],
-            reportFolderName:[""],
-            reportFileName:[""],
-            reportSPName:[""],
-            reportPageOrientation:[""],
-            reportPageSize:[""],
+            reportSection:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportName:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            parentid:["",
+                [
+                    Validators.required,
+                    Validators.maxLength(10),
+                    Validators.pattern('^[0-9]*$')
+                ]
+            ],
+            reportTitle:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportHeader:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportColumn:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportHeaderFile:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportBodyFile:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportFolderName:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportFileName:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportSPName:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
+            reportPageOrientation:["",[Validators.required]],
+            reportPageSize:["",[Validators.required]],
             isActive:[true,[Validators.required]],
         });
     }
@@ -69,7 +116,7 @@ export class ReportConfigurationService {
     }
 
      //insert update of Report Configuration
-     public insertReportConfig(Param: any, showLoader = true) {
+    public insertReportConfig(Param: any, showLoader = true) {
         if (Param.reportId) {
             return this._httpClient.PutData("MReportConfig/" + Param.reportId, Param, showLoader);
         } else return this._httpClient.PostData("MReportConfig", Param, showLoader);

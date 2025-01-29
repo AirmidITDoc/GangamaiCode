@@ -50,6 +50,7 @@ const routes: Routes = [
     FuseSidebarModule,
     MatDialogModule,
     SharedModule,
+
   ],
   providers: [ReportConfigurationService, DatePipe]
 })

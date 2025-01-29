@@ -38,7 +38,7 @@
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> Role Name" autocomplete="off"
                                             name="RoleNameSearch" formControlName="RoleNameSearch" />
-                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
@@ -56,7 +56,7 @@
                         <div fxlayout="row" class="rm-table mt-16">
                             <div style="width: 100%">
                                 <mat-table #table matSort [dataSource]="dsRoleMasterList"
-                                    [@animateStagger]="{ value: '50' }" style="overflow: auto">
+                                    [@animateStagger]="{ value: '50' }" style="overflow: auto;">
                                     <ng-container matColumnDef="RoleId">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
                                         </mat-header-cell>
