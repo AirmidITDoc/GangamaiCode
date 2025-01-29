@@ -48,7 +48,7 @@
                                       </mat-option>
                                 </mat-autocomplete>
                             </mat-form-field> -->
-                            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="selectedOption($event)"></airmid-autocomplete>
+                            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
                         <!-- <mat-form-field class=searchRegId appearance="outline" fxflex="30" *ngIf="Regflag">
                             <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto" (input)="getSearchList()" maxlength="10">
                             <span matSuffix style="display: flex;">

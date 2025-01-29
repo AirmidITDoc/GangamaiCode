@@ -124,7 +124,7 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig1" class="content">
                         <ng-container filters>
-
+                            <form [formGroup]="myFilterform">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="Search First Name" autocomplete="off"
@@ -143,46 +143,12 @@
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
+                         
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Date</mat-label>
-                                <input matInput placeholder="Search From Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Date</mat-label>
-                                <input matInput placeholder="Search To Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field> -->
-
-                            <form [formGroup]="_IPBrowseBillService.myFilterIppaymentbrowseform">
-
-                                         
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker" formControlName="fromDate"
-                                        (dateChange)="onChangeDate($event.value)" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                                        placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline"fxFlex>
-                                    <input matInput [matDatepicker]="validFromPicker1" formControlName="enddate"
-                                        (dateChange)="onChangeDate1($event.value)" [(ngModel)]="gridConfig.filters[3].fieldValue"
-                                        placeholder="mm/dd/yyyy">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker1"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker1></mat-datepicker>
-                                </mat-form-field>
-                            </form>
+                                <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+                                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[2].fieldValue"></airmid-datepicker>
+                           
 
 
                             <mat-form-field appearance="outline" fxFlex>
@@ -212,6 +178,7 @@
                                 <mat-radio-button mat-fab value="1">IsIntrimOrFinal</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsIntrimOrFinal</mat-radio-button>
                             </mat-radio-group>
+                        </form>
                         </ng-container>
                     </airmid-table>
                 </div>

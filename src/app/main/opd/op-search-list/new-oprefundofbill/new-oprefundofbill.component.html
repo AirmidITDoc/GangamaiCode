@@ -24,21 +24,8 @@
                     <form [formGroup]="searchFormGroup">
                         
                             <div class="patient-search">
-                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-                                    <mat-form-field class=searchRegId appearance="outline" fxFlex="60%">
-                                        <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1" (optionSelected)='getSelectedObj1($event.option.value)'>
-                                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                                {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
-                                                {{option.LastName}} |
-                                                {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8" style="width: 50%;">
+                                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
                                 </div>
                             </div>
                         
@@ -84,7 +71,7 @@
                                                 class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}D | {{GenderName}}</span>
+                                                class="patient-col-value">{{dateofbirth}}| {{genderName}}</span>
                                         </div>
                                         
                                     </div>
@@ -94,48 +81,7 @@
                     </div>
                 </div>
             </div>
-                <!-- <div class="layout-card-container">
-                    <form [formGroup]="searchFormGroup">
-                        <mat-card style="padding: 6px;">
-                            <div class="patient-info-container">
-                                <fieldset class="fieldset-div">
-                                    <legend class="h2">Patient Information</legend>
-                                    <div class="sales-patient-info mb-3" fxLayout="row" fxLayoutAlign="space-between center">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-row" fxLayout="row" fxLayoutAlign="space-between center">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key ">Patient Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{PatientName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">OPIPNo</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vOPDNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">DoctorName</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{Doctorname}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">CompanyName</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{CompanyName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">TarrifName</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{Tarrifname}}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-                        </mat-card>
-                    </form>
-                </div> -->
+          
                 <div class="layout-card-container table-container">
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                         <!-- Table 1 -->

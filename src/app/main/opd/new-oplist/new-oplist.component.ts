@@ -235,13 +235,13 @@ export class NewOPListComponent implements OnInit {
    
     viewgetOPBillReportPdf(data) {
         setTimeout(() => {
-
+debugger
             let param = {
                 
                     "searchFields": [
                       {
                         "fieldName": "BillNo",
-                        "fieldValue": "7940",
+                        "fieldValue": data.billNo,
                         "opType": "13"
                       }
                     ],
@@ -274,10 +274,86 @@ export class NewOPListComponent implements OnInit {
     }
     getWhatsappshareBill(Id) { }
 
-    viewgetOPPaymentReportPdf(Id) { }
+    viewgetOPPaymentReportPdf(obj) { 
+        setTimeout(() => {
+
+            let param = {
+                
+                    "searchFields": [
+                      {
+                        "fieldName": "PaymentId",
+                        "fieldValue": obj.paymentId,
+                        "opType": "13"
+                      }
+                    ],
+                    "mode": "OPPaymentReceipt"
+                  }
+            
+
+            debugger
+            console.log(param)
+            this._OPListService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Op Bill  Viewer"
+
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
+    }
     getWhatsappsharePaymentReceipt(Id) { }
 
-    viewgetOPRefundBillReportPdf(Id) { }
+    viewgetOPRefundBillReportPdf(obj) {
+        setTimeout(() => {
+
+            let param = {
+                
+                    "searchFields": [
+                      {
+                        "fieldName": "RefundId",
+                        "fieldValue": obj.refundId,
+                        "opType": "13"
+                      }
+                    ],
+                    "mode": "OPRefundReceipt"
+                  }
+            
+
+            debugger
+            console.log(param)
+            this._OPListService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Op Refund Receipt  Viewer"
+
+                        }
+
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
+     }
     getWhatsappshareRefundBill(Id) { }
 
     EditRefund() {

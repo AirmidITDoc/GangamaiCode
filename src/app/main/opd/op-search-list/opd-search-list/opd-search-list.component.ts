@@ -10,7 +10,7 @@ import { OPBillingComponent } from '../op-billing/op-billing.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith, takeUntil } from 'rxjs/operators';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
@@ -86,7 +86,7 @@ export class OpdSearchListComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private _fuseSidebarService: FuseSidebarService, 
-    private formBuilder: UntypedFormBuilder, 
+    private formBuilder: FormBuilder, 
   ) { }
 
   ngOnInit(): void {
@@ -113,25 +113,59 @@ export class OpdSearchListComponent implements OnInit {
       });
     } 
   } 
+  // getSelectedObj(obj) {
+  //   console.log(obj)
+  //   this.registerObj = obj; 
+  //   this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+  //   this.RegId = obj.RegID;  
+  //   this.RegId = obj.RegId;  
+  //   this.vAdmissionID = obj.AdmissionID;
+  //   this.RegNo = obj.RegNo;
+  //   this.AgeYear = obj.AgeYear; 
+  //   this.AgeDay = obj.AgeDay;
+  //   this.AgeMonth = obj.AgeMonth;
+  //   this.GenderName = obj.GenderName;
+  //   this.MobileNo = obj.MobileNo;  
+  //   this.getCreditBillDetails(); 
+  // }
+
   getSelectedObj(obj) {
     console.log(obj)
-    this.registerObj = obj; 
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+   
+    this.RegId = obj.value;
+  
+    if ((this.RegId ?? 0) > 0) {
+        
+       setTimeout(() => {
+          this._opSearchListService.getRegistraionById(this.RegId).subscribe((response) => {
+            this.registerObj = response;
+            console.log(this.registerObj)
+            if(this.registerObj)
+              this.getregdetails(this.registerObj);
+  
+          });
+  
+        }, 500);
+    }
+  
+}
+ 
+getregdetails(obj){
+  console.log(obj)
+    this.PatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName;
     this.RegId = obj.RegID;  
-    this.RegId = obj.RegId;  
+    this.RegId = obj.regId;  
     this.vAdmissionID = obj.AdmissionID;
     this.RegNo = obj.RegNo;
     this.AgeYear = obj.AgeYear; 
     this.AgeDay = obj.AgeDay;
     this.AgeMonth = obj.AgeMonth;
-    this.GenderName = obj.GenderName;
-    this.MobileNo = obj.MobileNo;  
-    this.getCreditBillDetails(); 
-  }
- 
+    this.GenderName = obj.genderId;
+    this.MobileNo = obj.mobileNo;  
+}
   getOptionText(option) {
     if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' ' + option.LastName ; 
+    return option.firstName + ' ' + option.mastName + ' ' + option.lastName ; 
   }
   clearpatientinfo(){
     this.PatientName = '';
@@ -150,6 +184,9 @@ export class OpdSearchListComponent implements OnInit {
       'RegId':this.RegId
     } 
     console.log(Vdata)
+
+
+    
     this._opSearchListService.getCreditBillList(Vdata).subscribe(Visit => {
       this.dataSource1.data = Visit as CreditBilldetail[];
       console.log(this.dataSource1.data);
@@ -191,29 +228,12 @@ export class OpdSearchListComponent implements OnInit {
           FromName: "OP-Bill"
         }
       });
-    // PatientHeaderObj['Date'] = formattedDate;
-    // PatientHeaderObj['PatientName'] = this.PatientName;
-    // PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-    // PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt; 
-    // PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-    // PatientHeaderObj['PBillNo'] = contact.PBillNo;
-    // PatientHeaderObj['OPDNo'] = contact.OPDNo;
-    // PatientHeaderObj['RegNo'] = this.RegNo; 
-    // const dialogRef = this._matDialog.open(IPpaymentWithadvanceComponent,
-    //   {
-    //     maxWidth: "95vw",
-    //     height: '650px',
-    //     width: '85%',
-    //     data: {
-    //       advanceObj: PatientHeaderObj,
-    //       FromName: "OP-SETTLEMENT"
-    //     }
-    //   });
+  
 
       dialogRef.afterClosed().subscribe(result => {
         console.log(result)
         if (result.IsSubmitFlag == true) {
-
+debugger
           this.vpaidamt = result.PaidAmt;
           this.vbalanceamt = result.BalAmt
 
@@ -244,96 +264,44 @@ export class OpdSearchListComponent implements OnInit {
         }
       });
   }  
-  // openPaymentpopup(contact){
-  //   console.log(contact)
-  //   let PatientHeaderObj = {};
-  //   PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
-  //   PatientHeaderObj['RegNo'] = contact.RegNo;
-  //   PatientHeaderObj['PatientName'] = contact.PatientName;
-  //   PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-  //   PatientHeaderObj['Age'] = contact.PatientAge;
-  //   PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-  //   PatientHeaderObj['DoctorName'] = contact.DoctorName;
-  //   PatientHeaderObj['TariffName'] = contact.TariffName;
-  //   PatientHeaderObj['CompanyName'] = contact.CompanyName;
-  //   PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
-  //   this.vMobileNo = contact.MobileNo;
-    
-  //   const dialogRef = this._matDialog.open(OpPaymentComponent,
-  //     {
-
-  //       maxWidth: "80vw",
-  //      // height: '600px',
-  //       width: '70%',
-  //       data: {
-  //         vPatientHeaderObj: PatientHeaderObj,
-  //         FromName: "OP-Bill"
-  //       }
-  //     });
-
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log(result)
-  //       if (result.IsSubmitFlag == true) {
-  //         this.vpaidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
-  //         this.vbalanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-  //         let updateBillobj = {};
-  //         updateBillobj['BillNo'] = contact.BillNo;
-  //         updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || result.submitDataPay.ipPaymentInsert.BalanceAmt;//result.BalAmt;
-  //         const updateBill = new UpdateBill(updateBillobj);
-  //         let Data = {
-  //           "updateBill": updateBill,
-  //           "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
-  //         };
-  //         console.log(Data)
-  //         this._BrowseOPDBillsService.InsertOPBillingsettlement(Data).subscribe(response => {
-  //           if (response) {
-  //             Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
-  //               if (result.isConfirmed) {
-                  
-  //                 this.viewgetOPPayemntPdf(response,true)
-  //                 this._matDialog.closeAll();
-  //                 this.getBrowseOPDBillsList();
-  //                 this.getWhatsappshareOPPaymentReceipt(response,this.vMobileNo);
-  //               }
-  //             });
-  //           }
-  //           else {
-  //             Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
-  //           }
-  //         });
-  //       }
-  //     });
-  // }
+ 
   viewgetOPPayemntPdf(Id,value) {
-    
-    let PaymentId=0;
-if(value)
- PaymentId=Id
-else
-PaymentId=Id.PaymentId
     setTimeout(() => {
 
-      this._opSearchListService.getOpPaymentview(
-        PaymentId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Op Payment Receipt Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.sIsLoading = '';
-        });
+      let param = {
 
+          "searchFields": [
+              {
+                  "fieldName": "PaymentId",
+                  "fieldValue": Id,
+                  "opType": "13"
+              }
+          ],
+          "mode": "OPPaymentReceipt"
+      }
+
+      debugger
+      console.log(param)
+      this._BrowseOPDBillsService.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "OP Payment  Viewer"
+
+                  }
+
+              });
+
+          matDialog.afterClosed().subscribe(result => {
+
+          });
       });
 
-    }, 100);
+  }, 100);
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -476,8 +444,8 @@ export class ChargesList{
   ServiceId: number;
   serviceId: number;
   ServiceName : String;
-  Price:number;
-  Qty: number;
+  Price:any;
+  Qty: any;
   TotalAmt: number;
   DiscPer: number;
   DiscAmt: number;
@@ -485,15 +453,20 @@ export class ChargesList{
   DoctorId:number;
   ChargeDoctorName: String;
   ChargesDate: Date;
-  IsPathology:Boolean;
-  IsRadiology:Boolean;
+  IsPathology:boolean;
+  IsRadiology:boolean;
   ClassId:number;
   ClassName: string;
   ChargesAddedName: string;
-
+  PackageId:any;
+  PackageServiceId:any;
+  IsPackage:any;
+  PacakgeServiceName:any;
+  BillwiseTotalAmt: any;
+  
   constructor(ChargesList){
-          this.ChargesId = ChargesList.ChargesId || 0;
-          this.ServiceId = ChargesList.ServiceId || 0;
+          this.ChargesId = ChargesList.ChargesId || '';
+          this.ServiceId = ChargesList.ServiceId || '';
           this.serviceId = ChargesList.serviceId || 0;
           this.ServiceName = ChargesList.ServiceName || '';
           this.Price = ChargesList.Price || '';
@@ -505,10 +478,14 @@ export class ChargesList{
           this.DoctorId=ChargesList.DoctorId || 0;
           this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
           this.ChargesDate = ChargesList.ChargesDate || '';
-          this.IsPathology = ChargesList.IsPathology || false;
-          this.IsRadiology = ChargesList.IsRadiology || false;
+          this.IsPathology = ChargesList.IsPathology || '';
+          this.IsRadiology = ChargesList.IsRadiology || '';
           this.ClassId=ChargesList.ClassId || 0;
           this.ClassName = ChargesList.ClassName || '';
           this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+          this.PackageId=ChargesList.PackageId || 0;
+          this.PackageServiceId=ChargesList.PackageServiceId || 0;
+          this.IsPackage=ChargesList.IsPackage || 0; 
+          this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
   }
 } 

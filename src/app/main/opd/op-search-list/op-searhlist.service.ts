@@ -549,4 +549,9 @@ public getRegistraionById(Id,showLoader = true) {
   return this._httpClient1.GetData("OutPatient/" + Id,showLoader);
 }
 
+
+// new API
+public getReportView(Param, showLoader = true) {
+  return this._httpClient1.PostData("Report/ViewReport", Param, showLoader);
+}
 }

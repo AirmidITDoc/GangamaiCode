@@ -62,10 +62,7 @@ const routes: Routes = [
         path: '**',
         component: OpdSearchListComponent,
     },
-    {
-        path: 'new-OpdBilling',
-        // component: OpBillingComponent,
-    },
+    
 ];
 @NgModule({
     declarations: [
@@ -128,9 +125,8 @@ const routes: Routes = [
     ],
     providers: [
         OPSearhlistService,
-        NotificationServiceService,
         DatePipe,
-        CurrencyPipe
+        
     ]
 })
 export class opseachlistModule {

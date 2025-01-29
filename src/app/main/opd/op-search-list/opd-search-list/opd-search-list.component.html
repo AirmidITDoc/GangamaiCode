@@ -34,30 +34,8 @@
                         <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                             <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
         
-                                <div class="redio-container">
-        
-                                    <mat-form-field appearance="outline" fxFlex="50%"
-                                         >
-                                        <input type="text" name="RegId" formControlName="RegId"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                            [matAutocomplete]="auto" (input)="getSearchList()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                                {{option.RegNo}} | {{option.MobileNo}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
-                                            Required field cannot be left blank
-                                        </mat-error>
-                                    </mat-form-field> 
+                                <div class="redio-container" style="width: 40%;">
+                                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
                                 </div>  
                             </div>
                         </form>

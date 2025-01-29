@@ -122,7 +122,8 @@ export class NewOPRefundofbillComponent implements OnInit {
   vFinalrefundbamt=0;
   RegNo:any;
   vMobileNo: any;
-
+  dateofbirth:any;
+  genderName:any;
 
 
   @ViewChild('picker') datePickerElement = MatDatepicker;
@@ -187,14 +188,7 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
 
     this.refundBillForm();
-    // this.getRefundofBillOPDListByReg();
-    // this.getServiceListCombobox();
-
-
-    console.log(this.datePickerElement)
-    console.log(this.datePickerElement['opened'])
-
-  }
+      }
 
 
 
@@ -228,64 +222,58 @@ export class NewOPRefundofbillComponent implements OnInit {
     });
   }
 
-  // Patient Search;
-  getSearchList() {
 
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegId').value}%`
-    }
-    this._OpSearchListService.getRegisteredList(m_data).subscribe(data => {
-      this.PatientListfilteredOptions = data;
-      console.log(data)
-      if (this.PatientListfilteredOptions.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-
-  }
-  AgeMonth:any;
-  AgeDay:any;
-  GenderName:any;
-  getSelectedObj1(obj) {
+  getregdetails(obj) {
     this.dataSource.data = [];
     console.log(obj)
     this.registerObj = obj;
-    this.PatientName = obj.FirstName + " " + obj.LastName;
-    this.RegId = obj.RegId; 
-    this.RegNo = obj.RegNo;
-    this.City = obj.City;
-    this.AgeMonth = obj.AgeMonth;
-    this.GenderName = obj.GenderName;
-    this.AgeDay = obj.AgeDay;
-    this.AgeYear = obj.AgeYear;
+    this.PatientName = obj.firstName + " " + obj.lastName;
+    this.RegId = obj.regId; 
+    this.RegNo = obj.regNo;
+    this.City = obj.city;
+    this.AgeYear = obj.ageYear;
     this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
-    this.CompanyName = obj.CompanyName;
-    this.Tarrifname = obj.TariffName;
-    this.Doctorname = obj.DoctorName;
-    this.vOPDNo = obj.RegId;
-    this.vTariffId = obj.TariffId;
+    this.CompanyName = obj.companyName;
+    this.Tarrifname = obj.tariffName;
+    this.Doctorname = obj.coctorName;
+    this.vOPDNo = obj.regId;
+    this.vTariffId = obj.tariffId;
     this.vClassId = obj.classId
-    this.AgeYear = obj.AgeYear;
-    this.vMobileNo = obj.MobileNo;
-    this.getRefundofBillOPDListByReg();
+    this.AgeYear = obj.ageYear;
+    this.vMobileNo = obj.mobileNo;
+    this.genderName=obj.genderId
+    this.dateofbirth = this.datePipe.transform(obj.dateOfBirth, 'dd/MM/yyyy hh:mm a');
+    this.getRefundofBillOPDListByReg(obj.RegId);
   }
 
-  getOptionText1(option) {
-    if (!option)
-      return '';
-    return option.FirstName + ' ' + option.MiddleName + ' ' + option.LastName;
+  getSelectedObj(obj) {
+    console.log(obj)
+   
+    this.RegId = obj.value;
+  
+    if ((this.RegId ?? 0) > 0) {
+        
+       setTimeout(() => {
+          this._OpSearchListService.getRegistraionById(this.RegId).subscribe((response) => {
+            this.registerObj = response;
+            console.log(this.registerObj)
+            if(this.registerObj)
+              this.getregdetails(this.registerObj);
+  
+          });
+  
+        }, 500);
+    }
+  
+}
+ 
 
-  }
 
 
   //Give BillNumber For List
-  getRefundofBillOPDListByReg() {
-    ;
-
-    var m_data = {
-      "RegId": this.RegId //2
+  getRefundofBillOPDListByReg(RegId) {
+        var m_data = {
+      "RegId": RegId //2
 
     }
 
@@ -577,9 +565,9 @@ onSave() {
       this.searchFormGroup.get('RegId').reset();
       this.PatientName = '';
       this.AgeYear = '';
-      this.AgeMonth = '';
-      this.GenderName = '';
-      this.AgeDay = '';
+      // this.AgeMonth = '';
+      // this.GenderName = '';
+      // this.AgeDay = '';
       this.TotalRefundAmount=0;
       this.RefundBalAmount=0;
       this.RegNo = '';
@@ -590,32 +578,42 @@ onSave() {
   SpinLoading: boolean = false;
   viewgetOPRefundofbillPdf(RefundId) {
     setTimeout(() => {
-      this.SpinLoading = true;
-      //  this.AdList=true;
-      this._OpSearchListService.getOprefundofbillview(
-        RefundId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Op Refund Of Bill Receipt Viewer"
+
+      let param = {
+          
+              "searchFields": [
+                {
+                  "fieldName": "RefundId",
+                  "fieldValue": RefundId,
+                  "opType": "13"
+                }
+              ],
+              "mode": "OPRefundReceipt"
             }
+      
+
+      debugger
+      console.log(param)
+      this._OpSearchListService.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+              {
+                  maxWidth: "85vw",
+                  height: '750px',
+                  width: '100%',
+                  data: {
+                      base64: res["base64"] as string,
+                      title: "Op Refund Receipt  Viewer"
+
+                  }
+
+              });
+
+          matDialog.afterClosed().subscribe(result => {
+
           });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
       });
 
-    }, 100);
+  }, 100);
   }
 
   getWhatsappshareRefundbill(el, vmono) {
