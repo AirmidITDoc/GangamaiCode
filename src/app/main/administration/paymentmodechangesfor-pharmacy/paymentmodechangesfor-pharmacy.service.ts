@@ -1,17 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentmodechangesforpharmacyService {
 
-  userFormGroup:FormGroup;
-  paymentform:FormGroup;
-  constructor(
-    public _httpClient:HttpClient,
-    public _formBuilder:UntypedFormBuilder
+    userFormGroup:FormGroup;
+    paymentform:FormGroup;
+    constructor(
+        private _httpClient: ApiCaller,
+        private _formBuilder: UntypedFormBuilder
     ) 
     { 
       
@@ -32,8 +33,6 @@ export class PaymentmodechangesforpharmacyService {
 
       })
     }
-
-   
 
     createpaymentForm(){
       return this._formBuilder.group({
@@ -63,21 +62,24 @@ export class PaymentmodechangesforpharmacyService {
       })
     }
 
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
+    }
 
 
     public getIpPharAdvanceList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPayPharReceipt",Param)
+      return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPayPharReceipt",Param)
     }
     public getSalesNoList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BrowsePharmacyPayReceipt",Param)
+      return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_BrowsePharmacyPayReceipt",Param)
     }
 
     public getBankMasterCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
+      return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
     }
     
     public PaymentmodeUpdate(employee) {//Administration/UpdateLoginUser
-      return this._httpClient.post("Pharmacy/UpdatePharmPaymentMode", employee);
+      return this._httpClient.PostData("Pharmacy/UpdatePharmPaymentMode", employee);
     }
     
 }

@@ -6,6 +6,9 @@ import { UntypedFormBuilder, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class CancellationService {
+  getIpdreturnAdvancepaymentreceipt(D_data: { F_Name: string; L_Name: string; From_Dt: string; To_Dt: string; Reg_No: any; }) {
+      throw new Error('Method not implemented.');
+  }
   UserFormGroup: FormGroup;
   MyForm: FormGroup;
   constructor(

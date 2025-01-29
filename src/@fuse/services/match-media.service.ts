@@ -6,8 +6,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class FuseMatchMediaService
-{
+export class FuseMatchMediaService {
     activeMediaQuery: string;
     onMediaChange: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
@@ -18,8 +17,7 @@ export class FuseMatchMediaService
      */
     constructor(
         private _mediaObserver: MediaObserver
-    )
-    {
+    ) {
         // Set the defaults
         this.activeMediaQuery = '';
 
@@ -37,20 +35,20 @@ export class FuseMatchMediaService
      *
      * @private
      */
-    private _init(): void
-    {
-        // this._mediaObserver..media$
-        //     .pipe(
-        //         debounceTime(500),
-        //         distinctUntilChanged()
-        //     )
-        //     .subscribe((change: MediaChange) => {
-        //         if ( this.activeMediaQuery !== change.mqAlias )
-        //         {
-        //             this.activeMediaQuery = change.mqAlias;
-        //             this.onMediaChange.next(change.mqAlias);
-        //         }
-        //     });
+    private _init(): void {
+        this._mediaObserver.asObservable()
+            .pipe(
+                debounceTime(500),
+                distinctUntilChanged()
+            )
+            .subscribe((changes: MediaChange[]) => {
+                changes.forEach((change) => {
+                    if (this.activeMediaQuery !== change.mqAlias) {
+                        this.activeMediaQuery = change.mqAlias;
+                        this.onMediaChange.next(change.mqAlias);
+                    }
+                })
+            });
     }
 
 }

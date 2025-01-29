@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -16,7 +17,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe,public _matDialog: MatDialog) {
+    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService:FuseSidebarService) {
     }
     dateType = DATE_TYPES;
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
@@ -35,6 +36,7 @@ export class AirmidTableComponent implements OnInit {
     headers = [];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     public defaultColumnWidth = 120;
+    public isLoading = false;
     ngOnInit(): void {
         this.bindGridData();
     }
@@ -56,7 +58,9 @@ export class AirmidTableComponent implements OnInit {
             rows: (this.paginator?.pageSize ?? this.gridConfig.row),
             exportType: gridResponseType.JSON
         };
+        this.isLoading = true;
         this._httpClient.PostData(this.gridConfig.apiUrl, param).subscribe((data: any) => {
+            this.isLoading = false;
             this.dataSource.data = data.data as [];
             this.dataSource.sort = this.sort;
             this.resultsLength = data["recordsFiltered"];
@@ -68,14 +72,14 @@ export class AirmidTableComponent implements OnInit {
     getStatus(status: boolean) {
         return status;
     }
-    onDelete(obj,element) {
+    onDelete(obj, element) {
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
                 disableClose: false,
             }
         );
-        this.confirmDialogRef.componentInstance.confirmMessage =obj.message?? "Are you sure you want to deactive?";
+        this.confirmDialogRef.componentInstance.confirmMessage = obj.message ?? "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 obj.callback(element);

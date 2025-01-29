@@ -306,7 +306,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy {
                 if (this._wasActive === isActive) {
                     return;
                 }
-
+                
                 // Activate the lockedOpen
                 if (isActive) {
                     // Set the lockedOpen status

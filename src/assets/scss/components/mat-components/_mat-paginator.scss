@@ -1,7 +1,8 @@
 .mat-typography {
-    .mat-paginator {
+    .mat-paginator,.mat-mdc-paginator {
         font-family: $font-primary;
         @include font-size(12px);
+        background-color: transparent;
         .mat-paginator-outer-container {
             .mat-paginator-container {
                 min-height: 40px;
@@ -24,9 +25,9 @@
             }
         }
         @include themed() {
-            background-color: t($bg-color);
-            color: t($text-color);
-            border-top: 1px solid t(ngt-inverse);
+            // background-color: t($bg-color);
+            // color: t($text-color);
+            // border-top: 1px solid t(ngt-inverse);
             .mat-paginator-outer-container {
                 .mat-paginator-container {
                     .mat-select-trigger {
