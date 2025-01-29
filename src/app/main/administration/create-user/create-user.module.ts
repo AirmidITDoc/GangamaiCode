@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CreateUserComponent } from './create-user.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,6 +36,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
 import { MyprofileComponent } from '../myprofile/myprofile.component';
+import { NewcreateUserComponent } from './newcreate-user/newcreate-user.component';
+import { CreateUserService } from './create-user.service';
 
 const routes: Routes = [
   {
@@ -45,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CreateUserComponent, ChangePasswordComponent, UserDetailComponent, MyprofileComponent],
+    declarations: [CreateUserComponent, ChangePasswordComponent, UserDetailComponent, MyprofileComponent, NewcreateUserComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
@@ -88,6 +90,7 @@ const routes: Routes = [
         MatCardModule,
         MatTooltipModule,
         MatExpansionModule,
-    ]
+    ],
+    providers: [CreateUserService, DatePipe]
 })
 export class CreateUserModule { }

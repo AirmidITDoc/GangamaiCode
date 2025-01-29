@@ -96,6 +96,7 @@ export class RolePermissionComponent implements OnInit {
     ngOnInit(): void {
         if (this.data) {
             this.roleId=this.data.RoleId;
+            console.log(this.roleId)
         }
     }
     updatePermission(obj, type, $event) {
@@ -110,16 +111,14 @@ export class RolePermissionComponent implements OnInit {
             descendants[i][proptype] = $event.checked;
             if ((descendants[i].children ?? []).length > 0) {
                 for (let j = 0; j < descendants[i].children.length; j++) {
-                    // var objNode=this.dataSource._flattenedData.value.find(x=>x["menuId"]==descendants[i].children[j].menuId);
-                    var objNode=this.treeControl.dataNodes.find(x=>x["menuId"]==descendants[i].children[j].menuId);
+                    var objNode=this.dataSource.data.find(x=>x["menuId"]==descendants[i].children[j].menuId);
                     if(objNode)
                         objNode[proptype] = $event.checked;
                     descendants[i].children[j][proptype] = $event.checked;
                 }
             }
         }
-        // var objNode=this.dataSource._flattenedData.value.find(x=>x["menuId"]==obj.menuId);
-        var objNode=this.treeControl.dataNodes.find(x=>x["menuId"]==obj.menuId);
+        var objNode=this.dataSource.data.find(x=>x["menuId"]==obj.menuId);
         if(objNode)
             objNode[proptype] = $event.checked;
     }
@@ -130,8 +129,7 @@ export class RolePermissionComponent implements OnInit {
     }
       
     onSubmit() {
-        // var data=this.dataSource._flattenedData.value.map(obj => ({ ...obj, RoleId: this.roleId }));
-        var data=this.treeControl.dataNodes.map(obj => ({ ...obj, RoleId: this.roleId }));
+        var data=this.dataSource.data.map(obj => ({ ...obj, RoleId: this.roleId }));
         this._RoleService.savePermission(data).subscribe((Menu) => {
             this.toastr.success('Permission updated Successfully.', 'updated !', {
                 toastClass: 'tostr-tost custom-toast-success',

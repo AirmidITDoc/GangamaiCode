@@ -1,350 +1,459 @@
-
-
-
-    <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px"> -->
-        <div class="main-content" >
-   
+<div class=" simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+          Configuration Form
+        </span>
+      </div>
   
-            <div class="form-section" >
-        
-              <div class="header-container" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                fxLayoutAlign="space-between">
-                <span style="font-size: 22px; font-weight: 500; color: #fff;">Configuration Form</span>
-                <span class="material-icons" (click)="onClose()" style="cursor: pointer; margin-left: 24px; color: #fff;" >
-                  close
-                </span>
-              </div>
-              <div class="form-div">
-                <form  fxLayoutAlign="space-between start">
-                  <div class="register-container" fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    
-                 
-                    <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs()" style="border-radius: 16px;display:none;">
-                      Show
-                    </button>
-                    <!-- <div class="search-field"> -->
-                    <!-- <mat-form-field appearance="outline" fxFlex="20">
-                      <input name="RegId" formControlName="RegId" placeholder="RegNo" matInput required>
-                      <mat-error>Please enter Reg No </mat-error>
-                    </mat-form-field> -->
-        
-                 
-                    <!-- </div> -->
-                    
-                  </div>
-                </form>
-        
-             <div>
-              
-                    <form  [formGroup]="configFormGroup">
-                      <!-- <ng-template matStepLabel>Personal</ng-template> -->
-                      <br>
-                      <div  fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                      fxLayoutAlign="space-between" style=" height: 35px;background-color:#33b5e5">
-                       <span style="font-size:18px; font-weight: 500; color:white;padding:7px;">Config</span>
-                       
-                        </div>
-                        <div style="padding: 7px;">
-        
-                      <div fxFlexFill fxLayout="column"  fxLayout.gt-xs="row" fxLayoutGap="25px">
-                          <mat-checkbox  formControlName="PrintReg">Print After Registration </mat-checkbox>
-                          <mat-checkbox formControlName="PrintOPDVisit" >Print Case Proper After OPD Visit  </mat-checkbox>
-                          <mat-checkbox formControlName="PrintAdm" >Print IPD Admission </mat-checkbox>
-                         
-                      </div>
-                      <br>
-                      <span style="font-size:16px; font-weight: bold; ">Registration Mandatory Field:</span>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="50px">
-                          <mat-checkbox formControlName="FirstName" >First Name </mat-checkbox>
-                          <mat-checkbox formControlName="MiddleName" >Middle Name </mat-checkbox>
-                          <mat-checkbox formControlName="LastName" >Last Name</mat-checkbox>
-                          <mat-checkbox formControlName="Address" >Address  </mat-checkbox>
-                          <mat-checkbox formControlName="City" >City </mat-checkbox>
-                          <mat-checkbox formControlName="PhoneNo" >Phone No</mat-checkbox>
-                          <mat-checkbox formControlName="Age" >Age</mat-checkbox>
-                          <mat-checkbox formControlName="isPathologistDr" >IsPathologistDr</mat-checkbox>
-                          <mat-checkbox formControlName="OTCharges" >OTCharges</mat-checkbox>
-                      </div>
-                      <br>
-                      <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                          <mat-form-field appearance="outline" fxFlex>
-                              <mat-label>RegistrationNo</mat-label>
-                              <input name="RegPrefix"  formControlName="RegPrefix" [(ngModel)]="configObj.RegPrefix"  placeholder="Reg No"  matInput>
-                             
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                              <mat-label>IP No</mat-label>
-                              <input name="IPPrefix"  formControlName="IPPrefix"  [(ngModel)]="configObj.IPPrefix"  placeholder="IP No" matInput >
-                             
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                              <mat-label>OP No</mat-label>
-                              <input name="OPPrefix"  formControlName="OPPrefix"  [(ngModel)]="configObj.OPPrefix"  placeholder="OP No" matInput >
-                            </mat-form-field>
-    
-                            <mat-form-field appearance="outline" fxFlex=30%>
-                              <mat-label>Patient Type</mat-label>
-                              <mat-select formControlName="PatientTypeID" >
-                                <mat-option *ngFor="let Doc of PatientTypeList" [value]="Doc">
-                                  {{Doc.PatientType}}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                           
-                            <div >
-                            <mat-checkbox aria-label="Checked"     formControlName="ClassEdit" style="margin-top:15px"  >Class Edit Option For IP Patient</mat-checkbox>
-                           </div>
-                      </div>
-        
-      
-                      <br>
-                      <div  fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                      fxLayoutAlign="space-between" style=" height: 35px;background-color:#33b5e5">
-                       <span style="font-size:18px; font-weight: 500; color:white;padding:7px;"> OP Billing Config</span>
-                       
-                        </div>
-                        <br>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="25px" >
-                        <mat-checkbox formControlName="Charges" > After OPD Appointment Pop add Charges Form </mat-checkbox>
-                        <mat-checkbox formControlName="PopPayBill" > After Charges Pop Payment Form  </mat-checkbox>
-                        <mat-checkbox formControlName="GenerateOPBill" >Generated Bill Cash </mat-checkbox>
-      
-                      </div>
-                      <br>
-                      <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-      
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label> OPD Billing Counter</mat-label>
-                          <mat-select formControlName="OPD_Billing_CounterId"  placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="oPDBillingFilterCtrl"   [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredOPDCounter | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-    
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>OPD Receipt Counter</mat-label>
-                          <mat-select formControlName="OPD_Receipt_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="oPDReceiptFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredReceipt | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                       
-      
-                            <mat-form-field appearance="outline" fxFlex>
-                              <mat-label>OPD Refund Of Bill Counter</mat-label>
-                              <mat-select formControlName="OPD_Refund_Bill_CounterId" placeholder="Bank" #singleSelect >
-                                <mat-option>
-                                  <ngx-mat-select-search [formControl]="opdRefundOfBillFilterCtrl"  [placeholderLabel]="'Search'"
-                                  [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                                </mat-option>
-                                <mat-option *ngFor="let element of filteredOpdRefundBill | async" [value]="element">
-                                  {{element.CashCounterName}}
-                                </mat-option>
-                              </mat-select>
-                            </mat-form-field>
-                            <div >
-                          
-                           </div>
-                      </div>
-        
-                      <br>
-                      <div  fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                      fxLayoutAlign="space-between" style=" height: 35px;background-color:#33b5e5">
-                       <span style="font-size:18px; font-weight: 500; color:white;padding:7px;"> IPD Billing Config</span>
-                       
-                        </div>
-                        <br>
+      <div class="close-icon">
+        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+  
+    <div class="content">
+  
+      <div class="center p-12 pb-56" fxFlexAlign="start center">
+  
+        <div class="content-card" style="border-radius:4px;">
+          <!-- <form  fxLayoutAlign="space-between start">
+                    <div class="register-container" fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                       
-                      <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-      
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>IPD Advance Counter</mat-label>
-                          <mat-select formControlName="IPD_Advance_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="iPDAdvanceFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredIPDAdvance | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-      
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>IPD Billing Counter</mat-label>
-                          <mat-select formControlName="IPD_Billing_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="iPDBillingFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredIPDBilling | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-      
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>IPD Receipt Counter</mat-label>
-                          <mat-select formControlName="IPD_Receipt_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="iPDReceiptFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredIPDReceipt | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>IPD Refund Of Bill Counter</mat-label>
-                          <mat-select formControlName="IPD_Refund_of_Bill_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="ipdRefundOfBillFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredIpdRefundBill | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-      
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>IPD Refund Advance  Counter</mat-label>
-                          <mat-select formControlName="IPD_Refund_of_Advance_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="ipdRefundOfAdvanceFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredIpdRefundOfAdvance| async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                       
-                            
-                            <div >
-                          
-                           </div>
-                      </div>
-                      <br>
-                      <div  fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                      fxLayoutAlign="space-between" style=" height: 35px;background-color:#33b5e5">
-                       <span style="font-size:18px; font-weight: 500; color:white;padding:7px;"> Pathology Config</span>
-                       
-                        </div>
-                        <br>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Pathology Department</mat-label>
-                          <mat-select formControlName="DepartmentId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="pathDepartmentFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredPathDepartment| async" [value]="element">
-                              {{element.DepartmentName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Pathology Doctor Name</mat-label>
-                          <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="pathDoctorFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredPathDoctor| async" [value]="element">
-                              {{element.Doctorname}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      
-                         
-                      </div>
-                      <br>
-                      <div  fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                      fxLayoutAlign="space-between" style=" height: 35px;background-color:#33b5e5">
-                       <span style="font-size:18px; font-weight: 500; color:white;padding:7px;"> Pharmacy Config</span>
-                       
-                        </div>
-                        <br>
-                      <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Sales  Counter</mat-label>
-                          <mat-select formControlName="PharmacySales_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="pharmacySalesFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredPharmacySales | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Sales Return Counter</mat-label>
-                          <mat-select formControlName="PharmacySalesReturn_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="pharmacySalesReturnFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredPharmacySalesReturn | async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Sales Receipt Counter</mat-label>
-                          <mat-select formControlName="PharmacyReceipt_CounterId" placeholder="Bank" #singleSelect >
-                            <mat-option>
-                              <ngx-mat-select-search [formControl]="pharmacySalesReceiptFilterCtrl"  [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredPharmacySalesReceipt| async" [value]="element">
-                              {{element.CashCounterName}}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                       
-                         
-                      </div>
-                  
-                  </div>
-        
-                      <div class="footer-navigation" style="text-align: right;">
-                        <div class="next-div">
-                          <button class="next-btn" style="border-radius: 16px;" (click)="onSubmit()"> Save  </button>
-                          
-                        <button class="footer-btn" (click)="onClose()" style="border-radius: 16px;width: 80px;" >Cancel</button>
-                        </div>
-                      </div> 
-                      <br>
-                    </form>
                    
-                
-                  </div> 
-                 
-               
-               
+                      <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs()" style="border-radius: 16px;display:none;">
+                        Show
+                      </button>
+                      <div class="search-field">
+                      <mat-form-field appearance="outline" fxFlex="20">
+                        <input name="RegId" formControlName="RegId" placeholder="RegNo" matInput required>
+                        <mat-error>Please enter Reg No </mat-error>
+                      </mat-form-field>
+          
+                   
+                      </div>
+                      
+                    </div>
+                  </form> -->
+  
+          <div class="nav material2">
+  
+            <div fxLayout="column" fxLayoutAlign="start none">
+  
+              <form [formGroup]="configFormGroup">
+  
+                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                  class="top-header accent heading-container h-40 border-radius-4">
+                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                    Config
+                  </span>
+                </div>
+  
+                <mat-card>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="25px">
+                    <mat-checkbox formControlName="PrintReg">Print After Registration </mat-checkbox>
+                    <mat-checkbox formControlName="PrintOPDVisit">Print Case Proper After OPD Visit </mat-checkbox>
+                    <mat-checkbox formControlName="PrintAdm">Print IPD Admission </mat-checkbox>
+  
+                  </div>
+                  <br>
+                  <span style="font-size:16px; font-weight: bold; ">Registration Mandatory Field:</span>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="50px" style="padding-top: 5px;">
+                    <mat-checkbox formControlName="FirstName">First Name </mat-checkbox>
+                    <mat-checkbox formControlName="MiddleName">Middle Name </mat-checkbox>
+                    <mat-checkbox formControlName="LastName">Last Name</mat-checkbox>
+                    <mat-checkbox formControlName="Address">Address </mat-checkbox>
+                    <mat-checkbox formControlName="City">City </mat-checkbox>
+                    <mat-checkbox formControlName="PhoneNo">Phone No</mat-checkbox>
+                    <mat-checkbox formControlName="Age">Age</mat-checkbox>
+                    <mat-checkbox formControlName="isPathologistDr">IsPathologistDr</mat-checkbox>
+                    <mat-checkbox formControlName="OTCharges">OTCharges</mat-checkbox>
+                  </div>
+                  <br>
+                  <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>RegistrationNo</mat-label>
+                      <input name="RegPrefix" formControlName="RegPrefix" [(ngModel)]="configObj.RegPrefix"
+                        placeholder="Reg No" matInput>
+  
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>IP No</mat-label>
+                      <input name="IPPrefix" formControlName="IPPrefix" [(ngModel)]="configObj.IPPrefix"
+                        placeholder="IP No" matInput>
+  
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>OP No</mat-label>
+                      <input name="OPPrefix" formControlName="OPPrefix" [(ngModel)]="configObj.OPPrefix"
+                        placeholder="OP No" matInput>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>PatientType</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput
+                        formControlName="PatientTypeID" [matAutocomplete]="autoPatient" required
+                         [(ngModel)]="selectedPatienttype">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PatientTypeID').setValue(''); isPatientSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PatientTypeID').setValue(''); isPatientSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="getOptionTextPatient">
+                        <mat-option *ngFor="let option of filteredOptionsPatient | async" [value]="option">
+                          {{option.PatientType}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <div>
+                      <mat-checkbox aria-label="Checked" formControlName="ClassEdit" style="margin-top:15px">Class Edit
+                        Option For IP Patient</mat-checkbox>
+                    </div>
+                  </div>
+                </mat-card>
+  
+                <br>
+  
+                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                  class="top-header accent heading-container h-40 border-radius-4">
+                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                    OP Billing Config
+                  </span>
+                </div>
+  
+                <mat-card>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="25px">
+                    <mat-checkbox formControlName="Charges"> After OPD Appointment Pop add Charges Form </mat-checkbox>
+                    <mat-checkbox formControlName="PopPayBill"> After Charges Pop Payment Form </mat-checkbox>
+                    <mat-checkbox formControlName="GenerateOPBill">Generated Bill Cash </mat-checkbox>
+  
+                  </div>
+                  <br>
+                  <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>OPD Billing Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select OPD Billing Counter" matInput
+                        formControlName="OPD_Billing_CounterId" [matAutocomplete]="autoOPD_Billing_CounterId" required
+                         [(ngModel)]="selectedOpBilling">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('OPD_Billing_CounterId').setValue(''); isOpBillingSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('OPD_Billing_CounterId').setValue(''); isOpBillingSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoOPD_Billing_CounterId="matAutocomplete" [displayWith]="getOptionTextOpBilling">
+                        <mat-option *ngFor="let option of filteredOptionsOpBilling | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>OPD Receipt Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select OPD Receipt Counter" matInput
+                        formControlName="OPD_Receipt_CounterId" [matAutocomplete]="autoOPD_Receipt_CounterId" required
+                         [(ngModel)]="selectedOpdReceipt">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('OPD_Receipt_CounterId').setValue(''); isOpdReceiptSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('OPD_Receipt_CounterId').setValue(''); isOpdReceiptSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoOPD_Receipt_CounterId="matAutocomplete" [displayWith]="getOptionTextOpdReceipt">
+                        <mat-option *ngFor="let option of filteredOptionsOpdReceipt | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>OPD Refund Of Bill Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select OPD Refund Of Bill Counter" matInput
+                        formControlName="OPD_Refund_Bill_CounterId" [matAutocomplete]="autoOPD_Refund_Bill_CounterId" required
+                         [(ngModel)]="selectedOpdRefund">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(''); isOpdRefundSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(''); isOpdRefundSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoOPD_Refund_Bill_CounterId="matAutocomplete" [displayWith]="getOptionTextOpdRefund">
+                        <mat-option *ngFor="let option of filteredOptionsOpdRefund | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <div>
+  
+                    </div>
+                  </div>
+                </mat-card>
+  
+                <br>
+  
+                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                  class="top-header accent heading-container h-40 border-radius-4">
+                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                    IPD Billing Config
+                  </span>
+                </div>
+  
+                <mat-card>
+                  <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>IPD Advance Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Advance Counter" matInput
+                        formControlName="IPD_Advance_CounterId" [matAutocomplete]="autoIPD_Advance_CounterId" required
+                         [(ngModel)]="selectedIpdAdvCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Advance_CounterId').setValue(''); isIpdAdvCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Advance_CounterId').setValue(''); isIpdAdvCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoIPD_Advance_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdAdvCounter">
+                        <mat-option *ngFor="let option of filteredOptionsIpdAdvCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>IPD Billing Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Billing Counter" matInput
+                        formControlName="IPD_Billing_CounterId" [matAutocomplete]="autoIPD_Billing_CounterId" required
+                         [(ngModel)]="selectedIpdBillCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Billing_CounterId').setValue(''); isIpdBillCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Billing_CounterId').setValue(''); isIpdBillCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoIPD_Billing_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdBillCounter">
+                        <mat-option *ngFor="let option of filteredOptionsIpdBillCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>IPD Receipt Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Receipt Counter" matInput
+                        formControlName="IPD_Receipt_CounterId" [matAutocomplete]="autoIPD_Receipt_CounterId" required
+                         [(ngModel)]="selectedIpdReceiptCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Receipt_CounterId').setValue(''); isIpdReceiptCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Receipt_CounterId').setValue(''); isIpdReceiptCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoIPD_Receipt_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdReceiptCounter">
+                        <mat-option *ngFor="let option of filteredOptionsIpdReceiptCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>IPD Refund Of Bill Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD RefundOfBill Counter" matInput
+                        formControlName="IPD_Refund_of_Bill_CounterId" [matAutocomplete]="autoIPD_Refund_of_Bill_CounterId" required
+                         [(ngModel)]="selectedIpdRefundOfBillCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(''); isIpdRefundOfBillCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(''); isIpdRefundOfBillCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoIPD_Refund_of_Bill_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdRefundOfBillCounter">
+                        <mat-option *ngFor="let option of filteredOptionsIpdRefundOfBillCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>IPD Refund Advance Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Refund Advance Counter" matInput
+                        formControlName="IPD_Refund_of_Advance_CounterId" [matAutocomplete]="autoIPD_Refund_of_Advance_CounterId" required
+                         [(ngModel)]="selectedIpdRefundOfAdvanceCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(''); isIpdRefundOfAdvanceCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(''); isIpdRefundOfAdvanceCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoIPD_Refund_of_Advance_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdRefundOfAdvanceCounter">
+                        <mat-option *ngFor="let option of filteredOptionsIPDRefundOfAdvanceCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                  </div>
+                </mat-card>
+  
+                <br>
+  
+                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                  class="top-header accent heading-container h-40 border-radius-4">
+                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                    Pathology Config
+                  </span>
+                </div>
+  
+                <mat-card>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Pathology Department</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
+                        formControlName="DepartmentId" [matAutocomplete]="autoDepartmentId" required
+                         [(ngModel)]="selectedDepartment">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('DepartmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoDepartmentId="matAutocomplete" [displayWith]="getOptionTextDepartment"
+                      (optionSelected)="onDepartmentSelected($event)">
+                        <mat-option *ngFor="let option of filteredOptionsDepartment | async" [value]="option">
+                          {{option.DepartmentName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Pathology Doctor</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
+                        formControlName="DoctorId" [matAutocomplete]="autoDoctorId" required
+                         [(ngModel)]="selectedDoctor">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctor"
+                      (optionSelected)='onDoctorSelect($event.option.value)'>
+                        <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
+                          {{option.Doctorname}} <b>|</b> {{option.DepartmentName }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                  </div>
+                </mat-card>
+  
+                <br>
+  
+                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                  class="top-header accent heading-container h-40 border-radius-4">
+                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                    Pharmacy Config
+                  </span>
+                </div>
+  
+                <mat-card>
+                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Sales Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Sales Counter" matInput
+                        formControlName="PharmacySales_CounterId" [matAutocomplete]="autoPharmacySales_CounterId" required
+                         [(ngModel)]="selectedSalesCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PharmacySales_CounterId').setValue(''); isSalesCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PharmacySales_CounterId').setValue(''); isSalesCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoPharmacySales_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesCounter">
+                        <mat-option *ngFor="let option of filteredOptionsSalesCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Sales Return Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Sales Return Counter" matInput
+                        formControlName="PharmacySalesReturn_CounterId" [matAutocomplete]="autoPharmacySalesReturn_CounterId" required
+                         [(ngModel)]="selectedSalesReturnCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PharmacySalesReturn_CounterId').setValue(''); isSalesReturnCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PharmacySalesReturn_CounterId').setValue(''); isSalesReturnCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoPharmacySalesReturn_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesReturnCounter">
+                        <mat-option *ngFor="let option of filteredOptionsSalesReturnCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+  
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Sales Receipt Counter</mat-label>
+                      <input matAutocompletePosition="below" type="text" placeholder="Select Sales Receipt Counter" matInput
+                        formControlName="PharmacyReceipt_CounterId" [matAutocomplete]="autoPharmacyReceipt_CounterId" required
+                         [(ngModel)]="selectedSalesReceiptCounter">
+                      <span matSuffix style="display: flex;">
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PharmacyReceipt_CounterId').setValue(''); isSalesReceiptCounterSelected = false;">close</mat-icon>
+                        <mat-icon class="mat-icon-close"
+                          (click)="configFormGroup.get('PharmacyReceipt_CounterId').setValue(''); isSalesReceiptCounterSelected = false;">search</mat-icon>
+                      </span>
+    
+                      <mat-autocomplete #autoPharmacyReceipt_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesReceiptCounter">
+                        <mat-option *ngFor="let option of filteredOptionsSalesReceiptCounter | async" [value]="option">
+                          {{option.CashCounterName}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                </mat-card>
+  
+                <div class="modal-footer-buttons gap-8 mt-12" fxLayout="row" fxLayoutAlign="end"> 
+                  <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                  <button class="btn btn-primary " (click)="onSubmit()">Save</button>
               </div>
-        
-        
-              <!-- </form> -->
+  
+              </form>
+  
             </div>
-        
+  
           </div>
+  
+        </div>
         
-       
+      </div>
+  
+    </div>
+  
+  </div>
