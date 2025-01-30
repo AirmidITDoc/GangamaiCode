@@ -13,6 +13,7 @@ fuse-sidebar {
     margin: $sidebar-gap 0 0 $sidebar-gap;
     border-radius: 4px;
     font-family: inherit;
+    height: 100%;
     @include box-shadow-small();
     .sidebar-content {
         .sidebar-header {
