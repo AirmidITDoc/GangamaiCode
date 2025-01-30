@@ -35,11 +35,6 @@ export class RegistrationService {
             fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
             MobileNo: ['']
-            //   , [
-            //   Validators.pattern("^[0-9]*$"),
-            //   Validators.minLength(10),
-            //   Validators.maxLength(10),
-            // ]],   
         });
     }
 

@@ -56,6 +56,16 @@ export class AppointmentListComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
 
     doctorID = "0";
+    
+    onChangeStartDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    ngOnInit(): void {
+        this.myformSearch = this._AppointmentlistService.filterForm();
+    }
 
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -143,16 +153,7 @@ export class AppointmentListComponent implements OnInit {
 
     }
 
-    onChangeStartDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    ngOnInit(): void {
-    this.myformSearch = this._AppointmentlistService.filterForm();
-       
-    }
+   
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -197,67 +198,18 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    //    getAppointmentlistrview() {
-
-    //     setTimeout(() => {
-
-    //         let param = {
-
-    //             "searchFields": [
-    //                 {
-    //                     "fieldName": "FromDate",
-    //                     "fieldValue": this.fromDate,
-    //                     "opType": "13"
-    //                 },
-    //                 {
-    //                     "fieldName": "ToDate",
-    //                     "fieldValue": this.toDate,
-    //                     "opType": "13"
-    //                 }
-    //             ],
-    //             "mode": "AppointmentListReport"
-    //         }
-
-    //         console.log(param)
-    //         this._AppointmentlistService.getPatientListView(param).subscribe(res => {
-    //             console.log(res)
-    //             const matDialog = this._matDialog.open(PdfviewerComponent,
-    //                 {
-    //                     maxWidth: "85vw",
-    //                     height: '750px',
-    //                     width: '100%',
-    //                     data: {
-    //                         base64: res["base64"] as string,
-    //                         title: "Appointment List  Viewer"
-
-    //                     }
-
-    //                 });
-
-    //             matDialog.afterClosed().subscribe(result => {
-
-    //             });
-    //         });
-
-    //     }, 100);
-    // }
-
     getAppointmentcasepaperview(data) {
         setTimeout(() => {
-
             let param = {
-
                 "searchFields": [
                     {
                         "fieldName": "VisitId",
-                        "fieldValue": "226480",//data.visitId
+                        "fieldValue": data.visitId,
                         "opType": "13"
                     }
                 ],
                 "mode": "AppointmentReceipt"
             }
-
-            debugger
             console.log(param)
             this._AppointmentlistService.getPatientcasepaperView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -268,16 +220,11 @@ export class AppointmentListComponent implements OnInit {
                         data: {
                             base64: res["base64"] as string,
                             title: "Op CasePaper  Viewer"
-
                         }
-
                     });
-
                 matDialog.afterClosed().subscribe(result => {
-
                 });
             });
-
         }, 100);
     }
 

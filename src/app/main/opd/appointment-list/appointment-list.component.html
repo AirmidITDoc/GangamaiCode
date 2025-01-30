@@ -19,7 +19,7 @@
 
 
     </div>
-    <div class="info-badge-top py-12 border-bottom" fxLayout="row" fxLayoutAlign="center center">
+    <div class="info-badge-top py-12 border-bottom" fxLayout="row" fxLayoutAlign="space-between" flex>
         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
             <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
@@ -41,7 +41,6 @@
                 <mat-icon class="pill red-600 s-16">circle</mat-icon>
                 <span class="blue-600-fg">Cross Consultant Count :
                     {{VCrossConscount}}</span>
-
             </div>
 
         </div>
@@ -51,6 +50,10 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
+
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                    [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
@@ -72,6 +75,7 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
                         <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch"
@@ -81,14 +85,13 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
+                    
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
                         [(ngModel)]="gridConfig.filters[3].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
-                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                  
                 </form>
             </ng-container>
         </airmid-table>

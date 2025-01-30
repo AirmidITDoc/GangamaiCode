@@ -1,27 +1,29 @@
-<fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
-    <div class="sidebar-content">
-        <div class="sidebar-header accent">
-            <span class="search-title">Search Facility</span>
-        </div>
-        <div class="sidebar-body">
-            <div class="sidebar-form">
-                <form>
-                    <div fxLayout="column" fxLayoutAlign="start none" class="table-filter">
-                        <ng-content select="[filters]"></ng-content>
-                        <div class="action-buttons">
-                            <button mat-raised-button (click)="onClear()" matTooltip="close">
-                                <mat-icon class="cleariconbutton">close</mat-icon>
-                            </button>
-                            <button mat-raised-button (click)="bindGridData()" matTooltip="search">
-                                <mat-icon class="searchiconbutton">search</mat-icon>
-                            </button>
+<div class="search-bar-container">
+    <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-header accent">
+                <span class="search-title">Search Facility</span>
+            </div>
+            <div class="sidebar-body">
+                <div class="sidebar-form">
+                    <form>
+                        <div fxLayout="column" fxLayoutAlign="start none" class="table-filter">
+                            <ng-content select="[filters]"></ng-content>
+                            <div class="action-buttons">
+                                <button mat-raised-button (click)="onClear()" matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>
+                                <button mat-raised-button (click)="bindGridData()" matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</fuse-sidebar>
+    </fuse-sidebar>
+</div>
 <div class="center p-12 pb-56 airmid-table-container" fxFlexAlign="start center">
     <div class="content-card">
         <div class="table-wrapper">
@@ -70,7 +72,7 @@
                                             <mat-icon title="View">remove_red_eye</mat-icon>
                                         </button>
                                         <button mat-icon-button *ngIf="sta.action == GridAction.edit" (click)="sta.callback(element)" style="color:black;">
-                                            <mat-icon title="Edit Menu">launch</mat-icon>
+                                            <mat-icon title="Edit Menu">edit</mat-icon>
                                         </button>
                                         <button mat-icon-button *ngIf="sta.action == GridAction.delete" (click)="onDelete(sta,element)" color="warn">
                                             <mat-icon>delete_outline</mat-icon>

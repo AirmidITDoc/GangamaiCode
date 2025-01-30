@@ -32,10 +32,21 @@ export class RegistrationComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
-    nowdate = new Date();
-    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
-    fromDate ='2021-01-01'// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    // nowdate = new Date();
+    // firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
+    // fromDate ='2021-01-01'// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+    // toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    
+    ngOnInit(): void {
+        this.myFilterform = this._RegistrationService.filterForm();
+    }
+
+    onChangeStartDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
 
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
@@ -64,14 +75,6 @@ export class RegistrationComponent implements OnInit {
                             // this.getAdmittedPatientCasepaperview(data);
                         }
                     },
-                    // {
-                    //     action: gridActions.delete, callback: (data: any) => {
-                    //         this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
-                    //             this.toastr.success(response.message);
-                    //             this.grid.bindGridData();
-                    //         });
-                    //     }
-                    // }
                     ]
             }
         ],
@@ -81,8 +84,8 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:"", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:"", opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -94,17 +97,7 @@ export class RegistrationComponent implements OnInit {
     constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
-    ngOnInit(): void {
-        this.myFilterform = this._RegistrationService.filterForm();
-        }
-
-
-    onChangeStartDate(value) {
-        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
+   
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -199,9 +192,7 @@ export class RegistrationComponent implements OnInit {
     }
     getRegistrationlistrview() {
         setTimeout(() => {
-
             let param = {
-
                 "searchFields": [
                     {
                         "fieldName": "FromDate",
@@ -216,8 +207,6 @@ export class RegistrationComponent implements OnInit {
                 ],
                 "mode": "RegistrationReport"
             }
-
-            debugger
             console.log(param)
             this._RegistrationService.getPatientListView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,

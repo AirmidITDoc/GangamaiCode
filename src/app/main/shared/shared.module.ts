@@ -45,11 +45,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AirmidDatepickerComponent } from './componets/airmid-datepicker/airmid-datepicker.component';
 import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.component';
 import { AirmidAutoCompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
+import { TableSearchBarComponent } from './componets/airmid-table/table-search-bar/table-search-bar.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent,AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent],
+         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
