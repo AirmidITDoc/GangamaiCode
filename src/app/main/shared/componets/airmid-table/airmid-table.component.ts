@@ -17,7 +17,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class AirmidTableComponent implements OnInit {
 
-    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService:FuseSidebarService) {
+    constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService) {
     }
     dateType = DATE_TYPES;
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
