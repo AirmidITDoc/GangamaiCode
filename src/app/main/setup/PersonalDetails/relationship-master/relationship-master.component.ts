@@ -2,6 +2,16 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
+import { RelationshipMasterService } from "./relationship-master.service";
+import { FuseUtils } from "@fuse/utils";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { fuseAnimations } from "@fuse/animations";
+import Swal from "sweetalert2";
+import { ToastrService } from "ngx-toastr";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { NewRelationshipMasterComponent } from "./new-relationship-master/new-relationship-master.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: "app-relationship-master",
@@ -13,11 +23,13 @@ import { MatTableDataSource } from "@angular/material/table";
 export class RelationshipMasterComponent implements OnInit {
     RelationshipMasterList: any;
     msg: any;
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
 
     displayedColumns: string[] = [
         "RelationshipId",
         "RelationshipName",
-        "AddedBy",
+        // "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -26,8 +38,18 @@ export class RelationshipMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _relationshipService: RelationshipMasterService,
-        public toastr : ToastrService,) {}
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._relationshipService.myformSearch.controls; }
+
+    constructor(
+        public _relationshipService: RelationshipMasterService,
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,) { }
+
     onSearch() {
         this.getrelationshipMasterList();
     }
@@ -42,6 +64,19 @@ export class RelationshipMasterComponent implements OnInit {
 
     ngOnInit(): void {
         this.getrelationshipMasterList();
+    }
+
+    newRelationship() {
+        const dialogRef = this._matDialog.open(NewRelationshipMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "30%",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getrelationshipMasterList();
+        });
     }
 
     getrelationshipMasterList() {
@@ -63,136 +98,70 @@ export class RelationshipMasterComponent implements OnInit {
             });
     }
 
-    onClear() {
-        this._relationshipService.myform.reset({ IsDeleted: "false" });
-        this._relationshipService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._relationshipService.myform.valid) {
-            if (!this._relationshipService.myform.get("RelationshipId").value) {
-                var m_data = {
-                    relationshipMasterInsert: {
-                        relationshipName_1: this._relationshipService.myform
-                            .get("RelationshipName")
-                            .value.trim(),
-                        addedBy: 10,
-                        isDeleted_2: Boolean(
-                            JSON.parse(
-                                this._relationshipService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                    },
-                };
-                console.log(m_data);
-                this._relationshipService
-                    .relationshipMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getrelationshipMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getrelationshipMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Relationship Data not saved !, Please check  error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getrelationshipMasterList();
-                    },error => {
-                        this.toastr.error('RelationShip Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            } else {
-                var m_dataUpdate = {
-                    relationshipMasterUpdate: {
-                        relationshipId:
-                            this._relationshipService.myform.get(
-                                "RelationshipId"
-                            ).value,
-                        relationshipName: this._relationshipService.myform
-                            .get("RelationshipName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._relationshipService.myform.get(
-                                    "IsDeleted"
-                                ).value
-                            )
-                        ),
-                        updatedBy: 10,
-                    },
-                };
-                console.log(m_dataUpdate);
-                this._relationshipService
-                    .relationshipMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getrelationshipMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getrelationshipMasterList();
-                            //     }
-                            // });
-                        } else {
-                            error => {
-                                this.toastr.error('Relationship Data not updated !, Please check  error..', 'Error !', {
-                                 toastClass: 'tostr-tost custom-toast-error',
-                               });
-                           }
-                        }
-                        this.getrelationshipMasterList();
-                    },error => {
-                        this.toastr.error('RelationShip Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-                
-            }
-            this.onClear();
-        }
-    }
-
     onEdit(row) {
-        console.log(row);
-        var m_data = {
-            RelationshipId: row.RelationshipId,
-            RelationshipName: row.RelationshipName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._relationshipService.populateForm(m_data);
+        // console.log(row);
+        // var m_data = {
+        //     RelationshipId: row.RelationshipId,
+        //     RelationshipName: row.RelationshipName.trim(),
+        //     IsDeleted: JSON.stringify(row.IsDeleted),
+        //     UpdatedBy: row.UpdatedBy,
+        // };
+        // this._relationshipService.populateForm(m_data);
+        const dialogRef = this._matDialog.open(NewRelationshipMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "30%",
+                data: {
+                    Obj: row
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getrelationshipMasterList();
+        });
     }
+      onDeactive(RelationshipId) {
+                debugger
+                Swal.fire({
+                    title: 'Confirm Status',
+                    text: 'Are you sure you want to Change Status?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes,Change Status!'
+                }).then((result) => {
+                    debugger
+        
+                    if (result.isConfirmed) {
+                        let Query;
+                        const tableItem = this.DSRelationshipMasterList.data.find(item => item.RelationshipId === RelationshipId);
+                        console.log("table:", tableItem)
+        
+                        if (tableItem.IsDeleted) {
+                            Query = "Update M_RelationshipMaster set IsDeleted=0 where RelationshipId=" + RelationshipId;
+                        } else {
+                            Query = "Update M_RelationshipMaster set IsDeleted=1 where RelationshipId=" + RelationshipId;
+                        }
+        
+                        console.log("query:", Query);
+        
+                        this._relationshipService.deactivateTheStatus(Query)
+                            .subscribe(
+                                (data) => {
+                                    Swal.fire('Changed!', 'Relationship Status has been Changed.', 'success');
+                                    this.getrelationshipMasterList();
+                                },
+                                (error) => {
+                                    Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                                }
+                            );
+                    }
+        
+                });
+            }
 }
-
-import { FuseUtils } from "@fuse/utils";
-import { RelationshipMasterService } from "./relationship-master.service";
-import { NotificationServiceService } from "app/core/notification-service.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { fuseAnimations } from "@fuse/animations";
-import Swal from "sweetalert2";
-import { ToastrService } from "ngx-toastr";
 
 export class RelationshipMaster {
     RelationshipId: number;

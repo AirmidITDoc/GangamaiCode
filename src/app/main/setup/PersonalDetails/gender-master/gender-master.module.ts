@@ -17,6 +17,26 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { GenderMasterComponent } from "./gender-master.component";
 import { GenderMasterService } from "./gender-master.service";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { CommonModule, DatePipe } from "@angular/common";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { SharedModule } from "app/main/shared/shared.module";
+import { NewgenderMasterComponent } from './newgender-master/newgender-master.component';
 
 const routes: Routes = [
     {
@@ -26,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [GenderMasterComponent],
+    declarations: [GenderMasterComponent, NewgenderMasterComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -45,8 +65,29 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule,
+
+        SharedModule,
+        FuseConfirmDialogModule,
+        CommonModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatTabsModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
-    providers: [GenderMasterService],
+    providers: [DatePipe, GenderMasterService],
     entryComponents: [GenderMasterComponent],
 })
 export class GenderMasterModule {}

@@ -26,7 +26,7 @@ export class PatienttypeMasterService {
         return this._formBuilder.group({
             PatientTypeId: [""],
             PatientType: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -53,6 +53,11 @@ export class PatienttypeMasterService {
             param
         );
     }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
 
     populateForm(param) {
         this.myForm.patchValue(param);

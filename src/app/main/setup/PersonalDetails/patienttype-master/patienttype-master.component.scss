@@ -1,58 +1,58 @@
-app-patienttype-master {
-    .mat-header-row {
-        width: 600px;
-        max-width: 600px;
-        min-width: 600px;
-        font-weight: bold;
-    }
+// app-patienttype-master {
+//     .mat-header-row {
+//         width: 600px;
+//         max-width: 600px;
+//         min-width: 600px;
+//         font-weight: bold;
+//     }
 
-    .mat-row {
-        width: 600px;
-        max-width: 600px;
-        min-width: 600px;
-    }
+//     .mat-row {
+//         width: 600px;
+//         max-width: 600px;
+//         min-width: 600px;
+//     }
 
-    .mat-column-PatientTypeId {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
+//     .mat-column-PatientTypeId {
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//     }
 
-    .mat-column-PatientType {
-        width: 150px;
-        max-width: 150px;
-        min-width: 150px;
-    }
+//     .mat-column-PatientType {
+//         width: 150px;
+//         max-width: 150px;
+//         min-width: 150px;
+//     }
 
-    // .mat-column-AddedByName {
-    //     width: 100px;
-    //     max-width: 100px;
-    //     min-width: 100px;
-    // }
+//     // .mat-column-AddedByName {
+//     //     width: 100px;
+//     //     max-width: 100px;
+//     //     min-width: 100px;
+//     // }
 
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
+//     .mat-column-IsDeleted {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//         text-align: center;
+//         justify-content: center;
+//     }
 
-    .mat-column-action {
-        // color: white !important;
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-        text-align: right;
-        justify-content: right;
-    }
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
-    }
-}
+//     .mat-column-action {
+//         // color: white !important;
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//         text-align: right;
+//         justify-content: right;
+//     }
+//     .mat-icon-button {
+//         padding: 0;
+//         min-width: 0;
+//         width: 40px;
+//         height: 20px;
+//         flex-shrink: 0;
+//         line-height: 20px;
+//         border-radius: 50%;
+//     }
+// }

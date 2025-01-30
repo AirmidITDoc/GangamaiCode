@@ -56,6 +56,7 @@ export class NewicdComponent implements OnInit {
   vWardName:any;
 
   vShowData:any;
+  vHId:any;
 
   displayedColumns: string[] = [
     "ICDCode",
@@ -121,6 +122,7 @@ this.dataSource2.data = [...this.tablelist];
       this.vGenderName = this.registerObj1.GenderName;
       this.vAdmissionID = this.registerObj1.AdmissionID;
       this.vWardName=this.registerObj1.WardName;
+      this.vHId=this.registerObj1.HId;
     }
     this.getICDCodelist();
   }
@@ -202,6 +204,16 @@ getICDCodeDetailList(row: any) {
     });
     return;
   }
+  // if (
+  //   [...this.tablelist, ...this.registerObj].some(
+  //     item => item.ICDCodingId === row.ICDCodingId
+  //   )
+  // ) {
+  //   this.toastr.warning('Record Already Exists.', 'Warning!', {
+  //     toastClass: 'tostr-tost custom-toast-Warning',
+  //   });
+  //   return;
+  // }
   // Add the new row to tablelist
   this.tablelist.push({
     ICDCodingId: row.ICDCodingId,  // Ensure unique identifier is added
@@ -327,18 +339,31 @@ getICDCodeDetailList(row: any) {
     }
     else {
 
-      let updatePatICDCodeHeader = {
+      let deletePatICDCodeParamHeader= {
+        "patICDCodeId": this.vpatICDCodeId
+    }
+
+      let updatePatICDCodeHeader = this.DSIcdMasterList.data.map((row: any) => ({
         "patICDCodeId": this.vpatICDCodeId,
         "reqDate": formattedDate,
         "reqTime": formattedTime,
         "oP_IP_Type": 1,
         "oP_IP_ID": this.vAdmissionID,
         "modifiedBy": this._loggedService.currentUserValue.user.id
-      }
+      }));
+
+      // let updatePatICDCodeHeader = {
+      //   "patICDCodeId": this.vpatICDCodeId,
+      //   "reqDate": formattedDate,
+      //   "reqTime": formattedTime,
+      //   "oP_IP_Type": 1,
+      //   "oP_IP_ID": this.vAdmissionID,
+      //   "modifiedBy": this._loggedService.currentUserValue.user.id
+      // }
 
       let updatePatICDCodeDetailsArray = this.dataSource2.data.map((row: any) => ({
         "dId": row.dId || this.vdId, // Use existing dId if available, otherwise use vdId
-        "hId": 0,
+        "hId": row.HId || this.vHId,
         "icdCode": row.ICDCode,
         "icdCodeDesc": row.ICDCodeName,
         "icdCdeMainName": row.MainCName,
@@ -357,6 +382,7 @@ getICDCodeDetailList(row: any) {
       // }
 
       let updateData = {
+        "deletePatICDCodeParamHeader":deletePatICDCodeParamHeader,
         "updatePatICDCodeParamHeader": updatePatICDCodeHeader,
         "updatePatICDCodeParamDetails": updatePatICDCodeDetailsArray
       }

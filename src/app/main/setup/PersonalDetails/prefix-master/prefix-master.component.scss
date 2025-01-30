@@ -1,58 +1,58 @@
-app-prefix-master {
-    .mat-header-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
-        font-weight: bold;
-    }
+// app-prefix-master {
+//     .mat-header-row {
+//         width: 800px;
+//         max-width: 800px;
+//         min-width: 800px;
+//         font-weight: bold;
+//     }
 
-    .mat-row {
-        width: 800px;
-        max-width: 800px;
-        min-width: 800px;
-    }
+//     .mat-row {
+//         width: 800px;
+//         max-width: 800px;
+//         min-width: 800px;
+//     }
 
-    .mat-column-PrefixID {
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-    }
+//     .mat-column-PrefixID {
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//     }
 
-    .mat-column-PrefixName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
+//     .mat-column-PrefixName {
+//         width: 250px;
+//         max-width: 250px;
+//         min-width: 250px;
+//     }
 
-    .mat-column-GenderName {
-        width: 250px;
-        max-width: 250px;
-        min-width: 250px;
-    }
+//     .mat-column-GenderName {
+//         width: 250px;
+//         max-width: 250px;
+//         min-width: 250px;
+//     }
 
-    .mat-column-IsDeleted {
-        width: 100px;
-        max-width: 100px;
-        min-width: 100px;
-        text-align: center;
-        justify-content: center;
-    }
+//     .mat-column-IsDeleted {
+//         width: 100px;
+//         max-width: 100px;
+//         min-width: 100px;
+//         text-align: center;
+//         justify-content: center;
+//     }
 
-    .mat-column-action {
-        // color: white !important;
-        width: 110px;
-        max-width: 110px;
-        min-width: 110px;
-        text-align: right;
-        justify-content: right;
-    }
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
-    }
-}
+//     .mat-column-action {
+//         // color: white !important;
+//         width: 110px;
+//         max-width: 110px;
+//         min-width: 110px;
+//         text-align: right;
+//         justify-content: right;
+//     }
+//     .mat-icon-button {
+//         padding: 0;
+//         min-width: 0;
+//         width: 40px;
+//         height: 20px;
+//         flex-shrink: 0;
+//         line-height: 20px;
+//         border-radius: 50%;
+//     }
+// }

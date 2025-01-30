@@ -28,7 +28,7 @@ export class MaritalstatusMasterService {
         return this._formBuilder.group({
             MaritalStatusId: [""],
             MaritalStatusName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -58,7 +58,11 @@ export class MaritalstatusMasterService {
             param
         );
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     populateForm(param) {
         this.myform.patchValue(param);
     }

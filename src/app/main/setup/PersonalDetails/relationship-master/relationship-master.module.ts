@@ -17,6 +17,29 @@ import { NotificationServiceService } from "app/core/notification-service.servic
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { RelationshipMasterService } from "./relationship-master.service";
 
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { NewRelationshipMasterComponent } from './new-relationship-master/new-relationship-master.component'; 
+
 const routes: Routes = [
     {
         path: "**",
@@ -25,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [RelationshipMasterComponent],
+    declarations: [RelationshipMasterComponent, NewRelationshipMasterComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -34,9 +57,7 @@ const routes: Routes = [
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-
         MatTableModule,
-
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
@@ -45,6 +66,27 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
+        MatCheckboxModule,
+        MatMenuModule,
+        MatToolbarModule,
+        SharedModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatTabsModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
     providers: [RelationshipMasterService, NotificationServiceService],
 

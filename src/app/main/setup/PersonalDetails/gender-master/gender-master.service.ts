@@ -24,11 +24,11 @@ export class GenderMasterService {
         return this._formBuilder.group({
             GenderId: [""],
             GenderName: ['', [
-                Validators.required,
-                Validators.maxLength(50),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                // Validators.required,
+                // Validators.maxLength(50),
+                // Validators.pattern('^[a-zA-Z () ]*$')
               ]],
-            IsDeleted: [""],
+            IsDeleted: [true],
         });
     }
 
@@ -46,15 +46,17 @@ export class GenderMasterService {
         return this._httpClient.post("Gender/List", param, showLoader);
     }
 
-    public genderMasterInsert(Param: any, showLoader = true) {
-        return this._httpClient.post("Gender", Param, showLoader);
+    public genderMasterInsert(Param: any) {
+        return this._httpClient.post("PersonalDetails/GenderSave", Param);
     }
 
-    public genderMasterUpdate(id: number , Param: any, showLoader = true) {
-        return this._httpClient.put("Gender/" + id , Param, showLoader);
+    public genderMasterUpdate(Param: any) {
+        return this._httpClient.post("PersonalDetails/GenderUpdate", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.delete("Gender?Id=" + m_data, {});
-    }
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
 }

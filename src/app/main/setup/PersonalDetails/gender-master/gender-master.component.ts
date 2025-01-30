@@ -7,6 +7,9 @@ import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { NewgenderMasterComponent } from "./newgender-master/newgender-master.component";
+import Swal from "sweetalert2";
 
 @Component({
     selector: "app-gender-master",
@@ -18,6 +21,8 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
 
     displayedColumns: string[] = [
         "GenderId",
@@ -30,13 +35,35 @@ export class GenderMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._GenderService.myformSearch.controls; }
+
+
     constructor(
         public _GenderService: GenderMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
-    ) {}
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
+    ) { }
 
     ngOnInit(): void {
         this.getGenderMasterList();
+    }
+
+    newGender() {
+        const dialogRef = this._matDialog.open(NewgenderMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "30%",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getGenderMasterList();
+        });
     }
 
     onSearch() {
@@ -52,22 +79,22 @@ export class GenderMasterComponent implements OnInit {
     }
 
     getGenderMasterList() {
-        var Param : any = {
+        var Param: any = {
             "First": 0,
             "Rows": 10,
             "SortField": "GenderId",
             "SortOrder": 0,
-            "Filters" : [],
+            "Filters": [],
             "ExportType": "Excel",
             "Columns": [
-              {
-                "Data": "string",
-                "Name": "string"
-              }
+                {
+                    "Data": "string",
+                    "Name": "string"
+                }
             ]
         };
         var GenderName = this._GenderService.myformSearch.get("GenderNameSearch").value.trim();
-        if(GenderName){
+        if (GenderName) {
             Param.Filters.push({
                 "FieldName": "GenderName",
                 "FieldValue": GenderName,
@@ -75,13 +102,13 @@ export class GenderMasterComponent implements OnInit {
             });
         }
         var isActive = this._GenderService.myformSearch.get("IsDeletedSearch").value;
-        if(isActive != 2){
+        if (isActive != 2) {
             Param.Filters.push({
                 "FieldName": "IsActive",
                 "FieldValue": this._GenderService.myformSearch.get("IsDeletedSearch").value,
                 "OpType": "13"
             });
-        }        
+        }
         this._GenderService
             .getGenderMasterList(Param)
             .subscribe((response: any) => {
@@ -94,177 +121,76 @@ export class GenderMasterComponent implements OnInit {
             });
     }
 
-    onClear() {
-        this._GenderService.myform.reset({ IsDeleted: "false" });
-        this._GenderService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._GenderService.myform.valid) {
-            if (!this._GenderService.myform.get("GenderId").value) {
-                var m_data = {
-                    GenderId: 0,
-                    GenderName: this._GenderService.myform
-                            .get("GenderName")
-                            .value.trim(),
-                    isActive: Boolean(
-                        JSON.parse(
-                            this._GenderService.myform.get("IsDeleted")
-                                .value
-                        )
-                    )
-                };
-                console.log(m_data);
-                this._GenderService.genderMasterInsert(m_data).subscribe(
-                    (data) => {
-                        this.msg = data;
-                        if (data.StatusCode == 200) {
-                            this.toastr.success(
-                                "Record Saved Successfully.",
-                                "Saved !",
-                                {
-                                    toastClass:
-                                        "tostr-tost custom-toast-success",
-                                }
-                            );
-                            this.getGenderMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getGenderMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error(
-                                "Gender Master Data not saved !, Please check API error..",
-                                "Error !",
-                                {
-                                    toastClass: "tostr-tost custom-toast-error",
-                                }
-                            );
-                        }
-                        this.getGenderMasterList();
-                    },
-                    (error) => {
-                        this.toastr.error(
-                            "Gender Data not saved !, Please check API error..",
-                            "Error !",
-                            {
-                                toastClass: "tostr-tost custom-toast-error",
-                            }
-                        );
-                    }
-                );
-            } else {
-                var m_dataUpdate = {
-                    GenderId: this._GenderService.myform.get("GenderId").value,
-                    GenderName: this._GenderService.myform
-                        .get("GenderName")
-                        .value.trim(),
-                    isActive: Boolean(
-                        JSON.parse(
-                            this._GenderService.myform.get("IsDeleted")
-                                .value
-                        )
-                    ),                        
-                };
-
-                this._GenderService.genderMasterUpdate(this._GenderService.myform.get("GenderId").value, m_dataUpdate).subscribe(
-                    (data) => {
-                        this.msg = data;
-                        if (data.StatusCode == 200) {
-                            this.toastr.success(
-                                "Record updated Successfully.",
-                                "updated !",
-                                {
-                                    toastClass:
-                                        "tostr-tost custom-toast-success",
-                                }
-                            );
-                            this.getGenderMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getGenderMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error(
-                                "Gender Master Data not updated !, Please check API error..",
-                                "Error !",
-                                {
-                                    toastClass: "tostr-tost custom-toast-error",
-                                }
-                            );
-                        }
-                        this.getGenderMasterList();
-                    },
-                    (error) => {
-                        this.toastr.error(
-                            "Gender Data not Updated !, Please check API error..",
-                            "Error !",
-                            {
-                                toastClass: "tostr-tost custom-toast-error",
-                            }
-                        );
-                    }
-                );
-            }
-            this.onClear();
-        }
-    }
-
     onEdit(row) {
-        var m_data = {
-            GenderId: row.GenderId,
-            GenderName: row.GenderName.trim(),
-            IsDeleted: JSON.stringify(row.IsActive),
-        };
-        this._GenderService.populateForm(m_data);
-    }
-    onDeactive(GenderId) {
-        debugger
-        this.confirmDialogRef = this._matDialog.open(
-          FuseConfirmDialogComponent,
-          {
-            disableClose: false,
-          }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-          "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
-            debugger
-          if (result) {
-            this._GenderService.deactivateTheStatus(GenderId).subscribe((data: any) => {
-                this.msg = data
-                if(data.StatusCode == 200) {
-                    this.toastr.success(
-                        "Record updated Successfully.",
-                        "updated !",
-                        {
-                            toastClass:
-                                "tostr-tost custom-toast-success",
-                        }
-                    );
-                    this.getGenderMasterList();
+        // var m_data = {
+        //     GenderId: row.GenderId,
+        //     GenderName: row.GenderName.trim(),
+        //     IsDeleted: JSON.stringify(row.IsActive),
+        // };
+        // this._GenderService.populateForm(m_data);
+
+        const dialogRef = this._matDialog.open(NewgenderMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "30%",
+                data: {
+                    Obj: row
                 }
             });
-          }
-          this.confirmDialogRef = null;
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getGenderMasterList();
         });
-      }
+    }
+
+    onDeactive(GenderId) {
+        debugger
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            debugger
+
+            if (result.isConfirmed) {
+                let Query;
+                const tableItem = this.DSGenderMasterList.data.find(item => item.GenderId === GenderId);
+                console.log("table:", tableItem)
+
+                if (tableItem.IsActive) {
+                    Query = "Update DB_Gendermaster set IsActive=0 where GenderId=" + GenderId;
+                } else {
+                    Query = "Update DB_Gendermaster set IsActive=1 where GenderId=" + GenderId;
+                }
+
+                console.log("query:", Query);
+
+                this._GenderService.deactivateTheStatus(Query)
+                    .subscribe(
+                        (data) => {
+                            Swal.fire('Changed!', 'Gender Status has been Changed.', 'success');
+                            this.getGenderMasterList();
+                        },
+                        (error) => {
+                            Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                        }
+                    );
+            }
+
+        });
+    }
 }
 
 export class GenderMaster {
     GenderId: number;
     GenderName: string;
     IsDeleted: boolean;
+    IsActive: boolean;
 
     /**
      * Constructor
@@ -276,6 +202,7 @@ export class GenderMaster {
             this.GenderId = GenderMaster.GenderId || "";
             this.GenderName = GenderMaster.GenderName || "";
             this.IsDeleted = GenderMaster.IsDeleted || "true";
+            this.IsActive = GenderMaster.IsActive || "";
         }
     }
 }

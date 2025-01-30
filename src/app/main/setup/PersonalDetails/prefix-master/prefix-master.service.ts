@@ -30,7 +30,7 @@ export class PrefixMasterService {
             PrefixName: [""],
             SexID: [" "],
             GenderName: [""],
-            IsActive: ["true"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -60,6 +60,12 @@ export class PrefixMasterService {
     public updatePrefixMaster(Param) {
         return this._httpClient.post("PersonalDetails/PrefixUpdate", Param);
     }
+
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     populateForm(param) {
         this.myform.patchValue(param);
     }
