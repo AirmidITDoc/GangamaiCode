@@ -1,8 +1,8 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll role-template-section">
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll role-template-section">
     <div class="top-header header accent" fxLayout="row" fxLayoutAlign="start center"
         fxLayoutAlign.gt-xs="space-between center">
-        <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="start center">
+         <!-- APP TITLE  -->
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <div class="top-header-info gap-8 logo" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon" [@animate]="{
                         value: '*',
@@ -16,18 +16,18 @@
                         }">
                         Role Master
                     </span>
-                </div>
+                </div> --> 
                  <!-- <button mat-raised-button (click)="newSchduler()" style="margin-left:20% !important">New Schduler
 
                  </button> -->
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
         <!-- / APP TITLE -->
         <!-- SEARCH -->
         <!-- / SEARCH -->
-    </div>
+    <!-- </div> -->
 
-    <div class="content">
+    <!-- <div class="content">
         <div class="center px-24 pt-24" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-16">
@@ -36,7 +36,7 @@
                             <form [formGroup]="_RoleService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Role Name" autocomplete="off"
+                                         <input matInput placeholder="Search Role Name" autocomplete="off"
                                             name="RoleNameSearch" formControlName="RoleNameSearch" />
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
@@ -128,9 +128,9 @@
                                 </mat-paginator>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div fxFlex.gt-sm="35%" fxFlex style="background-color: white">
+                    <!-- <div fxFlex.gt-sm="35%" fxFlex style="background-color: white">
                         <div fxlayout="row">
                             <div class="dialog-content-wrapper">
                                 <div mat-dialog-content class="role-search-form">
@@ -170,5 +170,47 @@
                 </div>
             </div>
         </div>
+    </div> 
+</div> -->
+
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Role Template Master
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">+ New Role Template 
+            </button>
+        </div>
+    </div>
+
+    
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Role Name</mat-label>
+                    <input matInput placeholder="Search Role Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group>
+            </ng-container>
+        </airmid-table>
     </div>
 </div>

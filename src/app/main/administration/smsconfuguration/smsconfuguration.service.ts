@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class SMSConfugurationService {
 
   constructor(
     public _formbuilder:UntypedFormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient: ApiCaller
   ) 
   {
     this.MySearchForm = this.CreateSearchForm();
@@ -33,16 +34,20 @@ export class SMSConfugurationService {
       IsBlock:['']
     });
    }
+
+   public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("TalukaMaster?Id=" + m_data.toString());
+    }
    public getSMSSentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Sent_SMS_List",Param);
+    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_Sent_SMS_List",Param);
   }
   public getMappinfSMS(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MappingListForSMS", {});
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_MappingListForSMS", {});
   }
   public getMSGCategory(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MsgCategoryForCombo", {});
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_MsgCategoryForCombo", {});
   }
   public getMSGCategoryList(){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_MsgTempMasterList", {});
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_MsgTempMasterList", {});
   }
 }

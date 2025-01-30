@@ -48,7 +48,7 @@ export class ReportConfigurationComponent implements OnInit{
                             }
                         }, {
                             action: gridActions.delete, callback: (data: any) => {
-                                this._ReportConfigurationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                                this._ReportConfigurationService.deactivateTheStatus(data.reportId).subscribe((response: any) => {
                                     this.toastr.success(response.message);
                                     this.grid.bindGridData();
                                 });

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { TalukaMasterComponent } from "./taluka-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
@@ -9,7 +9,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import {  MatPaginatorModule } from "@angular/material/paginator";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
@@ -19,6 +19,9 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { TalukaMasterService } from "./taluka-master.service";
+import { NewTalukaComponent } from './new-taluka/new-taluka.component';
+import { SharedModule } from "../../../shared/shared.module";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -28,27 +31,29 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [TalukaMasterComponent],
+    declarations: [TalukaMasterComponent, NewTalukaComponent],
     imports: [
-        RouterModule.forChild(routes),
-        CommonModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        NgxMatSelectSearchModule,
-    ],
-    providers: [TalukaMasterService]
+    RouterModule.forChild(routes),
+    CommonModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    NgxMatSelectSearchModule,
+    SharedModule,
+    MatDialogModule
+],
+    providers: [TalukaMasterService, DatePipe]
 })
 export class TalukaMasterModule {}

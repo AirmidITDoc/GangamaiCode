@@ -9,6 +9,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { UpdateSMSComponent } from './update-sms/update-sms.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-smsconfuguration',
@@ -18,13 +21,68 @@ import { UpdateSMSComponent } from './update-sms/update-sms.component';
   animations: fuseAnimations,
 })
 export class SMSConfugurationComponent implements OnInit {
-  displayedColumns = [
-    'OutGoingCode',
-    'Date',
-    'MobileNo',
-    'SMSString',
-    'IsSent',
-  ];
+
+    msg: any;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "TalukaMaster/List",
+        columnsList: [
+            { heading: "OutGoingCode", key: "OutGoingCode", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "Date", key: "Date", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "SMSString", key: "SMSString", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "IsSent", key: "IsSent", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            {
+                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._SMSConfigService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "talukaId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+       
+        //    constructor(
+        //        public _SMSConfugurationService: SMSConfugurationService,
+        //        public toastr: ToastrService, public _matDialog: MatDialog
+        //    ) { }
+       
+        //    ngOnInit(): void { }
+       
+    onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(UpdateSMSComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
 
   sIsLoading: string = '';
   isLoading = true;

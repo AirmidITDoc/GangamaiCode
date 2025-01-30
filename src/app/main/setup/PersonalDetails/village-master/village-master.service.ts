@@ -1,6 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +9,7 @@ export class VillageMasterService {
     myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createVillageForm();
@@ -18,14 +18,10 @@ export class VillageMasterService {
 
     createVillageForm(): FormGroup {
         return this._formBuilder.group({
-            VillageId: [""],
-            VillageName: [""],
-            TalukaName: [""],
-            TalukaId: [""],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            AddedByName: [""],
+            villageId: [""],
+            villageName: [""],
+            talukaId: [""],
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
@@ -39,28 +35,38 @@ export class VillageMasterService {
         this.createVillageForm();
     }
 
-    public getVillageMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_VillageNameList_by_Name",param
-        );
+    public stateMasterSave(Param: any) {
+        if (Param.villageId) {
+            return this._httpClient.PutData("TalukaMaster/" + Param.villageId, Param);
+        } else return this._httpClient.PostData("TalukaMaster", Param);
     }
 
-    public getTalukaMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_TalukaMasterForCombo",
-            {}
-        );
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("TalukaMaster?Id=" + m_data.toString());
     }
 
-    public villageMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/VillageSave", param);
-    }
+    // public getVillageMasterList(param) {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Rtrv_VillageNameList_by_Name",param
+    //     );
+    // }
 
-    public villageMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/VillageUpdate", param);
-    }
+    // public getTalukaMasterCombo() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_TalukaMasterForCombo",
+    //         {}
+    //     );
+    // }
 
-    populateForm(param) {
-        this.myForm.patchValue(param);
-    }
+    // public villageMasterInsert(param) {
+    //     return this._httpClient.post("PersonalDetails/VillageSave", param);
+    // }
+
+    // public villageMasterUpdate(param) {
+    //     return this._httpClient.post("PersonalDetails/VillageUpdate", param);
+    // }
+
+    // populateForm(param) {
+    //     this.myForm.patchValue(param);
+    // }
 }

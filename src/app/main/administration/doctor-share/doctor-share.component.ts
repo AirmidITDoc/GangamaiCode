@@ -40,6 +40,11 @@ export class DoctorShareComponent implements OnInit {
         //'groupName',
         // 'Action'
       ];
+
+      
+
+
+
       @ViewChild('drawer') public drawer: MatDrawer;
       isRegIdSelected : boolean = false;
       isDoctorIDSelected: boolean=false;
