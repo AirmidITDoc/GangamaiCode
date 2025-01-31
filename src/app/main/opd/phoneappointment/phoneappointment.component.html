@@ -19,6 +19,11 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
+
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
+                        [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
+
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
@@ -45,11 +50,6 @@
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
-
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                        [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
-
                 </form>
             </ng-container>
         </airmid-table>

@@ -49,8 +49,8 @@ export class AppointmentListComponent implements OnInit {
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-    fromDate = "2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
@@ -82,21 +82,19 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-             { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: 17 },
-            { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: 15 },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DoctorName", key: "consultantdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Ref DoctorName", key: "refdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Department", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
-
             {
                 heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
                     {
