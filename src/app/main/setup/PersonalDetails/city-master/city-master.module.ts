@@ -38,6 +38,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const routes: Routes = [
     {
@@ -85,6 +88,7 @@ const routes: Routes = [
         MatSlideToggleModule,
         MatListModule,
         MatChipsModule,
+        
         
     ],
     providers: [CityMasterService, NotificationServiceService],

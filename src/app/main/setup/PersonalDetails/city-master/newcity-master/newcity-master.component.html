@@ -1,4 +1,4 @@
-<!-- <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -32,48 +32,37 @@
                                         <input type="hidden" name="CityId" formControlName="CityId">
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>City</mat-label>
-                                                <input matAutocompletePosition="below" type="text" placeholder="Select City"
-                                                    formControlName="CityName" [(ngModel)]="vCityName" [matAutocomplete]="autoCity"
-                                                    required>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select City" matInput formControlName="CityId" required
+                                                    required [(ngModel)]="vCityIds" [matAutocomplete]="autoCity">
                                                 <span matSuffix style="display: flex;">
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_EmergencyListService.MyForm.get('CityName').setValue(''); isCitySelected = false;">close</mat-icon>
+                                                        (click)="_cityService.myform.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
                                                     <mat-icon class="mat-icon-close"
-                                                        (click)="_EmergencyListService.MyForm.get('CityName').setValue(''); isCitySelected = false;">search</mat-icon>
+                                                        (click)="_cityService.myform.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
                                                 </span>
+
                                                 <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity1">
-                                                    <mat-option *ngFor="let option of filteredOptionsCity | async" [value]="option"
-                                                        (onSelectionChange)="onChangeCityList(option)">
+                                                    <mat-option *ngFor="let option of filteredOptionsCity | async" 
+                                                    [value]="option" (onSelectionChange)="onChangeCityList(option)">
                                                         {{option.CityName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
-                                                <mat-error
-                                                    *ngIf="_EmergencyListService.MyForm.get('CityName').invalid && _EmergencyListService.MyForm.get('CityName').touched">
-                                                    <span
-                                                        *ngIf="_EmergencyListService.MyForm.get('CityName').hasError('required')">
-                                                        City is required</span>
-                                                </mat-error>
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>State Name</mat-label>
-                                                <mat-select formControlName="StateId" name="StateId"
-                                                    (selectionChange)="onChangeCountryList($event.value)">
+                                                <mat-select formControlName="StateId" name="StateId">
                                                     <mat-option></mat-option>
                                                     <mat-option *ngFor="let m of stateList" [value]="m">
                                                         {{m.StateName}}
                                                     </mat-option>
                                                 </mat-select>
-                                                <mat-error
-                                                    *ngIf="_EmergencyListService.MyForm.get('StateId').invalid && _EmergencyListService.MyForm.get('StateId').touched">
-                                                    <span
-                                                        *ngIf="_EmergencyListService.MyForm.get('StateId').hasError('required')">
-                                                        City is required</span>
-                                                </mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -100,4 +89,4 @@
         </div>
     </div>
 
-</div> -->
+</div>
