@@ -53,7 +53,11 @@ export class CityMasterService {
             {}
         );
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     // public getStateMasterCombo() {
     //     return this._httpClient.post(
     //         "Generic/GetByProc?procName=Retrieve_StateMaster ",

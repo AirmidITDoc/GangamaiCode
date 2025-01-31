@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { LoaderService } from "app/core/components/loader/loader.service";
 import { HttpService } from "app/core/http/http.service";
 
 @Injectable()
@@ -8,7 +9,8 @@ export class GenderMasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: HttpService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+                public loaderService: LoaderService
     ) {
         this.myform = this.createGenderForm();
         this.myformSearch = this.createSearchForm();
@@ -40,10 +42,8 @@ export class GenderMasterService {
         this.myform.patchValue(Param);
     }
 
-
-
-    public getGenderMasterList(param: any, showLoader = true) {
-        return this._httpClient.post("Gender/List", param, showLoader);
+    public getGenderMasterList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DB_GenderMaster", Param);
     }
 
     public genderMasterInsert(Param: any) {

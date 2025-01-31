@@ -39,7 +39,7 @@ export class RelationshipMasterService {
 
     public getrelationshipMasterList(e) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_RelativeNameList",
+            "Generic/GetByProc?procName=m_Rtrv_RelativeNameList",
             e
         );
     }

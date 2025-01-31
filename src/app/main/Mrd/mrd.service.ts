@@ -118,6 +118,10 @@ export class MrdService {
   public geticdCodelist(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_M_ICDCdeMst_by_Name", employee)
   }
+  // details list
+  public getPatientICDDetaillist(Param){
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_PatientICDDetailsListInfo",Param)
+  }
  // ip
  public getAdmittedPatientList(employee){
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)

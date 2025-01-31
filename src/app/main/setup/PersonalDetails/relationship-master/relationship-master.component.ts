@@ -81,7 +81,7 @@ export class RelationshipMasterComponent implements OnInit {
 
     getrelationshipMasterList() {
         var m_data = {
-            RelativeName:
+            RelationshipName:
                 this._relationshipService.myformSearch
                     .get("RelationshipNameSearch")
                     .value.trim() || "%",

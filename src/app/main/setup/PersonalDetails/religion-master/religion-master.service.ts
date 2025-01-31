@@ -25,7 +25,7 @@ export class ReligionMasterService {
         return this._formBuilder.group({
             ReligionId: [""],
             ReligionName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: [""],
             UpdatedBy: [""],
         });
@@ -36,11 +36,15 @@ export class ReligionMasterService {
 
     public getReligionMasterList(e) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_ReligionName_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_ReligionName_by_Name",
             e
         );
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     public religionMasterInsert(param) {
         return this._httpClient.post(
             "PersonalDetails/ReligionMasterSave",

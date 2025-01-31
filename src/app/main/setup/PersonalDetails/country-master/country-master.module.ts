@@ -1,5 +1,4 @@
 import { NgModule } from "@angular/core";
-
 import { CountryMasterComponent } from "./country-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { CountryMasterService } from "./country-master.service";
@@ -17,6 +16,28 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
+import { NewcountryMasterComponent } from './newcountry-master/newcountry-master.component';
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { CommonModule } from "@angular/common";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { MatMenuModule } from "@angular/material/menu";
 
 const routes: Routes = [
     {
@@ -26,17 +47,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CountryMasterComponent],
+    declarations: [CountryMasterComponent, NewcountryMasterComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
-
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-
         MatTableModule,
         MatToolbarModule,
         MatPaginatorModule,
@@ -47,8 +65,28 @@ const routes: Routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseSidebarModule,
+        CommonModule,
+        MatMenuModule,        
+        SharedModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatTabsModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
-    providers: [CountryMasterService],
+    providers: [CountryMasterService,NotificationServiceService],
 
     entryComponents: [CountryMasterComponent],
 })

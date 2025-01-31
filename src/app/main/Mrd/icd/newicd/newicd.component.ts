@@ -53,10 +53,11 @@ export class NewicdComponent implements OnInit {
   vpatICDCodeId: any;
   vdId: any;
   selectedRow: any;
-  vWardName:any;
+  vWardName: any;
 
-  vShowData:any;
-  vHId:any;
+  vShowData: any;
+  vHId: any;
+  tablelist: any = [];
 
   displayedColumns: string[] = [
     "ICDCode",
@@ -92,18 +93,8 @@ export class NewicdComponent implements OnInit {
       this.registerObj1 = this.data.Obj;
       console.log("Icd RegisterObj:", this.registerObj1)
 
-      // this.dataSource2.data = Array.isArray(this.registerObj1) ? [...this.registerObj1] : [this.registerObj1];
-
-    //   if (this.registerObj1 && this.registerObj1.length > 0) {
-    //     this.tablelist = [...this.registerObj1]; 
-    //     this.dataSource2.data = [...this.tablelist]; 
-    // }
-
-    this.tablelist = Array.isArray(this.registerObj1) ? [...this.registerObj1] : [this.registerObj1];
-this.dataSource2.data = [...this.tablelist];
-
-      this.vpatICDCodeId=this.registerObj1.PatICDCodeId
-      this.vdId=this.registerObj1.DId
+      this.vpatICDCodeId = this.registerObj1.PatICDCodeId
+      this.vdId = this.registerObj1.DId
       this.RegId = this.registerObj1.RegId;
       this.vAdmissionID = this.registerObj1.AdmissionID
       console.log("AdmittedListIP:", this.registerObj1)
@@ -121,10 +112,13 @@ this.dataSource2.data = [...this.tablelist];
       this.vAge = this.registerObj1.AgeYear;
       this.vGenderName = this.registerObj1.GenderName;
       this.vAdmissionID = this.registerObj1.AdmissionID;
-      this.vWardName=this.registerObj1.WardName;
-      this.vHId=this.registerObj1.HId;
+      this.vWardName = this.registerObj1.WardName;
+      // this.vHId = this.registerObj1.HId;
     }
     this.getICDCodelist();
+    if (this.vpatICDCodeId) {
+      this.getICDCodePatDetailList(this.vpatICDCodeId);
+    }
   }
 
   getSelectedObj(obj) {
@@ -173,6 +167,48 @@ this.dataSource2.data = [...this.tablelist];
     }
   }
 
+  // details list
+  getICDCodePatDetailList(Param: any) {
+    debugger;
+    var vdata = {
+      HId: Param
+    };
+    console.log("HId:", vdata);
+    this._MrdService.getPatientICDDetaillist(vdata).subscribe(data => {
+      // If there is existing data, append the new data to the tablelist
+      if (this.tablelist && this.tablelist.length > 0) {
+        // If new data is received, append it to the existing tablelist
+        // if(this.tablelist.some(item => item.ICDCode === this.tablelist.ICDCode)) {
+        //   this.toastr.warning('Record Already Exist.', 'Warning !', {
+        //     toastClass: 'tostr-tost custom-toast-Warning',
+        //   });
+        // }
+        // else{
+          this.tablelist = [...this.tablelist, ...(data as IcdcodingMaster[])];
+        // }
+      } else {
+        // If tablelist is empty, initialize it with the fetched data
+        this.tablelist = data as IcdcodingMaster[];
+      }  
+      // Update dataSource2 with the updated tablelist
+      this.dataSource2.data = [...this.tablelist];
+  
+      console.log("Updated tablelist:", this.tablelist);
+      console.log("Updated dataSource2:", this.dataSource2.data);
+    });
+  }
+  //  getICDCodePatDetailList(Param:any){
+  //   debugger
+  //     var vdata={
+  //       HId:Param
+  //     }
+  //     console.log("HId:",vdata)
+  //     this._MrdService.getPatientICDDetaillist(vdata).subscribe(data =>{
+  //       this.dataSource2.data = data as IcdcodingMaster[];
+  //        console.log("details list:",this.dataSource2.data);
+  //     })
+  //   }
+
   getICDCodelist() {
     debugger
     const icdCode = this._MrdService.icdForm.get("ICDCodeSearch").value || '';
@@ -191,50 +227,37 @@ this.dataSource2.data = [...this.tablelist];
     });
   }
 
-tablelist:any=[];
-getICDCodeDetailList(row: any) {
-  debugger;
-  if (!this.tablelist) {
-    this.tablelist = [];
-  }
-  // Check if the record already exists
-  if (this.tablelist.some(item => item.ICDCodingId === row.ICDCodingId)) {
-    this.toastr.warning('Record Already Exist.', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-Warning',
+  getICDCodeDetailList(row: any) {
+    debugger;
+    if (!this.tablelist) {
+      this.tablelist = [];
+    }
+    // Check if the record already exists
+    if (this.tablelist.some(item => item.ICDCode === row.ICDCode)) {
+      this.toastr.warning('Record Already Exist.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-Warning',
+      });
+      return;
+    }
+    // Add the new row to tablelist
+    this.tablelist.push({
+      MainCName: row.MainCName,
+      ICDCode: row.ICDCode,
+      ICDCodeName: row.ICDCodeName
     });
-    return;
+    // Update dataSource2 with the updated tablelist
+    this.dataSource2.data = [...this.tablelist];
   }
-  // if (
-  //   [...this.tablelist, ...this.registerObj].some(
-  //     item => item.ICDCodingId === row.ICDCodingId
-  //   )
-  // ) {
-  //   this.toastr.warning('Record Already Exists.', 'Warning!', {
-  //     toastClass: 'tostr-tost custom-toast-Warning',
-  //   });
-  //   return;
-  // }
-  // Add the new row to tablelist
-  this.tablelist.push({
-    ICDCodingId: row.ICDCodingId,  // Ensure unique identifier is added
-    MainCName: row.MainCName,
-    ICDCode: row.ICDCode,
-    ICDCodeName: row.ICDCodeName
-  });
 
-  // Update dataSource2 with the updated tablelist
-  this.dataSource2.data = [...this.tablelist];
-}
-
-// demo end
+  // demo end
 
   removeRow(row: any) {
     debugger
     if (!this.tablelist) return;
     // Filter out the row to be removed
-    this.tablelist = this.tablelist.filter(data => data.ICDCodingId !== row.ICDCodingId);
+    this.tablelist = this.tablelist.filter(data => data.ICDCode !== row.ICDCode);
     // Update dataSource2 with the new list
-    this.dataSource2.data = [...this.tablelist];  
+    this.dataSource2.data = [...this.tablelist];
     console.log('Updated DataSource after Deletion:', this.dataSource2.data);
   }
 
@@ -249,11 +272,11 @@ getICDCodeDetailList(row: any) {
   onSave() {
     if (!this._MrdService.icdForm.get('RegID')?.value && !this.registerObj1?.RegId) {
       this.toastr.warning('Please Select Patient', 'Warning!', {
-          toastClass: 'tostr-tost custom-toast-warning',
+        toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-  }
-  
+    }
+
     if (!this.dataSource2 || this.dataSource2.data.length === 0) {
       this.toastr.warning('Please Select ICD Code', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -283,7 +306,6 @@ getICDCodeDetailList(row: any) {
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
 
     if (!this.vpatICDCodeId && !this.vdId) {
 
@@ -339,9 +361,9 @@ getICDCodeDetailList(row: any) {
     }
     else {
 
-      let deletePatICDCodeParamHeader= {
+      let deletePatICDCodeParamHeader = {
         "patICDCodeId": this.vpatICDCodeId
-    }
+      }
 
       let updatePatICDCodeHeader = this.DSIcdMasterList.data.map((row: any) => ({
         "patICDCodeId": this.vpatICDCodeId,
@@ -362,8 +384,10 @@ getICDCodeDetailList(row: any) {
       // }
 
       let updatePatICDCodeDetailsArray = this.dataSource2.data.map((row: any) => ({
-        "dId": row.dId || this.vdId, // Use existing dId if available, otherwise use vdId
-        "hId": row.HId || this.vHId,
+        // "dId":this.dataSource2.data[0].DId,
+        // "hId": this.dataSource2.data[0].HId,
+        "dId":row.DId,
+        "hId": row.HId,
         "icdCode": row.ICDCode,
         "icdCodeDesc": row.ICDCodeName,
         "icdCdeMainName": row.MainCName,
@@ -382,7 +406,7 @@ getICDCodeDetailList(row: any) {
       // }
 
       let updateData = {
-        "deletePatICDCodeParamHeader":deletePatICDCodeParamHeader,
+        "deletePatICDCodeParamHeader": deletePatICDCodeParamHeader,
         "updatePatICDCodeParamHeader": updatePatICDCodeHeader,
         "updatePatICDCodeParamDetails": updatePatICDCodeDetailsArray
       }
@@ -420,7 +444,7 @@ export class IcdcodingMaster {
   MainName: string;
   ICDDescription: string;
   IsActive: boolean;
-  PatICDCodeId:number;
+  PatICDCodeId: number;
 
   /**
    * Constructor
@@ -433,7 +457,7 @@ export class IcdcodingMaster {
       this.MainName = IcdcodingMaster.MainName || "";
       this.ICDDescription = IcdcodingMaster.ICDDescription || "";
       this.IsActive = IcdcodingMaster.IsActive || "false";
-      this.PatICDCodeId=IcdcodingMaster.PatICDCodeId || '';
+      this.PatICDCodeId = IcdcodingMaster.PatICDCodeId || '';
     }
   }
 }

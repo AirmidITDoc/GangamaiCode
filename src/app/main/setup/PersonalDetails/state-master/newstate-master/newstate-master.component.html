@@ -1,0 +1,93 @@
+<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="color: white;">
+                <mat-icon>account_box</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                New State
+            </span>
+        </div>
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56" fusePerfectScrollbar>
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <div fxlayout="row">
+                            <form [formGroup]="_stateService.myform">
+                                <div class="dialog-content-wrapper">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="4px">
+
+                                        <input type="hidden" name="StateId" formControlName="StateId">
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>State Name</mat-label>
+                                                <input name="StateName" formControlName="StateName"
+                                                    placeholder="State Name" matInput type="text"
+                                                    oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');"
+                                                    [(ngModel)]="vStateName">
+                                                <mat-error
+                                                    *ngIf="_stateService.myform.get('StateName').invalid && _stateService.myform.get('StateName').touched">
+                                                    State Name is required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Country</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Country" matInput formControlName="CountryId" required
+                                                    required [(ngModel)]="vCountryId" [matAutocomplete]="autoCountry">
+                                                <span matSuffix style="display: flex;">
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_stateService.myform.get('CountryId').setValue(''); isCountrySelected = false;">close</mat-icon>
+                                                    <mat-icon class="mat-icon-close"
+                                                        (click)="_stateService.myform.get('CountryId').setValue(''); isCountrySelected = false;">search</mat-icon>
+                                                </span>
+
+                                                <mat-autocomplete #autoCountry="matAutocomplete" [displayWith]="getOptionTextCountry">
+                                                    <mat-option *ngFor="let option of filteredOptionsCountry | async" 
+                                                    [value]="option">
+                                                        {{option.CountryName}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="footer-navigation-container">
+
+                                    <mat-checkbox aria-label="IsDeleted" formControlName="IsDeleted"
+                                        (checked)=true>IsActive
+                                    </mat-checkbox>
+
+                                    <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
+                                        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                        <button class="btn btn-primary" (click)="onSave()">
+                                            Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
