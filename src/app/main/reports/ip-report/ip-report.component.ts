@@ -281,6 +281,7 @@ export class IpReportComponent implements OnInit {
       this.FlagMaterialConsumptionIdSelected = false;
       this.FlagDischargetypeIdSelected = true;
       this.FlagWardIdSelected = false;
+      this.IPBILL=false
     }
     else if (this.ReportName == 'IPD Discharge Type Company Wise') {
 
@@ -673,8 +674,7 @@ export class IpReportComponent implements OnInit {
     console.log("ggggg:", m_data)
 
     this._IPReportService.getDoctorMaster(m_data).subscribe(data => {
-      this.DoctorList = data;
-      this.optionsSearchDoc = this.DoctorList.slice();
+      this.DoctorList = data; 
       this.filteredOptionsDoctorMode = this._IPReportService.userForm.get('DoctorId').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filtersearchdoc(value) : this.DoctorList.slice()),
@@ -2400,26 +2400,56 @@ export class IpReportComponent implements OnInit {
             });
         });
      
-  }
-  exportIPBillReportExcel(){
-        let fromdate = this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let todate = this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+  } 
+  dsDischargeTypeData = new MatTableDataSource<IpBillBrowseList>()
+  getIpDischargeType(){
+    let DoctorId = 0
+    if (this._IPReportService.userForm.get('DoctorId').value)
+      DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
 
-        var data = {
-          "FromDate": fromdate,
-          "ToDate": todate,
-          "AddedById": this._loggedUser.currentUserValue.user.id
-        }
-        this._IPReportService.getBrowseIPDBillsummaryList(data).subscribe(Visit => {
-          this.dsIPBrowseList.data = Visit as IpBillBrowseList[];
-          console.log(this.dsIPBrowseList.data)
-          if( this.dsIPBrowseList.data.length > 0)
-            this.IpbillsummaryExcel()
-        }
-        );
-      
-        
+    let DischargeTypeId = 0
+    if (this._IPReportService.userForm.get('DischargeTypeId').value)
+      DischargeTypeId = this._IPReportService.userForm.get('DischargeTypeId').value.DischargeTypeId || 0;
+
+    var vdata = {
+      'DoctorId': DoctorId,
+      'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+      'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+      'DischargeTypeId': DischargeTypeId
+    }
+    this._IPReportService.getDischargetypewiseData(vdata).subscribe(res => {
+      this.dsDischargeTypeData.data = res as IpBillBrowseList[]
+      console.log(this.dsDischargeTypeData)
+      if(this.dsDischargeTypeData.data.length>0){
+        this.exportIPBillReportExcel();
+      }
+    });
   }
+  exportIPBillReportExcel() {
+    // let fromdate = this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    // let todate = this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+
+    // var data = {
+    //   "FromDate": fromdate,
+    //   "ToDate": todate,
+    //   "AddedById": this._loggedUser.currentUserValue.user.id
+    // }
+    // this._IPReportService.getBrowseIPDBillsummaryList(data).subscribe(Visit => {
+    //   this.dsIPBrowseList.data = Visit as IpBillBrowseList[];
+    //   console.log(this.dsIPBrowseList.data)
+    //   if( this.dsIPBrowseList.data.length > 0)
+    //     this.IpbillsummaryExcel()
+    // }
+    // );
+    if (this.ReportName == 'IPD Discharge Type Wise') { 
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['AdmissionDate', 'DischargeDate', 'IPDNo', 'PatientName', 'MobileNo', 'DoctorName', 'RefDoctorName', 'DepartmentName', 'Diagnosis'];
+      this.reportDownloadService.getExportJsonData(this.dsDischargeTypeData.data, exportHeaders, 'IPD Discharge Type Wise');
+      this.dsDischargeTypeData.data = [];
+      this.sIsLoading = '';
+    }
+  }
+
   IpbillsummaryExcel() {
     console.log(this.dsIPBrowseList.data)
     let exportHeaders = ['RegNo', 'IPDNo', 'PatientName', 'DoctorName', 'IsBillGenerated', 'BillNo', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'PaidAmount', 'BalanceAmt', 'BillDate', 'OPD_IPD_Type', 'BillAddedByName', 'CashCounterName'

@@ -404,6 +404,12 @@ public getBrowseIPDBillsummaryList(data,loader = true){
   return this._httpClient.post("Generic/GetByProc?procName=rptIPDBillDateWise",data)
 
 }
+public getDischargetypewiseData(data,loader = true){
+  if (loader) {
+    this._loaderService.show();
+} 
+  return this._httpClient.post("Generic/GetByProc?procName=rptDischargeTypeReport",data) 
+}
 
 
 public getRefundofbillview(FromDate,ToDate,loader = true){

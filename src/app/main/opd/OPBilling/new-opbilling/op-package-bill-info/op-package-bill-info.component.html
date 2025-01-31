@@ -111,18 +111,6 @@
                             <mat-table #table1 matSort [dataSource]="dsPackageDet" [@animateStagger]="{value:'50'}"
                                 style="height:250px !important;overflow: auto;">
 
-                                <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
-                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
-                                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                                        </buttom>
-                                        <button mat-icon-button (click)="deleteTableRowPackage(row)" color="warn">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </mat-cell>
-                                </ng-container>
 
                                 <ng-container matColumnDef="IsCheck" sticky>
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -179,14 +167,51 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="DoctorName">
+                                <!-- <ng-container matColumnDef="DoctorName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                         class="w-150">DoctorName
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                         <span> {{contact.DoctorName || '-'}}</span>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
+
+                                <ng-container matColumnDef="DoctorName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                        class="w-200">
+                                        DoctorName</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                        <span>{{contact.DoctorName}}</span>
+                                        <ng-container *ngIf="!contact.EditDoctor; else showInput">
+                                            <button mat-icon-button (click)="DocenableEditing(contact)" class="clear-button">
+                                                --<mat-icon>edit</mat-icon></button>
+                                        </ng-container>
+                                        <ng-template #showInput> 
+                                            <form [formGroup]="PackageForm">
+                                            <mat-form-field appearance="legacy" class="w-120">
+                                                <mat-label>Select Doctor</mat-label>
+                                                <input matAutocompletePosition="below" type="text"
+                                                    placeholder="Select Doctor" matInput formControlName="EditDoctor"
+                                                    [matAutocomplete]="autoDocId"  
+                                                    (input)="getAdmittedDoctorEditable(contact)"> 
+                                                <mat-autocomplete #autoDocId="matAutocomplete"
+                                                    [displayWith]="getOptionTextDoctorEdit"  
+                                                    (optionSelected)='DropDownValue($event.option.value)'>
+                                                    <mat-option *ngFor="let option of filteredOptionsDoctorsEdit"
+                                                        [value]="option">
+                                                        {{option.Doctorname}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>&nbsp;
+                                            </form> 
+                                            <mat-icon matTooltip="Close" (click)="DoctorisableEditing(contact)">cancel</mat-icon> 
+                                            <!-- <buttom mati-icon-button (click)="OnSaveEditSupplier(contact)" matTooltip="Save">
+                                                <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                            </buttom> -->
+                                        
+                                        </ng-template>
+                                    </mat-cell>
+                                </ng-container>   
 
                                 <ng-container matColumnDef="DiscPer">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
@@ -212,6 +237,20 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <span> {{contact.NetAmount || '0'}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                        </buttom>
+                                        <button mat-icon-button (click)="deleteTableRowPackage(contact)" color="warn">
+                                            <mat-icon>delete_outline</mat-icon>
+                                        </button>
                                     </mat-cell>
                                 </ng-container>
 

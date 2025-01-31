@@ -666,6 +666,7 @@ ServiceList:any=[];
       this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         if (data) {
           this.getChargesList(); 
+          this.getpackagedetList();
         }
       });
       this.onClearServiceAddList()
@@ -692,8 +693,7 @@ ServiceList:any=[];
   }
     //package list 
     PacakgeList:any=[];
-    getpackagedetList() {
-      debugger
+    getpackagedetList() { 
       var vdata = {
         'ServiceId': this.serviceId || 0
       }
@@ -719,15 +719,15 @@ ServiceList:any=[];
         })
         this.PackageDatasource.data = this.PacakgeList
         console.log(this.PacakgeList);
-        console.log(this.PackageDatasource.data);
+       // console.log(this.PackageDatasource.data);
       });
     }
  
     //add charge Table Cal
    
     getQtytable(element,Qty) {
-      console.log(Qty)
-      console.log(element)
+      //console.log(Qty)
+      //console.log(element)
       let discAmt = 0; 
       let discPer = 0;
       discPer = element.ConcessionPercentage 
@@ -744,8 +744,8 @@ ServiceList:any=[];
       } 
     }
     getPricetable(element,Price) {
-      console.log(Price)
-      console.log(element)
+      // console.log(Price)
+      // console.log(element)
       let discAmt = 0; 
       let discPer = 0;
       element.Price = Price
@@ -1566,6 +1566,8 @@ CalculateAdminCharge(){
          this.TotalPrice = 0;
      }
    })
+   this.getChargesList(); 
+   this.getpackagedetList();
  }
   showAllFilter(event) {
     console.log(event);

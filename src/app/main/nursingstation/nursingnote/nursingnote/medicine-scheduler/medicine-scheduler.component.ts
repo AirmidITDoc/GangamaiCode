@@ -30,6 +30,7 @@ export class MedicineSchedulerComponent implements OnInit {
     'Action'
   ]
 
+  timeValue: string = ''; // This will hold the selected time value
   screenFromString = 'dose';
   isLoading = true;
   sIsLoading: string = '';
@@ -164,7 +165,7 @@ export class MedicineSchedulerComponent implements OnInit {
         DrugName: this.registerObj.ItemName || '',
         // DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0, 
         // DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
-        DoseDateTime: this.MedicineItemForm.get('DoseDateTime').value || '01/01/1900',
+        DoseDateTime: this.MedicineItemForm.get('DoseDateTime').value || '01/01/1900',   
         Route: this.MedicineItemForm.get('Route').value || '',
         Frequency: this.MedicineItemForm.get('Frequency').value || 0,
         NurseName: this.MedicineItemForm.get('NurseName').value || '',

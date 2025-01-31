@@ -21,7 +21,7 @@ export class OpBillingService {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient.post("InPatient/AddIPCharges", employee);
+    return this._httpClient.post("InPatient/InsertIPDPackageBill", employee);
   }
   // edit  main  Charges 
   public UpdateMainCharge(employee, loader = true) {

@@ -219,11 +219,11 @@ export class OPSearhlistService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveVisitDetailsList_1", employee)
   }
   //op bill Package details
-  public getpackagedetList(employee, loader = true) {
+  public getpackagedetList(employee, loader = true) {///m_Retrieve_PackageDetails
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PackageDetails", employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PackageDetails_List", employee)
   }
 
   // Doctor Master Combobox List
