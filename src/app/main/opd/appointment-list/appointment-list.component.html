@@ -50,13 +50,16 @@
             <div class="patient-column gap-12" fxLayout="row">
                 <div class="patient-old-new" fxLayout="row" fxLayoutAlign="center">
                     <div class="pill-icon" fxLayout="row" fxLayoutAlign="center">
-                        <mat-icon *ngIf="element.patientOldNew=='1' || element.patientOldNew=='1'"
-                            matTooltip="PatientNew" class="pill green-600 s-16">circle</mat-icon>
-                        <mat-icon *ngIf="element.PatientOldNew=='2' " matTooltip="PatientOld"
-                            class="pill orange-600 s-16">circle
+                        <mat-icon *ngIf="element.patientOldNew=='1' || element.patientOldNew=='1'" matTooltip="PatientNew"
+                            class="pill green-600 s-16">circle</mat-icon>
+                        <mat-icon *ngIf="element.PatientOldNew=='2' " matTooltip="PatientOld" class="pill orange-600 s-16">circle
                         </mat-icon>
                     </div>
                 </div>
+            </div>
+        </ng-template>
+        <ng-template #actionsflgBillNo let-element>
+            <div class="patient-column gap-12" fxLayout="row">
                 <div class="bill-generated" fxLayout="row" fxLayoutAlign="center">
                     <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
                         class="pill red-600 s-16">circle</mat-icon>
@@ -65,17 +68,8 @@
                         circle
                     </mat-icon>
                 </div>
-                <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
-                    <div class="pill-icon">
-                        <mat-icon *ngIf="element.phoneAppId == 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
-                            settings_phone
-                        </mat-icon>
-                    </div>
-                </div>
             </div>
-
         </ng-template>
-
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch">

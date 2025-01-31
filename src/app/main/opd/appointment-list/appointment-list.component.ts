@@ -47,9 +47,10 @@ export class AppointmentListComponent implements OnInit {
     myformSearch: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
 
-    nowdate = new Date();
-    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
+    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
+        public toastr: ToastrService, public datePipe: DatePipe) {
 
+    }
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -81,6 +82,8 @@ export class AppointmentListComponent implements OnInit {
 
     ];
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
+    
     edit(a) {
         debugger
     }
@@ -90,13 +93,14 @@ export class AppointmentListComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template1 = this.actionsflgBillNo;
     }
 
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
             { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20, type: gridColumnTypes.template },
-            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 , type: gridColumnTypes.template},
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
@@ -165,10 +169,6 @@ export class AppointmentListComponent implements OnInit {
 
     }
 
-    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-        public toastr: ToastrService, public datePipe: DatePipe) {
-
-    }
 
 
     onSave(row: any = null) {
