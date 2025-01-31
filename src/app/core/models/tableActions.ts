@@ -30,7 +30,8 @@ export enum gridColumnTypes{
     StatusIsPathology=19,
     StatusIsRadiology=20,
     StatusCreditdr=21,
-    StatusPatientType=22
+    StatusPatientType=22,
+    template=23
 }
 export const DATE_TYPES = {
     SHORT_TIME: 'h:mm a',

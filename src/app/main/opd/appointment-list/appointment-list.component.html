@@ -46,14 +46,43 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionsTemplate let-element>
+            <div class="patient-column gap-12" fxLayout="row">
+                <div class="patient-old-new" fxLayout="row" fxLayoutAlign="center">
+                    <div class="pill-icon" fxLayout="row" fxLayoutAlign="center">
+                        <mat-icon *ngIf="element.patientOldNew=='1' || element.patientOldNew=='1'"
+                            matTooltip="PatientNew" class="pill green-600 s-16">circle</mat-icon>
+                        <mat-icon *ngIf="element.PatientOldNew=='2' " matTooltip="PatientOld"
+                            class="pill orange-600 s-16">circle
+                        </mat-icon>
+                    </div>
+                </div>
+                <div class="bill-generated" fxLayout="row" fxLayoutAlign="center">
+                    <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
+                        class="pill red-600 s-16">circle</mat-icon>
+                    <mat-icon style=" border: black 1px solid;" *ngIf="element.MPbillNo=='0' "
+                        matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                        circle
+                    </mat-icon>
+                </div>
+                <div class="phone-app" fxLayout="row" fxLayoutAlign="center">
+                    <div class="pill-icon">
+                        <mat-icon *ngIf="element.phoneAppId == 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
+                            settings_phone
+                        </mat-icon>
+                    </div>
+                </div>
+            </div>
+
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
 
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
-                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
-                    [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
@@ -85,13 +114,13 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                    
+
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
                         [(ngModel)]="gridConfig.filters[3].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
-                  
+
                 </form>
             </ng-container>
         </airmid-table>
