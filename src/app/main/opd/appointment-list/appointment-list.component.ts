@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -79,11 +79,23 @@ export class AppointmentListComponent implements OnInit {
         { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
-    ]
+    ];
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    edit(a) {
+        debugger
+    }
+    delete(a) {
+        debugger
+    }
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
+    }
+
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20, type: gridColumnTypes.template },
             { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
