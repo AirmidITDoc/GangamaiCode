@@ -31,6 +31,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.component';
 import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
+import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -49,14 +50,14 @@ export class AppointmentListComponent implements OnInit {
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-    fromDate = "2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
 
     doctorID = "0";
-    
+
     onChangeStartDate(value) {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
@@ -82,23 +83,27 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-             { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: 17 },
-            { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: 15 },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DoctorName", key: "consultantdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Ref DoctorName", key: "refdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Department", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
-
             {
                 heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
+                    {
+                        // Pending page...
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.showBilling(data);
+                        }
+                    },
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
@@ -143,7 +148,7 @@ export class AppointmentListComponent implements OnInit {
         sortField: "VisitId",
         sortOrder: 0,
         filters: this.allfilters
-              ,
+        ,
         row: 25
 
     }
@@ -153,7 +158,7 @@ export class AppointmentListComponent implements OnInit {
 
     }
 
-   
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -173,7 +178,17 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-
+    showBilling(row: any = null) {
+        // Pending...
+        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+            maxWidth: "90vw",
+            maxHeight: "90vh",
+            width: "80%",
+            data: {
+                patientDetail: row
+            }
+        });
+    }
 
     onRegistrationEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -381,7 +396,7 @@ export class AppointmentListComponent implements OnInit {
 
 
             if (flag.isConfirmed) {
-               
+
                 let submitData = {
                     "visitId": contact.visitId
 
@@ -389,18 +404,18 @@ export class AppointmentListComponent implements OnInit {
                 console.log(submitData);
                 this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
                     this.toastr.success(response.message);
-                   this._matDialog.closeAll();
+                    this._matDialog.closeAll();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
             }
         });
-       
+
     }
 
 
     getAppointmentrview() {
-       
+
         let param = {
 
             "searchFields": [
@@ -527,7 +542,7 @@ export class VisitMaster1 {
         {
             this.visitId = VisitMaster1.visitId || 0;
             this.regId = VisitMaster1.regId || 0;
-            this.RegID=VisitMaster1.RegID || 0;
+            this.RegID = VisitMaster1.RegID || 0;
             this.visitDate = VisitMaster1.visitDate || "";
             this.visitTime = VisitMaster1.visitTime || "";
             this.unitId = VisitMaster1.unitId || 1;

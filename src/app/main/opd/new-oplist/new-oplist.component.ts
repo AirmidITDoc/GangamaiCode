@@ -29,10 +29,8 @@ export class NewOPListComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
-    nowdate = new Date();
-    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
-    fromDate = "2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
 
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -49,35 +47,34 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:150,type:22 },
-            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:150,type:16},
+            { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:20,type:22 },
+            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:20,type:16},
              { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width:100 },
             { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA', width: 70 },
             { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-            { heading: "CashCounter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250},
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-           
             {
                 heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
@@ -117,11 +114,9 @@ export class NewOPListComponent implements OnInit {
             { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", width: 150 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-           
             { heading: "CompantName", key: "companyName", sort: true, align: "center", width: 250 },
           
             {
@@ -171,11 +166,8 @@ export class NewOPListComponent implements OnInit {
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA' },
-         
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA' },
-         
             { heading: "PatientType", key: "patientType", sort: true, align: "center" },
-            
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CompanyName", key: "companyName",sort: true, align: "center" },
             // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
@@ -413,18 +405,20 @@ debugger
     onChangeDate1(selectDate) {
         if (selectDate) {
             
-            this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
-            console.log(this.toDate);
-            this.gridConfig.filters[3].fieldValue = this.toDate
+            // this.toDate = this.datePipe.transform(selectDate, "MM/dd/yyyy")
+            // console.log(this.toDate);
+            // this.gridConfig.filters[3].fieldValue = this.toDate
 
-            this.gridConfig.filters = [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            this.gridConfig.filters = [
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
+            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+        ]
         }
     }
 

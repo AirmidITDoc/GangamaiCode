@@ -31,12 +31,13 @@ export class RegistrationComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-    // nowdate = new Date();
-    // firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
-    // fromDate ='2021-01-01'// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    // toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-    
+
+    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
+        public toastr: ToastrService, public datePipe: DatePipe) { }
+
+    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+
     ngOnInit(): void {
         this.myFilterform = this._RegistrationService.filterForm();
     }
@@ -51,18 +52,15 @@ export class RegistrationComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
-            { heading: "RegDate", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
+            { heading: "Date", key: "rDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
+            { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
             { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', },
-            // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
-            // { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
             {
                 heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action,width:160, actions: [
                     {
@@ -84,8 +82,8 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue:"", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:"", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
@@ -93,15 +91,10 @@ export class RegistrationComponent implements OnInit {
         ],
         row: 25
     }
-
-    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
-        public toastr: ToastrService, public datePipe: DatePipe) { }
-
    
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
@@ -160,7 +153,6 @@ export class RegistrationComponent implements OnInit {
     }
 
     onDeactive(doctorId) {
-
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {

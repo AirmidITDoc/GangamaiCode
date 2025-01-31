@@ -1,5 +1,5 @@
 .mat-typography {
-    .mat-tab-group {
+    .mat-mdc-tab-group {
         font-family: inherit;
         .mat-tab-header {
             border-radius: 4px;
@@ -42,8 +42,8 @@
             }
         }
         @include themed() {
-            .mat-tab-header {
-                background-color: $gray-100;
+            .mat-mdc-tab-header {
+                // background-color: $gray-100;
                 background-color: t($ngt-tab);
                 color: t($text-color);
                 .mat-tab-label-container {
