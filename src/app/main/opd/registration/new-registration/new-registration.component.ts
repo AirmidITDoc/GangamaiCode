@@ -72,12 +72,9 @@ export class NewRegistrationComponent implements OnInit {
 
     ngOnInit(): void {
         this.personalFormGroup = this._registerService.createPesonalForm1();
-       
         this.minDate = new Date();
-      
         // if((this.data?.Submitflag?? true)==true)
         //     this.registerObj.regId=this.data.data1.regId
-        debugger
         // if ((this.data.data1?.regId?? 0) > 0) {
             if ((this.data?.regId?? 0) > 0) {
             setTimeout(() => {
@@ -96,18 +93,16 @@ export class NewRegistrationComponent implements OnInit {
     Saveflag: boolean = false;
     OnSubmit() {
         console.log(this.personalFormGroup.value)
-        
-        // if (this.personalFormGroup.valid) {
-          
+        if (this.personalFormGroup.valid) {
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        // } else {
-        //     this.toastr.warning("Form Is Invalid !...");
-        // }
+        } else {
+            this.toastr.warning("Form Is Invalid !...");
+        }
     }
 
     onClose() {

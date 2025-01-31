@@ -31,27 +31,36 @@ export class RegistrationComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-    nowdate = new Date();
-    firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
-    fromDate ='2021-01-01'// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+
+    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
+        public toastr: ToastrService, public datePipe: DatePipe) { }
+
+    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+
+    ngOnInit(): void {
+        this.myFilterform = this._RegistrationService.filterForm();
+    }
+
+    onChangeStartDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
 
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
-            { heading: "RegDate", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Middle Name", key: "middleName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
+            { heading: "Date", key: "rDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
+            { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
             { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', },
-            // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
-            // { heading: "IsCharity", key: "isCharity", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
             {
                 heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action,width:160, actions: [
                     {
@@ -64,14 +73,6 @@ export class RegistrationComponent implements OnInit {
                             // this.getAdmittedPatientCasepaperview(data);
                         }
                     },
-                    // {
-                    //     action: gridActions.delete, callback: (data: any) => {
-                    //         this._RegistrationService.deactivateTheStatus(data.regId).subscribe((response: any) => {
-                    //             this.toastr.success(response.message);
-                    //             this.grid.bindGridData();
-                    //         });
-                    //     }
-                    // }
                     ]
             }
         ],
@@ -90,25 +91,10 @@ export class RegistrationComponent implements OnInit {
         ],
         row: 25
     }
-
-    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
-        public toastr: ToastrService, public datePipe: DatePipe) { }
-
-    ngOnInit(): void {
-        this.myFilterform = this._RegistrationService.filterForm();
-        }
-
-
-    onChangeStartDate(value) {
-        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
+   
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
@@ -167,7 +153,6 @@ export class RegistrationComponent implements OnInit {
     }
 
     onDeactive(doctorId) {
-
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -199,9 +184,7 @@ export class RegistrationComponent implements OnInit {
     }
     getRegistrationlistrview() {
         setTimeout(() => {
-
             let param = {
-
                 "searchFields": [
                     {
                         "fieldName": "FromDate",
@@ -216,8 +199,6 @@ export class RegistrationComponent implements OnInit {
                 ],
                 "mode": "RegistrationReport"
             }
-
-            debugger
             console.log(param)
             this._RegistrationService.getPatientListView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,

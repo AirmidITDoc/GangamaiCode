@@ -1,6 +1,6 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 @Injectable({
     providedIn: "root",
@@ -9,7 +9,7 @@ export class TalukaMasterService {
     myForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
-        private _httpClient: HttpClient,
+        private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder
     ) {
         this.myForm = this.createTalukaForm();
@@ -18,13 +18,10 @@ export class TalukaMasterService {
 
     createTalukaForm(): FormGroup {
         return this._formBuilder.group({
-            TalukaId: [""],
-            TalukaName: [""],
-            CityName: [""],
-            CityId: [""],
-            IsDeleted: ["false"],
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
+            talukaId: [0],
+            talukaName: [""],
+            cityId: [""],
+            isActive:[true,[Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
@@ -38,29 +35,39 @@ export class TalukaMasterService {
         this.createTalukaForm();
     }
 
-    public getTalukaMasterList(param) {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_TalukaNameList_by_Name",
-            param
-        );
+    public stateMasterSave(Param: any) {
+        if (Param.talukaId) {
+            return this._httpClient.PutData("TalukaMaster/" + Param.talukaId, Param);
+        } else return this._httpClient.PostData("TalukaMaster", Param);
     }
 
-    public getCityMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
-            {}
-        );
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("TalukaMaster?Id=" + m_data.toString());
     }
 
-    public talukaMasterInsert(param) {
-        return this._httpClient.post("PersonalDetails/TalukaSave", param);
-    }
+    // public getTalukaMasterList(param) {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=M_Rtrv_TalukaNameList_by_Name",
+    //         param
+    //     );
+    // }
 
-    public talukaMasterUpdate(param) {
-        return this._httpClient.post("PersonalDetails/TalukaUpdate", param);
-    }
+    // public getCityMasterCombo() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
+    //         {}
+    //     );
+    // }
 
-    populateForm(param) {
-        this.myForm.patchValue(param);
-    }
+    // public talukaMasterInsert(param) {
+    //     return this._httpClient.post("PersonalDetails/TalukaSave", param);
+    // }
+
+    // public talukaMasterUpdate(param) {
+    //     return this._httpClient.post("PersonalDetails/TalukaUpdate", param);
+    // }
+
+    // populateForm(param) {
+    //     this.myForm.patchValue(param);
+    // }
 }

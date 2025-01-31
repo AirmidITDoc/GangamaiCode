@@ -20,6 +20,10 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">
+                    
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
+                    [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
@@ -41,6 +45,7 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
+
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
                         <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
@@ -50,8 +55,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
-                   
                    
                     <mat-form-field appearance="outline">
                         <mat-label>MobileNo</mat-label>
@@ -62,10 +65,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
-                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                    [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
 
                 </form>
             </ng-container>

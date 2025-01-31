@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
@@ -36,6 +36,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips'; 
 import { SMSConfugurationComponent } from './smsconfuguration.component';
 import { UpdateSMSComponent } from './update-sms/update-sms.component';
+import { SMSConfugurationService } from './smsconfuguration.service';
 
 const routes: Routes = [
   { 
@@ -43,12 +44,8 @@ const routes: Routes = [
       component: SMSConfugurationComponent 
   },
 ];
-
 @NgModule({
-    declarations: [
-        SMSConfugurationComponent,
-        UpdateSMSComponent
-    ],
+    declarations: [ SMSConfugurationComponent, UpdateSMSComponent ],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -91,8 +88,7 @@ const routes: Routes = [
         // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule
     ],
-    providers: [
-        DatePipe,
-    ]
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+    providers: [ DatePipe, SMSConfugurationService ]
 })
 export class SMSConfugurationModule { }

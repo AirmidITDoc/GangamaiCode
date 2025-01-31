@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { VillageMasterComponent } from "./village-master.component";
 import { RouterModule, Routes } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
@@ -21,6 +21,8 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { VillageMasterService } from "./village-master.service";
 import { MatStepperModule } from "@angular/material/stepper";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NewVillageComponent } from './new-village/new-village.component';
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -30,7 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [VillageMasterComponent],
+    declarations: [VillageMasterComponent, NewVillageComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -52,7 +54,8 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatDialogModule
     ],
-    providers: [VillageMasterService]
+    providers: [VillageMasterService, DatePipe]
 })
 export class VillageMasterModule {}

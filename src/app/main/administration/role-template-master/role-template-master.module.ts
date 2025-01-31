@@ -18,6 +18,12 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { RoleTemplateMasterComponent } from "./role-template-master.component";
 import { RoleTemplateService } from "./role-template.service";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
+import { NewRoletemplateComponent } from './new-roletemplate/new-roletemplate.component';
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "app/main/shared/shared.module";
+import { DatePipe } from "@angular/common";
 
 
 const routes: Routes = [
@@ -26,9 +32,8 @@ const routes: Routes = [
       component: RoleTemplateMasterComponent,
   },
 ];
-
 @NgModule({
-    declarations: [RoleTemplateMasterComponent, RolePermissionComponent],
+    declarations: [RoleTemplateMasterComponent, RolePermissionComponent, NewRoletemplateComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
@@ -46,11 +51,30 @@ const routes: Routes = [
         MatSnackBarModule,
         FuseSharedModule,
         FuseSidebarModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatDialogModule, SharedModule,
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
     ],
-    providers: [RoleTemplateService]
+    providers: [RoleTemplateService, DatePipe]
 })
 export class RoleTemplateMasterModule { }
 

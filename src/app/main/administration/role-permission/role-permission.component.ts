@@ -86,9 +86,9 @@ export class RolePermissionComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<RolePermissionComponent>,
     ) {
-        this._RoleService.getPermissionList(this.data.RoleId).subscribe((Menu) => {
-            this.dataSource.data = Menu as FileNode[];
-        });
+        // this._RoleService.getPermissionList(this.data.RoleId).subscribe((Menu) => {
+        //     this.dataSource.data = Menu as FileNode[];
+        // });
     }
 
     hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
@@ -130,11 +130,11 @@ export class RolePermissionComponent implements OnInit {
       
     onSubmit() {
         var data=this.dataSource.data.map(obj => ({ ...obj, RoleId: this.roleId }));
-        this._RoleService.savePermission(data).subscribe((Menu) => {
-            this.toastr.success('Permission updated Successfully.', 'updated !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-        });
+        // this._RoleService.savePermission(data).subscribe((Menu) => {
+        //     this.toastr.success('Permission updated Successfully.', 'updated !', {
+        //         toastClass: 'tostr-tost custom-toast-success',
+        //     });
+        // });
     }
 
 }

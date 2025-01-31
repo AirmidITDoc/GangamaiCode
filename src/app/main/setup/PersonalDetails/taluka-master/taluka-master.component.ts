@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { ReplaySubject, Subject } from "rxjs";
 import { TalukaMasterService } from "./taluka-master.service";
-import { takeUntil } from "rxjs/operators";
-import { MatSort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
-import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { MatDialog } from "@angular/material/dialog";
+import { NewTalukaComponent } from "./new-taluka/new-taluka.component";
 
 @Component({
     selector: "app-taluka-master",
@@ -18,237 +16,64 @@ import { ToastrService } from "ngx-toastr";
     animations: fuseAnimations,
 })
 export class TalukaMasterComponent implements OnInit {
-    TalukaMasterList: any;
-    CitycmbList: any = [];
     msg: any;
-
-    public cityFilterCtrl: FormControl = new FormControl();
-    public filteredCity: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
-
-    displayedColumns: string[] = [
-        "TalukaID",
-        "TalukaNAME",
-        "CityNAME",
-        "AddedBy",
-        "ISDELETED",
-        "action",
-    ];
-
-    DSTalukaMasterList = new MatTableDataSource<TalukaMaster>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-    constructor(public _TalukaService: TalukaMasterService,
-        public toastr : ToastrService,) {}
-
-    ngOnInit(): void {
-        this.getTalukaMasterList();
-        this.getCityMasterCombo();
-
-        this.cityFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterCity();
-            });
-    }
-    onSearch() {
-        this.getTalukaMasterList();
-    }
-    onSearchClear() {
-        this._TalukaService.myformSearch.reset({
-            TalukaNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-        this.getTalukaMasterList();
-    }
-
-    private filterCity() {
-        // ;
-        if (!this.CitycmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.cityFilterCtrl.value;
-        if (!search) {
-            this.filteredCity.next(this.CitycmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredCity.next(
-            this.CitycmbList.filter(
-                (bank) => bank.CityName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
-
-    getTalukaMasterList() {
-        var param = {
-            TalukaName:
-                this._TalukaService.myformSearch
-                    .get("TalukaNameSearch")
-                    .value.trim() || "%",
-        };
-        this._TalukaService.getTalukaMasterList(param).subscribe((Menu) => {
-            this.DSTalukaMasterList.data = Menu as TalukaMaster[];
-            console.log(this.DSTalukaMasterList.data);
-            this.DSTalukaMasterList.sort = this.sort;
-            this.DSTalukaMasterList.paginator = this.paginator;
-        });
-    }
-
-    getCityMasterCombo() {
-        this._TalukaService.getCityMasterCombo().subscribe((data) => {
-            this.CitycmbList = data;
-            this.filteredCity.next(this.CitycmbList.slice());
-        });
-    }
-
-    onClear() {
-        this._TalukaService.myForm.reset({ IsDeleted: "false" });
-        this._TalukaService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._TalukaService.myForm.valid) {
-            if (!this._TalukaService.myForm.get("TalukaId").value) {
-                var m_data = {
-                    talukaMasterInsert: {
-                        talukaName: this._TalukaService.myForm
-                            .get("TalukaName")
-                            .value.trim(),
-                        cityId: this._TalukaService.myForm.get("CityId").value
-                            .CityId,
-
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._TalukaService.myForm.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-                this._TalukaService
-                    .talukaMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = m_data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getTalukaMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getTalukaMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Taluka Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getTalukaMasterList();
-                    },error => {
-                        this.toastr.error('Taluka Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            } else {
-                var m_dataUpdate = {
-                    talukaMasterUpdate: {
-                        talukaId:
-                            this._TalukaService.myForm.get("TalukaId").value,
-                        talukaName: this._TalukaService.myForm
-                            .get("TalukaName")
-                            .value.trim(),
-                        cityId: this._TalukaService.myForm.get("CityId").value
-                            .CityId,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._TalukaService.myForm.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-                this._TalukaService
-                    .talukaMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = m_dataUpdate;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getTalukaMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getTalukaMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Taluka Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getTalukaMasterList();
-                    },error => {
-                        this.toastr.error('Taluka Master Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
-    }
-    onEdit(row) {
-        var m_data1 = {
-            TalukaId: row.TalukaID,
-            TalukaName: row.TalukaNAME,
-            CityId: row.CityID,
-            IsDeleted: JSON.stringify(row.ISDELETED),
-            UpdatedBy: row.UpdatedBy,
-        };
-        console.log(m_data1);
-        this._TalukaService.populateForm(m_data1);
-    }
-}
-
-export class TalukaMaster {
-    TalukaId: number;
-    TalukaName: string;
-    CityId: number;
-    CityName: string;
-    IsDeleted: boolean;
-    AddedBy: number;
-    UpdatedBy: number;
-
-    /**
-     * Constructor
-     *
-     * @param TalukaMaster
-     */
-    constructor(TalukaMaster) {
-        {
-            this.TalukaId = TalukaMaster.TalukaId || "";
-            this.TalukaName = TalukaMaster.TalukaName || "";
-            this.CityId = TalukaMaster.CityId || "";
-            this.CityName = TalukaMaster.CityName || "";
-            this.IsDeleted = TalukaMaster.IsDeleted || "false";
-            this.AddedBy = TalukaMaster.AddedBy || "";
-            this.UpdatedBy = TalukaMaster.UpdatedBy || "";
-        }
-    }
+       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+       gridConfig: gridModel = {
+           apiUrl: "TalukaMaster/List",
+           columnsList: [
+               { heading: "Code", key: "talukaId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+               { heading: "Taluka Name", key: "talukaName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+               { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+               { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+               { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+               {
+                   heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                       {
+                           action: gridActions.edit, callback: (data: any) => {
+                               this.onSave(data);
+                           }
+                       }, {
+                           action: gridActions.delete, callback: (data: any) => {
+                               this._TalukaMasterService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
+                                   this.toastr.success(response.message);
+                                   this.grid.bindGridData();
+                               });
+                           }
+                       }]
+               } //Action 1-view, 2-Edit,3-delete
+           ],
+           sortField: "talukaId",
+           sortOrder: 0,
+           filters: [
+               { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.Contains },
+               { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+           ],
+           row: 25
+       }
+   
+       constructor(
+           public _TalukaMasterService: TalukaMasterService,
+           public toastr: ToastrService, public _matDialog: MatDialog
+       ) { }
+   
+       ngOnInit(): void { }
+   
+       onSave(row: any = null) {
+           const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+           buttonElement.blur(); // Remove focus from the button
+   
+           let that = this;
+           const dialogRef = this._matDialog.open(NewTalukaComponent,
+               {
+                   maxWidth: "45vw",
+                   height: '35%',
+                   width: '70%',
+                   data: row
+               });
+           dialogRef.afterClosed().subscribe(result => {
+               if (result) {
+                   that.grid.bindGridData();
+               }
+           });
+       }
 }

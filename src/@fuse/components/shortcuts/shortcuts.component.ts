@@ -37,10 +37,10 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     ngOnInit(): void {
         if ((JSON.parse(localStorage.getItem("currentUser"))?.user?.webRoleId ?? 0) > 0) {
-            this._authService.getFavMenus(JSON.parse(localStorage.getItem("currentUser")).user.webRoleId, JSON.parse(localStorage.getItem("currentUser")).user.id).subscribe((Menu) => {
-                this.shortcutItems = Menu as any[];
-                this.filteredShortcutItems = this.shortcutItems;
-            });
+            // this._authService.getFavMenus(JSON.parse(localStorage.getItem("currentUser")).user.webRoleId, JSON.parse(localStorage.getItem("currentUser")).user.id).subscribe((Menu) => {
+            //     this.shortcutItems = Menu as any[];
+            //     this.filteredShortcutItems = this.shortcutItems;
+            // });
         }
     }
     ngAfterViewInit(): void {
@@ -85,9 +85,9 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
     toggleShortcut(event, itemToToggle): void {
         event.stopPropagation();
         var data = { UserId: itemToToggle.userId, MenuId: itemToToggle.menuId };
-        this._authService.setFavMenus(data).subscribe((data) => {
-            itemToToggle.isFavourite = !itemToToggle.isFavourite;
-        });
+        // this._authService.setFavMenus(data).subscribe((data) => {
+        //     itemToToggle.isFavourite = !itemToToggle.isFavourite;
+        // });
 
     }
 

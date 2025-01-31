@@ -33,9 +33,8 @@ export class PhoneappointmentComponent implements OnInit {
     myformSearch:FormGroup;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    fromDate = "01/01/2022"//this.datePipe.transform(new Date(), "mm/ddyyyy")
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
-
+    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
@@ -43,16 +42,16 @@ export class PhoneappointmentComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-            { heading: "AppApproved", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status,width: 100 },
-            { heading: "New Patient", key: "regNo", sort: true, align: 'left', type: gridColumnTypes.status,width: 100 },
-            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "-", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status, width: 20 },
+            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA', width: 30 },
             { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
             { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            // { heading: "UHID", key: "regNo", sort: true, align: 'left', width: 100 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Department", key: "departmentId", emptySign: 'NA', align: "center", width: 150 },
-            { heading: "Doctor", key: "doctorId",  emptySign: 'NA',align: "center", width: 150 },
+            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left", width: 150 },
+            { heading: "Doctor Name", key: "doctorName",  emptySign: 'NA',align: "left", width: 150 },
+            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     // {
@@ -147,7 +146,6 @@ export class PhoneappointmentComponent implements OnInit {
     }
 
     Appprint(data){}
-
     Appointmentcancle(data){}
     whatsappAppoitment(data){}
 }

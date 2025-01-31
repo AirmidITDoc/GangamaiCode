@@ -39,6 +39,12 @@
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
                             <form [formGroup]="myFilterbillform">
+
+                                <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
@@ -85,20 +91,6 @@
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
-
-
-                                <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
-                                    formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
-
-
-                                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[4].fieldValue"
-                                    fxLayoutAlign="center center">
-                                    <mat-radio-button value="">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                                </mat-radio-group>
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -128,6 +120,11 @@
                         <ng-container filters>
 
                             <form [formGroup]="myFilterpayform">
+
+                                <airmid-datepicker [formGroup]="myFilterpayform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig1.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
@@ -188,21 +185,6 @@
                                     </button>
                                 </mat-form-field>
 
-
-
-                                <airmid-datepicker [formGroup]="myFilterpayform" [isRangePicker]="true"
-                                    formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig1.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
-
-
-                                <mat-radio-group value="" [(ngModel)]="gridConfig1.filters[7].fieldValue"
-                                    fxLayoutAlign="center center">
-                                    <mat-radio-button value="">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                                </mat-radio-group>
-
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -230,6 +212,12 @@
                     <airmid-table [gridConfig]="gridConfig2" class="content">
                         <ng-container filters>
                             <form [formGroup]="myFilterrefundform">
+
+                                <airmid-datepicker [formGroup]="myFilterrefundform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig2.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig2.filters[3].fieldValue"></airmid-datepicker>
+
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
@@ -266,10 +254,7 @@
                                     </button>
                                 </mat-form-field>
 
-                                <airmid-datepicker [formGroup]="myFilterrefundform" [isRangePicker]="true"
-                                    formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[3].fieldValue"></airmid-datepicker>
+
 
                             </form>
                         </ng-container>

@@ -123,6 +123,6 @@ export class ReportConfigurationService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("MReportConfig?Id=" + m_data.toString());
     }
 }

@@ -50,13 +50,23 @@ export class AppointmentListComponent implements OnInit {
     nowdate = new Date();
     firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-    fromDate = "2022-01-01"// this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
-    toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
 
     doctorID = "0";
+
+    onChangeStartDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    ngOnInit(): void {
+        this.myformSearch = this._AppointmentlistService.filterForm();
+    }
 
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -73,25 +83,24 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: 17 },
-            { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: 15 },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DepartmentId", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "DoctorName", key: "consultantdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Ref DoctorName", key: "refdocId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PatientType", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Department", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "CrossConsulFlag", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', width: 100, type:14 },
-
             {
                 heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.CossConsult, callback: (data: any) => {
+                        // Pending page...
+                        action: gridActions.edit, callback: (data: any) => {
                             this.showBilling(data);
                         }
                     },
@@ -149,16 +158,7 @@ export class AppointmentListComponent implements OnInit {
 
     }
 
-    onChangeStartDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    ngOnInit(): void {
-        this.myformSearch = this._AppointmentlistService.filterForm();
 
-    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -178,7 +178,17 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-
+    showBilling(row: any = null) {
+        // Pending...
+        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+            maxWidth: "90vw",
+            maxHeight: "90vh",
+            width: "80%",
+            data: {
+                patientDetail: row
+            }
+        });
+    }
 
     onRegistrationEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -203,77 +213,18 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    showBilling(row: any = null) {
-        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
-            maxWidth: "90vw",
-            maxHeight: "90vh",
-            width: "80%",
-            data: {
-                patientDetail: row
-            }
-        });
-    }
-    //    getAppointmentlistrview() {
-
-    //     setTimeout(() => {
-
-    //         let param = {
-
-    //             "searchFields": [
-    //                 {
-    //                     "fieldName": "FromDate",
-    //                     "fieldValue": this.fromDate,
-    //                     "opType": "13"
-    //                 },
-    //                 {
-    //                     "fieldName": "ToDate",
-    //                     "fieldValue": this.toDate,
-    //                     "opType": "13"
-    //                 }
-    //             ],
-    //             "mode": "AppointmentListReport"
-    //         }
-
-    //         console.log(param)
-    //         this._AppointmentlistService.getPatientListView(param).subscribe(res => {
-    //             console.log(res)
-    //             const matDialog = this._matDialog.open(PdfviewerComponent,
-    //                 {
-    //                     maxWidth: "85vw",
-    //                     height: '750px',
-    //                     width: '100%',
-    //                     data: {
-    //                         base64: res["base64"] as string,
-    //                         title: "Appointment List  Viewer"
-
-    //                     }
-
-    //                 });
-
-    //             matDialog.afterClosed().subscribe(result => {
-
-    //             });
-    //         });
-
-    //     }, 100);
-    // }
-
     getAppointmentcasepaperview(data) {
         setTimeout(() => {
-
             let param = {
-
                 "searchFields": [
                     {
                         "fieldName": "VisitId",
-                        "fieldValue": "226480",//data.visitId
+                        "fieldValue": data.visitId,
                         "opType": "13"
                     }
                 ],
                 "mode": "AppointmentReceipt"
             }
-
-            debugger
             console.log(param)
             this._AppointmentlistService.getPatientcasepaperView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -284,16 +235,11 @@ export class AppointmentListComponent implements OnInit {
                         data: {
                             base64: res["base64"] as string,
                             title: "Op CasePaper  Viewer"
-
                         }
-
                     });
-
                 matDialog.afterClosed().subscribe(result => {
-
                 });
             });
-
         }, 100);
     }
 
