@@ -541,27 +541,27 @@ export class IssueToDepartmentComponent implements OnInit {
             }
         }
 
-        this.ItemSamelist = this.dsNewIssueList3.data.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId)
+        this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId)
         if (this.ItemSamelist) {
-            if (this.ItemSamelist.find(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.find(item => item.LandedRate === this.vUnitMRP)) {
+            if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
                 this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
             }
         }
-        this.BatchSamelist = this.dsNewIssueList3.data.some(item => item.BatchNo === this.vBatchNo)
+        this.BatchSamelist = this.dsNewIssueList3.data.filter(item => item.BatchNo === this.vBatchNo)
         if (this.BatchSamelist) {
-            if (this.BatchSamelist.find(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.find(item => item.LandedRate === this.vUnitMRP)) {
+            if (this.BatchSamelist.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
                 this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
             }
         }
-        this.MRPSamelist = this.dsNewIssueList3.data.some(item => item.LandedRate === this.vUnitMRP)
+        this.MRPSamelist = this.dsNewIssueList3.data.filter(item => item.LandedRate === this.vLandedRate)
         if (this.MRPSamelist) {
-            if (this.MRPSamelist.find(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.find(item => item.BatchNo === this.vBatchNo)) {
+            if (this.MRPSamelist.some(item => item.ItemId === this._IssueToDep.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.some(item => item.BatchNo === this.vBatchNo)) {
                 this.toastr.warning('Selected Item already added with same Batch &  same MRP in the list', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
