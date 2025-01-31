@@ -31,6 +31,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.component';
 import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
+import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -72,7 +73,7 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-             { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: 17 },
+            { heading: "PatientOldNew", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: 17 },
             { heading: "BillGenerated", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: 15 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -89,6 +90,11 @@ export class AppointmentListComponent implements OnInit {
 
             {
                 heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.CossConsult, callback: (data: any) => {
+                            this.showBilling(data);
+                        }
+                    },
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
@@ -133,7 +139,7 @@ export class AppointmentListComponent implements OnInit {
         sortField: "VisitId",
         sortOrder: 0,
         filters: this.allfilters
-              ,
+        ,
         row: 25
 
     }
@@ -150,8 +156,8 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
     ngOnInit(): void {
-    this.myformSearch = this._AppointmentlistService.filterForm();
-       
+        this.myformSearch = this._AppointmentlistService.filterForm();
+
     }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -197,6 +203,16 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
+    showBilling(row: any = null) {
+        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+            maxWidth: "90vw",
+            maxHeight: "90vh",
+            width: "80%",
+            data: {
+                patientDetail: row
+            }
+        });
+    }
     //    getAppointmentlistrview() {
 
     //     setTimeout(() => {
@@ -434,7 +450,7 @@ export class AppointmentListComponent implements OnInit {
 
 
             if (flag.isConfirmed) {
-               
+
                 let submitData = {
                     "visitId": contact.visitId
 
@@ -442,18 +458,18 @@ export class AppointmentListComponent implements OnInit {
                 console.log(submitData);
                 this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
                     this.toastr.success(response.message);
-                   this._matDialog.closeAll();
+                    this._matDialog.closeAll();
                 }, (error) => {
                     this.toastr.error(error.message);
                 });
             }
         });
-       
+
     }
 
 
     getAppointmentrview() {
-       
+
         let param = {
 
             "searchFields": [
@@ -580,7 +596,7 @@ export class VisitMaster1 {
         {
             this.visitId = VisitMaster1.visitId || 0;
             this.regId = VisitMaster1.regId || 0;
-            this.RegID=VisitMaster1.RegID || 0;
+            this.RegID = VisitMaster1.RegID || 0;
             this.visitDate = VisitMaster1.visitDate || "";
             this.visitTime = VisitMaster1.visitTime || "";
             this.unitId = VisitMaster1.unitId || 1;

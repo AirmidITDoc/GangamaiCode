@@ -39,7 +39,8 @@
                 &:not(:first-of-type) {
                     padding: 3px 10px;
                 }
-                .mat-icon-button,.mdc-icon-button  {
+                .mat-icon-button,
+                .mdc-icon-button {
                     height: 25px;
                     width: 25px;
                     display: inline-flex;
@@ -49,7 +50,7 @@
                     .material-icons {
                         @include font-size(18px);
                     }
-                    .mat-mdc-button-touch-target{
+                    .mat-mdc-button-touch-target {
                         height: 25px;
                         width: 25px;
                     }
@@ -69,6 +70,7 @@
             &.self-row {
             }
         }
+
         .mat-footer-row {
             .mat-footer-cell {
                 @include font-size(14px);
@@ -185,7 +187,17 @@
             .action-list {
                 display: flex;
                 gap: 8px;
-            }   
+            }
+            thead {
+                tr {
+                    height: 45px;
+                }
+            }
+            tbody {
+                tr {
+                    height: 40px;
+                }
+            }
         }
         .table-footer-wrapper {
             display: flex;

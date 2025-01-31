@@ -45,6 +45,7 @@ import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-con
 import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
 import { ImageViewComponent } from './image-view/image-view.component';
+import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 
 const routes: Routes = [
     {
@@ -54,7 +55,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent],
+    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, AppointmentBillingComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
