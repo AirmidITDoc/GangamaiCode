@@ -176,7 +176,9 @@ date=new Date();
     }
 
     public onDateChange($event) {
-        this.formGroup.controls[this.formControlName].setValue($event.value);
+        debugger
+        //this.formGroup.controls[this.formControlName].setValue($event.value);
+        this.formGroup.controls[this.formControlName].setValue(this.datePipe.transform($event.value, this.format));
         this.dateChange.emit(this.datePipe.transform($event.value, this.format));
     }
     public onStartDateChange($event) {
