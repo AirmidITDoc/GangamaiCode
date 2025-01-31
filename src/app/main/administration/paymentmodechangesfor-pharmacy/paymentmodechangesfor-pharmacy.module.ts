@@ -36,6 +36,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon';
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
+import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
  
 
 const routes: Routes = [
@@ -89,7 +90,7 @@ const routes: Routes = [
         MatTooltipModule
     ],
     providers: [
-        DatePipe,
+        DatePipe, PaymentmodechangesforpharmacyService
     ]
 })
 export class PaymentmodechangesforPharmacyModule { }

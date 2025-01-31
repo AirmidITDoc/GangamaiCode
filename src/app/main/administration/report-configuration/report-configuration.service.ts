@@ -16,7 +16,24 @@ export class ReportConfigurationService {
             this.myformSearch = this.createSearchForm();
             this.myform = this.createForm();
         }
-
+    
+        //{
+//   "reportId": 0,
+//   "reportSection": "Abc",
+//   "reportName": "shilpa",
+//   "parentid": 1234,
+//   "reportMode": "prathhhh",
+//   "reportTitle": "ashhuuu",
+//   "reportHeader": "BILLING",
+//   "reportColumn": "string",
+//   "reportHeaderFile": "string",
+//   "reportBodyFile": "string",
+//   "reportFolderName": "string",
+//   "reportFileName": "ABC",
+//   "reportSpname": "string",
+//   "reportPageOrientation": "string",
+//   "reportPageSize": "string"
+// }
 
     createForm(): FormGroup {
         return this._formBuilder.group({
@@ -42,6 +59,13 @@ export class ReportConfigurationService {
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
+            reportMode:["",
+                [
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                ]
+            ],
             reportTitle:["",
                 [
                     Validators.required, 
@@ -52,15 +76,13 @@ export class ReportConfigurationService {
             reportHeader:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.maxLength(100),
                 ]
             ],
             reportColumn:["",
                 [
                     Validators.required, 
-                    Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.maxLength(100),
                 ]
             ],
             reportHeaderFile:["",

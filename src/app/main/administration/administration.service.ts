@@ -58,7 +58,7 @@ export class AdministrationService {
     public getPathDepartmentCombo() {
       return this._httpClient.post("Generic/GetByProc?procName=RetrieveDocDepartmentMasterForCombo", {})
     }
-    public getPathologistDoctorCombo() {
+    public getPathologistDoctorCombo(vdata: { Id: any; }) {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
     }
     public getRoleCombobox() {

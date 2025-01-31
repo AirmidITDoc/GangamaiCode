@@ -21,7 +21,7 @@ const appRoutes: Routes = [
   },
   {
     path: "configuration",
-   loadChildren: () => import("./system-configuration/system-configuration.module").then((m) => m.SystemConfigurationModule),
+   loadChildren: () => import("./configuration/configuration.module").then((m) => m.ConfigurationModule),
   },
   {
     path: "roletemplatemaster",

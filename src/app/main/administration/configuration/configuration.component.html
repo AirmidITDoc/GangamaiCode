@@ -1,4 +1,4 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
 
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" class="top-header-info">
@@ -20,30 +20,30 @@
             </button>
         </div>
 
-    </mat-toolbar>
+    </mat-toolbar> -->
 
     <!-- / HEADER -->
 
     <!-- SELECTED BAR -->
-    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
+    <!-- <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main> -->
     <!-- / SELECTED BAR -->
 
     <!-- CONTENT -->
-    <div class="content">
+    <!-- <div class="content"> -->
         <!-- CENTER -->
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
+        <!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
 
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
+                    <div fxFlex.gt-sm="100%" fxFlex> -->
 
-                        <div fxlayout="row">
+                        <!-- <div fxlayout="row">
                             <div style="width: 100%;">
                                 <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
                                     class="backgroundBlur">
                                     <div class="spinner-border text-danger"></div>
-                                </div>
+                                </div> -->
 
                                 <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                     style="background-color:white; margin-left:5px; width:100%;overflow:auto; width: fit-content;"
@@ -52,16 +52,16 @@
                                         Configration
                                     </h2>
                                 </div> -->
-
+<!-- 
                                 <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                                     style="overflow:auto;width: 100%;" class="table1">
 
                                     <ng-container matColumnDef="MandatoryFirstName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                             FirstName</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150"> -->
                                             <!-- {{contact.MandatoryFirstName}} -->
-                                            {{ contact.MandatoryFirstName === 1 ? 'True' : 'False' }}
+                                            <!-- {{ contact.MandatoryFirstName === 1 ? 'True' : 'False' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -265,8 +265,8 @@
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataSource!=null}">
-                                        <!-- [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" -->
-                                    </mat-footer-row>
+                                         [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" -->
+                                    <!-- </mat-footer-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
                                         [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
                                 </mat-table>
@@ -281,7 +281,7 @@
 
             </div>
 
-            &nbsp;&nbsp;
+            &nbsp;&nbsp; --> 
             <!-- <div class="content-card" style="border-radius:4px; "> -->
 
 
@@ -514,11 +514,55 @@
             <!-- </div> -->
 
 
-        </div>
+        <!-- </div> -->
 
         <!-- / CENTER -->
 
-    </div>
+    <!-- </div> -->
     <!-- / CONTENT-->
 
+<!-- </div> -->
+
+
+
+
+
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Configuration 
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">+ New Configuration
+            </button>
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig"  class="content">
+            <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Search Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group> -->
+            </ng-container>
+        </airmid-table>
+    </div>
 </div>

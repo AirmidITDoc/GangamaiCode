@@ -10,6 +10,10 @@ import { EditPaymentmodeComponent } from '../paymentmodechangesfor-pharmacy/edit
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { DateUpdateComponent } from './date-update/date-update.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -20,23 +24,82 @@ import { DateUpdateComponent } from './date-update/date-update.component';
 })
 export class PaymentmodechangesComponent implements OnInit {
   
-  displayedColumns:string[] = [
-    'Type',
-    'PayDate',
-    'ReceiptNo',
-    'BillNo',
-    'RegNo',
-    'PatientName',
-    'BillAmt',
-    'PaidAmt',
-    'CashAmt',
-    'ChequeAmt',
-    'CardAmt',
-    'NEFTPayAmount',
-    'PayTMAmount',
-    'User',
-    'action',
-  ];
+//   displayedColumns:string[] = [
+//     'Type',
+//     'PayDate',
+//     'ReceiptNo',
+//     'BillNo',
+//     'RegNo',
+//     'PatientName',
+//     'BillAmt',
+//     'PaidAmt',
+//     'CashAmt',
+//     'ChequeAmt',
+//     'CardAmt',
+//     'NEFTPayAmount',
+//     'PayTMAmount',
+//     'User',
+//     'action',
+//   ];
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+                gridConfig: gridModel = {
+                    apiUrl: "MReportConfig/List",
+                    columnsList: [
+                        { heading: "PayDate", key: "paydate", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+                        { heading: "ReceiptNo", key: "receiptno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        { heading: "UHIDNo ", key: "uhidno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        { heading: "BillAmt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        { heading: "PaidAmount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        { heading: "CashAmount", key: "cashamount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                        { heading: "ChequeAmount", key: "chequeamount", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+                        { heading: "CardAmount", key: "cardamount", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                        { heading: "NEFTPay", key: "neftpay", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                        { heading: "PayATM", key: "payatm", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                        {
+                            heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
+                                {
+                                    action: gridActions.edit, callback: (data: any) => {
+                                        this.onSave(data);
+                                    }
+                                }, {
+                                    action: gridActions.delete, callback: (data: any) => {
+                                        this._PaymentmodechangesService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                                            this.toastr.success(response.message);
+                                            this.grid.bindGridData();
+                                        });
+                                    }
+                                }]
+                        } //Action 1-view, 2-Edit,3-delete
+                    ],
+                    sortField: "ReportName",
+                    sortOrder: 0,
+                    filters: [
+                        { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
+                        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                    ],
+                    row: 25
+                }
+  
+          onSave(row: any = null) {
+              const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+              buttonElement.blur(); // Remove focus from the button
+      
+              let that = this;
+              // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
+              //     {
+              //         maxHeight: '95vh',
+              //         width: '90%',
+              //         data: row
+              //     });
+              // dialogRef.afterClosed().subscribe(result => {
+              //     if (result) {
+              //         that.grid.bindGridData();
+              //     }
+              // });
+          }
  
   sIsLoading: string = '';
   isLoading = true;
@@ -50,6 +113,7 @@ export class PaymentmodechangesComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
+    public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {

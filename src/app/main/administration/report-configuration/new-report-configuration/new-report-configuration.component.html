@@ -58,6 +58,17 @@
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
+                                label="ReportMode" 
+                                formControlName="reportMode" 
+                                [value]="data?.reportMode" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportMode" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
                                 label="ReportTitle" 
                                 formControlName="reportTitle" 
                                 [value]="data?.reportTitle" 
@@ -74,7 +85,7 @@
                                 [value]="data?.reportHeader" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportHeader" 
-                                [maxLength]="30">
+                                [maxLength]="100">
                             </airmid-textbox>
                         </div>
 
@@ -85,7 +96,7 @@
                                 [value]="data?.reportColumn" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportColumn" 
-                                [maxLength]="30">
+                                [maxLength]="100">
                             </airmid-textbox>
                         </div>
 
@@ -144,7 +155,7 @@
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageOrientation</mat-label>
                                 <mat-select placeholder="reportPageOrientation" formControlName="reportPageOrientation" name="reportPageOrientation">
@@ -154,7 +165,7 @@
                             </mat-form-field>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageSize</mat-label>
                                 <mat-select placeholder="reportPageSize" formControlName="reportPageSize" name="reportPageSize">

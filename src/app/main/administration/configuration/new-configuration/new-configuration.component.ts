@@ -1,12 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfigSettingParams } from 'app/core/models/config';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AdministrationService } from '../../administration.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { ConfigurationService } from '../configuration.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-configuration',
@@ -72,7 +75,7 @@ export class NewConfigurationComponent implements OnInit {
     ) { }
   
     ngOnInit(): void {
-      this.configFormGroup = this._configurationService.createconfigForm();
+    //   this.configFormGroup = this._configurationService.createconfigForm();
       this.getPatientTypeList();
       this.getOPDBillingList();
       this.getOPDReceiptCounterList();
@@ -356,18 +359,18 @@ export class NewConfigurationComponent implements OnInit {
   
       console.log("UpdateJson:", m_data);
   
-      this._configurationService.ConfigUpdate(m_data).subscribe(response => {
-        if (response) {
-          this.toastr.success('Record Updated Successfully.', 'Updated !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.onClose()
-        } else {
-          this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      });
+    //   this._configurationService.ConfigUpdate(m_data).subscribe(response => {
+    //     if (response) {
+    //       this.toastr.success('Record Updated Successfully.', 'Updated !', {
+    //         toastClass: 'tostr-tost custom-toast-success',
+    //       });
+    //       this.onClose()
+    //     } else {
+    //       this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
+    //         toastClass: 'tostr-tost custom-toast-error',
+    //       });
+    //     }
+    //   });
     }
   
   

@@ -36,6 +36,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DateUpdateComponent } from './date-update/date-update.component';
+import { PaymentmodechangesService } from './paymentmodechanges.service';
 
 
 const routes: Routes = [
@@ -89,7 +90,7 @@ const routes: Routes = [
         MatTooltipModule
     ],
     providers: [
-        DatePipe,
+        DatePipe, PaymentmodechangesService
     ]
 })
 export class PaymentmodechangesModule { }

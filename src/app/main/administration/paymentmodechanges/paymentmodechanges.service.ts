@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class PaymentmodechangesService {
   UseFormGroup:FormGroup
   constructor(
     public _formBuilder:UntypedFormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:ApiCaller
   ) 
   { this.UseFormGroup=this.createUserFormGroup() }
 
@@ -26,16 +26,21 @@ export class PaymentmodechangesService {
       ReceiptNo:''
     })
   }
+
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
+    }
+
   public getOpReceiptList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOPDPaymentReceipt",Param)
+    return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseOPDPaymentReceipt",Param)
   }
   public getIpReceiptList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPDPaymentReceipt",Param)
+    return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseIPDPaymentReceipt",Param)
   }
   public getIpAdvanceList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPaymentReceipt",Param)
+    return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPaymentReceipt",Param)
   }
   public getDateTimeChange(m_data) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
+    return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + m_data,{});
 }
 }

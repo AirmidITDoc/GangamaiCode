@@ -74,6 +74,11 @@ export class NewReportConfigurationComponent implements OnInit{
                 { name: "maxlength", Message: "Parent ID should not be greater than 10 Numbers." },
                 { name: "pattern", Message: "Only Numbers Allowed." }
             ],
+            reportMode:[
+                { name: "required", Message: "Report Name is required" },
+                { name: "maxlength", Message: "Report Name should not be greater than 30 char." },
+                { name: "pattern", Message: "Only Characters Allowed." }
+            ],
             reportTitle:[
                 { name: "required", Message: "Report Title is required" },
                 { name: "maxlength", Message: "Report Title should not be greater than 30 char." },
@@ -81,13 +86,11 @@ export class NewReportConfigurationComponent implements OnInit{
             ],
             reportHeader:[
                 { name: "required", Message: "Report Header is required" },
-                { name: "maxlength", Message: "Report Header should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report Header should not be greater than 100 char." },
             ],
             reportColumn:[
                 { name: "required", Message: "Report column is required" },
-                { name: "maxlength", Message: "Report Column should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
             ],
             reportHeaderFile:[
                 { name: "required", Message: "Report Header File is required" },

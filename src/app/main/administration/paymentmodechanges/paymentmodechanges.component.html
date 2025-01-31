@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar"dynamicTableHeight>
+<!-- <div class="page-layout simple inner-sidebar inner-scroll right-sidebar"dynamicTableHeight>
     <mat-toolbar>
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -12,11 +12,11 @@
                 Payment Mode Changes
             </span>
         </div>
-    </mat-toolbar>
+    </mat-toolbar> -->
 
 
 
-    <div class="content">
+    <!-- <div class="content">
         <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
          margin-left:12px; background-color: white;height:100%;"> 
       
@@ -88,10 +88,10 @@
 
             </div>
 
-        </fuse-sidebar>
+        </fuse-sidebar> -->
 
 
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
+        <!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
                     <div fxFlex.gt-sm="100%" fxFlex>
@@ -236,12 +236,12 @@
                             <ng-container matColumnDef="action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-200">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-200"> 
+                                <mat-cell *matCellDef="let contact" class="w-200">  -->
                                     <!-- <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button> -->
                                      
-                                    <button class="btn btn-info"  
+                                    <!-- <button class="btn btn-info"  
                                     matTooltip="Payment Date Update" (click)="PaymentDate(contact)" >Date Update</button>&nbsp;
                                     <button class="btn btn-primary" (click)="onEdit(contact)" matTooltip="Payment Mode Change" style="color: white;">
                                       Edit
@@ -282,4 +282,102 @@
 
     </div>
 
+</div> -->
+
+
+
+
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Payment Mode Change
+                </span>
+            </div>
+        </div>
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">+ New Payment Mode
+            </button>
+        </div> -->
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <!-- <div class="info-badge-top pb-2 border-bottom"> 
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                    <span>: Sales</span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                    <span>: IP Pharmacy Advance</span>
+                </div>  
+            </div>
+        </div> 
+        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+            class="backgroundBlur">
+            <div class="spinner-border text-danger"></div>
+        </div> -->
+        <airmid-table [gridConfig]="gridConfig"  class="content">
+            
+            <ng-container filters>
+                
+                <form [formGroup]="_PaymentmodechangesService.UseFormGroup" style="padding: 6px 6px 5px 5px;"
+                    fusePerfectScrollbar>
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-form-field appearance="outline" style="margin-left: 2%;">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="startdate" placeholder="Start date">
+                                <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getsearchList()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>RegNo</mat-label>
+                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getsearchList()">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="getsearchList()">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input name="LastName" formControlName="LastName" matInput (keyup)="getsearchList()">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sales No</mat-label>
+                            <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getsearchList()">
+                        </mat-form-field>
+
+                        <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                            <mat-radio-group formControlName="Radio" name="Radio" >
+                                <mat-label>Type :</mat-label>&nbsp;
+                                <mat-radio-button value="1" (click)="getSalesList()">Sales</mat-radio-button>
+                                <mat-radio-button value="2" (click)="getIPPharAdvanceList()">IP Phar Advance</mat-radio-button>
+                            </mat-radio-group>
+                        </div> -->
+                        <div fxLayout="row" fxLayout.gt-xs="column" column>
+                            <mat-radio-group formControlName="Radio" name="Radio">
+                                <mat-label>Type : </mat-label>
+                                <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPReceiptList()">
+                                    OP Receipt</mat-radio-button>
+                                <mat-radio-button value="1" (click)="getIPReceiptList()">IP Receipt</mat-radio-button>
+                                <mat-radio-button value="2" style="margin-left:32px;" (click)="getIPAdvanceList()">IP
+                                    Advance</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                    </div>
+                </form>
+            </ng-container> 
+        </airmid-table>
+    </div>
 </div>

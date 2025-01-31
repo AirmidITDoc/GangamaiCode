@@ -88,7 +88,7 @@ const routes: Routes = [
         // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule
     ],
-    schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+    // schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     providers: [ DatePipe, SMSConfugurationService ]
 })
 export class SMSConfugurationModule { }
