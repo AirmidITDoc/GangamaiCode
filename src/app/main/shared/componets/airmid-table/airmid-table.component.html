@@ -37,7 +37,7 @@
                         *matCellDef="let element; let i = index" fxShow.gt-sm>
                         <ng-container *ngIf="row.type==GridColumnType.template; else defaultTemplate">
                             <ng-container
-                                *ngTemplateOutlet="row.template; context: { $implicit: element}"></ng-container>
+                                *ngTemplateOutlet="row.template; context: { $implicit: element,column: column,row:row }"></ng-container>
                         </ng-container>
                         <ng-template #defaultTemplate>
                             <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
@@ -115,7 +115,7 @@
                 </ng-container>
                 <mat-header-row class="accent" *matHeaderRowDef="Headers; sticky: true">
                 </mat-header-row>
-                <mat-row *matRowDef="let row; columns: Headers;" class="element"></mat-row>
+                <mat-row [ngClass]="{'selected-row': row['selected'] == true}" *matRowDef="let row; columns: Headers;" class="element"></mat-row>
             </mat-table>
         </div>
         <div class="table-footer-wrapper">
