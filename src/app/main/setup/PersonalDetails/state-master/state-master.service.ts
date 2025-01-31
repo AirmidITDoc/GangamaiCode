@@ -22,7 +22,7 @@ export class StateMasterService {
             StateName: [""],
             CountryId: [""],
             CountryName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -44,6 +44,11 @@ export class StateMasterService {
             param
         );
     }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
 
     public getCountryMasterCombo() {
         return this._httpClient.post(

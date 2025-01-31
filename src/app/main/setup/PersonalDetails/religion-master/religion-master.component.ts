@@ -6,6 +6,12 @@ import { fuseAnimations } from "@fuse/animations";
 import { ReligionMasterService } from "./religion-master.service";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseUtils } from "@fuse/utils";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { MatDialog } from "@angular/material/dialog";
+import { NewreligionMasterComponent } from "./newreligion-master/newreligion-master.component";
 
 @Component({
     selector: "app-religion-master",
@@ -16,11 +22,12 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ReligionMasterComponent implements OnInit {
     msg: any;
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
 
     displayedColumns: string[] = [
         "ReligionId",
         "ReligionName",
-        "AddedBy",
         "IsDeleted",
         "action",
     ];
@@ -29,9 +36,16 @@ export class ReligionMasterComponent implements OnInit {
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._religionService.myformSearch.controls; }
 
     constructor(public _religionService: ReligionMasterService,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService) { }
 
     ngOnInit(): void {
         this.getReligionMasterList();
@@ -62,120 +76,74 @@ export class ReligionMasterComponent implements OnInit {
             });
     }
 
-    onClear() {
-        this._religionService.myform.reset({ IsDeleted: "false" });
-        this._religionService.initializeFormGroup();
+    newReligion() {
+        const dialogRef = this._matDialog.open(NewreligionMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "30%",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getReligionMasterList();
+        });
     }
-
-    onSubmit() {
-        if (this._religionService.myform.valid) {
-            if (!this._religionService.myform.get("ReligionId").value) {
-                var m_data = {
-                    religionMasterInsert: {
-                        religionName: this._religionService.myform
-                            .get("ReligionName")
-                            .value.trim(),
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._religionService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-
-                this._religionService
-                    .religionMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getReligionMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getReligionMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Religion Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getReligionMasterList();
-                    },error => {
-                        this.toastr.error('Religion Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            } else {
-                var m_dataUpdate = {
-                    religionMasterUpdate: {
-                        religionID:
-                            this._religionService.myform.get("ReligionId")
-                                .value,
-                        religionName: this._religionService.myform
-                            .get("ReligionName")
-                            .value.trim(),
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._religionService.myform.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._religionService
-                    .religionMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getReligionMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getReligionMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Religion Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getReligionMasterList();
-                    },error => {
-                        this.toastr.error('Religion Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            }
-            this.onClear();
-        }
-    }
-
     onEdit(row) {
-        console.log(row);
-        var m_data = {
-            ReligionId: row.ReligionId,
-            ReligionName: row.ReligionName.trim(),
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._religionService.populateForm(m_data);
+
+        const dialogRef = this._matDialog.open(NewreligionMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "30%",
+                data: {
+                    Obj: row
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getReligionMasterList();
+        });
+    }
+
+    onDeactive(ReligionId) {
+        debugger
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            debugger
+
+            if (result.isConfirmed) {
+                let Query;
+                const tableItem = this.DSReligionMasterList.data.find(item => item.ReligionId === ReligionId);
+                console.log("table:", tableItem)
+
+                if (tableItem.IsDeleted) {
+                    Query = "Update M_ReligionMaster set IsDeleted=0 where ReligionId=" + ReligionId;
+                } else {
+                    Query = "Update M_ReligionMaster set IsDeleted=1 where ReligionId=" + ReligionId;
+                }
+
+                console.log("query:", Query);
+
+                this._religionService.deactivateTheStatus(Query)
+                    .subscribe(
+                        (data) => {
+                            Swal.fire('Changed!', 'Religion Status has been Changed.', 'success');
+                            this.getReligionMasterList();
+                        },
+                        (error) => {
+                            Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                        }
+                    );
+            }
+
+        });
     }
 }
 

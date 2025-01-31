@@ -9,6 +9,13 @@ import { FormControl } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseUtils } from "@fuse/utils";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { MatDialog } from "@angular/material/dialog";
+import { NewstateMasterComponent } from "./newstate-master/newstate-master.component";
+
 
 @Component({
     selector: "app-state-master",
@@ -19,9 +26,12 @@ import { ToastrService } from "ngx-toastr";
 })
 export class StateMasterComponent implements OnInit {
     StateMasterList: any;
-    CountrycmbList: any = [];
     msg: any;
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
+
     autocompleteModecountry: string = "Country";
+    CountrycmbList: any = [];
     //country filter
     public countryFilterCtrl: FormControl = new FormControl();
     public filteredCountry: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -32,7 +42,6 @@ export class StateMasterComponent implements OnInit {
         "StateId",
         "StateName",
         "CountryName",
-        //  "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -40,19 +49,20 @@ export class StateMasterComponent implements OnInit {
     DSStateMasterList = new MatTableDataSource<StateMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._stateService.myformSearch.controls; }
 
     constructor(public _stateService: StateMasterService,
-        public toastr : ToastrService,) {}
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService) { }
 
     ngOnInit(): void {
         this.getstateMasterList();
-        this.getCountryNameCombobox();
-
-        this.countryFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterCountry();
-            });
+        // this.getCountryNameCombobox();
     }
 
     onSearch() {
@@ -65,25 +75,6 @@ export class StateMasterComponent implements OnInit {
             IsDeletedSearch: "2",
         });
         this.getstateMasterList();
-    }
-    private filterCountry() {
-        if (!this.CountrycmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.countryFilterCtrl.value;
-        if (!search) {
-            this.filteredCountry.next(this.CountrycmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredCountry.next(
-            this.CountrycmbList.filter(
-                (bank) => bank.CountryName.toLowerCase().indexOf(search) > -1
-            )
-        );
     }
 
     getstateMasterList() {
@@ -100,140 +91,73 @@ export class StateMasterComponent implements OnInit {
         });
     }
 
-    getCountryNameCombobox() {
-        this._stateService.getCountryMasterCombo().subscribe((data) => {
-            this.CountrycmbList = data
+    newState() {
+        const dialogRef = this._matDialog.open(NewstateMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "40%",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getstateMasterList();
+        });
+    }
+    onEdit(row) {
+        const dialogRef = this._matDialog.open(NewstateMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "40%",
+                data: {
+                    Obj: row
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getstateMasterList();
         });
     }
 
-    onClear() {
-        this._stateService.myform.reset({ IsDeleted: "false" });
-        this._stateService.initializeFormGroup();
-    }
+    onDeactive(StateId) {
+        debugger
+        Swal.fire({
+            title: 'Confirm Status',
+            text: 'Are you sure you want to Change Status?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes,Change Status!'
+        }).then((result) => {
+            debugger
 
-    onSubmit() {
-        if (this._stateService.myform.valid) {
-            if (!this._stateService.myform.get("StateId").value) {
-                var m_data = {
-                    stateMasterInsert: {
-                        stateName: this._stateService.myform
-                            .get("StateName")
-                            .value.trim(),
-                        countryId:
-                            this._stateService.myform.get("CountryId").value
-                                .CountryId,
+            if (result.isConfirmed) {
+                let Query;
+                const tableItem = this.DSStateMasterList.data.find(item => item.StateId === StateId);
+                console.log("table:", tableItem)
+                const isDeleted = Boolean(Number(tableItem.Isdeleted));
+                if (isDeleted) {
+                    Query = "Update M_StateMaster set IsDeleted=0 where StateId=" + StateId;
+                } else {
+                    Query = "Update M_StateMaster set IsDeleted=1 where StateId=" + StateId;
+                }
 
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._stateService.myform.get("IsDeleted").value
-                            )
-                        ),
-                    },
-                };
+                console.log("query:", Query);
 
-                this._stateService
-                    .stateMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getstateMasterList();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getstateMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('State Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
+                this._stateService.deactivateTheStatus(Query)
+                    .subscribe(
+                        (data) => {
+                            Swal.fire('Changed!', 'State Status has been Changed.', 'success');
+                            this.getstateMasterList();
+                        },
+                        (error) => {
+                            Swal.fire('Error!', 'Failed to deactivate category.', 'error');
                         }
-                        console.log(m_data);
-                        this.getstateMasterList();
-                    },error => {
-                        this.toastr.error('State Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     } );
-            } else {
-                var m_dataUpdate = {
-                    stateMasterUpdate: {
-                        stateId: this._stateService.myform.get("StateId").value,
-                        stateName: this._stateService.myform
-                            .get("StateName")
-                            .value.trim(),
-                        countryId:
-                            this._stateService.myform.get("CountryId").value
-                                .CountryId,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._stateService.myform.get("IsDeleted").value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-
-                this._stateService
-                    .stateMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getstateMasterList();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getstateMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('State Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getstateMasterList();
-                    },error => {
-                        this.toastr.error('State Master Data not updated !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
+                    );
             }
-            this.onClear();
-        }
-    }
 
-    onEdit(row) {
-        var m_data = {
-            StateId: row.StateId,
-            StateName: row.StateName.trim(),
-            CountryId: row.CountryId,
-            CountryName: row.CountryName.trim(),
-            IsDeleted: JSON.stringify(row.Isdeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        this._stateService.populateForm(m_data);
-    }
-
-
-    getValidationMessages() {
-        return {
-            CountryId: [
-                { name: "required", Message: "CountryId  is required" }
-            ],
-        };
+        });
     }
 }
 
@@ -242,7 +166,7 @@ export class StateMaster {
     StateName: string;
     CountryId: number;
     CountryName: string;
-    IsDeleted: boolean;
+    Isdeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
 
@@ -256,7 +180,7 @@ export class StateMaster {
             this.StateId = StateMaster.StateId || "";
             this.StateName = StateMaster.StateName || "";
             this.CountryId = StateMaster.CountryId || "";
-            this.IsDeleted = StateMaster.IsDeleted || "false";
+            this.Isdeleted = StateMaster.Isdeleted || "";
             this.AddedBy = StateMaster.AddedBy || "";
             this.UpdatedBy = StateMaster.UpdatedBy || "";
         }

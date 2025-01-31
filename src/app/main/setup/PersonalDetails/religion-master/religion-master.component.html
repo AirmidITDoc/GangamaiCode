@@ -1,111 +1,136 @@
-<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-    <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center">
+<div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
 
-        <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Religion Master
-                </span>
-            </div>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Religion Master
+            </span>
         </div>
-        <!-- / APP TITLE -->
-        <!-- SEARCH -->
-        <!-- / SEARCH -->
 
-    </div>
-    <!-- / HEADER -->
+        <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
+
+            <button mat-raised-button (click)="newReligion()"
+                style="background-color: aliceblue;margin-left:10% !important">
+                New Religion
+            </button>
+        </div>
+
+    </mat-toolbar>
+
+    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
 
     <!-- CONTENT -->
     <div class="content">
 
         <!-- SIDEBAR -->
-        <!-- / SIDEBAR -->
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
+            <!-- SIDEBAR HEADER -->
+            <div class="sidebar-content">
 
-        <!-- CENTER -->
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <!-- CONTENT -->
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="65%" fxFlex>
+                <div class="accent sidebar-header" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="search-title">Search Facility</span>
+                    <!-- / USER -->
+                </div>
+                <!-- / SIDEBAR HEADER -->
+                <!-- SIDEBAR CONTENT -->
+                <div class="nav material2">
+                    <form [formGroup]="_religionService.myformSearch" fusePerfectScrollbar>
+                        <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <div fxlayout="row" style="
-                        background-color: white;
-                        padding: 5px 10px 5px 10px;
-                    ">
-                            <form [formGroup]="_religionService.myformSearch">
-                                <div class="dialog-content-wrapper">
-                                    <mat-form-field class="mr-sm-12" fxFlex>
-                                        <input matInput placeholder="Search --> Religion Name" autocomplete="off"
-                                            name="ReligionNameSearch" formControlName="ReligionNameSearch" />
-                                        <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="onSearchClear()">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                    </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Search Religion Name</mat-label>
+                                <input name="ReligionNameSearch" formControlName="ReligionNameSearch" matInput
+                                    (keyup)="onSearch()">
+                                <span class="error"
+                                    *ngIf="f.ReligionNameSearch.invalid && f.ReligionNameSearch.touched">
+                                    Religion Name is required Enter only Alphabets</span>
+                            </mat-form-field>
 
-                                    <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
+                            <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
                                         <mat-radio-button value="2">All</mat-radio-button>
                                         <mat-radio-button mat-fab value="0">IsActive</mat-radio-button>
                                         <mat-radio-button mat-fab value="1">IsDeactive</mat-radio-button>
                                     </mat-radio-group>
 
-                                    <button mat-raised-button (click)="onSearch()" fxLayoutAlign="center center">
-                                        <mat-icon>search</mat-icon>
-                                        Search
-                                    </button>
-                                </div>
-                            </form>
+                            <div style="margin-top: 10px;">
+                                <button mat-raised-button (click)="onSearchClear()" class="clearbutton"
+                                    matTooltip="close">
+                                    <mat-icon class="cleariconbutton">close</mat-icon>
+                                </button>&nbsp;
+                                <button mat-raised-button class="searchButton" (click)="onSearch()" matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+                            </div>
                         </div>
 
+                    </form>
+                </div>
+            </div>
+        </fuse-sidebar>
+        <!-- / SIDEBAR -->
+
+        <!-- CENTER -->
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+            <!-- CONTENT -->
+            <div class="content-card" style="border-radius:4px; ">
+
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
                             <div style="width: 100%;">
+                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                    class="backgroundBlur">
+                                    <div class="spinner-border text-danger"></div>
+                                </div>
+
                                 <mat-table #table matSort [dataSource]="DSReligionMasterList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto">
                                     <ng-container matColumnDef="ReligionId">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Code
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.ReligionId}}
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            {{element.ReligionId}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="ReligionName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            ReligionName</mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.ReligionName}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Religion Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> 
+                                            {{element.ReligionName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="IsDeleted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm> IsActive
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                             IsActive
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-icon *ngIf="!element.IsDeleted"
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-icon *ngIf="element.IsDeleted==1"
                                                 class="active-icon green-600 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="element.IsDeleted"
+                                            <mat-icon *ngIf="element.IsDeleted==0"
                                                 class="active-icon red-500 s-16">close</mat-icon>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="AddedBy">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedBy}}
-                                        </mat-cell>
-                                    </ng-container>
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;">
+                                        <mat-header-cell *matHeaderCellDef class="w-150">
                                             Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
+                                        <mat-cell *matCellDef="let row" class="w-150">
                                             <button mat-icon-button (click)="onEdit(row)"><mat-icon
                                                     title="Edit Menu">launch</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(row.BankId)"
+                                            <button mat-icon-button (click)="onDeactive(row.ReligionId)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
 
                                         </mat-cell>
@@ -135,43 +160,6 @@
                             </div>
                         </div>
                     </div>
-                    <div fxFlex.gt-sm="35%" fxFlex style="background-color: white;">
-                        <div class="dialog-content-wrapper">
-                            <div mat-dialog-content class="p-24 pb-0 m-0">
-                                <form [formGroup]="_religionService.myform">
-                                    <h3>{{_religionService.myform.controls.ReligionId.value?"Modify Religion
-                                        Master":"New Religion Master"}}</h3>
-
-                                    <input type="hidden" name="ReligionId" formControlName="ReligionId">
-
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                            <mat-label>Religion Name</mat-label>
-                                            <input type="text" placeholder="Religion Name" name="ReligionName"
-                                                formControlName="ReligionName" matInput required>
-                                            <mat-error>Please Enter Religion Name </mat-error>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                        <mat-radio-group name="IsDeleted" formControlName="IsDeleted" value='false'>
-                                            <mat-radio-button value='false' class="mr-sm-12"
-                                                fxFlex>IsActive</mat-radio-button>
-                                            <mat-radio-button value='true' class="mr-sm-12"
-                                                fxFlex>IsDeactive</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
-                                </form>
-                            </div>
-                            <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-                                <div class="button-row">
-                                    <button mat-raised-button color="primary" type="submit" (click)="onSubmit()"
-                                        [disabled]="_religionService.myform.invalid">Save</button>
-                                    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <!-- / CONTENT -->

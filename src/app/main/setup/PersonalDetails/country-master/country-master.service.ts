@@ -26,7 +26,7 @@ export class CountryMasterService {
         return this._formBuilder.group({
             CountryId: [""],
             CountryName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -38,10 +38,15 @@ export class CountryMasterService {
 
     public getCountryMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_CountryNameList_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_CountryNameList_by_Name",
             param
         );
     }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
 
     public countryMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/CountrySave", param);

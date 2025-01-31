@@ -107,8 +107,6 @@ export class PrefixMasterComponent implements OnInit {
         var Param = {
             PrefixName:
                 this._PrefixService.myformSearch.get("PrefixNameSearch").value.trim() + "%" || "%",
-            // p_IsDeleted:
-            //     this._PrefixService.myformSearch.get("IsDeletedSearch").value,
         };
         // console.log(Param)
         this._PrefixService.getPrefixMasterList(Param).subscribe((Menu) => {

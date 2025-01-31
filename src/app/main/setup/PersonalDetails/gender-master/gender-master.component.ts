@@ -5,8 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { GenderMasterService } from "./gender-master.service";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialog} from "@angular/material/dialog";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { NewgenderMasterComponent } from "./newgender-master/newgender-master.component";
 import Swal from "sweetalert2";
@@ -30,7 +29,7 @@ export class GenderMasterComponent implements OnInit {
         "IsDeleted",
         "action",
     ];
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
     DSGenderMasterList = new MatTableDataSource<GenderMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,8 +39,7 @@ export class GenderMasterComponent implements OnInit {
     }
     // field validation 
     get f() { return this._GenderService.myformSearch.controls; }
-
-
+    
     constructor(
         public _GenderService: GenderMasterService,
         public toastr: ToastrService,
@@ -78,47 +76,22 @@ export class GenderMasterComponent implements OnInit {
         this.getGenderMasterList();
     }
 
-    getGenderMasterList() {
-        var Param: any = {
-            "First": 0,
-            "Rows": 10,
-            "SortField": "GenderId",
-            "SortOrder": 0,
-            "Filters": [],
-            "ExportType": "Excel",
-            "Columns": [
-                {
-                    "Data": "string",
-                    "Name": "string"
-                }
-            ]
-        };
-        var GenderName = this._GenderService.myformSearch.get("GenderNameSearch").value.trim();
-        if (GenderName) {
-            Param.Filters.push({
-                "FieldName": "GenderName",
-                "FieldValue": GenderName,
-                "OpType": "13"
-            });
-        }
-        var isActive = this._GenderService.myformSearch.get("IsDeletedSearch").value;
-        if (isActive != 2) {
-            Param.Filters.push({
-                "FieldName": "IsActive",
-                "FieldValue": this._GenderService.myformSearch.get("IsDeletedSearch").value,
-                "OpType": "13"
-            });
-        }
-        this._GenderService
-            .getGenderMasterList(Param)
-            .subscribe((response: any) => {
-                if (response.StatusCode == 200) {
-                    this.DSGenderMasterList.data = response.Data.Data as GenderMaster[];
-                    this.DSGenderMasterList.sort = this.sort;
-                    this.DSGenderMasterList.paginator = this.paginator;
-                    console.log(this.DSGenderMasterList.data);
-                }
-            });
+    getGenderMasterList(){
+         this.sIsLoading='loading-data';
+            var vdata={
+              "GenderName":this._GenderService.myformSearch.get('GenderNameSearch').value + '%' || '%',
+            }
+            console.log("GenderName:",vdata)
+            this._GenderService.getGenderMasterList(vdata).subscribe(data=>{
+              this.DSGenderMasterList.data=data as unknown as GenderMaster[];
+              console.log("data:",this.DSGenderMasterList.data);
+              this.DSGenderMasterList.sort=this.sort;
+              this.DSGenderMasterList.paginator=this.paginator;
+              this.sIsLoading='';
+            },
+          error=>{
+            this.sIsLoading='';
+          });
     }
 
     onEdit(row) {
@@ -199,7 +172,7 @@ export class GenderMaster {
      */
     constructor(GenderMaster) {
         {
-            this.GenderId = GenderMaster.GenderId || "";
+            this.GenderId = GenderMaster.GenderId || 0;
             this.GenderName = GenderMaster.GenderName || "";
             this.IsDeleted = GenderMaster.IsDeleted || "true";
             this.IsActive = GenderMaster.IsActive || "";

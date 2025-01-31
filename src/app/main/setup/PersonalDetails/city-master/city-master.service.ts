@@ -24,7 +24,7 @@ export class CityMasterService {
             StateName: [""],
             CountryId: [""],
             CountryName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             // AddedBy: ["0"],
             // UpdatedBy: ["0"],
         });
@@ -46,14 +46,24 @@ export class CityMasterService {
             param
         );
     }
-
+    public getCityList() {
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+      }
+      //StateName Combobox List
+      public getStateList(CityId) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
+      }
     public getCityMasterCombo() {
         return this._httpClient.post(
             "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
             {}
         );
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     // public getStateMasterCombo() {
     //     return this._httpClient.post(
     //         "Generic/GetByProc?procName=Retrieve_StateMaster ",
@@ -61,9 +71,9 @@ export class CityMasterService {
     //     );
     // }
 
-    public getStateList(CityId) {
-        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
-    }
+    // public getStateList(CityId) {
+    //     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
+    // }
     
 
     public cityMasterInsert(param) {

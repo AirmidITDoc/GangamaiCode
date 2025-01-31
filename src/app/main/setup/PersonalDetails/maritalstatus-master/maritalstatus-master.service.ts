@@ -40,7 +40,7 @@ export class MaritalstatusMasterService {
 
     public getmaritalstatusMasterList(e) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Rtrv_MaritalStatusNameNameList",
+            "Generic/GetByProc?procName=m_Rtrv_MaritalStatusNameNameList",
             e
         );
     }

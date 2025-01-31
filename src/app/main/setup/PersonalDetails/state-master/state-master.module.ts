@@ -21,6 +21,23 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatStepperModule } from "@angular/material/stepper";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { StateMasterService } from "./state-master.service";
+import { NewstateMasterComponent } from './newstate-master/newstate-master.component';
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
     {
@@ -30,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [StateMasterComponent],
+    declarations: [StateMasterComponent, NewstateMasterComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -53,8 +70,23 @@ const routes: Routes = [
         MatSnackBarModule,
         MatStepperModule,
         NgxMatSelectSearchModule,
+        MatMenuModule,
+        MatToolbarModule,
+        SharedModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
-    providers: [StateMasterService],
+    providers: [StateMasterService, NotificationServiceService],
 
     entryComponents: [StateMasterComponent],
 })
