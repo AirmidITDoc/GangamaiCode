@@ -132,6 +132,7 @@ export class NewareaMasterComponent implements OnInit {
           var m_dataInsert = {
             "areaMasterInsert": {
               "areaName": this._AreaService.myform.get("AreaName").value || '',
+              "talukaId":this._AreaService.myform.get("CityId").value.CityId || '',
               "addedBy": this.accountService.currentUserValue.user.id,
               "isDeleted": Boolean(JSON.parse(this._AreaService.myform.get("IsDeleted").value) || 0),
             }
@@ -161,6 +162,7 @@ export class NewareaMasterComponent implements OnInit {
             "areaMasterUpdate": {
               "areaId": this.vAreaId,
               "areaName": this._AreaService.myform.get("AreaName").value || '',
+              "talukaId":this._AreaService.myform.get("CityId").value.CityId || '',
               "isDeleted": Boolean(JSON.parse(this._AreaService.myform.get("IsDeleted").value) || 0),
               "updatedBy": this.accountService.currentUserValue.user.id,
             }

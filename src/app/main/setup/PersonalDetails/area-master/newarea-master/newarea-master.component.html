@@ -60,7 +60,7 @@
 
                                                 <mat-autocomplete #autoCity="matAutocomplete" [displayWith]="getOptionTextCity1">
                                                     <mat-option *ngFor="let option of filteredOptionsCity | async" 
-                                                    [value]="option" (onSelectionChange)="onChangeCityList(option)">
+                                                    [value]="option">
                                                         {{option.CityName}}
                                                     </mat-option>
                                                 </mat-autocomplete>
