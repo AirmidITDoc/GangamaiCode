@@ -16,7 +16,6 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { NotificationServiceService } from "app/core/notification-service.service";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { RelationshipMasterService } from "./relationship-master.service";
-
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";

@@ -49,9 +49,9 @@ public getCityList() {
 
   return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
 }
-public getHospitalMasterList() {
+public getHospitalMasterList(p) {
       
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_HospitalMaster", {})
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_HospitalMaster",p)
 }
 populateForm(param) {
   this.HospitalForm.patchValue(param);

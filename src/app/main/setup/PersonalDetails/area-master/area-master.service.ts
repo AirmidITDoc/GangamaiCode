@@ -23,7 +23,7 @@ export class AreaMasterService {
             AreaName: [""],
             CityId: [""],
             CityName: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -41,7 +41,7 @@ export class AreaMasterService {
 
     public getAreaMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_AreaName",
+            "Generic/GetByProc?procName=m_Rtrv_AreaName_List",
             param
         );
     }
@@ -53,7 +53,11 @@ export class AreaMasterService {
             {}
         );
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     public areaMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/AreaSave", param);
     }

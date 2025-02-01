@@ -48,15 +48,33 @@ DSHospitalList=new MatTableDataSource<HospitalMaster>();
     
   }
 
-
   getHospitalMaster() {
-  this._HospitalService.getHospitalMasterList().subscribe((data) => {
-        this.DSHospitalList.data = data as HospitalMaster[];
+
+    var m_data = {
+      HospitalName:
+                    this._HospitalService.myformSearch
+                        .get("NameSearch")
+                        .value.trim() || "%",
+            };
+    
+            this._HospitalService
+                .getHospitalMasterList(m_data)
+                .subscribe((Menu) => {
+                    this.DSHospitalList.data =
+                        Menu as HospitalMaster[];
+                    this.DSHospitalList.sort = this.sort;
+                    this.DSHospitalList.paginator = this.paginator;
+                    console.log(this.DSHospitalList);
+                });
+
+  // this._HospitalService.getHospitalMasterList().subscribe((data) => {
+  //       this.DSHospitalList.data = data as HospitalMaster[];
        
-        this.resultsLength=  this.DSHospitalList.data.length; 
-        console.log(this.DSHospitalList.data);
-    });
+  //       this.resultsLength=  this.DSHospitalList.data.length; 
+  //       console.log(this.DSHospitalList.data);
+  //   });
 }
+
 onSearch(){
 
 }

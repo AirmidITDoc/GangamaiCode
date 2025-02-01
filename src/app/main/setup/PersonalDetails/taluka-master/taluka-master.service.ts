@@ -22,7 +22,7 @@ export class TalukaMasterService {
             TalukaName: [""],
             CityName: [""],
             CityId: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -40,18 +40,19 @@ export class TalukaMasterService {
 
     public getTalukaMasterList(param) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=M_Rtrv_TalukaNameList_by_Name",
+            "Generic/GetByProc?procName=m_Rtrv_TalukaNameList_by_Name",
             param
         );
     }
 
-    public getCityMasterCombo() {
+    public getCityList() {
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveCityMasterForCombo", {})
+      }
+    public deactivateTheStatus(m_data) {
         return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_CityMasterForCombo",
-            {}
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
         );
-    }
-
+      }
     public talukaMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/TalukaSave", param);
     }

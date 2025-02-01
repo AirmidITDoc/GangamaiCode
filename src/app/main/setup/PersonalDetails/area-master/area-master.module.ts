@@ -24,6 +24,20 @@ import { AreaMasterService } from "./area-master.service";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatCardModule } from "@angular/material/card";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { NewareaMasterComponent } from './newarea-master/newarea-master.component';
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
     {
@@ -33,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AreaMasterComponent],
+    declarations: [AreaMasterComponent, NewareaMasterComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -56,8 +70,23 @@ const routes: Routes = [
         MatSnackBarModule,
         MatStepperModule,
         NgxMatSelectSearchModule,
+        MatMenuModule,
+        MatAutocompleteModule,
+        SharedModule,
+        MatToolbarModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatProgressSpinnerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
-    providers: [AreaMasterService],
+    providers: [AreaMasterService, NotificationServiceService],
     entryComponents: [AreaMasterComponent],
 })
 export class AreaMasterModule {}
