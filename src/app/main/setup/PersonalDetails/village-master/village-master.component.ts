@@ -9,6 +9,12 @@ import { MatSort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { FuseUtils } from "@fuse/utils";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { MatDialog } from "@angular/material/dialog";
+import { NewvillageMasterComponent } from "./newvillage-master/newvillage-master.component";
 
 @Component({
     selector: "app-village-master",
@@ -19,20 +25,14 @@ import { ToastrService } from "ngx-toastr";
 })
 export class VillageMasterComponent implements OnInit {
     VillageMasterList: any;
-    TalukacmbList: any = [];
     msg: any;
-
-    // taluka filter
-    public talukaFilterCtrl: FormControl = new FormControl();
-    public filteredTaluka: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-    private _onDestroy = new Subject<void>();
+    sIsLoading: string = '';
+    hasSelectedContacts: boolean;
 
     displayedColumns: string[] = [
         "VillageId",
         "VillageName",
         "TalukaName",
-        "AddedByName",
         "IsDeleted",
         "action",
     ];
@@ -40,19 +40,19 @@ export class VillageMasterComponent implements OnInit {
     DSVillageMasterList = new MatTableDataSource<VillageMaster>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    // field validation 
+    get f() { return this._VillageService.myformSearch.controls; }
 
     constructor(public _VillageService: VillageMasterService,
-        public toastr : ToastrService,) {}
+        public toastr : ToastrService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,) {}
 
     ngOnInit(): void {
         this.getVillageMasterLists();
-        this.getTalukaMasterCombo();
-
-        this.talukaFilterCtrl.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-                this.filterTaluka();
-            });
     }
 
     onSearch() {
@@ -66,27 +66,7 @@ export class VillageMasterComponent implements OnInit {
         });
         this. getVillageMasterLists()
     }
-    private filterTaluka() {
-        // debugger;
-        if (!this.TalukacmbList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.talukaFilterCtrl.value;
-        if (!search) {
-            this.filteredTaluka.next(this.TalukacmbList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter
-        this.filteredTaluka.next(
-            this.TalukacmbList.filter(
-                (bank) => bank.TalukaName.toLowerCase().indexOf(search) > -1
-            )
-        );
-    }
- 
+
     getVillageMasterLists() {
         var param = {
             VillageName:this._VillageService.myformSearch.get("VillageNameSearch").value.trim() || "%",
@@ -100,133 +80,84 @@ export class VillageMasterComponent implements OnInit {
         });
     }
 
-    getTalukaMasterCombo() {
-        // this._VillageService.getTalukaMasterCombo().subscribe(data => this.TalukacmbList =data);
-        this._VillageService.getTalukaMasterCombo().subscribe((data) => {
-            this.TalukacmbList = data;
-            this.filteredTaluka.next(this.TalukacmbList.slice());
+    newVillage(){
+        const dialogRef = this._matDialog.open(NewvillageMasterComponent,
+                    {
+                        maxWidth: "40%",
+                        width: "100%",
+                        height: "40%",
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    console.log('The dialog was closed - Insert Action', result);
+                    this.getVillageMasterLists();
+                });
+    }
+
+    onEdit(row) {
+        // var m_data1 = {
+        //     VillageId: row.VillageId,
+        //     VillageName: row.VillageName.trim(),
+        //     TalukaId: row.TalukaId,
+        //     IsDeleted: JSON.stringify(row.IsDeleted),
+        //     UpdatedBy: row.UpdatedBy,
+        // };
+        // console.log(m_data1);
+        // this._VillageService.populateForm(m_data1);
+        const dialogRef = this._matDialog.open(NewvillageMasterComponent,
+            {
+                maxWidth: "40%",
+                width: "100%",
+                height: "40%",
+                data: {
+                    Obj: row
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getVillageMasterLists();
         });
     }
 
-    onClear() {
-        this._VillageService.myForm.reset({ IsDeleted: "false" });
-        this._VillageService.initializeFormGroup();
-    }
-
-    onSubmit() {
-        if (this._VillageService.myForm.valid) {
-            if (!this._VillageService.myForm.get("VillageId").value) {
-                var m_data = {
-                    villageMasterInsert: {
-                        villageName: this._VillageService.myForm
-                            .get("VillageName")
-                            .value.trim(),
-                        talukaId:
-                            this._VillageService.myForm.get("TalukaId").value
-                                .TalukaId,
-                        addedBy: 1,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._VillageService.myForm.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                    },
-                };
-                console.log(m_data);
-                this._VillageService
-                    .villageMasterInsert(m_data)
-                    .subscribe((data) => {
-                        this.msg = m_data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getVillageMasterLists();
-                            // Swal.fire(
-                            //     "Saved !",
-                            //     "Record saved Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getVillageMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Village Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
+     onDeactive(VillageId) {
+                    debugger
+                    Swal.fire({
+                        title: 'Confirm Status',
+                        text: 'Are you sure you want to Change Status?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes,Change Status!'
+                    }).then((result) => {
+                        debugger
+            
+                        if (result.isConfirmed) {
+                            let Query;
+                            const tableItem = this.DSVillageMasterList.data.find(item => item.VillageId === VillageId);
+                            console.log("table:", tableItem)
+            
+                            if (tableItem.IsDeleted) {
+                                Query = "Update M_VillageMaster set IsDeleted=0 where VillageId=" + VillageId;
+                            } else {
+                                Query = "Update M_VillageMaster set IsDeleted=1 where VillageId=" + VillageId;
+                            }
+            
+                            console.log("query:", Query);
+            
+                            this._VillageService.deactivateTheStatus(Query)
+                                .subscribe(
+                                    (data) => {
+                                        Swal.fire('Changed!', 'Village Status has been Changed.', 'success');
+                                        this.getVillageMasterLists();
+                                    },
+                                    (error) => {
+                                        Swal.fire('Error!', 'Failed to deactivate category.', 'error');
+                                    }
+                                );
                         }
-                        this.getVillageMasterLists();
-                    },error => {
-                        this.toastr.error('Village Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            } else {
-                var m_dataUpdate = {
-                    villageMasterUpdate: {
-                        villageID:
-                            this._VillageService.myForm.get("VillageId").value,
-                        villageName: this._VillageService.myForm
-                            .get("VillageName")
-                            .value.trim(),
-                        talukaId:
-                            this._VillageService.myForm.get("TalukaId").value
-                                .Taluka.Id,
-                        isDeleted: Boolean(
-                            JSON.parse(
-                                this._VillageService.myForm.get("IsDeleted")
-                                    .value
-                            )
-                        ),
-                        updatedBy: 1,
-                    },
-                };
-                this._VillageService
-                    .villageMasterUpdate(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = m_dataUpdate;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                              });
-                              this.getVillageMasterLists();
-                            // Swal.fire(
-                            //     "Updated !",
-                            //     "Record updated Successfully !",
-                            //     "success"
-                            // ).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         this.getVillageMasterList();
-                            //     }
-                            // });
-                        } else {
-                            this.toastr.error('Village Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                              });
-                        }
-                        this.getVillageMasterLists();
-                    } ,error => {
-                        this.toastr.error('Village Data not saved !, Please check API error..', 'Error !', {
-                         toastClass: 'tostr-tost custom-toast-error',
-                       });
-                     });
-            }
-            this.onClear();
-        }
-    }
-    onEdit(row) {
-        var m_data1 = {
-            VillageId: row.VillageId,
-            VillageName: row.VillageName.trim(),
-            TalukaId: row.TalukaId,
-            IsDeleted: JSON.stringify(row.IsDeleted),
-            UpdatedBy: row.UpdatedBy,
-        };
-        console.log(m_data1);
-        this._VillageService.populateForm(m_data1);
-    }
+            
+                    });
+                }
 }
 
 export class VillageMaster {

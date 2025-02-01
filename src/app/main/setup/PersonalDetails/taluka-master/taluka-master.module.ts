@@ -14,11 +14,30 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { FuseConfirmDialogModule } from "@fuse/components";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { TalukaMasterService } from "./taluka-master.service";
+import { NewtalukaMasterComponent } from './newtaluka-master/newtaluka-master.component';
+import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { MatMenuModule } from "@angular/material/menu";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
     {
@@ -28,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [TalukaMasterComponent],
+    declarations: [TalukaMasterComponent, NewtalukaMasterComponent],
     imports: [
         RouterModule.forChild(routes),
 
@@ -48,13 +67,29 @@ const routes: Routes = [
         MatRadioModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
-
         ReactiveFormsModule,
         MatSnackBarModule,
-
         NgxMatSelectSearchModule,
+        FuseSidebarModule,
+        MatMenuModule,
+        SharedModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatTabsModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
-    providers: [TalukaMasterService],
+    providers: [TalukaMasterService, NotificationServiceService],
 
     entryComponents: [TalukaMasterComponent],
 })

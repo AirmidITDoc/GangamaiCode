@@ -21,6 +21,23 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { VillageMasterService } from "./village-master.service";
 import { MatStepperModule } from "@angular/material/stepper";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NewvillageMasterComponent } from './newvillage-master/newvillage-master.component';
+import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { NotificationServiceService } from "app/core/notification-service.service";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatRippleModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 
 const routes: Routes = [
     {
@@ -30,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [VillageMasterComponent],
+    declarations: [VillageMasterComponent, NewvillageMasterComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -41,25 +58,37 @@ const routes: Routes = [
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-
         MatTableModule,
-
         MatPaginatorModule,
         MatSortModule,
         MatSelectModule,
-
         MatStepperModule,
         MatRadioModule,
         FuseSharedModule,
-
         ReactiveFormsModule,
         MatSnackBarModule,
         MatAutocompleteModule,
-
         SharedModule,
         NgxMatSelectSearchModule,
+
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatToolbarModule,
+        MatRippleModule,
+        MatDatepickerModule,
+        MatTabsModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDividerModule,
+        MatDialogModule,
+        MatProgressSpinnerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatChipsModule,
     ],
-    providers: [VillageMasterService],
+    providers: [VillageMasterService, NotificationServiceService],
 
     entryComponents: [VillageMasterComponent],
 })

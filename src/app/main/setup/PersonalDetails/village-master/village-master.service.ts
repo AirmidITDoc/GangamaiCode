@@ -22,7 +22,7 @@ export class VillageMasterService {
             VillageName: [""],
             TalukaName: [""],
             TalukaId: [""],
-            IsDeleted: ["false"],
+            IsDeleted: [true],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
@@ -51,7 +51,11 @@ export class VillageMasterService {
             {}
         );
     }
-
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.post(
+            "Generic/ExecByQueryStatement?query=" + m_data,{}
+        );
+      }
     public villageMasterInsert(param) {
         return this._httpClient.post("PersonalDetails/VillageSave", param);
     }
