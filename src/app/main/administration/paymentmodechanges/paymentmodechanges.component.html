@@ -1,292 +1,3 @@
-<!-- <div class="page-layout simple inner-sidebar inner-scroll right-sidebar"dynamicTableHeight>
-    <mat-toolbar>
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">
-                <mat-icon>account_box</mat-icon>
-            </button>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Payment Mode Changes
-            </span>
-        </div>
-    </mat-toolbar> -->
-
-
-
-    <!-- <div class="content">
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" style="width:30%; border-radius:4px;
-         margin-left:12px; background-color: white;height:100%;"> 
-      
-            <div class="accent header p-12" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 3%">
-                <span class="search-title">Search Facility</span>
-            </div>
-            <div class="nav material2">
-                <form [formGroup]="_PaymentmodechangesService.UseFormGroup" fusePerfectScrollbar>
-                    <div fxLayout="column" fxLayoutAlign="start none">
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="startdate" placeholder="Start date">
-                                <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getsearchList()">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input name="LastName" formControlName="LastName" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>RegNo</mat-label>
-                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Bill No</mat-label>
-                            <input name="BillNo" formControlName="BillNo" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Receipt No</mat-label>
-                            <input name="ReceiptNo" formControlName="ReceiptNo" matInput (keyup)="getsearchList()">
-                        </mat-form-field>&nbsp;&nbsp;
-
-                        <div fxLayout="row" fxLayout.gt-xs="column" column>
-                            <mat-radio-group formControlName="Radio" name="Radio">
-                                <mat-label>Type :</mat-label>&nbsp;
-                                <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPReceiptList()">
-                                    OP Receipt</mat-radio-button>
-                                <mat-radio-button value="1" (click)="getIPReceiptList()">IP Receipt</mat-radio-button>&nbsp;
-                                <mat-radio-button value="2" style="margin-left:32px;" (click)="getIPAdvanceList()">IP
-                                    Advance</mat-radio-button>&nbsp;&nbsp;
-                            </mat-radio-group>
-                        </div>
-
-                        <div style="margin-top: 15px;">
-                            <button mat-raised-button class="clearbutton" matTooltip="close">
-                                <mat-icon class="cleariconbutton">close</mat-icon>
-                            </button>&nbsp;&nbsp;
-                            <button mat-raised-button class="searchButton" matTooltip="search">
-                                <mat-icon class="searchiconbutton" (click)="getsearchList()">search</mat-icon>
-                            </button>
-                        </div>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </fuse-sidebar> -->
-
-
-        <!-- <div class="center p-12 pb-56" fxFlexAlign="start center">
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="30px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div class="info-badge-top pb-2 border-bottom"> 
-                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
-                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                                    <span>: OP Receipt</span>
-                                </div>
-                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                    <span>: IP Receipt</span>
-                                </div>  
-                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                                    <span>: IP Advance</span>
-                                </div>  
-                            </div>
-                        </div> 
-                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                            class="backgroundBlur">
-                            <div class="spinner-border text-danger"></div>
-                        </div>
-
-                        <mat-table class="table1" matSort [dataSource]="dsPaymentChanges" [@animateStagger]="{value:'50'}"
-                            style="overflow: auto;">
-
-                            <ng-container matColumnDef="Type" sticky>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-80">
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-80">
-                                    <mat-icon *ngIf="contact.label != 'OP Reciept' && contact.label != 'IP Advance'" matTooltip="IP Receipt" class="pill green-600 s-16">circle</mat-icon>
-                                    <mat-icon *ngIf="contact.label == 'OP Reciept'" matTooltip="OP Receipt" class="pill orange-600 s-16">circle</mat-icon> 
-                                    <mat-icon *ngIf="contact.label == 'IP Advance'" matTooltip="IP Advance" class="pill blue-600 s-16">circle</mat-icon>   
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PayDate" sticky >
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    Pay Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.PayDate}}-{{contact.PaymentTime | date:'hh:mm a'}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ReceiptNo" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                    Receipt No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                    {{contact.ReceiptNo || '-'}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="BillNo" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
-                                    Bill No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  class="w-90">
-                                    {{contact.BillNo || '-'}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="RegNo" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">
-                                    UHID No
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                    {{contact.RegNo}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PatientName" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-210">
-                                    Patient Name</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-210">
-                                    {{contact.PatientName}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="BillAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Bill Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.TotalAmt | currency:"INR":"symbol"}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PaidAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Paid Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PaidAmount | currency:"INR":"symbol"}}
-                                </mat-cell>
-                            </ng-container> 
-
-                            <ng-container matColumnDef="CashAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Cash Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.CashPayAmount | currency:"INR":"symbol" }}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ChequeAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Cheque Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.ChequePayAmount | currency:"INR":"symbol"}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="CardAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Card Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.CardPayAmount | currency:"INR":"symbol"}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="NEFTPayAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    NEFT Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.NEFTPayAmount | currency:"INR":"symbol" }}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PayTMAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    PayTM Amt </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.PayTMAmount | currency:"INR":"symbol" }}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="User">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">
-                                    User Name </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-                                    {{contact.UserName}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-200">Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-200">  -->
-                                    <!-- <button mat-icon-button matTooltip="Edit" (click)="onEdit(contact)">
-                                        <mat-icon>edit</mat-icon>
-                                    </button> -->
-                                     
-                                    <!-- <button class="btn btn-info"  
-                                    matTooltip="Payment Date Update" (click)="PaymentDate(contact)" >Date Update</button>&nbsp;
-                                    <button class="btn btn-primary" (click)="onEdit(contact)" matTooltip="Payment Mode Change" style="color: white;">
-                                      Edit
-                                     </button>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent min-width-1750" *matHeaderRowDef="displayedColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1750"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsPaymentChanges!=null && dsPaymentChanges.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="12" showFirstLastButtons>
-                        </mat-paginator>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
-
-</div> -->
-
-
-
-
 <div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -298,10 +9,6 @@
                 </span>
             </div>
         </div>
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New Payment Mode
-            </button>
-        </div> -->
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <!-- <div class="info-badge-top pb-2 border-bottom"> 
@@ -321,62 +28,46 @@
             <div class="spinner-border text-danger"></div>
         </div> -->
         <airmid-table [gridConfig]="gridConfig"  class="content">
-            
             <ng-container filters>
+
+                <mat-form-field appearance="outline" style="margin-left: 2%;">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="startdate" placeholder="Start date">
+                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getsearchList()">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>RegNo</mat-label>
+                    <input name="RegNo" formControlName="RegNo" matInput (keyup)="getsearchList()">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input name="FirstName" formControlName="FirstName" matInput (keyup)="getsearchList()">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input name="LastName" formControlName="LastName" matInput (keyup)="getsearchList()">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Sales No</mat-label>
+                    <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getsearchList()">
+                </mat-form-field>
+
+                <mat-radio-group formControlName="Radio" name="Radio">
+                    <mat-label>Type : </mat-label>
+                    <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPReceiptList()">
+                        OP Receipt</mat-radio-button>
+                    <mat-radio-button value="1" (click)="getIPReceiptList()">IP Receipt</mat-radio-button>
+                    <mat-radio-button value="2" style="margin-left:32px;" (click)="getIPAdvanceList()">IP
+                        Advance</mat-radio-button>
+                </mat-radio-group>
                 
-                <form [formGroup]="_PaymentmodechangesService.UseFormGroup" style="padding: 6px 6px 5px 5px;"
-                    fusePerfectScrollbar>
-                    <div fxLayout="column" fxLayoutAlign="start none">
-
-                        <mat-form-field appearance="outline" style="margin-left: 2%;">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="startdate" placeholder="Start date">
-                                <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getsearchList()">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>RegNo</mat-label>
-                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input name="FirstName" formControlName="FirstName" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input name="LastName" formControlName="LastName" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Sales No</mat-label>
-                            <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getsearchList()">
-                        </mat-form-field>
-
-                        <!-- <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                            <mat-radio-group formControlName="Radio" name="Radio" >
-                                <mat-label>Type :</mat-label>&nbsp;
-                                <mat-radio-button value="1" (click)="getSalesList()">Sales</mat-radio-button>
-                                <mat-radio-button value="2" (click)="getIPPharAdvanceList()">IP Phar Advance</mat-radio-button>
-                            </mat-radio-group>
-                        </div> -->
-                        <div fxLayout="row" fxLayout.gt-xs="column" column>
-                            <mat-radio-group formControlName="Radio" name="Radio">
-                                <mat-label>Type : </mat-label>
-                                <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPReceiptList()">
-                                    OP Receipt</mat-radio-button>
-                                <mat-radio-button value="1" (click)="getIPReceiptList()">IP Receipt</mat-radio-button>
-                                <mat-radio-button value="2" style="margin-left:32px;" (click)="getIPAdvanceList()">IP
-                                    Advance</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-
-                    </div>
-                </form>
             </ng-container> 
         </airmid-table>
     </div>

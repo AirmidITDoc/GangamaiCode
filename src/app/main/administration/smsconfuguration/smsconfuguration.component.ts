@@ -27,9 +27,9 @@ export class SMSConfugurationComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "TalukaMaster/List",
         columnsList: [
-            { heading: "OutGoingCode", key: "OutGoingCode", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "Date", key: "Date", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "OutGoingCode", key: "OutGoingCode", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Date", key: "Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "MobileNo", key: "MobileNo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "SMSString", key: "SMSString", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "IsSent", key: "IsSent", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
@@ -72,9 +72,9 @@ export class SMSConfugurationComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(UpdateSMSComponent,
             {
-                maxWidth: "45vw",
-                height: '35%',
-                width: '70%',
+                maxWidth: "85vw",
+                height: '90%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -126,8 +126,8 @@ export class SMSConfugurationComponent implements OnInit {
     const dialogRef = this._matDialog.open(UpdateSMSComponent,
       {
         maxWidth: "100%",
-        height: '80%',
-        width: '70%', 
+        height: '90%',
+        width: '90%', 
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);

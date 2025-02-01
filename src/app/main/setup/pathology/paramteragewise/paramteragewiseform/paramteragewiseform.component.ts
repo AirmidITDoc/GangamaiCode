@@ -22,6 +22,8 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 })
 export class ParamteragewiseformComponent implements OnInit {
     ageType: string[] = ["Days", "Months", "Years"];
+    
+    isActive:boolean=true;
 
 
     displayedColumns: string[] = [
@@ -82,7 +84,8 @@ export class ParamteragewiseformComponent implements OnInit {
         this.getAgeTypeList();
         this.getDscriptiveMasterList();
         if (this._ParameterageService.myform.get("ParameterID").value) {
-       
+            
+            this.isActive=this.data.isActive
             this.dsParameterAgeList.data =this._ParameterageService.numericList;
             this.selectedItems = this._ParameterageService.descriptiveList;
         }
@@ -239,22 +242,22 @@ insertParameterMasterRangeWise["maxvalue"]=0
 insertParameterMasterRangeWise["addedby"]=0
                 var m_data = {
                  
-                    insertParameterMasterRangeWise: {
-                        paraId:
-                            "0" ||
-                            this._ParameterageService.myform.get("ParameterID")
-                                .value,
-                        sexId: this._ParameterageService.myIsNumericform.get("SexID").value.GenderId,
-                        minValue:
-                            this._ParameterageService.myIsNumericform
-                                .get("MinValue")
-                                .value || "%",
-                        maxvalue:
-                            this._ParameterageService.myIsNumericform
-                                .get("MaxValue")
-                                .value || "%",
-                     addedby:  this.accountService.currentUserValue.userId ,
-                    },
+                    // insertParameterMasterRangeWise: {
+                    //     paraId:
+                    //         "0" ||
+                    //         this._ParameterageService.myform.get("ParameterID")
+                    //             .value,
+                    //     sexId: this._ParameterageService.myIsNumericform.get("SexID").value.GenderId,
+                    //     minValue:
+                    //         this._ParameterageService.myIsNumericform
+                    //             .get("MinValue")
+                    //             .value || "%",
+                    //     maxvalue:
+                    //         this._ParameterageService.myIsNumericform
+                    //             .get("MaxValue")
+                    //             .value || "%",
+                    //  addedby:  this.accountService.currentUserValue.userId ,
+                    // },
                     
                 };
 

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { ParamteragewiseComponent } from "./paramteragewise.component";
 import { RouterModule, Routes } from "@angular/router";
 import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
@@ -33,6 +33,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { SharedModule } from "../../../shared/shared.module";
 
 const routes: Routes = [
     {
@@ -44,45 +45,46 @@ const routes: Routes = [
 @NgModule({
     declarations: [ParamteragewiseComponent, ParamteragewiseformComponent],
     imports: [
-        RouterModule.forChild(routes),
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatSnackBarModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        CommonModule,
-        MatExpansionModule,
-        MatCardModule,
-        MatSlideToggleModule,
-        MatListModule,
-        MatDialogModule,
-        MatGridListModule,
-        MatDividerModule,
-        MatDialogModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatStepperModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        NgxMatSelectSearchModule,
-        MatBadgeModule,
-    ],
-    providers: [ParamteragewiseComponent]
+    RouterModule.forChild(routes),
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    CommonModule,
+    MatExpansionModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatListModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatDividerModule,
+    MatDialogModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    NgxMatSelectSearchModule,
+    MatBadgeModule,
+    SharedModule
+],
+    providers: [ParamteragewiseComponent, DatePipe]
 })
 export class ParamteragewiseModule {}

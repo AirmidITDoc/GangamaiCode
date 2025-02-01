@@ -28,6 +28,8 @@ export class FixSupplierComponent implements OnInit
        msmflag: boolean = false;
        CityId: any;
        vchkactive: any = true;
+       
+    isActive:boolean=true;
      
        // new API
      
@@ -50,9 +52,11 @@ export class FixSupplierComponent implements OnInit
        ngOnInit(): void {
          this.supplierForm = this._supplierService.createSuppliermasterForm();
      
-                 
-         if (this.data.supplierId > 0) {
+            debugger
+            // if((this.data?.id??0) > 0)
+         if ((this.data?.supplierId??0) > 0) {
            
+            this.isActive = this.data.isActive;
            this._supplierService.getsupplierId(this.data.supplierId).subscribe((response) => {
                this.registerObj = response;
                console.log(this.registerObj )

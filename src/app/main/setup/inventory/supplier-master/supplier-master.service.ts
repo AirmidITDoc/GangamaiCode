@@ -105,6 +105,7 @@ export class SupplierMasterService {
                 ]
             ],
             supplierTime: [(new Date()).toISOString()],
+            isActive:[true,[Validators.required]],
             mAssignSupplierToStores: [
                 {
                     assignId: 0,

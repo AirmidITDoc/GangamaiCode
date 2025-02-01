@@ -10,6 +10,10 @@ import { ParamteragewiseService } from "./paramteragewise.service";
 import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
 import Swal from "sweetalert2";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
  
 @Component({
     selector: "app-paramteragewise",
@@ -20,20 +24,67 @@ import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 })
  
 export class ParamteragewiseComponent implements OnInit {
-    displayedColumns: string[] = [
-        "ParameterID",
-        "ParameterName",
-        "ParameterShortName",
-        "PrintParameterName",
-        "UnitName",
-        "IsNumeric",
-        "IsPrintDisSummary",
-        // "MethodName",
-        //"ParaMultipleRange",
-        "AddedBy",
-        "Isdeleted",
-        "action",
-    ];
+     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
+        gridConfig: gridModel = {
+            apiUrl: "PathCategoryMaster/List",
+            columnsList: [
+                { heading: "ParameterID", key: "ParameterID",  sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ParameterName", key: "ParameterName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ParameterShortName", key: "ParameterShortName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PrintParameterName", key: "PrintParameterName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "UnitName", key: "UnitName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsNumeric", key: "IsNumeric", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsPrintDisSummary", key: "IsPrintDisSummary", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "AddedBy", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this._ParameterageService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    this.grid.bindGridData();
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "categoryId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+    
+        ngOnInit(): void {
+    
+        }
+    
+        onSave(row: any = null) {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+            
+            let that = this;
+            const dialogRef = this._matDialog.open(ParamteragewiseformComponent,
+                {
+                    maxWidth: "45vw",
+                    height: '35%',
+                    width: '70%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
+        }
 
     isLoading = true;
     sIsLoading: string = '';
@@ -58,11 +109,12 @@ export class ParamteragewiseComponent implements OnInit {
         public _ParameterageService: ParamteragewiseService,
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
+                public toastr: ToastrService,
     ) { }
 
-    ngOnInit(): void {
-        this.getParameterMasterList();
-    }
+    // ngOnInit(): void {
+    //     this.getParameterMasterList();
+    // }
 
     toggleSidebar(name): void {
         this._fuseSidebarService.getSidebar(name).toggleOpen();

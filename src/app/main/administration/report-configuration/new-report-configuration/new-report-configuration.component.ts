@@ -17,7 +17,7 @@ export class NewReportConfigurationComponent implements OnInit{
     myform: FormGroup;
     isActive:boolean=true;
 
-    reportPageOrientation: string[] = ["Portrait Orientation (Vertical)", "Landscape Orientation (Horizontal)"];
+    reportPageOrientation: string[] = ["Portrait (Vertical)", "Landscape (Horizontal)"];
     reportPageSize: string[] = ["A1", "A2", "A3", "A4", "C4", "C5", "C6"];
 
     constructor(
@@ -62,7 +62,7 @@ export class NewReportConfigurationComponent implements OnInit{
             reportSection: [
                 { name: "required", Message: "Report Section is required" },
                 { name: "maxlength", Message: "Report Section should not be greater than 30 char." },
-                { name: "pattern", Message: "Only Characters Allowed." }
+                { name: "pattern", Message: "Only Characters and Spaces Allowed." }
             ],
             reportName:[
                 { name: "required", Message: "Report Name is required" },
@@ -112,7 +112,7 @@ export class NewReportConfigurationComponent implements OnInit{
                 { name: "maxlength", Message: "Report File Name should not be greater than 30 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
-            reportSPName:[
+            reportSpname:[
                 { name: "required", Message: "Report SP Name is required" },
                 { name: "maxlength", Message: "Report SP Name should not be greater than 30 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
