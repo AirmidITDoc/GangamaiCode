@@ -30,21 +30,22 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class NursingnoteComponent implements OnInit {
   displayedColumns: string[] = [
-    'VDate', 
+    'VDate',
     'Note',
     'AddedBy',
     'Action'
   ]
   displayedItemColumn: string[] = [
-    'ItemName', 
+    'Status',
+    'ItemName',
     'DoseName',
     'Route',
-    'Frequency', 
+    'Frequency',
     'NurseName',
     'Action'
   ]
   displayedHandOverNote: string[] = [
-    'Date', 
+    'Date',
     'Shift',
     'I',
     'S',
@@ -56,121 +57,119 @@ export class NursingnoteComponent implements OnInit {
     'Action'
   ]
   displayedItemColumnPatient: string[] = [
-    'ItemName', 
+    'ItemName',
     'BatchNo',
-    'Qty', 
+    'Qty',
     'Action'
   ]
 
-      editorConfig: AngularEditorConfig = {
-        // color:true,
-        editable: true,
-        spellcheck: true,
-        height: '15rem',
-        minHeight: '15rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    
-      };
-      onBlur(e: any) {
-        this.vDescription = e.target.innerHTML;
-      }
-      
+  editorConfig: AngularEditorConfig = {
+    // color:true,
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '15rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+  onBlur(e: any) {
+    this.vDescription = e.target.innerHTML;
+  }
+
   currentDate = new Date();
   isLoading: any;
-  IsAddFlag:boolean=false;;
+  IsAddFlag: boolean = false;;
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
   PathologyDoctorList: any = [];
-  isRegIdSelected:boolean=false;
+  isRegIdSelected: boolean = false;
   PatientListfilteredOptions: any;
-  noOptionFound:any;
-  filteredOptions:any; 
-  vCompanyName:any;
-  vRegNo:any;
-  vDescription:any;
-  vPatienName:any;
-  vGender:any;
-  vAdmissionDate:any;
-  vAdmissionID:any;
-  vIPDNo:any;
-  vAgeyear:any;
-  vAgeMonth:any;
-  vRegId:any;
-  vAgeDay:any;
-  vWardName:any;
-  vBedName:any;
-  vPatientType:any;
-  vRefDocName:any;
-  vTariffName:any;
-  vDoctorname:any;
-  vDepartmentName:any;
-  vTariffId:any;
-  vClassId:any;
-  vClassName:any;
-  vGenderName:any;
-  vCompanyId:any;
-  vVisitDate:any;
-  PatientListfilteredOptionsIP: any; 
-  registerObj:any;
-  NoteList:any=[]; 
-   selectedAdvanceObj: AdmissionPersonlModel;
+  noOptionFound: any;
+  filteredOptions: any;
+  vCompanyName: any;
+  vRegNo: any;
+  vDescription: any;
+  vPatienName: any;
+  vGender: any;
+  vAdmissionDate: any;
+  vAdmissionID: any;
+  vIPDNo: any;
+  vAgeyear: any;
+  vAgeMonth: any;
+  vRegId: any;
+  vAgeDay: any;
+  vWardName: any;
+  vBedName: any;
+  vPatientType: any;
+  vRefDocName: any;
+  vTariffName: any;
+  vDoctorname: any;
+  vDepartmentName: any;
+  vTariffId: any;
+  vClassId: any;
+  vClassName: any;
+  vGenderName: any;
+  vCompanyId: any;
+  vVisitDate: any;
+  PatientListfilteredOptionsIP: any;
+  registerObj: any;
+  NoteList: any = [];
+  selectedAdvanceObj: AdmissionPersonlModel;
   dsNursingNoteList = new MatTableDataSource<DocNote>();
   dsItemList = new MatTableDataSource<MedicineItemList>();
   dsPatientItemList = new MatTableDataSource<MedicineItemList>();
   dsHandOverNoteList = new MatTableDataSource<DocNote>();
-  vAdmissionTime:any
-  TemplateNoteList:any=[];
-  TemplateListfilteredOptions:Observable<string[]>
-  isTempSelected:boolean=false
-  MedicineItemForm:FormGroup
-  isItemIdSelected:boolean=false;
-  isDoseSelected:boolean=false
-  vRoute:any;
-  vFrequency:any;
-  vNurseName:any;
+  vAdmissionTime: any
+  TemplateNoteList: any = [];
+  TemplateListfilteredOptions: Observable<string[]>
+  isTempSelected: boolean = false
+  MedicineItemForm: FormGroup
+  vRoute: any;
+  vFrequency: any;
+  vNurseName: any;
 
-  
+
   vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
   vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
   vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
 
-  @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
- 
- 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('Patientlistpaginator', { static: true }) public Patientlistpaginator: MatPaginator;
+  @ViewChild('Medicinepaginator', { static: true }) public Medicinepaginator: MatPaginator;
 
   constructor(
     public _NursingStationService: NursingnoteService,
-    private accountService: AuthenticationService, 
+    private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder, 
-    public datePipe: DatePipe,   
+    private formBuilder: FormBuilder,
+    public datePipe: DatePipe,
     public toastr: ToastrService,
-    public _matDialog: MatDialog,  
-    private _formBuilder:FormBuilder
-  )
-  { 
-    if (this.advanceDataStored.storage) { 
-    this.selectedAdvanceObj = this.advanceDataStored.storage;
-    // this.PatientHeaderObj = this.advanceDataStored.storage;
-    console.log( this.selectedAdvanceObj)
-  } 
- }
+    public _matDialog: MatDialog,
+    private _formBuilder: FormBuilder
+  ) {
+    if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      // this.PatientHeaderObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj)
+    }
+  }
 
   //doctorone filter
   public pathodoctorFilterCtrl: FormControl = new FormControl();
   public filteredPathDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   private _onDestroy = new Subject<void>();
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.MedicineItemForm = this.MedicineItemform();
-    this.getTemplateNoteList(); 
-    if(this.selectedAdvanceObj){
+    this.getTemplateNoteList();
+    if (this.selectedAdvanceObj) {
       this.vRegNo = this.selectedAdvanceObj.RegNo;
       this.vPatienName = this.selectedAdvanceObj.PatientName;
       this.vDoctorname = this.selectedAdvanceObj.DoctorName;
@@ -183,19 +182,19 @@ export class NursingnoteComponent implements OnInit {
       this.vAdmissionID = this.selectedAdvanceObj.AdmissionID
       this.getNoteTablelist()
       this.getHandOverNotelist();
-    }  
-     
+    }
+
   }
   MedicineItemform() {
     return this._formBuilder.group({
       ItemId: '',
       DoseId: '',
       Route: '',
-      Frequency: '', 
-      NurseName: '',  
+      Frequency: '',
+      NurseName: '',
     });
   }
-  getSearchList(){ 
+  getSearchList() {
     var m_data = {
       "Keyword": `${this._NursingStationService.myform.get('RegID').value}%`
     }
@@ -206,17 +205,17 @@ export class NursingnoteComponent implements OnInit {
       } else {
         this.noOptionFound = false;
       }
-    }); 
+    });
   }
-  
-  getOptionTextIPObj(option) { 
-    return option && option.FirstName + " " + option.LastName; 
+
+  getOptionTextIPObj(option) {
+    return option && option.FirstName + " " + option.LastName;
   }
-  
-  getSelectedObjRegIP(obj){
+
+  getSelectedObjRegIP(obj) {
     console.log(obj)
     this.registerObj = obj;
-    this.vPatienName = obj.FirstName + ' ' +obj.MiddleName+ ' ' + obj.LastName;
+    this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
     this.vRegId = obj.RegId;
     this.vAdmissionDate = obj.AdmissionDate;
     this.vAdmissionTime = obj.AdmissionTime;
@@ -241,153 +240,152 @@ export class NursingnoteComponent implements OnInit {
     this.vAdmissionID = obj.AdmissionID
     this.getNoteTablelist()
     this.getItemlistforMedication();
-    this.getHandOverNotelist(); 
+    this.getHandOverNotelist();
+    this.getSchedulerlist();
     this.dsNursingNoteList.data = []
     this.dsHandOverNoteList.data = []
-    this.dsItemList.data = []
     this.HandOverNoteList = []
     this._NursingStationService.myform.get('TemplateName').setValue('')
-   
+
   }
   ///Template note list
-    getTemplateNoteList() {
-      var vdata={
-        "category": "NursNote"
-      }
-      this._NursingStationService.getNursingNoteCombo(vdata).subscribe(data => {
-        this.TemplateNoteList = data;
-        console.log(this.TemplateNoteList)
-        this.TemplateListfilteredOptions = this._NursingStationService.myform.get('TemplateName').valueChanges.pipe(
-          startWith(''),
-          map(value => value ? this._filterTemp(value) : this.TemplateNoteList.slice()),
-        );
-      }); 
-    } 
-    private _filterTemp(value: any): string[] {
-      if (value) {
-        const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
-        return this.TemplateNoteList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
-      }
+  getTemplateNoteList() {
+    var vdata = {
+      "category": "NursNote"
     }
-    getOptionTextTemplateName(option) { 
-      if (!option)
-        return '';
-      return option.TemplateName;
+    this._NursingStationService.getNursingNoteCombo(vdata).subscribe(data => {
+      this.TemplateNoteList = data;
+      this.TemplateListfilteredOptions = this._NursingStationService.myform.get('TemplateName').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filterTemp(value) : this.TemplateNoteList.slice()),
+      );
+    });
+  }
+  private _filterTemp(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.TemplateName ? value.TemplateName.toLowerCase() : value.toLowerCase();
+      return this.TemplateNoteList.filter(option => option.TemplateName.toLowerCase().includes(filterValue));
     }
-    getSelectedObjTemplateName(obj) {
-      console.log(obj)
-    }
- 
- onClearPatientInfo() {
-  this.vRegNo = '';
-  this.vPatienName = '';
-  this.vWardName = '';
-  this.vBedName = '';
-  this.vGender = '';
-  this.vIPDNo = '';
-  this.vDepartmentName = '';
-  this.vDoctorname = '';
-  this.vAgeyear = '';
-  this.vAgeMonth = '';
-  this.vAgeDay = '';
-  this.vAdmissionDate = '';
-  this.vRefDocName = '';
-  this.vPatientType = '';
-  this.vTariffName = '';
-  this.vCompanyName = '';
-  this.vAdmissionTime = '';
-}
+  }
+  getOptionTextTemplateName(option) {
+    if (!option)
+      return '';
+    return option.TemplateName;
+  }
+  getSelectedObjTemplateName(obj) {
+    // console.log(obj)
+  }
 
- onAdd(){
-  if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-    this.toastr.warning('Please select Patient', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
+  onClearPatientInfo() {
+    this.vRegNo = '';
+    this.vPatienName = '';
+    this.vWardName = '';
+    this.vBedName = '';
+    this.vGender = '';
+    this.vIPDNo = '';
+    this.vDepartmentName = '';
+    this.vDoctorname = '';
+    this.vAgeyear = '';
+    this.vAgeMonth = '';
+    this.vAgeDay = '';
+    this.vAdmissionDate = '';
+    this.vRefDocName = '';
+    this.vPatientType = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+    this.vAdmissionTime = '';
   }
-  if (!this._NursingStationService.myform.get('TemplateName').value) {
-    this.toastr.warning('Please select Template note', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  if(this._NursingStationService.myform.get('TemplateName').value){
-    if(!this.TemplateNoteList.some(item=> item.TemplateName == this._NursingStationService.myform.get('TemplateName').value.TemplateName)){
-      this.toastr.warning('Please select valid Note', 'Warning !', {
+
+  onAdd() {
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+    if (!this._NursingStationService.myform.get('TemplateName').value) {
+      this.toastr.warning('Please select Template note', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._NursingStationService.myform.get('TemplateName').value) {
+      if (!this.TemplateNoteList.some(item => item.TemplateName == this._NursingStationService.myform.get('TemplateName').value.TemplateName)) {
+        this.toastr.warning('Please select valid Note', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    this.vDescription = this._NursingStationService.myform.get('TemplateName').value.TemplateDesc || '';
+    this._NursingStationService.myform.get('TemplateName').setValue('');
   }
-  this.vDescription = this._NursingStationService.myform.get('TemplateName').value.TemplateDesc || ''; 
-  this._NursingStationService.myform.get('TemplateName').setValue('');
- }
 
- getNoteTablelist(){
-  var vdata={
-    'AdmId': this.vAdmissionID
+  getNoteTablelist() {
+    var vdata = {
+      'AdmId': this.vAdmissionID
+    }
+    this._NursingStationService.getNursingNotelist(vdata).subscribe(data => {
+      this.dsNursingNoteList.data = data as DocNote[];
+      //console.log(this.dsNursingNoteList.data);
+      this.dsNursingNoteList.sort = this.sort;
+      this.dsNursingNoteList.paginator = this.paginator;
+    });
   }
-  this._NursingStationService.getNursingNotelist(vdata).subscribe(data =>{
-    this.dsNursingNoteList.data = data as DocNote[];
-    console.log(this.dsNursingNoteList.data);
-    this.dsNursingNoteList.sort = this.sort;
-    this.dsNursingNoteList.paginator =this.paginator;
-  });
- }
 
- 
-  getDoctorList() { 
+
+  getDoctorList() {
     this._NursingStationService.getDoctorCombo().subscribe(data => {
       this.PathologyDoctorList = data;
-     this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
-  
-    }); 
-  } 
-  
-  onSubmit() {   
-      const currentDate = new Date();
-      const datePipe = new DatePipe('en-US');
-      const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+      this.filteredPathDoctor.next(this.PathologyDoctorList.slice());
 
-      if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-        this.toastr.warning('Please select Patient', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } 
-      if (this.vDescription == '' || this.vDescription == null || this.vDescription == undefined) {
-        this.toastr.warning('Please enter Doctor Note', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }   
-    this.isLoading = 'submit'; 
-    if(!this._NursingStationService.myform.get("NursingNoteId").value){
-      let nursingTemplateInsert={
+    });
+  }
+
+  onSubmit() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.vDescription == '' || this.vDescription == null || this.vDescription == undefined) {
+      this.toastr.warning('Please enter Doctor Note', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.isLoading = 'submit';
+    if (!this._NursingStationService.myform.get("NursingNoteId").value) {
+      let nursingTemplateInsert = {
 
         "docNoteId": 0,
-      
+
         "admID": this.vAdmissionID,
-    
+
         "tDate": formattedDate,
-    
+
         "tTime": formattedTime,
-    
-        "nursingNotes":  this._NursingStationService.myform.get("Description").value || '',  
-    
+
+        "nursingNotes": this._NursingStationService.myform.get("Description").value || '',
+
         "createdBy": this.accountService.currentUserValue.user.id,
-    
-      }  
-      let submitData = {  
+
+      }
+      let submitData = {
         "saveNursingNoteParam": nursingTemplateInsert
       };
-      console.log(submitData); 
-      this._NursingStationService.NursingNoteInsert(submitData).subscribe(response => { 
+      console.log(submitData);
+      this._NursingStationService.NursingNoteInsert(submitData).subscribe(response => {
         if (response) {
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
-          }); 
+          });
           this.getNoteTablelist();
           this.getNursingNoteprint(this.vAdmissionID);
           this.onClose();
@@ -396,74 +394,73 @@ export class NursingnoteComponent implements OnInit {
           this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
-        } 
+        }
       }, error => {
         this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      });  
+      });
     }
-   else{   
-    let updateNursingNoteParam={
+    else {
+      let updateNursingNoteParam = {
 
-      "docNoteId":this._NursingStationService.myform.get("NursingNoteId").value,
+        "docNoteId": this._NursingStationService.myform.get("NursingNoteId").value,
 
-      "admID":  this.vAdmissionID ,
+        "admID": this.vAdmissionID,
 
-      "tDate": formattedDate,
+        "tDate": formattedDate,
 
-      "tTime": formattedTime,
+        "tTime": formattedTime,
 
-      "nursingNotes":this._NursingStationService.myform.get("Description").value || '', 
+        "nursingNotes": this._NursingStationService.myform.get("Description").value || '',
 
-      "modifiedBy":this.accountService.currentUserValue.user.id  
-    }  
-    let submitData = {  
-      "updateNursingNoteParam": updateNursingNoteParam
-    };
-    console.log(submitData); 
-    this._NursingStationService.NursingNoteUpdate(submitData).subscribe(response => {
-      console.log(response) 
-      if (response) {
-        this.toastr.success('Record Updated Successfully.', 'Updated !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this.getNoteTablelist(); 
-        this.getNursingNoteprint(this.vAdmissionID);
-        this.onClose();
+        "modifiedBy": this.accountService.currentUserValue.user.id
       }
-      else {
-        this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
+      let submitData = {
+        "updateNursingNoteParam": updateNursingNoteParam
+      };
+      console.log(submitData);
+      this._NursingStationService.NursingNoteUpdate(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.getNoteTablelist();
+          this.getNursingNoteprint(this.vAdmissionID);
+          this.onClose();
+        }
+        else {
+          this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      }, error => {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      } 
-    }, error => {
-      this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
       });
-    }); 
 
-    this.IsAddFlag = false
-   }
-  } 
+      this.IsAddFlag = false
+    }
+  }
   OnEdit(row) {
     console.log(row)
     var m_data = {
       "TemplateId": row.TemplateId,
       "TemplateName": row.TemplateName,
-      "Description": row.NursingNotes, 
+      "Description": row.NursingNotes,
       "UpdatedBy": row.UpdatedBy,
-      "NursingNoteId":row.DocNoteId
+      "NursingNoteId": row.DocNoteId
     }
     this._NursingStationService.NursingNotepoppulateForm(m_data);
     this.IsAddFlag = true;
   }
-  
+
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-     this.dateTimeObj = dateTimeObj;
-  }  
+    this.dateTimeObj = dateTimeObj;
+  }
   onClose() {
     //this._NursingStationService.myform.reset();
     this._matDialog.closeAll();
@@ -476,143 +473,27 @@ export class NursingnoteComponent implements OnInit {
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning') 
+    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
     this.HandOverNoteList = []
     this.IsAddFlag = false
-  } 
-  doseList:any=[];
-  filteredOptionsItem:any;
-  filteredOptionsDosename:Observable<string[]>
+  }
 
-     //Prescription List
-  getSearchItemList() {
-    if ((this.vRegNo == '' || this.vRegNo == '0' || this.vRegNo== undefined)) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    var m_data = {
-      "ItemName": `${this.MedicineItemForm.get('ItemId').value}%`,
-      "StoreId": this.accountService.currentUserValue.user.storeId
-    }
-    console.log(m_data);
-    this._NursingStationService.getItemlist(m_data).subscribe(data => {
-      this.filteredOptionsItem = data;
-       //console.log(this.filteredOptionsItem);
-      this.filteredOptionsItem = data;
-      if (this.filteredOptionsItem.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
-    });
-  }
-  getOptionItemText(option) { 
-    if (!option) return '';
-    return option.ItemName;
-  }
-  getSelectedObjItem(obj) {
-    console.log(obj) 
-    this.vDoseId = obj.DoseName
-    this.vRoute = obj.DoseDay
-    this.vFrequency = obj.Instruction 
-    this.getDoseList();
-  }
-  vDoseId:any;
-  getDoseList() {
-    this._NursingStationService.getDoseList().subscribe((data) => {
-      this.doseList = data;
-      console.log(this.doseList)
-      this.filteredOptionsDosename = this.MedicineItemForm.get('DoseId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDosename(value) : this.doseList.slice()),
-      );
-      if(this.vDoseId){
-        const dvalue = this.doseList.filter(item=> item.DoseId == this.vDoseId)
-        this.MedicineItemForm.get('DoseId').setValue(dvalue[0])
-      }
-    });
-  }
-  private _filterDosename(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoseName ? value.DoseName.toLowerCase() : value.toLowerCase();
-      return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextDose(option) {
-    return option && option.DoseName ? option.DoseName : '';
-  }
-  Chargelist:any=[];
-  onAddMedicine() {
 
-    if ((this.MedicineItemForm.get('ItemId').value == '' || this.MedicineItemForm.get('ItemId').value == null || this.MedicineItemForm.get('ItemId').value == undefined)) {
-      this.toastr.warning('Please select Item', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+  //Prescription List 
+  Chargelist: any = [];
+  //get Scheduler list
+  getSchedulerlist() {
+    var vdata = {
+      'AdmissionId': this.vAdmissionID
     }
-    if (!this.filteredOptionsItem.find(item => item.ItemName == this.MedicineItemForm.get('ItemId').value.ItemName)) {
-      this.toastr.warning('Please select valid Item Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.MedicineItemForm.get('DoseId').value == '' || this.MedicineItemForm.get('DoseId').value == null || this.MedicineItemForm.get('DoseId').value == undefined)) {
-      this.toastr.warning('Please select Dose', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.doseList.find(item => item.DoseName == this.MedicineItemForm.get('DoseId').value.DoseName)) {
-      this.toastr.warning('Please select valid Dose Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vRoute == '' || this.vRoute == null || this.vRoute == undefined)) {
-      this.toastr.warning('Please enter a Route', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vFrequency == '' || this.vFrequency == null || this.vFrequency == undefined)) {
-      this.toastr.warning('Please enter a Frequency', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vNurseName == '' || this.vNurseName == null || this.vNurseName == undefined)) {
-      this.toastr.warning('Please enter a NurseName', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.MedicineItemForm.get('ItemId').value.ItemId)
-    if (!iscekDuplicate) {
-      //debugger
-      let Qty = this.MedicineItemForm.get('DoseId').value.DoseQtyPerDay || 0
-      this.Chargelist.push(
-        { 
-          DrugId: this.MedicineItemForm.get('ItemId').value.ItemId || 0,
-          DrugName: this.MedicineItemForm.get('ItemId').value.ItemName || '',
-          DoseId: this.MedicineItemForm.get('DoseId').value.DoseId || 0, 
-          DoseName: this.MedicineItemForm.get('DoseId').value.DoseName || '',
-          Route: this.MedicineItemForm.get('Route').value || '',
-          Frequency: this.MedicineItemForm.get('Frequency').value || 0,  
-          NurseName: this.MedicineItemForm.get('NurseName').value || '', 
-        });
-      this.dsItemList.data = this.Chargelist
-      console.log(this.dsItemList.data);
-    } else {
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
-    this.MedicineItemForm.reset(); 
-    this.itemid.nativeElement.focus();
+    this._NursingStationService.getSchedulerlist(vdata).subscribe(data => {
+      this.dsItemList.data = data as MedicineItemList[];
+      this.Chargelist = data as MedicineItemList[];
+      this.dsItemList.sort = this.sort
+      this.dsItemList.paginator = this.Medicinepaginator
+    })
   }
+
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
@@ -624,239 +505,217 @@ export class NursingnoteComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
-    @ViewChild('itemid') itemid: ElementRef;
-    @ViewChild('dosename') dosename: ElementRef;
-    @ViewChild('Day') Day: ElementRef;
-    @ViewChild('Instruction') Instruction: ElementRef;
-    @ViewChild('NurseName') NurseName: ElementRef;
-    @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;  
-
-    onEnterItem(event): void {
-      if (event.which === 13) {
-        this.dosename.nativeElement.focus();
-      }
-    }
-    public onEnterDose(event): void {
-      if (event.which === 13) {
-        this.Day.nativeElement.focus();
-      }
-    }
-    public onEnterqty(event): void {
-      if (event.which === 13) {
-        this.Instruction.nativeElement.focus();
-      }
-    }
-  
-    public onEnterremark(event): void {
-      if (event.which === 13) {
-        this.addbutton.focus;
-        this.NurseName.nativeElement.focus();
-      }
-    } 
-    keyPressAlphanumeric(event) {
-      var inp = String.fromCharCode(event.keyCode);
-      if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-    keyPressCharater(event) {
-      var inp = String.fromCharCode(event.keyCode);
-      if (/^\d*\.?\d*$/.test(inp)) {
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-    ///[^a-zA-Z0-9]/
-    keyPressOk(event) {
-      var inp = String.fromCharCode(event.keyCode);
-      if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-  
-    //Patient HandOver 
-    HandOverNoteList:any=[];
-    OnAddHand() {
-      const currentDate = new Date();
-      const datePipe = new DatePipe('en-US');
-      const formattedTime = datePipe.transform(currentDate, 'hh:mm');
-      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-      
-      if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-        this.toastr.warning('Please select Patient', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } 
-      this.HandOverNoteList.push(
-        {
-          VDate:formattedDate,
-          MTime:formattedTime,
-          ShiftInfo: this._NursingStationService.PatientHandOverForm.get('HandOverType').value,
-          PatHand_I: this._NursingStationService.PatientHandOverForm.get('staffName').value,
-          PatHand_S: this._NursingStationService.PatientHandOverForm.get('Stable').value,
-          PatHand_B: this._NursingStationService.PatientHandOverForm.get('SYMPTOMS').value,
-          PatHand_A: this._NursingStationService.PatientHandOverForm.get('Assessment').value,
-          PatHand_R: this._NursingStationService.PatientHandOverForm.get('Instruction').value ,
-          Comments :this._NursingStationService.PatientHandOverForm.get('Comments').value || '',
-          CreatedBy:this.accountService.currentUserValue.user.userName || ''
-        }
-      )
-      this.onSubmitHandOver();
-     // this.dsHandOverNoteList.data = this.HandOverNoteList   
-     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
-     this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
-     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
-     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
-     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-     this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
-    }
-    deleteHandOverTableRow(element) { 
-      let index = this.HandOverNoteList.indexOf(element);
-      if (index >= 0) {
-        this.HandOverNoteList.splice(index, 1);
-        this.dsHandOverNoteList.data = [];
-        this.dsHandOverNoteList.data = this.HandOverNoteList;
-      }
-      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+  SelectedChecked(contact, event) {
+    if (event.checked) {
+      this.toastr.success('The selected dose/item has been successfully administered to the patient.', 'successfully !', {
         toastClass: 'tostr-tost custom-toast-success',
-      });  
-  }
-  OnHandOverEdit(row) {
-    console.log(row)  
-    var m_data = {
-      "HandOverType": row.ShiftInfo,
-      "staffName": row.PatHand_I,
-      "SYMPTOMS": row.PatHand_B, 
-      "Instruction": row.PatHand_R,
-      "Stable":row.PatHand_S,
-      "Assessment":row.PatHand_A,
-      "PatHandId":row.PatHandId, 
-      "Comments":row.Comments
-    } 
-    this._NursingStationService.HandOverNotepoppulateForm(m_data);
-    if(row.ShiftInfo == 'Night'){
-      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Night')
-    }else if(row.ShiftInfo == 'Morning'){
-      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
-    }else{
-      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Evening')
+      });
     }
   }
-  onSubmitHandOver() {  
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  ///[^a-zA-Z0-9]/
+  keyPressOk(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  //Patient HandOver 
+  HandOverNoteList: any = [];
+  OnAddHand() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'hh:mm');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
+    }
+    this.HandOverNoteList.push(
+      {
+        VDate: formattedDate,
+        MTime: formattedTime,
+        ShiftInfo: this._NursingStationService.PatientHandOverForm.get('HandOverType').value,
+        PatHand_I: this._NursingStationService.PatientHandOverForm.get('staffName').value,
+        PatHand_S: this._NursingStationService.PatientHandOverForm.get('Stable').value,
+        PatHand_B: this._NursingStationService.PatientHandOverForm.get('SYMPTOMS').value,
+        PatHand_A: this._NursingStationService.PatientHandOverForm.get('Assessment').value,
+        PatHand_R: this._NursingStationService.PatientHandOverForm.get('Instruction').value,
+        Comments: this._NursingStationService.PatientHandOverForm.get('Comments').value || '',
+        CreatedBy: this.accountService.currentUserValue.user.userName || ''
+      }
+    )
+    this.onSubmitHandOver();
+    // this.dsHandOverNoteList.data = this.HandOverNoteList   
+    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
+  }
+  deleteHandOverTableRow(element) {
+    let index = this.HandOverNoteList.indexOf(element);
+    if (index >= 0) {
+      this.HandOverNoteList.splice(index, 1);
+      this.dsHandOverNoteList.data = [];
+      this.dsHandOverNoteList.data = this.HandOverNoteList;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+  OnHandOverEdit(row) {
+    console.log(row)
+    var m_data = {
+      "HandOverType": row.ShiftInfo,
+      "staffName": row.PatHand_I,
+      "SYMPTOMS": row.PatHand_B,
+      "Instruction": row.PatHand_R,
+      "Stable": row.PatHand_S,
+      "Assessment": row.PatHand_A,
+      "PatHandId": row.PatHandId,
+      "Comments": row.Comments
+    }
+    this._NursingStationService.HandOverNotepoppulateForm(m_data);
+    if (row.ShiftInfo == 'Night') {
+      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Night')
+    } else if (row.ShiftInfo == 'Morning') {
+      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
+    } else {
+      this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Evening')
+    }
+  }
+  onSubmitHandOver() {
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     // if (!this.dsHandOverNoteList.data.length) {
     //   this.toastr.warning('Please add Patient HandOver Note', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',
     //   });
     //   return;
     // }
-  
-  this.isLoading = 'submit'; 
-  if(!this._NursingStationService.PatientHandOverForm.get('PatHandId').value){  
-    let saveTNursingPatientHandoverParam 
-    this.dsHandOverNoteList.data.forEach(element=>{
-      saveTNursingPatientHandoverParam={
-        "patHandId": 0,
-        "admID": this.vAdmissionID,
-        "tDate": element.VDate,
-        "tTime": element.MTime,
-        "shiftInfo": element.ShiftInfo,
-        "patHand_I": element.PatHand_I,
-        "patHand_S": element.PatHand_S,
-        "patHand_B": element.PatHand_B,
-        "patHand_A": element.PatHand_A,
-        "patHand_R": element.PatHand_R, 
-        "comments": element.Comments || '',
-        "createdBy": this.accountService.currentUserValue.user.id, 
-      }
-    })    
-    let submitData = {  
-      "saveTNursingPatientHandoverParam": saveTNursingPatientHandoverParam
-    };
-    console.log(submitData); 
-    this._NursingStationService.HandOverInsert(submitData).subscribe(response => { 
-      if (response) {
-        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });  
-        this.getHandOverNotelist();
-        this.getPatientHandprint(this.vAdmissionID)
-        this.onClose() 
-      }
-      else {
-        this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+
+    this.isLoading = 'submit';
+    if (!this._NursingStationService.PatientHandOverForm.get('PatHandId').value) {
+      let saveTNursingPatientHandoverParam
+      this.dsHandOverNoteList.data.forEach(element => {
+        saveTNursingPatientHandoverParam = {
+          "patHandId": 0,
+          "admID": this.vAdmissionID,
+          "tDate": element.VDate,
+          "tTime": element.MTime,
+          "shiftInfo": element.ShiftInfo,
+          "patHand_I": element.PatHand_I,
+          "patHand_S": element.PatHand_S,
+          "patHand_B": element.PatHand_B,
+          "patHand_A": element.PatHand_A,
+          "patHand_R": element.PatHand_R,
+          "comments": element.Comments || '',
+          "createdBy": this.accountService.currentUserValue.user.id,
+        }
+      })
+      let submitData = {
+        "saveTNursingPatientHandoverParam": saveTNursingPatientHandoverParam
+      };
+      console.log(submitData);
+      this._NursingStationService.HandOverInsert(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.getHandOverNotelist();
+          this.getPatientHandprint(this.vAdmissionID)
+          this.onClose()
+        }
+        else {
+          this.toastr.error('Record Data not saved !, Please check error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      }, error => {
+        this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
-      } 
-    }, error => {
-      this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
       });
-    }); 
-  }
-  else{ 
-    let updateTNursingPatientHandoverParam 
-    this.dsHandOverNoteList.data.forEach(element=>{
-      updateTNursingPatientHandoverParam={
-        "patHandId": this._NursingStationService.PatientHandOverForm.get('PatHandId').value,
-        "admID": this.vAdmissionID,
-        "tDate": element.VDate,
-        "tTime": element.MTime,
-        "shiftInfo": element.ShiftInfo,
-        "patHand_I": element.PatHand_I,
-        "patHand_S": element.PatHand_S,
-        "patHand_B": element.PatHand_B,
-        "patHand_A": element.PatHand_A,
-        "patHand_R": element.PatHand_R, 
-        "comments": element.Comments || '',
-        "modifiedBy": this.accountService.currentUserValue.user.id, 
-      }
-    })  
-  let submitData = {  
-    "updateTNursingPatientHandoverParam": updateTNursingPatientHandoverParam
-  };
-  console.log(submitData); 
-  this._NursingStationService.HandOverUpdate(submitData).subscribe(response => { 
-    if (response) {
-      this.toastr.success('Record Updated Successfully.', 'Updated !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
-      this.getHandOverNotelist(); 
-      this.getPatientHandprint(this.vAdmissionID)
-      this.onClose()  
     }
     else {
-      this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
+      let updateTNursingPatientHandoverParam
+      this.dsHandOverNoteList.data.forEach(element => {
+        updateTNursingPatientHandoverParam = {
+          "patHandId": this._NursingStationService.PatientHandOverForm.get('PatHandId').value,
+          "admID": this.vAdmissionID,
+          "tDate": element.VDate,
+          "tTime": element.MTime,
+          "shiftInfo": element.ShiftInfo,
+          "patHand_I": element.PatHand_I,
+          "patHand_S": element.PatHand_S,
+          "patHand_B": element.PatHand_B,
+          "patHand_A": element.PatHand_A,
+          "patHand_R": element.PatHand_R,
+          "comments": element.Comments || '',
+          "modifiedBy": this.accountService.currentUserValue.user.id,
+        }
+      })
+      let submitData = {
+        "updateTNursingPatientHandoverParam": updateTNursingPatientHandoverParam
+      };
+      console.log(submitData);
+      this._NursingStationService.HandOverUpdate(submitData).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Updated Successfully.', 'Updated !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.getHandOverNotelist();
+          this.getPatientHandprint(this.vAdmissionID)
+          this.onClose()
+        }
+        else {
+          this.toastr.error('Record Data not Updated !, Please check error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      }, error => {
+        this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
       });
-    } 
-  }, error => {
-    this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {
-      toastClass: 'tostr-tost custom-toast-error',
-    });
-  }); 
-  }
-  this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
-  this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
-  this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
-  this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
-  this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-  this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
-  this.dsHandOverNoteList.data = [];
+    }
+    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+    this._NursingStationService.PatientHandOverForm.get('HandOverType').setValue('Morning')
+    this.dsHandOverNoteList.data = [];
   }
   getHandOverNotelist() {
     var vdata = {
@@ -867,34 +726,33 @@ export class NursingnoteComponent implements OnInit {
       this.HandOverNoteList = data as DocNote[];
       this.dsHandOverNoteList.sort = this.sort
       this.dsHandOverNoteList.paginator = this.paginator
-      console.log(this.dsHandOverNoteList.data); 
     });
   }
-  
-    NewTemplate() {
-      const dialogRef = this._matDialog.open(CreateTemplateComponent,
-        {
-          maxWidth: "75vw",
-          height: '85%',
-          width: '100%', 
-        });
-      dialogRef.afterClosed().subscribe(result => { 
-        this.getTemplateNoteList();
-      });
-    }
 
-    //Medication chart
-    getItemlistforMedication(){
-      var vdata={
-        'AdmId': this.vAdmissionID
-      }
-      this._NursingStationService.getItemlistforMedication(vdata).subscribe(data =>{
-        this.dsPatientItemList.data = data as MedicineItemList[];
-        console.log(this.dsPatientItemList.data);
-        this.dsPatientItemList.sort = this.sort;
-        this.dsPatientItemList.paginator =this.paginator;
+  NewTemplate() {
+    const dialogRef = this._matDialog.open(CreateTemplateComponent,
+      {
+        maxWidth: "75vw",
+        height: '85%',
+        width: '100%',
       });
-     }
+    dialogRef.afterClosed().subscribe(result => {
+      this.getTemplateNoteList();
+    });
+  }
+
+  //Medication chart
+  getItemlistforMedication() {
+    var vdata = {
+      'AdmId': this.vAdmissionID
+    }
+    this._NursingStationService.getItemlistforMedication(vdata).subscribe(data => {
+      this.dsPatientItemList.data = data as MedicineItemList[];
+      console.log(this.dsPatientItemList.data);
+      this.dsPatientItemList.sort = this.sort;
+      this.dsPatientItemList.paginator = this.Patientlistpaginator;
+    });
+  }
 
   getSchedular(contact) {
     const dialogRef = this._matDialog.open(MedicineSchedulerComponent,
@@ -908,10 +766,11 @@ export class NursingnoteComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.getItemlistforMedication();
+      this.getSchedulerlist();
     });
-  } 
+  }
 
-  getNursingNoteprint(AdmID) { 
+  getNursingNoteprint(AdmID) {
     setTimeout(() => {
       this._NursingStationService.NursingNoteReport(
         AdmID
@@ -933,7 +792,7 @@ export class NursingnoteComponent implements OnInit {
     }, 100);
 
   }
-  getPatientHandprint(AdmID) { 
+  getPatientHandprint(AdmID) {
     setTimeout(() => {
       this._NursingStationService.getPatientHandprint(
         AdmID
@@ -956,42 +815,42 @@ export class NursingnoteComponent implements OnInit {
 
   }
 }
- 
+
 export class DocNote {
 
-  AdmID : number;
-  TDate : Date;
-  TTime : Date;
-  DoctorsNotes : any;
-  IsAddedBy : any;
-  DoctNoteId  : any;
-  VDate:any;
+  AdmID: number;
+  TDate: Date;
+  TTime: Date;
+  DoctorsNotes: any;
+  IsAddedBy: any;
+  DoctNoteId: any;
+  VDate: any;
   MTime: Date;
   ShiftInfo: any;
   PatHand_I: any;
   PatHand_S: any;
-  PatHand_B:any;
-  PatHand_A:any;
-  PatHand_R:any; 
-  Comments:any;
- 
+  PatHand_B: any;
+  PatHand_A: any;
+  PatHand_R: any;
+  Comments: any;
+
   constructor(DocNote) {
- 
+
     this.AdmID = DocNote.AdmID || 0;
     this.TDate = DocNote.TDate || '';
     this.TTime = DocNote.TTime || '';
     this.DoctorsNotes = DocNote.DoctorsNotes || '';
     this.IsAddedBy = DocNote.IsAddedBy || 0;
-   this.DoctNoteId =DocNote.DoctNoteId  || 0;
-   this.VDate = DocNote.VDate || 0;
-   this.MTime = DocNote.MTime || 0;
-   this.ShiftInfo = DocNote.ShiftInfo || 0;
-   this.PatHand_I = DocNote.PatHand_I || 0;
-   this.PatHand_S = DocNote.PatHand_S || 0;
-   this.PatHand_B = DocNote.PatHand_B || 0;
-   this.PatHand_A = DocNote.PatHand_A || 0;
-   this.PatHand_R = DocNote.PatHand_R || 0; 
-  } 
+    this.DoctNoteId = DocNote.DoctNoteId || 0;
+    this.VDate = DocNote.VDate || 0;
+    this.MTime = DocNote.MTime || 0;
+    this.ShiftInfo = DocNote.ShiftInfo || 0;
+    this.PatHand_I = DocNote.PatHand_I || 0;
+    this.PatHand_S = DocNote.PatHand_S || 0;
+    this.PatHand_B = DocNote.PatHand_B || 0;
+    this.PatHand_A = DocNote.PatHand_A || 0;
+    this.PatHand_R = DocNote.PatHand_R || 0;
+  }
 }
 
 export class MedicineItemList {
@@ -1004,8 +863,8 @@ export class MedicineItemList {
   NurseName: number;
   DoseName2: any;
   Day2: number;
-  Instruction: any; 
-  DoseDateTime:any;
+  Instruction: any;
+  DoseDateTime: any;
 
   /**
   * Constructor
@@ -1016,11 +875,11 @@ export class MedicineItemList {
     {
       this.ItemId = MedicineItemList.ItemId || 0;
       this.ItemID = MedicineItemList.ItemID || 0;
-      this.ItemName = MedicineItemList.ItemName || ""; 
+      this.ItemName = MedicineItemList.ItemName || "";
       this.Frequency = MedicineItemList.Frequency || '';
       this.DoseName = MedicineItemList.DoseName || '';
-      this.Route = MedicineItemList.Route || 0; 
-      this.NurseName = MedicineItemList.NurseName || 0; 
+      this.Route = MedicineItemList.Route || 0;
+      this.NurseName = MedicineItemList.NurseName || 0;
 
     }
   }

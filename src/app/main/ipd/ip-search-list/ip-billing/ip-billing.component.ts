@@ -105,6 +105,7 @@ export class IPBillingComponent implements OnInit {
     'Qty',
     'TotalAmt', 
     'DiscAmt',
+    'DoctorName',
     'NetAmount', 
    // 'DoctorName',  
   ];
@@ -433,8 +434,7 @@ ServiceList:any=[];
       SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
       TariffId: this.selectedAdvanceObj.TariffId,
       ClassId: this.Serviceform.get('ChargeClass').value.ClassId || 0
-    };
-    console.log(m_data)
+    }; 
     if (this.Serviceform.get('SrvcName').value.length >= 1) {
       this._IpSearchListService.getBillingServiceList(m_data).subscribe(data => {
         this.filteredOptions = data;
@@ -508,10 +508,10 @@ ServiceList:any=[];
       var vdata={
         "Keywords": DoctorName + "%" || "%"
       } 
-      console.log(vdata)
+      //console.log(vdata)
       this._IpSearchListService.getAdmittedDoctorCombo(vdata).subscribe(data => { 
         this.filteredOptionsDoctors = data; 
-        console.log(this.filteredOptionsDoctors)  
+       // console.log(this.filteredOptionsDoctors)  
           if (this.filteredOptionsDoctors.length == 0) {
             this.noOptionFound = true;
           } else {
@@ -619,8 +619,7 @@ ServiceList:any=[];
         "packageId": 0,
         "chargeTime":this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         "classId":this.Serviceform.get('ChargeClass').value.ClassId,    // this.selectedAdvanceObj.ClassId, 
-      } 
- debugger
+      }  
       let PackageData =[]
       if(this.IsPackage == '1'){ 
        
@@ -629,7 +628,7 @@ ServiceList:any=[];
             "chargesDate": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
             "opD_IPD_Type": 1,
             "opD_IPD_Id": this.selectedAdvanceObj.AdmissionID,
-            "serviceId": element.PackageServiceId,
+            "serviceId": element.ServiceId,
             "price": element.Price || 0,
             "qty": element.Qty || 0,
             "totalAmt": element.TotalAmt || 0,
@@ -651,10 +650,10 @@ ServiceList:any=[];
             "isPackage": 1,
             "packageMainChargeID": 0,
             "isSelfOrCompanyService": false,
-            "packageId": element.ServiceId,  
+            "packageId": element.PackageServiceId,  
             "ChargeTime": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
           }  
-          console.log(Vdata)
+         // console.log(Vdata)
           PackageData.push(Vdata)
         })  
     } 
@@ -665,8 +664,7 @@ ServiceList:any=[];
       console.log(submitData)
       this._IpSearchListService.InsertIPAddCharges(submitData).subscribe(data => {
         if (data) {
-          this.getChargesList(); 
-          this.getpackagedetList();
+          this.getChargesList();  
         }
       });
       this.onClearServiceAddList()
@@ -697,13 +695,13 @@ ServiceList:any=[];
       var vdata = {
         'ServiceId': this.serviceId || 0
       }
-      console.log(vdata);
+      //console.log(vdata);
       this._IpSearchListService.getpackagedetList(vdata).subscribe((data) => {
         this.PackageDatasource.data = data as ChargesList[];
         this.PackageDatasource.data.forEach(element =>{
           this.PacakgeList.push(
             { 
-              ServiceId: element.ServiceId,
+              ServiceId: element.PackageServiceId,
               ServiceName: element.ServiceName,
               Price: element.Price || 0,
               Qty: 1,
@@ -713,21 +711,20 @@ ServiceList:any=[];
               IsPathology: element.IsPathology,
               IsRadiology: element.IsRadiology, 
               PackageId:element.PackageId,
-              PackageServiceId:element.PackageServiceId,
+              PackageServiceId:element.ServiceId,
               PacakgeServiceName:element.PacakgeServiceName,
+              DoctorName:'',
+              DoctorId:0
             })
         })
         this.PackageDatasource.data = this.PacakgeList
-        console.log(this.PacakgeList);
-       // console.log(this.PackageDatasource.data);
+        console.log(this.PacakgeList); 
       });
     }
  
     //add charge Table Cal
    
-    getQtytable(element,Qty) {
-      //console.log(Qty)
-      //console.log(element)
+    getQtytable(element,Qty) { 
       let discAmt = 0; 
       let discPer = 0;
       discPer = element.ConcessionPercentage 
@@ -743,9 +740,7 @@ ServiceList:any=[];
         element.NetAmount =  0 ;
       } 
     }
-    getPricetable(element,Price) {
-      // console.log(Price)
-      // console.log(element)
+    getPricetable(element,Price) { 
       let discAmt = 0; 
       let discPer = 0;
       element.Price = Price
@@ -764,10 +759,8 @@ ServiceList:any=[];
     }
     QtyEditable:boolean=false;
     PriceEditable:boolean=false;
-      QtyenableEditing(row:Bill) {
-        console.log(row)
-        row.QtyEditable = true; 
-        
+      QtyenableEditing(row:Bill) { 
+        row.QtyEditable = true;  
       }
      QtydisableEditing(row:Bill) {
         row.QtyEditable = false; 
@@ -775,20 +768,18 @@ ServiceList:any=[];
       } 
       PriceenableEditing(row:Bill) {
         row.PriceEditable = true;  
-        
       }
      PricedisableEditing(row:Bill) {
         row.PriceEditable = false; 
         this.getChargesList();
       }
-  OnSaveEditedValue(element) { 
-    console.log(element)
+  OnSaveEditedValue(element) {  
     let Query; 
     Query = "update addcharges set Qty=" +element.Qty+",Price=" +element.Price+ 
     ",TotalAmt="+element.TotalAmt+",ConcessionAmount="+element.ConcessionAmount+ 
      ",NetAmount="+element.NetAmount+"where ChargesId="+element.ChargesId;
      
-    console.log(Query)
+   // console.log(Query)
     this._IpSearchListService.UpdateipbillService(Query).subscribe(data => {
       if (data) { 
         this.toastr.success('Record Successfuly Updated','Updated !',{
@@ -800,8 +791,7 @@ ServiceList:any=[];
           toastClass: 'tostr-tost custom-toast-error',
         })
       }
-    });
-
+    }); 
   }
   //Previouse bill list
   getPrevBillList() {
@@ -839,7 +829,7 @@ ServiceList:any=[];
   getPharmacyAmount() {
     let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.AdmissionId
     this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
-      console.log(data)
+      //console.log(data)
       this.PharmacyAmont = data[0].PhBillCredit;
     })
   }
@@ -881,11 +871,11 @@ ServiceList:any=[];
   getRtrvPackageList() {  
      this.isLoadingStr = 'loading';
      let Query = "Select *  from lvwAddCharges where IsGenerated=0 and IsPackage=1  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
-     console.log(Query); 
+    // console.log(Query); 
      this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
        this.PackageDatasource.data = data as ChargesList[];
       // this.PacakgeList = data as ChargesList[];
-       console.log(this.PacakgeList)   
+      // console.log(this.PacakgeList)   
 
        this.dataSource.data.forEach(element=>{ 
        this.newlist =  this.PackageDatasource.data.filter(item=> item.PackageId  == element.ServiceId)
@@ -905,6 +895,8 @@ ServiceList:any=[];
             PackageId: obj.PackageId || 0,
             PackageServiceId: element.ServiceId || 0, 
             PacakgeServiceName:element.ServiceName || '',
+            DoctorName:'',
+            DoctorId:0
           }); 
        })     
        })
@@ -958,7 +950,7 @@ ServiceList:any=[];
   //nursing Service List added
  
   AddList(m) {
-    console.log(m)   
+   // console.log(m)   
     var m_data = { 
       "opipid": m.OP_IP_ID,
       "serviceId":  m.ServiceId,
@@ -968,12 +960,12 @@ ServiceList:any=[];
       "reqDetId": m.ReqDetId , 
       "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy") || '01/01/1900', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
     }
-    console.log(m_data);
+   // console.log(m_data);
     let submitData = { 
       "labRequestCharges":m_data
     };  
     this._IpSearchListService.InsertIPLabReqCharges(submitData).subscribe(data => {
-      console.log(data)
+       
       if (data) { 
         Swal.fire('Success !', 'ChargeList Row Added Successfully', 'success'); 
         this.getChargesList();
@@ -1389,7 +1381,7 @@ CalculateAdminCharge(){
       };
       // console.log(m_data)
       this.advanceDataStored.storage = new AdvanceDetailObj(m_data);
-      console.log('this.interimArray==', this.interimArray, m_data);
+      //console.log('this.interimArray==', this.interimArray, m_data);
       const dialogRef =  this._matDialog.open(InterimBillComponent,
         {
           maxWidth: "85vw",
@@ -1442,10 +1434,11 @@ CalculateAdminCharge(){
         console.log(submitData);
         this._IpSearchListService.Addchargescancle(submitData).subscribe(response => {
           if (response) {
+            debugger
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
               if (contact.IsPackageMaster == '1' && contact.ServiceId) {
                 this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId !== contact.ServiceId)
-                console.log(this.PacakgeList)
+                //console.log(this.PacakgeList)
                 this.PackageDatasource.data = this.PacakgeList;
               }
               this.getChargesList();
@@ -1464,20 +1457,54 @@ CalculateAdminCharge(){
    EditedPackageService:any=[];
    OriginalPackageService:any = [];
    TotalPrice:any = 0; 
-   
+   getPackageDet(Id){ 
+      var vdata = {
+       'ChargesId': Id
+      } 
+      this._IpSearchListService.getpackageEditList(vdata).subscribe((data) => {
+        this.PackageDatasource.data = data as ChargesList[]; 
+        console.log(this.PackageDatasource.data )
+
+        this.PackageDatasource.data.forEach(element =>{ 
+          this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId !== element.ServiceId) 
+        });
+        
+        this.PackageDatasource.data.forEach(element =>{  
+          this.PacakgeList.push(
+            { 
+              ServiceId: element.PackageServiceId,
+              ServiceName: element.ServiceName,
+              Price: element.Price || 0,
+              Qty: element.Qty,
+              TotalAmt:  element.TotalAmt,
+              ConcessionAmt:  element.ConcessionAmount,  
+              NetAmount: element.NetAmount,
+              IsPathology: element.IsPathology,
+              IsRadiology: element.IsRadiology, 
+              PackageId:element.PackageId,
+              PackageServiceId:element.ServiceId ,
+              PacakgeServiceName:element.PacakgeServiceName,
+              DoctorName:element.DoctorName || '',
+              DoctorId:element.DoctorId || 0
+            })
+        })
+        this.PackageDatasource.data = this.PacakgeList
+        console.log(this.PacakgeList); 
+      }); 
+   }
  getPacakgeDetail(contact){
-   let deleteservice;
-   deleteservice = this.PackageDatasource.data
-   this.PackageDatasource.data.forEach(element => {
-     deleteservice = deleteservice.filter(item => item.ServiceId !== element.ServiceId)
-     console.log(deleteservice)   
-     this.PackageDatasource.data =  deleteservice
+  //  let deleteservice;
+  //  deleteservice = this.PackageDatasource.data
+  //  this.PackageDatasource.data.forEach(element => {
+  //    deleteservice = deleteservice.filter(item => item.ServiceId !== element.ServiceId)
+  //    //console.log(deleteservice)   
+  //    this.PackageDatasource.data =  deleteservice
   
-     this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
-     this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
-     console.log(this.OriginalPackageService)
-     console.log(this.EditedPackageService)
-   });
+    //  this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+    //  this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+    //  console.log(this.OriginalPackageService)
+    //  console.log(this.EditedPackageService)
+  //  });
  
    const dialogRef = this._matDialog.open(OpPackageBillInfoComponent,
      {
@@ -1489,16 +1516,15 @@ CalculateAdminCharge(){
          FormName:'IPD Package'
        }
      });
-   dialogRef.afterClosed().subscribe(result => {
-     debugger
+   dialogRef.afterClosed().subscribe(result => { 
      console.log('The dialog was closed - Insert Action', result);
      if (result) {
- 
-       this.PackageDatasource.data = result
-       console.log( this.PackageDatasource.data)   
-       this.PackageDatasource.data.forEach(element => {
-         this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId  !== element.ServiceId)
-         console.log(this.PacakgeList)   
+      this.getPackageDet(result)
+      //  this.PackageDatasource.data = result
+       //console.log( this.PackageDatasource.data)   
+      //  this.PackageDatasource.data.forEach(element => {
+      //    this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId  !== element.ServiceId)
+         //console.log(this.PacakgeList)   
         //  if(element.BillwiseTotalAmt > 0){
         //    this.TotalPrice = element.BillwiseTotalAmt;  
         //    console.log(this.TotalPrice) 
@@ -1511,27 +1537,27 @@ CalculateAdminCharge(){
         //  this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
         //  console.log(this.OriginalPackageService)
         //  console.log(this.EditedPackageService)
-       });
+       //});
  
-       this.PackageDatasource.data.forEach(element => {
-         this.PacakgeList.push(
-           {  
-             ServiceId: element.ServiceId,
-             ServiceName: element.ServiceName,
-             Price: element.Price || 0,
-             Qty: element.Qty || 1,
-             TotalAmt: element.TotalAmt || 0,
-             ConcessionPercentage: element.DiscPer || 0,
-             DiscAmt: element.DiscAmt || 0,
-             NetAmount: element.NetAmount || 0,
-             IsPathology: element.IsPathology || 0,
-             IsRadiology: element.IsRadiology || 0,
-             PackageId: element.PackageId || 0,
-             PackageServiceId: element.PackageServiceId || 0, 
-             PacakgeServiceName:element.PacakgeServiceName || '',
-           });
-         this.PackageDatasource.data = this.PacakgeList;
-       });
+      //  this.PackageDatasource.data.forEach(element => {
+      //    this.PacakgeList.push(
+      //      {  
+      //        ServiceId: element.ServiceId,
+      //        ServiceName: element.ServiceName,
+      //        Price: element.Price || 0,
+      //        Qty: element.Qty || 1,
+      //        TotalAmt: element.TotalAmt || 0,
+      //        ConcessionPercentage: element.DiscPer || 0,
+      //        DiscAmt: element.DiscAmt || 0,
+      //        NetAmount: element.NetAmount || 0,
+      //        IsPathology: element.IsPathology || 0,
+      //        IsRadiology: element.IsRadiology || 0,
+      //        PackageId: element.PackageId || 0,
+      //        PackageServiceId: element.PackageServiceId || 0, 
+      //        PacakgeServiceName:element.PacakgeServiceName || '',
+      //      });
+      //    this.PackageDatasource.data = this.PacakgeList;
+      //  });
   
         //  if(this.EditedPackageService.length){
         //    this.EditedPackageService.forEach(element => {
@@ -1563,14 +1589,14 @@ CalculateAdminCharge(){
         //    });
         //  } 
          
-         this.TotalPrice = 0;
-     }
+        // this.TotalPrice = 0;
+     } 
+     this.getChargesList();  
    })
-   this.getChargesList(); 
-   this.getpackagedetList();
+
  }
   showAllFilter(event) {
-    console.log(event);
+    //console.log(event);
     if (event.checked == true)
       // this.isFilteredDateDisabled = event.value;
       this.isFilteredDateDisabled = true;
@@ -2088,9 +2114,7 @@ CalculateAdminCharge(){
         });
     });
   }
-  viewgetBillReportPdf(BillNo) {
-    debugger
-    console.log(BillNo)
+  viewgetBillReportPdf(BillNo) { 
     this._IpSearchListService.getIpFinalBillReceiptgroupwise(
       BillNo
     ).subscribe(res => {
@@ -2107,9 +2131,7 @@ CalculateAdminCharge(){
     });
   }
 
-  viewgetDraftBillclassPdf(BillNo) {
-    debugger
-    console.log(BillNo)
+  viewgetDraftBillclassPdf(BillNo) { 
     this._IpSearchListService.getIpDraftBillclasswise(
       BillNo
     ).subscribe(res => {
@@ -2212,8 +2234,7 @@ CalculateAdminCharge(){
   }
 
 
-  getPreBilldet(contact) {
-    //console.log(contact)
+  getPreBilldet(contact) { 
     const dialogRef = this._matDialog.open(PrebillDetailsComponent,
       {
         maxWidth: "100%",

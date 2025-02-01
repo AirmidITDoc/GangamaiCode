@@ -1209,6 +1209,10 @@ getIpDischargeReceipt(AdmId){
  getIpDischargesummaryReceipt(AdmissionID){
   return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
  }
+ viewgetDischargesummaryPathologyReportPdf(AdmissionID){
+  return this._httpClient.get("Pathology/View-PathologyReport?AdmissionID=" + AdmissionID)
+ }
+
 
  getIpDischargesummaryTempReceipt(AdmissionID){
   return this._httpClient.get("InPatient/view-NewDischargSummaryTemplate?AdmissionID=" + AdmissionID)
@@ -1259,6 +1263,12 @@ public getDoseList() {
       this._loaderService.show();
   }
     return this._httpClient.post("Generic/GetByProc?procName=m_RtrvConfig_initiateDischarge", {})
+  }
+  public getpackageEditList(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PackageDetails_List", employee)
   }
 }
 

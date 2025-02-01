@@ -894,6 +894,15 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="DoctorName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    DoctorName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.DoctorName || '-'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetPay Amt
                                 </mat-header-cell>

@@ -192,9 +192,9 @@ export class OpPackageBillInfoComponent implements OnInit {
 
   //package list 
   getpackagedetList(obj) {
-    this.PacakgeList = [];
+    this.PacakgeList = []; 
     var vdata = {
-      'ServiceId': obj.ServiceId
+      'ChargesId': obj.ChargesId
     }
     console.log(vdata);
     this._oPSearhlistService.getpackagedetList(vdata).subscribe((data) => {
@@ -295,8 +295,7 @@ export class OpPackageBillInfoComponent implements OnInit {
     this.PackageForm.reset();
   }
   // Service Add 
-  onSaveAddCharges() {
-    debugger
+  onSaveAddCharges() { 
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
@@ -365,7 +364,7 @@ export class OpPackageBillInfoComponent implements OnInit {
           "isSelfOrCompanyService": false,
           "packageId": this.registerObj.ServiceId,
           "chargeTime": formattedTime,
-          "classId": 0
+          "classId": this.registerObj.ClassId
         } 
       console.log(Vdata) 
 
@@ -378,7 +377,7 @@ export class OpPackageBillInfoComponent implements OnInit {
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.getpackagedetList(data)
+          this.getpackagedetList(this.registerObj)
         } else {
           this.toastr.error('Record Data not Saved !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -411,8 +410,7 @@ export class OpPackageBillInfoComponent implements OnInit {
     }
     this.isDoctor = false;
     this.ChargesDoctorname = ''
-    this.ChargeDoctorId = 0;
-    this.PackageForm.reset();
+    this.ChargeDoctorId = 0; 
     this.Servicename.nativeElement.focus();
     this.PackageForm.get('SrvcName').reset();
     this.PackageForm.get('DoctorID').reset('');
@@ -472,33 +470,7 @@ export class OpPackageBillInfoComponent implements OnInit {
   //   }  
   // });
   // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
   deleteTableRowPackage(element) {
     let index = this.PacakgeList.indexOf(element);
     if (index >= 0) {
@@ -550,8 +522,7 @@ export class OpPackageBillInfoComponent implements OnInit {
     return this.FinalTotalamt;
   }
   SavePacList: any = [];
-  onSavePackage() {
-    debugger
+  onSavePackage() { 
     if (this.dsPackageDet.data.length < 0) {
       this.toastr.warning('please add services list is blank ', 'error!', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -572,7 +543,7 @@ export class OpPackageBillInfoComponent implements OnInit {
         netAmt = Math.round(totalAmt - DiscAmt).toFixed(2)
       } else {
         DiscAmt = 0;
-        netAmt = 0;
+        netAmt = totalAmt;
       }
 
     
@@ -595,7 +566,7 @@ export class OpPackageBillInfoComponent implements OnInit {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose();
+          this.dialogRef.close(this.registerObj.ChargesId);
         } else {
           this.toastr.success('Record not saved', 'error', {
             toastClass: 'tostr-tost custom-toast-success',
@@ -633,11 +604,12 @@ export class OpPackageBillInfoComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  OnSaveEditedValue(element) {
-
+  OnSaveEditedValue(element) { 
     let DoctorId = 0 
     if(this.PackageForm.get('EditDoctor').value){
       DoctorId = this.PackageForm.get('EditDoctor').value.DoctorId
+    }else{
+      DoctorId = element.DoctorId
     }
 
     let addCharge = {

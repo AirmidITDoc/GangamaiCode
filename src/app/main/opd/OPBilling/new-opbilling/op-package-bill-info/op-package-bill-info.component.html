@@ -184,7 +184,7 @@
                                         <span>{{contact.DoctorName}}</span>
                                         <ng-container *ngIf="!contact.EditDoctor; else showInput">
                                             <button mat-icon-button (click)="DocenableEditing(contact)" class="clear-button">
-                                                --<mat-icon>edit</mat-icon></button>
+                                                <mat-icon>edit</mat-icon></button>
                                         </ng-container>
                                         <ng-template #showInput> 
                                             <form [formGroup]="PackageForm">
@@ -195,7 +195,7 @@
                                                     [matAutocomplete]="autoDocId"  
                                                     (input)="getAdmittedDoctorEditable(contact)"> 
                                                 <mat-autocomplete #autoDocId="matAutocomplete"
-                                                    [displayWith]="getOptionTextDoctorEdit"  
+                                                    [displayWith]="getOptionTextDoctorEdit"   class="package-auto-complete"
                                                     (optionSelected)='DropDownValue($event.option.value)'>
                                                     <mat-option *ngFor="let option of filteredOptionsDoctorsEdit"
                                                         [value]="option">

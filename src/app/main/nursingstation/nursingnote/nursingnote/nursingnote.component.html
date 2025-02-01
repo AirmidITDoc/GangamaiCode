@@ -311,6 +311,7 @@
                                 </div>
                                
                             </mat-tab>
+
                             <mat-tab label="Medication-Chart">
                                 <div class="content">
                                     <div class="center p-12 pb-56">
@@ -376,7 +377,7 @@
                                                                     class="element"
                                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                             </mat-table>
-                                                            <mat-paginator #paginator
+                                                            <mat-paginator #Patientlistpaginator
                                                                 [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                                                 showFirstLastButtons>
                                                             </mat-paginator>
@@ -390,6 +391,20 @@
                                                                     [dataSource]="dsItemList"
                                                                     [@animateStagger]="{value:'50'}"
                                                                     style="overflow: auto;height: 270px;">
+
+                                                                    <ng-container matColumnDef="Status">
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                            fxHide fxShow.gt-sm class="w-50">
+                                                                            <span class="material-icons" (click)="getSchedulerlist()">
+                                                                                cached
+                                                                            </span>
+                                                                          </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" fxHide
+                                                                            fxShow.gt-sm class="w-50">
+                                                                            <mat-checkbox aria-label="Checked" (change)="SelectedChecked($event, contact)">
+                                                                            </mat-checkbox>
+                                                                        </mat-cell>
+                                                                    </ng-container>
     
                                                                     <ng-container matColumnDef="ItemName">
                                                                         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -425,7 +440,7 @@
                                                                             fxShow.gt-sm>Frequency
                                                                         </mat-header-cell>
                                                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                            <span> {{element.Frequency}}</span>
+                                                                            <span> {{element.Freq}}</span>
                                                                         </mat-cell>
                                                                     </ng-container>
     
@@ -461,7 +476,7 @@
                                                                         class="element"
                                                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                 </mat-table>
-                                                                <mat-paginator #paginator
+                                                                <mat-paginator #Medicinepaginator
                                                                     [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                                                                     showFirstLastButtons>
                                                                 </mat-paginator>

@@ -652,6 +652,7 @@ export class DischargeSummaryComponent implements OnInit {
               //console.log(response);
               if (response) {
                 this.viewgetDischargesummaryPdf(this.vAdmissionId);
+                this.viewgetDischargesummaryPathologyReportPdf(this.vAdmissionId)
                 this._matDialog.closeAll();
                 this.toastr.success('Discharge Summary save Successfully !', 'Congratulations !', {
                   toastClass: 'tostr-tost custom-toast-success',
@@ -739,6 +740,7 @@ export class DischargeSummaryComponent implements OnInit {
               // console.log(response);
               if (response) {
                 this.viewgetDischargesummaryPdf(this.vAdmissionId);
+                this.viewgetDischargesummaryPathologyReportPdf(this.vAdmissionId)
                 this._matDialog.closeAll();
                 this.toastr.success('Discharge Summary Updated Successfully !', 'Congratulations !', {
                   toastClass: 'tostr-tost custom-toast-success',
@@ -770,6 +772,23 @@ export class DischargeSummaryComponent implements OnInit {
           data: {
             base64: res["base64"] as string,
             title: "Discharge Summary Viewer"
+          }
+        });
+    });
+  }
+  viewgetDischargesummaryPathologyReportPdf(AdmId) {
+
+    this._IpSearchListService.viewgetDischargesummaryPathologyReportPdf(
+      AdmId
+    ).subscribe(res => {
+      const dialogRef = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Pathology Report Viewer"
           }
         });
     });
