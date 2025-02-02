@@ -3,17 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PhoneAppointListService } from './phone-appoint-list.service';
 import { DatePipe } from '@angular/common';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
-import { GeturlService } from './geturl.service';
-import { map, startWith } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
 
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
