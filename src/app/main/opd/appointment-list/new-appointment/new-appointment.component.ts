@@ -478,31 +478,7 @@ export class NewAppointmentComponent implements OnInit {
     vPhoneFlage = 0;
     vPhoneAppId: any;
     RegNo = 0;
-    // getSelectedObjPhone(obj) {
-    //     this.RegOrPhoneflag = 'Entry From Phone Appointment'
-    //     this.vPhoneFlage = 1;
-    //     // this.registerObj = obj;
-    //     // this.registerObj.MobileNo = obj.MobileNo.trim();
-    //     // this.registerObj.DateofBirth = this.currentDate;
-    //     this.PatientName = obj.PatientName;
-    //     this.RegId = obj.RegId;
-    //     this.RegNo = obj.RegNo;
-    //     this.vPhoneAppId = obj.PhoneAppId;
-    //     // this.vReligionId = obj.ReligionId;
-    //     // this.vAreaId = obj.AreaId
-    //     // this.vMaritalStatusId = obj.MaritalStatusId;
-
-
-
-    //     // this.setDropdownObjs();
-
-    //     this.VisitFlagDisp = true;
-    //     let todayDate = new Date();
-    //     const timeDiff = Math.abs(Date.now() - this.registerObj.DateofBirth.getTime());
-    //     // this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    //     // this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - this.registerObj.dateofBirth.getMonth());
-    //     // this.registerObj.ageDay = Math.abs(todayDate.getDate() - this.registerObj.dateofBirth.getDate());
-    // }
+  
 
     getSelectedObj(obj) {
         console.log(obj)
@@ -658,9 +634,6 @@ debugger
     }
 
     OnsaveNewRegister() {
-
-        // console.log(this.VisitFormGroup.value);
-        // console.log(this.personalFormGroup.value);
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -1162,8 +1135,5 @@ debugger
         // this.refDocId = obj
     }
 
-    selectChangepurpose(obj: any) {
-        console.log(obj);
-        // this.purposeId = obj
-    }
+
 }

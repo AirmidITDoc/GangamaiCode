@@ -283,17 +283,14 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
 
   DischargesaveForm(): FormGroup{
     return this._formBuilder.group({
-     RegNo: '',
-     DoctorID:'',
-     DocNameID:[''],
-     Doctorname:'',
-     DischargeTypeId:['',Validators.required],
-     DischargeDate:[''],
-     DischargeTime:'',
-     Modeofdischarge:'',
-    // DOT: '' ,
-     ModeId:'',
-     Comments:['']
+    
+    dischargeId: 0,
+    admissionId: 0,
+    dischargeDate: "2029-09-07",
+    dischargeTime: "11:00:00 AM",
+    dischargeTypeId: 0,
+    dischargedDocId: 0,
+    dischargedRmoid: 0,
     });
   }
   refundAdvanceForm(): FormGroup {
@@ -593,10 +590,6 @@ public getUMOCombo() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_M_UnitofMeasurementMasterCombo", {})
 }
 
-public insertIPDDischargSummary(employee)
-{    
-  return this._httpClient.post("InPatient/InsertIPDischargeSummary",employee);
-}
 
 public updateIPDDischargSummary(employee)
 {    
@@ -1100,9 +1093,9 @@ public getDoseList() {
 
 //  new Api
 public BedtransferUpdate(Param: any) {
-  if (Param.transferId) {
-      return this._httpClient1.PutData("BedTransfer/InsertSP" + Param.transferId, Param);
-  } else return this._httpClient1.PostData("BedTransfer/InsertSP", Param);
+  
+      return this._httpClient1.PostData("BedTransfer/InsertSP",Param);
+  
 }
 
 public DichargeInsert(Param: any) {
@@ -1124,6 +1117,12 @@ return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id
 public deactivateTheStatus(m_data) {
   return this._httpClient1.PostData("Admission", m_data);
 }
+
+public insertIPDDischargSummary(employee)
+{    
+  return this._httpClient1.PostData("DischargeSummary/Insert",employee);
+}
+
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

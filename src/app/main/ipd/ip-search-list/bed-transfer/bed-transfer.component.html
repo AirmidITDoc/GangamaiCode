@@ -20,7 +20,7 @@
         </div>
     </mat-toolbar>
 
-    <!-- <div class="content">
+    <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
@@ -42,25 +42,23 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                <span class="patient-col-value">{{data.regNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
                                                 </span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                <span class="patient-col-value">{{data.patientName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.Doctorname}}</span>
+                                                <span class="patient-col-value">{{data.doctorname}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                <span class="patient-col-value">{{data.departmentName}}</span>
                                             </div>
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -68,27 +66,27 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">DOA | Time</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj.AdmDateTime}}</span>
+                                                <!-- <span
+                                                    class="patient-col-value">{{data.AdmDateTime}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">IPD No</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                <!-- <span class="patient-col-value">{{data.IPDNo}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-                                                <span
+                                                <!-- <span
                                                     class="patient-col-value">{{selectedAdvanceObj.AgeYear}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                    D | {{selectedAdvanceObj.GenderName}}</span>
+                                                    D | {{selectedAdvanceObj.GenderName}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Ref-Doctor Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span> -->
                                             </div>
 
                                         </div>
@@ -97,81 +95,82 @@
                                                 <span class="patient-col-key">Ward | Bed Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.RoomName}}
-                                                    | {{selectedAdvanceObj.BedName}}</span>
+                                                <!-- <span class="patient-col-value">{{selectedAdvanceObj.RoomName}}
+                                                    | {{selectedAdvanceObj.BedName}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Type
                                                 </span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                <!-- <span
+                                                    class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Tarrif Name
                                                 </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                <!-- <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span> -->
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value"
-                                                    style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                <!-- <span class="patient-col-value"
+                                                    style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </mat-card>-->
+                    </mat-card>
 
-    <form [formGroup]="Bedtransfer" fxLayout="column">
+                    <form [formGroup]="Bedtransfer" fxLayout="column">
+                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="data.admissionId">
+                        <input type="hidden" name="fromWardId" formControlName="fromWardId" [(ngModel)]="data.WardId">
+                        <input type="hidden" name="fromBedId" formControlName="fromBedId" [(ngModel)]="data.bedId">
+                        <input type="hidden" name="fromClassId" formControlName="fromClassId" [(ngModel)]="data.classId">
 
-        <mat-card style="padding: 8px;">
-            <div fxLayout="column" fxLayoutGap="4px">
-                <div class="sales-patient-info-title">
-                    <span style="font-weight: 700;">
-                        Bed Transfer
-                    </span>
-                </div>
-                <hr>
-                <div fxLayout="row" fxLayoutGap="8px">
-                    <!-- <airmid-dropdown [mode]="autocompleteroom" (selectDdlObject)="selectChangeward($event)"></airmid-dropdown> -->
-                    <airmid-dropdown label="RoomId" formControlName="RoomId"
-                    [formGroup]="Bedtransfer"  [value]="RoomId"
-                    [validations]="getValidationroomMessages().RoomId"
-                    [mode]="autocompleteroom" (selectDdlObject)="selectChangeward($event)">
-                </airmid-dropdown>
-                    <!-- <airmid-dropdown [mode]="autocompletebed" (selectDdlObject)="selectChangebed($event)"></airmid-dropdown> -->
-                    <airmid-dropdown label="BedId" formControlName="BedId"
-                    [formGroup]="Bedtransfer"  [value]="BedId"
-                    [validations]="getValidationbedMessages().BedId"
-                    [mode]="autocompletebed" (selectDdlObject)="selectChangebed($event)">
-                </airmid-dropdown>
-                    <!-- <airmid-dropdown [mode]="autocompleteclass" (selectDdlObject)="selectChangeclass($event)"></airmid-dropdown> -->
-                    <airmid-dropdown label="ClassId" formControlName="ClassId"
-                    [formGroup]="Bedtransfer"  [value]="ClassId"
-                    [validations]="getValidationclassMessages().ClassId"
-                    [mode]="autocompleteclass" (selectDdlObject)="selectChangeclass($event)">
-                </airmid-dropdown>
-       
-                </div>
-                <div fxLayout="row" fxLayoutGap="8px">
-                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                        <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
-                            formControlName="Remark">
+
+                        <mat-card style="padding: 8px;">
+                            <div fxLayout="column" fxLayoutGap="4px">
+                                <div class="sales-patient-info-title">
+                                    <span style="font-weight: 700;">
+                                        Bed Transfer
+                                    </span>
+                                </div>
+                                <hr>
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                    <airmid-dropdown label="Room Name" formControlName="toWardId" [formGroup]="Bedtransfer"
+                                        [validations]="getValidationMessages().RoomId" [mode]="autocompleteroom">
+                                    </airmid-dropdown>
+
+                                    <airmid-dropdown label="Bed name" formControlName="toBedId" [formGroup]="Bedtransfer"
+                                        [validations]="getValidationMessages().BedId" [mode]="autocompletebed">
+                                    </airmid-dropdown>
+
+                                    <airmid-dropdown label="Class Name" formControlName="toClassId"
+                                        [formGroup]="Bedtransfer" [validations]="getValidationMessages().ClassId"
+                                        [mode]="autocompleteclass">
+                                    </airmid-dropdown>
+
+
+                                </div>
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                    <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="50%">
+                                        <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
+                                            formControlName="remark">
                                                                         </textarea>
-                    </mat-form-field>
-                </div>
-            </div>
-        </mat-card>
-    </form>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </form>
 
-    <div fxLayoutAlign="end">
-        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
-            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-            <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
-        </div>
-    </div>
-</div>
+                    <div fxLayoutAlign="end">
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                            style="margin: 0px 20px 0px 50px; ">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
+                        </div>
+                    </div>
+                </div>

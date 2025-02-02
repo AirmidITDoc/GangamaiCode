@@ -120,7 +120,7 @@
                                                         <div class="form-input">
                                                             <mat-form-field appearance="outline" fxFlex>
                                                                 <mat-label>FInal DIAGNOSS</mat-label>
-                                                                <textarea matInput name="Diagnosis" formControlName="Diagnosis" [(ngModel)]="vDiagnosis" cols="300"
+                                                                <textarea matInput name="Diagnosis" formControlName="diagnosis" [(ngModel)]="vDiagnosis" cols="300"
                                                                     rows="8"></textarea>
                                                             </mat-form-field>
                                                         </div>
@@ -148,7 +148,7 @@
                                                             <mat-form-field appearance="outline" fxFlex>
                                                                 <mat-label>Clinical Condition OnAdmisssion</mat-label>
                                                                 <textarea matInput name="ClinicalConditionOnAdmisssion"
-                                                                    formControlName="ClinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition" cols="300"
+                                                                    formControlName="clinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition" cols="300"
                                                                     rows="8"></textarea>
                                                             </mat-form-field>
                                                         </div>
@@ -167,7 +167,7 @@
 
                                                              <mat-form-field appearance="outline" fxFlex>
                                                                 <mat-label>CLINICAL FINDING</mat-label> 
-                                                                <textarea matInput name="ClinicalFinding" formControlName="ClinicalFinding"
+                                                                <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding"
                                                                     [(ngModel)]="vClinicalFinding" cols="300" rows="8">  
                                                                 </textarea>
                                                             </mat-form-field>
@@ -189,7 +189,7 @@
                                                 <div class="form-input">
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>SURGERY /PROCEDURE DONE</mat-label>
-                                                        <textarea matInput name="SurgeryProcDone" formControlName="SurgeryProcDone"
+                                                        <textarea matInput name="SurgeryProcDone" formControlName="surgeryProcDone"
                                                             [(ngModel)]="vSURGERYprocedure" cols="300" rows="8"></textarea>
                                                     </mat-form-field>
                                                 </div>
@@ -212,7 +212,7 @@
                                                 <div class="form-input">
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>OPRATIVE NOTES</mat-label>
-                                                        <textarea matInput name="OperativeNotes" formControlName="OperativeNotes"
+                                                        <textarea matInput name="OperativeNotes" formControlName="operativeNotes"
                                                             [(ngModel)]="vOperativeNotes" cols="300" rows="8"></textarea>
                                                     </mat-form-field>
                                                 </div>
@@ -229,7 +229,7 @@
                                             <div class="form-input">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>PATHOLOGY</mat-label>
-                                                    <textarea matInput name="Pathology" formControlName="Pathology"
+                                                    <textarea matInput name="Pathology" formControlName="pathology"
                                                         [(ngModel)]="vPathology" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
@@ -241,7 +241,7 @@
                                             <div class="form-input">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Radiology</mat-label>
-                                                    <textarea matInput name="Radiology" formControlName="Radiology"
+                                                    <textarea matInput name="Radiology" formControlName="radiology"
                                                         [(ngModel)]="vRadiology" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
@@ -261,7 +261,7 @@
                                                             <mat-label>COURSES IN THE HOSPITAL</mat-label>
                                                             <h4 style="padding: 0px;"><b>Detail History</b></h4>
                                                             <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap;"
-                                                                formControlName="TreatmentGiven"  
+                                                                formControlName="treatmentGiven"  
                                                                 [(ngModel)]="vTreatmentGiven" cols="200"
                                                                 rows="8">
                                                             </textarea>
@@ -276,7 +276,7 @@
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>Treatment Adviced</mat-label>
                                                             <textarea matInput name="TreatmentAdvisedAfterDischarge"
-                                                                formControlName="TreatmentAdvisedAfterDischarge"
+                                                                formControlName="treatmentAdvisedAfterDischarge"
                                                                 [(ngModel)]="vTreatmentAdvisedAfterDischarge"
                                                                 cols="200" rows="8"></textarea>
                                                         </mat-form-field>
@@ -295,19 +295,19 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>OTHER CON DR.OPINION</mat-label>
                                                     <textarea matInput name="OtherConDrOpinions"
-                                                        formControlName="OtherConDrOpinions"
+                                                        formControlName="otherConDrOpinions"
                                                         [(ngModel)]="vOtherConDrOpinions" cols="300"
                                                         rows="8"></textarea>
                                                 </mat-form-field>
                                             </div>
     
-                                            <div class="form-title mb-2 pb-2 border-bottom" *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
+                                            <div class="form-title mb-2 pb-2 border-bottom" *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'">
                                                 <span class="h2 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
                                             </div>
-                                            <div class="form-input" *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
+                                            <div class="form-input" *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'">
                                                 <mat-form-field appearance="outline" fxFlex >
                                                     <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
-                                                    <textarea matInput name="PainManagementTechnique"
+                                                    <textarea matInput name="painManagementTechnique"
                                                         formControlName="PainManagementTechnique"
                                                         [(ngModel)]="vPainManagementTechnique" cols="300"
                                                         rows="8"></textarea>
@@ -327,7 +327,7 @@
                                                     <div class="form-input" fxLayoutGap="8px grid">
                                                         <mat-form-field appearance="outline" fxFlex *ngIf="DischargesumForm.get('IsNormalOrDeath').value == 'True'">
                                                             <mat-label>FOLLOW UP</mat-label>
-                                                            <textarea matInput name="LifeStyle" formControlName="LifeStyle"
+                                                            <textarea matInput name="LifeStyle" formControlName="lifeStyle"
                                                                 [(ngModel)]="vLifeStyle" cols="300"
                                                                 rows="6"></textarea>
                                                         </mat-form-field>
@@ -336,7 +336,7 @@
                                                         <mat-form-field appearance="outline" fxFlex>
                                                             <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
                                                             <textarea matInput name="ConditionAtTheTimeOfDischarge"
-                                                                formControlName="ConditionAtTheTimeOfDischarge"
+                                                                formControlName="conditionAtTheTimeOfDischarge"
                                                                 [(ngModel)]="vConditionofTimeDischarge"
                                                                 cols="300" rows="6"></textarea>
                                                         </mat-form-field>
@@ -358,101 +358,57 @@
                                                     <div class="input-container">
                                                         <div fxLayout="row wrap" fxLayoutGap="8px grid">
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Doctor Name</mat-label>
-                                                                    <input matAutocompletePosition="below" type="text"
-                                                                        placeholder="Select Doctor" matInput
-                                                                        formControlName="DischargeDoctor1"
-                                                                        [matAutocomplete]="autoDoctor1"  >
-                                                                    <span matSuffix style="display: flex;">
-                                                                        <mat-icon class="mat-icon-close"
-                                                                            (click)="DischargesumForm.get('DischargeDoctor1').setValue(''); isdoctor1Selected = false;">close</mat-icon>
-                                                                        <mat-icon class="mat-icon-close"
-                                                                            (click)="DischargesumForm.get('DischargeDoctor1').setValue(''); isdoctor1Selected = false;">search</mat-icon>
-                                                                    </span>
-                                                                    <mat-autocomplete #autoDoctor1="matAutocomplete"
-                                                                        [displayWith]="getOptionTextsDoctor1">
-                                                                        <mat-option
-                                                                            *ngFor="let option of filteredOptionDoctor1 | async"
-                                                                            [value]="option">
-                                                                            {{option.DoctorName}}
-                                                                        </mat-option>
-                                                                    </mat-autocomplete>
-                                                                </mat-form-field>
-
+                                                               
+                                                                <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
+                                                                [formGroup]="DischargesumForm" [value]="data?.dischargeDoctor1"
+                                                                [validations]="getValidationMessages().dischargeDoctor1" #ddldoctor
+                                                                [mode]="autocompleteModedeptdoc">
+                                                            </airmid-dropdown>
                                                               
                                                             </div>
     
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                                 <mat-form-field appearance="outline" fxFlex>
                                                                     <mat-label>Claim Number</mat-label>
-                                                                    <input name="ClaimNumber" formControlName="ClaimNumber"
+                                                                    <input name="ClaimNumber" formControlName="claimNumber"
                                                                         [(ngModel)]="vClaimNumber" matInput>
                                                                 </mat-form-field>
                                                             </div>
     
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Ref-Doctor Name</mat-label>
-                                                                    <input matAutocompletePosition="below" type="text"
-                                                                        placeholder="Select Doctor" matInput
-                                                                        formControlName="DischargeDoctor2"
-                                                                        [matAutocomplete]="autoDoctor2"  >
-                                                                    <span matSuffix style="display: flex;">
-                                                                        <mat-icon class="mat-icon-close"
-                                                                            (click)="DischargesumForm.get('DischargeDoctor2').setValue(''); isdoctor2Selected = false;">close</mat-icon>
-                                                                        <mat-icon class="mat-icon-close"
-                                                                            (click)="DischargesumForm.get('DischargeDoctor2').setValue(''); isdoctor2Selected = false;">search</mat-icon>
-                                                                    </span>
-                                                                    <mat-autocomplete #autoDoctor2="matAutocomplete"
-                                                                        [displayWith]="getOptionTextsDoctor2">
-                                                                        <mat-option
-                                                                            *ngFor="let option of filteredOptionDoctor2 | async"
-                                                                            [value]="option">
-                                                                            {{option.DoctorName}}
-                                                                        </mat-option>
-                                                                    </mat-autocomplete>
-                                                                </mat-form-field>
+                                                                
+
+                                                                <airmid-dropdown label="Doctor Name2" formControlName="dischargeDoctor2"
+                                                                [formGroup]="DischargesumForm" [value]="data?.dischargeDoctor2"
+                                                                [validations]="getValidationMessages().dischargeDoctor2" 
+                                                                [mode]="autocompleteModedeptdoc">
+                                                            </airmid-dropdown>
                                                             </div>
     
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                                 <mat-form-field appearance="outline" fxFlex>
                                                                     <mat-label>Pre OTH Number</mat-label>
                                                                     <input name="PreOthNumber"
-                                                                        formControlName="PreOthNumber"
+                                                                        formControlName="preOthNumber"
                                                                         [(ngModel)]="vPreOthNumber" matInput>
                                                                 </mat-form-field>
                                                             </div>
     
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>Ref-Doctor Name</mat-label>
-                                                                    <input matAutocompletePosition="below" type="text"
-                                                                        placeholder="Select Doctor" matInput
-                                                                        formControlName="DischargeDoctor3"
-                                                                        [matAutocomplete]="autoDoctor3">
-                                                                    <span matSuffix style="display: flex;">
-                                                                        <mat-icon class="mat-icon-close"
-                                                                            (click)="DischargesumForm.get('DischargeDoctor3').setValue(''); isdoctor3Selected = false;">close</mat-icon>
-                                                                        <mat-icon class="mat-icon-close"
-                                                                            (click)="DischargesumForm.get('DischargeDoctor3').setValue(''); isdoctor3Selected = false;">search</mat-icon>
-                                                                    </span>
-                                                                    <mat-autocomplete #autoDoctor3="matAutocomplete"
-                                                                        [displayWith]="getOptionTextsDoctor3">
-                                                                        <mat-option
-                                                                            *ngFor="let option of filteredOptionDoctor3 | async"
-                                                                            [value]="option">
-                                                                            {{option.DoctorName}}
-                                                                        </mat-option>
-                                                                    </mat-autocomplete>
-                                                                </mat-form-field>
+                                                               
+
+                                                                <airmid-dropdown label="Doctor Name2" formControlName="dischargeDoctor3"
+                                                                [formGroup]="DischargesumForm" [value]="data?.dischargeDoctor3"
+                                                                [validations]="getValidationMessages().dischargeDoctor3" 
+                                                                [mode]="autocompleteModedeptdoc">
+                                                            </airmid-dropdown>
                                                             </div>
     
                                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                                 <mat-form-field appearance="outline" fxFlex>
                                                                     <mat-label>Doctor Assistant Name</mat-label>
                                                                     <input name="DoctorAssistantName"
-                                                                        formControlName="DoctorAssistantName"
+                                                                        formControlName="doctorAssistantName"
                                                                         [(ngModel)]="vDoctorAssistantName"
                                                                         matInput>
                                                                 </mat-form-field>
@@ -530,6 +486,7 @@
                                                                 </mat-autocomplete>
                                                             </mat-form-field>
                     
+                                                          
                         
                                                             <mat-form-field appearance="outline" fxFlex="10%">
                                                                 <mat-label>Day</mat-label>
@@ -546,7 +503,7 @@
                                                             </mat-form-field> -->
                         
                                                             <div class="input-add-button">
-                                                                <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'">
+                                                                <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'" fxLayoutGap="10px" fxLayout="row">
                                                                     <button #addbutton class="btn btn-primary btn-with-icon" 
                                                                         (click)="onAdd()">
                                                                         <span class="btn-icon">
@@ -554,6 +511,10 @@
                                                                         </span>
                                                                         <span>Add</span>
                                                                     </button>
+
+                                                                    <button mat-raised-button (click)="getItemMaster()">
+                                                                        <mat-icon>add</mat-icon>
+                                                                        Drug</button>
                                                                    
                                                                 </div>
                                                             </div>
@@ -640,6 +601,13 @@
                                         <mat-radio-button value="false">Death Summary</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
+                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxLayout="row" class="gap-8">
+                                        <mat-checkbox formControlName="template" (change)="chkTemplate($event)"
+                                        style="padding: 15px;"> Is Template Print
+                                    </mat-checkbox>&nbsp;
+                                    </div>
+                                </div> -->
                             </mat-card>
                         </div>
                     </div>
@@ -651,7 +619,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="OnSave()" > Save </button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()"> Save </button>
             </div>
         </div>
     </div>

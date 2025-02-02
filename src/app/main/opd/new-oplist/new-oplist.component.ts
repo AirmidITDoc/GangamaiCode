@@ -227,7 +227,7 @@ export class NewOPListComponent implements OnInit {
    
     viewgetOPBillReportPdf(data) {
         setTimeout(() => {
-debugger
+            // 216339
             let param = {
                 
                     "searchFields": [

@@ -10,7 +10,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
-import { GeturlService } from './geturl.service';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';

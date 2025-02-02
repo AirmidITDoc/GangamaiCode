@@ -235,5 +235,12 @@ export class AdmissionService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
     }
+
+
+    public MlcInsert(Param: any) {
+            if (Param.mlcid) {
+            return this._httpClient1.PutData("MlcInformation" + Param.mlcid, Param);
+        } else return this._httpClient1.PostData("MlcInformation", Param);
+    }
 }
 

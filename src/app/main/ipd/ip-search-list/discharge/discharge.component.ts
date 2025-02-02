@@ -57,8 +57,7 @@ export class DischargeComponent implements OnInit {
      autocompletcondoc: string = "ConDoctor";
      autocompletedichargetype: string = "DichargeType";
      autocompletemode: string = "Mode";
-
-
+  
   constructor(
     public _IpSearchListService: IPSearchListService,
     private accountService: AuthenticationService,
@@ -73,18 +72,16 @@ export class DischargeComponent implements OnInit {
   
     if (this.data) {
     
-       this.selectedAdvanceObj = this.data;
-       this.registerObj =  this.advanceDataStored.storage;
-       console.log(this.registerObj);
+     
  
         }
   }
 
   ngOnInit(): void {
     this.DischargeForm=this._IpSearchListService.DischargesaveForm();
-    if (this.advanceDataStored.storage) { 
-      this.vAdmissionId = this.registerObj.AdmissionID;
-   
+    if (this.data) { 
+      this.vAdmissionId = this.data.admissionId;
+   this.vBedId=this.data.bedId
     } 
   }
 
@@ -92,7 +89,6 @@ export class DischargeComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-
  
  
 
@@ -103,71 +99,10 @@ export class DischargeComponent implements OnInit {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
     const formattedTime = formattedDate+this.dateTimeObj.time;
 
-    if(this.vDoctorId == 0) {
-      this.toastr.warning('Please select Doctor', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    // if(!this.DoctorNameList.find(item => item.DoctorName ==  this._IpSearchListService.mySaveForm.get('DoctorID').value.DoctorName)){
-    //   this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if(this.vDescType == 0) {
-    //   this.toastr.warning('Please select Discharge Type', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if(!this.DischargeTypeList.find(item => item.DischargeTypeName ==  this._IpSearchListService.mySaveForm.get('DischargeTypeId').value.DischargeTypeName)){
-    //   this.toastr.warning('Please select valid Discharge Type', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    if(this._IpSearchListService.mySaveForm.get('ModeId').value){
-    // if(!this.ModeNameList.find(item => item.ModeOfDischargeName ==  this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeName)){
-    //   this.toastr.warning('Please select valid Mode Of Discharge', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-  }
-  
-  // if(this._ConfigService.configParams.chkPharmacyDue == '0'){
-  //   console.log(this._ConfigService.configParams.chkPharmacyDue )
-  //   if(this.CheckBalanceAmt > 0){
-  //     Swal.fire({
-  //       title: '"Please clear all pharmacy dues ' + this.CheckBalanceAmt,
-  //       text: "If the pharmacy dues cannot be discharged!",
-  //       icon: "warning", 
-  //       confirmButtonColor: "#d33", 
-  //       confirmButtonText: "Ok" 
-  //     })
-  //     return
-  //   }
-  // }
-
-    
-    let ModeOfDischarge = 0
-    if(this._IpSearchListService.mySaveForm.get('ModeId').value)
-      ModeOfDischarge = this._IpSearchListService.mySaveForm.get('ModeId').value.ModeOfDischargeId;
  
     if (!this.DischargeId) {
       var m_data = {
-        "dischargeModel": {
-          "dischargeId": 0,
-          "admissionId": this.vAdmissionID,
-          "dischargeDate": formattedDate || '01/01/1900' , // this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || '01/01/1900', 
-          "dischargeTime": formattedTime || '01/01/1900', //this.datePipe.transform(this.currentDate, 'hh:mm:ss') || '01/01/1900', 
-          "dischargeTypeId": this.vDescType,
-          "dischargedDocId":this.vDoctorId,
-          "dischargedRMOID": 0,
-          "modeOfDischargeId":  this.vMode, 
-          "createdBy":2,// this.accountService.currentUserValue.userId,
-        }, 
+        "dischargeModel":this.DischargeForm.value,
         "dischargeAdmissionModel": {
           "admissionID": this.vAdmissionID,
           "isDischarged": 1,
@@ -178,6 +113,8 @@ export class DischargeComponent implements OnInit {
           "bedId": this.vBedId,
         }
       }
+
+      
       console.log(m_data);
       this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
         this.toastr.success(response.message);
@@ -236,44 +173,21 @@ export class DischargeComponent implements OnInit {
 
   // new Api
 
-  getValidationModeMessages() {
+  getValidationMessages() {
     return {
-      Modeofdischarge: [
-            { name: "required", Message: "Mode Name is required" }
-        ]
+      dischargeTypeId: [
+            { name: "required", Message: "dischargeType Name is required" }
+        ],
+        dischargedDocId: [
+          { name: "required", Message: "Doctor Name is required" }
+      ],
+      dischargedRmoid: [
+        { name: "required", Message: "Mode Name is required" }
+    ]
     };
 }
 
 
-getValidationConDoc() {
-    return {
-      DoctorID: [
-            { name: "required", Message: "Doctor Name is required" }
-        ]
-    };
-}
-getValidationdisChargetypeMessages() {
-    return {
-      DischargeTypeId: [
-            { name: "required", Message: "Discharge Type Name is required" }
-        ]
-    };
-}
-
-  selectChangecondoc(obj: any){
-    console.log(obj);
-    this.vDoctorId=obj.value
-  }
-  
-  selectChangedichargetype(obj: any){
-    console.log(obj);
-    this.vDescType =obj.value
-  }
-  
-  selectChangemode(obj: any){
-    console.log(obj);
-    this.vMode=obj.value
-  }
 }
 
 

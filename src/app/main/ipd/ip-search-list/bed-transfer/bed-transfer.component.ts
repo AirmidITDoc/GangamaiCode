@@ -25,21 +25,16 @@ import { ToastrService } from 'ngx-toastr';
 export class BedTransferComponent implements OnInit {
   Bedtransfer: FormGroup;
   dateTimeObj: any;
-  isLoading: string = '';
+ 
   screenFromString = 'admission-form';
   currentDate = new Date();
   
-  vWardId: any;
-  vBedId: any;
-  vClassId: any; 
-  submitted = false; 
+  vWardId: any=0;
+  vBedId: any=0;
+  vClassId: any=0; 
+  AdmissionId=0
   
-  selectedAdvanceObj: AdmissionPersonlModel; 
   
-  AdmissionId:any=10;
-  Fromward:any=20;
-  FromBed:any=10;
-  FromClass:any=10;
 
   menuActions: Array<string> = [];
   advanceAmount: any = 12345;
@@ -59,106 +54,54 @@ export class BedTransferComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder
   ) {
   
-    if (this.advanceDataStored.storage) {
-     // 
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj)
-    
-    } 
+   
   }
 
   ngOnInit(): void {
     this.Bedtransfer = this.bedsaveForm();
     if(this.data){
-      this.AdmissionId=12//this.data
-      this.Fromward=1;
-      this.Fromward=2
-      this.FromBed=2
-      this.FromClass=1
+    console.log(this.data);
+    
+  this.AdmissionId=this.data.admissionId;
+  this.vWardId=this.data.wardId;
+  this.vBedId=this.data.bedId;
+  this.vClassId=this.data.classId;
     }
-    this.selectedAdvanceObj = this.advanceDataStored.storage; 
-    if (this.selectedAdvanceObj) { 
-      // this.setDropdownObjs(); 
-    }  
+   
  
   }
-  get f() { return this._IpSearchListService.mySaveForm.controls; }
-
+  
   getDateTime(dateTimeObj) { 
     this.dateTimeObj = dateTimeObj;
   }
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({
-      RegNo: '',
-      RoomId: ['', Validators.required],
-      RoomName: '',
-      BedId: ['', Validators.required],
-      BedName: '',
-      ClassId: ['', Validators.required],
-      ClassName: '',
-      Remark: '',
+         transferId: 0,
+    admissionId: 0,
+    fromDate: "2025-08-05",
+    fromTime: "10:00:00 AM",
+    fromWardId: 0,
+    fromBedId: 0,
+    fromClassId: 0,
+    toDate:  "2025-08-05",
+    toTime:  "10:00:00 AM",
+    toWardId: 0,
+    toBedId: 0,
+    toClassId: 0,
+    remark: "%",
+    addedBy: 10,
+    isCancelled: 0,
+    isCancelledBy: 0
     });
   }
   
  
-
- 
-   
-  onEdit(row) { 
-    var m_data = {
-      "DischargeDate": row.DischargeDate,
-      "DischargeTime": row.DischargeTime,
-      "DischargeTypeId": row.DischargeTypeId,
-      "DischargedDocId": row.DischargedDocId, 
-    }
-    console.log(m_data);
-    this._IpSearchListService.populateForm(m_data);
-  } 
   onBedtransfer() {
-    ;
-    if ((this.vWardId == 0)) {
-      this.toastr.warning('Please select valid Ward ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vBedId == 0)) {
-      this.toastr.warning('Please select valid Bed', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.vClassId == 0)) {
-      this.toastr.warning('Please select Class', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    this.submitted = true;
-
+  
     var m_data = {
       
-        "bedTransfer": {
-          "transferId": 0,
-          "admissionId": this.AdmissionId,
-          "fromDate":"2024-09-18T11:24:02.656Z",// this.Bedtransfer.get("").value
-          "fromTime": "2024-09-18T11:24:02.656Z",
-          "fromWardId":1,// this.Fromward,
-          "fromBedId":2,//this.FromBed,
-          "fromClassId":2,// this.FromClass,
-          "toDate": "2024-09-18T11:24:02.656Z",
-          "toTime":  "2024-09-18T11:24:02.656Z",
-          "toWardId": this.vWardId,
-          "toBedId": this.vBedId,
-          "toClassId": this.vClassId,
-          "remark": this.Bedtransfer.get("Remark").value || '',
-          "addedBy": 0,
-          "isCancelled": 0,
-          "isCancelledBy": 0
-        },
-        "bedTofreed": {
-          "bedId": this.FromBed,
-        },
+        "bedTransfer":this.Bedtransfer.value,
+        "bedTofreed":{bedId: this.data.bedId},
         "admssion": {
           "admissionId": this.AdmissionId,
           "bedId":this.vBedId,
@@ -187,54 +130,21 @@ export class BedTransferComponent implements OnInit {
     this._IpSearchListService.mySaveForm.reset();
     this.dialogRef.close();
   }
-  @ViewChild('bed') bed: ElementRef;
-  public onEnterward(event): void {
-    if (event.which === 13) { 
-      this.bed.nativeElement.focus();
-    } 
-  }
-
-  // new Api
-
-ClassId=0;
-BedId=0;
-RoomId=0;
-  getValidationroomMessages() {
+  
+  getValidationMessages() {
     return {
       RoomId: [
             { name: "required", Message: "Room Name is required" }
-        ]
+        ],
+        BedId: [
+          { name: "required", Message: "Bed Name is required" }
+      ],
+      ClassId: [
+        { name: "required", Message: "Class Name is required" }
+    ]
     };
   }
   
-  getValidationbedMessages() {
-  return {
-    BedId: [
-          { name: "required", Message: "Bed Name is required" }
-      ]
-  };
-}
 
-getValidationclassMessages() {
-  return {
-    ClassId: [
-          { name: "required", Message: "Class Name is required" }
-      ]
-  };
-}
-  selectChangeward(obj: any){
-  console.log(obj);
-  this.vWardId=obj.value
-}
-
-selectChangebed(obj: any){
-  console.log(obj);
-  this.vBedId =obj.value
-}
-
-selectChangeclass(obj: any){
-  console.log(obj);
-  this.vClassId=obj.value
-}
 }
 

@@ -30,7 +30,7 @@ import { RegistrationService } from 'app/main/opd/registration/registration.serv
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ThemeService } from 'ng2-charts';
-import { AdvanceDetailObj } from '../../ip-search-list/ip-search-list.component';
+import { AdvanceDetailObj, Bedtransfer, Discharge } from '../../ip-search-list/ip-search-list.component';
 import { OPIPFeedbackComponent } from '../../Feedback/opip-feedback/opip-feedback.component';
 import { ParameterDescriptiveMasterComponent } from 'app/main/setup/department/parameter-descriptive-master/parameter-descriptive-master.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -38,6 +38,8 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 import { User } from 'app/core/models/user';
+import { BedTransferComponent } from '../../ip-search-list/bed-transfer/bed-transfer.component';
+import { DischargeComponent } from '../../ip-search-list/discharge/discharge.component';
 
 
 @Component({
@@ -154,11 +156,21 @@ export class AdmissionComponent implements OnInit {
                       
                       {
                           action: gridActions.edit, callback: (data: any) => {
-                              this.onEdit(data);
+                              this.onbedTransfer(data);
                           }
                       },
                       {
-                          action: gridActions.print , callback: (data: any) => {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.ondischarge(data);
+                        }
+                    },
+                    {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.ondischargesummarydata(data);
+                      }
+                  },
+                      {
+                          action: gridActions.print, callback: (data: any) => {
                               this.getAdmittedPatientCasepaperview(data);
                           }
                       },
@@ -172,18 +184,18 @@ export class AdmissionComponent implements OnInit {
                               this.getEditAdmission(data);
                           }
                       },
-                      // {
-                      //   action: gridActions.Mlc, callback: (data: any) => {
-                      //       this.NewMLc(data);
-                      //   }
-                    // },
-                      // {
-                      //     action: gridActions.delete, callback: (data: any) => {
+                      {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.NewMLc(data);
+                        }
+                    },
+                      {
+                          action: gridActions.delete, callback: (data: any) => {
   
-                      //         // this.AppointmentCancle(data);
+                              // this.AppointmentCancle(data);
   
-                      //     }
-                      // }
+                          }
+                      }
                     ]
               } //Action 1-view, 2-Edit,3-delete
           ],
@@ -520,9 +532,7 @@ onChangeEndDate(value) {
       {
         maxWidth: '85vw',
         height: '600px', width: '100%',
-        data: {
-          registerObj: contact,
-        },
+        data: contact
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -532,29 +542,7 @@ onChangeEndDate(value) {
 
 
   getMLCdetailview(Id) {
-    // this.sIsLoading = 'loading-data';
-
-    // setTimeout(() => {
-
-    //   this._AdmissionService.getMLCDetailView(Id
-    //   ).subscribe(res => {
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "MLC Detail Viewer"
-    //         }
-    //       });
-
-    //     matDialog.afterClosed().subscribe(result => {
-         
-    //     });
-    //   });
-
-    // }, 100);
+    
 
   }
 
@@ -604,6 +592,69 @@ onChangeEndDate(value) {
   }
 
   getEditCompany(row) {
+
+    this._registrationService.populateFormpersonal(row);
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
+
+    const dialogRef = this._matDialog.open(CompanyInformationComponent,
+      {
+        maxWidth: "70vw",
+        height: '740px',
+        width: '100%',
+        data: {
+          registerObj: row,
+          Submitflag: true
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      
+
+    });
+  }
+
+  onbedTransfer(row) {
+
+    this._registrationService.populateFormpersonal(row);
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
+
+    const dialogRef = this._matDialog.open(BedTransferComponent,
+      {
+        maxWidth: "70vw",
+        height: '540px',
+        width: '100%',
+        data:row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      
+
+    });
+  }
+
+  ondischarge(row) {
+
+    this._registrationService.populateFormpersonal(row);
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
+
+    const dialogRef = this._matDialog.open(DischargeComponent,
+      {
+        maxWidth: "70vw",
+        height: '740px',
+        width: '100%',
+        data:row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      
+
+    });
+  }
+
+  ondischargesummarydata(row) {
 
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"] = row.RegID;

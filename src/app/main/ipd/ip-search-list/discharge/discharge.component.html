@@ -132,35 +132,26 @@
                                     <div fxlayout="row">
                                     <div fxLayoutGap="4px">
                                       
-                                        <airmid-dropdown label="DoctorID" formControlName="DoctorID"
-                                        [formGroup]="DischargeForm"
-                                        [validations]="getValidationConDoc().DoctorID"
-                                        [mode]="autocompletcondoc"
-                                        (selectDdlObject)="selectChangecondoc($event)">
+                                    <airmid-dropdown label="DischargedDoc" formControlName="dischargedDocId" [formGroup]="DischargeForm"
+                                        [validations]="getValidationMessages().dischargedDocId" [mode]="autocompletcondoc">
                                     </airmid-dropdown>
-                                        <airmid-dropdown label="DischargeTypeId" formControlName="DischargeTypeId"
-                                        [formGroup]="DischargeForm"
-                                        [validations]="getValidationdisChargetypeMessages().DischargeTypeId"
-                                        [mode]="autocompletedichargetype"
-                                        (selectDdlObject)="selectChangedichargetype($event)">
+
+                                    <airmid-dropdown label="DischargeType" formControlName="dischargeTypeId" [formGroup]="DischargeForm"
+                                        [validations]="getValidationMessages().dischargeTypeId" [mode]="autocompletedichargetype">
                                     </airmid-dropdown>
-                                        <airmid-dropdown label="Modeofdischarge" formControlName="Modeofdischarge"
-                                        [formGroup]="DischargeForm"
-                                        [validations]="getValidationModeMessages().Modeofdischarge"
-                                        [mode]="autocompletemode"
-                                        (selectDdlObject)="selectChangemode($event)">
-                                    </airmid-dropdown>
+
+                                
+                                    <airmid-dropdown label="Mode" formControlName="dischargedRmoid" [formGroup]="DischargeForm"
+                                    [validations]="getValidationMessages().dischargedRmoid" [mode]="autocompletemode">
+                                  </airmid-dropdown>
 
                                       
                                     </div>
-                                        <div fxlayout="row">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Comments</mat-label>
-                                            <input name="Comments" formControlName="Comments"
-                                                placeholder="Comments" matInput [(ngModel)]="vComments">
-                                        </mat-form-field>
-
-                                    </div>
+                                        <!-- <div fxlayout="row">
+                                       
+                                        <airmid-textbox label="First Name" formControlName="Comments" [value]="registerObj.firstName" [formGroup]="DischargeForm" [validations]="getValidationMessages().firstName" [maxLength]="50">
+                                        </airmid-textbox>
+                                    </div> -->
                                 </div>
                         </mat-card>
 
