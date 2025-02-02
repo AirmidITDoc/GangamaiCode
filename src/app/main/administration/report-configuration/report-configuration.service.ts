@@ -42,14 +42,14 @@ export class ReportConfigurationService {
                 [
                     Validators.required, 
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z @#&]+$") //include space 
                 ]
             ],
             reportName:["",
                 [
                     Validators.required, 
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z @#&]+$")
                 ]
             ],
             parentid:["",
@@ -70,7 +70,7 @@ export class ReportConfigurationService {
                 [
                     Validators.required, 
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z @#&]+$")
                 ]
             ],
             reportHeader:["",
@@ -89,14 +89,14 @@ export class ReportConfigurationService {
                 [
                     Validators.required, 
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
-            reportBodyFile:["",
+            reportBodyFile:["", 
                 [
                     Validators.required, 
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
             reportFolderName:["",
@@ -113,7 +113,7 @@ export class ReportConfigurationService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            reportSPName:["",
+            reportSpname:["",
                 [
                     Validators.required, 
                     Validators.maxLength(50),

@@ -22,8 +22,7 @@
                 <input type="hidden" name="reportId" formControlName="reportId">
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportSection" 
                                 formControlName="reportSection" 
@@ -34,7 +33,7 @@
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportName" 
                                 formControlName="reportName" 
@@ -45,7 +44,7 @@
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ParentID" 
                                 formControlName="parentid" 
@@ -55,8 +54,9 @@
                                 [maxLength]="10">
                             </airmid-textbox>
                         </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportMode" 
                                 formControlName="reportMode" 
@@ -67,7 +67,7 @@
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportTitle" 
                                 formControlName="reportTitle" 
@@ -78,29 +78,7 @@
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="ReportHeader" 
-                                formControlName="reportHeader" 
-                                [value]="data?.reportHeader" 
-                                [formGroup]="myform" 
-                                [validations]="getValidationMessages().reportHeader" 
-                                [maxLength]="100">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
-                                label="ReportColumn" 
-                                formControlName="reportColumn" 
-                                [value]="data?.reportColumn" 
-                                [formGroup]="myform" 
-                                [validations]="getValidationMessages().reportColumn" 
-                                [maxLength]="100">
-                            </airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportHeaderFile" 
                                 formControlName="reportHeaderFile" 
@@ -110,6 +88,32 @@
                                 [maxLength]="30">
                             </airmid-textbox>
                         </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="ReportHeader" 
+                                formControlName="reportHeader" 
+                                [value]="data?.reportHeader" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportHeader" 
+                                [maxLength]="100">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="ReportColumn" 
+                                formControlName="reportColumn" 
+                                [value]="data?.reportColumn" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportColumn" 
+                                [maxLength]="100">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
@@ -147,14 +151,15 @@
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportSPName" 
-                                formControlName="reportSPName" 
-                                [value]="data?.reportSPName" 
+                                formControlName="reportSpname" 
+                                [value]="data?.reportSpname" 
                                 [formGroup]="myform" 
-                                [validations]="getValidationMessages().reportSPName" 
+                                [validations]="getValidationMessages().reportSpname" 
                                 [maxLength]="30">
                             </airmid-textbox>
                         </div>
-
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageOrientation</mat-label>
@@ -174,8 +179,8 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-
                     </div>
+
                 </div>
 
                 <!-- Modal footer -->

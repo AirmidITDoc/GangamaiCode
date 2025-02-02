@@ -196,14 +196,31 @@
 
                             </div>
 
+                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                                <div>
+                                
+                                    <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="supplierForm" [(ngModel)]="isActive" ></app-airmid-slider>
+            
+                                </div>
+                     
+                                <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                                    <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                     
+                            </div>
+
                         </form>
 
-                        <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end"
+                        <!-- <div class="modal-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end"
                             style="padding: 20px;">
 
                             <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                             <button class="btn btn-primary " (click)="onSubmit()" >Save</button>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

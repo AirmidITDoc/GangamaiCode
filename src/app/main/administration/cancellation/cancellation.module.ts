@@ -36,6 +36,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
 import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
+import { CancellationService } from './cancellation.service';
 
 
 
@@ -45,7 +46,6 @@ const routes : Routes =[
     component:CancellationComponent,
   },
 ];
-
 @NgModule({
     declarations: [CancellationComponent, BillDateUpdateComponent],
     imports: [
@@ -86,11 +86,10 @@ const routes : Routes =[
         MatSelectModule,
         MatSelectModule,
         MatChipsModule,
-        // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule
     ],
     providers: [
-        DatePipe,
+         CancellationService, DatePipe
     ]
 })
 export class CancellationModule { }

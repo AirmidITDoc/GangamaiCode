@@ -27,13 +27,16 @@ const appRoutes: Routes = [
     path: "roletemplatemaster",
    loadChildren: () => import("./role-template-master/role-template-master.module").then((m) => m.RoleTemplateMasterModule),
   },
- 
   {
     path: "doctorshare",
     loadChildren: () => import("./doctor-share/doctor-share.module").then((m) => m.DOctorShareModule),
   },
   {
     path: "cancellation",
+    loadChildren: () => import("./cancellation/cancellation.module").then((m)=>m.CancellationModule),
+  },
+  {
+    path: "reportconfiguration",
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
    {
@@ -50,7 +53,9 @@ const appRoutes: Routes = [
    },
    {
     path:"tallyinterface",
-    loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
+    // loadChildren: () => import("./cancellation/cancellation.module").then((m)=>m.CancellationModule),
+    
+    loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
    },
    {
     path:"pharmacypayipadvmode",

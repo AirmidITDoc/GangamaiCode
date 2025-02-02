@@ -183,6 +183,6 @@ export class StoreMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("StoreMaster?Id" + m_data.toString());
     }
 }

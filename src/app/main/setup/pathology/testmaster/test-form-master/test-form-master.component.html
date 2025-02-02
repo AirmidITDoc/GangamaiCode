@@ -500,27 +500,22 @@
                                 </div>
                                 <hr>
 
-
                                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
-
+                                    
                                     <div>
-                                        <mat-radio-group name="isActive" formControlName="isActive">
-                                            <mat-radio-button value='true' class="mr-sm-12" fxFlex>IsActive
-                                            </mat-radio-button>
-                                            <mat-radio-button value='false' class="mr-sm-12" fxFlex>IsDeactive
-                                            </mat-radio-button>
-                                        </mat-radio-group>
-
+                                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="testForm" [(ngModel)]="isActive" ></app-airmid-slider>
                                     </div>
-                    
+
                                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                                         <button class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
                                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                                             <span>Save</span>
                                         </button>
                                     </div>
-                    
+
                                 </div>
+
+
                             </form>
                         </div>
                     </div>
