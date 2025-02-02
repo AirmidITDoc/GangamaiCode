@@ -29,6 +29,7 @@ export class ReportConfigurationComponent implements OnInit{
                 { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Rarentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+                { heading: "ReportMode", key: "reportMode", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "ReportTitle", key: "reportTitle", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "ReportHeader", key: "reportHeader", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "ReportColumn", key: "reportColumn", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -59,8 +60,8 @@ export class ReportConfigurationComponent implements OnInit{
             sortField: "ReportName",
             sortOrder: 0,
             filters: [
-                // { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+                { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
             row: 25
         }
@@ -74,7 +75,8 @@ export class ReportConfigurationComponent implements OnInit{
             let that = this;
             const dialogRef = this._matDialog.open( NewReportConfigurationComponent, 
                 {
-                    maxHeight: '95vh',
+                    maxWidth: "95vw",
+                    height: '95%',
                     width: '90%',
                     data: row
                 });

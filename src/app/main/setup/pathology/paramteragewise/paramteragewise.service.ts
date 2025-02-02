@@ -57,6 +57,7 @@ export class ParamteragewiseService {
             IsDescriptive: [""],
             parameterValues: ["", [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
             IsDefaultValue: [""],
+            isActive:[true,[Validators.required]]
 
         });
     }

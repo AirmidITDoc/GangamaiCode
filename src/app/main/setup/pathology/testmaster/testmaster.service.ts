@@ -95,8 +95,8 @@ export class TestmasterService {
             IsTemplateTest: true,
             TestTime: ["2022-09-10"],
             TestDate: ["2022-07-11"],
-            isActive:[false,[Validators.required]],
             ParameterNameSearch:[""],
+            isActive:[true,[Validators.required]]
         });
     }
     /**

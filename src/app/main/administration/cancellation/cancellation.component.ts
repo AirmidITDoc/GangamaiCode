@@ -14,6 +14,9 @@ import { IPBrowseBillService } from 'app/main/ipd/ip-bill-browse-list/ip-browse-
 
 import { ToastrService } from 'ngx-toastr';
 import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-cancellation',
@@ -23,17 +26,143 @@ import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.com
   animations: fuseAnimations
 })
 export class CancellationComponent implements OnInit {
-  displayedColumns:string[] = [
-     'btn',
-    'BillDate',
-    'PBillNo',
-    'RegNo',
-    'PatientName',
-    'BillAmt',
-    'ConAmt',
-    'NetpayableAmt', 
-    'action',
-  ];
+dsRefundOfBillList: any;
+displayedRefundBillColumn: any;
+getSearchRefOfAdvList: any;
+dsRefundOfAdvList: any;
+displayedRefundAdvColumn: any;
+getSearchRefOfBillList() {
+throw new Error('Method not implemented.');
+}
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    gridConfig: gridModel = {
+        apiUrl: "MReportConfig/List",
+        columnsList: [
+            { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ReportName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
+
+    gridConfig1: gridModel = {
+        apiUrl: "MReportConfig/List",
+        columnsList: [
+            { heading: "RefundDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ReportName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+     
+    gridConfig2: gridModel = {
+        apiUrl: "MReportConfig/List",
+        columnsList: [
+            { heading: "RefundDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHIDNo", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AdvanceUsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA'},
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "ReportName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
+        ],
+        row: 25
+    }
+    onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
+        //     {
+        //         maxHeight: '95vh',
+        //         width: '90%',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        // });
+    }
   
 
   sIsLoading: string = '';
