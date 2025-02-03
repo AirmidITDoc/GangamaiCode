@@ -36,18 +36,21 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Nursing/PatietWiseMatetialList",
         columnsList: [
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "MaterialConsumptionId", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "ConsumptionDate", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ConsumptionTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Expr1", key: "expr1", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Con.No", key: "conNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DateTime", key: "dateTime", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "LandTotalAmt", key: "amount", sort: true, align: 'left', emptySign: 'NA'},
+            // { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "MaterialConsumptionId", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+            // { heading: "ConsumptionDate", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "ConsumptionTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "Expr1", key: "expr1", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "FromStoreId", key: "fromStoreId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA'},
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -103,5 +106,19 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
         this.StoreId = obj.value
     }
 
-    EditConsumption() { }
+    EditConsumption(row:any=null) { 
+        let that = this;
+                const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
+                    {
+                        maxWidth: "75vw",
+                        height: '75%',
+                        width: '70%',
+                        data: row
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+    }
 }

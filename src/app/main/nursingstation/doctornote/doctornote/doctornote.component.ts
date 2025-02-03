@@ -6,7 +6,7 @@ import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admissio
 import { DoctornoteService } from "../doctornote.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AdvanceDataStored } from "app/main/ipd/advance";
-import { UntypedFormBuilder } from "@angular/forms";
+import { FormGroup, UntypedFormBuilder } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -76,6 +76,7 @@ export class DoctornoteComponent implements OnInit {
   dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;
   dsHandOverNoteList = new MatTableDataSource;
+  searchFormGroup: FormGroup;
  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator; 
@@ -97,8 +98,6 @@ export class DoctornoteComponent implements OnInit {
    } 
   }
 
-  
-
   ngOnInit(): void {     
       this.vRegNo = this.selectedAdvanceObj.RegNo;
       this.vPatienName = this.selectedAdvanceObj.PatientName;
@@ -111,6 +110,7 @@ export class DoctornoteComponent implements OnInit {
       this.vWardName = this.selectedAdvanceObj.RoomName;  
     this.getDoctorNoteList(); 
     this.getWardNameList();
+    this.searchFormGroup = this.createSearchForm();
   }
 
   getWardNameList(){
@@ -139,8 +139,6 @@ OnAdd(){
   }
   this._NursingStationService.myform.get('Note').setValue('');
 }
-
-
 
   onSubmit() { 
  
@@ -195,7 +193,43 @@ OnAdd(){
   //   this._SampleService.populateForm(m_data);
   // }
 
-  
+  createSearchForm() {
+    return this.formBuilder.group({
+        RegId: [''],
+    });
+}
+
+RegOrPhoneflag = '';
+PatientName: any = '';
+RegId: any = 0;
+VisitFlagDisp: boolean = false;
+registerObj:any;
+
+getSelectedObj(obj) {
+  debugger
+  console.log(obj)
+  this.RegOrPhoneflag = 'Entry from Registration';
+  let todayDate = new Date();
+  const d = new Date(obj.DateofBirth);
+
+  this.PatientName = obj.PatientName;
+  this.RegId = obj.value;
+  this.VisitFlagDisp = true;
+debugger
+  if ((this.RegId ?? 0) > 0) {
+      debugger
+      // console.log(this.data)
+     setTimeout(() => {
+        this._NursingStationService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+
+        });
+
+      }, 500);
+  }
+
+}
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {

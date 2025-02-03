@@ -42,14 +42,15 @@ export class PrescriptionComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
         columnsList: [
-            { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PrscTime", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "AdmissionDate", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Vst_Adm_Date", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Pres_DateTime", key: "pres_DateTime", sort: true, align: 'left', emptySign: 'NA'},
+            // { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+            // { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
             {
                 heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action,
                 actions: [
@@ -83,10 +84,12 @@ export class PrescriptionComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "Nursing/PrescriptionDetailList",
         columnsList: [
-            { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 720 },
-            { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            // { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
+            // { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {

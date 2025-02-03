@@ -173,112 +173,446 @@
                            </div> 
                         </mat-card>
                        
-                        <div fxLayout="row" fxLayoutGap="10px">
-                            <div fxFlex.gt-sm="40%" fxFlex>
-                                <mat-card style="padding: 5px;">
-                                <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
-
-                                    <ng-container matColumnDef="VDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            VDate </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.VDate}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Time">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Time </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.Time}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Note">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Note </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.Note}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Action">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Action </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            {{element.Action}} </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsNursingNoteList!=null && dsNursingNoteList.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                                    showFirstLastButtons>
-                                </mat-paginator>
-                              </mat-card>
-                            </div>
-                           
-                            <div fxFlex.gt-sm="60%" fxFlex>
-                             
-                                <div fxLayout="column" fxLayoutGap="10px">
-                                    <mat-card style="padding: 5px;height: 358px;overflow: auto;">
-                                        <div style="padding: 5px;" fxLayout="row" fxLayoutGap="20px">
-                                
-                                            <mat-form-field appearance="outline" fxFlex="60%">
-                                                <mat-label>Notes</mat-label>
-                                                <mat-select formControlName="Note" placeholder="Select Note" #singleSelect>
-                                                    <mat-option> </mat-option>
-                                                    <mat-option *ngFor="let m of NoteList" [value]="m">
-                                                        {{m.NursTempName}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-
-                                            <div class="input-add-button">
-                                                <div>
-                                                    <button #addbutton class="btn btn-primary btn-with-icon"  (click)="onAdd()" id="btnAdd">
-                                                        <span class="btn-icon">
-                                                            <mat-icon> add </mat-icon>
-                                                        </span>
-                                                        <span>Add</span>
-                                                    </button> 
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-tab-group>
+                                <mat-tab label="Doctor Note">
+                                    <div class="content" style="overflow: auto;">
+                                        <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
+                                            <div class="content-card">
+                                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="row" fxLayoutGap="10px">
+                                                        <div fxFlex.gt-sm="40%" fxFlex>
+                                                            <mat-card style="padding: 5px;">
+                                                            <mat-table class="table2" matSort [dataSource]="dsNursingNoteList"
+                                                                [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
+                            
+                                                                <ng-container matColumnDef="VDate">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        VDate </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.VDate}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <!-- <ng-container matColumnDef="Time">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Time </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Time}} </mat-cell>
+                                                                </ng-container> -->
+                            
+                                                                <ng-container matColumnDef="Note">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Note </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Note}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="AddedBy">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        AddedBy </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.AddedBy}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="Action">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Action </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Action}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="loading">
+                                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                    </mat-header-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="noData">
+                                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                        no data found...
+                                                                    </mat-footer-cell>
+                                                                </ng-container>
+                            
+                                                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                                                </mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                                    [ngClass]="{'hide':!(dsNursingNoteList!=null && dsNursingNoteList.data.length==0)}">
+                                                                </mat-footer-row>
+                                                            </mat-table>
+                                                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                                                showFirstLastButtons>
+                                                            </mat-paginator>
+                                                          </mat-card>
+                                                        </div>
+                                                       
+                                                        <div fxFlex.gt-sm="60%" fxFlex>
+                                                         
+                                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                                <mat-card style="padding: 5px;height: 358px;overflow: auto;">
+                                                                    <div style="padding: 5px;" fxLayout="row" fxLayoutGap="20px">
+                                                            
+                                                                        <mat-form-field appearance="outline" fxFlex="60%">
+                                                                            <mat-label>Notes</mat-label>
+                                                                            <mat-select formControlName="Note" placeholder="Select Note" #singleSelect>
+                                                                                <mat-option> </mat-option>
+                                                                                <mat-option *ngFor="let m of NoteList" [value]="m">
+                                                                                    {{m.NursTempName}}
+                                                                                </mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                            
+                                                                        <div class="input-add-button">
+                                                                            <div>
+                                                                                <button #addbutton class="btn btn-primary btn-with-icon"  (click)="onAdd()" id="btnAdd">
+                                                                                    <span class="btn-icon">
+                                                                                        <mat-icon> add </mat-icon>
+                                                                                    </span>
+                                                                                    <span>Add</span>
+                                                                                </button> 
+                                                                            </div>
+                                                                        </div>
+                                                                      
+                                                                    </div>
+                                                            
+                                                                    <div>
+                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                            <mat-label>Description</mat-label>
+                                                                            <textarea rows="16" matInput name="Description" formControlName="Description"
+                                                                                placeholder="Add Note....." type="text" id="Description" #description required
+                                                                                [(ngModel)]="vDescription"></textarea>
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                </mat-card>
+                                                                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+                                                                    <button class="btn btn-primary-outline" type="button" value="Input">New Template</button>
+                                                                    <button class="btn btn-danger-outline" type="button" value="Input">Reset</button>
+                                                                    <button class="btn btn-primary" type="submit" value="submit">Save</button>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        </div> 
+                                                    </div> 
                                                 </div>
                                             </div>
-                                          
                                         </div>
-                                
-                                        <div>
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Description</mat-label>
-                                                <textarea rows="16" matInput name="Description" formControlName="Description"
-                                                    placeholder="Add Note....." type="text" id="Description" #description required
-                                                    [(ngModel)]="vDescription"></textarea>
-                                            </mat-form-field>
-                                        </div>
-                                    </mat-card>
-                                    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
-                                        <button class="btn btn-primary-outline" type="button" value="Input">New Template</button>
-                                        <button class="btn btn-danger-outline" type="button" value="Input">Reset</button>
-                                        <button class="btn btn-primary" type="submit" value="submit">Save</button>
                                     </div>
-                                </div>
+                                </mat-tab>
+
+                                <mat-tab label="Madication-Chart">
+                                    <div class="content" style="overflow: auto;">
+                                        <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
+                                            <div class="content-card">
+                                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                                                    <div fxLayout="row" fxLayoutGap="10px">
+                                                        <div fxFlex.gt-sm="40%" fxFlex>
+                                                            <mat-card style="padding: 5px;">
+                                                            <mat-table class="table2" matSort [dataSource]="dsMadicationChartList"
+                                                                [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
                             
-                            </div> 
-                        </div>  
+                                                                <ng-container matColumnDef="ItemName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        ItemName </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.ItemName}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="BatchNo">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        BatchNo </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.BatchNo}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="Qty">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Qty </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Qty}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="Action">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Action </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Action}} </mat-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="loading">
+                                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                    </mat-header-cell>
+                                                                </ng-container>
+                            
+                                                                <ng-container matColumnDef="noData">
+                                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                        no data found...
+                                                                    </mat-footer-cell>
+                                                                </ng-container>
+                            
+                                                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                                                </mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
+                                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                                    [ngClass]="{'hide':!(dsMadicationChartList!=null && dsMadicationChartList.data.length==0)}">
+                                                                </mat-footer-row>
+                                                            </mat-table>
+                                                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                                                showFirstLastButtons>
+                                                            </mat-paginator>
+                                                          </mat-card>
+                                                        </div>
+                                                       
+                                                        <div fxFlex.gt-sm="60%" fxFlex>
+                                                         
+                                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                                <mat-card style="padding: 5px;">
+                                                                    <mat-table class="table2" matSort [dataSource]="dsMadicationChart1List"
+                                                                        [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
+                                    
+                                                                        <ng-container matColumnDef="DrugName">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                Drug Name </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                {{element.DrugName}} </mat-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <ng-container matColumnDef="DoseName">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                Dose Name </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                {{element.DoseName}} </mat-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <ng-container matColumnDef="Route">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                Route </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                {{element.Route}} </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="Frequency">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                Frequency </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                {{element.Frequency}} </mat-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <ng-container matColumnDef="NurseName">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                Nurse Name </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                {{element.NurseName}} </mat-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <ng-container matColumnDef="Action">
+                                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                                Action </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                                {{element.Action}} </mat-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <ng-container matColumnDef="loading">
+                                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                            </mat-header-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <ng-container matColumnDef="noData">
+                                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                                no data found...
+                                                                            </mat-footer-cell>
+                                                                        </ng-container>
+                                    
+                                                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true">
+                                                                        </mat-header-row>
+                                                                        <mat-row *matRowDef="let row; columns: displayedColumns2;" class="element"
+                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                                            [ngClass]="{'hide':!(dsMadicationChart1List!=null && dsMadicationChart1List.data.length==0)}">
+                                                                        </mat-footer-row>
+                                                                    </mat-table>
+                                                                    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                                                        showFirstLastButtons>
+                                                                    </mat-paginator>
+                                                                  </mat-card>
+                                                            </div>
+                                                        
+                                                        </div> 
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Patient Handover Note">
+                                    <div class="content" style="overflow: auto;">
+                                        <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
+                                            <div class="content-card">
+                                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                                    
+                                                    <div fxLayout="row" fxLayoutGap="20px">
+                                                        <span style="font-size:40px;padding: 10px 10px 0 0;">I</span>
+                                                        <div fxLayout="column" style="border: 1px solid black;height: 90px;" fxFlex="25%">
+                                                            <span style="margin-bottom: 10px;">Handover Given Details :</span>
+                                                            <span>Staff Nurse Name :</span>
+                                                            <span>Designation :</span>
+                                                        </div>
+                                                        <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
+                                                        <div fxLayout="column" style="border: 1px solid black;height: 90px;" fxFlex="25%">
+                                                            <span style="margin-bottom: 10px;">Presenting SYMPTOMS</span>
+                                                            <span>Vitals :</span>
+                                                            <span>Any Status Changes :</span>
+                                                        </div>
+                                                        <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
+                                                        <div fxLayout="column" style="border: 1px solid black;height: 90px;" fxFlex="25%">
+                                                            <span>BE CLEAR ABOUT THE REQUESTS</span>
+                                                            <span>(If any special Instruction)</span>
+                                                        </div>
+                                    
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="20px">
+                                                        <span style="font-size:40px;padding-top: 10px;">S</span>
+                                                        <div fxLayout="column" style="border: 1px solid black;height: 90px;" fxFlex="25%">
+                                    
+                                                            <span>THE PATIENT IS - Stable / Unstable </span>
+                                                            <span>But i have a wwomes</span>
+                                                            <span style="margin-bottom: 10px;">LEVEL OF WORRIES :</span>
+                                                            <span>High / Medium / Low</span>
+                                    
+                                                        </div>
+                                                        <span style="font-size:40px;padding-top: 10px;">A</span>
+                                                        <div fxLayout="column" style="border: 1px solid black;height: 90px;" fxFlex="25%">
+                                                            <span>ON THE BASIC OF ABOVE </span>
+                                                            <span>Assessment give</span>
+                                                            <span>Any Need</span>
+                                                            <span>Any Risk</span>
+                                                        </div>
+                                    
+                                                        <div fxLayout="column" fxLayoutGap="6px" style="padding: 10px 10px 0 60px;">
+                                                            <mat-radio-group name="HandOverType" formControlName="HandOverType" fxLayout="column">
+                                                                <mat-radio-button value="0">Morning</mat-radio-button>
+                                                                <mat-radio-button value="1"> Evening</mat-radio-button>
+                                                                <mat-radio-button value="2">Night</mat-radio-button>
+                                                            </mat-radio-group>
+                                                        </div> &nbsp;&nbsp;
+                                    
+                                                        <div style="padding: 30px 10px 0 10px;">
+                                                            <button type="button" class="btn btn-primary btn-with-icon py-8" #addbutton id="btnAdd">
+                                                                <mat-icon>add</mat-icon>
+                                                            </button>
+                                                        </div>&nbsp;
+                                    
+                                                    </div>
+                                    
+                                                    <div fxFlex.gt-sm="100%" fxFlex>
+                                                        <mat-card style="padding: 5px;">
+                                                            <mat-table class="table2" matSort [dataSource]="dsHandOverNoteList"
+                                                                [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                    
+                                                                <ng-container matColumnDef="VDate">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        DateTime</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.VDate}} {{element.Time}} </mat-cell>
+                                                                </ng-container>
+                                    
+                                                                <!-- <ng-container matColumnDef="Time">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Time </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Time}} </mat-cell>
+                                                                </ng-container> -->
+                                    
+                                                                <ng-container matColumnDef="Shift">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Shift </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Shift}} </mat-cell>
+                                                                </ng-container>
+                                    
+                                                                <ng-container matColumnDef="I">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        I </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.I}} </mat-cell>
+                                                                </ng-container>
+                                    
+                                                                <ng-container matColumnDef="S">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        S </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.S}} </mat-cell>
+                                                                </ng-container>
+                                    
+                                                                <ng-container matColumnDef="B">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        B </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.B}} </mat-cell>
+                                                                </ng-container>
+                                    
+                                                                <ng-container matColumnDef="A">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        A </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.A}} </mat-cell>
+                                                                </ng-container>
+                                    
+                                                                <ng-container matColumnDef="R">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        R </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.R}} </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="Comments">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        Comments </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.Comments}} </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="CreatedBy">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                        CreatedBy </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                        {{element.CreatedBy}} </mat-cell>
+                                                                </ng-container>                                                                       
+                                    
+                                                                <ng-container matColumnDef="loading">
+                                                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                    </mat-header-cell>
+                                                                </ng-container>
+                                    
+                                                                <ng-container matColumnDef="noData">
+                                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                        no data found...
+                                                                    </mat-footer-cell>
+                                                                </ng-container>
+                                    
+                                                                <mat-header-row class="accent" *matHeaderRowDef="displayedHandOverNote; sticky: true">
+                                                                </mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedHandOverNote;" class="element"
+                                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                                    [ngClass]="{'hide':!(dsHandOverNoteList!=null && dsHandOverNoteList.data.length==0)}">
+                                                                </mat-footer-row>
+                                                            </mat-table>
+                                                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                                                                showFirstLastButtons>
+                                                            </mat-paginator>
+                                                        </mat-card>
+                                                    </div>
+                                                   
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                        
                     </div>
                 </form>
             </div> 

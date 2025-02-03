@@ -30,18 +30,14 @@ export class PrescriptionReturnComponent implements OnInit {
 
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionReturnList",
-        columnsList: [
-            { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 720 },
-            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        columnsList: [            
             // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
             // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},    
             {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -54,7 +50,13 @@ export class PrescriptionReturnComponent implements OnInit {
                             });
                         }
                     }]
-            } //Action 1-view, 2-Edit,3-delete
+            },//Action 1-view, 2-Edit,3-delete
+            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},
         ],
         sortField: "PresReId",
         sortOrder: 0,
@@ -70,30 +72,30 @@ export class PrescriptionReturnComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "Nursing/PrescriptionReturnList",
         columnsList: [
-            { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 720 },
-            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
             // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
             // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
-            {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._PrescriptionReturnService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            // {
+            //     heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._PrescriptionReturnService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PresReId",
         sortOrder: 0,

@@ -2,8 +2,8 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
    
-    <mat-tab-group>
-        <mat-tab label="IP Search List">
+    <!-- <mat-tab-group> -->
+        <!-- <mat-tab label="IP Search List"> -->
             <ng-template mat-tab-label>
                 IP Search List
             </ng-template>
@@ -45,7 +45,7 @@
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue=''">
+                                        (click)="gridConfig.filters[0].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -54,7 +54,7 @@
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[1].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue=''">
+                                        (click)="gridConfig.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -64,7 +64,7 @@
                                     <input matInput placeholder="Search Reg No" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[2].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue=''">
+                                        (click)="gridConfig.filters[2].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -75,7 +75,7 @@
                                     <input matInput placeholder="Search M_Name" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[3].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[3].fieldValue=''">
+                                        (click)="gridConfig.filters[3].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -126,17 +126,17 @@
                                     <input matInput placeholder="Search M_Name" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[7].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[7].fieldValue=''">
+                                        (click)="gridConfig.filters[7].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
                 
                                 <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>IPNo</mat-label>
-                                    <input matInput placeholder="Search IPNo" autocomplete="off"
+                                    <mat-label>IPDNo</mat-label>
+                                    <input matInput placeholder="Search IPDNo" autocomplete="off"
                                         [(ngModel)]="gridConfig.filters[8].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[8].fieldValue=''">
+                                        (click)="gridConfig.filters[8].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -155,7 +155,7 @@
             </div>
 
 
-        </mat-tab>
+        <!-- </mat-tab> -->
 
 
 
@@ -256,7 +256,7 @@
 
   
 
-    </mat-tab-group>
+    <!-- </mat-tab-group> -->
 
 
 </div>

@@ -18,7 +18,8 @@ export class NursingnoteService {
       Note: [''], 
       Description:[''],
       Op_ip_id:['1'],
-      RegID:['']
+      RegID:[''],
+      HandOverType:['0']
     });
   }
 

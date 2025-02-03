@@ -12,17 +12,22 @@
             </span>
         </div>
 
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">New Prescription
+            </button>
+        </div>
+
     </mat-toolbar>
 
 
-    <mat-tab-group>
+    <!-- <mat-tab-group> -->
 
-        <mat-tab label=" Prescription List">
+        <!-- <mat-tab> -->
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
@@ -32,7 +37,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
@@ -92,9 +97,9 @@
                 </div>
             </div>
 
-        </mat-tab>
+        <!-- </mat-tab> -->
            
-    </mat-tab-group>
+    <!-- </mat-tab-group> -->
 
 
 </div>

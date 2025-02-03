@@ -140,7 +140,7 @@
                                 </div>
                                 <hr>
                                 <div fxLayout="row" fxLayoutGap="8px">
-                                    <airmid-dropdown label="Room Name" formControlName="toWardId" [formGroup]="Bedtransfer"
+                                    <airmid-dropdown label="Ward Name" formControlName="toWardId" [formGroup]="Bedtransfer"
                                         [validations]="getValidationMessages().RoomId" [mode]="autocompleteroom">
                                     </airmid-dropdown>
 
@@ -153,24 +153,33 @@
                                         [mode]="autocompleteclass">
                                     </airmid-dropdown>
 
-
-                                </div>
-                                <div fxLayout="row" fxLayoutGap="8px">
                                     <mat-form-field appearance="outline" class="mr-sm-12" fxFlex="50%">
                                         <textarea name="Remark" matInput rows="1" cols="5" placeholder="Enter Remark"
                                             formControlName="remark">
                                                                         </textarea>
                                     </mat-form-field>
+
                                 </div>
                             </div>
                         </mat-card>
+                        <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px">
+                            <div class="footer-navigation-container">
+                                <div class="modal-footer-buttons">
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </form>
 
-                    <div fxLayoutAlign="end">
+                    
+
+                    <!-- <div fxLayoutAlign="end">
                         <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
                             style="margin: 0px 20px 0px 50px; ">
                             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                             <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>

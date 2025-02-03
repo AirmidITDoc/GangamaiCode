@@ -26,9 +26,39 @@ import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admissio
 export class NursingnoteComponent implements OnInit {
   displayedColumns: string[] = [
     'VDate',
-    'Time',
+    // 'Time',
     'Note',
+    'AddedBy',
     'Action'
+  ]
+
+  displayedColumns1: string[] = [
+    'ItemName',
+    'BatchNo',
+    'Qty',
+    'Action'
+  ]
+
+  displayedColumns2: string[] = [
+    'DrugName',
+    'DoseName',
+    'Route',
+    'Frequency',
+    'NurseName',
+    'Action'
+  ]
+
+  displayedHandOverNote: string[] = [
+    'VDate',
+    // 'Time',
+    'Shift',
+    'I',
+    'S',
+    'B',
+    'A',
+    'R',
+    'Comments',
+    'CreatedBy',
   ]
  
   currentDate = new Date();
@@ -61,6 +91,9 @@ export class NursingnoteComponent implements OnInit {
   NoteList:any=[]; 
    selectedAdvanceObj: AdmissionPersonlModel;
   dsNursingNoteList = new MatTableDataSource<DocNote>();
+  dsMadicationChartList=new MatTableDataSource<DocNote>();
+  dsMadicationChart1List=new MatTableDataSource<DocNote>();
+  dsHandOverNoteList=new MatTableDataSource<DocNote>();
  
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

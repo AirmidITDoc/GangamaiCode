@@ -49,16 +49,17 @@ export class IPSearchListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Admission/AdmissionList",
         columnsList: [
-            { heading: "Code", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.status, },
-            { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', width: 50, type: gridColumnTypes.status, },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-            { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-            { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
-            { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.status, },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 10 },
+            { heading: "", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
+            { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA',type: 8 },
+            { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Doctorname", key: "doctorname", sort: true, align: 'left', emptySign: 'NA',type: 10 },
+            { heading: "RefDocName", key: "refDocName", sort: true, align: 'left', emptySign: 'NA',type: 10 },            
+            { heading: "Adv.Amount", key: "adv.amount", sort: true, align: 'left', emptySign: 'NA',type: 10 },
+            { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
@@ -861,7 +862,7 @@ export class IPSearchListComponent implements OnInit {
         const dialogRef = this._matDialog.open(BedTransferComponent,
             {
                 maxWidth: "100%",
-                height: '95%',
+                height: '70%',
                 width: '80%',
             });
         dialogRef.afterClosed().subscribe(result => {

@@ -37,6 +37,9 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DoctornoteComponent } from './doctornote.component';
 import { DoctornoteService } from '../doctornote.service';
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+
 
 const routes: Routes = [
   {
@@ -87,7 +90,9 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
+        MatTooltipModule,
+        ScrollingModule,
+        MatButtonToggleModule,
     ],
     providers: [
         DatePipe,

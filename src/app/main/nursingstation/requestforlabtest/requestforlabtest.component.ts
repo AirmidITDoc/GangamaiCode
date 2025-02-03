@@ -33,16 +33,17 @@ export class RequestforlabtestComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Nursing/LabRequestList",
         columnsList: [
-            { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "OP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            // { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA'},
+            // { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            // { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "OP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+            // { heading: "IsCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', width: 50 },
 
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -75,15 +76,15 @@ export class RequestforlabtestComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "Nursing/LabRequestDetailsList",
         columnsList: [
-            { heading: "Code", key: "requestId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            // { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:250},
-            // { heading: "BillTime", key: "billTime", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA',width:50 },
-            // { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',width:50 },
-            // { heading: "Net Pay", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' ,width:50},
+            { heading: "IsBillingStatus", key: "isBillingStatus", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "IsTestStatus", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "BillDateTime", key: "billdatetime", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PBill No", key: "pBillno", sort: true, align: 'left', emptySign: 'NA'},
 
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
