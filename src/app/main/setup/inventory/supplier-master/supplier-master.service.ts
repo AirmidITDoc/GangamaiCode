@@ -36,15 +36,12 @@ export class SupplierMasterService {
             cityId: [0,
                 Validators.required
             ],
-            // CityName: [""],
             stateId: [0,
                 Validators.required
             ],
-            // StateName: [""],
             countryId: [0,
                 Validators.required
             ],
-            // CountryName: [""],
             CreditPeriod: ["",
                 [
                     Validators.required
@@ -83,8 +80,8 @@ export class SupplierMasterService {
             termofPayment: ["",
                 Validators.required
             ],
-            CurrencyId: [1],// Validators.pattern("[0-9]+")
-            Octroi: [0],//Validators.pattern("[0-9]+")
+            CurrencyId: [1],
+            Octroi: [0],
             Freight: [0,
                 [
                     // Validators.required,
@@ -97,7 +94,7 @@ export class SupplierMasterService {
                     Validators.required,
                     Validators.maxLength(15)
                 ]
-            ], //Validators.pattern("/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/")],
+            ], 
             panNo: ["",
                 [
                     Validators.required,
@@ -128,17 +125,9 @@ export class SupplierMasterService {
         });
     }
 
-
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.PostData(
-    //         "Generic/ExecByQueryStatement?query=" + m_data,
-    //         {}
-    //     );
-    // }
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("Supplier/Cancel?Id=" + m_data.toString());
     }
-
 
     public SupplierSave(Param: any) {
 

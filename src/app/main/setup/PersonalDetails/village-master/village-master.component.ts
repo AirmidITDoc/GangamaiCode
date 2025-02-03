@@ -21,13 +21,13 @@ export class VillageMasterComponent implements OnInit {
            gridConfig: gridModel = {
                apiUrl: "TalukaMaster/List",
                columnsList: [
-                   { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-                   { heading: "Village Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-                   { heading: "Taluka Name", key: "talukaId", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-                   { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                   { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+                   { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "Village Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "Taluka Name", key: "talukaId", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+                   { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
                    {
-                       heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                            {
                                action: gridActions.edit, callback: (data: any) => {
                                    this.onSave(data);

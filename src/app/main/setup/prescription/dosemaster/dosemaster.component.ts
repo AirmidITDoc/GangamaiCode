@@ -21,13 +21,13 @@ export class DosemasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DoseMaster/List",
         columnsList: [
-            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "Dose Name In English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "DoseQtyPerDay", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Dose Name In English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoseQtyPerDay", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

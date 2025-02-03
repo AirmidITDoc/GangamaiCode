@@ -23,12 +23,12 @@ export class CityMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: [
-            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

@@ -21,11 +21,11 @@ export class CountryMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CountryMaster/List",
         columnsList: [
-            { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            { heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+            { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

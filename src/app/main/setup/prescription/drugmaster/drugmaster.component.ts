@@ -24,13 +24,13 @@ export class DrugmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DrugMaster/List",
         columnsList: [
-            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA', width:400 },
-            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA', width:200  },
-            { heading: "Class Name", key: "classId", sort: true, align: 'left', emptySign: 'NA' ,width:200},
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width:100,align: "center" },
+            { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA'  },
+            { heading: "Class Name", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status,align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width:100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

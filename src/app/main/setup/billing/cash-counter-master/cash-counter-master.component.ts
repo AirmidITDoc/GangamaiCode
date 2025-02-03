@@ -23,13 +23,13 @@ export class CashCounterMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CashCounter/List",
         columnsList: [
-            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

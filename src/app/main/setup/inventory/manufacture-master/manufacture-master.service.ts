@@ -17,10 +17,17 @@ export class ManufactureMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
+    // {
+    //     "manufId": 0,
+    //     "manufName": "Pharmacy",
+    //     "manufShortName": "Medical"
+    //   }
+      
+
     createManufactureForm(): FormGroup {
         return this._formBuilder.group({
-            itemManufactureId: [0],
-            manufactureName: ["",
+            manufId: [0],
+            manufName: ["",
                 [
                     Validators.required,Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
@@ -50,12 +57,12 @@ export class ManufactureMasterService {
     }
 
     public manufactureMasterSave(Param: any) {
-        if (Param.itemManufactureId) {
-            return this._httpClient.PutData("ItemManufactureMaster/" + Param.itemManufactureId, Param);
-        } else return this._httpClient.PostData("ItemManufactureMaster", Param);
+        if (Param.manufId) {
+            return this._httpClient.PutData("ManufactureMaster/" + Param.manufId, Param);
+        } else return this._httpClient.PostData("ManufactureMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemManufactureMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("ManufactureMaster?Id=" + m_data.toString());
     }
 }

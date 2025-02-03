@@ -23,12 +23,12 @@ export class CurrencyMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "CurrencyMaster/List",
         columnsList: [
-            { heading: "Code", key: "currencyId", sort: true, width: 100, align: 'left', emptySign: 'NA' },
-            { heading: "Currency Name", key: "currencyName", sort: true, width: 700, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width: 100, align: "center" },
+            { heading: "Code", key: "currencyId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Currency Name", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

@@ -7,6 +7,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.component";
+import { RolePermissionComponent } from "../role-permission/role-permission.component";
 
 @Component({
   selector: 'app-role-template-master',
@@ -16,9 +17,6 @@ import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.co
   animations: fuseAnimations,
 })
 export class RoleTemplateMasterComponent implements OnInit {
-    // msg: any;
-    // confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    // DialogRef: MatDialogRef<RolePermissionComponent>;
 
     constructor(
         public _RoleTemplateService: RoleTemplateService,
@@ -39,14 +37,21 @@ export class RoleTemplateMasterComponent implements OnInit {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
                             }
-                        }, {
+                        }, 
+                        {
                             action: gridActions.delete, callback: (data: any) => {
                                 this._RoleTemplateService.deactivateTheStatus(data.RoleId).subscribe((response: any) => {
                                     this.toastr.success(response.message);
                                     this.grid.bindGridData();
                                 });
                             }
-                        }]
+                        },
+                        {
+                            action: gridActions.view, callback: (data: any) => {
+                                this.onPermission(data.RoleId);
+                            }
+                        }, 
+                    ]
                 } //Action 1-view, 2-Edit,3-delete
             ],
             sortField: "RoleId",
@@ -80,6 +85,30 @@ export class RoleTemplateMasterComponent implements OnInit {
                 }
             });
         }
+
+        onPermission(RoleId){
+              console.log(RoleId)
+              const dialogRef = this._matDialog.open(RolePermissionComponent,
+                {
+                  maxWidth: "80vw",
+                    height: '100vh',
+                    maxHeight:'1290vh',
+                    width: '100%',
+                    data : {
+                      RoleId : RoleId,
+                    }
+                });
+              dialogRef.afterClosed().subscribe(result => {
+            //   this. getregistrationList();
+              });
+            //   this.DialogRef = this._matDialog.open(
+            //     RolePermissionComponent,
+            //     {
+            //       disableClose: false,
+            //     }
+            //   );
+              
+            }
 
 }
 
@@ -184,29 +213,7 @@ export class RoleTemplateMasterComponent implements OnInit {
     //   this._RoleService.myform.reset({ IsActive: "true" });
     //   this._RoleService.initializeFormGroup();
     // }
-    // onPermission(RoleId){
-    //   console.log(RoleId)
-    //   const dialogRef = this._matDialog.open(RolePermissionComponent,
-    //     {
-    //       maxWidth: "80vw",
-    //         height: '100vh',
-    //         maxHeight:'1290vh',
-    //         width: '100%',
-    //         data : {
-    //           RoleId : RoleId,
-    //         }
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //   //this. getregistrationList();
-    //   });
-    //   // this.DialogRef = this._matDialog.open(
-    //   //   RolePermissionComponent,
-    //   //   {
-    //   //     disableClose: false,
-    //   //   }
-    //   // );
-      
-    // }
+    
   
     // // newSchduler(){
     // //   const dialogRef = this._matDialog.open(NewSchdulerComponent,

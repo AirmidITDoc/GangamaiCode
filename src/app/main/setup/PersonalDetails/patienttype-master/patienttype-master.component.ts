@@ -20,11 +20,11 @@ export class PatienttypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PatientType/List",
         columnsList: [
-            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 800 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

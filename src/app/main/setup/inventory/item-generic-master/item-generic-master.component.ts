@@ -29,12 +29,12 @@ export class ItemGenericMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            { heading: "Code", key: "genericId", sort: true, width: 100, align: 'left', emptySign: 'NA' },
-            { heading: "Generic Name", key: "genericName", sort: true, width: 700, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, width: 100, align: "center" },
+            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

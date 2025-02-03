@@ -24,12 +24,12 @@ export class DepartmentMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DepartmentMaster/List",
         columnsList: [
-            { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

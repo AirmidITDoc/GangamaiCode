@@ -19,10 +19,9 @@ const appRoutes: Routes = [
             import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
     {
-        path: "ip-advance-browse",
+        path: "ip-advance-browse", 
         loadChildren: () =>
-            // import("./ip-advance-browse/ip-advance.module").then((m) => m.IpAdvanceBrowseModule),
-        import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
+        import("./browse-ip-advance/browse-ip-advance.module").then((m) => m.BrowseIpAdvanceModule),
     },
     {
         path: "ip-casepaper",

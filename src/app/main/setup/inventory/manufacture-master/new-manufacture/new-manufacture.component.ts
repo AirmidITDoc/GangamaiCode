@@ -58,7 +58,7 @@ export class NewManufactureComponent implements OnInit {
      
     getValidationMessages() {
         return {
-            manufactureName: [
+            manufName: [
                 { name: "required", Message: "Manufacture Name is required" },
                 { name: "maxlength", Message: "Manufacture Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
