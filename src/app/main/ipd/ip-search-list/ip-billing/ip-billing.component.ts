@@ -870,45 +870,39 @@ ServiceList:any=[];
   newlist:any=[];
   getRtrvPackageList() {  
      this.isLoadingStr = 'loading';
-     let Query = "Select *  from lvwAddCharges where IsGenerated=0 and IsPackage=1  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
-    // console.log(Query); 
-     this._IpSearchListService.getchargesPackageList(Query).subscribe(data => {
-       this.PackageDatasource.data = data as ChargesList[];
-      // this.PacakgeList = data as ChargesList[];
-      // console.log(this.PacakgeList)   
-
-       this.dataSource.data.forEach(element=>{ 
-       this.newlist =  this.PackageDatasource.data.filter(item=> item.PackageId  == element.ServiceId)
-
-       this.newlist.forEach(obj=>{
+    //  let Query = "Select *  from lvwAddCharges where IsGenerated=0 and IsPackage=1  and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+    var vdata={
+      "OPD_IPD_Id":this.selectedAdvanceObj.AdmissionID
+    }
+     this._IpSearchListService.getMainpackageList(vdata).subscribe(data => {
+       this.PackageDatasource.data = data as ChargesList[];  
+       console.log( this.PackageDatasource.data); 
+      this.PackageDatasource.data.forEach(element =>{  
         this.PacakgeList.push(
-          {
-            ServiceId: obj.ServiceId,
-            ServiceName: obj.ServiceName,
-            Price: obj.Price || 0,
-            Qty: obj.Qty || 1,
-            TotalAmt: obj.TotalAmt || 0, 
-            ConcessionAmt: obj.ConcessionAmount || 0,
-            NetAmount: obj.NetAmount || 0,
-            IsPathology: obj.IsPathology || 0,
-            IsRadiology: obj.IsRadiology || 0,
-            PackageId: obj.PackageId || 0,
-            PackageServiceId: element.ServiceId || 0, 
-            PacakgeServiceName:element.ServiceName || '',
-            DoctorName:'',
-            DoctorId:0
-          }); 
-       })     
-       })
-       this.PackageDatasource.data = this.PacakgeList
-     },
-       (error) => {
-         this.isLoading = 'list-loaded';
-       });  
+          { 
+            ServiceId: element.PackageServiceId,
+            ServiceName: element.ServiceName,
+            Price: element.Price || 0,
+            Qty: element.Qty,
+            TotalAmt:  element.TotalAmt,
+            ConcessionAmt:  element.ConcessionAmount,  
+            NetAmount: element.NetAmount,
+            IsPathology: element.IsPathology,
+            IsRadiology: element.IsRadiology, 
+            PackageId:element.PackageId,
+            PackageServiceId:element.ServiceId ,
+            PacakgeServiceName:element.PacakgeServiceName,
+            DoctorName:element.DoctorName || '',
+            DoctorId:element.DoctorId || 0
+          })
+      })
+      this.PackageDatasource.data = this.PacakgeList
+      console.log(this.PacakgeList); 
+    }); 
    }
 
   getChargesList() {
-   // debugger
+   debugger
     this.chargeslist = [];
     this.dataSource.data = [];
     this.isLoadingStr = 'loading';
@@ -917,14 +911,14 @@ ServiceList:any=[];
      this._IpSearchListService.getchargesList(Query).subscribe(data => {
       this.chargeslist = data as ChargesList[];
       console.log(this.chargeslist)
-      this.dataSource.data = this.chargeslist;
-
+      this.dataSource.data = this.chargeslist;  
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
     },
       (error) => {
         this.isLoading = 'list-loaded';
       }); 
     this.chkdiscstatus(); 
+   
   }
 
   billheaderlist: any;
@@ -1438,6 +1432,10 @@ CalculateAdminCharge(){
             Swal.fire('Charges cancelled !', 'Charges cancelled Successfully!', 'success').then((result) => {
               if (contact.IsPackageMaster == '1' && contact.ServiceId) {
                 this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId !== contact.ServiceId)
+                let query
+                query = 'update addcharges set IsCancelled = 1 where PackageMainChargeID='+ contact.ChargesId
+                this._IpSearchListService.getDeletePackageServiceP(query).subscribe(data=>{ 
+                })
                 //console.log(this.PacakgeList)
                 this.PackageDatasource.data = this.PacakgeList;
               }

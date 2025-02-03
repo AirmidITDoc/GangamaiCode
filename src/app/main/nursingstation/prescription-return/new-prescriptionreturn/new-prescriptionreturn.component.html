@@ -35,13 +35,11 @@
                                         name="PatientType" (change)="onChangePatientType($event)"
                                         (blur)="onChangePatientType($event)">
                                         <mat-radio-button value="OP">OP</mat-radio-button>
-                                        <mat-radio-button value="IP">IP</mat-radio-button>
-                                        <mat-radio-button value="External" (checked)="true">External</mat-radio-button>
+                                        <mat-radio-button value="IP">IP</mat-radio-button> 
                                     </mat-radio-group>
                                 </div>
                                 <div class="input-container gap-8" fxFlex>
-                                    <mat-form-field appearance="outline"
-                                        *ngIf="ItemSubform.get('PatientType').value != 'External'" fxFlex>
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <input type="text" name="RegID" formControlName="RegID"
                                             placeholder="RegNo / First Name / Last Name / Mobile No" matInput
                                             [matAutocomplete]="auto1" (input)="getSearchList()">
@@ -64,48 +62,124 @@
                                             *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
                                             Required field cannot be left blank
                                         </mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline"
-                                        *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
-                                        <mat-label>Mobile Number</mat-label>
-                                        <input name="MobileNo" formControlName="MobileNo" placeholder="Mobile Number"
-                                            matInput required [(ngModel)]="MobileNo" max="9999999999" min="1000000000"
-                                            autocomplete="off" maxlength="10"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                            required="required" value="9876658688"
-                                            (keydown.enter)="onEntermobileno($event)" (blur)="onEntermobileno($event)">
-                                        <mat-error class="error"
-                                            *ngIf="ItemSubform.get('MobileNo').invalid && ItemSubform.get('MobileNo').touched">10
-                                            digits Mobile number is
-                                            required</mat-error>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline"
-                                        *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
-                                        <mat-label>Patient Name</mat-label>
-                                        <input matInput placeholder="PatientName" formControlName="PatientName"
-                                            [(ngModel)]="PatientName" required (keydown)="onEnterpatientname($event)"
-                                            #patientname type="text">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline"
-                                        *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
-                                        <mat-label>Doctor Name</mat-label>
-                                        <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
-                                            (keydown)="onEnterDoctorname($event)" #doctorname
-                                            formControlName="DoctorName">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline"
-                                        *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
-                                        <mat-label>Address</mat-label>
-                                        <input matInput placeholder="extAddress" [(ngModel)]="extAddress"
-                                            (keydown)="onEnterAddress($event)" #address formControlName="extAddress">
-                                    </mat-form-field>
+                                    </mat-form-field> 
                                 </div>
                             </div>
                         </mat-card>
+                    </div>
+
+                    <div class="modal-card-container">
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 5px ;">
+                                        <div class="patient-info-sales my-8">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                fxLayoutAlign="space-between center" class="patient-info">
+                                                <div class="patient-sub">
+                                                    <div class="patient-info-row patient-info-1-111 pt-8"
+                                                        fxLayout="row" fxLayoutAlign="space-between">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">UHID No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Doctor Name</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Department</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">DOA | Time</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.AdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">IPD No</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Age | Sex
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.Age}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
+                                                                    D | {{selectedAdvanceObj.GenderName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Ref-Doctor Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                            </div>
+
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Ward | Bed Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.RoomName}}
+                                                                    | {{selectedAdvanceObj.BedName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Type
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Tarrif Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Company Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value"
+                                                                    style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-card-container">
                         <mat-card>
@@ -141,13 +215,13 @@
                                 <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                     <mat-label>Qty</mat-label>
                                     <input matInput  formControlName="Qty" required #qty autocomplete="off"
-                                        [(ngModel)]="Qty" (keydown)="addData()" onlyNumber>
+                                        [(ngModel)]="Qty"  onlyNumber>
                                 </mat-form-field>
 
                                 <div class="input-add-button">
                                     <div matTooltip="Select  name to enable this button!!"
                                         [matTooltipDisabled]="!ItemSubform.invalid" [matTooltipPosition]="'above'">
-                                        <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="!add"
+                                        <button #addbutton class="btn btn-primary btn-with-icon"  
                                             (click)="onAdd()">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
@@ -161,7 +235,7 @@
                     </div>
                     <div class="modal-card-container">
                         <mat-card>
-                            <mat-table #table matSort [dataSource]="saleSelectedDatasource"
+                            <mat-table #table matSort [dataSource]="dsItemlist"
                                 [@animateStagger]="{value:'50'}" class="h-280">
 
                                 <ng-container matColumnDef="ItemId">
@@ -232,16 +306,16 @@
                                 <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
                                          (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
                                 <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':saleSelectedDatasource!=null}">
+                                    [ngClass]="{'hide':dsItemlist!=null}">
                                 </mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(saleSelectedDatasource!=null && saleSelectedDatasource.data.length==0)}">
+                                    [ngClass]="{'hide':!(dsItemlist!=null && dsItemlist.data.length==0)}">
                                 </mat-footer-row>
                             </mat-table>
 
                             <div class="net-amt mt-8">
                                 <span class="net-amt-label font-weight-600">No of Items : </span>
-                                <span class="net-amt-value">{{saleSelectedDatasource.data.length}}</span>
+                                <span class="net-amt-value">{{dsItemlist.data.length}}</span>
                             </div>
                         </mat-card>
                     </div>

@@ -354,13 +354,12 @@
                                 <div fxLayout="row" fxLayoutAlign="start none">
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
                                         style="margin-left:2%;">
-                                        <span>Print</span>
-                                    </button>
-                                    <button type="button" mat-icon-button
-                                    (click)="getIpDischargeType()" [disabled]="IPBILL">
-                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                        <span>Print PDF</span>
+                                    </button>&nbsp;
+                                    <button type="button" mat-raised-button (click)="getIpDischargeType()" [disabled]="IPBILL">
+                                    Export Excel
                                 </button>
-
+                                <!-- <img width="32" height="10px" src="assets/images/svg/xls-svg.svg"> -->
                                
                                 </div>
                             </form>

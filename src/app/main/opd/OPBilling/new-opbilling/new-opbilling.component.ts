@@ -57,7 +57,7 @@ export class NewOPBillingComponent implements OnInit {
     'Qty',
     'Price',
     'TotalAmt',
-    'DiscPer',
+    'DoctorName',
     'DiscAmt',
     'NetAmount', 
     // 'action'
@@ -643,7 +643,7 @@ finaldiscAmt() {
       'ServiceId': this.serviceId
     }
     console.log(vdata);
-    this._oPSearhlistService.getpackagedetList(vdata).subscribe((data) => {
+    this._oPSearhlistService.getmainpackagedetList(vdata).subscribe((data) => {
       this.dsPackageDet.data = data as ChargesList[];
       this.dsPackageDet.data.forEach(element =>{
         this.PacakgeList.push(
@@ -1588,6 +1588,8 @@ getPacakgeDetail(contact){
             PackageId: element.PackageId || 0,
             PackageServiceId: element.PackageServiceId || 0, 
             PacakgeServiceName:element.PacakgeServiceName || '',
+            DoctorName: element.DoctorName || '',
+            DoctorId:element.DoctorId || 0
           });
         this.dsPackageDet.data = this.PacakgeList;
       });

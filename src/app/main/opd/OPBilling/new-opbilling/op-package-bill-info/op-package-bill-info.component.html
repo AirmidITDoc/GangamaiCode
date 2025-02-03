@@ -196,7 +196,7 @@
                                                     (input)="getAdmittedDoctorEditable(contact)"> 
                                                 <mat-autocomplete #autoDocId="matAutocomplete"
                                                     [displayWith]="getOptionTextDoctorEdit"   class="package-auto-complete"
-                                                    (optionSelected)='DropDownValue($event.option.value)'>
+                                                    (optionSelected)='DropDownValue($event.option.value,contact)'>
                                                     <mat-option *ngFor="let option of filteredOptionsDoctorsEdit"
                                                         [value]="option">
                                                         {{option.Doctorname}}
@@ -245,7 +245,8 @@
                                     <mat-header-cell *matHeaderCellDef style="color: white;"> Action
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
-                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
+                                        <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save"
+                                         *ngIf="FormName == 'IPD Package'">
                                             <mat-icon class="active-icon green-600 s-16">check</mat-icon>
                                         </buttom>
                                         <button mat-icon-button (click)="deleteTableRowPackage(contact)" color="warn">

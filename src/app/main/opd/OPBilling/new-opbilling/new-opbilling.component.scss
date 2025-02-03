@@ -38,3 +38,14 @@
 	left: 0;
 	z-index: 1000;
 }
+.mat-column-DoctorName {
+    width:120px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }

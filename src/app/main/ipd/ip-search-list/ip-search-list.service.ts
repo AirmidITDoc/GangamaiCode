@@ -987,6 +987,9 @@ return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_InitiateDiscToStoreName", {})
   
   }
+  public getDeletePackageServiceP(query) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+  }
   // public xyz()
   // {
   //   return this._httpClient.post("Generic/GetByProc?procName=rptBarChartValues",{})
@@ -1270,7 +1273,14 @@ public getDoseList() {
   }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PackageDetails_List", employee)
   }
+  public getMainpackageList(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Packagedet_List", employee)
+  }
 }
+
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"
   

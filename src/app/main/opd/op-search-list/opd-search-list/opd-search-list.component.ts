@@ -494,6 +494,7 @@ export class ChargesList{
   IsPackage:any;
   PacakgeServiceName:any;
   BillwiseTotalAmt: any;
+  DoctorName:any;
   
   constructor(ChargesList){
           this.ChargesId = ChargesList.ChargesId || '';
@@ -516,6 +517,7 @@ export class ChargesList{
           this.PackageId=ChargesList.PackageId || 0;
           this.PackageServiceId=ChargesList.PackageServiceId || 0;
           this.IsPackage=ChargesList.IsPackage || 0; 
-          this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+          this.PacakgeServiceName = ChargesList.PacakgeServiceName || ''; 
+          this.DoctorName = ChargesList.DoctorName || '';
   }
 } 
