@@ -32,18 +32,18 @@ export class DoctorMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DoctoreMaster/List",
         columnsList: [
-            { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Prefix", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA' , width: 150},
+            { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Doctor Type", key: "doctorTypeName", sort: true, align: 'left', emptySign: 'NA' },
@@ -55,7 +55,7 @@ export class DoctorMasterComponent implements OnInit {
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Mah RegNo", key: "mahRegNo", type: gridColumnTypes.status, align: "center" },
-            { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA' , width: 150},
+            { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
@@ -190,7 +190,7 @@ export class DoctorMasterComponent implements OnInit {
     }
 
     onDeactive(doctorId) {
-        
+
         this.confirmDialogRef = this._matDialog.open(
             FuseConfirmDialogComponent,
             {
@@ -200,7 +200,7 @@ export class DoctorMasterComponent implements OnInit {
         this.confirmDialogRef.componentInstance.confirmMessage =
             "Are you sure you want to deactive?";
         this.confirmDialogRef.afterClosed().subscribe((result) => {
-            
+
             if (result) {
                 this._doctorService.deactivateTheStatus(doctorId).subscribe((data: any) => {
                     //  this.msg = data

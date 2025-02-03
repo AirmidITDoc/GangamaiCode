@@ -120,6 +120,8 @@ export class CrossConsultationComponent implements OnInit {
     data.departmentId=this.crossconForm.get('departmentId').value
     data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
     data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
+    data.visitDate=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-dd')
+
     data.visitId=0;
     data.addedBy=0;
     data.updatedBy=0;

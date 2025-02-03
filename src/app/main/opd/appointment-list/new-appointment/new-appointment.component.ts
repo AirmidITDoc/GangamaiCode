@@ -127,6 +127,7 @@ export class NewAppointmentComponent implements OnInit {
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
+    @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
 
 
 
@@ -158,8 +159,6 @@ export class NewAppointmentComponent implements OnInit {
             this.registerObj = this.data;
         console.log(this.registerObj)
 
-        this.data.tariffId = 1
-        this.data.patientTypeId = 1
     }
 
 
@@ -211,10 +210,10 @@ export class NewAppointmentComponent implements OnInit {
             MaritalStatusId: 0,
             ReligionId: 0,
             AreaId: 0,
-            CityId: 0,
+            CityId:[Validators.required],
             City: '',
-            StateId: 0,
-            CountryId: 0,
+            StateId:[Validators.required],
+            CountryId:[Validators.required],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: 1,
@@ -236,10 +235,10 @@ export class NewAppointmentComponent implements OnInit {
             visitDate: [(new Date()).toISOString()],
             visitTime: [(new Date()).toISOString()],
             UnitId: 1,
-            PatientTypeId: [Validators.required,],
-            ConsultantDocId: [Validators.required,],
-            RefDocId: [Validators.required,],
-            TariffId: [Validators.required,],
+            PatientTypeId: [1, Validators.required],
+            ConsultantDocId: [Validators.required],
+            RefDocId: [Validators.required],
+            TariffId: [1, Validators.required],
             CompanyId: 0,
             addedBy: 0,
             updatedBy: 0,
@@ -247,10 +246,10 @@ export class NewAppointmentComponent implements OnInit {
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
             ClassId: 1,
-            DepartmentId: [Validators.required,],
+            DepartmentId: [Validators.required],
             patientOldNew: 1,
             firstFollowupVisit: 0,
-            AppPurposeId: 0,
+            AppPurposeId: [Validators.required],
             followupDate: [(new Date()).toISOString()],
             crossConsulFlag: 0,
             phoneAppId: 0
@@ -415,8 +414,8 @@ export class NewAppointmentComponent implements OnInit {
     displayFn(user: any): string {
         return user.text;
     }
-    selectedOption(e:any){
-        let RegId=e.value;
+    selectedOption(e: any) {
+        let RegId = e.value;
         // from here you need to bind form.
     }
     WhatsAppAppointmentSend(el, vmono) {
@@ -478,28 +477,28 @@ export class NewAppointmentComponent implements OnInit {
     vPhoneFlage = 0;
     vPhoneAppId: any;
     RegNo = 0;
-  
+
 
     getSelectedObj(obj) {
         console.log(obj)
         this.RegOrPhoneflag = 'Entry from Registration';
         let todayDate = new Date();
         const d = new Date(obj.DateofBirth);
-      
+
         this.PatientName = obj.PatientName;
         this.RegId = obj.value;
         this.VisitFlagDisp = true;
-debugger
+        debugger
         if ((this.RegId ?? 0) > 0) {
             debugger
             console.log(this.data)
-           setTimeout(() => {
-              this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
-                this.registerObj = response;
-                console.log(this.registerObj)
-      
-              });
-      
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+
+                });
+
             }, 500);
         }
 
@@ -610,16 +609,14 @@ debugger
         };
     }
     Saveflag: boolean = false;
-   
+
 
     onSave() {
-
-        var Ageflag = false
-
+        debugger
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-           
+
             if (this.searchFormGroup.get('regRadio').value == "registration") {
-             
+
                 this.OnsaveNewRegister();
 
             }
@@ -634,6 +631,7 @@ debugger
     }
 
     OnsaveNewRegister() {
+        
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -648,6 +646,7 @@ debugger
         }, (error) => {
             this.toastr.error(error.message);
         });
+
     }
     onSaveRegistered() {
         this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
@@ -1124,6 +1123,14 @@ debugger
     selectChangedepartment(obj: any) {
         console.log(obj);
         this.departmentId = obj
+
+        this.ddldoctor.SetSelection(obj.departmentId);
+        // this._AppointmentlistService.doctordepartmentData( this.departmentId ).subscribe((response) => {
+        //     this.toastr.success(response.message);
+        //      this.onClear(true);
+        //  }, (error) => {
+        //      this.toastr.error(error.message);
+        //  });
     }
 
     selectChangedeptdoc(obj: any) {

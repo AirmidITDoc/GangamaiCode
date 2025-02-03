@@ -33,16 +33,15 @@ export class PhoneappointmentComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-            { heading: "-", key: "isCancelled", sort: true, align: 'left', type: gridColumnTypes.status, width: 20 },
-            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA', width: 30 },
-            { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
-            { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
-            // { heading: "UHID", key: "regNo", sort: true, align: 'left', width: 100 },
+            { heading: "New/Old", key: "RegNo", sort: true, align: 'left', type: gridColumnTypes.status},
+            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left", width: 150 },
-            { heading: "Doctor Name", key: "doctorName",  emptySign: 'NA',align: "left", width: 150 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left"},
+            { heading: "Doctor Name", key: "doctorName",  emptySign: 'NA',align: "left"},
+            
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     // {
@@ -63,6 +62,7 @@ export class PhoneappointmentComponent implements OnInit {
                                       
                     {
                         action: gridActions.delete, callback: (data: any) => {
+                            debugger
                             this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();

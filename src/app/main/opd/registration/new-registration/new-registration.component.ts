@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
@@ -64,45 +64,53 @@ export class NewRegistrationComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private readonly changeDetectorRef: ChangeDetectorRef
     ) {
 
     }
 
+    ngAfterViewChecked(): void {
+        this.changeDetectorRef.detectChanges();
+    }
 
+    onChangePrefix(e) {
+        this.ddlGender.SetSelection(e.sexId);
+    }
     ngOnInit(): void {
         this.personalFormGroup = this._registerService.createPesonalForm1();
         this.minDate = new Date();
-        // if((this.data?.Submitflag?? true)==true)
-        //     this.registerObj.regId=this.data.data1.regId
-        // if ((this.data.data1?.regId?? 0) > 0) {
-            if ((this.data?.regId?? 0) > 0) {
+        debugger
+           if ((this.data?.regId?? 0) > 0) {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-                   
+                     if(this.registerObj){
+                    // this.personalFormGroup.get("PrefixId").setValue(this.registerObj.prefixId)
+                    //  this.personalFormGroup.get("CityId").setValue(this.registerObj.cityId)
+                     }
                    });
             }, 500);
         }
-        else {
-            this.personalFormGroup.reset();
+        // else {
+        //     this.personalFormGroup.reset();
 
-        }
+        // }
     }
-    Saveflag: boolean = false;
+ 
     OnSubmit() {
         console.log(this.personalFormGroup.value)
-        if (this.personalFormGroup.valid) {
+        // if (this.personalFormGroup.valid) {
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        } else {
-            this.toastr.warning("Form Is Invalid !...");
-        }
+        // } else {
+        //     this.toastr.warning("Enter * all data...Form Is Invalid !...");
+        // }
     }
 
     onClose() {
@@ -134,18 +142,27 @@ export class NewRegistrationComponent implements OnInit {
     get f() {
         return this.personalFormGroup.controls;
     }
-    onChangePrefix(e) {
-        
-        this.ddlGender.SetSelection(e.sexId);
-    }
+  
 
     onChangestate(e) {
-        this.ddlCountry.SetSelection(e.stateId);
+        this.ddlCountry.SetSelection(e.countryId);
     }
 
     onChangecity(e) {
-        this.ddlState.SetSelection(e.cityId);
-        this.ddlCountry.SetSelection(e.stateId);
+        debugger
+        this.ddlState.SetSelection(e.stateId);
+        console.log(this.ddlState)
+        // if(this.personalFormGroup.get("StateId").value)
+
+        //     setTimeout(() => {
+        //         this._registerService.getstateId(e.stateId).subscribe((response) => {
+        //             console.log(response)
+                   
+        //            });
+        //     }, 500);
+
+        this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
+      
     }
 
     

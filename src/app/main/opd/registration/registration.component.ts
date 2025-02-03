@@ -52,27 +52,24 @@ export class RegistrationComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "OutPatient/RegistrationList",
         columnsList: [
-            { heading: "Date", key: "rDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-            { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
             { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
             { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', },
+           
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA',width:150   },
+            // { heading: "aadharCardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA', },
             {
-                heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action,width:160, actions: [
+                heading: "Action", key: "action", align: "right",sticky:true, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onEdit(data);
+                            this.grid.bindGridData();
                         }
-                    },
-                   {
-                        action: gridActions.print, callback: (data: any) => {
-                            // this.getAdmittedPatientCasepaperview(data);
-                        }
-                    },
+                    }
                     ]
             }
         ],
@@ -110,27 +107,24 @@ export class RegistrationComponent implements OnInit {
         });
     }
 
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.genderId);
-                break;
-            default:
-                break;
-        }
-    }
+    // changeStatus(status: any) {
+    //     switch (status.id) {
+    //         case 1:
+    //             //this.onEdit(status.data)
+    //             break;
+    //         case 2:
+    //             this.onEdit(status.data)
+    //             break;
+    //         case 5:
+    //             this.onDeactive(status.data.genderId);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     onEdit(row) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        console.log(row)
+       console.log(row)
         this._RegistrationService.populateForm(row);
 
         const dialogRef = this._matDialog.open(
@@ -139,10 +133,8 @@ export class RegistrationComponent implements OnInit {
                 maxWidth: "95vw",
                 maxHeight: '90%',
                 width: '90%',
-                data: {
-                    data1: row,
-                    Submitflag: false
-                },
+                data:row
+                
             }
         );
 
@@ -182,45 +174,45 @@ export class RegistrationComponent implements OnInit {
             this.confirmDialogRef = null;
         });
     }
-    getRegistrationlistrview() {
-        setTimeout(() => {
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "FromDate",
-                        "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
-                        "opType": "13"
-                    },
-                    {
-                        "fieldName": "ToDate",
-                        "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
-                        "opType": "13"
-                    }
-                ],
-                "mode": "RegistrationReport"
-            }
-            console.log(param)
-            this._RegistrationService.getPatientListView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Registration List  Viewer"
+    // getRegistrationlistrview() {
+    //     setTimeout(() => {
+    //         let param = {
+    //             "searchFields": [
+    //                 {
+    //                     "fieldName": "FromDate",
+    //                     "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
+    //                     "opType": "13"
+    //                 },
+    //                 {
+    //                     "fieldName": "ToDate",
+    //                     "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
+    //                     "opType": "13"
+    //                 }
+    //             ],
+    //             "mode": "RegistrationReport"
+    //         }
+    //         console.log(param)
+    //         this._RegistrationService.getPatientListView(param).subscribe(res => {
+    //             const matDialog = this._matDialog.open(PdfviewerComponent,
+    //                 {
+    //                     maxWidth: "85vw",
+    //                     height: '750px',
+    //                     width: '100%',
+    //                     data: {
+    //                         base64: res["base64"] as string,
+    //                         title: "Registration List  Viewer"
 
-                        }
+    //                     }
 
-                    });
+    //                 });
 
-                matDialog.afterClosed().subscribe(result => {
+    //             matDialog.afterClosed().subscribe(result => {
 
-                });
-            });
+    //             });
+    //         });
 
-        }, 100);
-    }
+    //     }, 100);
+    // }
 
 
     getValidationMessages() {

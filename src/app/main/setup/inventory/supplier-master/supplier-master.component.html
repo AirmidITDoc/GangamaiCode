@@ -21,32 +21,20 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Supplier Name</mat-label>
-                    <input matInput placeholder="Search Supplier Name" autocomplete="off"   [formGroup]="myformSearch" 
-                        [(ngModel)]="gridConfig.filters[0].fieldValue"  formControlName="SupplierNameSearch" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
+                    <input matInput placeholder="Search Supplier Name" autocomplete="off" [formGroup]="myformSearch"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" formControlName="SupplierNameSearch" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-               
-                <airmid-dropdown 
-                    label="Store Name" 
-                    formControlName="StoreId"
-                    [formGroup]="myformSearch" 
-                    [(ngModel)]="gridConfig.filters[1].fieldValue"
-                    [mode]="autocompleteModestoreName"
-                    (selectionChange)="selectChangestoreName($event)"  >
+
+                <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="myformSearch"
+                    [(ngModel)]="gridConfig.filters[1].fieldValue" [mode]="autocompleteModestoreName"
+                    (selectionChange)="selectChangestoreName($event)">
                 </airmid-dropdown>
 
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
-
-                
             </ng-container>
         </airmid-table>
     </div>
-    
+
 </div>

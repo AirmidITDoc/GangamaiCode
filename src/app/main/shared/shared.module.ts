@@ -46,11 +46,12 @@ import { AirmidDatepickerComponent } from './componets/airmid-datepicker/airmid-
 import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.component';
 import { AirmidAutoCompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
 import { TableSearchBarComponent } from './componets/airmid-table/table-search-bar/table-search-bar.component';
+import { PrintCallingComponent } from './componets/print-calling/print-calling.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent,AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent],
+         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -98,7 +99,8 @@ import { TableSearchBarComponent } from './componets/airmid-table/table-search-b
         AirmidTextbox1Component,
         AirmidDateofbirthComponent,
         AirmidSliderComponent,
-        AirmidDatepickerComponent
+        AirmidDatepickerComponent,
+        PrintCallingComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

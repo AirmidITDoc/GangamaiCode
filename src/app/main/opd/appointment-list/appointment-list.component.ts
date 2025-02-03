@@ -32,6 +32,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.component';
 import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -48,7 +49,8 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-        public toastr: ToastrService, public datePipe: DatePipe) {
+        public toastr: ToastrService, public datePipe: DatePipe,
+       ) {
 
     }
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -99,18 +101,18 @@ export class AppointmentListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', width: 20, type: gridColumnTypes.template },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template,width:150 },
             { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 , type: gridColumnTypes.template},
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+            { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA',type: 8 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "Department", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
             { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             {
                 heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
@@ -123,6 +125,7 @@ export class AppointmentListComponent implements OnInit {
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onRegistrationEdit(data);
+                            this.grid.bindGridData();
                         }
                     },
                     {
@@ -212,10 +215,11 @@ export class AppointmentListComponent implements OnInit {
                 maxWidth: "95vw",
                 maxHeight: '90%',
                 width: '90%',
-                data: {
-                    data1: row,
-                    Submitflag: true
-                },
+                data:row
+                //  {
+                //     data1: row,
+                //     Submitflag: true
+                // },
 
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -238,7 +242,7 @@ export class AppointmentListComponent implements OnInit {
                 "mode": "AppointmentReceipt"
             }
             console.log(param)
-            this._AppointmentlistService.getPatientcasepaperView(param).subscribe(res => {
+            this._AppointmentlistService.getReportView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
                     {
                         maxWidth: "85vw",

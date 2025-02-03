@@ -15,7 +15,7 @@ export class PhoneAppointListService {
         private _httpClient1: HttpClient,
         private _formBuilder: UntypedFormBuilder
     ) {
-        this.myFilterform = this.filterForms();
+        // this.myFilterform = this.filterForms();
         this.mysearchform = this.filterForm();
     }
 
@@ -34,22 +34,22 @@ export class PhoneAppointListService {
         });
     }
 
-    filterForms(): FormGroup {
-        return this._formBuilder.group({
+    // filterForms(): FormGroup {
+    //     return this._formBuilder.group({
 
-            hospitalId: '0',
-            patientTypeID: '0',
-            companyId: '0',
-            tariffId: '0',
-            departmentId: '0',
-            doctorId: '0',
-            refDocName: '0',
-            classId: '0',
-            countryId: '0',
-            isSeniorCitizen: '0',
+    //         hospitalId: '0',
+    //         patientTypeID: '0',
+    //         companyId: '0',
+    //         tariffId: '0',
+    //         departmentId: '0',
+    //         doctorId: '0',
+    //         refDocName: '0',
+    //         classId: '0',
+    //         countryId: '0',
+    //         isSeniorCitizen: '0',
 
-        });
-    }
+    //     });
+    // }
 
     createphoneForm(): FormGroup {
         return this._formBuilder.group({
@@ -57,19 +57,14 @@ export class PhoneAppointListService {
             appDate: [(new Date()).toISOString()],
             appTime: [(new Date()).toISOString()],
             // seqNo: '',
-            firstName: ['', [
+           firstName: ['', [
                 Validators.required,
-                Validators.maxLength(50),
-                // Validators.pattern("^[a-zA-Z._ -]*$"),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
-            middleName: ['', [
-
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-            ]],
+            middleName: [''],
             lastName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
             ]],
             address: ['', Validators.required],
             mobileNo: ['', [Validators.required,
@@ -79,8 +74,8 @@ export class PhoneAppointListService {
             ]],
             phAppDate: [(new Date()).toISOString()],
             phAppTime: [(new Date()).toISOString()],
-            departmentId: '',
-            doctorId: [1],
+            departmentId: ['', Validators.required],
+            doctorId:['', Validators.required],
             addedBy: 1,
             updatedBy: 1,
             regNo: [''],
@@ -90,32 +85,10 @@ export class PhoneAppointListService {
 
 
 
-
-
-    getValidationMessages() {
-        return {
-            categoryName: [
-                { name: "required", Message: "Category Name is required" },
-                { name: "maxlength", Message: "Category name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
-
-
     public getPhoenappschdulelist() {
         return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp", {})
     }
 
-
-    //Deartment Combobox List
-    public getDepartmentCombo() {
-        return this._httpClient1.post("Generic/GetByProc?procName=RetrieveDepartmentMasterForCombo", {})
-    }
-    //Doctor Master Combobox List
-    public getDoctorMasterCombo(Id) {
-        return this._httpClient1.post("Generic/GetByProc?procName=Retrieve_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
-    }
 
     // new Api
     public phoneMasterSave(Param: any) {
@@ -129,12 +102,14 @@ export class PhoneAppointListService {
 
 
     public phoneMasterCancle(Param: any) {
-        if (Param.phoneAppId) {
-            return this._httpClient.PutData("PhoneAppointment2/Cancel" + Param.phoneAppId, Param);
-        } else return this._httpClient.PostData("PhoneAppointment2/Cancel", Param);
-    }
+      return this._httpClient.PutData("PhoneAppointment2/Cancel", Param);
+      }
 
     public getMaster(mode, Id) {
         return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
+    }
+
+    public getRegistraionById(Id) {
+        return this._httpClient.GetData("OutPatient/" + Id);
     }
 }

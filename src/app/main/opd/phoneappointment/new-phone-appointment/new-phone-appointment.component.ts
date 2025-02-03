@@ -13,6 +13,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from '../../registration/registration.component';
 
 @Component({
   selector: 'app-new-phone-appointment',
@@ -23,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
+  searchFormGroup: FormGroup
   hasSelectedContacts: boolean;
 
 
@@ -34,9 +36,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   minDate: Date;
   vMobile: any;
   phoneAppId: any = 0;
-  vDepartmentid: any = '1';
-  vDoctorId: any = '2';
 
+  registerObj = new RegInsert({});
 
   // New Api
   autocompletedepartment: string = "Department";
@@ -58,7 +59,38 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.minDate = new Date();
 
     this.phoneappForm = this._phoneAppointListService.createphoneForm();
+    this.searchFormGroup = this.createSearchForm();
   }
+
+
+  createSearchForm() {
+    return this.formBuilder.group({
+      RegId: 0,
+      AppointmentDate: [(new Date()).toISOString()],
+    });
+  }
+
+
+  RegId = 0;
+
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.RegId = obj.value;
+    debugger
+    if ((this.RegId ?? 0) > 0) {
+
+      setTimeout(() => {
+        this._phoneAppointListService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(response)
+
+        });
+
+      }, 500);
+    }
+
+  }
+
 
 
 
@@ -103,9 +135,16 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnSubmit() {
-debugger
+
     console.log(this.phoneappForm.value);
+
     if (!this.phoneappForm.invalid) {
+      this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
+      this.phoneappForm.get('phAppTime').setValue(this.datePipe.transform(this.phoneappForm.get('phAppTime').value, 'hh:mm:ss a'))
+      this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
+      this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.phoneappForm.get('appTime').value, 'hh:mm:ss a'))
+     
+      console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
@@ -136,12 +175,12 @@ debugger
 
   selectChangedepartment(obj: any) {
     console.log(obj);
-    this.vDepartmentid = obj.value
+    // this.vDepartmentid = obj.value
   }
 
   selectChangedoctor(obj: any) {
     console.log(obj);
-    this.vDoctorId = obj.value
+    // this.vDoctorId = obj.value
   }
 }
 

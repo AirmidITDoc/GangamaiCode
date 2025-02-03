@@ -66,10 +66,7 @@ export class AppointmentlistService {
         });
     }
 
-    initializeFormGroup() {
-        // this.createPesonalForm();
-        // this.createVisitdetailForm();
-    }
+   
 
 
     public documentuploadInsert(employee, loader = true) {
@@ -144,14 +141,19 @@ export class AppointmentlistService {
     public getRegistraionById(Id) {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
+
+    
+    public doctordepartmentData(Id) {
+        return this._httpClient1.GetData("OutPatient/" + Id);
+    }
+
     public getRegistrations(keyword) {
         return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
     }
 
-    public getPatientcasepaperView(Param) {
+    public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
-    }
-
+      }
 
 }
 

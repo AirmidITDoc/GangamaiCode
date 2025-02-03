@@ -41,7 +41,7 @@ export class RegistrationService {
     createPesonalForm1() {
         return this._formBuilder.group({
             RegId: [0],
-            RegNo: '1',
+            RegNo: '',
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
@@ -81,14 +81,14 @@ export class RegistrationService {
             Validators.pattern("^[0-9]*$")
             ]],
 
-            panCardNo: 'ds',
-            MaritalStatusId: '',
+            panCardNo: '',
+            MaritalStatusId:0,
             ReligionId: 0,
-            AreaId: '',
-            CityId: '',
-            City: ['d'],
-            StateId: '',
-            CountryId: '',
+            AreaId: 0,
+            CityId: [0, [Validators.required]],
+            City: [''],
+            StateId:  [0, [Validators.required]],
+            CountryId:  [0, [Validators.required]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: 1,
@@ -150,6 +150,13 @@ export class RegistrationService {
 
     public getcitylist(version) {
         return this._httpClient1.GetData("CityMaster/get-cities/" + "&version=" + version);
+    }
+
+  
+
+    public getstateId(Id) {
+
+        return this._httpClient1.GetData("StateMaster/?Id=" + Id + "&version=" + 1);
     }
 
     public getPatientListView(mode) {

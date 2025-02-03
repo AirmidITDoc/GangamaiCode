@@ -308,7 +308,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <!-- [value]="RefDocId" -->
-                                    <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId" [formGroup]="VisitFormGroup" [value]="data?.refDocId" [validations]="getValidationMessages().refDocId" [mode]="autocompleteModedeptdoc">
+                                    <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId" [formGroup]="VisitFormGroup" [value]="data?.refDocId" [validations]="getValidationMessages().refDocId" [mode]="autocompleteModerefdoc">
                                     </airmid-dropdown>
                                 </div>
 
@@ -334,6 +334,7 @@
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
             </div>
+           
         </div>
     </div>
 </div>
