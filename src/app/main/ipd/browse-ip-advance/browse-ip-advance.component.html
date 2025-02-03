@@ -1,0 +1,151 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+        dynamicTableHeight>
+
+        <mat-toolbar class="top-header accent">
+            <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Browse IP Advance
+                </span>
+            </div>
+        </mat-toolbar>
+    
+        <mat-tab-group>
+            <mat-tab label="IP Browse Advance List">
+                <div fusePerfectScrollbar
+                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                    dynamicTableHeight>
+                    <mat-toolbar class="top-header accent">
+                        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                IP Browse Advance List
+                            </span>
+                        </div>
+                    </mat-toolbar>
+                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                        <airmid-table [gridConfig]="gridConfig" class="content">
+                            <ng-container filters>
+    
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a Date Range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
+                                            placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date"
+                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field> 
+                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Registration No</mat-label>
+                                    <input matInput placeholder="Search Registration No" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[1].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[2].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[3].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>PBill No</mat-label>
+                                    <input matInput placeholder="Search PBill No" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[4].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                            </ng-container>
+                        </airmid-table>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <!-- 2nd -->
+            <mat-tab label="IP Refund Of Advance">
+                <div fusePerfectScrollbar
+                    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                    dynamicTableHeight>
+                    <mat-toolbar class="top-header accent">
+                        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                IP Refund Of Advance
+                            </span>
+                        </div>
+                    </mat-toolbar>
+                    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                        <airmid-table [gridConfig]="gridConfig1" class="content">
+                            <ng-container filters>
+    
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a Date Range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
+                                            placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date"
+                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field> 
+                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Registration No</mat-label>
+                                    <input matInput placeholder="Search Registration No" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[1].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[2].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+    
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="gridConfig.filters[3].fieldValue=''">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                            </ng-container>
+                        </airmid-table>
+                    </div>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+</div>

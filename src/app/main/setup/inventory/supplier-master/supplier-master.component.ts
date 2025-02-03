@@ -42,28 +42,6 @@ export class SupplierMasterComponent implements OnInit {
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 80 },
             {
-                // heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-                //     {
-                //         action: gridActions.edit, callback: (data: any) => {
-                //             let that = this;
-                //             const dialogRef = this._matDialog.open(FixSupplierComponent,
-                //                 {
-                //                     maxWidth: "95vw",
-                //                     height: '85%',
-                //                     width: '70%',
-                //                     data: { supplierId: data.supplierId }
-                //                 });
-                //             dialogRef.afterClosed().subscribe(result => {
-                //                 if (result) {
-                //                     that.grid.bindGridData();
-                //                 }
-                //             });
-                //         }
-                //     }, {
-                //         action: gridActions.delete, callback: (data: any) => {
-
-                //         }
-                //     }]
                 heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
@@ -118,7 +96,7 @@ export class SupplierMasterComponent implements OnInit {
                 maxWidth: "100vw",
                 height: '95%',
                 width: '70%',
-                data: Row
+                data: obj
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -228,7 +206,7 @@ export class SupplierMaster {
     ModeOfPayment: Number;
     TermOfPayment: Number;
     
-modeofPayment: Number;
+    modeofPayment: Number;
     termofPayment: Number;
     TaxNature: Number;
     CurrencyId: Number;
@@ -258,7 +236,7 @@ modeofPayment: Number;
     OpeningBalance: any;
     supplierTime:any;
     mAssignSupplierToStores: any[];
-Freight: any;
+    Freight: any;
     /**
      * Constructor
      *

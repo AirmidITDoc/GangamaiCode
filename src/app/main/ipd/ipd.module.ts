@@ -57,13 +57,14 @@ import { StockManagementComponent } from './stock-management/stock-management.co
 import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ipsettlement-view.component';
 import { CompanyInformationComponent } from './company-information/company-information.component';
 import { CompanyListComponent } from './company-list/company-list.component';
+import { BrowseIPAdvanceComponent } from './browse-ip-advance/browse-ip-advance.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
 
 @NgModule({
-  declarations: [IPDSearcPatienthComponent],
+  declarations: [IPDSearcPatienthComponent,],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -102,7 +103,7 @@ import { CompanyListComponent } from './company-list/company-list.component';
     MatListModule,
     SharedModule,
     // MatStepperModule,
-    MatSpinner,
+    // MatSpinner,
     // NgxMatSelectSearchModule,
     MatDatepickerModule,
     //  NgMultiSelectDropDownModule.forRoot(),

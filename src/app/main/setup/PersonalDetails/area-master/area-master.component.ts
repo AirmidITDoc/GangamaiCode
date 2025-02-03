@@ -20,13 +20,13 @@ export class AreaMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "AreaMaster/List",
         columnsList: [
-            { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

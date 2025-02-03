@@ -20,12 +20,12 @@ export class MaritalstatusMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "MaritalStatus/List",
         columnsList: [
-            { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

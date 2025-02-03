@@ -25,12 +25,12 @@ export class PrefixMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Prefix/List",
         columnsList: [
-            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
+            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

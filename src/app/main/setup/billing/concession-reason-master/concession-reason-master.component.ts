@@ -24,12 +24,12 @@ export class ConcessionReasonMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "ConcessionReasonMaster/List",
         columnsList: [
-            { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA', width: 700 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+            { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

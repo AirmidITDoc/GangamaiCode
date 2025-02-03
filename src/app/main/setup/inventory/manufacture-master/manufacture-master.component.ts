@@ -21,15 +21,15 @@ export class ManufactureMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "ItemManufactureMaster/List",
+        apiUrl: "ManufactureMaster/List",
         columnsList: [
-            { heading: "Code", key: "itemManufactureId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ManuFatcure Name", key: "manufactureName", width: 350, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Manufacture Short Name", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "User Name", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ManuFatcureName", key: "manufName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ManufactureShortName", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
@@ -44,7 +44,7 @@ export class ManufactureMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "itemManufactureId",
+        sortField: "ManufName",
         sortOrder: 0,
         filters: [
             { fieldName: "manufactureName", fieldValue: "", opType: OperatorComparer.Contains },

@@ -24,13 +24,13 @@ export class PrescriptionclassmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Priscriptionclass/List",
         columnsList: [
-            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width:350 },
-            { heading: "TemplateDesc Name", key: "templatedescname", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:100 },
+            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateDesc Name", key: "templatedescname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,width:100, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data)

@@ -22,11 +22,11 @@ export class UnitmasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathUnitMaster/List",
         columnsList: [
-            { heading: "Code", key: "unitId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Unit Name", key: "unitName", width: 800, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

@@ -20,14 +20,14 @@ export class WardMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
-            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 110 },
+            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);

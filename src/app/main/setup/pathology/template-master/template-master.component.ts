@@ -27,14 +27,14 @@ export class TemplateMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "PathologyTemplate/List",
         columnsList: [
-            { heading: "Code", key: "templateId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Name", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Name", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Template Desc", key: "templateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
