@@ -49,11 +49,11 @@ export class AirmidDatepickerComponent implements
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
     @Input() isRangePicker: boolean = false;
-    @Input() format:string="yyyy-MM-dd"
+    @Input() format: string = "yyyy-MM-dd"
     @Output() dateChange = new EventEmitter<any>();
     @Output() fromValueChange = new EventEmitter<string>();
     @Output() toValueChange = new EventEmitter<string>();
-date=new Date();
+    date = new Date();
 
     minDate = new Date();
     get disabled(): boolean {
@@ -198,6 +198,9 @@ date=new Date();
 
 
     ngOnInit() {
-
+        if (!this.isRangePicker) {
+            let date = this.datePipe.transform(this.formGroup.controls[this.formControlName].value, this.format);
+            this.formGroup.controls[this.formControlName].setValue(date);
+        }
     }
 }
