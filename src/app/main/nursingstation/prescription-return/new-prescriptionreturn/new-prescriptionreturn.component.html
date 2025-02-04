@@ -38,9 +38,10 @@
                                         <mat-radio-button value="IP">IP</mat-radio-button>
                                         <mat-radio-button value="External" (checked)="true">External</mat-radio-button>
                                     </mat-radio-group>
+
                                 </div>
                                 <div class="input-container gap-8" fxFlex>
-                                    <mat-form-field appearance="outline"
+                                    <!-- <mat-form-field appearance="outline"
                                         *ngIf="ItemSubform.get('PatientType').value != 'External'" fxFlex>
                                         <input type="text" name="RegID" formControlName="RegID"
                                             placeholder="RegNo / First Name / Last Name / Mobile No" matInput
@@ -64,7 +65,21 @@
                                             *ngIf="ItemSubform.get('RegID').hasError('required')  && ItemSubform.get('RegID').touched">
                                             Required field cannot be left blank
                                         </mat-error>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+
+                                    <airmid-autocomplete lbl="RgId" 
+                                    *ngIf="ItemSubform.get('PatientType').value == 'OP'"
+                                        [formGroup]="ItemSubform" formControlName="RegID" 
+                                        placeholderText="OP-RegNo/FirstName/LastName" ApiUrl="OutPatient/auto-complete?Keyword=" 
+                                        (selectionChange)="getSelectedObjOP($event)">
+                                    </airmid-autocomplete>
+
+                                    <airmid-autocomplete lbl="RgId" 
+                                    *ngIf="ItemSubform.get('PatientType').value == 'IP'"
+                                        [formGroup]="ItemSubform" formControlName="RegID" 
+                                        placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="OutPatient/auto-complete?Keyword=" 
+                                        (selectionChange)="getSelectedObjIP($event)">
+                                    </airmid-autocomplete>
 
                                     <mat-form-field appearance="outline"
                                         *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
@@ -84,24 +99,27 @@
                                     <mat-form-field appearance="outline"
                                         *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
                                         <mat-label>Patient Name</mat-label>
-                                        <input matInput placeholder="PatientName" formControlName="PatientName"
+                                        <!-- <input matInput placeholder="PatientName" formControlName="PatientName"
                                             [(ngModel)]="PatientName" required (keydown)="onEnterpatientname($event)"
-                                            #patientname type="text">
+                                            #patientname type="text"> -->
+                                            <input name="MobileNo" formControlName="PatientName" placeholder="PatientName"
+                                            matInput required [(ngModel)]="PatientName"
+                                            (keydown.enter)="onEnterpatientname($event)">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline"
                                         *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
                                         <mat-label>Doctor Name</mat-label>
                                         <input matInput placeholder="DoctorName" [(ngModel)]="DoctorName"
-                                            (keydown)="onEnterDoctorname($event)" #doctorname
+                                            (keydown.enter)="onEnterDoctorname($event)" #doctorname
                                             formControlName="DoctorName">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline"
                                         *ngIf="ItemSubform.get('PatientType').value == 'External'" fxFlex>
                                         <mat-label>Address</mat-label>
-                                        <input matInput placeholder="extAddress" [(ngModel)]="extAddress"
-                                            (keydown)="onEnterAddress($event)" #address formControlName="extAddress">
+                                        <input matInput placeholder="Address" [(ngModel)]="extAddress"
+                                            (keydown.enter)="onEnterAddress($event)" #address formControlName="extAddress">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -111,26 +129,11 @@
                         <mat-card>
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
 
-                                <mat-form-field appearance="outline" fxFlex="1 1 auto">
-                                    <mat-label>ItemName</mat-label>
-                                    <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
-                                        placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="ItemSubform.get('ItemId').setValue(''); isItemIdSelected = false;"> close </mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="ItemSubform.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
-                                        (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                        <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                            {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                    <mat-error class="error" *ngIf="ItemSubform.get('ItemId').invalid && ItemSubform.get('ItemId').touched">
-                                        Select ItemName
-                                    </mat-error>
-                                </mat-form-field>
+                                <airmid-dropdown label="Item Name" 
+                                    formControlName="ItemId" [formGroup]="ItemSubform"
+                                    [validations]="getValidationMessages().ItemId" 
+                                    [mode]="autocompleteitem">
+                                </airmid-dropdown>
 
                                 <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                     <mat-label>Batch No</mat-label>

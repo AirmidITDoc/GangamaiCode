@@ -35,23 +35,11 @@
                                     </mat-radio-group>
                                 </div>
                                 <div class="input-container gap-8" fxFlex>
-                                    <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
-                                        <input type="text" name="RegID" formControlName="RegID" placeholder="RegNo / First Name / Last Name / Mobile No" matInput [matAutocomplete]="auto1" (input)="getSearchList()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText" (optionSelected)='getSelectedObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                                {{option.RegNo}} |
-                                                {{option.MobileNo}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error *ngIf="searchFormGroup.get('RegID').hasError('required')  && searchFormGroup.get('RegID').touched">
-                                            Required field cannot be left blank
-                                        </mat-error>
-                                    </mat-form-field>
+                                    <airmid-autocomplete lbl="RgId" 
+                                        [formGroup]="searchFormGroup" formControlName="RegID" 
+                                        placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="OutPatient/auto-complete?Keyword=" 
+                                        (selectionChange)="getSelectedObjIP($event)">
+                                    </airmid-autocomplete>
                                 </div>
                             </div>
                         </form>
@@ -62,7 +50,7 @@
                         <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container">
                                 <div class="patient-info-box">
-                                    <mat-card fxFlex.gt-sm="99%" fxFlex style="padding: 6px;">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
                                         <div class="patient-info-sales my-8">
                                             <div class="patient-info-title border-bottom pb-2">
                                                 <span class="h1">Patient Information</span>
@@ -78,26 +66,24 @@
                                                                 </span>
                                                                 <span>:</span>
                                                                 <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                                    class="patient-col-value">{{registerObj.RegNo}}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Patient Name
                                                                 </span>
                                                                 <span>:</span>
                                                                 <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                                    class="patient-col-value">{{ registerObj.firstName + ' ' + registerObj.lastName }}</span>
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Doctor Name</span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.DoctorName}}</span> -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Department</span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.DepartmentName}}</span> -->
                                                             </div>
                                                         </div>
                                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -105,29 +91,25 @@
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">DOA | Time</span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.AdmissionTime | date:'dd/MM/YYYY'}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.AdmissionTime | date:'dd/MM/YYYY'}}</span> -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">IPD No</span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.IPDNo}}</span> -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Age | Sex
                                                                 </span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.Age}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                                    D | {{selectedAdvanceObj.GenderName}}</span>
+                                                                <span class="patient-col-value">{{registerObj.ageYear}}Y|{{registerObj.AgeMonth}}M|{{registerObj.AgeDay}}D</span>
+                                                                 <!--  | {{registerObj.GenderName}} -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Ref-Doctor Name
                                                                 </span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.RefDocName}}</span> -->
                                                             </div>
 
                                                         </div>
@@ -136,29 +118,26 @@
                                                                 <span class="patient-col-key">Ward | Bed Name
                                                                 </span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.RoomName}}
-                                                                    | {{selectedAdvanceObj.BedName}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.RoomName}}
+                                                                    | {{registerObj.BedName}}</span> -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Patient Type
                                                                 </span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.PatientType}}</span> -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Tarrif Name
                                                                 </span>
                                                                 <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                                <!-- <span class="patient-col-value">{{registerObj.TariffName}}</span> -->
                                                             </div>
                                                             <div class="patient-col">
                                                                 <span class="patient-col-key">Company Name</span>
                                                                 <span>:</span>
-                                                                <span class="patient-col-value"
-                                                                    style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                                <!-- <span class="patient-col-value"
+                                                                    style="color: orange;">{{registerObj.CompanyName}}</span> -->
                                                             </div>
                                                         </div>
                                                     </div>

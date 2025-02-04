@@ -47,6 +47,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   BatchNo: any = '';
   Qty: any;
   screenFromString = 'payment-form';
+  autocompleteitem: string = "Item";
 
   constructor(public _PrescriptionReturnService: PrescriptionReturnService,
     private _fuseSidebarService: FuseSidebarService,
@@ -101,10 +102,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-
     this.dateTimeObj = dateTimeObj;
   }
-
 
   getSearchItemList() {  
       var m_data = {
@@ -124,11 +123,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
         }
       });  
   } 
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemName;
-  } 
+  // getOptionItemText(option) {
+  //   this.ItemId = option.ItemID;
+  //   if (!option) return '';
+  //   return option.ItemName;
+  // } 
   getSelectedObjItem(obj) {
     // if (this.saleSelectedDatasource.data.length > 0) {
     //   this.saleSelectedDatasource.data.forEach((element) => {
@@ -176,7 +175,13 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // this.qty.nativeElement.focus();
   }
 
-
+  getValidationMessages() {
+    return {
+      ItemId:[
+        { name: "required", Message: "Item Name is required" }
+      ]
+    };
+  }
 
   onChangePatientType(event) {
     if (event.value == 'OP') {
@@ -206,6 +211,81 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.ItemSubform.updateValueAndValidity();
 
       this.OP_IPType = 2;
+    }
+  }
+
+  // onChangePatientType(event) {
+    
+  //     if (event.value == 'OP') {
+  //         // this.registerObj = new RegInsert({});
+  //         this.personalFormGroup.reset();
+  //         this.personalFormGroup.get('RegId').reset();
+  //         this.searchFormGroup.get('RegId').disable();
+  //         this.isRegSearchDisabled = false;
+
+  //         // this.personalFormGroup = this.createPesonalForm();
+  //         // this.personalFormGroup.markAllAsTouched();
+  //         // this.VisitFormGroup = this.createVisitdetailForm();
+  //         // this.VisitFormGroup.markAllAsTouched();
+  //         // // this.Regdisplay = false;
+  //         // this.showtable = false;
+  //         this.Regflag = false;
+  //         this.IsPhoneAppflag = true;
+
+  //     } else if (event.value == 'IP') {
+
+  //         // this.personalFormGroup.get('RegId').enable();
+  //         // this.searchFormGroup.get('RegId').enable();
+  //         // this.searchFormGroup.get('RegId').reset();
+  //         // this.personalFormGroup.reset();
+  //         // this.Patientnewold = 2;
+
+  //         // this.personalFormGroup = this.createPesonalForm();
+  //         // this.personalFormGroup.markAllAsTouched();
+  //         // this.VisitFormGroup = this.createVisitdetailForm();
+  //         // this.VisitFormGroup.markAllAsTouched();
+  //         this.Regflag = true;
+  //         this.IsPhoneAppflag = false;
+  //         this.isRegSearchDisabled = true;
+
+  //         // this.getregdetails();
+
+  //     }
+
+  // }
+
+  getSelectedObjOP(obj) {
+    console.log(obj)
+    this.RegId = obj.value;
+    debugger
+    if ((this.RegId ?? 0) > 0) {
+
+      setTimeout(() => {
+        this._PrescriptionReturnService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(response)
+
+        });
+
+      }, 500);
+    }
+
+  }
+
+  getSelectedObjIP(obj) {
+    console.log(obj)
+    this.RegId = obj.value;
+    debugger
+    if ((this.RegId ?? 0) > 0) {
+
+      setTimeout(() => {
+        this._PrescriptionReturnService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(response)
+
+        });
+
+      }, 500);
     }
   }
 

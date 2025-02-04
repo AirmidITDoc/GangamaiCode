@@ -20,12 +20,16 @@
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="modal-card-container">
-                <form [formGroup]="_NursingStationService.myform">
-                    <!-- <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" 
-                        formControlName="RegId" placeholderText="Enter RegId"
-                        ApiUrl="OutPatient/auto-complete?Keyword=" 
-                        (selectionChange)="getSelectedObj($event)">
-                    </airmid-autocomplete> -->
+                <form [formGroup]="searchFormGroup">
+                    <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
+                        <!-- <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" 
+                        placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" 
+                        (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
+                    </div>
+                  </form>
+
+                <form [formGroup]="_NursingStationService.myform">                    
+
                     <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                         <mat-card style="padding: 5px;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">

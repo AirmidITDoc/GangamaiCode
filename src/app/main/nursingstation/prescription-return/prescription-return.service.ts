@@ -54,7 +54,10 @@ export class PrescriptionReturnService {
     });
   }
   
-
+// new dropdown
+public getRegistraionById(Id) {
+  return this._httpClient1.GetData("OutPatient/" + Id);
+}
   public getPriscriptionretList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescriptionReturnListFromWard",Param)
   }

@@ -34,7 +34,7 @@
                                         </mat-radio-group>
                                     </div>
                                     <div class="input-container gap-8" fxFlex>
-                                        <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" disabled="isRegSearchDisabled" fxFlex>
                                             <input type="text" name="RegID" formControlName="RegID"
                                                 placeholder="RegNo / First Name / Last Name / Mobile No" matInput
                                                 [matAutocomplete]="auto1" (input)="getSearchList()">
@@ -56,7 +56,13 @@
                                             <mat-error *ngIf="myForm.get('RegID').hasError('required')">
                                                 Required field cannot be left blank
                                             </mat-error>
-                                        </mat-form-field>
+                                        </mat-form-field> -->
+                                        <airmid-autocomplete lbl="RgId" 
+                                        [formGroup]="myForm" formControlName="RegID" 
+                                        placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="OutPatient/auto-complete?Keyword=" 
+                                        (selectionChange)="getSelectedObj($event)">
+                                    </airmid-autocomplete>
+
                                     </div>
                                 </div> 
                         </div>
@@ -64,7 +70,7 @@
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
                                     <div class="patient-info-box">
-                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 5px ;">
+                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
                                             <div class="patient-info-sales my-8">
                                                 <div class="patient-info-title border-bottom pb-2">
                                                     <span class="h1">Patient Information</span>
@@ -80,26 +86,26 @@
                                                                     </span>
                                                                     <span>:</span>
                                                                     <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.RegNo}}</span>
+                                                                        class="patient-col-value">{{registerObj.RegNo}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Patient Name
                                                                     </span>
                                                                     <span>:</span>
                                                                     <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.PatientName}}</span>
+                                                                        class="patient-col-value">{{ registerObj.firstName + ' ' + registerObj.lastName }}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Doctor Name</span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.DoctorName}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.DoctorName}}</span> -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Department</span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.DepartmentName}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.DepartmentName}}</span> -->
                                                                 </div>
                                                             </div>
                                                             <div fxLayout="column" fxLayoutGap="6px">
@@ -107,29 +113,30 @@
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">DOA | Time</span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.AdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.AdmissionDate | date:'dd/MM/YYYY'}}</span> -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">IPD No</span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.IPDNo}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.IPDNo}}</span> -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Age | Sex
                                                                     </span>
                                                                     <span>:</span>
                                                                     <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.Age}}Y|{{selectedAdvanceObj.AgeMonth}}M|{{selectedAdvanceObj.AgeDay}}
-                                                                        D | {{selectedAdvanceObj.GenderName}}</span>
+                                                                        class="patient-col-value">{{registerObj.ageYear}}Y|{{registerObj.AgeMonth}}M|{{registerObj.AgeDay}}
+                                                                        D</span>
+                                                                        <!-- | {{registerObj.GenderName}} -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Ref-Doctor Name
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.RefDocName}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.RefDocName}}</span> -->
                                                                 </div>
 
                                                             </div>
@@ -138,29 +145,29 @@
                                                                     <span class="patient-col-key">Ward | Bed Name
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.RoomName}}
-                                                                        | {{selectedAdvanceObj.BedName}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.RoomName}}
+                                                                        | {{registerObj.BedName}}</span> -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Patient Type
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.PatientType}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.PatientType}}</span> -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Tarrif Name
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{selectedAdvanceObj.TariffName}}</span>
+                                                                    <!-- <span
+                                                                        class="patient-col-value">{{registerObj.TariffName}}</span> -->
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Company Name</span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value"
-                                                                        style="color: orange;">{{selectedAdvanceObj.CompanyName}}</span>
+                                                                    <!-- <span class="patient-col-value"
+                                                                        style="color: orange;">{{registerObj.CompanyName}}</span> -->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -173,46 +180,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-card-container">
+                        <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                             <mat-card style="padding: 10px;">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                                    <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>From Store Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Store"
-                                            matInput formControlName="StoreId" [matAutocomplete]="autoStore" required>
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('StoreId').setValue(''); isStoreselected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('StoreId').setValue(''); isStoreselected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoStore="matAutocomplete"
-                                            [displayWith]="getOptionTextStore">
-                                            <mat-option *ngFor="let option of filteredOptionsStore | async"
-                                                [value]="option">
-                                                {{option.StoreName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>Ward Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select WardName"
-                                            matInput formControlName="WardName" [matAutocomplete]="autoward" required>
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('WardName').setValue(''); isWardselected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('WardName').setValue(''); isWardselected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoward="matAutocomplete" [displayWith]="getOptionTextWard"
-                                            (optionSelected)='getSelectedObjward($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredOptionsWard | async"
-                                                [value]="option">
-                                                {{option.RoomName}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                    <airmid-dropdown label="Store Name" 
+                                    formControlName="StoreId" [formGroup]="myForm"
+                                    [validations]="getValidationMessages().StoreId" 
+                                    [value]="data?.StoreId" 
+                                    [mode]="autocompletestore">
+                                </airmid-dropdown>
+
+                                <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="myForm"
+                                    [validations]="getValidationMessages().WardName" 
+                                    [value]="data?.WardName" 
+                                    [mode]="autocompleteward">
+                                </airmid-dropdown>
+
                                 </div>
                             </mat-card>
                         </div>
@@ -224,7 +208,7 @@
                             <form [formGroup]="ItemForm">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                     
-                                    <mat-form-field appearance="outline" fxFlex="30%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="30%">
                                         <mat-label>ItemName</mat-label>
                                         <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
                                             placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()"
@@ -245,7 +229,14 @@
                                         <mat-error class="error" *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">
                                             Select ItemName
                                         </mat-error>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+
+                                    <airmid-dropdown label="Item Name" 
+                                    formControlName="ItemId" [formGroup]="myForm"
+                                    [validations]="getValidationMessages().ItemId" 
+                                    [value]="data?.ItemId" 
+                                    [mode]="autocompleteitem">
+                                </airmid-dropdown>
                     
                                     <!-- <mat-form-field appearance="outline" fxFlex="20%">
                                         <mat-label>Dose Name</mat-label>
