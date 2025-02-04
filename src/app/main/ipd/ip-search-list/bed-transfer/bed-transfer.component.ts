@@ -52,22 +52,20 @@ export class BedTransferComponent implements OnInit {
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<IPSearchListComponent>,
     private _formBuilder: UntypedFormBuilder
-  ) {
-  
-   
-  }
+  ) {  }
 
   ngOnInit(): void {
-    this.Bedtransfer = this.bedsaveForm();
+    debugger
+    // this.Bedtransfer = this.bedsaveForm();
     if(this.data){
-    console.log(this.data);
+    console.log("Data:",this.data);
     
   this.AdmissionId=this.data.admissionId;
   this.vWardId=this.data.wardId;
   this.vBedId=this.data.bedId;
   this.vClassId=this.data.classId;
     }
-   
+    this.Bedtransfer = this.bedsaveForm();
  
   }
   
@@ -127,7 +125,7 @@ export class BedTransferComponent implements OnInit {
      // this.dialogRef.close(val);
    }
   onClose() {
-    this._IpSearchListService.mySaveForm.reset();
+    // this._IpSearchListService.mySaveForm.reset();
     this.dialogRef.close();
   }
   
