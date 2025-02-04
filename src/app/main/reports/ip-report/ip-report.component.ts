@@ -498,7 +498,7 @@ export class IpReportComponent implements OnInit {
     } else if(this.ReportName == 'DoctorWiseSummaryReport') {
       this.FlagDoctorSelected = true;
       this.FlagUserSelected = false;
-      this.FlagGroupSelected = false;
+      this.FlagGroupSelected = true;
       this.FlaOPIPTypeSelected = true;
       this.CurrentUser= false;
       this.clearField();
@@ -2779,21 +2779,24 @@ export class IpReportComponent implements OnInit {
     }, 100);
   }
 
-  viewgetDoctorWiseSummaryReportReportPdf() {
-    
+  viewgetDoctorWiseSummaryReportReportPdf() { 
     let DoctorId = 0;
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId
+
+    let GroupId = 0;
+    if (this._IPReportService.userForm.get('GroupId').value)
+      GroupId = this._IPReportService.userForm.get('GroupId').value.GroupId 
 
     this.OPIPType = parseInt(this._IPReportService.userForm.get('OPIPType').value)
 
     setTimeout(() => {
       this.SpinLoading = true;
       this.AdList = true;
-      this._IPReportService.getDoctorSharesummaryReportView(
+      this._IPReportService.getDoctorSharesummaryReportView(DoctorId,GroupId,
         this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", DoctorId, this.OPIPType
-
+        this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        this.OPIPType 
       ).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
@@ -2804,15 +2807,13 @@ export class IpReportComponent implements OnInit {
               base64: res["base64"] as string,
               title: "Doctor wise Summary Report Viewer"
             }
-          });
-
+          }); 
         matDialog.afterClosed().subscribe(result => {
           this.AdList = false;
           this.sIsLoading = ' ';
           this.clearField();
         });
-      });
-
+      }); 
     }, 100);
   }
 

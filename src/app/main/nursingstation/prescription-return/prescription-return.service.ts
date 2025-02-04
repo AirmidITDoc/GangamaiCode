@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export class PrescriptionReturnService {
   PrecReturnSearchGroup :FormGroup;
   constructor(
     public _httpClient:HttpClient,
+          private _loaderService: LoaderService,
     private _FormBuilder:FormBuilder
   ) { this.mySearchForm=this.SearchFilterForm();
     this.PrecReturnSearchGroup= this.PrescriptionRetSearchFrom();
@@ -54,24 +56,39 @@ export class PrescriptionReturnService {
   }
   
 
-  public getPriscriptionretList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescriptionReturnListFromWard",Param)
+  public getPriscriptionretList(Param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPPrescriptionReturnListFromWard",Param)
   }
 
-  public getPreiscriptionretdetList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescReturnItemDet",Param)
+  public getPreiscriptionretdetList(Param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPPrescReturnItemDet",Param)
   }
 
-  public getBatchList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemNameBatchPOP_IPPresRet",Param)
+  public getBatchList(Param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemNameBatchPOP_IPPresRet",Param)
   }
 
-  public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
+  public getItemlist(Param,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPSalesReturnDrugForNursing",Param)
   }
 
 
-  public presciptionreturnSave(emp){
+  public presciptionreturnSave(emp,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
   }
 
@@ -85,7 +102,10 @@ export class PrescriptionReturnService {
 
 
 
-public getIpPrescriptionreturnview(PresReId){
+public getIpPrescriptionreturnview(PresReId,loader = true){
+  if (loader) {
+    this._loaderService.show();
+}
   return this._httpClient.get("InPatient/view-IP_PrescriptionReturn?PresReId=" + PresReId);
 }
 }

@@ -652,7 +652,6 @@ export class DischargeSummaryComponent implements OnInit {
               //console.log(response);
               if (response) {
                 this.viewgetDischargesummaryPdf(this.vAdmissionId);
-                this.viewgetDischargesummaryPathologyReportPdf(this.vAdmissionId)
                 this._matDialog.closeAll();
                 this.toastr.success('Discharge Summary save Successfully !', 'Congratulations !', {
                   toastClass: 'tostr-tost custom-toast-success',
@@ -739,8 +738,7 @@ export class DischargeSummaryComponent implements OnInit {
             this._IpSearchListService.updateIPDDischargSummary(SubmitData).subscribe(response => {
               // console.log(response);
               if (response) {
-                this.viewgetDischargesummaryPdf(this.vAdmissionId);
-                this.viewgetDischargesummaryPathologyReportPdf(this.vAdmissionId)
+                this.viewgetDischargesummaryPdf(this.vAdmissionId); 
                 this._matDialog.closeAll();
                 this.toastr.success('Discharge Summary Updated Successfully !', 'Congratulations !', {
                   toastClass: 'tostr-tost custom-toast-success',
@@ -774,7 +772,13 @@ export class DischargeSummaryComponent implements OnInit {
             title: "Discharge Summary Viewer"
           }
         });
+        dialogRef.afterClosed().subscribe(result => {
+          this.viewgetDischargesummaryPathologyReportPdf(AdmId) 
+        }); 
     });
+
+
+    
   }
   viewgetDischargesummaryPathologyReportPdf(AdmId) {
 

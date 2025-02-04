@@ -15,6 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { ToastrService } from 'ngx-toastr';
+import { PrescriptionretList } from '../prescription-return.component';
 
 
 @Component({
@@ -26,11 +27,11 @@ import { ToastrService } from 'ngx-toastr';
 
 })
 export class NewPrescriptionreturnComponent implements OnInit {
-  SpinLoading:boolean=false;
+  SpinLoading: boolean = false;
   PresItemlist: any = [];
   Store1List: any = [];
   filteredOptionsItem: any;
-  filteredOptions:any;
+  filteredOptions: any;
   noOptionFound: boolean = false;
   isItemIdSelected: boolean = false;
   ItemSubform: FormGroup;
@@ -48,7 +49,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   BalanceQty: any;
   BatchNo: any = '';
   Qty: any;
-  isRegIdSelected:boolean=false;
+  isRegIdSelected: boolean = false;
   screenFromString = 'payment-form';
 
   CompanyName: any;
@@ -59,10 +60,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
-  RegNo:any;
-  vAdmissionID:any;
-  WardName:any;
-  BedNo:any;
+  RegNo: any;
+  vAdmissionID: any;
+  WardName: any;
+  BedNo: any;
+  BatchExpDate: any;
   selectedAdvanceObj = new AdmissionPersonlModel({});
 
 
@@ -71,15 +73,14 @@ export class NewPrescriptionreturnComponent implements OnInit {
     public _httpClient: HttpClient,
     public _matDialog: MatDialog,
     private _formBuilder: FormBuilder,
-        public toastr: ToastrService,
+    public toastr: ToastrService, 
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,) { }
 
   selectedSaleDisplayedCol = [
-    'ItemId',
     'ItemName',
     'BatchNo',
-    // 'BatchExpDate',
+    'BatchExpDate',
     'Qty',
     // 'UnitMRP',
     // 'GSTPer',
@@ -92,7 +93,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     'buttons'
   ];
 
-  dsItemlist = new MatTableDataSource<IndentList>();
+  dsItemlist = new MatTableDataSource<PrescriptionretList>();
   ngOnInit(): void {
     this.getItemSubform();
   }
@@ -109,99 +110,95 @@ export class NewPrescriptionreturnComponent implements OnInit {
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
-      PatientType: ['IP', [Validators.required]],
+      PatientType: ['1', [Validators.required]],
       // OP_IP_ID: [0,[Validators.required]],
-      TotalAmt: '', 
-      RegID: '', 
+      TotalAmt: '',
+      RegID: '',
     });
   }
 
   dateTimeObj: any;
-  getDateTime(dateTimeObj) { 
+  getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
-
-  getSearchItemList() {  
-      var m_data = {
-        "ItemName": `${this.ItemSubform.get('ItemId').value}%`,
-        "StoreId": this._loggedService.currentUserValue.user.storeId
+  getSearchItemList() {
+    var m_data = {
+      "ItemName": `${this.ItemSubform.get('ItemId').value}%`,
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "IPAdmID": this.selectedAdvanceObj.AdmissionID || 0
+    }
+    console.log(m_data);
+    this._PrescriptionReturnService.getItemlist(m_data).subscribe(data => {
+      this.filteredOptionsItem = data;
+      // console.log(this.data);
+      this.filteredOptionsItem = data;
+      if (this.filteredOptionsItem.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
       }
-      console.log(m_data); 
-      this._PrescriptionReturnService.getItemlist(m_data).subscribe(data => {
-        this.filteredOptionsItem = data;
-        // console.log(this.data);
-        this.filteredOptionsItem = data;
-        if (this.filteredOptionsItem.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });  
-  } 
+    });
+  }
   getOptionItemText(option) {
-    this.ItemId = option.ItemID;
+    this.ItemId = option.ItemId;
     if (!option) return '';
     return option.ItemName;
-  }  
+  }
 
   getSelectedObjItem(obj) {
     console.log(obj)
     if (this.dsItemlist.data.length > 0) {
-      if(this.dsItemlist.data.some(item=> item.ItemId == obj.ItemID)){
+      if (this.dsItemlist.data.some(item => item.ItemId == obj.ItemId)) {
         this.ItemSubform.reset();
         this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
-      } 
+      }
     }
     else {
       this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemID;
+      this.ItemId = obj.ItemId;
       this.Qty = obj.BalanceQty;
-      this. getBatch();
+      this.OP_IP_Id = obj.OP_IP_ID
+      this.getBatch(obj);
     }
   }
-  getBatch() {
-    this.qty.nativeElement.focus(); 
+  getBatch(obj) {
+    this.qty.nativeElement.focus();
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
-        maxWidth: "800px",
-        minWidth: '800px',
-        width: '800px',
-        height: '380px',
+        width: '65%',
+        height: '45%',
         disableClose: true,
-        data: {
-          "ItemId": this.ItemId,// this._PrescriptionReturnService.PrecReturnSearchGroup.get('ItemId').value.ItemId,
-          "StoreId": this._PrescriptionReturnService.PrecReturnSearchGroup.get('StoreId').value.storeid,
-          "OP_IP_Id": this.OP_IP_Id
-        }
+        data: obj
       });
     dialogRef.afterClosed().subscribe(result => {
       // console.log(result);
-      this.BatchNo = result.BatchNo; 
+      this.BatchNo = result.BatchNo;
       this.Qty = result.Qty;
-      this.BalanceQty = result.Qty; 
-    });  
-  } 
+      this.BalanceQty = result.Qty;
+      this.BatchExpDate =  result.BatchExpDate
+    });
+  }
   onChangePatientType(event) {
-    if (event.value == 'OP') {
+    if (event.value == '0') {
       this.OP_IPType = 0;
-      this.RegId = ""; 
+      this.RegId = "";
       this.ItemSubform.get('MobileNo').clearValidators();
       this.ItemSubform.get('PatientName').clearValidators();
       this.ItemSubform.get('MobileNo').updateValueAndValidity();
       this.ItemSubform.get('PatientName').updateValueAndValidity();
     }
-    else if (event.value == 'IP') {
+    else if (event.value == '1') {
       this.OP_IPType = 1;
-      this.RegId = ""; 
+      this.RegId = "";
       this.ItemSubform.get('MobileNo').clearValidators();
       this.ItemSubform.get('PatientName').clearValidators();
       this.ItemSubform.get('MobileNo').updateValueAndValidity();
       this.ItemSubform.get('PatientName').updateValueAndValidity();
-    }  
+    }
   }
 
   @ViewChild('itemid') itemid: ElementRef;
@@ -212,20 +209,20 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   onEnterItem(event): void {
     if (event.which === 13) {
-      this.qty.nativeElement.focus(); 
+      this.qty.nativeElement.focus();
     }
-  }  
-  public onEnterqty(event): void { 
+  }
+  public onEnterqty(event): void {
     if (event.which === 13) {
       this.add = true;
       this.addbutton.focus();
     }
-  } 
+  }
 
   onAdd() {
     this.sIsLoading = 'save';
     if ((this.ItemSubform.get('ItemId').value == '' || this.ItemSubform.get('ItemId').value == null ||
-    this.ItemSubform.get('ItemId').value == undefined)) {
+      this.ItemSubform.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item  Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -242,22 +239,23 @@ export class NewPrescriptionreturnComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }  
-      this.dsItemlist.data = [];
-      this.Itemchargeslist.push(
-        {
-          ItemId: this.ItemId,
-          ItemName: this.ItemName,
-          BatchNo: this.BatchNo,  
-          Qty: this.Qty 
-        });
-      this.sIsLoading = '';
-    this.dsItemlist.data = this.Itemchargeslist;  
-    this.ItemSubform.get('ItemId').reset(''); 
+    }
+    this.dsItemlist.data = [];
+    this.Itemchargeslist.push(
+      {
+        ItemId: this.ItemId,
+        ItemName: this.ItemName,
+        BatchNo: this.BatchNo,
+        BatchExpDate: this.BatchExpDate,
+        Qty: this.Qty
+      });
+    this.sIsLoading = '';
+    this.dsItemlist.data = this.Itemchargeslist;
+    this.ItemSubform.get('ItemId').reset('');
     this.ItemSubform.get('BatchNo').reset('');
-    this.ItemSubform.get('Qty').reset(''); 
-    this.itemid.nativeElement.focus(); 
-  } 
+    this.ItemSubform.get('Qty').reset('');
+    this.itemid.nativeElement.focus();
+  }
   getSearchList() {
     var m_data = {
       "Keyword": `${this.ItemSubform.get('RegID').value}%`
@@ -272,55 +270,57 @@ export class NewPrescriptionreturnComponent implements OnInit {
           this.noOptionFound = true;
         } else {
           this.noOptionFound = false;
-        } 
+        }
       });
     }
-  } 
-  getOptionText(option) { ;
+  }
+  getOptionText(option) {
+    ;
     if (!option) return '';
     return option.ItemId + ' ' + option.ItemName + ' (' + option.BalanceQty + ')';
-  } 
+  }
   getOptionTextReg(option) {
     if (!option) return '';
     return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }  
+  }
 
   getSelectedObjReg(obj) {
     console.log(obj)
-      if(obj.IsDischarged == 1){
-        Swal.fire('Selected Patient is already discharged');
-        this.PatientName = ''  
-        this.vAdmissionID =  ''
-        this.RegNo = ''
-        this.Doctorname =  ''
-        this.Tarrifname = ''
-        this.CompanyName =''
-        this.vOPDNo = ''
-        this.WardName =''
-        this.BedNo = ''
-      }
-      else{  
-        this.selectedAdvanceObj = obj;
-        this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
-        this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-        this.RegNo = obj.RegNo;
-        this.RegId = obj.RegId;
-        this.vAdmissionID = obj.AdmissionID;
-        this.CompanyName = obj.CompanyName;
-        this.Tarrifname = obj.TariffName;
-        this.Doctorname = obj.DoctorName;
-        // this.vOpIpId = obj.AdmissionID;
-        this.vOPDNo = obj.IPDNo;
-        this.WardName = obj.RoomName;
-        this.BedNo = obj.BedName;
-        this.vClassId=obj.ClassId;
-        this.BatchNo = 
+    if (obj.IsDischarged == 1) {
+      Swal.fire('Selected Patient is already discharged');
+      this.PatientName = ''
+      this.vAdmissionID = ''
+      this.RegNo = ''
+      this.Doctorname = ''
+      this.Tarrifname = ''
+      this.CompanyName = ''
+      this.vOPDNo = ''
+      this.WardName = ''
+      this.BedNo = ''
+    }
+    else {
+      this.selectedAdvanceObj = obj;
+      this.selectedAdvanceObj.PatientName = obj.FirstName + ' ' + obj.LastName;
+      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+      this.RegNo = obj.RegNo;
+      this.RegId = obj.RegId;
+      this.vAdmissionID = obj.AdmissionID;
+      this.CompanyName = obj.CompanyName;
+      this.Tarrifname = obj.TariffName;
+      this.Doctorname = obj.DoctorName;
+      // this.vOpIpId = obj.AdmissionID;
+      this.vOPDNo = obj.IPDNo;
+      this.WardName = obj.RoomName;
+      this.BedNo = obj.BedName;
+      this.vClassId = obj.ClassId;
+      this.BatchNo =
         console.log(obj);
-      } 
+    }
   }
-  onClose() { 
+  onClose() {
     this.ItemSubform.reset();
-    this.ItemSubform.get('PatientType').setValue('IP')
+    this.ItemSubform.get('PatientType').setValue('1')
+    this._matDialog.closeAll()
   }
 
 
@@ -330,53 +330,52 @@ export class NewPrescriptionreturnComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
-    let ipPrescriptionReturnH = {}; 
+    }
+    let ipPrescriptionReturnH = {};
     ipPrescriptionReturnH['presDate'] = this.datePipe.transform((new Date), 'dd/MM/yyyy');//this.dateTimeObj.date;
     ipPrescriptionReturnH['presTime'] = this.datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     ipPrescriptionReturnH['toStoreId'] = this._loggedService.currentUserValue.user.storeId;
-    ipPrescriptionReturnH['admissionId'] = this.OP_IP_Id || 1;
-    ipPrescriptionReturnH['oP_IP_Id'] = this.RegId ||1;
-    ipPrescriptionReturnH['oP_IP_Type'] = 1;
+    ipPrescriptionReturnH['oP_IP_Id'] = this.OP_IP_Id || 0;
+    ipPrescriptionReturnH['oP_IP_Type'] = this.ItemSubform.get('PatientType').value;
     ipPrescriptionReturnH['addedby'] = this._loggedService.currentUserValue.user.id;
     ipPrescriptionReturnH['isdeleted'] = 0;
     ipPrescriptionReturnH['isclosed'] = 1;
-    ipPrescriptionReturnH['presReId'] = 0; 
- 
+    ipPrescriptionReturnH['presReId'] = 0;
 
-    let ipPrescriptionReturnDArray = []; 
+    let ipPrescriptionReturnDArray = [];
     this.dsItemlist.data.forEach((element) => {
       let ipPrescriptionReturnD = {};
       ipPrescriptionReturnD['presReId'] = 0;
-      ipPrescriptionReturnD['batchExpDate'] = this.datePipe.transform((new Date), 'dd/MM/yyyy');
+      ipPrescriptionReturnD['batchExpDate'] = element.BatchExpDate;
       ipPrescriptionReturnD['itemId'] = element.ItemId;
-      ipPrescriptionReturnD['batchNo'] = this.BatchNo || 'B0';
+      ipPrescriptionReturnD['batchNo'] = element.BatchNo;
       ipPrescriptionReturnD['qty'] = element.Qty;
 
       ipPrescriptionReturnDArray.push(ipPrescriptionReturnD);
     });
 
-    let submissionObj={
-      'ipPrescriptionReturnH':ipPrescriptionReturnH,
-      'ipPrescriptionReturnD':ipPrescriptionReturnDArray 
-    } 
+    let submissionObj = {
+      'ipPrescriptionReturnH': ipPrescriptionReturnH,
+      'ipPrescriptionReturnD': ipPrescriptionReturnDArray
+    }
     console.log(submissionObj);
 
-    this._PrescriptionReturnService.presciptionreturnSave(submissionObj).subscribe(response => { 
-      if (response) { 
-        this.toastr.error('Record Saved Successfully !', 'error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        }); 
-        this._matDialog.closeAll();
+    this._PrescriptionReturnService.presciptionreturnSave(submissionObj).subscribe(response => {
+      console.log(response)
+      if (response) {
+        this.toastr.success('Record Saved Successfully !', 'success !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+        this.onClose()
         this.viewgetIpprescriptionreturnReportPdf(response);
       } else {
         this.toastr.error('Record Not Saved Successfully !', 'error !', {
           toastClass: 'tostr-tost custom-toast-error',
-        }); 
+        });
       }
 
     });
-  } 
+  }
 
   deleteTableRow(event, element) {
     this.PresItemlist = this.dsItemlist.data;
@@ -386,35 +385,35 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.dsItemlist.data = [];
       this.dsItemlist.data = this.PresItemlist;
     }
-    Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');  
-  } 
+    Swal.fire('Success !', 'Row Deleted Successfully', 'success');
+  }
   viewgetIpprescriptionreturnReportPdf(row) {
     // debugger
     setTimeout(() => {
-      this.SpinLoading =true;
-    //  this.AdList=true;
-    this._PrescriptionReturnService.getIpPrescriptionreturnview(
-      row.PresReId
-    ).subscribe(res => {
-      const dialogRef = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "95vw",
-          height: '850px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "IP Prescription Return Viewer"
-          }
-        });
+      this.SpinLoading = true;
+      //  this.AdList=true;
+      this._PrescriptionReturnService.getIpPrescriptionreturnview(
+        row.PresReId
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "95vw",
+            height: '850px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Prescription Return Viewer"
+            }
+          });
         dialogRef.afterClosed().subscribe(result => {
           this.SpinLoading = false;
         });
         dialogRef.afterClosed().subscribe(result => {
           this.SpinLoading = false;
         });
-    });
-   
-    },100);
+      });
+
+    }, 100);
   }
 
 }

@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { PrescriptionReturnService } from '../prescription-return.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-batchpopup',
@@ -19,8 +20,8 @@ export class BatchpopupComponent implements OnInit {
     'BalanceQty',
     'MRP',
     'PurPrice',
-    'ConversionFactor',
-    'LandedRate'
+    'LandedRate', 
+    'VatPer',
     // 'ItemName',
     // 'ItemCode',
   ];;
@@ -28,64 +29,38 @@ export class BatchpopupComponent implements OnInit {
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
+  registerObj:any;
 
-  
-  
+
+
   constructor(
     private dialogRef: MatDialogRef<BatchpopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public _PrescriptionReturnService:PrescriptionReturnService,
-  ) {
-    
+    public _PrescriptionReturnService: PrescriptionReturnService,
+    private _loggedService: AuthenticationService,
+  ) { }
 
-   }
-
-  // const ESCAPE_KEYCODE = 27;
-
-@HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     if (event.keyCode === 27) {
-        this. close();
+      this.close();
     }
-}
-
-
-
-
-  close(){
-    this.dialogRef.close();
-  }
-
-  highlight(row: any) {
-    if(row && row.position) {
-      this.selectedRowIndex = row.position;
-      // console.log(this.selectedRowIndex);
-    }
-   
-  }
-
-  arrowUpEvent(row: object, index: number) {
-    var nextrow = this.dataSource.data[index - 2];
-    this.highlight(nextrow);
-  }
-
-  arrowDownEvent(row: object, index: number) {
-    var nextrow = this.dataSource.data[index];
-    this.highlight(nextrow);
-  }
+  } 
 
   ngOnInit(): void {
+    if(this.data){
+      this.registerObj = this.data
+      console.log(this.registerObj) 
+    }
     this.getSalesData();
-    setTimeout(() => {
-      document.getElementById('ele-1').focus();
-    }, 1000);
+  
   }
- 
+
   getSalesData() {
     this.isLoadingStr = 'loading';
     var reqData = {
-      "ItemId": this.data.ItemId,
-      "StoreId": this.data.StoreId,
-      "OP_IP_Id":this.data.OP_IP_Id
+      "ItemId": this.registerObj.ItemId,
+      "StoreId": this._loggedService.currentUserValue.user.storeId || 0,
+      "OP_IP_Id": this.registerObj.OP_IP_ID
     }
     this._PrescriptionReturnService.getBatchList(reqData).subscribe((res: any) => {
       if (res && res.length > 0) {
@@ -93,6 +68,7 @@ export class BatchpopupComponent implements OnInit {
           element['position'] = index + 1;
         });
         this.dataSource.data = res as SalesList[];
+        console.log(this.dataSource.data)
         this.highlight(this.dataSource.data[0]);
       } else {
         this.isLoadingStr = 'no-data';
@@ -102,9 +78,9 @@ export class BatchpopupComponent implements OnInit {
 
   selectedRow(index?: number, ele?: SalesList) {
     let selectedData;
-    if(index) {
-      selectedData = this.dataSource.data[index-1];
-    } else if(ele) {
+    if (index) {
+      selectedData = this.dataSource.data[index - 1];
+    } else if (ele) {
       selectedData = ele;
     }
     this.dialogRef.close(selectedData);
@@ -117,9 +93,29 @@ export class BatchpopupComponent implements OnInit {
   }
 
   onTableClick() {
-    let focusId = 'ele-'+this.selectedRowIndex;
+    let focusId = 'ele-' + this.selectedRowIndex;
     document.getElementById(focusId).focus();
+  } 
+  close() {
+    this.dialogRef.close();
   }
+
+  arrowUpEvent(row: object, index: number) {
+    var nextrow = this.dataSource.data[index - 2];
+    this.highlight(nextrow);
+  }
+
+  arrowDownEvent(row: object, index: number) {
+    var nextrow = this.dataSource.data[index];
+    this.highlight(nextrow);
+  }
+  highlight(row: any) {
+    if (row && row.position) {
+      this.selectedRowIndex = row.position;
+      // console.log(this.selectedRowIndex);
+    } 
+  }
+
 
 }
 

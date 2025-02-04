@@ -1,4 +1,5 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
     <!-- HEADER -->
 
     <!-- Start Sider  -->
@@ -40,27 +41,32 @@
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="startdate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date" (dateChage)="getPriscriptionretList()">
+                                        <input matEndDate formControlName="enddate" placeholder="End date"
+                                            (dateChage)="getPriscriptionretList()">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline">
-                                    <mat-label>Search RegNo</mat-label>
-                                    <input name="RegNo" formControlName="RegNo" matInput (keypress)="keyPressCharater($event)">
+                                    <mat-label>Search UHID No</mat-label>
+                                    <input name="RegNo" formControlName="RegNo" matInput
+                                        (keypress)="keyPressCharater($event)">
                                 </mat-form-field>
 
-                                <mat-radio-group aria-label="Select an option" formControlName="PrescriptionStatus" name="PrescriptionStatus" (change)="onChangePrescriptionType($event)" (blur)="onChangePrescriptionType($event)">
+                                <!-- <mat-radio-group aria-label="Select an option" formControlName="PrescriptionStatus"
+                                    name="PrescriptionStatus" (change)="onChangePrescriptionType($event)"
+                                    (blur)="onChangePrescriptionType($event)">
                                     <mat-radio-button value="Pending">Pending</mat-radio-button>
                                     <mat-radio-button value="Closed">Closed</mat-radio-button>
 
-                                </mat-radio-group>
+                                </mat-radio-group> -->
 
                                 <div class="action-buttons mt-12">
                                     <button mat-raised-button class="clearbutton" matTooltip="close">
                                         <mat-icon class="cleariconbutton">close</mat-icon></button>
-                                    <button mat-raised-button class="searchButton" (click)="getPriscriptionretList()" matTooltip="search">
+                                    <button mat-raised-button class="searchButton" (click)="getPriscriptionretList()"
+                                        matTooltip="search">
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
@@ -74,15 +80,17 @@
         <div class="center p-12" fxFlexAlign="start center">
             <div class="table-header">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                 
+
                     <div class="table-header-right">
                         <div class="export-buttons">
                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                <button type="button" mat-icon-button (click)="exportReportPdf()" [disabled]="dsprescritionretList.data.length ==0">
+                                <button type="button" mat-icon-button (click)="exportReportPdf()"
+                                    [disabled]="dsprescritionretList.data.length ==0">
                                     <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
                                 </button>
 
-                                <button type="button" mat-icon-button (click)="exportIpprescriptionReturnReportExcel()" [disabled]="dsprescritionretList.data.length == 0">
+                                <button type="button" mat-icon-button (click)="exportIpprescriptionReturnReportExcel()"
+                                    [disabled]="dsprescritionretList.data.length == 0">
                                     <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
                                 </button>
                             </div>
@@ -95,35 +103,23 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <div fxlayout="row">
                             <div style="width: 100%;">
-                                <mat-table class="Tab1" matSort [dataSource]="dsprescritionretList" [@animateStagger]="{value:'50'}">
+                                <mat-table class="Tab1" matSort [dataSource]="dsprescritionretList"
+                                    [@animateStagger]="{value:'50'}"> 
 
-                                    <ng-container matColumnDef="action">
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Action
+
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let row">
-                                            <button mat-icon-button matTooltip="print" (click)="viewgetIpprescriptionreturnReportPdf(row)">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
-
-                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                <mat-icon>delete_outline</mat-icon>
-                                            </button>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.Date}}-{{contact.PresTime | date: 'h:mm a'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="RegNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UHID No
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             <span> {{contact.RegNo}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Vst_Adm_Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adm Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.Vst_Adm_Date}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -136,13 +132,14 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Date
+                                    <ng-container matColumnDef="Vst_Adm_Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Adm Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.Date}}</span>
+                                            <span> {{contact.Vst_Adm_Date}}</span>
                                         </mat-cell>
                                     </ng-container>
+
 
                                     <ng-container matColumnDef="StoreName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -153,32 +150,52 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="IPMedID" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            IPMedID
+                                    <ng-container matColumnDef="action">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Action
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.IPMedID}}</span>
+                                        <mat-cell *matCellDef="let row">
+                                            <button mat-icon-button matTooltip="print"
+                                                (click)="viewgetIpprescriptionreturnReportPdf(row)">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+
+                                            <!-- <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                <mat-icon>delete_outline</mat-icon>
+                                            </button> -->
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6"
+                                            style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
 
-                                    <mat-header-row class="accent min-width-900" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onSelect(contact)">
-                                    </mat-row> -->
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container> 
 
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-900" [ngClass]="contact.IsClosed == '1' ? 'self-row' : ''" (click)="onSelect(contact)" [@animate]="{value:'*',params:{y:'100%'}}">
-                                    </mat-row>
-                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                         </mat-footer-row>
-                                         <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
-                                         </mat-footer-row> -->
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"
+                                        (click)="getPreiscriptionretdetList(contact)">
+                                    </mat-row> 
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dsprescritionList!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsprescritionList!=null && dsprescritionList.data.length==0)}">
+                                    </mat-footer-row>
 
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15" showFirstLastButtons> </mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[15, 25, 35, 100]" [pageSize]="15"
+                                    showFirstLastButtons> </mat-paginator>
 
-                                <mat-table class="Tab2" matSort [dataSource]="dsprescriptionretdetList" [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                <mat-table class="Tab2" matSort [dataSource]="dsprescriptionretdetList"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                                     <ng-container matColumnDef="ItemName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ItemName
@@ -204,16 +221,37 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-400" *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayColumns;" class="contact min-width-400" [@animate]="{value:'*',params:{y:'100%'}}">
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6"
+                                            style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayColumns;"
+                                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
-                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-        </mat-footer-row>
-        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-        </mat-footer-row> -->
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dataSource1!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                                    </mat-footer-row>  
                                 </mat-table>
                                 <mat-paginator [pageSizeOptions]="[5, 25, 35, 100]" [pageSize]="5" showFirstLastButtons>
                                 </mat-paginator>
+
+ 
+                     
+                     
+                         
                             </div>
                         </div>
                     </div>

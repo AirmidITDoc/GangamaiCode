@@ -34,8 +34,8 @@
                                     <mat-radio-group aria-label="Select an option" formControlName="PatientType"
                                         name="PatientType" (change)="onChangePatientType($event)"
                                         (blur)="onChangePatientType($event)">
-                                        <mat-radio-button value="OP">OP</mat-radio-button>
-                                        <mat-radio-button value="IP">IP</mat-radio-button> 
+                                        <mat-radio-button value="0">OP</mat-radio-button>
+                                        <mat-radio-button value="1">IP</mat-radio-button> 
                                     </mat-radio-group>
                                 </div>
                                 <div class="input-container gap-8" fxFlex>
@@ -198,7 +198,7 @@
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
                                         (optionSelected)='getSelectedObjItem($event.option.value)'>
                                         <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                            {{option.ItemID}} | {{option.ItemName}} |{{option.BalanceQty}}
+                                            {{option.ItemId}} | {{option.ItemName}} |{{option.Qty}}
                                         </mat-option>
                                     </mat-autocomplete>
                                     <mat-error class="error" *ngIf="ItemSubform.get('ItemId').invalid && ItemSubform.get('ItemId').touched">
@@ -236,14 +236,7 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <mat-table #table matSort [dataSource]="dsItemlist"
-                                [@animateStagger]="{value:'50'}" class="h-280">
-
-                                <ng-container matColumnDef="ItemId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ItemId</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact">
-                                        <span> {{contact.ItemId}}</span>
-                                    </mat-cell>
-                                </ng-container>
+                                [@animateStagger]="{value:'50'}" class="h-280"> 
 
                                 <ng-container matColumnDef="ItemName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>ItemName</mat-header-cell>
@@ -260,7 +253,23 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="BatchExpDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BatchExpDate
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.BatchExpDate | date:'dd/MM/YYYY'}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="Qty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.Qty}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <!-- <ng-container matColumnDef="Qty">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -270,14 +279,14 @@
                                                 (keypress)="keyPressAlphanumeric($event)" readonly>
                                         </mat-form-field>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="buttons" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef class="table-actions">Action
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
                                         <ng-container class="actions">
-                                            <mat-icon (click)="deleteTableRow($event ,contact)"> delete </mat-icon>
+                                            <mat-icon (click)="deleteTableRow($event ,contact)" color="warn"> delete </mat-icon>
                                         </ng-container>
                                     </mat-cell>
                                 </ng-container>
@@ -313,10 +322,10 @@
                                 </mat-footer-row>
                             </mat-table>
 
-                            <div class="net-amt mt-8">
+                            <!-- <div class="net-amt mt-8">
                                 <span class="net-amt-label font-weight-600">No of Items : </span>
                                 <span class="net-amt-value">{{dsItemlist.data.length}}</span>
-                            </div>
+                            </div> -->
                         </mat-card>
                     </div>
                 </div>
@@ -327,7 +336,7 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClose()" [mat-dialog-close]="true">Close</button>
+                <button class="btn btn-danger-outline" (click)="onClose()" >Close</button>
                 <button class="btn btn-primary" (click)="OnSavePrescriptionreturn()">Save</button>
             </div>
         </div>

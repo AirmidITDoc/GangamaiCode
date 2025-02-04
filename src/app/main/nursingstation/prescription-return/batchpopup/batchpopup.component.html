@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container" dynamicTableHeight>
     <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -18,7 +18,7 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <div fxLayout="column" class="gap-12">
+            <div fxLayout="column" class="gap-6">
                 <div class="modal-card-container">
                     <mat-card>
                         <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"  (click)="onTableClick()">
@@ -33,28 +33,28 @@
                             </ng-container>
 
                             <ng-container matColumnDef="BalanceQty">
-                                <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.BalanceQty}} </span></mat-cell>
+                                <mat-header-cell *matHeaderCellDef> Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.Qty}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="MRP">
                                 <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.UnitMRP}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.UnitMRP | currency:"INR":"symbol"}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="PurPrice">
                                 <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.PurchaseRate}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.PurRateWf | currency:"INR":"symbol"}} </span></mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="ConversionFactor">
-                                <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.ConversionFactor}} </span></mat-cell>
+                            <ng-container matColumnDef="VatPer">
+                                <mat-header-cell *matHeaderCellDef> VatPer </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.VatPer}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="LandedRate">
                                 <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.LandedRate}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.LandedPrice | currency:"INR":"symbol"}} </span></mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
