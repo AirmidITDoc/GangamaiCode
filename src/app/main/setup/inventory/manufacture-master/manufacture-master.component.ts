@@ -47,7 +47,7 @@ export class ManufactureMasterComponent implements OnInit {
         sortField: "ManufName",
         sortOrder: 0,
         filters: [
-            { fieldName: "manufactureName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "manufName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
@@ -55,6 +55,7 @@ export class ManufactureMasterComponent implements OnInit {
 
 
     ngOnInit(): void { }
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

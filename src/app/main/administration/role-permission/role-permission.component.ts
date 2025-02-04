@@ -81,12 +81,12 @@ export class RolePermissionComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(public _RoleService: RoleTemplateService,
+    constructor(public _RoleTemplateService: RoleTemplateService,
         public toastr: ToastrService, public _matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<RolePermissionComponent>,
     ) {
-        // this._RoleService.getPermissionList(this.data.RoleId).subscribe((Menu) => {
+        // this._RoleTemplateService.getPermissionList(this.data.roleId).subscribe((Menu) => {
         //     this.dataSource.data = Menu as FileNode[];
         // });
     }
@@ -95,7 +95,7 @@ export class RolePermissionComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.data) {
-            this.roleId=this.data.RoleId;
+            this.roleId=this.data.roleId;
             console.log(this.roleId)
         }
     }

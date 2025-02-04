@@ -17,23 +17,6 @@ export class ReportConfigurationService {
             this.myform = this.createForm();
         }
     
-        //{
-//   "reportId": 0,
-//   "reportSection": "Abc",
-//   "reportName": "shilpa",
-//   "parentid": 1234,
-//   "reportMode": "prathhhh",
-//   "reportTitle": "ashhuuu",
-//   "reportHeader": "BILLING",
-//   "reportColumn": "string",
-//   "reportHeaderFile": "string",
-//   "reportBodyFile": "string",
-//   "reportFolderName": "string",
-//   "reportFileName": "ABC",
-//   "reportSpname": "string",
-//   "reportPageOrientation": "string",
-//   "reportPageSize": "string"
-// }
 
     createForm(): FormGroup {
         return this._formBuilder.group({

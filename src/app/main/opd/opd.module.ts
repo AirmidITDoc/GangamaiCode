@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NewOPListComponent } from './new-oplist/new-oplist.component';
+import { CompanysettlementComponent } from './companysettlement/companysettlement.component';
+import { SharedModule } from "../shared/shared.module";
 
 const appRoutes: Routes = [
   {
@@ -31,10 +33,10 @@ const appRoutes: Routes = [
     path: "registration",
     loadChildren: () => import("./registration/registration.module").then((m) => m.RegistrationModule),
   },
-// {
-//     path: "browse-opd-bills",
-//     loadChildren: () => import("./browse-opbill/browse-opbill.module").then((m) => m.BrowseOPBillModule),
-// },
+{
+    path: "companysettlement",
+    loadChildren: () => import("./companysettlement/companysettlement.module").then((m) => m.CompanysettlementModule),
+},
 // {
 //     path: "browse-opd-payment-receipt",
 //     loadChildren: () => import("./browse-payment-list/browsepayment.module").then((m) => m.browsepaymentModule),
@@ -66,9 +68,12 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    // CompanysettlementComponent
+  ],
   imports: [
     RouterModule.forChild(appRoutes),
-  ]
+    SharedModule
+]
 })
 export class OPDModule { }

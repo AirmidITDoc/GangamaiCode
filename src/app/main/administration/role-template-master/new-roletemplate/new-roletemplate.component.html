@@ -17,15 +17,15 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myform">
-                <input type="hidden" name="RoleId" formControlName="RoleId">
+                <input type="hidden" name="roleId" formControlName="roleId">
                 
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <airmid-textbox 
                             label="Role Name" 
-                            formControlName="RoleName" 
-                            [value]="data?.RoleName" 
+                            formControlName="roleName" 
+                            [value]="data?.roleName" 
                             [formGroup]="myform"
-                            [validations]="getValidationMessages().RoleName" 
+                            [validations]="getValidationMessages().roleName" 
                             [maxLength]="50">
                         </airmid-textbox>
                 </div>
