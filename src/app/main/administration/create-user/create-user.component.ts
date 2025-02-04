@@ -17,64 +17,67 @@ import { NewcreateUserComponent } from './newcreate-user/newcreate-user.componen
 })
 export class CreateUserComponent implements OnInit {
     myuserform: any;
-        constructor(public _CreateUserService: CreateUserService, public _matDialog: MatDialog,
-                public toastr: ToastrService,)
-                    { }
-            @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-            gridConfig: gridModel = {
-                apiUrl: "MReportConfig/List",
-                columnsList: [
-                    { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-                    { heading: "LoginName", key: "loginname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                    { heading: "RoleName", key: "rolename", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                    { heading: "StoreName", key: "storename", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                    { heading: "DoctorName", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                    { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-                    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-                    {
-                        heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
-                            {
-                                action: gridActions.edit, callback: (data: any) => {
-                                    this.onSave(data);
-                                }
-                            }, {
-                                action: gridActions.delete, callback: (data: any) => {
-                                    this._CreateUserService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                                        this.toastr.success(response.message);
-                                        this.grid.bindGridData();
-                                    });
-                                }
-                            }]
-                    } //Action 1-view, 2-Edit,3-delete
-                ],
-                sortField: "ReportName",
-                sortOrder: 0,
-                filters: [
-                    { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-                    { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-                ],
-                row: 25
-            }
-        
-            ngOnInit(): void { }
-        
-            onSave(row: any = null) {
-                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-                buttonElement.blur(); // Remove focus from the button
-        
-                let that = this;
-                const dialogRef = this._matDialog.open( NewcreateUserComponent, 
-                    {
-                        maxHeight: '95vh',
-                        width: '90%',
-                        data: row
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    if (result) {
-                        that.grid.bindGridData();
-                    }
+
+        constructor(public _CreateUserService: CreateUserService, 
+            public _matDialog: MatDialog, public toastr: ToastrService)
+            { }
+
+        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        gridConfig: gridModel = {
+            apiUrl: "LoginManager/LoginList",
+            columnsList: [
+                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "LoginName", key: "loginName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "RoleName", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                {
+                    heading: "Action", key: "action" , align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this._CreateUserService.deactivateTheStatus(data.userName).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    this.grid.bindGridData();
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "UserId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+    
+        ngOnInit(): void { }
+    
+        onSave(row: any = null) {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+    
+            let that = this;
+            const dialogRef = this._matDialog.open( NewcreateUserComponent, 
+                {
+                    maxHeight: '95vh',
+                    width: '90%',
+                    data: row
                 });
-            }
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
+        }
 }
 //   isLoading: boolean;
 //   UserIdList: any = [];

@@ -24,42 +24,43 @@ export class NewRoletemplateComponent implements OnInit {
         public toastr: ToastrService
     ) { }
  
-  ngOnInit(): void {
-      this.myform = this._RoleTemplateService.createRoleForm();
-      if((this.data?.RoleId??0) > 0)
+    ngOnInit(): void {
+        this.myform = this._RoleTemplateService.createRoleForm();
+        if((this.data?.roleId??0) > 0)
         {
             this.isActive=this.data.isActive
             this.myform.patchValue(this.data);
         }
-  }
-  onSubmit() {
+    }
+    onSubmit() {
    
-      if (this.myform.valid) {
+        if (this.myform.valid) {
 
+            console.log("JSON :-",this.myform.value)
         
-        console.log("JSON :-",this.myform.value)
-        
-          this._RoleTemplateService.classMasterSave(this.myform.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }else{
-        this.toastr.warning('Please Enter Valid data.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-      }
+            this._RoleTemplateService.classMasterSave(this.myform.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
+        else
+        {
+            this.toastr.warning('Please Enter Valid data.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+            });
+        }
     }     
   
     onClear(val: boolean) {
-      this.myform.reset();
-      this.dialogRef.close(val);
+        this.myform.reset();
+        this.dialogRef.close(val);
     }
 
     getValidationMessages() {
         return {
-            RoleName: [
+            roleName: [
                 { name: "required", Message: "Class Name is required" },
                 { name: "maxlength", Message: "Class name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }

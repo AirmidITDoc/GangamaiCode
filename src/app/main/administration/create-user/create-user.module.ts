@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { CreateUserComponent } from './create-user.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {  MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -45,7 +45,6 @@ const routes: Routes = [
       component: CreateUserComponent,
   },
 ];
-
 @NgModule({
     declarations: [CreateUserComponent, ChangePasswordComponent, UserDetailComponent, MyprofileComponent, NewcreateUserComponent],
     imports: [
