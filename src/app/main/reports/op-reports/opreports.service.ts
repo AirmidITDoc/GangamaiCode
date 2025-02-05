@@ -834,7 +834,167 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
   
     return this._httpClient.post("Generic/GetByProc?procName=rptOPDCreditBills",data)
   
+  } 
+  public getDoctorwisePatientCount(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=RptDoctorWisePatientCount",data) 
   }
-
-  
+  public getRefDoctorwisePatientCount(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=RptReferenceDoctorWisePatientCount",data) 
+  }
+  public getConssesionReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIP_OP_ConcessionReport",data) 
+  }
+  public getDailyCollectionReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIP_OP_Comman_DailyCollectionReport",data) 
+  }
+  public getDailyCollectionSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptCollectionSummary",data) 
+  }
+  public getGroupIwiseCollectionSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptGrupWisePeport",data) 
+  }
+  public getGroupIwiseSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptGrupWiseSummaryPeport",data) 
+  }
+  public getGroupWiseRevenuSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptGrpSumary",data) 
+  }
+  public getCreditReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOP_IP_CreditBills",data) 
+  }
+  public getPatientLedgerOPReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPPatientLedger",data) 
+  }
+  public getPatientLedgerIPReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPPatientLedger",data) 
+  }
+  public getServiceWiseWithoutBillReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptServiceWiseReport_Detail",data) 
+  }
+  public getServiceWiseWithBillReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPServiceWiseBillList",data) 
+  }
+  public getServiceWiseReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptServiceWisePatAmt",data) 
+  }
+  public getBillSummaryWithTCSReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillwithTCS",data) 
+  }
+  public getRefByPatientReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptRefByAdmittedPatientList",data) 
+  }
+  public getCancelChargesReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptCancelChargesList",data) 
+  }
+  public getDocDepWiseMonthlyReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDoctorAndDepartmentWiseCollection",data) 
+  }
+  public getDoctorWiisegroupReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDoctorWiseGroupWise",data) 
+  }
+  public getIPCompanyWiseBillReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rtrv_IPCompanyWiseBillInfo",data) 
+  }
+  public getIPCompanyWiseCreditlReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rtrv_IPCompanyWiseCreditReport",data) 
+  }
+  public getIPDischargebillgenerationReport(loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=IPPatientDischargeBillGenerationPending",{}) 
+  }
+  public getIPBillGenerationPayDueReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillGeneratePatientPaymentDue",data) 
+  }
+  public getCollectionSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDCollectionReport",data) 
+  }
+  public getBillSummarytwoLakhReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPbillsumry2lakh",data) 
+  }
+  public getBillSummaryOPD_IPDReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOP_IP_BillSummaryReport",data) 
+  }
+  public getCashCounterWiseDailyCollReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptCashCounterWiseDailyCollection",data) 
+  }
   }

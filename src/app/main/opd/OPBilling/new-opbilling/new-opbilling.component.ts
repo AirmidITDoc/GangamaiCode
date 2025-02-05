@@ -516,7 +516,7 @@ onAddCharges() {
     });
     return;
   }
-  if (this.IsDocEditable) {
+  if (this.IsDocEditable == true || this.CreditedtoDoctor == true) {
     if ((this.vDoctor == undefined || this.vDoctor == null || this.vDoctor == "")) {
       this.toastr.warning('Please select Doctor', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

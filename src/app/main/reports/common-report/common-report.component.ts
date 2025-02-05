@@ -11,6 +11,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-common-report',
@@ -86,7 +88,8 @@ export class CommonReportComponent implements OnInit {
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private _loggedUser: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder, 
+        private reportDownloadService: ExcelDownloadService,
   ) {
     this.UserId = this._loggedUser.currentUserValue.user.id;
     this.UserName = this._loggedUser.currentUserValue.user.userName;
@@ -476,9 +479,590 @@ export class CommonReportComponent implements OnInit {
       this.getCashcounterwisedailycollectionview();
     } else if (this.ReportName == 'Cash Counter Wise Daily Collection Summary') {
       this.getCashcounterwisedailycollectionsummaryview();
+    } 
+  }
+
+    dsExeclData = new MatTableDataSource<ReportDetail>()
+    chargelist:any=[];
+    getCommanRptExcel(){
+      let DoctorID = 0;
+      if (this._OPReportsService.userForm.get('DoctorID').value)
+        DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
+
+      let AddedById = 0;
+      if (this._OPReportsService.userForm.get('UserId').value)
+        AddedById = this._OPReportsService.userForm.get('UserId').value.UserId
+
+      let GroupId = 0;
+      if (this._OPReportsService.userForm.get('GroupId').value)
+        GroupId = this._OPReportsService.userForm.get('GroupId').value.GroupId
+
+      let ServiceId = 0;
+      if (this._OPReportsService.userForm.get('ServiceId').value)
+        ServiceId = this._OPReportsService.userForm.get('ServiceId').value.ServiceId
+
+      let CashcounterId =0
+      if (this._OPReportsService.userForm.get('CashCounterID').value)
+        CashcounterId = this._OPReportsService.userForm.get('CashCounterID').value.CashCounterId || 0
+  
+      if (this.ReportName == 'Doctor Wise Patient Count Report'){
+        var vdata = {
+          'DoctorID': DoctorID,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        }
+        this._OPReportsService.getDoctorwisePatientCount(vdata).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data) 
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        }); 
+      } 
+      else if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
+        var vdata = {
+          'DoctorID': DoctorID,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        }
+        this._OPReportsService.getRefDoctorwisePatientCount(vdata).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        }); 
+      } else if (this.ReportName == 'Concession Report') {
+        var m_data= {
+          'DoctorId': DoctorID,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+          'OP_IP_Type':1
+        } 
+        this._OPReportsService.getConssesionReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      } 
+      else if (this.ReportName == 'Daily Collection Report') {
+        let  m_data= {
+          'DoctorId': DoctorID,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+          'AddedById':AddedById
+        } 
+        this._OPReportsService.getDailyCollectionReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });   
+      }
+      else if (this.ReportName == 'Daily Collection Summary Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getDailyCollectionSummaryReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });   
+      } else if (this.ReportName == 'Group wise Collection Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
+          'GroupId':GroupId
+        } 
+        this._OPReportsService.getGroupIwiseCollectionSummaryReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      } else if (this.ReportName == 'Group wise Summary Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
+          'GroupId':GroupId
+        } 
+        this._OPReportsService.getGroupIwiseSummaryReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'Group Wise Revenue Summary Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getGroupWiseRevenuSummaryReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });   
+      }
+      else if (this.ReportName == 'Credit Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getCreditReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });    
+      } else if (this.ReportName == 'Patient Ledger') {  
+        if (this._OPReportsService.userForm.get('OPIPType').value == '0'){
+          let  m_data= { 
+            'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+            'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+          } 
+          this._OPReportsService.getPatientLedgerOPReport(m_data).subscribe(res => {
+            this.dsExeclData.data = res as ReportDetail[]
+            console.log(this.dsExeclData.data)
+            if(this.dsExeclData.data.length>0){
+              this.getExeclDate();
+            }
+          });   
+        }else if(this._OPReportsService.userForm.get('OPIPType').value == '1'){
+          let  m_data= { 
+            'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+            'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+          } 
+          this._OPReportsService.getPatientLedgerIPReport(m_data).subscribe(res => {
+            this.dsExeclData.data = res as ReportDetail[]
+            console.log(this.dsExeclData.data)
+            if(this.dsExeclData.data.length>0){
+              this.getExeclDate();
+            }
+          });  
+        }  
+      }
+      else if (this.ReportName == 'Service Wise Report without Bill') {
+        let  m_data= { 
+          'ServiceId':ServiceId,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getServiceWiseWithoutBillReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'Service Wise Report with Bill') {
+        let  m_data= { 
+          'ServiceId':ServiceId,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getServiceWiseWithBillReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'Service Wise Report') {
+        let  m_data= { 
+          'ServiceId':ServiceId,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getServiceWiseReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'Bill Summary With TCS Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getBillSummaryWithTCSReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'Ref By Patient List') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getRefByPatientReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        }); 
+      } else if (this.ReportName == 'Cancel Charges List') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getCancelChargesReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        }); 
+      }
+      else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
+        let  m_data= {
+          'DoctorId': DoctorID,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+          'DepartmentId':0
+        } 
+        this._OPReportsService.getDocDepWiseMonthlyReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
+        let  m_data= {
+          'DoctorId': DoctorID,
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        } 
+        this._OPReportsService.getDoctorWiisegroupReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });  
+      }
+      else if (this.ReportName == 'IP Company Wise Bill Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getIPCompanyWiseBillReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      }
+      else if (this.ReportName == 'IP Company Wise Credit Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getIPCompanyWiseCreditlReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+       
+        this._OPReportsService.getIPDischargebillgenerationReport().subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      }
+      else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getIPBillGenerationPayDueReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      }
+      else if (this.ReportName == 'Collection Summary Report') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getCollectionSummaryReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      }
+      else if (this.ReportName == 'Bill Summary Report for 2 Lakh Amount') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getBillSummarytwoLakhReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      }
+      else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+        } 
+        this._OPReportsService.getBillSummaryOPD_IPDReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      }  else if (this.ReportName == 'Cash Counter Wise Daily Collection') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+          'OP_IP_Type': this._OPReportsService.userForm.get("OPIPType").value,
+          'CashCounterId':CashcounterId,
+          'UserId':AddedById
+        }                    
+        this._OPReportsService.getCashCounterWiseDailyCollReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      } else if (this.ReportName == 'Cash Counter Wise Daily Collection Summary') {
+        let  m_data= { 
+          'FromDate': this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+          'ToDate': this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+          'OP_IP_Type': this._OPReportsService.userForm.get("OPIPType").value,
+          'CashCounterId':CashcounterId,
+          'UserId':AddedById
+        }                    
+        this._OPReportsService.getCashCounterWiseDailyCollReport(m_data).subscribe(res => {
+          this.dsExeclData.data = res as ReportDetail[]
+          console.log(this.dsExeclData.data)
+          if(this.dsExeclData.data.length>0){
+            this.getExeclDate();
+          }
+        });
+      } 
     }
+  getExeclDate(){
+    if (this.ReportName == 'Doctor Wise Patient Count Report') { 
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['DoctorName', 'PatientType', 'Count'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Doctor Wise Patient Count Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Reference Doctor Wise Patient Count Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RefDoctorName', 'PatientType'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Reference Doctor Wise Patient Count Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
 
-
+    } else if (this.ReportName == 'Concession Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['Visit_Adm_Time', 'PBillNo','RegNo','PatientName','TotalAmt','ConcessionAmt','NetPayableAmt','CashPayAmount','ChequePayAmount','CashPayAmount','NEFTPayAmount','PayTMPayAmount','DiscComments'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Concession Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } 
+    else if (this.ReportName == 'Daily Collection Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PaymentDate', 'PBillNo','RegNo','PatientName','BillAmount','CashPayAmount','ChequePayAmount','CardPayAmount','NEFTPayAmount','PayTMAmount','AdvanceUsedAmount','BalanceAmt','AddedByName'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Daily Collection Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Daily Collection Summary Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PaymentDate', 'OPCollection','IPCollection','AdvCollection','OPBillRefund','IPBillRefund','IPAdvRefund' ];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Daily Collection Summary Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'Group wise Collection Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['BillNo', 'PaymentDate','ServiceName','patientType','RegNo','PatientName','NetPayableAmt','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Group wise Collection Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'Group wise Summary Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['GroupName', 'NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Group wise Summary Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Group Wise Revenue Summary Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['GroupName', 'NetAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Group Wise Revenue Summary Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Credit Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PBillNo', 'RegNo','PatientName','NetPayableAmt','PaidAmount','BalanceAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Credit Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'Patient Ledger') {  
+      if (this._OPReportsService.userForm.get('OPIPType').value == '0'){
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['PBillNo', 'RegNo','BillDate','ChargesDate','PatientName','ChargesDoctorName','Qty','Price','TotalAmt','NetAmount'];
+        this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Patient Ledger Report');
+        this.dsExeclData.data = [];
+        this.sIsLoading = '';
+      }else if(this._OPReportsService.userForm.get('OPIPType').value == '1'){
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['PBillNo', 'RegNo','BillDate','PatientName','AdmittedDoctorName','TotalAmt','NetPayableAmt'];
+        this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Patient Ledger Report');
+        this.dsExeclData.data = [];
+        this.sIsLoading = '';
+      } 
+    }
+    else if (this.ReportName == 'Service Wise Report without Bill') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['ChargesDate', 'RegNo','BillDate','PatientName','AddDocName','Price','Qty','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Service Wise Report without Bill');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Service Wise Report with Bill') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['ChargesDate', 'RegNo','PatientName','AddDocName','Price','Qty','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Service Wise Report with Bill');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Service Wise Report') {
+      this.viewgetServicewiseReportPdf();
+    }
+    else if (this.ReportName == 'Bill Summary With TCS Report') {
+      this.ViewgetBillSummwithTCSview();
+    }
+    else if (this.ReportName == 'Ref By Patient List') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo', 'PatientName','AdmissionDate','DischargeDate','IPDNo','DoctorName','RefDocName'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Ref By Patient List');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'Cancel Charges List') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PatientName', 'AdmissionDate','IPDNo','ServiceName','Price','Qty','TotalAmt','ConcessionPercentage','ConcessionAmount','NetAmount','IsCancelledBy','IsCancelledDate','UserName'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Cancel Charges List');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Doctor and Department Wise Monthly Collection Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['DepartmentName', 'GroupName','Total_Amount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Doctor and Department Wise Monthly Collection Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Doctor (Visit/Admitted) WISE GROUP REPORT') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['GroupName', 'NetPayableAmt','DoctorName'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Doctor (Visit/Admitted) WISE GROUP REPORT');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IP Company Wise Bill Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['BillDate', 'PBillNo','PatientName','RegNo','IPDNo','TotalAmt','ConcessionAmt','NetPayableAmt','TDSAmount','CashPayAmount','ChequePayAmount','AdvanceUsedAmount','NEFTPayAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'IP Company Wise Bill Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IP Company Wise Credit Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['BillDate', 'PBillNo','CompanyName','PatientName','IPDNo','RegNo','TotalAmt','ConcessionAmt','NetPayableAmt','BalanceAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'IP Company Wise Credit Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['AdmissionDate', 'RegNo','IPDNo','PatientName','PatientType','AdmittedDoctorName','CompanyName','AdmissionDate','DischargeDate','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'IP Discharge & Bill Generation Pending Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['BillDate', 'BillNo','RegNo','PatientName','DischargeDate','PaymentDate','TotalAmt','ConcessionAmt','NetPayableAmt','PaidAmt','BalanceAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'IP Bill Generation Payment Due report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Collection Summary Report') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PBillNo', 'BillDate','RegNo','PatientName','TotalAmt','ConcessionAmt','NetPayableAmt','CashPayAmount','CardPayAmount','NEFTPayAmount','RefundAmount','ConcessionReason','CompanyName'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Collection Summary Report');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Bill Summary Report for 2 Lakh Amount') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['BillDate', 'RegNo','PatientName','TotalAmt','ConcessionAmt','NetPayableAmt','CashPayAmount','ChequePayAmount','CardPayAmount','NEFTPayAmount','PayTMAmount','PaidAmt','BalanceAmt','PaymentDate'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Bill Summary Report for 2 Lakh Amount');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'Bill Summary Report OPD & IPD') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PBillNo', 'BillDate','RegNo','PatientName','ConcessionAmt','NetPayableAmt','PaidAmount','BalanceAmt','PayTMPay','AdvUsdPay'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Bill Summary Report OPD & IPD');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    }   else if (this.ReportName == 'Cash Counter Wise Daily Collection') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo','PatientName','PBillNo','BillDate','NetPayableAmt','CashPayAmount','ChequePayAmount','CardPayAmount','neftpayamount','PayTMPayAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Cash Counter Wise Daily Collection');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'Cash Counter Wise Daily Collection Summary') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo','PatientName','PBillNo','BillDate','NetPayableAmt','CashPayAmount','ChequePayAmount','CardPayAmount','neftpayamount','PayTMPayAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExeclData.data, exportHeaders, 'Cash Counter Wise Daily Collection');
+      this.dsExeclData.data = [];
+      this.sIsLoading = '';
+    } 
   }
 
 

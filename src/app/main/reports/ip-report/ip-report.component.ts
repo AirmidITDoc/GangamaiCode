@@ -2419,7 +2419,7 @@ export class IpReportComponent implements OnInit {
     }
     this._IPReportService.getDischargetypewiseData(vdata).subscribe(res => {
       this.dsDischargeTypeData.data = res as IpBillBrowseList[]
-      console.log(this.dsDischargeTypeData)
+      console.log(this.dsDischargeTypeData.data)
       if(this.dsDischargeTypeData.data.length>0){
         this.exportIPBillReportExcel();
       }
@@ -2443,7 +2443,7 @@ export class IpReportComponent implements OnInit {
     // );
     if (this.ReportName == 'IPD Discharge Type Wise') { 
       this.sIsLoading == 'loading-data'
-      let exportHeaders = ['AdmissionDate', 'DischargeDate', 'IPDNo', 'PatientName', 'MobileNo', 'DoctorName', 'RefDoctorName', 'DepartmentName', 'Diagnosis'];
+      let exportHeaders = ['AdmissionDate', 'DischargeDate', 'IPDNo', 'PatientName', 'MobileNo', 'DoctorName', 'RefDoctorName', 'DepartmentName', 'Diagnosis','Procedurename1','Procedurename2','Procedurename3','NetPayableAmt'];
       this.reportDownloadService.getExportJsonData(this.dsDischargeTypeData.data, exportHeaders, 'IPD Discharge Type Wise');
       this.dsDischargeTypeData.data = [];
       this.sIsLoading = '';
