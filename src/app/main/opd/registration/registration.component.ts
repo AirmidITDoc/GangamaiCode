@@ -95,9 +95,9 @@ export class RegistrationComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "98vw",
                 maxHeight: '90%',
-                width: '90%',
+                width: '95%',
 
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -130,9 +130,9 @@ export class RegistrationComponent implements OnInit {
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "100vw",
                 maxHeight: '90%',
-                width: '90%',
+                width: '95%',
                 data:row
                 
             }
@@ -140,7 +140,7 @@ export class RegistrationComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
-
+            this.grid.bindGridData();
         });
     }
 

@@ -228,87 +228,13 @@ export class NewOPListComponent implements OnInit {
     }
    
     viewgetOPBillReportPdf(data) {
-        // setTimeout(() => {
-        //     // 216339
-        //     let param = {
-                
-        //             "searchFields": [
-        //               {
-        //                 "fieldName": "BillNo",
-        //                 "fieldValue": data.billNo,
-        //                 "opType": "13"
-        //               }
-        //             ],
-        //             "mode": "OpBillReceipt"
-        //           }
-            
-
-        //     debugger
-        //     console.log(param)
-        //     this._OPListService.getReportView(param).subscribe(res => {
-        //         const matDialog = this._matDialog.open(PdfviewerComponent,
-        //             {
-        //                 maxWidth: "85vw",
-        //                 height: '750px',
-        //                 width: '100%',
-        //                 data: {
-        //                     base64: res["base64"] as string,
-        //                     title: "Op Bill  Viewer"
-
-        //                 }
-
-        //             });
-
-        //         matDialog.afterClosed().subscribe(result => {
-
-        //         });
-        //     });
-
-        // }, 100);
-   
+         
         this.commonService.Onprint("BillNo",data.billNo,"OpBillReceipt");
     }
     getWhatsappshareBill(Id) { }
 
     viewgetOPPaymentReportPdf(data) { 
-        // setTimeout(() => {
-
-        //     let param = {
-                
-        //             "searchFields": [
-        //               {
-        //                 "fieldName": "PaymentId",
-        //                 "fieldValue": "230748",
-        //                 "opType": "13"
-        //               }
-        //             ],
-        //             "mode": "OPPaymentReceipt"
-        //           }
-            
-
-        //     debugger
-        //     console.log(param)
-        //     this._OPListService.getReportView(param).subscribe(res => {
-        //         const matDialog = this._matDialog.open(PdfviewerComponent,
-        //             {
-        //                 maxWidth: "85vw",
-        //                 height: '750px',
-        //                 width: '100%',
-        //                 data: {
-        //                     base64: res["base64"] as string,
-        //                     title: "Op Bill  Viewer"
-
-        //                 }
-
-        //             });
-
-        //         matDialog.afterClosed().subscribe(result => {
-
-        //         });
-        //     });
-
-        // }, 100);
-   
+        
         this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
     }
     getWhatsappsharePaymentReceipt(Id) { }

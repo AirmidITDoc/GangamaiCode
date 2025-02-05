@@ -859,11 +859,15 @@ export class IPSearchListComponent implements OnInit {
     }
 
     onBedTransferSave(data) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
         const dialogRef = this._matDialog.open(BedTransferComponent,
             {
                 maxWidth: "100%",
                 height: '70%',
                 width: '80%',
+                data:data
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);

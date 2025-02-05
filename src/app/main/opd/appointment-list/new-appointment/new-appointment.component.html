@@ -172,14 +172,19 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="MaritalStatus" formControlName="MaritalStatusId" [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().maritalStatusId" [mode]="autocompleteModemstatus">
+                                        <div fxLayout="row" class="gap-8">
+
+                                        <airmid-dropdown label="MaritalStatus" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" formControlName="MaritalStatusId" [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().maritalStatusId" [mode]="autocompleteModemstatus">
                                         </airmid-dropdown>
+                                        <airmid-dropdown label="Religion Name" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion">
+                                        </airmid-dropdown>
+                                        </div>
                                     </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Religion Name" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion">
                                         </airmid-dropdown>
-                                    </div>
+                                    </div> -->
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div fxLayout="row" class="gap-8">

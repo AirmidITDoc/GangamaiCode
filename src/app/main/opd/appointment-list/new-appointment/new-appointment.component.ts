@@ -272,9 +272,8 @@ export class NewAppointmentComponent implements OnInit {
             this.isRegSearchDisabled = false;
 
             // this.personalFormGroup = this.createPesonalForm();
-            // this.personalFormGroup.markAllAsTouched();
+            
             // this.VisitFormGroup = this.createVisitdetailForm();
-            // this.VisitFormGroup.markAllAsTouched();
             // // this.Regdisplay = false;
             // this.showtable = false;
             this.Regflag = false;
@@ -289,14 +288,13 @@ export class NewAppointmentComponent implements OnInit {
             // this.Patientnewold = 2;
 
             // this.personalFormGroup = this.createPesonalForm();
-            // this.personalFormGroup.markAllAsTouched();
             // this.VisitFormGroup = this.createVisitdetailForm();
-            // this.VisitFormGroup.markAllAsTouched();
+            
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
 
-            // this.getregdetails();
+           
 
         }
 
@@ -613,6 +611,8 @@ export class NewAppointmentComponent implements OnInit {
 
     onSave() {
         debugger
+console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup.valid)
+
         if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
 
             if (this.searchFormGroup.get('regRadio').value == "registration") {
