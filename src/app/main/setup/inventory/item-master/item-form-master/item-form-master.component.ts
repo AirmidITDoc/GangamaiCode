@@ -50,24 +50,27 @@ export class ItemFormMasterComponent implements OnInit {
         public dialogRef: MatDialogRef<ItemMasterComponent>
     ) { }
     
+    vHSNCode:any;
     ngOnInit(): void {
         this.itemForm = this._itemService.createItemmasterForm();
-
+        debugger
         if((this.data?.itemID??0) > 0)
-          {
+        {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
-              this.registerObj = response;
-              console.log(response)
-              this.ItemId = this.registerObj.itemId 
-              this.vchkactive=this.registerObj.isActive
-              this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
-    
+                this.registerObj = response;
+                console.log(response)
+                this.ItemId = this.registerObj.itemId 
+                this.vHSNCode=this.registerObj.hsncode
+                this.vchkactive=this.registerObj.isActive
+                this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
+
             }, (error) => {
-              this.toastr.error(error.message);
+                this.toastr.error(error.message);
             });
-          }   else {
+        }   
+        //   else {
             // this.itemForm.reset();
-        }
+        // }
     }
 
     onSave(row: any = null) {

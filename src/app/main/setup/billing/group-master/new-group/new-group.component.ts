@@ -13,6 +13,7 @@ export class NewGroupComponent implements OnInit {
   
     groupForm: FormGroup;
     isActive:boolean=true;
+    isconsolidated: boolean = true;
 
     constructor(
         public _GroupMasterService: GroupMasterService,
@@ -25,6 +26,7 @@ export class NewGroupComponent implements OnInit {
         this.groupForm = this._GroupMasterService.createGroupForm();
         if((this.data?.groupId??0) > 0){
             this.isActive=this.data.isActive
+            this.isconsolidated = this.data.isconsolidated
             this.groupForm.patchValue(this.data);
         }
     }

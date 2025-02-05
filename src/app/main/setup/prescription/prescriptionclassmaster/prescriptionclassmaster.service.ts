@@ -14,6 +14,14 @@ export class PrescriptionclassmasterService {
         this.myformSearch = this.createSearchForm();
     }
 
+    /** 
+    {
+        "classId": 0,
+        "className": "ABC",
+        "templateDescName": "XYZ"
+    }
+    */
+
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
             classId: [0],
@@ -23,7 +31,7 @@ export class PrescriptionclassmasterService {
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            templatedescname: ["",Validators.required],
+            templateDescName: ["",Validators.required],
             isActive:[true,[Validators.required]]
         });
     }

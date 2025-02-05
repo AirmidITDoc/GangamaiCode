@@ -25,9 +25,9 @@ export class PrescriptionclassmasterComponent implements OnInit {
         apiUrl: "Priscriptionclass/List",
         columnsList: [
             { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateDesc Name", key: "templatedescname", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateDescName", key: "templateDescName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

@@ -22,11 +22,10 @@ export class GroupMasterService {
             groupName: ["", 
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern("^[A-Za-z\s]+$")
                 ]
             ],
             isconsolidated: true,
-            isConsolidatedDr: true,
             isActive:[true,[Validators.required]]
         });
     }
