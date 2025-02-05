@@ -13,7 +13,7 @@ export class PrescriptionService {
   mypreretunForm: FormGroup;
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
   ) { 
     this.mysearchform= this.SearchFilterFrom();
     this.mypreretunForm=this.PrescriptionReturnFilterForm();
@@ -36,7 +36,10 @@ export class PrescriptionService {
       PrescriptionStatus:['Pending']
     })
   }
-
+// new dropdown
+public getRegistraionById(Id) {
+  return this._httpClient1.GetData("OutPatient/" + Id);
+}
   public getPrintPrecriptionlist(Param){
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPrecriptionPrint",Param)
   }

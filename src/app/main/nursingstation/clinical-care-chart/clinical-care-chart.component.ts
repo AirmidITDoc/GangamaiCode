@@ -50,6 +50,42 @@ export class ClinicalCareChartComponent implements OnInit {
     'PainAssess',
     'Action'
   ]
+  displayedLabReport: string[] = [
+    'Date&Time', 
+    'TestName',
+    'PBillNo',
+    'IsCompleted'
+  ]
+  displayedIpPrescription: string[] = [
+    'AdmDate', 
+    'PresDate',
+    'StoreName',
+    'CompanyName',
+    'Action'
+  ]
+  displayedIpPrescriptionDetail: string[] = [
+    'Status', 
+    'ItemName',
+    'Qty'
+  ]
+
+  displayedLabRequest: string[] = [
+    'ReqDate', 
+    'ReqTime',
+    'WardName',
+    'RequestType',
+    'IsonFileTest'
+  ]
+  displayedLabRequestDetail: string[] = [
+    'isBillingStatus', 
+    'isTestStatus',
+    'ServiceName',
+    'AddedBy',
+    'AddBillUser',
+    'BillDateTime',
+    'PBillNo'
+  ]
+
   displayedVitals: string[] = [
     'date',
     'time',
@@ -129,10 +165,16 @@ export class ClinicalCareChartComponent implements OnInit {
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   dsPainsAssessment =new MatTableDataSource<PainAssesList>();
   dsPainsAssessment2 =new MatTableDataSource<PainAssesList>();
+  dsLabReport=new MatTableDataSource<PainAssesList>();
+  dsIpPrescription=new MatTableDataSource<PainAssesList>();
+  dsIpPrescriptionDetail=new MatTableDataSource<PainAssesList>();
+  dsLabRequest=new MatTableDataSource<PainAssesList>();  
+  dsLabRequestDetail=new MatTableDataSource<PainAssesList>();
   dsvitalsList =new MatTableDataSource<VitalsList>();
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
   dsOxygenTable = new MatTableDataSource<INputOutputList>();
   dsSugarTable = new MatTableDataSource<INputOutputList>();
+
   
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('wardpaginator', { static: true }) public wardpaginator: MatPaginator;

@@ -24,7 +24,7 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="Class Name" 
+                            label="ClassName" 
                             formControlName="className" 
                             [value]="data?.className"
                             [formGroup]="prescriptionForm"
@@ -34,11 +34,11 @@
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
-                            label="TemplateDesc Name"
-                            formControlName="templatedescname"
-                            [value]="data?.templatedescname"
+                            label="TemplateDescName"
+                            formControlName="templateDescName"
+                            [value]="data?.templateDescName"
                             [formGroup]="prescriptionForm"
-                            [validations]="getValidationMessages().templatedescname"
+                            [validations]="getValidationMessages().templateDescName"
                             [maxLength]="50">
                         </airmid-textbox> 
                     </div>

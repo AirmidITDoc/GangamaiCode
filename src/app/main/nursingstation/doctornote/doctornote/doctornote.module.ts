@@ -39,7 +39,8 @@ import { DoctornoteComponent } from './doctornote.component';
 import { DoctornoteService } from '../doctornote.service';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-
+import { AngularEditorModule } from "@kolkov/angular-editor";
+import { CreateTemplateComponent } from './create-template/create-template.component';
 
 const routes: Routes = [
   {
@@ -49,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctornoteComponent],
+    declarations: [DoctornoteComponent, CreateTemplateComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -93,6 +94,7 @@ const routes: Routes = [
         MatTooltipModule,
         ScrollingModule,
         MatButtonToggleModule,
+        AngularEditorModule
     ],
     providers: [
         DatePipe,

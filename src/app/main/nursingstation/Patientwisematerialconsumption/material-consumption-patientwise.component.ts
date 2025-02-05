@@ -34,12 +34,14 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     autocompleteModestore: string = "Store";
 
     gridConfig: gridModel = {
-        apiUrl: "Nursing/PatietWiseMatetialList",
+        // apiUrl: "Nursing/PatietWiseMatetialList",
+        apiUrl:"Prescription/PatietWiseMatetialList",
         columnsList: [
             // { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Con.No", key: "conNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "DateTime", key: "dateTime", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "LandTotalAmt", key: "amount", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Con.No", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Date", key: "consumptionDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Time", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150},
+            { heading: "LandTotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA'},
             // { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             // { heading: "MaterialConsumptionId", key: "materialConsumptionId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             // { heading: "ConsumptionNo", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
@@ -67,7 +69,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "materialConsumptionId",
+        sortField: "MaterialConsumptionId",
         sortOrder: 0,
         filters: [
             { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },

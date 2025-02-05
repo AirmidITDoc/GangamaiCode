@@ -25,90 +25,92 @@ export class RoleTemplateMasterComponent implements OnInit {
 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
-        gridConfig: gridModel = {
-            apiUrl: "ClassMaster/List",
-            columnsList: [
-                { heading: "Code", key: "RoleId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-                { heading: "Role Name", key: "RoleName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
-                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-                {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onSave(data);
-                            }
-                        }, 
-                        {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this._RoleTemplateService.deactivateTheStatus(data.RoleId).subscribe((response: any) => {
-                                    this.toastr.success(response.message);
-                                    this.grid.bindGridData();
-                                });
-                            }
-                        },
-                        {
-                            action: gridActions.view, callback: (data: any) => {
-                                this.onPermission(data.RoleId);
-                            }
-                        }, 
-                    ]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "RoleId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "RoleName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-            ],
-            row: 25
-        }
+    gridConfig: gridModel = {
+        apiUrl: "RoleTemplate/List",
+        columnsList: [
+            { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onSave(data);
+                        }
+                    }, 
+                    {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._RoleTemplateService.deactivateTheStatus(data.roleId).subscribe((response: any) => {
+                                this.toastr.success(response.message);
+                                this.grid.bindGridData();
+                            });
+                        }
+                    },
+                    {
+                        action: gridActions.view, callback: (data: any) => {
+                            this.onPermission(data.roleId);
+                        }
+                    }, 
+                ]
+            } //Action 1-view, 2-Edit,3-delete
+        ],
+        sortField: "RoleName",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "roleName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
     
         
     
-        ngOnInit(): void { }
+    ngOnInit(): void {
+        // this.getRoleMasterList();
+    }
     
-        onSave(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-            
-            let that = this;
-            const dialogRef = this._matDialog.open(NewRoletemplateComponent,
-                {
-                    maxWidth: "45vw",
-                    height: '35%',
-                    width: '70%',
-                    data: row
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
+    onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+        
+        let that = this;
+        const dialogRef = this._matDialog.open(NewRoletemplateComponent,
+            {
+                maxWidth: "45vw",
+                height: '35%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    onPermission(roleId){
+            console.log(roleId)
+            const dialogRef = this._matDialog.open(RolePermissionComponent,
+            {
+                maxWidth: "80vw",
+                height: '100vh',
+                maxHeight:'100vh',
+                width: '100%',
+                data : {
+                    roleId : roleId,
                 }
             });
-        }
-
-        onPermission(RoleId){
-              console.log(RoleId)
-              const dialogRef = this._matDialog.open(RolePermissionComponent,
+            dialogRef.afterClosed().subscribe(result => {
+                // this. getregistrationList();
+            });
+            const DialogRef = this._matDialog.open(
+                RolePermissionComponent,
                 {
-                  maxWidth: "80vw",
-                    height: '100vh',
-                    maxHeight:'1290vh',
-                    width: '100%',
-                    data : {
-                      RoleId : RoleId,
-                    }
-                });
-              dialogRef.afterClosed().subscribe(result => {
-            //   this. getregistrationList();
-              });
-            //   this.DialogRef = this._matDialog.open(
-            //     RolePermissionComponent,
-            //     {
-            //       disableClose: false,
-            //     }
-            //   );
-              
-            }
+                    disableClose: false,
+                }
+          );
+            
+    }
 
 }
 

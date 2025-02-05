@@ -8,10 +8,13 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class DoctornoteService {
   myform: FormGroup;
+  Templateform: FormGroup;
+
   constructor(public _httpClient: HttpClient,
     public _httpClient1: ApiCaller,
     public _formBuilder: UntypedFormBuilder) {
       this.myform = this.createtemplateForm();
+      this.Templateform=this.createnewtemplateForm();
      }
 
      createtemplateForm(): FormGroup {
@@ -22,9 +25,28 @@ export class DoctornoteService {
       HandOverType:['0']
       });
     }
+
+    createnewtemplateForm(): FormGroup {
+      return this._formBuilder.group({
+        TemplateId:[''],
+        TemplateName:[''],
+        TemplateDesc:[''],
+        IsDeleted:[true],
+        Category:['NursNote']
+          });
+    }
   
+  // public DoctorNoteInsert(employee) {
+  //   return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
+  // }
   public DoctorNoteInsert(employee) {
-    return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
+    return this._httpClient.post("DoctorNote", employee)
+  }
+  public DoctorNoteUpdate(Param: any) {
+    debugger
+    if (Param.doctNoteId) {
+        return this._httpClient.put("DoctorNote/" + Param.doctNoteId, Param);
+    }
   }
   public getRegistraionById(Id) {
     return this._httpClient1.GetData("OutPatient/" + Id);

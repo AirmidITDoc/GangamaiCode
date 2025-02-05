@@ -29,6 +29,11 @@ export class RequestforlabtestService {
     })
 
   }
+
+  // new dropdown
+public getRegistraionById(Id) {
+  return this._httpClient1.GetData("OutPatient/" + Id);
+}
   public getPrintRequesttList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=rptLabRequestList",Param)
   }

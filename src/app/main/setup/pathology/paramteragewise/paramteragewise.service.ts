@@ -101,25 +101,25 @@ export class ParamteragewiseService {
             "Generic/GetByProc?procName=Retrieve_UnitMasterForCombo",{});
     }
      // Gender Master Combobox List
-     public getGenderMasterCombo() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",{}
-        );
-    }
+    //  public getGenderMasterCombo() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=RetrieveGenderMasterForCombo",{}
+    //     );
+    // }
     // AgeType Master Combobox List
-    public getAgeTypeList() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrieve_AgeTypeMasterForCombo",{}
-        );
-    }
+    // public getAgeTypeList() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrieve_AgeTypeMasterForCombo",{}
+    //     );
+    // }
    //Descriptive
-    public getDescriptiveMasterList() {
-        return this._httpClient.post(
-            "Generic/GetByProc?procName=Retrive_DescriptiveParameterMaster",
-            { ParameterName: "%" }
-           // Rtrv_PathParameterDescriptiveMaster_by_Name
-        );
-    }
+    // public getDescriptiveMasterList() {
+    //     return this._httpClient.post(
+    //         "Generic/GetByProc?procName=Retrive_DescriptiveParameterMaster",
+    //         { ParameterName: "%" }
+    //        // Rtrv_PathParameterDescriptiveMaster_by_Name
+    //     );
+    // }
     //Numeric
     public getNumericMasterList() {
         return this._httpClient.post(

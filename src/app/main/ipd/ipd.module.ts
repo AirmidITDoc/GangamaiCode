@@ -58,13 +58,14 @@ import { IPSettlementViewComponent } from './ip-settlement/ipsettlement-view/ips
 import { CompanyInformationComponent } from './company-information/company-information.component';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { BrowseIPAdvanceComponent } from './browse-ip-advance/browse-ip-advance.component';
+import { NRefundComponent } from './nrefund/nrefund.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
 
 @NgModule({
-  declarations: [IPDSearcPatienthComponent,],
+  declarations: [IPDSearcPatienthComponent, NRefundComponent,],
   imports: [
     CommonModule,
     MatButtonModule,

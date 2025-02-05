@@ -29,7 +29,7 @@ export class NewPrescriptionComponent implements OnInit {
   vItemName: any;
   vQty: any;
   vRemark: any;
-  SpinLoading: boolean = false;
+  
   myForm: FormGroup;
   searchFormGroup: FormGroup;
   ItemForm: FormGroup;
@@ -102,6 +102,10 @@ export class NewPrescriptionComponent implements OnInit {
   dsiVisitList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
  
+  autocompletestore: string = "Store";
+  autocompleteward: string = "Ward";
+  autocompleteitem: string = "Item";
+
   constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
     public _PrescriptionService: PrescriptionService,
@@ -148,15 +152,10 @@ export class NewPrescriptionComponent implements OnInit {
     })
   }
 
-
   ngOnInit(): void {
     this.myForm = this.createMyForm();
     this.ItemForm = this.createItemForm();  
-    this.gePharStoreList();
-    this.getWardList(); 
-    this.getDoseList();
-
-   
+  
   }
   dateTimeObj: any;
   WardName:any;
@@ -184,44 +183,63 @@ export class NewPrescriptionComponent implements OnInit {
     } 
   }
  
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }
-  getSelectedObj(obj) {
+  // getOptionText(option) {
+  //   if (!option) return '';
+  //   return option.FirstName + ' '+ option.MiddleName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  // }
+  // getSelectedObj(obj) {
     
-    if(obj.IsDischarged == 1){
-      Swal.fire('Selected Patient is already discharged');
-      this.PatientName = ''  
-      this.vAdmissionID =  ''
-      this.RegNo = ''
-      this.Doctorname =  ''
-      this.Tarrifname = ''
-      this.CompanyName =''
-      this.vOPDNo = ''
-      this.WardName =''
-      this.BedNo = ''
-    }
-    else{
+  //   if(obj.IsDischarged == 1){
+  //     Swal.fire('Selected Patient is already discharged');
+  //     this.PatientName = ''  
+  //     this.vAdmissionID =  ''
+  //     this.RegNo = ''
+  //     this.Doctorname =  ''
+  //     this.Tarrifname = ''
+  //     this.CompanyName =''
+  //     this.vOPDNo = ''
+  //     this.WardName =''
+  //     this.BedNo = ''
+  //   }
+  //   else{
       
-      this.registerObj = obj;
-      this.selectedAdvanceObj = obj;
-      this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
-      this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-      this.RegNo = obj.RegNo;
-      this.RegId = obj.RegId;
-      this.vAdmissionID = obj.AdmissionID;
-      this.CompanyName = obj.CompanyName;
-      this.Tarrifname = obj.TariffName;
-      this.Doctorname = obj.DoctorName;
-      // this.vOpIpId = obj.AdmissionID;
-      this.vOPDNo = obj.IPDNo;
-      this.WardName = obj.RoomName;
-      this.BedNo = obj.BedName;
-      this.vClassId=obj.ClassId;
-      console.log(obj);
-    } 
-  } 
+  //     this.registerObj = obj;
+  //     this.selectedAdvanceObj = obj;
+  //     this.selectedAdvanceObj.PatientName= obj.FirstName + ' ' + obj.LastName;
+  //     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
+  //     this.RegNo = obj.RegNo;
+  //     this.RegId = obj.RegId;
+  //     this.vAdmissionID = obj.AdmissionID;
+  //     this.CompanyName = obj.CompanyName;
+  //     this.Tarrifname = obj.TariffName;
+  //     this.Doctorname = obj.DoctorName;
+  //     // this.vOpIpId = obj.AdmissionID;
+  //     this.vOPDNo = obj.IPDNo;
+  //     this.WardName = obj.RoomName;
+  //     this.BedNo = obj.BedName;
+  //     this.vClassId=obj.ClassId;
+  //     console.log(obj);
+  //   } 
+  // } 
+
+  getSelectedObj(obj) {
+    console.log(obj)
+    this.RegId = obj.value;
+    debugger
+    if ((this.RegId ?? 0) > 0) {
+
+      setTimeout(() => {
+        this._PrescriptionService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(response)
+
+        });
+
+      }, 500);
+    }
+
+  }
+
   getSearchItemList() {  
     if(this.myForm.get('StoreId').value.StoreId > 0){ 
       var m_data = {
@@ -247,33 +265,39 @@ export class NewPrescriptionComponent implements OnInit {
     }
     
   } 
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemName;
-  } 
-  getSelectedObjItem(obj) {
-    console.log(obj)
-      this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemId;
-      this.BalanceQty = obj.BalanceQty;
-    // if (this.dsPresList.data.length > 0) {
-    //   this.dsPresList.data.forEach((element) => {
-    //     if (obj.ItemID == element.ItemID) {
-    //       Swal.fire('Selected Item already added in the list ');
-    //       this.ItemForm.reset();
-    //     }
-    //   });
-    //   this.ItemName = obj.ItemName;
-    //   this.ItemId = obj.ItemID;
-    //   this.BalanceQty = obj.BalanceQty;
-    // }
-    // else {
-    //   this.ItemName = obj.ItemName;
-    //   this.ItemId = obj.ItemID;
-    //   this.BalanceQty = obj.BalanceQty;
-    // }
-  }
+  // getOptionItemText(option) {
+  //   this.ItemId = option.ItemID;
+  //   if (!option) return '';
+  //   return option.ItemName;
+  // } 
+  // getSelectedObjItem(obj) {
+  //   console.log(obj)
+  //     this.ItemName = obj.ItemName;
+  //     this.ItemId = obj.ItemId;
+  //     this.BalanceQty = obj.BalanceQty;
+  //   // if (this.dsPresList.data.length > 0) {
+  //   //   this.dsPresList.data.forEach((element) => {
+  //   //     if (obj.ItemID == element.ItemID) {
+  //   //       Swal.fire('Selected Item already added in the list ');
+  //   //       this.ItemForm.reset();
+  //   //     }
+  //   //   });
+  //   //   this.ItemName = obj.ItemName;
+  //   //   this.ItemId = obj.ItemID;
+  //   //   this.BalanceQty = obj.BalanceQty;
+  //   // }
+  //   // else {
+  //   //   this.ItemName = obj.ItemName;
+  //   //   this.ItemId = obj.ItemID;
+  //   //   this.BalanceQty = obj.BalanceQty;
+  //   // }
+  // }
+
+  selectChangeItem(obj: any) {
+    console.log("Item:",obj);
+    // this.refdocId = obj.value
+}
+
   onAdd1() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a qty', 'Warning !', {
@@ -309,21 +333,6 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   doseList:any=[];
-  getDoseList() {
-    this._PrescriptionService.getDoseList().subscribe((data) => {
-      this.doseList = data; 
-      this.filteredOptionsDosename = this.ItemForm.get('DoseId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterDosename(value) : this.doseList.slice()),
-      );
-    });
-  }
-  private _filterDosename(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.DoseName ? value.DoseName.toLowerCase() : value.toLowerCase();
-      return this.doseList.filter(option => option.DoseName.toLowerCase().includes(filterValue));
-    }
-  }
 
   deleteTableRow1(event, element) {
     // if (this.key == "Delete") {
@@ -338,63 +347,28 @@ export class NewPrescriptionComponent implements OnInit {
     }); 
   }
 
-  private _filterStore(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.optionsStore.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    } 
-  }
-  gePharStoreList() {
-    this._PrescriptionService.getPharmacyStoreList().subscribe(data => {
-      this.StoreList = data;
-      this.optionsStore = this.StoreList.slice();
-      this.filteredOptionsStore = this.myForm.get('StoreId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterStore(value) : this.StoreList.slice()),
-      );
-
-    });
-  } 
-  private _filterWard(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.RoomName ? value.RoomName.toLowerCase() : value.toLowerCase();
-      return this.optionsWard.filter(option => option.RoomName.toLowerCase().includes(filterValue));
-    } 
-  }
-  getWardList() {
-    this._PrescriptionService.getWardList().subscribe(data => {
-      this.WardList = data;
-      console.log(this.WardList)
-      this.optionsWard = this.WardList.slice();
-      this.filteredOptionsWard = this.myForm.get('WardName').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterWard(value) : this.WardList.slice()),
-      ); 
-    });
-  }
-
   WardId: any;
-  getOptionTextWard(option) {
-    // 
-    return option && option.RoomName ? option.RoomName : '';
-  }
-  getOptionTextStore(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
 
-
+  getValidationMessages() {
+    return {
+      StoreId: [
+            { name: "required", Message: "Store Name is required" }
+        ],
+        WardName: [
+          { name: "required", Message: "Ward Name is required" }
+      ],
+      ItemId:[
+        { name: "required", Message: "Item Name is required" }
+      ]
+    };
+  }
   onEdit(row) {
     console.log(row);
 
     this.registerObj = row;
     this.getSelectedObj(row);
   }
-  getSelectedObjward(obj) {
-    this.WardId = obj.RoomId;
-  }
-  getOptionTextDose(option) {
-    return option && option.DoseName ? option.DoseName : '';
-  }
+
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
@@ -405,9 +379,8 @@ export class NewPrescriptionComponent implements OnInit {
     }
   }  
 
-
   onAdd() {
-    
+    debugger
     if ((this.ItemForm.get('ItemId').value == '' || this.ItemForm.get('ItemId').value == null || this.ItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -520,7 +493,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   viewgetIpprescriptionReportPdf(OP_IP_ID) {
     setTimeout(() => {
-      this.SpinLoading = true;
+      // this.SpinLoading = true;
       //  this.AdList=true;
       this._PrescriptionService.getIpPrescriptionview(
         OP_IP_ID, 1
@@ -536,12 +509,10 @@ export class NewPrescriptionComponent implements OnInit {
             }
           });
         dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
+         
         });
         dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
+         
         });
       });
 

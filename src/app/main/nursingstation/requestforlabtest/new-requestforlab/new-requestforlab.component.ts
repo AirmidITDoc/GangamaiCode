@@ -123,29 +123,50 @@ export class NewRequestforlabComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   } 
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this.searchFormGroup.get('RegID').value}%`
-    }
-    if (this.searchFormGroup.get('RegID').value.length >= 1) {
-      this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData);
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
-      });
-    }
+  // getSearchList() {
+  //   var m_data = {
+  //     "Keyword": `${this.searchFormGroup.get('RegID').value}%`
+  //   }
+  //   if (this.searchFormGroup.get('RegID').value.length >= 1) {
+  //     this._RequestforlabtestService.getAdmittedPatientList(m_data).subscribe(resData => {
+  //       this.filteredOptions = resData;
+  //       console.log(resData);
+  //       this.PatientListfilteredOptions = resData;
+  //       if (this.filteredOptions.length == 0) {
+  //         this.noOptionFound = true;
+  //       } else {
+  //         this.noOptionFound = false;
+  //       } 
+  //     });
+  //   }
 
-  }
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }
+  // }
+  // getOptionText(option) {
+  //   if (!option) return '';
+  //   return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
+  // }
 
+  getSelectedObjIP(obj) {
+    console.log(obj)
+    this.RegId = obj.value;
+    debugger
+    if ((this.RegId ?? 0) > 0) {
+
+      setTimeout(() => {
+        this._RequestforlabtestService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(response)
+        //   if (response) {
+        //     this.registerObj = {
+        //         ...response,
+        //         PatientName: `${response.FirstName || ''} ${response.LastName || ''}`.trim()
+        //     };
+        // }
+        });
+
+      }, 500);
+    }
+  }
  
   onEdit(row) {
     console.log(row);
@@ -214,9 +235,16 @@ export class NewRequestforlabComponent implements OnInit {
         });
     }
     else{
-      this.toastr.warning('Please select patient ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+      if (!this.searchFormGroup.get('RegID')?.value && !this.registerObj?.RegId) {
+        this.toastr.warning('Please Select Patient', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
+      // this.toastr.warning('Please select patient ', 'Warning !', {
+      //   toastClass: 'tostr-tost custom-toast-warning',
+      // });
     }
    
   }

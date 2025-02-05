@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
                                 <div class="input-container" fxLayout="row" fxFlex="100%" fxFlex.gt-sm="30%" class="gap-8" fxLayoutAlign="start center">
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Department</mat-label>
                                         <mat-select formControlName="Departmentid" placeholder="Bank" #singleSelect required>
                                             <mat-option>
@@ -74,7 +74,11 @@
                                                 {{element.departmentName}}
                                             </mat-option>
                                         </mat-select>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <airmid-dropdown label="Department Name" formControlName="Departmentid" [formGroup]="registeredForm"
+                                        [validations]="getValidationMessages().Departmentid" 
+                                        [mode]="autocompletedepartment">
+                                    </airmid-dropdown>
                                 </div>
                             </div>
                         </mat-card>

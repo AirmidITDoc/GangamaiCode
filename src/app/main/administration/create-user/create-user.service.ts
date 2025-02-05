@@ -20,29 +20,42 @@ export class CreateUserService {
  
     createuserForm(): FormGroup {
         return this._formBuilder.group({
-            userId:[0],
-            // FirstName:[""],
-            // LastName:[""],
-            // LoginName:[""],
-            // Password:[""],
-            // RoleId:[""], // [Validators.minLength(6),Validators.maxLength(6)]],
-            // RoleName:[""],
-            // IsDoctor:[""],
-            // DoctorId:[""],
-            // DoctorName:[""],
-            // StoreId:[""],
-            // StoreName:[""],
-            // MailId:[""],
-            // MailDomain:[""],
-            // Status:[""],
-            isActive:[true,[Validators.required]],
+            userId: [0],
+            firstName: [""],
+            lastName: [""],
+            userName: [""],
+            password: [""],
+            roleId: [""],
+            storeId: 0,
+            isDoctorType: true,
+            doctorId: 0,
+            isPoverify: true,
+            isGrnverify: true,
+            isCollection: true,
+            isBedStatus: true,
+            isCurrentStk: true,
+            isPatientInfo: true,
+            isDateInterval: true,
+            isDateIntervalDays: 0,
+            mailId: [""],
+            mailDomain: [""],
+            loginStatus: true,
+            addChargeIsDelete: true,
+            isIndentVerify: true,
+            isPoinchargeVerify: true,
+            isRefDocEditOpt: true,
+            isInchIndVfy: true,
+            webRoleId: 0,
+            userToken: [""],
+            pharExtOpt: 0,
+            pharOpopt: 0,
+            pharIpopt: 0,
 
-            username:[""],
-            loginname:[""],
-            rolename:[""],
-            storename:[""],
-            doctorname:[""],
-            days:[""]
+            // loginname:[""],
+            // rolename:[""],
+            // storename:[""],
+            // doctorname:[""],
+            // days:[""]
 
         });
     }
@@ -60,12 +73,12 @@ export class CreateUserService {
 
     public insertuser(Param: any) {
         if (Param.userId) {
-            return this._httpClient.PutData("MReportConfig/" + Param.userId, Param);
-        } else return this._httpClient.PostData("MReportConfig", Param);
+            return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
+        } else return this._httpClient.PostData("LoginManager/Insert", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("LoginManager/LoginCanceled?Id=" + m_data.toString());
     }
 //   createuserform: FormGroup;
 //   myformSearch: FormGroup;

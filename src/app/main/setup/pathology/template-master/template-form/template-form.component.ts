@@ -31,6 +31,7 @@ export class TemplateFormComponent implements OnInit {
 
     vTemplateName:any;
     TemplateId = 0;
+    vTemplateDescInHtml:any;
     constructor(
         public _TemplateServieService: TemplateServieService,
         public dialogRef: MatDialogRef<TemplateFormComponent>,
@@ -40,17 +41,27 @@ export class TemplateFormComponent implements OnInit {
    
     ngOnInit(): void {
         this.templateForm = this._TemplateServieService.createTemplateForm();
-        var m_data = {
-            templateId: this.data?.templateId,
-            templateName: this.data?.templateName.trim(),
-            templateDesc: this.data?.templateDesc.trim(),
-            templateDescInHtml: this.data?.templateDescInHtml.trim(),
-        };
-        this.templateForm.patchValue(m_data);
+        
+        if (this.data) {
+            // var m_data = {
+            //     templateId: this.data?.templateId,
+            //     templateName: this.data?.templateName?.trim(),
+            //     templateDesc: this.data?.templateDesc?.trim(),
+            //     templateDescInHtml: this.data?.templateDescInHtml?.trim(),
+            // };
+            // this.templateForm.patchValue(m_data);
+            this.vTemplateName=this.data.templateName;
+            this.vTemplateDesc=this.data.templateDesc;
+            this.TemplateId=this.data.templateId;
+            this.vTemplateDescInHtml=this.data.templateDescInHtml;
+        } else {
+            console.warn("Data is not available in ngOnInit.");
+        }
     }
+    
     onSubmit() {
 
-            if (!this.templateForm.get("templateId").value) {
+            if (!this.TemplateId) {
                 
                 var mdata={
                       "templateId": 0,
@@ -67,6 +78,22 @@ export class TemplateFormComponent implements OnInit {
                       this.toastr.error(error.message);
                   });
               }
+              else{
+                var mdata={
+                    "templateId": this.TemplateId,
+                    "templateName": this.templateForm.get("templateName").value,
+                    "templateDesc": this.templateForm.get("templateDesc").value,
+                    "templateDescInHtml": "string"              
+              }
+              console.log('json mdata:',mdata);
+
+                this._TemplateServieService.templateMasterSave(mdata).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear();
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+              }
         
         this.onClose();
     }
@@ -77,8 +104,14 @@ export class TemplateFormComponent implements OnInit {
 
     onClear(){}
 
-    onBlur($event: any) {
-    throw new Error('Method not implemented.');
+    onBlur(e: any) {
+    // throw new Error('Method not implemented.');
+    this.vTemplateDesc = e.target.innerHTML;
     }
+
+    // onBlur(e: any) {
+    //     this.vConsentText = e.target.innerHTML;
+    //   }
+    
 }
   

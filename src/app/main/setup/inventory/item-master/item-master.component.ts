@@ -134,6 +134,7 @@ export class ItemMaster {
     reOrder: number;
     isNursingFlag: boolean;
     hsNcode: string;
+    hsncode: String;
     cgst: number;
     sgst: number;
     igst: number;

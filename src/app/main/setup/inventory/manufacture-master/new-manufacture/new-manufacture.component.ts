@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ManufactureMasterService } from '../manufacture-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-manufacture',
-  templateUrl: './new-manufacture.component.html',
-  styleUrls: ['./new-manufacture.component.scss']
+    selector: 'app-new-manufacture',
+    templateUrl: './new-manufacture.component.html',
+    styleUrls: ['./new-manufacture.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewManufactureComponent implements OnInit {
 
@@ -23,7 +26,7 @@ export class NewManufactureComponent implements OnInit {
 
     ngOnInit(): void {
       this.manufForm = this._ManufactureMasterService.createManufactureForm();
-      if((this.data?.itemManufactureId??0) > 0)
+      if((this.data?.manufId??0) > 0)
         {
         this.isActive=this.data.isActive
         this.manufForm.patchValue(this.data);
@@ -32,6 +35,7 @@ export class NewManufactureComponent implements OnInit {
 
   
     onSubmit() {
+        debugger
       if (!this.manufForm.invalid) 
         {
         this._ManufactureMasterService.manufactureMasterSave(this.manufForm.value).subscribe((response) => {
@@ -43,7 +47,7 @@ export class NewManufactureComponent implements OnInit {
       }
       else
       {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
         });
         return;

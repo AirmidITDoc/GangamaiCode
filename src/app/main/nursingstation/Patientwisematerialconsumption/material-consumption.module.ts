@@ -74,7 +74,7 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
         MatChipsModule,
-        MatProgressSpinnerModule,
+        // MatProgressSpinnerModule,
         // WebcamModule,
         ReactiveFormsModule,
         MatAutocompleteModule,

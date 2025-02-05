@@ -127,9 +127,9 @@ export class PrescriptionComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionComponent,
             {
-                maxWidth: "75vw",
-                height: '75%',
-                width: '70%',
+                maxWidth: "80vw",
+                height: '85%',
+                width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

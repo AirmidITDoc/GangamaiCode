@@ -135,8 +135,8 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   reportPrintObj: any;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
-  reportPrintObjList: any[] = [];
- 
+  reportPrintObjList: any[] = [];  
+  autocompletedepartment: string = "Department"; 
 
   constructor(
     private _fuseSidebarService: FuseSidebarService,
@@ -159,20 +159,18 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     this.createForm();
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-
     }
 
-
     //  this.getServiceListCombobox();
-     this.getDepartmentList();
+    //  this.getDepartmentList();
     //  this.getChargesList();
     // this.getBillingClassCombo();
     
-    this.departmentFilterCtrl.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterDepartment();
-    });
+    // this.departmentFilterCtrl.valueChanges
+    // .pipe(takeUntil(this._onDestroy))
+    // .subscribe(() => {
+    //   this.filterDepartment();
+    // });
    
   }
 
@@ -200,30 +198,30 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
 
  
-  private filterDepartment() {
-    // ;
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-    );
+  // private filterDepartment() {
+  //   // ;
+  //   if (!this.DepartmentList) {
+  //     return;
+  //   }
+  //   // get the search keyword
+  //   let search = this.departmentFilterCtrl.value;
+  //   if (!search) {
+  //     this.filteredDepartment.next(this.DepartmentList.slice());
+  //     return;
+  //   }
+  //   else {
+  //     search = search.toLowerCase();
+  //   }
+  //   // filter
+  //   this.filteredDepartment.next(
+  //     this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
+  //   );
 
-    // let cData = this._NursingStationService.getDepartmentCombo().subscribe(data => {
-    //   this.DepartmentList = data;
-    //   this.filteredDepartment.next(this.DepartmentList.slice());
-    // });
-  }
+  //   // let cData = this._NursingStationService.getDepartmentCombo().subscribe(data => {
+  //   //   this.DepartmentList = data;
+  //   //   this.filteredDepartment.next(this.DepartmentList.slice());
+  //   // });
+  // }
 
   //  ===================================================================================
   filterStates(name: string) {
@@ -237,12 +235,12 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     return tempArr;
   }
 
-  getDepartmentList() {
-    let cData = this._NursingStationService.getDepartmentCombo().subscribe(data => {
-      this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
-    });
-  }
+  // getDepartmentList() {
+  //   let cData = this._NursingStationService.getDepartmentCombo().subscribe(data => {
+  //     this.DepartmentList = data;
+  //     this.filteredDepartment.next(this.DepartmentList.slice());
+  //   });
+  // }
 
 //   Patientlist(){
 // ;
@@ -337,8 +335,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
 
-  
-
   openBillInfo() {
     this.isExpanded = !this.isExpanded;
   }
@@ -358,7 +354,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   getNetAmount() {
 
     this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-    
   }
 
   tableElementChecked(event, element) {
@@ -474,9 +469,15 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
     PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
     PatientHeaderObj['NetPayAmount'] = this.FinalAmt//this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
-    
-   
-  
+      
+  }
+
+  getValidationMessages() {
+    return {
+      Departmentid: [
+            { name: "required", Message: "Department Name is required" }
+        ]
+    };
   }
 
   OnSave() {

@@ -19,8 +19,8 @@
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Create User</mat-label>
-                    <input matInput placeholder="Search User" autocomplete="off"
+                    <mat-label>UserName</mat-label>
+                    <input matInput placeholder="Search UserName" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
