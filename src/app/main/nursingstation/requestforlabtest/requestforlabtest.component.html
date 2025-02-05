@@ -18,7 +18,7 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <mat-form-field appearance="outline" fxFlex>
+                <!-- <mat-form-field appearance="outline" fxFlex>
                     <mat-label>From Date</mat-label>
                     <input matInput placeholder="Search From Date" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
@@ -36,8 +36,13 @@
                         (click)="gridConfig.filters[1].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
-                </mat-form-field>
+                </mat-form-field> -->
 
+                <airmid-datepicker [formGroup]="_RequestforlabtestService.mySearchForm" [isRangePicker]="true" 
+                formStartControlName="startdate"
+                formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                [(toValue)]="gridConfig.filters[1].fieldValue">
+            </airmid-datepicker>
               
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>RegNo</mat-label>

@@ -6,7 +6,7 @@ import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admissio
 import { DoctornoteService } from "../doctornote.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AdvanceDataStored } from "app/main/ipd/advance";
-import { FormGroup,FormControl, UntypedFormBuilder,Validators } from "@angular/forms";
+import { FormGroup, FormControl, UntypedFormBuilder, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -15,6 +15,8 @@ import { fuseAnimations } from "@fuse/animations";
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { CreateTemplateComponent } from './create-template/create-template.component';
 
 
 @Component({
@@ -27,7 +29,7 @@ import { map, startWith, takeUntil } from 'rxjs/operators';
 export class DoctornoteComponent implements OnInit {
   displayedColumns: string[] = [
     'RegNo',
-    'PatienName' 
+    'PatienName'
   ]
   displayedDoctorNote: string[] = [
     'VDate',
@@ -46,142 +48,232 @@ export class DoctornoteComponent implements OnInit {
     'R',
     'Action'
   ]
- 
+
   currentDate = new Date();
   screenFromString = 'opd-casepaper';
   sIsLoading: string = '';
-  isLoading:string ='';
-  PathologyDoctorList:any=[];
-  wardList:any=[];
-  DoctorNoteList:any=[]; 
-  NoteList:any=[];
-  vCompanyName:any;
-  vRegNo:any;
-  vDescription:any;
-  vPatienName:any;
-  vGender:any;
-  vAdmissionDate:any;
-  vAdmissionID:any;
-  vIPDNo:any;
-  vAgeyear:any;
-  vAgeMonth:any;
-  vAgeDay:any;
-  vWardName:any;
-  vBedName:any;
-  vPatientType:any;
-  vRefDocName:any;
-  vTariffName:any;
-  vDoctorname:any;
-  vDepartmentName:any;
+  isLoading: string = '';
+  PathologyDoctorList: any = [];
+  wardList: any = [];
+  DoctorNoteList: any = [];
+  NoteList: any = [];
+  vCompanyName: any;
+  vRegNo: any;
+  vDescription: any;
+  vPatienName: any;
+  vGender: any;
+  vAdmissionDate: any;
+  vAdmissionID: any;
+  vIPDNo: any;
+  vAgeyear: any;
+  vAgeMonth: any;
+  vAgeDay: any;
+  vWardName: any;
+  vBedName: any;
+  vPatientType: any;
+  vRefDocName: any;
+  vTariffName: any;
+  vDoctorname: any;
+  vDepartmentName: any;
 
   selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
   dsDoctorNoteList = new MatTableDataSource;
   dsHandOverNoteList = new MatTableDataSource;
   searchFormGroup: FormGroup;
- 
+  autocompletenote: string = "Note";
+  vDoctNoteId: any;
+
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator; 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public _NursingStationService: DoctornoteService,
-    private accountService: AuthenticationService, 
+    private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
-    private formBuilder: UntypedFormBuilder, 
-    public datePipe: DatePipe, 
-    public toastr: ToastrService, 
-    public _matDialog: MatDialog,  
-  ) { 
-     if (this.advanceDataStored.storage) {
-    
-     this.selectedAdvanceObj = this.advanceDataStored.storage;
-     // this.PatientHeaderObj = this.advanceDataStored.storage;
-     console.log( this.selectedAdvanceObj)
-   } 
+    private formBuilder: UntypedFormBuilder,
+    public datePipe: DatePipe,
+    public toastr: ToastrService,
+    public _matDialog: MatDialog,
+  ) {
+    if (this.advanceDataStored.storage) {
+
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      // this.PatientHeaderObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj)
+    }
   }
 
-  ngOnInit(): void {     
-      this.vRegNo = this.selectedAdvanceObj.RegNo;
-      this.vPatienName = this.selectedAdvanceObj.PatientName;
-      this.vDoctorname = this.selectedAdvanceObj.DoctorName;
-      this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
-      this.vAgeyear = this.selectedAdvanceObj.AgeYear;
-      this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
-      this.vAgeDay = this.selectedAdvanceObj.AgeDay;
-      this.vBedName = this.selectedAdvanceObj.BedName;
-      this.vWardName = this.selectedAdvanceObj.RoomName;  
-    this.getDoctorNoteList(); 
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '12rem',
+    minHeight: '12rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+  };
+
+  onBlur(e: any) {
+    this.vDescription = e.target.innerHTML;
+  }
+
+  ngOnInit(): void {
+    this.vRegNo = this.selectedAdvanceObj.RegNo;
+    this.vPatienName = this.selectedAdvanceObj.PatientName;
+    this.vDoctorname = this.selectedAdvanceObj.DoctorName;
+    this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
+    this.vAgeyear = this.selectedAdvanceObj.AgeYear;
+    this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
+    this.vAgeDay = this.selectedAdvanceObj.AgeDay;
+    this.vBedName = this.selectedAdvanceObj.BedName;
+    this.vWardName = this.selectedAdvanceObj.RoomName;
+    // this.getDoctorNoteList(); 
     this.getWardNameList();
     this.searchFormGroup = this.createSearchForm();
   }
 
-  getWardNameList(){
-    this._NursingStationService.getWardNameList().subscribe(data =>{
+  getWardNameList() {
+    this._NursingStationService.getWardNameList().subscribe(data => {
       this.wardList = data;
     })
   }
-  getDoctorNoteList() {
-    this._NursingStationService.getDoctorNoteCombo().subscribe(data => {
-      this.DoctorNoteList = data;
-    }); 
-  } 
-OnAdd(){
-  if(this.vRegNo =='' || this.vRegNo  == null || this.vRegNo == undefined){ 
-    this.toastr.warning('Please select Patient', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-    return;
-  }
-  if(this._NursingStationService.myform.get('Note').value){
-    this.vDescription = this._NursingStationService.myform.get('Note').value.DocsTempName || '';
-  }else{
-    this.toastr.warning('Please select Note', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
-    });
-  }
-  this._NursingStationService.myform.get('Note').setValue('');
-}
 
-  onSubmit() { 
- 
-    this.isLoading = 'submit';
-       
-    let DocNoteTemplateInsertObj = {};
-        
-    DocNoteTemplateInsertObj['AdmID'] = 11,//this.selectedAdvanceObj.PathReportID;
-    DocNoteTemplateInsertObj['TDate']= this.dateTimeObj.date;
-    DocNoteTemplateInsertObj['TTime ']= this.dateTimeObj.time;
-    DocNoteTemplateInsertObj['DoctorsNotes']= this._NursingStationService.myform.get("DoctorsNotes").value || '',
-    
-    DocNoteTemplateInsertObj['doctNoteId'] =1,// this.accountService.currentUserValue.userId
-    DocNoteTemplateInsertObj['IsAddedBy'] = this.accountService.currentUserValue.userId
-   
-   
-    // this.dialogRef.afterClosed().subscribe(result => {
-          console.log('==============================  Advance Amount ===========');
-          let submitData = {
-           
-            "doctorNoteInsert": DocNoteTemplateInsertObj
-          };
-        console.log(submitData);
-      
-          this._NursingStationService.DoctorNoteInsert(submitData).subscribe(response => {
-            
-            if (response) {
-              Swal.fire('Congratulations !', 'Doctor Note Template data saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                //  this._matDialog.closeAll();
-                 ;
-                //  this.getPrint();
-                }
-              });
-            } else {
-              Swal.fire('Error !', 'Doctor Note Template data not saved', 'error');
-            }
-            this.isLoading = '';
+  NewTemplate() {
+    const dialogRef = this._matDialog.open(CreateTemplateComponent,
+      {
+        maxWidth: "75vw",
+        height: '85%',
+        width: '100%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.getDoctorNoteList();
+    });
+  }
+
+  OnAdd() {
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this._NursingStationService.myform.get('Note').value) {
+      this.vDescription = this._NursingStationService.myform.get('Note').value.DocsTempName || '';
+    } else {
+      this.toastr.warning('Please select Note', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+    }
+    this._NursingStationService.myform.get('Note').setValue('');
+  }
+
+  getValidationMessages() {
+    return {
+      Note: [
+        // { name: "required", Message: "Note Name is required" }
+      ]
+    };
+  }
+
+  onSubmit() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    if (!this.vDoctNoteId) {
+      var mdata = {
+        "doctNoteId": 0,
+        "admId": 0,
+        "tdate": formattedDate,
+        "ttime": formattedTime,
+        "doctorsNotes": this._NursingStationService.myform.get("Description").value,
+        "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
+      }
+      console.log('json mdata:', mdata);
+
+      this._NursingStationService.DoctorNoteInsert(mdata).subscribe(response => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Saved !', {
+            toastClass: 'tostr-tost custom-toast-success',
           });
-        
-   // });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    }
+    else {
+      var mdata1 = {
+        "doctNoteId": this.vDoctNoteId,
+        "admId": 0,
+        "tdate": formattedDate,
+        "ttime": formattedTime,
+        "doctorsNotes": this._NursingStationService.myform.get("Description").value,
+        "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
+      }
+      console.log('json mdata:', mdata1);
+
+      this._NursingStationService.DoctorNoteUpdate(mdata1).subscribe((response) => {
+        if (response) {
+          this.toastr.success('Record Update Successfully.', 'Update !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+          this.onClose()
+        } else {
+          this.toastr.error('Record not Update !, Please check API error..', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
+    }
+
+    // this.isLoading = 'submit';
+
+    // let DocNoteTemplateInsertObj = {};
+
+    // DocNoteTemplateInsertObj['AdmID'] = 11,//this.selectedAdvanceObj.PathReportID;
+    // DocNoteTemplateInsertObj['TDate']= this.dateTimeObj.date;
+    // DocNoteTemplateInsertObj['TTime ']= this.dateTimeObj.time;
+    // DocNoteTemplateInsertObj['DoctorsNotes']= this._NursingStationService.myform.get("DoctorsNotes").value || '',
+
+    // DocNoteTemplateInsertObj['doctNoteId'] =1,// this.accountService.currentUserValue.userId
+    // DocNoteTemplateInsertObj['IsAddedBy'] = this.accountService.currentUserValue.userId
+
+
+    // // this.dialogRef.afterClosed().subscribe(result => {
+    //       console.log('==============================  Advance Amount ===========');
+    //       let submitData = {
+
+    //         "doctorNoteInsert": DocNoteTemplateInsertObj
+    //       };
+    //     console.log(submitData);
+
+    //       this._NursingStationService.DoctorNoteInsert(submitData).subscribe(response => {
+
+    //         if (response) {
+    //           Swal.fire('Congratulations !', 'Doctor Note Template data saved Successfully !', 'success').then((result) => {
+    //             if (result.isConfirmed) {
+    //             //  this._matDialog.closeAll();
+    //              ;
+    //             //  this.getPrint();
+    //             }
+    //           });
+    //         } else {
+    //           Swal.fire('Error !', 'Doctor Note Template data not saved', 'error');
+    //         }
+    //         this.isLoading = '';
+    //       });
+
+    // });
   }
 
   // onEdit(row) {
@@ -197,31 +289,31 @@ OnAdd(){
 
   createSearchForm() {
     return this.formBuilder.group({
-        RegId: [''],
+      RegID: [''],
     });
-}
+  }
 
-RegOrPhoneflag = '';
-PatientName: any = '';
-RegId: any = 0;
-VisitFlagDisp: boolean = false;
-registerObj:any;
+  RegOrPhoneflag = '';
+  PatientName: any = '';
+  RegId: any = 0;
+  VisitFlagDisp: boolean = false;
+  registerObj: any;
 
-getSelectedObj(obj) {
-  debugger
-  console.log(obj)
-  this.RegOrPhoneflag = 'Entry from Registration';
-  let todayDate = new Date();
-  const d = new Date(obj.DateofBirth);
+  getSelectedObj(obj) {
+    debugger
+    console.log(obj)
+    this.RegOrPhoneflag = 'Entry from Registration';
+    let todayDate = new Date();
+    const d = new Date(obj.DateofBirth);
 
-  this.PatientName = obj.PatientName;
-  this.RegId = obj.value;
-  this.VisitFlagDisp = true;
-debugger
-  if ((this.RegId ?? 0) > 0) {
+    this.PatientName = obj.PatientName;
+    this.RegId = obj.value;
+    this.VisitFlagDisp = true;
+    debugger
+    if ((this.RegId ?? 0) > 0) {
       debugger
       // console.log(this.data)
-     setTimeout(() => {
+      setTimeout(() => {
         this._NursingStationService.getRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
           console.log(this.registerObj)
@@ -229,13 +321,13 @@ debugger
         });
 
       }, 500);
-  }
+    }
 
-}
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-     this.dateTimeObj = dateTimeObj;
+    this.dateTimeObj = dateTimeObj;
   }
 
   onClear() {
@@ -246,7 +338,7 @@ debugger
     this._NursingStationService.myform.reset();
     this._matDialog.closeAll();
     this.onClearPatientInfo();
-  } 
+  }
   onClearPatientInfo() {
     this.vRegNo = '';
     this.vPatienName = '';
@@ -265,24 +357,24 @@ debugger
     this.vTariffName = '';
     this.vCompanyName = '';
   }
-}  
+}
 export class DocNote {
 
-  AdmID : number;
-  TDate : Date;
-  TTime : Date;
-  DoctorsNotes : any;
-  IsAddedBy : any;
-  DoctNoteId  : any;
- 
+  AdmID: number;
+  TDate: Date;
+  TTime: Date;
+  DoctorsNotes: any;
+  IsAddedBy: any;
+  DoctNoteId: any;
+
   constructor(DocNote) {
- 
+
     this.AdmID = DocNote.AdmID || 0;
     this.TDate = DocNote.TDate || '';
     this.TTime = DocNote.TTime || '';
     this.DoctorsNotes = DocNote.DoctorsNotes || '';
     this.IsAddedBy = DocNote.IsAddedBy || 0;
-   this.DoctNoteId =DocNote.DoctNoteId  || 0;
+    this.DoctNoteId = DocNote.DoctNoteId || 0;
   }
 
 }

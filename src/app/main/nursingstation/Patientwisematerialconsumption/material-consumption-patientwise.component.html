@@ -94,22 +94,28 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig" class="content">
                         <ng-container filters>
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Enter a date range</mat-label>
                                 <mat-date-range-input [rangePicker]="picker">
                                     <input matStartDate formControlName="start" placeholder="Start date">
                                     <input matEndDate formControlName="end" placeholder="End date">
-                                    <!-- (dateChange)="getMaterialConList()" -->
+                                    (dateChange)="getMaterialConList()"
                                 </mat-date-range-input>
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
+                            </mat-form-field> -->
+
+                            <airmid-datepicker [formGroup]="_PatientwiseMaterialConsumptionService.mySearchForm" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
+                                [(toValue)]="gridConfig.filters[2].fieldValue">
+                            </airmid-datepicker>
+                            
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>From Store</mat-label>
                                 <input matInput placeholder="Search StoreName" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    (click)="gridConfig.filters[0].fieldValue=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>

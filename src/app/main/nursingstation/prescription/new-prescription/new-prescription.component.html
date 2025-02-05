@@ -235,7 +235,8 @@
                                     formControlName="ItemId" [formGroup]="myForm"
                                     [validations]="getValidationMessages().ItemId" 
                                     [value]="data?.ItemId" 
-                                    [mode]="autocompleteitem">
+                                    [mode]="autocompleteitem"
+                                    (selectDdlObject)="selectChangeItem($event)">
                                 </airmid-dropdown>
                     
                                     <!-- <mat-form-field appearance="outline" fxFlex="20%">

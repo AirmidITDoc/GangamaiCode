@@ -183,6 +183,12 @@ export class NewPrescriptionreturnComponent implements OnInit {
     };
   }
 
+  selectChangeItem(obj: any) {
+    debugger
+    console.log("Item:",obj);
+    // this.refdocId = obj.value
+}
+
   onChangePatientType(event) {
     if (event.value == 'OP') {
       this.OP_IPType = 0;

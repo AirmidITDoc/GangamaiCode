@@ -52,11 +52,12 @@ export class TestmasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "testId",
+        sortField: "TestId",
         sortOrder: 0,
         filters: [
-            { fieldName: "testName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Contains },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
         row: 25
     }

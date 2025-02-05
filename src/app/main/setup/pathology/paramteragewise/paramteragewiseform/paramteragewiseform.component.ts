@@ -24,7 +24,8 @@ export class ParamteragewiseformComponent implements OnInit {
     ageType: string[] = ["Days", "Months", "Years"];
     
     isActive:boolean=true;
-
+    autocompleteModeUnitId:string = "Unit";
+    autocompleteModeGender:String="Gender";
 
     displayedColumns: string[] = [
         "GenderName",
@@ -79,10 +80,10 @@ export class ParamteragewiseformComponent implements OnInit {
         this.selectedItems = [];
         this.dsParameterAgeList.data=[];
        
-        this.getUnitNameCombobox();
-        this.getGenderNameCombobox();
-        this.getAgeTypeList();
-        this.getDscriptiveMasterList();
+        // this.getUnitNameCombobox();
+        // this.getGenderNameCombobox();
+        // this.getAgeTypeList();
+        // this.getDscriptiveMasterList();
         if (this._ParameterageService.myform.get("ParameterID").value) {
             
             this.isActive=this.data.isActive
@@ -95,39 +96,39 @@ export class ParamteragewiseformComponent implements OnInit {
     get f() {
         return this._ParameterageService.myform.controls;
     }
-    getGenderNameCombobox() {
-        this._ParameterageService.getGenderMasterCombo().subscribe(data => {
-            this.GendercmbList = data;
-            console.log(this.GendercmbList);
-        });
-    }
-    getAgeTypeList() {
-        this._ParameterageService.getAgeTypeList().subscribe(data => {
-            this.AgeTypeList = data;
-            // console.log(this.AgeTypeList);
-        });
-    }
-    getUnitNameCombobox() {
+    // getGenderNameCombobox() {
+    //     this._ParameterageService.getGenderMasterCombo().subscribe(data => {
+    //         this.GendercmbList = data;
+    //         console.log(this.GendercmbList);
+    //     });
+    // }
+    // getAgeTypeList() {
+    //     this._ParameterageService.getAgeTypeList().subscribe(data => {
+    //         this.AgeTypeList = data;
+    //         // console.log(this.AgeTypeList);
+    //     });
+    // }
+    // getUnitNameCombobox() {
 
-        this._ParameterageService.getUnitMasterCombo().subscribe((data) => {
-            this.UnitcmbList = data;
-           console.log(this.UnitcmbList)
-            if (this.data) {
-                const toSelectUnitId = this.UnitcmbList.find(c => c.UnitId == this.registerObj.UnitId);
-                this._ParameterageService.myform.get('UnitId').setValue(toSelectUnitId);
-               console.log(toSelectUnitId);  
-              console.log(this.registerObj.UnitId); 
-               } 
-        });
-    }
+    //     this._ParameterageService.getUnitMasterCombo().subscribe((data) => {
+    //         this.UnitcmbList = data;
+    //        console.log(this.UnitcmbList)
+    //         if (this.data) {
+    //             const toSelectUnitId = this.UnitcmbList.find(c => c.UnitId == this.registerObj.UnitId);
+    //             this._ParameterageService.myform.get('UnitId').setValue(toSelectUnitId);
+    //            console.log(toSelectUnitId);  
+    //           console.log(this.registerObj.UnitId); 
+    //            } 
+    //     });
+    // }
 
-    getDscriptiveMasterList() {
-        this._ParameterageService.getDescriptiveMasterList().subscribe((Menu) => {
-            this.dsParameterAgeList.data = Menu as PathParaRangeAgeMaster[];
-            this.dsParameterAgeList.sort = this.sort;
-            this.dsParameterAgeList.paginator = this.paginator;
-        });
-    }
+    // getDscriptiveMasterList() {
+    //     this._ParameterageService.getDescriptiveMasterList().subscribe((Menu) => {
+    //         this.dsParameterAgeList.data = Menu as PathParaRangeAgeMaster[];
+    //         this.dsParameterAgeList.sort = this.sort;
+    //         this.dsParameterAgeList.paginator = this.paginator;
+    //     });
+    // }
     // getNumericMasterList() {
     //     var vadata={
     //         "ParameterId": 1 //this._ParameterageService.myform.get('ParameterID').value || 1
@@ -187,7 +188,16 @@ export class ParamteragewiseformComponent implements OnInit {
 
     }
 
-    
+    getValidationMessages(){
+        return{
+            UnitId:[
+                // { name: "required", Message: "Unit Id is required" }
+            ],
+            SexID:[
+                 // { name: "required", Message: "Sex Id is required" }
+            ]
+        }
+    }
     AddData(txt) {
         if (txt.replace(/\s/g, '').length !== 0) {
 

@@ -265,33 +265,39 @@ export class NewPrescriptionComponent implements OnInit {
     }
     
   } 
-  getOptionItemText(option) {
-    this.ItemId = option.ItemID;
-    if (!option) return '';
-    return option.ItemName;
-  } 
-  getSelectedObjItem(obj) {
-    console.log(obj)
-      this.ItemName = obj.ItemName;
-      this.ItemId = obj.ItemId;
-      this.BalanceQty = obj.BalanceQty;
-    // if (this.dsPresList.data.length > 0) {
-    //   this.dsPresList.data.forEach((element) => {
-    //     if (obj.ItemID == element.ItemID) {
-    //       Swal.fire('Selected Item already added in the list ');
-    //       this.ItemForm.reset();
-    //     }
-    //   });
-    //   this.ItemName = obj.ItemName;
-    //   this.ItemId = obj.ItemID;
-    //   this.BalanceQty = obj.BalanceQty;
-    // }
-    // else {
-    //   this.ItemName = obj.ItemName;
-    //   this.ItemId = obj.ItemID;
-    //   this.BalanceQty = obj.BalanceQty;
-    // }
-  }
+  // getOptionItemText(option) {
+  //   this.ItemId = option.ItemID;
+  //   if (!option) return '';
+  //   return option.ItemName;
+  // } 
+  // getSelectedObjItem(obj) {
+  //   console.log(obj)
+  //     this.ItemName = obj.ItemName;
+  //     this.ItemId = obj.ItemId;
+  //     this.BalanceQty = obj.BalanceQty;
+  //   // if (this.dsPresList.data.length > 0) {
+  //   //   this.dsPresList.data.forEach((element) => {
+  //   //     if (obj.ItemID == element.ItemID) {
+  //   //       Swal.fire('Selected Item already added in the list ');
+  //   //       this.ItemForm.reset();
+  //   //     }
+  //   //   });
+  //   //   this.ItemName = obj.ItemName;
+  //   //   this.ItemId = obj.ItemID;
+  //   //   this.BalanceQty = obj.BalanceQty;
+  //   // }
+  //   // else {
+  //   //   this.ItemName = obj.ItemName;
+  //   //   this.ItemId = obj.ItemID;
+  //   //   this.BalanceQty = obj.BalanceQty;
+  //   // }
+  // }
+
+  selectChangeItem(obj: any) {
+    console.log("Item:",obj);
+    // this.refdocId = obj.value
+}
+
   onAdd1() {
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a qty', 'Warning !', {
@@ -374,7 +380,7 @@ export class NewPrescriptionComponent implements OnInit {
   }  
 
   onAdd() {
-    
+    debugger
     if ((this.ItemForm.get('ItemId').value == '' || this.ItemForm.get('ItemId').value == null || this.ItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

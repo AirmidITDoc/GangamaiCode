@@ -235,9 +235,16 @@ export class NewRequestforlabComponent implements OnInit {
         });
     }
     else{
-      this.toastr.warning('Please select patient ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+      if (!this.searchFormGroup.get('RegID')?.value && !this.registerObj?.RegId) {
+        this.toastr.warning('Please Select Patient', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
+      // this.toastr.warning('Please select patient ', 'Warning !', {
+      //   toastClass: 'tostr-tost custom-toast-warning',
+      // });
     }
    
   }
