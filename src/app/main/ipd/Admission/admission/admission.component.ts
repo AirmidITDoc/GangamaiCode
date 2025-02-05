@@ -615,6 +615,8 @@ onChangeEndDate(value) {
   }
 
   onbedTransfer(row) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
 
     this._registrationService.populateFormpersonal(row);
     this.registerObj["RegId"] = row.RegID;

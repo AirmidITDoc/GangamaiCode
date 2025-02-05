@@ -89,6 +89,8 @@ const routes: Routes = [
         MatTooltipModule,
         MatExpansionModule,
         MatListModule,
+        MatDatepickerModule,
+        ReactiveFormsModule 
     ],
     providers: [
         DatePipe, PhoneAppointListService, MatDatepickerInput

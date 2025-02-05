@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
@@ -33,8 +33,6 @@ export class AppointmentlistService {
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
             ]],
             DoctorId: '',
-            DoctorName: '',
-            IsMark: 2,
             fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
         });
@@ -67,7 +65,100 @@ export class AppointmentlistService {
     }
 
    
+    createPesonalForm() {
 
+        return this._formBuilder.group({
+            RegId: 0,
+            RegNo: '1',
+            PrefixId: ['', [Validators.required]],
+            FirstName: ['', [
+                Validators.required,
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+            ]],
+            MiddleName: ['', [
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+            ]],
+            LastName: ['', [
+                Validators.required,
+                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+            ]],
+            GenderId: new FormControl('', [Validators.required]),
+            Address: '',
+            DateOfBirth: [(new Date()).toISOString()],
+            Age: ['0'],
+            AgeYear: ['0', [
+                // Validators.required,
+                Validators.maxLength(3),
+                Validators.pattern("^[0-9]*$")]],
+            AgeMonth: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            AgeDay: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            PhoneNo: ['', [Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            MobileNo: ['', [Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            aadharCardNo: ['', [Validators.required,
+            Validators.minLength(12),
+            Validators.maxLength(12),
+            Validators.pattern("^[0-9]*$")
+            ]],
+            panCardNo: '',
+            MaritalStatusId: 0,
+            ReligionId: 0,
+            AreaId: 0,
+            CityId:[Validators.required],
+            City: '',
+            StateId:[Validators.required],
+            CountryId:[Validators.required],
+            IsCharity: false,
+            IsSeniorCitizen: false,
+            AddedBy: 1,
+            updatedBy: 1,
+            RegDate: [(new Date()).toISOString()],
+            RegTime: [(new Date()).toISOString()],
+            Photo: [''],
+            PinNo: [''],
+            IsHealthCard: 0
+
+        });
+
+    }
+    createVisitdetailForm() {
+        return this._formBuilder.group({
+
+            visitId: 0,
+            regId: 0,
+            visitDate: [(new Date()).toISOString()],
+            visitTime: [(new Date()).toISOString()],
+            UnitId: 1,
+            PatientTypeId: [1, Validators.required],
+            ConsultantDocId: ['',Validators.required],
+            RefDocId: ['',Validators.required],
+            TariffId: [1, Validators.required],
+            CompanyId: 0,
+            SubCompanyId:0,
+            addedBy: 0,
+            updatedBy: 0,
+            isCancelledBy: 0,
+            isCancelled: true,
+            isCancelledDate: [(new Date()).toISOString()],
+            ClassId: 1,
+            DepartmentId: ['',Validators.required],
+            patientOldNew: 1,
+            firstFollowupVisit: 0,
+            AppPurposeId: ['',Validators.required],
+            followupDate: [(new Date()).toISOString()],
+            crossConsulFlag: 0,
+            phoneAppId: 0
+
+        });
+    }
 
     public documentuploadInsert(employee, loader = true) {
         if (loader) {

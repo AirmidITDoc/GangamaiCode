@@ -7,21 +7,21 @@ import { ApiCaller } from 'app/core/services/apiCaller';
     providedIn: 'root'
 })
 export class PhoneAppointListService {
+    phoneappForm: FormGroup;
     myFilterform: FormGroup;
-    mysearchform: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
         private _httpClient1: HttpClient,
         private _formBuilder: UntypedFormBuilder
     ) {
-        // this.myFilterform = this.filterForms();
-        this.mysearchform = this.filterForm();
+       
+        this.myFilterform = this.filterForm();
+        this.phoneappForm=this.filterForm();
     }
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
-            RegNo: '',
             FirstName: ['', [
                 Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
             ]],
@@ -34,22 +34,7 @@ export class PhoneAppointListService {
         });
     }
 
-    // filterForms(): FormGroup {
-    //     return this._formBuilder.group({
-
-    //         hospitalId: '0',
-    //         patientTypeID: '0',
-    //         companyId: '0',
-    //         tariffId: '0',
-    //         departmentId: '0',
-    //         doctorId: '0',
-    //         refDocName: '0',
-    //         classId: '0',
-    //         countryId: '0',
-    //         isSeniorCitizen: '0',
-
-    //     });
-    // }
+    
 
     createphoneForm(): FormGroup {
         return this._formBuilder.group({
@@ -102,7 +87,8 @@ export class PhoneAppointListService {
 
 
     public phoneMasterCancle(Param: any) {
-      return this._httpClient.PutData("PhoneAppointment2/Cancel", Param);
+        debugger
+      return this._httpClient.PostData("PhoneAppointment2/Cancel", Param);
       }
 
     public getMaster(mode, Id) {

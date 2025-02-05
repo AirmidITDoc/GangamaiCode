@@ -60,6 +60,8 @@ export class NewAppointmentComponent implements OnInit {
     VisitFlagDisp: boolean = false;
     hasSelectedContacts: boolean;
     isCompanySelected: boolean = false;
+    IsPhoneAppflag: boolean = true;
+
     loadID = 0;
 
     VisitTime: String;
@@ -77,7 +79,10 @@ export class NewAppointmentComponent implements OnInit {
     RegId: any = 0;
     OPIP: any = '';
     VisitId = 0;
+    patienttype = 0
 
+    
+    screenFromString = 'admission-form';
     @ViewChild('attachments') attachment: any;
 
     imageForm = new FormGroup({
@@ -151,117 +156,21 @@ export class NewAppointmentComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.personalFormGroup = this.createPesonalForm();
-        this.VisitFormGroup = this.createVisitdetailForm();
+        this.personalFormGroup = this._AppointmentlistService.createPesonalForm();
+        this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.searchFormGroup = this.createSearchForm();
 
         if (this.data)
             this.registerObj = this.data;
+       
+
         console.log(this.registerObj)
-
     }
 
 
 
-    createPesonalForm() {
-
-        return this.formBuilder.group({
-            RegId: [0],
-            RegNo: '1',
-            PrefixId: ['', [Validators.required]],
-            FirstName: ['', [
-                Validators.required,
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-            ]],
-            MiddleName: ['', [
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-            ]],
-            LastName: ['', [
-                Validators.required,
-                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
-            ]],
-            GenderId: new FormControl('', [Validators.required]),
-            Address: '',
-            DateOfBirth: [(new Date()).toISOString()],
-            Age: ['0'],
-            AgeYear: ['0', [
-                // Validators.required,
-                Validators.maxLength(3),
-                Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            PhoneNo: ['', [Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-            MobileNo: ['', [Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-            aadharCardNo: ['', [Validators.required,
-            Validators.minLength(12),
-            Validators.maxLength(12),
-            Validators.pattern("^[0-9]*$")
-            ]],
-            panCardNo: '',
-            MaritalStatusId: 0,
-            ReligionId: 0,
-            AreaId: 0,
-            CityId:[Validators.required],
-            City: '',
-            StateId:[Validators.required],
-            CountryId:[Validators.required],
-            IsCharity: false,
-            IsSeniorCitizen: false,
-            AddedBy: 1,
-            updatedBy: 1,
-            RegDate: [(new Date()).toISOString()],
-            RegTime: [(new Date()).toISOString()],
-            Photo: [''],
-            PinNo: [''],
-            IsHealthCard: 0
-
-        });
-
-    }
-    createVisitdetailForm() {
-        return this.formBuilder.group({
-
-            visitId: 0,
-            regId: 0,
-            visitDate: [(new Date()).toISOString()],
-            visitTime: [(new Date()).toISOString()],
-            UnitId: 1,
-            PatientTypeId: [1, Validators.required],
-            ConsultantDocId: [Validators.required],
-            RefDocId: [Validators.required],
-            TariffId: [1, Validators.required],
-            CompanyId: 0,
-            addedBy: 0,
-            updatedBy: 0,
-            isCancelledBy: 0,
-            isCancelled: true,
-            isCancelledDate: [(new Date()).toISOString()],
-            ClassId: 1,
-            DepartmentId: [Validators.required],
-            patientOldNew: 1,
-            firstFollowupVisit: 0,
-            AppPurposeId: [Validators.required],
-            followupDate: [(new Date()).toISOString()],
-            crossConsulFlag: 0,
-            phoneAppId: 0
-
-        });
-    }
-    IsPhoneAppflag: boolean = true;
-
-    // toggle sidebar
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
+   
+    
     onChangeReg(event) {
         //
         if (event.value == 'registration') {
@@ -311,7 +220,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
 
-    patienttype = 0
+   
     onChangePatient(value) {
 
         var mode = "Company"
@@ -332,16 +241,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-    isRowDisabled: boolean = false
-
-    chkdisabled(contact) {
-
-        if (contact.IsCancelled)
-            this.isRowDisabled = true
-        else
-            this.isRowDisabled = false
-    }
-
+   
     getregdetails() {
 
         let RegId = this.searchFormGroup.get("RegId").value
@@ -392,23 +292,23 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-    @ViewChild('appointmentFormStepper') appointmentFormStepper: MatStepper;
-    @Input() panelWidth: string | number;
-    selectedPrefixId: any;
+    // @ViewChild('appointmentFormStepper') appointmentFormStepper: MatStepper;
+    // @Input() panelWidth: string | number;
+    // selectedPrefixId: any;
 
-    public now: Date = new Date();
-    screenFromString = 'admission-form';
+    // public now: Date = new Date();
+    // screenFromString = 'admission-form';
 
 
-    editor: string;
-    filteredOptions: Array<any[]> = [];
-    regId: Number;
-    getSearchList(e: any) {
-        this._AppointmentlistService.getRegistrations(e.target.value).subscribe(data => {
-            this.filteredOptions = data;
-        });
+    // editor: string;
+    // filteredOptions: Array<any[]> = [];
+    // regId: Number;
+    // getSearchList(e: any) {
+    //     this._AppointmentlistService.getRegistrations(e.target.value).subscribe(data => {
+    //         this.filteredOptions = data;
+    //     });
 
-    }
+    // }
     displayFn(user: any): string {
         return user.text;
     }
@@ -447,24 +347,7 @@ export class NewAppointmentComponent implements OnInit {
         // this.IsLoading = false;
     }
 
-    getPhoneAppointmentList() {
-        var m_data = {
-            "Keyword": `${this.searchFormGroup.get('PhoneRegId').value}`
-        }
-        if (this.searchFormGroup.get('PhoneRegId').value.length >= 1) {
-            // this._AppointmentlistService.getPhoneAppointmentList1(m_data).subscribe(resData => {
-            //     this.filteredOptions = resData;
-            //     this.PatientListfilteredOptions = resData;
-            //     if (this.filteredOptions.length == 0) {
-            //         this.noOptionFound = true;
-            //     } else {
-            //         this.noOptionFound = false;
-            //     }
-
-            // });
-        }
-
-    }
+   
 
     getOptionText(option) {
         if (!option) return '';
@@ -486,9 +369,9 @@ export class NewAppointmentComponent implements OnInit {
         this.PatientName = obj.PatientName;
         this.RegId = obj.value;
         this.VisitFlagDisp = true;
-        debugger
+        
         if ((this.RegId ?? 0) > 0) {
-            debugger
+            
             console.log(this.data)
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
@@ -611,28 +494,29 @@ export class NewAppointmentComponent implements OnInit {
 
     onSave() {
         debugger
+        // this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
+        // this.personalFormGroup.get('RegTime').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'hh:mm:ss a'))
+     
 console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup.valid)
 
-        if ((!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid)) {
-
-            if (this.searchFormGroup.get('regRadio').value == "registration") {
-
-                this.OnsaveNewRegister();
-
-            }
+        if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid){
+         
+            if (this.searchFormGroup.get('regRadio').value == "registration") 
+            this.OnsaveNewRegister();
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
                 this.onSaveRegistered();
                 this.onClose();
             }
-
+        
         } else {
             Swal.fire("Form Invalid chk....")
         }
     }
 
     OnsaveNewRegister() {
-        
-
+        this.personalFormGroup.get("RegId").setValue(0)
+        this.VisitFormGroup.get("regId").setValue(0)
+       
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
@@ -646,8 +530,8 @@ console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup
         }, (error) => {
             this.toastr.error(error.message);
         });
-
     }
+    // }
     onSaveRegistered() {
         this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
@@ -795,22 +679,6 @@ console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup
     docArr: string[] = [];
 
 
-    ageyearcheck(event) {
-
-        if (parseInt(event) > 100) {
-            this.toastr.warning('Please Enter Valid Age.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-
-            // this.agey.nativeElement.focus();
-        }
-        return;
-        // else{
-        //   this.agem.nativeElement.focus();
-        // }
-    }
-
-
     onClose() {
         this.dialogRef.close();
     }
@@ -820,9 +688,9 @@ console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup
         this.dateTimeObj = dateTimeObj;
     }
 
-    get showNameEditor() {
-        return this.editor === 'name';
-    }
+    // get showNameEditor() {
+    //     return this.editor === 'name';
+    // }
     // removeImage(url: string) {
     //     let index = this.images.indexOf(url);
     //     this.images.splice(index, 1);

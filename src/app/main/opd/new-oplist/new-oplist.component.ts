@@ -239,44 +239,9 @@ export class NewOPListComponent implements OnInit {
     }
     getWhatsappsharePaymentReceipt(Id) { }
 
-    viewgetOPRefundBillReportPdf(obj) {
-        setTimeout(() => {
-
-            let param = {
-                
-                    "searchFields": [
-                      {
-                        "fieldName": "RefundId",
-                        "fieldValue": obj.refundId,
-                        "opType": "13"
-                      }
-                    ],
-                    "mode": "OPRefundReceipt"
-                  }
-            
-
-            debugger
-            console.log(param)
-            this._OPListService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Op Refund Receipt  Viewer"
-
-                        }
-
-                    });
-
-                matDialog.afterClosed().subscribe(result => {
-
-                });
-            });
-
-        }, 100);
+    viewgetOPRefundBillReportPdf(data) {
+     
+        this.commonService.Onprint("RefundId",data.RefundId,"OPRefundReceipt");
      }
     getWhatsappshareRefundBill(Id) { }
 

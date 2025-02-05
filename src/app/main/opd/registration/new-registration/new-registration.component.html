@@ -4,15 +4,10 @@
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Registration</span>
-                <!-- <button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                matTooltip="Close" style="margin-left: 1300px;">
-                <mat-icon style="width: 10px;height: 10px;">close</mat-icon>
-            </button> -->
+              
             </div>
             <div class="modal-header-right">
-                <!-- <button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                    <mat-icon style="width: 20px;height: 20px;">close</mat-icon>
-                </button> -->
+              
                 <div class="comman-date-container">
                     <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     <div class="close-icon">
@@ -25,12 +20,12 @@
         </div>
     </div>
 
-    <!-- Modal body -->
+  
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             
                 <form [formGroup]="personalFormGroup">
-                <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
+                <input type="hidden" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
@@ -117,10 +112,7 @@
                                      </div>
                                 </div>
 
-                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Religion Name" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion">
-                                    </airmid-dropdown>
-                                </div> -->
+                             
                                 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <div fxLayout="row" class="gap-8">
@@ -134,20 +126,19 @@
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-                                    <!-- <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                        <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a Date" name="Date" formControlName="appTime">
+                                    <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+                                        <input matInput [matDatepicker]="picker2" placeholder="Choose a Date"  formControlName="RegTime">
                                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                         <mat-datepicker #picker2></mat-datepicker>
-                                    </mat-form-field> -->
+                                    </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
-                                        <input matInput [matDatepicker]="picker1" [min]="minDate" [(ngModel)]="registerObj.regDate" placeholder="Choose a Date" name="Date" formControlName="RegDate">
+                                        <input matInput [matDatepicker]="picker1"  [(ngModel)]="registerObj.regDate" placeholder="Choose a Date" formControlName="RegDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
                                 </div>
                             </div>
-                            <!-- Photo capture -->
-
+                            
                         </div>
 
                     </div>

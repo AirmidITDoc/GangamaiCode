@@ -140,9 +140,16 @@
                                 </div>
                                 <hr>
                                 <div fxLayout="row" fxLayoutGap="8px">
-                                    <airmid-dropdown label="Ward Name" formControlName="toWardId" [formGroup]="Bedtransfer"
-                                        [validations]="getValidationMessages().RoomId" [mode]="autocompleteroom">
-                                    </airmid-dropdown>
+                                    <!-- <airmid-dropdown label="Ward Name" formControlName="toWardId" [formGroup]="Bedtransfer"
+                                        [validations]="getValidationMessages().RoomId" [mode]="autocompleteroom" [value]="vWardId">
+                                    </airmid-dropdown> -->
+
+                                    <airmid-dropdown label="Ward Name" formControlName="toWardId"
+                                    [formGroup]="Bedtransfer" [value]="data?.wardId"
+                                    [validations]="getValidationMessages().toWardId" 
+                                     [mode]="autocompleteroom">
+                                </airmid-dropdown>
+
 
                                     <airmid-dropdown label="Bed name" formControlName="toBedId" [formGroup]="Bedtransfer"
                                         [validations]="getValidationMessages().BedId" [mode]="autocompletebed">

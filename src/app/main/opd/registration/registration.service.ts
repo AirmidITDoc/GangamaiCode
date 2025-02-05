@@ -41,7 +41,7 @@ export class RegistrationService {
     createPesonalForm1() {
         return this._formBuilder.group({
             RegId: [0],
-            RegNo: '',
+            RegNo: "0",
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
@@ -93,7 +93,7 @@ export class RegistrationService {
             IsSeniorCitizen: false,
             AddedBy: 1,
             updatedBy: 1,
-            RegDate: [],
+            RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
             PinNo: [''],

@@ -49,6 +49,7 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
+        private commonService: PrintserviceService,
         public toastr: ToastrService, public datePipe: DatePipe,
        ) {
 
@@ -231,33 +232,8 @@ export class AppointmentListComponent implements OnInit {
     }
 
     getAppointmentcasepaperview(data) {
-        setTimeout(() => {
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "VisitId",
-                        "fieldValue": data.visitId,
-                        "opType": "13"
-                    }
-                ],
-                "mode": "AppointmentReceipt"
-            }
-            console.log(param)
-            this._AppointmentlistService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Op CasePaper  Viewer"
-                        }
-                    });
-                matDialog.afterClosed().subscribe(result => {
-                });
-            });
-        }, 100);
+      
+        this.commonService.Onprint("VisitId",data.VisitId,"AppointmentReceipt");
     }
 
 

@@ -25,9 +25,7 @@ export class PrintserviceService {
                       "mode": data
                   }
   
-              console.log(param)
-              debugger
-              this._AppointmentlistService.getReportView(param).subscribe(res => {
+            this._AppointmentlistService.getReportView(param).subscribe(res => {
                   const matDialog = this._matDialog.open(PdfviewerComponent,
                       {
                           maxWidth: "85vw",
@@ -35,7 +33,7 @@ export class PrintserviceService {
                           width: '100%',
                           data: {
                               base64: res["base64"] as string,
-                              title: "Op Bill  Viewer"
+                              title: data + "Viewer"
                           }
                       });
                   matDialog.afterClosed().subscribe(result => {

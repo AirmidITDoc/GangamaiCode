@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PhoneAppointListService } from './phone-appoint-list.service';
@@ -21,7 +21,7 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class PhoneappointmentComponent implements OnInit {
-    myformSearch:FormGroup;
+    myFilterform:FormGroup;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
@@ -30,10 +30,18 @@ export class PhoneappointmentComponent implements OnInit {
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
 
+     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+        @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
+        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template1 = this.actionsflgBillNo;
+    }
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-            { heading: "New/Old", key: "RegNo", sort: true, align: 'left', type: gridColumnTypes.status},
+             { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template,width:150 },
             { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA'},
@@ -63,7 +71,10 @@ export class PhoneappointmentComponent implements OnInit {
                     {
                         action: gridActions.delete, callback: (data: any) => {
                             debugger
-                            this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+                            let s={
+                                phoneAppId:data.phoneAppId
+                            }
+                            this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -94,9 +105,11 @@ export class PhoneappointmentComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.myformSearch=this._PhoneAppointListService.filterForm();
+        this.myFilterform=this._PhoneAppointListService.filterForm();
     }
 
+
+    changeStatus(status: any) {}
     onChangeStartDate(value) {
         this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }

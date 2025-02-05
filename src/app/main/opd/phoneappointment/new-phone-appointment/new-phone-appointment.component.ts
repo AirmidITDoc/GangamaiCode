@@ -26,7 +26,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
   searchFormGroup: FormGroup
   hasSelectedContacts: boolean;
-
+  date = new Date().toISOString();
+  date1: any;
 
   public now: Date = new Date();
 
@@ -51,6 +52,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
     public datePipe: DatePipe) {
+      this.date1 = (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm tt"));
+      var now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      this.date1 = now.toISOString().slice(0,16);
   }
 
 
@@ -66,7 +71,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   createSearchForm() {
     return this.formBuilder.group({
       RegId: 0,
-      AppointmentDate: [(new Date()).toISOString()],
+     
     });
   }
 
@@ -76,7 +81,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   getSelectedObj(obj) {
     console.log(obj)
     this.RegId = obj.value;
-    debugger
+    
     if ((this.RegId ?? 0) > 0) {
 
       setTimeout(() => {
@@ -133,14 +138,21 @@ export class NewPhoneAppointmentComponent implements OnInit {
   }
 
 
-
+  dateTimeControl = new FormControl('');
+  selectedTime: string | null = null;
   OnSubmit() {
 
     console.log(this.phoneappForm.value);
 
     if (!this.phoneappForm.invalid) {
+      debugger
       this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
       this.phoneappForm.get('phAppTime').setValue(this.datePipe.transform(this.phoneappForm.get('phAppTime').value, 'hh:mm:ss a'))
+     
+      // this.phoneappForm.get('phAppDate').setValue(this.date1,'yyyy-MM-dd')
+      // this.phoneappForm.get('phAppTime').setValue(this.date1,'hh:mm:ss a')
+     
+     
       this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
       this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.phoneappForm.get('appTime').value, 'hh:mm:ss a'))
      

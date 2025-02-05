@@ -34,54 +34,9 @@
                         </mat-radio-group>
                     </div>
                     <div class="form-right-container input-error-hidden" *ngIf="Regflag">
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>RgId</mat-label>
-                                <input matInput name="RegId" placeholder="Enter RegId" (keypress)="getregdetails()" formControlName="RegId" onlyNumber>
-                            </mat-form-field> -->
-                            <!-- <mat-form-field appearance="outline">
-                                <mat-label>RgId</mat-label>
-                                <input matInput name="RegId" placeholder="Enter RegId"
-                                    formControlName="RegId" onlyNumber [matAutocomplete]="auto" (input)="getSearchList($event)" (focus)="getSearchList($event)">
-                                <mat-autocomplete requireSelection (optionSelected)="selectedOption($event.option.value)" #auto="matAutocomplete" [displayWith]="displayFn">
-                                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
-                                        {{option.text}}
-                                      </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field> -->
+                         
                             <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-                        <!-- <mat-form-field class=searchRegId appearance="outline" fxflex="30" *ngIf="Regflag">
-                            <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char) " matInput [matAutocomplete]="auto" (input)="getSearchList()" maxlength="10">
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)='getSelectedObj($event.option.value)'>
-                                <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                    {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                    {{option.RegNo}} |
-                                    {{option.MobileNo}}
-                                </mat-option>
-                            </mat-autocomplete>
-
-                        </mat-form-field>
-                        <mat-form-field appearance="outline" fxflex="30" *ngIf="IsPhoneAppflag">
-                            <mat-label>Phone Appointment : First Name / Last Name / Mobile No </mat-label>
-                            <input type="text" name="PhoneRegId" formControlName="PhoneRegId" matInput [matAutocomplete]="auto" (input)="getPhoneAppointmentList()">
-                            <span matSuffix style="display: flex;">
-                                <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('PhoneRegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('PhoneRegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                            </span>
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)='getSelectedObjPhone($event.option.value)'>
-                                <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
-                                    {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                    {{option.RegNo}} |
-                                    {{option.MobileNo}}
-                                </mat-option>
-                            </mat-autocomplete>
-                            <mat-error *ngIf="searchFormGroup.get('RegId').hasError('required')">
-                                Required field cannot be left blank
-                            </mat-error>
-                        </mat-form-field> -->
+                        
                     </div>
                 </div>
             </form>
@@ -181,11 +136,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Religion Name" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion">
-                                        </airmid-dropdown>
-                                    </div> -->
-
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div fxLayout="row" class="gap-8">
 
@@ -218,7 +168,7 @@
                                             <input type="text" placeholder="Enter Health Card No" matInput #healthcard [(ngModel)]="vhealthCardNo" formControlName="HealthCardNo" (keypress)="keyPressAlphanumeric($event)">
                                         </mat-form-field>
                                     </div>
-                                    <!-- </div> -->
+                                  
                                 </div>
                                 <!-- Photo capture -->
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
@@ -240,6 +190,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <mat-form-field appearance="outline" fxFlex style="visibility: hidden;">
+                                <input matInput [matDatepicker]="picker1"  placeholder="Choose a Date" name="Date" formControlName="RegDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
                         </form>
                     </mat-expansion-panel>
 
@@ -255,39 +210,30 @@
 
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- [value]="PatientTypeID" -->
+                               
                                     <airmid-dropdown label="patientType" formControlName="PatientTypeId" [value]="data?.patientTypeId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().patientTypeId" [mode]="autocompleteModepatienttype" (selectionChange)="onChangePatient($event)">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- [value]="TrariffId" -->
+                               
                                     <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="VisitFormGroup" [value]="data?.tariffId" [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff" (selectionChange)="selectChangetariff($event)">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <!-- [value]="CompanyId" -->
-
                                     <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup" [value]="data?.companyId" [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany" (selectionChange)="selectChangecompany($event)">
                                     </airmid-dropdown>
-
 
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <!-- [value]="SubCompanyId" -->
-
                                     <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId" [mode]="autocompleteModesubcompany">
                                     </airmid-dropdown>
 
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <!-- [value]="Departmentid" -->
-                                    <!-- <airmid-dropdown label="Department Name" formControlName="DepartmentId" [formGroup]="VisitFormGroup" [value]="data?.departmentId" [validations]="getValidationMessages().departmentId" [mode]="autocompleteModedepartment" (selectionChange)="selectChangedepartment($event)">
-                                    </airmid-dropdown> -->
                                     <airmid-dropdown label="Department Name" formControlName="DepartmentId"
                                     [formGroup]="VisitFormGroup" [value]="data?.departmentId"
                                     [validations]="getValidationMessages().departmentId"
@@ -300,11 +246,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                    <!-- [value]="DoctorID" -->
-                                    <!-- <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId" [formGroup]="VisitFormGroup" [value]="data?.doctorID" [validations]="getValidationMessages().DoctorID" [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
-                                    </airmid-dropdown> -->
-
-                                    <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
+                                     <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
                                     [formGroup]="VisitFormGroup" [value]="data?.doctorID"
                                     [validations]="getValidationMessages().DoctorID" #ddldoctor
                                     [mode]="autocompleteModedeptdoc">
@@ -312,14 +254,13 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- [value]="RefDocId" -->
+ 
                                     <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId" [formGroup]="VisitFormGroup" [value]="data?.refDocId" [validations]="getValidationMessages().refDocId" [mode]="autocompleteModerefdoc">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                    <!-- [value]="PurposeId" -->
                                     <airmid-dropdown label="Purpose" formControlName="AppPurposeId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId" [mode]="autocompleteModepurpose">
                                     </airmid-dropdown>
                                 </div>

@@ -20,7 +20,7 @@
       <div class="modal-body-container">
         <form [formGroup]="searchFormGroup">
           <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
-            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter Patient Name/RegId.." ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
           </div>
         </form>
@@ -38,7 +38,22 @@
                               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker></mat-datepicker>
                           </mat-form-field> -->
+                         
                           <airmid-datepicker [formGroup]="phoneappForm" [isRangePicker]="false" formControlName="phAppDate"></airmid-datepicker>
+
+
+                        <!-- <div>
+                        <label for="dateTime">Select Date and Time:</label>
+                        <input id="dateTime" type="datetime-local" formControlName="phAppDate" [value]="date1" [(ngModel)]="date1"/>
+                        </div> -->
+                      
+
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Collection Date / Time</mat-label>
+                            <input matInput type="datetime-local" placeholder="date" [value]="date1" [(ngModel)]="date1"
+                                (change)="date1=$event.target.value" formControlName="phAppDate" />
+                        </mat-form-field> -->
+
 
                       </div>
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -60,7 +75,7 @@
                           </airmid-textbox>
                       </div>
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="vMobile" [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+                          <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="registerObj.mobileNo" [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                           </airmid-textbox>
                       </div>
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -77,22 +92,24 @@
                               <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                               <mat-datepicker #picker1></mat-datepicker>
                           </mat-form-field>
+
+                          
                       </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                      <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
                           <mat-form-field appearance="outline" fxFlex>
                               <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate" name="AppointmentDate" formControlName="appTime">
                               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                               <mat-datepicker #picker2></mat-datepicker>
                           </mat-form-field>
 
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                      </div> -->
+                      <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
                           <mat-form-field appearance="outline" fxFlex>
-                              <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime" name="AppointmentDate" formControlName="phAppTime">
+                              <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime" name="PhAppointmentDate" formControlName="phAppTime">
                               <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                               <mat-datepicker #picker3></mat-datepicker>
                           </mat-form-field>
-                      </div>
+                      </div> -->
                   </div>
               </div>
           </form>

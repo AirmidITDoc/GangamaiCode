@@ -18,6 +18,7 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content">
             <ng-container filters>
+                
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Doctor Name</mat-label>
                     <input matInput placeholder="Search Doctor Name" autocomplete="off"

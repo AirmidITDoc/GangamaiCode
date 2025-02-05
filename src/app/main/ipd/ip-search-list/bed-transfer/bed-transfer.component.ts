@@ -68,7 +68,7 @@ export class BedTransferComponent implements OnInit {
   this.vClassId=this.data.classId;
     }
    
- 
+    // this.Bedtransfer.patchValue(this.data);
   }
   
   getDateTime(dateTimeObj) { 
@@ -78,18 +78,18 @@ export class BedTransferComponent implements OnInit {
     return this._formBuilder.group({
          transferId: 0,
     admissionId: 0,
-    fromDate: "2025-08-05",
-    fromTime: "10:00:00 AM",
+    fromDate:[(new Date()).toISOString()],
+    fromTime: [(new Date()).toISOString()],
     fromWardId: 0,
     fromBedId: 0,
     fromClassId: 0,
-    toDate:  "2025-08-05",
-    toTime:  "10:00:00 AM",
+    toDate: [(new Date()).toISOString()],
+    toTime: [(new Date()).toISOString()],
     toWardId: 0,
     toBedId: 0,
     toClassId: 0,
     remark: "%",
-    addedBy: 10,
+    addedBy: 1,
     isCancelled: 0,
     isCancelledBy: 0
     });
@@ -133,7 +133,7 @@ export class BedTransferComponent implements OnInit {
   
   getValidationMessages() {
     return {
-      RoomId: [
+      toWardId: [
             { name: "required", Message: "Room Name is required" }
         ],
         BedId: [

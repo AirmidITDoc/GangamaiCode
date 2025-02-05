@@ -107,16 +107,7 @@ export class DoctorMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
-    onSearchClear() {
-        this._doctorService.myformSearch.reset({
-            DoctorNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-
-    }
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
+    
     onClear() {
         this._doctorService.myform.reset({ IsDeleted: "false" });
         this._doctorService.initializeFormGroup();

@@ -57,7 +57,6 @@ export class RegistrationComponent implements OnInit {
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
             { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA',width:50 },
             { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-           
             { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA',width:150   },
@@ -102,27 +101,12 @@ export class RegistrationComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                that.grid.bindGridData();
+                this.grid.bindGridData();
             }
         });
     }
 
-    // changeStatus(status: any) {
-    //     switch (status.id) {
-    //         case 1:
-    //             //this.onEdit(status.data)
-    //             break;
-    //         case 2:
-    //             this.onEdit(status.data)
-    //             break;
-    //         case 5:
-    //             this.onDeactive(status.data.genderId);
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
+ 
     onEdit(row) {
        console.log(row)
         this._RegistrationService.populateForm(row);
@@ -223,9 +207,7 @@ export class RegistrationComponent implements OnInit {
                 { name: "pattern", Message: "only char allowed." }
             ],
             LastName: [
-                // { name: "required", Message: "Middle Name is required" },
-                // { name: "maxLength", Message: "Enter only upto 50 chars" },
-                { name: "pattern", Message: "only char allowed." }
+              { name: "pattern", Message: "only char allowed." }
             ],
             RegNo: [],
             MobileNo: [

@@ -147,48 +147,7 @@
         </div>
         <div>
 
-            <!-- New dd? with old and new APi/new Component -->
-            <form [formGroup]="crossconForm">
-                <!-- <mat-form-field appearance="outline">
-                    <mat-label>Doctor using Old Code</mat-label>
-                    <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput #city
-                        formControlName="DoctorID" [matAutocomplete]="auto" required>
-                    <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                            (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                            (click)="crossconForm.get('DoctorID').setValue(''); isdocSelected = false;">search</mat-icon>
-                    </span>
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionTextDoc">
-                        <mat-option *ngFor="let option of filteredOptionsdoc | async" [value]="option">
-                            {{option.doctorId}} || {{option.firstName}} {{option.lastName}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field> -->
-                <!-- //DD with old code -->
-                <!-- <mat-form-field appearance="outline">
-                    <mat-label>Doctor Name</mat-label>
-                    <mat-select formControlName="DoctorID" name="DoctorID">
-                        <mat-option></mat-option>
-                        <mat-option *ngFor="let m of docList" [value]="m">
-                            {{m.doctorId}} || {{m.firstName}} {{m.lastName}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field> -->
-
-
-
-                <!-- ///////////// -->
-                <!-- <app-airmid-dropdown label="DoctorID" formControlName="consultantDocId" [value]="DoctorID1"
-                    [formGroup]="crossconForm" [mode]="autocompleteModedeptdoc">
-                </app-airmid-dropdown>  -->
-
-
-                <!-- <app-airmid-dropdown  label="Department" formControlName="departmentId" [value]="Departmentid"
-                    [formGroup]="crossconForm" [mode]="autocompleteModedepartment" (selectionChange)="selectChange($event)">
-                </app-airmid-dropdown> -->
-                <span style="font-size: larger;color: blue;">{{selected}}</span>
-            </form>
+         
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">

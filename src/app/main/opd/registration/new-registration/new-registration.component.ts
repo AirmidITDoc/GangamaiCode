@@ -86,10 +86,7 @@ export class NewRegistrationComponent implements OnInit {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-                     if(this.registerObj){
-                    // this.personalFormGroup.get("PrefixId").setValue(this.registerObj.prefixId)
-                    //  this.personalFormGroup.get("CityId").setValue(this.registerObj.cityId)
-                     }
+                    this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                    });
             }, 500);
         }
@@ -101,16 +98,20 @@ export class NewRegistrationComponent implements OnInit {
  
     OnSubmit() {
         console.log(this.personalFormGroup.value)
-        // if (this.personalFormGroup.valid) {
+        this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
+        // this.personalFormGroup.get('RegTime').setValue(this.datePipe.transform(this.personalFormGroup.get('RegTime').value, 'hh:mm:ss a'))
+     
+        
+        if (this.personalFormGroup.valid) {
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                this.toastr.success(response.message);
                 this.onClear(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        // } else {
-        //     this.toastr.warning("Enter * all data...Form Is Invalid !...");
-        // }
+        } else {
+            this.toastr.warning("Enter * all data...Form Is Invalid !...");
+        }
     }
 
     onClose() {

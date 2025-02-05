@@ -18,40 +18,40 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <form [formGroup]="myformSearch">
-
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                <form [formGroup]="myFilterform">
+                    
+                        <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                        [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
-
-                   
-                    <mat-form-field appearance="outline">
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
-                            formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
-                            formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[1].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
+                        [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker> -->
+    
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear"
+                                (click)="gridConfig.filters[0].fieldValue=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+    
+    
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="LastName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear"
+                                (click)="gridConfig.filters[1].fieldValue=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+    
+                        <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
                         [(ngModel)]="gridConfig.filters[2].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
                         (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
-                </form>
+                       
+                    </form>
             </ng-container>
         </airmid-table>
     </div>
