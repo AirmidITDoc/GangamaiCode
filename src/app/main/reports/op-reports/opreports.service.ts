@@ -82,7 +82,7 @@ export class OPReportsService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.get("OPReport/view-RegistrationReport ?FromDate="+FromDate+"&ToDate="+ToDate);
+    return this._httpClient.get("OPReport/view-RegistrationReport?FromDate="+FromDate+"&ToDate="+ToDate);
   }
 
   public getAppointmentListReport(Doctor_Id,FromDate,ToDate,loader = true){
@@ -996,5 +996,95 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId,loader = true){
       this._loaderService.show();
   } 
     return this._httpClient.post("Generic/GetByProc?procName=rptCashCounterWiseDailyCollection",data) 
+  }
+  public getRegisterationList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptListofRegistration",data) 
+  }
+  public geAppointmentList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPAppointmentListReport",data) 
+  }
+  public getDoctorWiseVisitList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDoctorWiseVisitDetails",data) 
+  }
+  public getRefDocWiseList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptReferenceDoctor",data) 
+  }
+  public getDepartmentWiseList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_OPDepartSumry",data) 
+  }
+  public getDocWiseCountList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_OPDocSumry",data) 
+  }
+  public getAppoinListWithServList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptAppointListWithService",data) 
+  }
+  public getCrossConsultList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPCrossConsultationReport",data) 
+  }
+  public getDocWiseNewOldPatientList(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDocWiseNewOldPatient_web",data) 
+  }
+  public getOPBIllReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillDateWise",data) 
+  }
+  public getOPBIllSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillDetails",data) 
+  }
+  public getOPRefBillReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDRefundOfBill",data) 
+  }
+  public getOPDailyCollectionSummaryReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDCollectionReport",data) 
+  }
+  public getOPBIllBalReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDCreditBills",data) 
+  }
+  public getOPDailyCollectionReport(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPDailyCollectionReport",data) 
   }
   }

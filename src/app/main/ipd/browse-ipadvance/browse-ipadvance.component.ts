@@ -42,7 +42,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
   displayedColumns = [
     'useraction',
-    'Date',
+    'Date', 
+    'AdvanceNo',
     'RegNo',
     'PatientName',
     'IPDNo',
@@ -51,7 +52,6 @@ export class BrowseIPAdvanceComponent implements OnInit {
     'CompanyName',
     'MobileNo',
     'WardName',
-    'AdvanceNo',
     'AdvanceAmount',
     'CashPayAmount',
     'ChequePayAmount',

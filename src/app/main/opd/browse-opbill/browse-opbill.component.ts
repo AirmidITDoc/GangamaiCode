@@ -939,6 +939,8 @@ export class BrowseOPDBill {
   Department: any;
   Address: any;
   MobileNo: any;
+  Lbl:any;
+  DocName:any;
   //PayTMAmount:number;
   //NEFTPayAmount:number;
   /**

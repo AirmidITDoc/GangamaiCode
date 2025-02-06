@@ -78,9 +78,8 @@ export class IpSalesReturnComponent implements OnInit {
   vAge:any;
   vGenderName:any;
  ;
- dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>();
-  SelectedList = new MatTableDataSource<IndentList>();
-  saleSelectedDatasource = new MatTableDataSource<IndentList>();
+ dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>(); 
+  dsIpRetrunItemList = new MatTableDataSource<IPSalesItemList>();
  
   displayedColumns = [
     'SalesNo',
@@ -102,6 +101,13 @@ export class IpSalesReturnComponent implements OnInit {
     'NetAmount' ,
     //'SalesDetId',
     'StkID',
+    'Action'
+  ];
+  displayeditemColumns = [ 
+    'ItemName',
+    'BatchNo',
+    'ExpDate',
+    'Qty', 
     'Action'
   ];
  

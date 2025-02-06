@@ -183,16 +183,12 @@
                                     <button class="btn btn-primary " color="accent" (click)="getPrint()"
                                         style="margin-left:2%;">
                                         <span>Print</span>
-                                    </button>
-                                    <button type="button" mat-icon-button
-                                    (click)="exportOPBillReportExcel()" [disabled]="OPBILL">
-                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                </button>
+                                    </button> 
 
-                                <button type="button" mat-icon-button
-                                (click)="exportOPcreditBillReportExcel()" [disabled]="OPcreditBILL">
-                                <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                            </button>
+                                <button type="button" mat-raised-button (click)="getExcelDate()"  >
+                                    Export Excel
+                                </button>
+                                
                                 </div>
                             </form>
 

@@ -63,7 +63,7 @@
                                             </mat-form-field>
             
                                             <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Bill No</mat-label>
+                                                <mat-label>Advance No</mat-label>
                                                 <input name="PBillNo" formControlName="PBillNo" matInput (keypress)="keyPressCharater($event)"
                                                     (keyup)="onShow_IpdAdvance()">
                                             </mat-form-field>
@@ -182,7 +182,7 @@
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             <span> {{contact.Date | date:'dd/mm/yyyy'}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> 
             
                                     <ng-container matColumnDef="RegNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>UHID
@@ -248,8 +248,8 @@
                                         </mat-cell>
                                     </ng-container>
             
-                                    <ng-container matColumnDef="AdvanceNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>PBillNo
+                                    <ng-container matColumnDef="AdvanceNo" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>AdvanceNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.AdvanceNo }}</span>
@@ -356,9 +356,9 @@
                                         </mat-footer-cell>
                                     </ng-container>
             
-                                    <mat-header-row class="accent min-width-2400"
+                                    <mat-header-row class="accent min-width-2500"
                                         *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-2400"
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-2500"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dataArray!=null}"></mat-footer-row>

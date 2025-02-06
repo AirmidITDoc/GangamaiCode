@@ -8,12 +8,18 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 })
 export class CancellationService {
   UserFormGroup: FormGroup;
-  MyForm: FormGroup;
+  AdvanceFormGroup: FormGroup;
+  RefOFBillFormGroup: FormGroup;
+  RefOFAdvFormGroup: FormGroup;
   constructor(
     public _formBuilder: FormBuilder,
     public _httpClient: HttpClient,
     private _loaderService:LoaderService
-  ) { this.UserFormGroup = this.createUserFormGroup() }
+  ) { this.UserFormGroup = this.createUserFormGroup();
+    this.AdvanceFormGroup = this.createAdvanceFormGroup();
+    this.RefOFBillFormGroup = this.createRefBillFormGroup();
+    this.RefOFAdvFormGroup = this.createRefAdvFormGroup();
+   }
 
   createUserFormGroup() {
     return this._formBuilder.group({
@@ -25,6 +31,36 @@ export class CancellationService {
       PBillNo: '',
       OP_IP_Type: ['1']
 
+    })
+  }
+  createAdvanceFormGroup() {
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo: '',
+      FirstName: '',
+      LastName: '',
+      PBillNo: '',  
+    })
+  }
+  createRefBillFormGroup() {
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo: '',
+      FirstName: '',
+      LastName: '',
+      PBillNo: '', 
+    })
+  }
+  createRefAdvFormGroup() {
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo: '',
+      FirstName: '',
+      LastName: '',
+      PBillNo: '', 
     })
   }
   public getIpBillList(param) {
@@ -60,4 +96,10 @@ public getDateTimeChangeReceipt(m_data,loader = true) {
 }
   return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
 }
+public getIpdAdvanceBrowseList(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPAdvanceList", employee)
+} 
 }

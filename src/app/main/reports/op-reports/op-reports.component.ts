@@ -12,6 +12,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { BrowseOPDBill } from 'app/main/opd/browse-opbill/browse-opbill.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-op-reports',
@@ -1507,34 +1508,368 @@ getDeptservicegroupwisecollsummaryview(){
 
 
 
-
-  exportOPBillReportExcel(){
-         
+  dsExcelData = new MatTableDataSource<BrowseOPDBill>()
+  dsOpcreditbillBrowseList = new MatTableDataSource<BrowseOPDBill>()
+  ExcelData:any=[];
+  getExcelDate(){
+    let DoctorID = 0;
+    if (this._OPReportsService.userForm.get('DoctorID').value)
+      DoctorID = this._OPReportsService.userForm.get('DoctorID').value.DoctorId
+ 
+    let AddUserId = 0;
+    if (this._OPReportsService.userForm.get('UserId').value)
+      AddUserId = this._OPReportsService.userForm.get('UserId').value.UserId
   
-          var data = {
-            "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-            "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-          }
-          this._OPReportsService.getBrowseOPBillsummaryList(data).subscribe(Visit => {
-            this.dsOpbillBrowseList.data = Visit as BrowseOPDBill[];
-            console.log(this.dsOpbillBrowseList.data)
-            if( this.dsOpbillBrowseList.data.length > 0)
-              this.OpbillsummaryExcel()
-          }
-          );
+
+    
+   //OP Reports
+    if (this.ReportName == 'Registration Report') {
+      var data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getRegisterationList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      ); 
+    }
+    if (this.ReportName == 'AppoitnmentList Report') {
+      let data = {
+        "From_Dt": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "To_Dt": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "Doctor_Id":DoctorID
+      }
+      this._OPReportsService.geAppointmentList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      ); 
+    } 
+     else if (this.ReportName == 'DoctorWise Visit Report') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getDoctorWiseVisitList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      ); 
+    } else if (this.ReportName == 'Reference doctor wise Report') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getRefDocWiseList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      ); 
+    } 
+    else if (this.ReportName == 'Department Wise Count Summary') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getDepartmentWiseList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length>0){
+          this.dsExcelData.data.forEach(element=>{
+            this.ExcelData.push(
+              {
+                DepartmentName:element.DepartmentName,
+                Count:element.Lbl
+              }
+            ) 
+          })
+          this.dsExcelData.data = this.ExcelData
+          this.getExcelExportDate()
+        } 
+    }); 
+    } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getDocWiseCountList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length>0){
+          this.dsExcelData.data.forEach(element=>{
+            this.ExcelData.push(
+              {
+                DocName:element.DocName,
+                Count:element.Lbl
+              }
+            ) 
+          })
+          this.dsExcelData.data = this.ExcelData
+          this.getExcelExportDate()
+        }  
+    });
+    } 
+    else if (this.ReportName == 'Cross Consultation Report') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getCrossConsultList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      );
+    }
+    else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getDocWiseNewOldPatientList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      );
+    } 
+       //op billing 
+       if (this.ReportName == 'OP Daily Collection') {
+        let data = {
+          "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "AddedById":AddUserId
+        }
+        this._OPReportsService.getOPDailyCollectionReport(data).subscribe(Visit => {
+          this.dsExcelData.data = Visit as BrowseOPDBill[];
+          console.log(this.dsExcelData.data)
+          if(this.dsExcelData.data.length > 0)
+            this.getExcelExportDate()
+        }
+        ); 
+      } 
+      else if (this.ReportName == 'OP Daily Collection Summary Reports') {
+        let data = {
+          "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900' 
+        }
+        this._OPReportsService.getOPDailyCollectionSummaryReport(data).subscribe(Visit => {
+          this.dsExcelData.data = Visit as BrowseOPDBill[];
+          console.log(this.dsExcelData.data)
+          if(this.dsExcelData.data.length > 0)
+            this.getExcelExportDate()
+        }
+        );
         
+      }
+      else if (this.ReportName == 'OP Bill Report') {
+        let data = {
+          "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "AddedById":AddUserId
+        }
+        this._OPReportsService.getOPBIllReport(data).subscribe(Visit => {
+          this.dsExcelData.data = Visit as BrowseOPDBill[];
+          console.log(this.dsExcelData.data)
+          if(this.dsExcelData.data.length > 0)
+            this.getExcelExportDate()
+        }
+        ); 
+      }
+       else if (this.ReportName == 'OP Daily COLLECTION UserWise') { 
+      } 
+      else if (this.ReportName == 'Bill Summary Report') {
+        let data = {
+          "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900' 
+        }
+        this._OPReportsService.getOPBIllSummaryReport(data).subscribe(Visit => {
+          this.dsExcelData.data = Visit as BrowseOPDBill[];
+          console.log(this.dsExcelData.data)
+          if(this.dsExcelData.data.length > 0)
+            this.getExcelExportDate()
+        }
+        );  
+      }
+       else if (this.ReportName == 'OP Bill Balance Report') {
+        let data = {
+          "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900' 
+        }
+        this._OPReportsService.getOPBIllBalReport(data).subscribe(Visit => {
+          this.dsExcelData.data = Visit as BrowseOPDBill[];
+          console.log(this.dsExcelData.data)
+          if(this.dsExcelData.data.length > 0)
+            this.getExcelExportDate()
+        }
+        ); 
+      } 
+      else if (this.ReportName == 'Refund of Bill Reports') {
+        let data = {
+          "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+          "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900' 
+        }
+        this._OPReportsService.getOPRefBillReport(data).subscribe(Visit => {
+          this.dsExcelData.data = Visit as BrowseOPDBill[];
+          console.log(this.dsExcelData.data)
+          if(this.dsExcelData.data.length > 0)
+            this.getExcelExportDate()
+        }
+        );
+      }
+
+      
+
+    else if (this.ReportName == 'Appointment List with Service Availed') {
+      let data = {
+        "FromDate": this.datePipe.transform(this._OPReportsService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+        "ToDate": this.datePipe.transform(this._OPReportsService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      }
+      this._OPReportsService.getAppoinListWithServList(data).subscribe(Visit => {
+        this.dsExcelData.data = Visit as BrowseOPDBill[];
+        console.log(this.dsExcelData.data)
+        if(this.dsExcelData.data.length > 0)
+          this.getExcelExportDate()
+      }
+      );
+    }
           
     }
-    OpbillsummaryExcel() {
-      console.log(this.dsOpbillBrowseList.data)
-      let exportHeaders = ['BillNo', 'BillDate', 'RegNo', 'ServiceName', 'Price', 'Qty', 'BillAmt', 'ConcessionAmt', 'PaidAmount', 'BalanceAmt'];
-      this.reportDownloadService.getExportJsonData(this.dsOpbillBrowseList.data, exportHeaders, 'OP Bill Summary List Datewise');
-      this.dsOpbillBrowseList.data = [];
+    getExcelExportDate() {  
+      //Op Reports
+      if (this.ReportName == 'Registration Report') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['RegId', 'PatientName','Address','City','PinNo','Age','GenderName','MobileNo'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Registration Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = '';
+      }
+      if (this.ReportName == 'AppoitnmentList Report') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['RegNo', 'VisitDate','PatientName','AgeYear','OPDNo','Doctorname','RefDocName','CompanyName'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'AppoitnmentList Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = ''; 
+      } 
+       else if (this.ReportName == 'DoctorWise Visit Report') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['RegId', 'VisitDate','PatientName','MobileNo','Address','DoctorName','RefDoctorName'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'DoctorWise Visit Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = '';
+      } else if (this.ReportName == 'Reference doctor wise Report') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['RegId', 'PatientName','DoctorName','RefDoctorName'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Reference doctor wise Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = '';
+      } 
+      else if (this.ReportName == 'Department Wise Count Summary') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['DepartmentName', 'Count'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Department Wise Count Summary');
+        this.dsExcelData.data = [];
+        this.ExcelData = [];
+        this.sIsLoading = '';
+      } else if (this.ReportName == 'DoctorWise Visit Count Summary') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['DocName', 'Count'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'DoctorWise Visit Count Summary');
+        this.dsExcelData.data = [];
+        this.ExcelData = [];
+        this.sIsLoading = '';
+      } 
+      else if (this.ReportName == 'Cross Consultation Report') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['RegNo', 'VisitDate','PatientName','DoctorName','OPDNo','DepartmentName'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Cross Consultation Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = '';
+      }
+      else if (this.ReportName == 'Doctor Wise new and Old Patient Report') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['RegNo', 'PatientName','DepartmentName','DoctorName','OPDNo'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Doctor Wise new and Old Patient Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = '';
+      } 
+   //op billing 
+   if (this.ReportName == 'OP Daily Collection') {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['Number', 'VisitDate','RegNo','PatientName','ReceiptNo','NetPayableAmt','CashPayAmount','ChequePayAmount','CardPayAmount','PayTMAmount','UserName'];
+    this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'OP Daily Collection');
+    this.dsExcelData.data = [];
+    this.sIsLoading = '';
+  } 
+  else if (this.ReportName == 'OP Daily Collection Summary Reports') {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegNo', 'PatientName','PBillNo','BillDate','TotalAmt','ConcessionAmt','NetPayableAmt','CashPayAmount','CardPayAmount','NEFTPayAmount','PayTMAmount','ConcessionReason','CompanyName'];
+    this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'OP Daily Collection Summary Reports');
+    this.dsExcelData.data = [];
+    this.sIsLoading = '';
+    
+  }
+  else if (this.ReportName == 'OP Bill Report') {
+    this.sIsLoading == 'loading-data'
+        let exportHeaders = ['BillNo', 'BillDate','RegId','PatientName','BillAmt','ConcessionAmt','NetPayableAmt','PaidAmount','BalanceAmt','CashPay','ChequePay','CardPay','NeftPay','PayTMPay'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'OP Bill Report');
+        this.dsExcelData.data = [];
+        this.sIsLoading = ''; 
+  }
+   else if (this.ReportName == 'OP Daily COLLECTION UserWise') {
+    this.viewOpDailyCollectionUserwisePdf();
+  } 
+  else if (this.ReportName == 'Bill Summary Report') {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['BillNo','BillDate','RegNo','ServiceName','Price','Qty','TotalAmt','ConcessionAmt','PaidAmount','BalanceAmt'];
+    this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Bill Summary Report');
+    this.dsExcelData.data = [];
+    this.sIsLoading = '';
+  }
+   else if (this.ReportName == 'OP Bill Balance Report') {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RegId', 'BillNo','BillDate','PatientName','NetPayableAmt','PaidAmount','BalanceAmt','TotalAmt'];
+    this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'OP Bill Balance Report');
+    this.dsExcelData.data = [];
+    this.sIsLoading = '';
+  } 
+  else if (this.ReportName == 'Refund of Bill Reports') {
+    this.sIsLoading == 'loading-data'
+    let exportHeaders = ['RefundNo', 'RefundDate','RegNo','PatientName','RefundAmount'];
+    this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Refund of Bill Reports');
+    this.dsExcelData.data = [];
+    this.sIsLoading = '';
+  }
+
+
+
+
+
+
+      else if (this.ReportName == 'Appointment List with Service Availed') {
+        this.sIsLoading == 'loading-data'
+        let exportHeaders = ['PBillNo', 'BillDate','RegNo','PatientName','ConcessionAmt','NetPayableAmt','PaidAmount','BalanceAmt','PayTMPay','AdvUsdPay'];
+        this.reportDownloadService.getExportJsonData(this.dsExcelData.data, exportHeaders, 'Appointment List with Service Availed');
+        this.dsExcelData.data = [];
+        this.sIsLoading = '';
+      }
+
+
     }
   
   
-    dsOpbillBrowseList = new MatTableDataSource<BrowseOPDBill>()
-    dsOpcreditbillBrowseList = new MatTableDataSource<BrowseOPDBill>()
+
   
     exportOPcreditBillReportExcel(){
          
