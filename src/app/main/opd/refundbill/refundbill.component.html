@@ -1,4 +1,4 @@
-<!-- <div class="page-layout">
+<div class="page-layout">
     <div class="top-header accent">
         <div class="top-header-info">
             <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -12,20 +12,33 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!--Middle Data-->
-    <!-- <div class="layout-body" fusePerfectScrollbar> -->
+    <div class="layout-body" fusePerfectScrollbar>
         
         <!-- CENTER -->
-        <!-- <div class="layout-body-container">
+        <div class="layout-body-container">
             <div fxLayout="column" class="gap-12">
                 <div class="layout-card-container">
                     <form [formGroup]="searchFormGroup">
                         
                             <div class="patient-search">
-                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8" style="width: 50%;">
-                                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter RegId" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <mat-form-field class=searchRegId appearance="outline" fxFlex="60%">
+                                        <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText1" (optionSelected)='getSelectedObj1($event.option.value)'>
+                                            <mat-option *ngFor="let option of PatientListfilteredOptions" [value]="option">
+                                                {{option.RegNo}} |{{option.FirstName}} {{option.MiddleName}}
+                                                {{option.LastName}} |
+                                                {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
                                 </div>
                             </div>
                         
@@ -71,7 +84,7 @@
                                                 class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{dateofbirth}}| {{genderName}}</span>
+                                                class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}D | {{GenderName}}</span>
                                         </div>
                                         
                                     </div>
@@ -81,11 +94,52 @@
                     </div>
                 </div>
             </div>
-          
+                <!-- <div class="layout-card-container">
+                    <form [formGroup]="searchFormGroup">
+                        <mat-card style="padding: 6px;">
+                            <div class="patient-info-container">
+                                <fieldset class="fieldset-div">
+                                    <legend class="h2">Patient Information</legend>
+                                    <div class="sales-patient-info mb-3" fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row" fxLayout="row" fxLayoutAlign="space-between center">
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key ">Patient Name</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{PatientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">OPIPNo</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{vOPDNo}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">DoctorName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Doctorname}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">CompanyName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{CompanyName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">TarrifName</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{Tarrifname}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </mat-card>
+                    </form>
+                </div> -->
                 <div class="layout-card-container table-container">
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                         <!-- Table 1 -->
-                        <!-- <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
+                        <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                             <mat-card>
                                 <div class="table-wrapper">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}">
@@ -121,7 +175,7 @@
                                             <mat-cell *matCellDef="let element">
                                                 <span> {{element.RefundAmount}}</span>
                                             </mat-cell>
-                                        </ng-container> --> -->
+                                        </ng-container>
 
                                         <!-- <ng-container matColumnDef="action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef class="table-actions" style="color: white;"> Action
@@ -133,16 +187,16 @@
                                             </mat-cell>
                                         </ng-container> -->
 
-                                        <!-- <ng-container matColumnDef="loading">
+                                        <ng-container matColumnDef="loading">
                                             <mat-footer-cell *matFooterCellDef colspan="6">
                                                 loading data...
                                             </mat-footer-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6"> -->
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
                                                 <!-- no data found... -->
-                                                <!-- <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                 </mat-spinner>
                                                 <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                             </mat-footer-cell>
@@ -155,10 +209,10 @@
                                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource3!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource3!=null && dataSource3.data.length==0)}">
                                         </mat-footer-row>
-                                    </mat-table> -->
+                                    </mat-table>
                                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5"
                                         showFirstLastButtons></mat-paginator> -->
-                                    <!-- <div class="net-amt-section mt-8">
+                                    <div class="net-amt-section mt-8">
                                         <div class="net-amt">
                                             <div class="net-amt-box">
                                                 <span class="net-amt-label">Total Refund : </span>
@@ -170,7 +224,7 @@
                             </mat-card>
                         </div>
                         <!-- Table 2 -->
-                        <!-- <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                             <mat-card>
                                 <div class="table-wrapper">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
@@ -200,9 +254,9 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6"> --> -->
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
                                                 <!-- no data found... -->
-                                                <!-- <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
+                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
                                                 </mat-spinner>
                                                 <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
                                             </mat-footer-cell>
@@ -229,9 +283,9 @@
                     </div>
                 </div>
                 <div class="layout-card-container table-container">
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row"> -->
+                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
                         <!-- Table 1 -->
-                        <!-- <div class="table-main" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <div class="table-main" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-card>
                                 <div class="table-wrapper">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource2" [@animateStagger]="{value:'50'}">
@@ -283,7 +337,7 @@
                                             <mat-cell *matCellDef="let element">
                                                 <span> {{element.ChargesDocName}}</span>
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
 
                                         <!-- <ng-container matColumnDef="RefundAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -292,7 +346,7 @@
                                                 {{element.RefundAmount | currency:'INR'}} </mat-cell>
                                         </ng-container> -->
 
-                                        <!-- <ng-container matColumnDef="RefAmount">
+                                        <ng-container matColumnDef="RefAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
@@ -309,7 +363,7 @@
                                                 Bal Amount </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <!-- <input matInput [(ngModel)]="element.BalanceAmount"> -->
-                                                <!-- <span>{{element.BalanceAmount}}</span>
+                                                <span>{{element.BalanceAmount}}</span>
                                             </mat-cell>
                                         </ng-container>
 
@@ -336,9 +390,9 @@
                                         </ng-container>
 
                                         <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumns1; sticky: true">
-                                        </mat-header-row>  -->
+                                        </mat-header-row>
                                         <!-- (click)="Serviceselect(row,$event)" -->
-                                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element min-width-1100" [@animate]="{value:'*',params:{y:'100%'}}">
                                         </mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource2!=null}">
                                         </mat-footer-row>
@@ -358,8 +412,8 @@
                             </mat-card>
                         </div>
                     </div>
-                </div> -->
-                <!-- <div class="layout-card-container">
+                </div>
+                <div class="layout-card-container">
                     <form [formGroup]="RefundOfBillFormGroup">
                         <mat-card style="padding: 6px;">
                             <div class="net-amt-form">
@@ -393,9 +447,10 @@
                     </form>
                 </div>
             </div>
-        </div> -->
+        </div>
         <!-- / CONTENT -->
-    <!-- </div> -->
+    </div>
    
     <!-- / CENTER -->
-<!-- </div> -->
+</div>
+<!--End of Middle Data-->

@@ -190,6 +190,7 @@ Swal.fire("Row selected :" + contact)
 
 export class IndentList {
   ItemId:any;
+  ItemID:any;
   ItemName: string;
   Qty: number;
   IssQty:number;
@@ -205,6 +206,7 @@ export class IndentList {
   constructor(IndentList) {
     {
       this.ItemId = IndentList.ItemId || 0;
+      this.ItemID=IndentList.ItemID || 0;
       this.ItemName = IndentList.ItemName || "";
       this.Qty = IndentList.Qty || 0;
       this.IssQty = IndentList.IssQty || 0;
