@@ -46,7 +46,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 export class AppointmentListComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch: FormGroup;
-    @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     menuActions: Array<string> = [];
     
     

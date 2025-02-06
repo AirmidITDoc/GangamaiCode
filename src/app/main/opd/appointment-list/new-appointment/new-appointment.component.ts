@@ -108,8 +108,6 @@ export class NewAppointmentComponent implements OnInit {
         'DocumentPath',
         'buttons'
     ];
-
-
     // New Api
     autocompleteModeprefix: string = "Prefix";
     autocompleteModegender: string = "Gender";
@@ -503,17 +501,13 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onSave() {
-        debugger
        console.log(this.personalFormGroup.value)
        console.log(this.VisitFormGroup.value)
-
-        console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
-
+       console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
-
-            this.personalFormGroup.get('RegDate').setValue(this.dateTimeObj.date)
+            this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
             this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
-            this.VisitFormGroup.get('visitDate').setValue(this.dateTimeObj.date)
+            this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
             this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
 
             if (this.searchFormGroup.get('regRadio').value == "registration")
@@ -522,7 +516,6 @@ export class NewAppointmentComponent implements OnInit {
                 this.onSaveRegistered();
                 this.onClose();
             }
-
         } else {
             Swal.fire("Form Invalid chk....")
         }

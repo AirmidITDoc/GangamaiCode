@@ -3,13 +3,10 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Reference Doctor Name Update</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Ref Doctor Name Changes</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                             <mat-icon>close</mat-icon>
