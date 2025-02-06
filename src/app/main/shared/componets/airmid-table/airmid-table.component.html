@@ -43,7 +43,7 @@
                             <ng [ngSwitch]="row?.type||GridColumnType.default" fxShow.gt-sm>
                                 <ng *ngSwitchCase="GridColumnType.customText">
                                     <span class="text-overflow"> {{ element[row.key] ? [row.text1] : [row.text2]
-                                        }}</span>
+                                        || '--'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
                                     <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16"
@@ -81,7 +81,7 @@
                                     </a>
                                 </ng>
                                 <ng *ngSwitchDefault>
-                                    <span class="text-overflow">{{ element[row.key]}}</span>
+                                    <span class="text-overflow">{{ element[row.key] || '--'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.action">
                                     <div class="action-list">

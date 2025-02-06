@@ -15,7 +15,7 @@
             <!-- <button class="btn btn-primary " color="accent" (click)="getAppointmentrview()">
                 <span>Appointment List</span>
             </button> -->
-           
+
         </div>
 
 
@@ -47,30 +47,89 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
         <ng-template #actionsTemplate let-element>
-            <div class="patient-column gap-12" fxLayout="row">
-                <div class="patient-old-new" fxLayout="row" fxLayoutAlign="center">
-                    <div class="pill-icon" fxLayout="row" fxLayoutAlign="center">
-                        <mat-icon *ngIf="element.patientOldNew=='1' || element.patientOldNew=='1'" matTooltip="PatientNew"
-                            class="pill green-600 s-16">circle</mat-icon>
-                        <mat-icon *ngIf="element.PatientOldNew=='2' " matTooltip="PatientOld" class="pill orange-600 s-16">circle
-                        </mat-icon>
-                    </div>
-                </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <!-- If patientOldNew is '1', show green -->
+                <mat-icon *ngIf="element.patientOldNew !== '1' && element.patientOldNew !== '2'"
+                    matTooltip="Patient New" class="mat-accent">
+                    circle
+                </mat-icon>
+
+                <!-- If patientOldNew is '2', show orange -->
+                <mat-icon *ngIf="element.patientOldNew === '0'" matTooltip="Patient Old" class="mat-warn">
+                    circle
+                </mat-icon>
+            </div>
+            <div>
+                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
+                    class="mat-warn">circle</mat-icon>
+
+                <mat-icon style=" border: black 1px solid;" *ngIf="element.MPbillNo=='0' "
+                    matTooltip="Bill Not Generated" class="mat-accent">
+                    circle
+                </mat-icon>
             </div>
         </ng-template>
-        <ng-template #actionsflgBillNo let-element>
-            <div class="patient-column gap-12" fxLayout="row">
-                <div class="bill-generated" fxLayout="row" fxLayoutAlign="center">
-                    <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
-                        class="pill red-600 s-16">circle</mat-icon>
-                    <mat-icon style=" border: black 1px solid;" *ngIf="element.MPbillNo=='0' "
-                        matTooltip="Did not Generated Bill" class="pill white-600 s-16">
-                        circle
-                    </mat-icon>
-                </div>
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- Button 1: Edit Patient Registration  -->
+                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Button 2: Edit Patient Registration  -->
+                <button *ngIf="false" mat-icon-button matTooltip="how_to_reg" (click)="OngetRecord(element,m)">
+                    <mat-icon>how_to_reg</mat-icon>
+                </button>
+
+                <!-- Button 3: Print Patient Case paper  -->
+                <button mat-icon-button matTooltip="Print Case papaer" (click)="OnViewReportPdf(element,true)">
+                    <mat-icon> print</mat-icon>
+                </button>
+
+                <!-- Button 4: Billing Page  -->
+                <button mat-icon-button matTooltip="Bill" (click)="OnBillPayment(contact)">
+                    <mat-icon> payment</mat-icon>
+                </button>
+
+                <!-- Button 5: Cross Consultation  -->
+                <button mat-icon-button matTooltip="Cross Consultation" (click)="OnNewCrossConsultation(element)">
+                    <mat-icon>cached icon</mat-icon>
+                </button>
+
+                <!-- Button 6: Vital Information  -->
+                <button mat-icon-button matTooltip="Vital Information" (click)="OnVitalInfo(element)">
+                    <mat-icon> perm_identity</mat-icon>
+                </button>
+
+                <!-- Button 7: Patient i card Print  -->
+                <button mat-icon-button matTooltip="print Patient Card" (click)="OnPrintPatientIcard(element)">
+                    <mat-icon [disabled]="element.IsCancelled">print</mat-icon>
+                </button>
+
+                <!-- Button 8: Patient i card Print  -->
+                <button mat-icon-button matTooltip="Send message On WhatsApp"
+                    (click)="OnWhatsAppAppointmentSend(element)">
+                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                </button>
+
+                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                    (click)="$event.stopPropagation();">
+                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                </button>
+                <mat-menu #moreMenu="matMenu">
+                    <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                            <span>{{m}}</span>
+                        </button>
+                    </ng-container>
+                </mat-menu>
             </div>
         </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
@@ -88,7 +147,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
 
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>

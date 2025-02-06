@@ -47,11 +47,13 @@ export class AppointmentListComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTable1Component;
-
+    menuActions: Array<string> = [];
+    
+    
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         public toastr: ToastrService, public datePipe: DatePipe,
-       ) {
+    ) {
 
     }
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -59,7 +61,6 @@ export class AppointmentListComponent implements OnInit {
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
-
     doctorID = "0";
 
     onChangeStartDate(value) {
@@ -70,6 +71,10 @@ export class AppointmentListComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myformSearch = this._AppointmentlistService.filterForm();
+        
+        // menu Button List
+        this.menuActions.push("Change Consultant Doctor");
+        this.menuActions.push("Change Refer Doctor");
     }
 
     allfilters = [
@@ -85,96 +90,68 @@ export class AppointmentListComponent implements OnInit {
 
     ];
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
-    // @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
-    
-    edit(a) {
-        debugger
-    }
-    delete(a) {
-        debugger
-    }
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template1 = this.actionsflgBillNo;
+        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
     }
 
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template,width:150 },
-            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', width: 20 , type: gridColumnTypes.template},
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Date", key: "visitDate", sort: true, align: 'left', emptySign: 'NA',type: 8 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "OpdNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-            { heading: "Department", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
             { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Mobile", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
-                    {
-                        // Pending page...
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.showBilling(data);
-                        }
-                    },
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onRegistrationEdit(data);
-                            this.grid.bindGridData();
-                        }
-                    },
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.EditConsultdr(data);
-                        }
-                    },
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.Editrefrancedr(data);
-                        }
-                    },
-                    {
-                        action: gridActions.CossConsult, callback: (data: any) => {
-                            this.Editcrossconsult(data);
-                        }
-                    },
-                    {
-                        action: gridActions.OPBill, callback: (data: any) => {
-                            this.EditOpBill(data);
-                        }
-                    },
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.getAppointmentcasepaperview(data);
-                        }
-                    },
-                    // {
-                    //     action: gridActions.delete, callback: (data: any) => {
-
-                    //         this.AppointmentCancle(data);
-
-                    //     }
-                    // }
-                ]
-            } //Action 1-view, 2-Edit,3-delete
+            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+            // {heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
+            //         {
+            //             // Pending page...
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.showBilling(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onRegistrationEdit(data);
+            //                 this.grid.bindGridData();
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.EditConsultdr(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.Editrefrancedr(data);
+            //             }
+            //         },
+            //     ]
+            // }, //Action 1-view, 2-Edit,3-delete
+           
         ],
 
         sortField: "VisitId",
         sortOrder: 0,
-        filters: this.allfilters
-        ,
+        filters: this.allfilters,
         row: 25
-
     }
-
-
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -207,7 +184,7 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    onRegistrationEdit(row: any = null) {
+    OnEditRegistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
@@ -217,7 +194,7 @@ export class AppointmentListComponent implements OnInit {
                 maxWidth: "95vw",
                 maxHeight: '90%',
                 width: '90%',
-                data:row
+                data: row
                 //  {
                 //     data1: row,
                 //     Submitflag: true
@@ -231,11 +208,86 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    getAppointmentcasepaperview(data) {
-      
-        this.commonService.Onprint("VisitId",data.VisitId,"AppointmentReceipt");
+    OngetRecord(element, m){
+        console.log('Third action clicked for:', element); 
+        if (m == "Change Consultant Doctor") {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+    
+            let that = this;
+            const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+                {
+                    maxWidth: "65vw",
+                    height: '50%',
+                    width: '80%',
+                    data: element
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
+        }
+        else if (m == "Change Refer Doctor") {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            let that = this;
+            const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
+                {
+                    maxWidth: "65vw",
+                    height: '50%',
+                    width: '80%',
+                    data: element
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
+        }
     }
 
+    OnViewReportPdf(element){
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("VisitId", element.VisitId, "AppointmentReceipt"); 
+    }
+
+    OnBillPayment(element){
+        console.log('Third action clicked for:', element); 
+    }
+
+    OnNewCrossConsultation(element){
+        console.log('Third action clicked for:', element); 
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(CrossConsultationComponent,
+            {
+                maxWidth: "65vw",
+                height: '50%',
+                width: '80%',
+                data: element
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    OnVitalInfo(element){
+        console.log('Third action clicked for:', element); 
+    }
+
+    OnPrintPatientIcard(element){
+        console.log('Third action clicked for:', element);
+    }
+
+    OnWhatsAppAppointmentSend(element){
+       console.log('Third action clicked for:', element);
+    }
 
     Vtotalcount = 0;
     VNewcount = 0;
@@ -328,42 +380,7 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-    EditBedtransfer() {
-
-        let that = this;
-        const dialogRef = this._matDialog.open(BedTransferComponent,
-            {
-                maxWidth: "65vw",
-                height: '45%',
-                width: '80%',
-                // data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
-
-    EditDischarge() {
-
-        let that = this;
-        const dialogRef = this._matDialog.open(DischargeComponent,
-            {
-                maxWidth: "75vw",
-                height: '45%',
-                width: '80%',
-                // data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
-
     EditOpBill(row) {
-
         let that = this;
         const dialogRef = this._matDialog.open(OPBillingComponent,
             {
@@ -387,12 +404,9 @@ export class AppointmentListComponent implements OnInit {
 
         }).then((flag) => {
 
-
             if (flag.isConfirmed) {
-
                 let submitData = {
                     "visitId": contact.visitId
-
                 };
                 console.log(submitData);
                 this._AppointmentlistService.Appointmentcancle(submitData).subscribe(response => {
@@ -405,12 +419,8 @@ export class AppointmentListComponent implements OnInit {
         });
 
     }
-
-
     getAppointmentrview() {
-
         let param = {
-
             "searchFields": [
                 {
                     "fieldName": "FromDate",
@@ -450,9 +460,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     selectChangedeptdoc(obj: any) {
-
         this.gridConfig.filters[3].fieldValue = obj.value
-
     }
     getValidationdoctorMessages() {
         return {
@@ -461,7 +469,7 @@ export class AppointmentListComponent implements OnInit {
             ]
         };
     }
-   
+
 
 }
 
