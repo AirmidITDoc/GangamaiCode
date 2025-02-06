@@ -143,47 +143,45 @@
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                                                     <div fxLayout="row" fxLayoutGap="10px">
-                                                        <div fxFlex.gt-sm="35%" fxFlex>
+                                                        <div fxFlex.gt-sm="40%" fxFlex>
                                                             <mat-card style="padding: 5px;">
+                                                                <!-- <airmid-table [gridConfig]="gridConfig" class="content">
+                                                                    
+                                                                </airmid-table> -->
                                                                 <mat-table class="table2" matSort
                                                                     [dataSource]="dsDoctorNoteList"
                                                                     [@animateStagger]="{value:'50'}"
                                                                     style="overflow: auto;height:305px;padding-bottom: 0px;">
 
-                                                                    <ng-container matColumnDef="VDate">
+                                                                    <ng-container matColumnDef="Date&Time">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
-                                                                            VDate </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element" fxHide
+                                                                            mat-sort-header fxShow.gt-sm>
+                                                                            Date&Time </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element"
                                                                             fxShow.gt-sm>
-                                                                            {{element.VDate}} </mat-cell>
-                                                                    </ng-container>
-
-                                                                    <ng-container matColumnDef="Time">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
-                                                                            Time </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
-                                                                            {{element.Time}} </mat-cell>
+                                                                            {{element.vtDate}} | {{element.tTime}} </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="Note">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
-                                                                            Note </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
-                                                                            {{element.Note}} </mat-cell>
+                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                                            Note 
+                                                                        </mat-header-cell>
+                                                                        <mat-cell *matCellDef="let element" class="ellipsis"
+                                                                            fxShow.gt-sm matTooltip="{{element.doctorsNotes}}">
+                                                                            {{element.doctorsNotes}} </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="Action">
                                                                         <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header fxHide fxShow.gt-sm>
+                                                                            mat-sort-header fxShow.gt-sm>
                                                                             Action </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let element" fxHide
-                                                                            fxShow.gt-sm>
-                                                                            {{element.Action}} </mat-cell>
+                                                                            <mat-cell *matCellDef="let row">
+                                                                                <button mat-icon-button (click)="onEdit(row)"><mat-icon
+                                                                                        title="Edit Menu">edit</mat-icon></button>
+                                                                                <button mat-icon-button>
+                                                                                    <mat-icon>print</mat-icon>
+                                                                                </button>
+                                                                            </mat-cell>
                                                                     </ng-container>
 
                                                                     <ng-container matColumnDef="loading">
@@ -215,7 +213,9 @@
                                                                 </mat-paginator>
                                                             </mat-card>
                                                         </div>
-                                                        <div fxFlex.gt-sm="65%" fxFlex>
+                                                        <div fxFlex.gt-sm="60%" fxFlex>
+
+                                                            <input type="hidden" formControlName="DoctNoteId" >
 
                                                             <div fxLayout="column" fxLayoutGap="2px">
 
@@ -240,7 +240,7 @@
                                                                 </div>
                                                             </div>
                                                                 <mat-card
-                                                                    style="padding: 5px;height: 270px;overflow: auto;">
+                                                                    style="padding: 5px;height: 250px;overflow: auto;">
                                                                     <div fxLayout="row" fxLayoutGap="20px">
 
                                                                     <!-- <app-common-date [screenFrom]="screenFromString" style="padding-left: 30px;"
@@ -249,19 +249,19 @@
 
                                                                     </div>
                                                                     <div>
-                                                                        <!-- <mat-form-field appearance="outline" fxFlex> -->
-                                                                        <!-- <mat-label>Description</mat-label>
-                                                                                <textarea rows="13" matInput name="Description" formControlName="DoctorID" placeholder="Add Note....."
+                                                                        <mat-form-field appearance="outline" fxFlex>
+                                                                        <mat-label>Description</mat-label>
+                                                                                <textarea rows="10" matInput name="Description" formControlName="Description" placeholder="Add Note....."
                                                                                     type="text" id="Description" #description required [(ngModel)]="vDescription">
-                                                                                </textarea> -->
-                                                                        <mat-label>Template Details</mat-label>
+                                                                                </textarea>
+                                                                        <!-- <mat-label>Template Details</mat-label>
                                                                         <angular-editor (blur)="onBlur($event)"
                                                                             [config]="editorConfig"
                                                                             style="height:300px;"
                                                                             [(ngModel)]="vDescription" required
                                                                             formControlName="Description">
-                                                                        </angular-editor>
-                                                                        <!-- </mat-form-field> -->
+                                                                        </angular-editor> -->
+                                                                        </mat-form-field>
                                                                     </div>
                                                                 </mat-card>
 
@@ -356,75 +356,67 @@
                                                             [dataSource]="dsHandOverNoteList"
                                                             [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
-                                                            <ng-container matColumnDef="VDate">
+                                                            <ng-container matColumnDef="Date&Time">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    Date </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.VDate}} </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="Time">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    Time </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.Time}} </mat-cell>
+                                                                     fxShow.gt-sm>
+                                                                     Date&Time </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
+                                                                    {{element.vDate}} | {{element.mTime}}</mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="Shift">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     Shift </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.Shift}} </mat-cell>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
+                                                                    {{element.shiftInfo}} </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="I">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     I </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
                                                                     {{element.I}} </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="S">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     S </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
                                                                     {{element.S}} </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="B">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     B </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
                                                                     {{element.B}} </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="A">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     A </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
                                                                     {{element.A}} </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="R">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     R </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    {{element.R}} </mat-cell>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
+                                                                    {{element.patHand_I}} </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="Action">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
+                                                                     fxShow.gt-sm>
                                                                     Action </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-cell *matCellDef="let element"  fxShow.gt-sm>
                                                                     {{element.Action}} </mat-cell>
                                                             </ng-container>
 

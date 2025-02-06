@@ -208,35 +208,12 @@
                             <form [formGroup]="ItemForm">
                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                     
-                                    <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>ItemName</mat-label>
-                                        <input type="text" name="ItemId" formControlName="ItemId" #itemid (keydown)="onEnterItem($event)"
-                                            placeholder="Item Name " matInput [matAutocomplete]="auto" (input)="getSearchItemList()"
-                                            required matAutocompletePosition="below">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">
-                                                close </mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="ItemForm.get('ItemId').setValue(''); isItemIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionItemText"
-                                            (optionSelected)='getSelectedObjItem($event.option.value)'>
-                                            <mat-option *ngFor="let option of filteredOptionsItem" [value]="option">
-                                                {{option.ItemId}} | {{option.ItemName}} |{{option.BalanceQty}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error class="error" *ngIf="ItemForm.get('ItemId').invalid && ItemForm.get('ItemId').touched">
-                                            Select ItemName
-                                        </mat-error>
-                                    </mat-form-field> -->
-
                                     <airmid-dropdown label="Item Name" 
-                                    formControlName="ItemId" [formGroup]="myForm"
+                                    formControlName="ItemId" [formGroup]="ItemForm"
                                     [validations]="getValidationMessages().ItemId" 
                                     [value]="data?.ItemId" 
                                     [mode]="autocompleteitem"
-                                    (selectDdlObject)="selectChangeItem($event)">
+                                    (selectionChange)="selectChangeItem($event)">
                                 </airmid-dropdown>
                     
                                     <!-- <mat-form-field appearance="outline" fxFlex="20%">
@@ -276,11 +253,11 @@
                                         <input type="text" name="Instruction" [(ngModel)]="vInstruction" formControlName="Instruction"
                                             matInput #remark (keydown)="onEnterremark($event)">
                                     </mat-form-field>
-                    
+                                    <!-- [disabled]="!add" -->
                                     <div class="input-add-button">
                                         <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!ItemForm.invalid"
                                             [matTooltipPosition]="'above'">
-                                            <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="!add" (click)="onAdd()">
+                                            <button #addbutton class="btn btn-primary btn-with-icon"  (click)="onAdd()">
                                                 <span class="btn-icon">
                                                     <mat-icon> add </mat-icon>
                                                 </span>

@@ -17,6 +17,10 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CreateTemplateComponent } from './create-template/create-template.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { SSL_OP_NO_TLSv1_1 } from 'constants';
 
 
 @Component({
@@ -27,19 +31,22 @@ import { CreateTemplateComponent } from './create-template/create-template.compo
   animations: fuseAnimations,
 })
 export class DoctornoteComponent implements OnInit {
+
+   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
   displayedColumns: string[] = [
     'RegNo',
     'PatienName'
   ]
   displayedDoctorNote: string[] = [
-    'VDate',
-    'Time',
+    'Date&Time',
+    // 'Time',
     'Note',
     'Action'
   ]
   displayedHandOverNote: string[] = [
-    'VDate',
-    'Time',
+    'Date&Time',
+    // 'Time',
     'Shift',
     'I',
     'S',
@@ -78,11 +85,12 @@ export class DoctornoteComponent implements OnInit {
 
   selectedAdvanceObj: AdmissionPersonlModel;
   dsPatientList = new MatTableDataSource;
-  dsDoctorNoteList = new MatTableDataSource;
-  dsHandOverNoteList = new MatTableDataSource;
+  dsDoctorNoteList = new MatTableDataSource<DocNote>();
+  dsHandOverNoteList = new MatTableDataSource<PatientHandNote>();
   searchFormGroup: FormGroup;
   autocompletenote: string = "Note";
   vDoctNoteId: any;
+  IsAddFlag: boolean = false;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -116,29 +124,111 @@ export class DoctornoteComponent implements OnInit {
   };
 
   onBlur(e: any) {
-    this.vDescription = e.target.innerHTML;
+    // this.vDescription = e.target.innerHTML;
+    throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
-    this.vRegNo = this.selectedAdvanceObj.RegNo;
-    this.vPatienName = this.selectedAdvanceObj.PatientName;
-    this.vDoctorname = this.selectedAdvanceObj.DoctorName;
-    this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
-    this.vAgeyear = this.selectedAdvanceObj.AgeYear;
-    this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
-    this.vAgeDay = this.selectedAdvanceObj.AgeDay;
-    this.vBedName = this.selectedAdvanceObj.BedName;
-    this.vWardName = this.selectedAdvanceObj.RoomName;
+    // this.vRegNo = this.selectedAdvanceObj.RegNo;
+    // this.vPatienName = this.selectedAdvanceObj.PatientName;
+    // this.vDoctorname = this.selectedAdvanceObj.DoctorName;
+    // this.vDepartmentName = this.selectedAdvanceObj.DepartmentName;
+    // this.vAgeyear = this.selectedAdvanceObj.AgeYear;
+    // this.vAgeMonth = this.selectedAdvanceObj.AgeMonth;
+    // this.vAgeDay = this.selectedAdvanceObj.AgeDay;
+    // this.vBedName = this.selectedAdvanceObj.BedName;
+    // this.vWardName = this.selectedAdvanceObj.RoomName;
     // this.getDoctorNoteList(); 
-    this.getWardNameList();
+    // this.getWardNameList();
+    this.getDoctorNoteList();
+    this.getHandOverNotelist();
     this.searchFormGroup = this.createSearchForm();
   }
 
-  getWardNameList() {
-    this._NursingStationService.getWardNameList().subscribe(data => {
-      this.wardList = data;
-    })
+  getDoctorNoteList() {
+    debugger
+    var param = {
+        sortField: "DoctNoteId",
+        sortOrder: 0,
+        filters: [
+                  { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals },
+                  { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
+                  { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+              ],
+                  row: 25
+    }
+    this._NursingStationService.getdoctornoteList(param).subscribe(Menu => {
+
+        this.dsDoctorNoteList.data = Menu.data as DocNote[];
+        this.dsDoctorNoteList.sort = this.sort;
+        this.dsDoctorNoteList.paginator = this.paginator;
+        console.log(this.dsDoctorNoteList.data)
+    });
+}
+
+getHandOverNotelist() {
+  debugger
+  var param = {
+      sortField: "DocHandId",
+      sortOrder: 0,
+      filters: [
+                { fieldName: "AdmId", fieldValue: "3", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            ],
+                row: 25
   }
+  this._NursingStationService.getpatientHandList(param).subscribe(Menu => {
+
+      this.dsDoctorNoteList.data = Menu.data as PatientHandNote[];
+      this.dsDoctorNoteList.sort = this.sort;
+      this.dsDoctorNoteList.paginator = this.paginator;
+      console.log(this.dsDoctorNoteList.data)
+  });
+}
+
+
+//   gridConfig: gridModel = {
+//     apiUrl: "CanteenRequest/DoctorNoteList",
+//     columnsList: [
+//         { heading: "VDate", key: "vtDate", sort: true, align: 'left', emptySign: 'NA' },
+//         { heading: "Time", key: "tTime", sort: true, align: 'left', emptySign: 'NA' },
+//         { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA'},
+//         {
+//             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+//                 {
+//                     action: gridActions.edit, callback: (data: any) => {
+//                         this.onSave(data);
+//                     }
+//                 }, {
+//                     action: gridActions.print, callback: (data: any) => {
+                        
+//                     }
+//                 }]
+//         } //Action 1-view, 2-Edit,3-delete
+//     ],
+//     sortField: "DoctNoteId",
+//     sortOrder: 0,
+//     filters: [
+//         { fieldName: "AdmId", fieldValue: "119", opType: OperatorComparer.Equals },
+//         { fieldName: "Start", fieldValue: "", opType: OperatorComparer.Equals },
+//         { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+//     ],
+//     row: 25
+// }
+
+onEdit(row) {
+  debugger
+  console.log("data:", row)
+  this.registerObj=row;
+  var m_data = {
+    "Description": this.registerObj.doctorsNotes,
+    "DoctNoteId": this.registerObj.doctNoteId
+  }
+  // this.IsAddFlag = true;
+  this._NursingStationService.DoctorNotepoppulateForm(m_data);
+      
+    }
 
   NewTemplate() {
     const dialogRef = this._matDialog.open(CreateTemplateComponent,
@@ -148,7 +238,7 @@ export class DoctornoteComponent implements OnInit {
         width: '100%',
       });
     dialogRef.afterClosed().subscribe(result => {
-      // this.getDoctorNoteList();
+      this.getDoctorNoteList();
     });
   }
 
@@ -178,63 +268,119 @@ export class DoctornoteComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-    if (!this.vDoctNoteId) {
+    if (!this.vDoctNoteId || this.vDoctNoteId === 0) {  // Insert Condition
       var mdata = {
         "doctNoteId": 0,
         "admId": 0,
         "tdate": formattedDate,
         "ttime": formattedTime,
         "doctorsNotes": this._NursingStationService.myform.get("Description").value,
-        "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
-      }
+        "isAddedBy": 1, //this.accountService.currentUserValue.userId,
+      };
       console.log('json mdata:', mdata);
-
+    
       this._NursingStationService.DoctorNoteInsert(mdata).subscribe(response => {
         if (response) {
           this.toastr.success('Record Saved Successfully.', 'Saved !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose()
+          this.onClose();
         } else {
-          this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+          this.toastr.error('Record not saved! Please check API error.', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
       }, (error) => {
         this.toastr.error(error.message);
       });
-    }
-    else {
+    } 
+    else if (this.registerObj?.doctNoteId && this.registerObj.doctNoteId !== 0) {  // Update Condition
       var mdata1 = {
-        "doctNoteId": this.vDoctNoteId,
+        "doctNoteId": this.registerObj.doctNoteId,
         "admId": 0,
         "tdate": formattedDate,
         "ttime": formattedTime,
         "doctorsNotes": this._NursingStationService.myform.get("Description").value,
-        "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
-      }
+        "isAddedBy": 1, //this.accountService.currentUserValue.userId,
+      };
       console.log('json mdata:', mdata1);
-
-      this._NursingStationService.DoctorNoteUpdate(mdata1).subscribe((response) => {
+    
+      this._NursingStationService.DoctorNoteUpdate(mdata1).subscribe(response => {
         if (response) {
-          this.toastr.success('Record Update Successfully.', 'Update !', {
+          this.toastr.success('Record Updated Successfully.', 'Update !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose()
+          this.onClose();
         } else {
-          this.toastr.error('Record not Update !, Please check API error..', 'Error !', {
+          this.toastr.error('Record not updated! Please check API error.', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
           });
         }
       }, (error) => {
         this.toastr.error(error.message);
       });
+    } 
+    else {
+      this.toastr.error('Invalid data! Cannot insert or update.', 'Error !');
     }
+    
+    // if (this.vDoctNoteId) {
+    //   var mdata = {
+    //     "doctNoteId": 0,
+    //     "admId": 0,
+    //     "tdate": formattedDate,
+    //     "ttime": formattedTime,
+    //     "doctorsNotes": this._NursingStationService.myform.get("Description").value,
+    //     "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
+    //   }
+    //   console.log('json mdata:', mdata);
+
+    //   this._NursingStationService.DoctorNoteInsert(mdata).subscribe(response => {
+    //     if (response) {
+    //       this.toastr.success('Record Saved Successfully.', 'Saved !', {
+    //         toastClass: 'tostr-tost custom-toast-success',
+    //       });
+    //       this.onClose()
+    //     } else {
+    //       this.toastr.error('Record not saved !, Please check API error..', 'Error !', {
+    //         toastClass: 'tostr-tost custom-toast-error',
+    //       });
+    //     }
+    //   }, (error) => {
+    //     this.toastr.error(error.message);
+    //   });
+    // }
+    // else if (this.registerObj.doctNoteId) {
+    //   var mdata1 = {
+    //     "doctNoteId": this.registerObj.doctNoteId,
+    //     "admId": 0,
+    //     "tdate": formattedDate,
+    //     "ttime": formattedTime,
+    //     "doctorsNotes": this._NursingStationService.myform.get("Description").value,
+    //     "isAddedBy": 0, //this.accountService.currentUserValue.user.id,
+    //   }
+    //   console.log('json mdata:', mdata1);
+
+    //   this._NursingStationService.DoctorNoteUpdate(mdata1).subscribe((response) => {
+    //     if (response) {
+    //       this.toastr.success('Record Update Successfully.', 'Update !', {
+    //         toastClass: 'tostr-tost custom-toast-success',
+    //       });
+    //       this.onClose()
+    //     } else {
+    //       this.toastr.error('Record not Update !, Please check API error..', 'Error !', {
+    //         toastClass: 'tostr-tost custom-toast-error',
+    //       });
+    //     }
+    //   }, (error) => {
+    //     this.toastr.error(error.message);
+    //   });
+    // }
 
     // this.isLoading = 'submit';
 
@@ -375,6 +521,42 @@ export class DocNote {
     this.DoctorsNotes = DocNote.DoctorsNotes || '';
     this.IsAddedBy = DocNote.IsAddedBy || 0;
     this.DoctNoteId = DocNote.DoctNoteId || 0;
+  }
+
+}
+export class PatientHandNote {
+
+  AdmID: number;
+  TDate: Date;
+  TTime: Date;
+  DoctorsNotes: any;
+  IsAddedBy: any;
+  DoctNoteId: any;
+  VDate: any;
+  MTime: Date;
+  ShiftInfo: any;
+  PatHand_I: any;
+  PatHand_S: any;
+  PatHand_B: any;
+  PatHand_A: any;
+  PatHand_R: any;
+
+  constructor(PatientHandNote) {
+
+    this.AdmID = PatientHandNote.AdmID || 0;
+    this.TDate = PatientHandNote.TDate || '';
+    this.TTime = PatientHandNote.TTime || '';
+    this.DoctorsNotes = PatientHandNote.DoctorsNotes || '';
+    this.IsAddedBy = PatientHandNote.IsAddedBy || 0;
+    this.DoctNoteId = PatientHandNote.DoctNoteId || 0;
+    this.VDate = PatientHandNote.VDate || 0;
+    this.MTime = PatientHandNote.MTime || 0;
+    this.ShiftInfo = PatientHandNote.ShiftInfo || 0;
+    this.PatHand_I = PatientHandNote.PatHand_I || 0;
+    this.PatHand_S = PatientHandNote.PatHand_S || 0;
+    this.PatHand_B = PatientHandNote.PatHand_B || 0;
+    this.PatHand_A = PatientHandNote.PatHand_A || 0;
+    this.PatHand_R = PatientHandNote.PatHand_R || 0;
   }
 
 }

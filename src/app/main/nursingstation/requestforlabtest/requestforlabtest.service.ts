@@ -30,6 +30,10 @@ export class RequestforlabtestService {
 
   }
 
+  public getserviceList(param) {
+    return this._httpClient1.PostData("BillingService/BillingList",param);
+}
+
   // new dropdown
 public getRegistraionById(Id) {
   return this._httpClient1.GetData("OutPatient/" + Id);

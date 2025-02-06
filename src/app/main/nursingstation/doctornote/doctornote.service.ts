@@ -21,6 +21,7 @@ export class DoctornoteService {
       return this._formBuilder.group({
       Note: [''], 
       Description:[''],
+      DoctNoteId:'',
       WardName:[''],
       HandOverType:['0']
       });
@@ -39,13 +40,22 @@ export class DoctornoteService {
   // public DoctorNoteInsert(employee) {
   //   return this._httpClient.post("InPatient/DoctorNoteInsert", employee)
   // }
+  DoctorNotepoppulateForm(param){
+    this.myform.patchValue(param)
+  }
+  public getdoctornoteList(param) {
+    return this._httpClient1.PostData("CanteenRequest/DoctorNoteList",param);
+}
+public getpatientHandList(param) {
+  return this._httpClient1.PostData("CanteenRequest/TDoctorPatientHandoverList",param);
+}
   public DoctorNoteInsert(employee) {
-    return this._httpClient.post("DoctorNote", employee)
+    return this._httpClient1.PostData("DoctorNote", employee)
   }
   public DoctorNoteUpdate(Param: any) {
     debugger
     if (Param.doctNoteId) {
-        return this._httpClient.put("DoctorNote/" + Param.doctNoteId, Param);
+        return this._httpClient1.PutData("DoctorNote/" + Param.doctNoteId, Param);
     }
   }
   public getRegistraionById(Id) {
@@ -55,7 +65,7 @@ export class DoctornoteService {
   public getDoctorNoteCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorNotesTemplateMaterForCombo", {})
   }
-  public getWardNameList() {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_WardClassMasterForCombo", {})
-  }
+  // public getWardNameList() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_WardClassMasterForCombo", {})
+  // }
 }

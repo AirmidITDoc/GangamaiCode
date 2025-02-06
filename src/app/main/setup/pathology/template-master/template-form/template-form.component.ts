@@ -105,8 +105,8 @@ export class TemplateFormComponent implements OnInit {
     onClear(){}
 
     onBlur(e: any) {
-    // throw new Error('Method not implemented.');
-    this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+    // this.vTemplateDesc = e.target.innerHTML;
     }
 
     // onBlur(e: any) {

@@ -70,13 +70,19 @@ public getRegistraionById(Id) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemNameBatchPOP_IPPresRet",Param)
   }
 
-  public getItemlist(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
-  }
+  // public getItemlist(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
+  // }
 
 
   public presciptionreturnSave(emp){
-    return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
+    // return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
+    return this._httpClient1.PostData("Nursing/PrescriptionReturnInsert",emp)
+  }
+
+  public presciptionreturnUpdate(emp){
+    // return this._httpClient.post("InPatient/InsertIPPrescriptionReturn",emp)
+    return this._httpClient1.PutData("Nursing/PrescriptionReturnUpdate",emp)
   }
 
   public getAdmittedPatientList(employee) {

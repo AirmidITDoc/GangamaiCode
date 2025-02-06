@@ -30,7 +30,8 @@ export class CreateTemplateComponent {
   };
 
   onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
+    // this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
   }
 
   constructor(
