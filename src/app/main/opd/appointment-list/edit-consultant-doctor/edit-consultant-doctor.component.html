@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Cons.Doctor Update</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Doctor Name Update</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -30,72 +30,73 @@
                             <div class="patient-info-container">
                                 <div class="patient-sub">
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                        fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.regId}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.patientName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Doctor Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.doctorname}}</span>
-                                            </div>
+                                    fxLayoutAlign="space-between">
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">UHID No
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.regId}}</span>
                                         </div>
-                                        <div fxLayout="column" fxLayoutGap="10px">
-
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">OPD No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.opdNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Sex
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
-                                                    D | {{data.genderName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Department</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.departmentName}}</span>
-                                            </div>
-
-
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.patientName}}</span>
                                         </div>
-                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
-
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Type | Tarrif
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.patientType}} |
-                                                    {{data.tariffName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Company Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value"
-                                                    style="color: orange;">{{data.companyName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Ref-Doctor Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{data.refDocName}}</span>
-                                            </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.doctorname}}</span>
                                         </div>
                                     </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">OPD No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.opdNo}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Age | Sex
+                                            </span>
+                                            <span>:</span>
+                                            <span
+                                                class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                D | {{data.genderName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Department</span>
+                                            <span>:</span>
+                                            <span
+                                                class="patient-col-value">{{data.departmentName}}</span>
+                                        </div>
+
+
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Type | Tarrif
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.patientType}} |
+                                                {{data.tariffName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Company Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value"
+                                                style="color: orange;">{{data.companyName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ref-Doctor Name
+                                            </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{data.refDocName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </mat-card>
@@ -103,12 +104,12 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
-                                <!-- <div class="form-title mb-2 border-bottom pb-2">
+                                <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600"> Consultation Doctor Information</span>
-                                </div> -->
+                                </div>
                                 <div class="form-body">
-                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8" style="margin-left: 30px;">
-                                      
+                                    <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+
                                         <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
@@ -122,18 +123,16 @@
                                             [validations]="getValidationMessages().consultantDocId"
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-dropdown>
-
-
                                     </div>
                                 </div>
                             </div>
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" style="margin-left:720px;">
+                            <div fxLayoutAlign="end">
+                                <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 0px 20px 0px 50px; ">
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                </div>
+                            </div> 
 
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                                    <span>Save</span>
-                                </button>
-                            </div>
                         </mat-card>
                     </div>
                 </div>

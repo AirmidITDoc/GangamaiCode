@@ -2,11 +2,12 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-refrance-doctor',
@@ -33,6 +34,7 @@ export class EditRefranceDoctorComponent implements OnInit {
     public _AppointmentlistService: AppointmentlistService,
     public dialogRef: MatDialogRef<EditRefranceDoctorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public _matDialog:MatDialog,
     public datePipe: DatePipe,
     public toastr: ToastrService
   ) { }
@@ -71,6 +73,31 @@ export class EditRefranceDoctorComponent implements OnInit {
       this.toastr.error(error.message);
     });
     }
+  }
+  RefDoctorId=0;
+  onCancleRefDoc() {
+    this.RefDoctorId = 0;
+    let query = '';
+    if (this.data.FormName == "Appointment") {
+      query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
+    }
+
+    console.log(query);
+    this._AppointmentlistService.UpdateQueryByStatement(query).subscribe(response => {
+      if (response) {
+        Swal.fire('Congratulations !', 'Reference Doctor removed Successfully !', 'success').then((result) => {
+          if (result.isConfirmed) {
+            this._matDialog.closeAll();
+
+          }
+        });
+      } else {
+        Swal.fire('Error !', 'Reference Doctor removed ', 'error');
+      }
+      // this.isLoading = '';
+
+    });
+
   }
 
 

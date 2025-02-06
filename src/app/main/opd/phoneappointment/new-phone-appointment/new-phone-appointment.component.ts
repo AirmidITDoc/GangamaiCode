@@ -14,6 +14,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../../registration/registration.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-new-phone-appointment',
@@ -26,6 +27,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   phoneappForm: FormGroup
   searchFormGroup: FormGroup
   hasSelectedContacts: boolean;
+  @ViewChild('ddlDoctor') ddlState: AirmidDropDownComponent;
   date = new Date().toISOString();
   date1: any;
 
@@ -186,13 +188,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
   // new Api
 
   selectChangedepartment(obj: any) {
-    console.log(obj);
-    // this.vDepartmentid = obj.value
-  }
-
-  selectChangedoctor(obj: any) {
-    console.log(obj);
-    // this.vDoctorId = obj.value
+    this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data:any)=>{
+        this.ddlState.options=data;
+        this.ddlState.bindGridAutoComplete();
+    });
   }
 }
 

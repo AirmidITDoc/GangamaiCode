@@ -73,6 +73,9 @@ export class PhoneAppointListService {
     public getPhoenappschdulelist() {
         return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp", {})
     }
+    public getDoctorsByDepartment(deptId) {
+        return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+    }
 
 
     // new Api

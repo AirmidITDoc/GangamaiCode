@@ -1,101 +1,120 @@
 <div class="modal-wrapper grid-container">
-  <!-- Modal header -->
-  <div class="modal-header accent">
-      <div class="modal-header-content">
-          <div class="modal-header-title">
-              <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Schduled Phone Appointment</span>
-          </div>
-          <div class="modal-header-right">
-              <div class="comman-date-container">
-                  <div class="close-icon">
-                      <mat-icon tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">close</mat-icon>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Schduled Phone Appointment</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <mat-icon tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">close</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <!-- Modal body -->
-  <div class="modal-body" fusePerfectScrollbar>
-      <div class="modal-body-container">
-        <form [formGroup]="searchFormGroup">
-          <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
-            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" placeholderText="Enter Patient Name/RegId.." ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="searchFormGroup">
+                <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
+                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId"
+                        placeholderText="Enter Patient Name/RegId.." ApiUrl="OutPatient/auto-complete?Keyword="
+                        (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-          </div>
-        </form>
-          <form [formGroup]="phoneappForm">
-              <input type="hidden" name="phoneAppId" formControlName="phoneAppId" [(ngModel)]="phoneAppId">
+                </div>
+            </form>
+            <form [formGroup]="phoneappForm">
+                <input type="hidden" name="phoneAppId" formControlName="phoneAppId" [(ngModel)]="phoneAppId">
 
-              <div fxLayout="column" fxLayoutGap="8px grid">
-                  <div class="card-header-container border-bottom pb-4">
-                      <span class="card-title">Personal Details</span>
-                  </div>
-                  <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <!-- <mat-form-field appearance="outline" fxFlex>
+                <div fxLayout="column" fxLayoutGap="8px grid">
+                    <div class="card-header-container border-bottom pb-4">
+                        <span class="card-title">Personal Details</span>
+                    </div>
+                    <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <!-- <mat-form-field appearance="outline" fxFlex>
                               <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="phAppDate">
                               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                               <mat-datepicker #picker></mat-datepicker>
                           </mat-form-field> -->
-                         
-                          <airmid-datepicker [formGroup]="phoneappForm" [isRangePicker]="false" formControlName="phAppDate"></airmid-datepicker>
+
+                            <airmid-datepicker [formGroup]="phoneappForm" [isRangePicker]="false"
+                                formControlName="phAppDate"></airmid-datepicker>
 
 
-                        <!-- <div>
+                            <!-- <div>
                         <label for="dateTime">Select Date and Time:</label>
                         <input id="dateTime" type="datetime-local" formControlName="phAppDate" [value]="date1" [(ngModel)]="date1"/>
                         </div> -->
-                      
 
-                        <!-- <mat-form-field appearance="outline">
+
+                            <!-- <mat-form-field appearance="outline">
                             <mat-label>Collection Date / Time</mat-label>
                             <input matInput type="datetime-local" placeholder="date" [value]="date1" [(ngModel)]="date1"
                                 (change)="date1=$event.target.value" formControlName="phAppDate" />
                         </mat-form-field> -->
 
 
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="First Name" formControlName="firstName"  [value]="registerObj.firstName" [formGroup]="phoneappForm" [validations]="getValidationMessages().firstName" [maxLength]="10">
-                          </airmid-textbox>
-                      </div>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="First Name" formControlName="firstName"
+                                [value]="registerObj.firstName" [formGroup]="phoneappForm"
+                                [validations]="getValidationMessages().firstName" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
 
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="Middle Name" formControlName="middleName"  [value]="registerObj.middleName" [formGroup]="phoneappForm" [validations]="getValidationMessages().middleName" [maxLength]="10">
-                          </airmid-textbox>
-                      </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Middle Name" formControlName="middleName"
+                                [value]="registerObj.middleName" [formGroup]="phoneappForm"
+                                [validations]="getValidationMessages().middleName" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
 
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="Last Name" formControlName="lastName" [value]="registerObj.lastName" [formGroup]="phoneappForm" [validations]="getValidationMessages().lastName" [maxLength]="10">
-                          </airmid-textbox>
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm" [validations]="getValidationMessages().address" [maxLength]="10">
-                          </airmid-textbox>
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="registerObj.mobileNo" [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo" [maxLength]="10">
-                          </airmid-textbox>
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="Department Name" formControlName="departmentId" [value]="data?.departmentId" [formGroup]="phoneappForm" [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
-                          </airmid-dropdown>
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId" [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" [mode]="autocompleteModedoctor" (selectionChange)="selectChangedoctor($event)">
-                          </airmid-dropdown>
-                      </div>
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
-                          <mat-form-field appearance="outline" fxFlex>
-                              <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate" name="AppointmentDate" formControlName="appDate">
-                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                              <mat-datepicker #picker1></mat-datepicker>
-                          </mat-form-field>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Last Name" formControlName="lastName" [value]="registerObj.lastName"
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().lastName"
+                                [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm"
+                                [validations]="getValidationMessages().address" [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="registerObj.mobileNo"
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo"
+                                [maxLength]="10">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                [value]="data?.departmentId" [formGroup]="phoneappForm"
+                                [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
+                                (selectionChange)="selectChangedepartment($event)">
+                            </airmid-dropdown>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor
+                               >
+                            </airmid-dropdown>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Choose a AppDate"
+                                    name="AppointmentDate" formControlName="appDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
 
-                          
-                      </div>
-                      <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+
+                        </div>
+                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
                           <mat-form-field appearance="outline" fxFlex>
                               <input matInput [matDatepicker]="picker2" [min]="minDate" placeholder="Choose a AppDate" name="AppointmentDate" formControlName="appTime">
                               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -103,26 +122,26 @@
                           </mat-form-field>
 
                       </div> -->
-                      <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
+                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">
                           <mat-form-field appearance="outline" fxFlex>
                               <input matInput [matDatepicker]="picker3" [min]="minDate" placeholder="Choose a phAppTime" name="PhAppointmentDate" formControlName="phAppTime">
                               <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                               <mat-datepicker #picker3></mat-datepicker>
                           </mat-form-field>
                       </div> -->
-                  </div>
-              </div>
-          </form>
-      </div>
-  </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-  <!-- Modal footer -->
-  <div class="modal-footer">
-      <div class="footer-navigation-container">
-          <div class="modal-footer-buttons">
-              <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-              <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
-          </div>
-      </div>
-  </div>
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
