@@ -8,88 +8,65 @@ import { ApiCaller } from 'app/core/services/apiCaller';
   providedIn: 'root'
 })
 export class RadiologyTestMasterService {
-  myform: FormGroup;
-  myformSearch: FormGroup;
-  AddParameterFrom: FormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
+    AddParameterFrom: FormGroup;
 
-  constructor( private _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder) {
-    this.myform = this.createRadiologytestForm();
-    this.myformSearch = this.createSearchForm();
-    this.AddParameterFrom = this.createAddparaFrom();
-  }
-
-  createRadiologytestForm(): FormGroup {
-    return this._formBuilder.group({
-      TestId: [''],
-      TestName: ['',
-        [
-            Validators.required,
-            Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-        ]
-      ],
-      PrintTestName: ['',
-        [
-            Validators.required,
-            Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-        ]
-      ],
-      CategoryId: [''],
-      TemplateName:[''],
-      ServiceId: [''],
-      IsDeleted: ['true'],
-
-    });
-  }
-  createSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      TestNameSearch: [""],
-      IsDeletedSearch: ["2"],
-    });
-  }
-  createAddparaFrom(): FormGroup {
-    return this._formBuilder.group({
-      TestId: [''],
-      TemplateName: [""]
-    });
-  }
-  getValidationMessages(){
-    return{
-      CategoryId: [
-        { name: "required", Message: "CategoryName is required" }
-      ],
-      ServiceId: [
-        { name: "required", Message: "ServiceName is required" }
-      ],
-      TemplateName: [
-        { name: "required", Message: "TemplateName is required" }
-      ]
+    constructor( private _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder) {
+        this.myform = this.createRadiologytestForm();
+        this.myformSearch = this.createSearchForm();
+        this.AddParameterFrom = this.createAddparaFrom();
     }
-  }
 
-  initializeFormGroup() {
-    this.createRadiologytestForm();
-    this.createSearchForm();
-  }
-  
+    createRadiologytestForm(): FormGroup {
+        return this._formBuilder.group({
+            testId: [0],
+            testName: [""],
+            printTestName: [""],
+            categoryId: [0],
+            serviceId: [0],
+            templateName:[""],
+            mRadiologyTemplateDetails: [
+                {
+                    ptemplateId: 0,
+                    testId: 0,
+                    templateId: 0
+                }
+            ],
+            isActive:[true,[Validators.required]]
+        });
+    }
 
-  public gettestMasterList(param: gridRequest) {
-    return this._httpClient.PostData("RadiologyTest/List", param);
-}
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+        TestNameSearch: [""],
+        IsDeletedSearch: ["2"],
+        });
+    }
 
-public testMasterSave(Param: any) {
-  if (Param.TestId) {
-      return this._httpClient.PutData("RadiologyTest/InsertEDMX" + Param.TestId, Param);
-  } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param);
-}
+    createAddparaFrom(): FormGroup {
+        return this._formBuilder.group({
+            testId: [""],
+            templateName: [""]
+        });
+    }
 
-// public deactivateTheStatus(m_data) {
-//     return this._httpClient.PostData("test", m_data);
-// }
-  populateForm(employee) {
-    this.myform.patchValue(employee);
-  }
-  public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("test?Id=" + m_data.toString());
+    initializeFormGroup() {
+        this.createRadiologytestForm();
+        this.createSearchForm();
+    }
+    
+
+    public testMasterSave(Param: any) {
+    if (Param.testId) {
+        return this._httpClient.PutData("RadiologyTest/Edit/" + Param.testId, Param);
+    } else return this._httpClient.PostData("RadiologyTest/InsertEDMX", Param);
+    }
+
+    populateForm(employee) {
+        this.myform.patchValue(employee);
+    }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("test?Id=" + m_data.toString());
+    }
 }
-}
-// Retrieve_RadiologyTemplateMasterForComboMasterList

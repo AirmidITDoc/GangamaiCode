@@ -25,7 +25,7 @@ export class ParametermasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
-        apiUrl: "PathParameterMaster/List",
+        apiUrl: "ParameterMaster/MPathParameterList", //PathParameterMaster/List
         columnsList: [
             { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -62,11 +62,12 @@ export class ParametermasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "parameterId",
+        sortField: "UnitId",
         sortOrder: 0,
         filters: [
-            { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "ParameterName", fieldValue: "Serum Uric Acid", opType: OperatorComparer.Contains },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
