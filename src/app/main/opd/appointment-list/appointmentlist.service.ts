@@ -67,64 +67,64 @@ export class AppointmentlistService {
    
     createPesonalForm() {
 
-        return this._formBuilder.group({
-            RegId: 0,
-            RegNo: '1',
-            PrefixId: ['', [Validators.required]],
-            FirstName: ['', [
-                Validators.required,
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-            ]],
-            MiddleName: ['', [
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-            ]],
-            LastName: ['', [
-                Validators.required,
-                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
-            ]],
-            GenderId: new FormControl('', [Validators.required]),
-            Address: '',
-            DateOfBirth: [(new Date()).toISOString()],
-            Age: ['0'],
-            AgeYear: ['0', [
-                // Validators.required,
-                Validators.maxLength(3),
-                Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            PhoneNo: ['', [Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-            MobileNo: ['', [Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-            aadharCardNo: ['', [Validators.required,
-            Validators.minLength(12),
-            Validators.maxLength(12),
-            Validators.pattern("^[0-9]*$")
-            ]],
-            panCardNo: '',
-            MaritalStatusId: 0,
-            ReligionId: 0,
-            AreaId: 0,
-            CityId:[Validators.required],
-            City: '',
-            StateId:[Validators.required],
-            CountryId:[Validators.required],
-            IsCharity: false,
-            IsSeniorCitizen: false,
-            AddedBy: 1,
-            updatedBy: 1,
-            RegDate: [(new Date()).toISOString()],
-            RegTime: [(new Date()).toISOString()],
-            Photo: [''],
-            PinNo: [''],
-            IsHealthCard: 0
+       return this._formBuilder.group({
+                RegId: [0],
+                RegNo: "0",
+                PrefixId: ['', [Validators.required]],
+                FirstName: ['', [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                ]],
+                MiddleName: ['', [
+                    Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                ]],
+                LastName: ['', [
+                    Validators.required,
+                    Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                ]],
+                GenderId: new FormControl('', [Validators.required]),
+                Address: '',
+                DateOfBirth: [(new Date()).toISOString()],
+                Age: ['0'],
+                AgeYear: ['0', [
+                    // Validators.required,
+                    Validators.maxLength(3),
+                    Validators.pattern("^[0-9]*$")]],
+                AgeMonth: ['0', [
+                    Validators.pattern("^[0-9]*$")]],
+                AgeDay: ['0', [
+                    Validators.pattern("^[0-9]*$")]],
+                PhoneNo: ['', [Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+                MobileNo: ['', [Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+                aadharCardNo: ['', [Validators.required,
+                Validators.minLength(12),
+                Validators.maxLength(12),
+                Validators.pattern("^[0-9]*$")
+                ]],
+    
+                panCardNo: '',
+                MaritalStatusId:0,
+                ReligionId: 0,
+                AreaId: 0,
+                CityId: [0, [Validators.required]],
+                City: [''],
+                StateId:  [0, [Validators.required]],
+                CountryId:  [0, [Validators.required]],
+                IsCharity: false,
+                IsSeniorCitizen: false,
+                AddedBy: 1,
+                updatedBy: 1,
+                RegDate: [(new Date()).toISOString()],
+                RegTime: [(new Date()).toISOString()],
+                Photo: [''],
+                PinNo: ['']
 
         });
 
@@ -138,8 +138,8 @@ export class AppointmentlistService {
             visitTime: [(new Date()).toISOString()],
             UnitId: 1,
             PatientTypeId: [1, Validators.required],
-            ConsultantDocId: ['',Validators.required],
-            RefDocId: ['',Validators.required],
+            ConsultantDocId: [0,Validators.required],
+            RefDocId: [0],
             TariffId: [1, Validators.required],
             CompanyId: 0,
             SubCompanyId:0,
@@ -149,10 +149,10 @@ export class AppointmentlistService {
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
             ClassId: 1,
-            DepartmentId: ['',Validators.required],
+            DepartmentId: [0,Validators.required],
             patientOldNew: 1,
             firstFollowupVisit: 0,
-            AppPurposeId: ['',Validators.required],
+            AppPurposeId: [0],
             followupDate: [(new Date()).toISOString()],
             crossConsulFlag: 0,
             phoneAppId: 0
@@ -168,16 +168,13 @@ export class AppointmentlistService {
     }
 
     public NewappointmentSave(Param: any) {
-        // if (Param.visitID) {
-        return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param);
-        // } else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
+       return this._httpClient1.PostData("VisitDetail/Insert", Param);
+       
     }
 
     public RregisteredappointmentSave(Param: any) {
 
         return this._httpClient1.PostData("VisitDetail/Update", Param);
-
-        // else return this._httpClient1.PostData("VisitDetail/AppVisitInsert", Param, showLoader);
     }
 
     public EditConDoctor(Param: any) {
@@ -201,7 +198,7 @@ export class AppointmentlistService {
     // new API?
 
     public getAppointmentList(employee) {
-        return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+        return this._httpClient1.PostData("VisitDetail/Insert", employee)
     }
 
     public Appointmentcancle(employee, loader = true) {
@@ -246,6 +243,12 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("Report/ViewReport", Param);
       }
 
+      public UpdateQueryByStatement(query,loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
+      }
 }
 
 //192.168.2.100:

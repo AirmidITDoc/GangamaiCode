@@ -21,103 +21,98 @@
     </div>
 
     <!-- Modal body -->
-    <mat-card>
-        <div class="modal-body" fusePerfectScrollbar>
-            <div class="modal-body-container">
-                <form [formGroup]="crossconForm">
-                    <div fxLayout="column" class="gap-12">
-                        <div class="modal-card-container">
-                            <mat-card>
-                                <div class="patient-info-container">
-                                    <div class="patient-sub">
-                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                            fxLayoutAlign="space-between">
-                                            <div fxLayout="column" fxLayoutGap="10px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">UHID No
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.regId}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.patientName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.doctorname}}</span>
-                                                </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="crossconForm">
+                <div fxLayout="column" class="gap-12">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-sub">
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="10px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.regId}}</span>
                                             </div>
-                                            <div fxLayout="column" fxLayoutGap="10px">
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">OPD No</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.opdNo}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Age | Sex
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span
-                                                        class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
-                                                        D | {{data.GenderName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Department</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.departmentName}}</span>
-                                                </div>
-
-
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.patientName}}</span>
                                             </div>
-                                            <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.doctorname}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="10px">
 
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Type | Tarrif
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.patientType}} |
-                                                        {{data.tariffName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                        style="color: orange;">{{data.companyName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ref-Doctor Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{data.refDocName}}</span>
-                                                </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">OPD No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.opdNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                    D | {{data.genderName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.departmentName}}</span>
+                                            </div>
+
+
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Type | Tarrif
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.patientType}} |
+                                                    {{data.tariffName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value"
+                                                    style="color: orange;">{{data.companyName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ref-Doctor Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.refDocName}}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </mat-card>
-                        </div>
-                        <div class="modal-card-container">
-
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card>
                             <div fxLayout="column" class="gap-8">
                                 <div class="form-title mb-2 border-bottom pb-2">
                                     <span class="h3 font-weight-600">Cross Consultation Information</span>
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+
                                         <input type="hidden" name="RegId" formControlName="regId"
                                             [(ngModel)]="registerObj1.regId">
 
-                                        <mat-form-field appearance="outline" fxFlex.sm="10%"
-                                            style="visibility: hidden;">
-                                            <input matInput type="datetime-local" placeholder="Visit Date / Time"
-                                                formControlName="visitDate"
-                                                [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
-                                        </mat-form-field>
+
 
                                         <mat-form-field appearance="outline" fxFlex.sm="50%">
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
@@ -128,7 +123,8 @@
                                             [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
                                             [validations]="getValidationMessages().Departmentid"
                                             ValueField="departmentId" TextField="departmentName"
-                                            (selectionChange)="selectChangedepartment($event)" ApiUrl="DepartmentMaster/get-departments">
+                                            (selectionChange)="selectChangedepartment($event)"
+                                            ApiUrl="DepartmentMaster/get-departments">
                                         </airmid-dropdown>
 
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
@@ -136,27 +132,30 @@
                                             [validations]="getValidationMessages().consultantDocId" #ddldoctor
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-dropdown>
+
+                                        <mat-form-field appearance="outline" fxFlex.sm="10%"
+                                            style="visibility: hidden;">
+                                            <input matInput type="datetime-local" placeholder="Visit Date / Time"
+                                                formControlName="visitDate"
+                                                [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
+                                        </mat-form-field>
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
+                        </mat-card>
                     </div>
-                </form>
-            </div>
-        </div>
-        <div>
-
-         
-        </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            <div class="footer-navigation-container">
-                <div class="modal-footer-buttons">
-                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">Save</button>
                 </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()">Save</button>
             </div>
         </div>
-    </mat-card>
+    </div>
 </div>

@@ -217,9 +217,9 @@ export class AppointmentListComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
                 {
-                    maxWidth: "65vw",
-                    height: '50%',
-                    width: '80%',
+                    maxWidth: "70vw",
+                    height: "410px",
+                    width: "70%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -235,9 +235,9 @@ export class AppointmentListComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
                 {
-                    maxWidth: "65vw",
-                    height: '50%',
-                    width: '80%',
+                    maxWidth: "70vw",
+                    height: "390px",
+                    width: "50%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -249,8 +249,9 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnViewReportPdf(element){
+        debugger
         console.log('Third action clicked for:', element);
-        this.commonService.Onprint("VisitId", element.VisitId, "AppointmentReceipt"); 
+        this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt"); 
     }
 
     OnBillPayment(element){
@@ -265,9 +266,8 @@ export class AppointmentListComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
-                maxWidth: "65vw",
-                height: '50%',
-                width: '80%',
+                maxWidth: '75vw',
+                height: '400px', width: '100%',
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -419,45 +419,45 @@ export class AppointmentListComponent implements OnInit {
         });
 
     }
-    getAppointmentrview() {
-        let param = {
-            "searchFields": [
-                {
-                    "fieldName": "FromDate",
-                    "fieldValue": "10-01-2024",
-                    "opType": "13"
-                },
-                {
-                    "fieldName": "ToDate",
-                    "fieldValue": "12-12-2024",
-                    "opType": "13"
-                }
-            ],
-            "mode": "AppointmentListReport"
-        }
-        console.log(param)
-        setTimeout(() => {
+    // getAppointmentrview() {
+    //     let param = {
+    //         "searchFields": [
+    //             {
+    //                 "fieldName": "FromDate",
+    //                 "fieldValue": "10-01-2024",
+    //                 "opType": "13"
+    //             },
+    //             {
+    //                 "fieldName": "ToDate",
+    //                 "fieldValue": "12-12-2024",
+    //                 "opType": "13"
+    //             }
+    //         ],
+    //         "mode": "AppointmentListReport"
+    //     }
+    //     console.log(param)
+    //     setTimeout(() => {
 
-            this._AppointmentlistService.getAppointmenttemplateReport(param
-            ).subscribe(res => {
-                const dialogRef = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Appointment  Viewer"
-                        }
-                    });
-                dialogRef.afterClosed().subscribe(result => {
+    //         this._AppointmentlistService.getAppointmenttemplateReport(param
+    //         ).subscribe(res => {
+    //             const dialogRef = this._matDialog.open(PdfviewerComponent,
+    //                 {
+    //                     maxWidth: "85vw",
+    //                     height: '750px',
+    //                     width: '100%',
+    //                     data: {
+    //                         base64: res["base64"] as string,
+    //                         title: "Appointment  Viewer"
+    //                     }
+    //                 });
+    //             dialogRef.afterClosed().subscribe(result => {
 
-                });
-            });
+    //             });
+    //         });
 
-        }, 100);
+    //     }, 100);
 
-    }
+    // }
 
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value

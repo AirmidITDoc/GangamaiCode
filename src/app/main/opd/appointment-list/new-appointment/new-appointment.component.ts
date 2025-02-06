@@ -80,8 +80,8 @@ export class NewAppointmentComponent implements OnInit {
     OPIP: any = '';
     VisitId = 0;
     patienttype = 0
+    UnitId = 1;
 
-    
     screenFromString = 'admission-form';
     @ViewChild('attachments') attachment: any;
 
@@ -162,15 +162,15 @@ export class NewAppointmentComponent implements OnInit {
 
         if (this.data)
             this.registerObj = this.data;
-       
+
 
         console.log(this.registerObj)
     }
 
 
 
-   
-    
+
+
     onChangeReg(event) {
         //
         if (event.value == 'registration') {
@@ -181,7 +181,7 @@ export class NewAppointmentComponent implements OnInit {
             this.isRegSearchDisabled = false;
 
             // this.personalFormGroup = this.createPesonalForm();
-            
+
             // this.VisitFormGroup = this.createVisitdetailForm();
             // // this.Regdisplay = false;
             // this.showtable = false;
@@ -198,12 +198,12 @@ export class NewAppointmentComponent implements OnInit {
 
             // this.personalFormGroup = this.createPesonalForm();
             // this.VisitFormGroup = this.createVisitdetailForm();
-            
+
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
 
-           
+
 
         }
 
@@ -215,12 +215,13 @@ export class NewAppointmentComponent implements OnInit {
             regRadio: ['registration'],
             regRadio1: ['registration1'],
             RegId: [''],
-            PhoneRegId: ['']
+            PhoneRegId: [''],
+            UnitId: [1]
         });
     }
 
 
-   
+
     onChangePatient(value) {
 
         var mode = "Company"
@@ -241,7 +242,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-   
+
     getregdetails() {
 
         let RegId = this.searchFormGroup.get("RegId").value
@@ -292,23 +293,6 @@ export class NewAppointmentComponent implements OnInit {
 
     }
 
-    // @ViewChild('appointmentFormStepper') appointmentFormStepper: MatStepper;
-    // @Input() panelWidth: string | number;
-    // selectedPrefixId: any;
-
-    // public now: Date = new Date();
-    // screenFromString = 'admission-form';
-
-
-    // editor: string;
-    // filteredOptions: Array<any[]> = [];
-    // regId: Number;
-    // getSearchList(e: any) {
-    //     this._AppointmentlistService.getRegistrations(e.target.value).subscribe(data => {
-    //         this.filteredOptions = data;
-    //     });
-
-    // }
     displayFn(user: any): string {
         return user.text;
     }
@@ -347,7 +331,7 @@ export class NewAppointmentComponent implements OnInit {
         // this.IsLoading = false;
     }
 
-   
+
 
     getOptionText(option) {
         if (!option) return '';
@@ -369,9 +353,35 @@ export class NewAppointmentComponent implements OnInit {
         this.PatientName = obj.PatientName;
         this.RegId = obj.value;
         this.VisitFlagDisp = true;
-        
+
         if ((this.RegId ?? 0) > 0) {
-            
+
+            console.log(this.data)
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+
+                });
+
+            }, 500);
+        }
+
+    }
+
+
+    getSelectedObjphone(obj) {
+        console.log(obj)
+        this.RegOrPhoneflag = 'Entry from Phone Registration';
+        let todayDate = new Date();
+        const d = new Date(obj.DateofBirth);
+
+        this.PatientName = obj.PatientName;
+        this.RegId = obj.value;
+        this.VisitFlagDisp = true;
+
+        if ((this.RegId ?? 0) > 0) {
+
             console.log(this.data)
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
@@ -494,20 +504,25 @@ export class NewAppointmentComponent implements OnInit {
 
     onSave() {
         debugger
-        // this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
-        // this.personalFormGroup.get('RegTime').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'hh:mm:ss a'))
-     
-console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup.valid)
+       console.log(this.personalFormGroup.value)
+       console.log(this.VisitFormGroup.value)
 
-        if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid){
-         
-            if (this.searchFormGroup.get('regRadio').value == "registration") 
-            this.OnsaveNewRegister();
+        console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
+
+        if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+
+            this.personalFormGroup.get('RegDate').setValue(this.dateTimeObj.date)
+            this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+            this.VisitFormGroup.get('visitDate').setValue(this.dateTimeObj.date)
+            this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+
+            if (this.searchFormGroup.get('regRadio').value == "registration")
+                this.OnsaveNewRegister();
             else if (this.searchFormGroup.get('regRadio').value == "registrered") {
                 this.onSaveRegistered();
                 this.onClose();
             }
-        
+
         } else {
             Swal.fire("Form Invalid chk....")
         }
@@ -516,7 +531,7 @@ console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup
     OnsaveNewRegister() {
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
-       
+
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
@@ -688,39 +703,6 @@ console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup
         this.dateTimeObj = dateTimeObj;
     }
 
-    // get showNameEditor() {
-    //     return this.editor === 'name';
-    // }
-    // removeImage(url: string) {
-    //     let index = this.images.indexOf(url);
-    //     this.images.splice(index, 1);
-    // }
-
-    // removeDoc(ele: DocData) {
-    //     let index = this.docsArray.indexOf(ele);
-    //     this.docsArray.splice(index, 1);
-    // }
-
-    // onViewImage(ele: any, type: string) {
-
-    //     let fileType;
-    //     if (ele) {
-
-    //         const dialogRef = this.matDialog.open(ImageViewComponent,
-    //             {
-    //                 width: '900px',
-    //                 height: '900px',
-    //                 data: {
-    //                     docData: type == 'img' ? ele : ele.doc,
-    //                     type: type == 'img' ? "image" : ele.type
-    //                 }
-    //             }
-    //         );
-    //         dialogRef.afterClosed().subscribe(result => {
-
-    //         });
-    //     }
-    // }
 
 
 
@@ -891,35 +873,7 @@ console.log("Personal",this.personalFormGroup.valid,"Visit" ,this.VisitFormGroup
         }
     }
 
-    keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
 
-    onChangeDateofBirth(DateOfBirth) {
-
-        console.log(DateOfBirth)
-        if (DateOfBirth) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.registerObj.ageYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-            this.registerObj.ageMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-            this.registerObj.ageDay = Math.abs(todayDate.getDate() - dob.getDate());
-            this.registerObj.dateofBirth = DateOfBirth;
-            this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-        }
-
-    }
-
-    get f() {
-        return this.personalFormGroup.controls;
-    }
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
