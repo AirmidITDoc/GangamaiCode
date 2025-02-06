@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { OperatorComparer } from 'app/core/models/gridRequest';
  
  
 @Component({
@@ -54,7 +55,7 @@ export class NewRequestforlabComponent implements OnInit {
   
   displayedServiceColumns: string[] = [
   'ServiceName',
-    // 'Price'
+    'Action'
    
   ]
 
@@ -96,7 +97,32 @@ export class NewRequestforlabComponent implements OnInit {
   ngOnInit(): void {
     this.searchFormGroup = this.createSearchForm();
     this.myFormGroup = this.createMyForm(); 
+    this.getServiceList();
   }
+  tariffId = "0";
+  groupId = "0";
+  getServiceList() {
+    debugger
+    var param = {
+      sortField: "ServiceId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+                { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
+                { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            ],
+            row: 125
+    }
+    this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
+
+        this.dsLabRequest2.data = Menu.data as LabRequest[];
+        this.dsLabRequest2.sort = this.sort;
+        this.dsLabRequest2.paginator = this.paginator;
+        console.log(this.dsLabRequest2.data)
+    });
+}
 
   createMyForm():FormGroup {
     return this._FormBuilder.group({
@@ -291,10 +317,11 @@ export class NewRequestforlabComponent implements OnInit {
   }
  
   onSaveEntry(row) {
+    debugger
     this.isLoading = 'save';
     this.dstable1.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
-      let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId);
+      let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.serviceId);
       if (duplicateItem && duplicateItem.length == 0) {
         this.addChargList(row);
         return;
@@ -315,11 +342,12 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   addChargList(row) {
+    debugger
     this.chargeslist.push(
       {
-        ServiceId: row.ServiceId,
-        ServiceName: row.ServiceName,
-        Price: row.Price || 0
+        ServiceId: row.serviceId,
+        ServiceName: row.serviceName,
+        Price: row.price || 0
       });
     this.isLoading = '';
     console.log(this.chargeslist);

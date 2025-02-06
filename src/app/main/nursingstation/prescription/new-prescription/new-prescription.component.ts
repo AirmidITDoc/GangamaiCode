@@ -103,7 +103,7 @@ export class NewPrescriptionComponent implements OnInit {
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
  
   autocompletestore: string = "Store";
-  autocompleteward: string = "Ward";
+  autocompleteward: string = "Room";
   autocompleteitem: string = "Item";
 
   constructor(private _FormBuilder: UntypedFormBuilder,
@@ -294,7 +294,9 @@ export class NewPrescriptionComponent implements OnInit {
   // }
 
   selectChangeItem(obj: any) {
+    debugger
     console.log("Item:",obj);
+    this.ItemForm.get('ItemId').setValue(obj); 
     // this.refdocId = obj.value
 }
 
@@ -387,43 +389,20 @@ export class NewPrescriptionComponent implements OnInit {
       });
       return;
     }
-    if(!this.filteredOptionsItem.find(item => item.ItemName ==  this.ItemForm.get('ItemId').value.ItemName)){
-      this.toastr.warning('Please select valid Item Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
     if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
       this.toastr.warning('Please enter a qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    // if ((this.ItemForm.get('DoseId').value == '' || this.ItemForm.get('DoseId').value == null || this.ItemForm.get('DoseId').value == undefined)) {
-    //   this.toastr.warning('Please select Dose', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if(!this.doseList.find(item => item.DoseName ==  this.ItemForm.get('DoseId').value.DoseName)){
-    //   this.toastr.warning('Please select valid Dose Name', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
-    //   this.toastr.warning('Please enter a Day', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
+    const selectedItem = this.ItemForm.get('ItemId').value;
+    const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == selectedItem.value)
     if(!iscekDuplicate){
     this.dsItemList.data = [];
     this.Chargelist.push(
       {
-        ItemID:  this.ItemForm.get('ItemId').value.ItemId || 0,
-        ItemName: this.ItemForm.get('ItemId').value.ItemName || '',
+        ItemID: selectedItem.value || 0,
+            ItemName: selectedItem.text || '',
         // DoseName: this.ItemForm.get('DoseId').value.DoseName || '',
         // DoseId: this.ItemForm.get('DoseId').value.DoseId || '',
         Qty:  this.vQty,

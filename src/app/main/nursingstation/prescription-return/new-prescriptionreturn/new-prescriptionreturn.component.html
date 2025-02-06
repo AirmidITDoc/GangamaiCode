@@ -133,26 +133,28 @@
                                     formControlName="ItemId" [formGroup]="ItemSubform"
                                     [validations]="getValidationMessages().ItemId" 
                                     [mode]="autocompleteitem"
-                                    (selectDdlObject)="selectChangeItem($event)">
+                                    (selectionChange)="selectChangeItem($event)">
                                 </airmid-dropdown>
 
                                 <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                     <mat-label>Batch No</mat-label>
                                     <input matInput placeholder="Placeholder" [(ngModel)]="BatchNo"
-                                        formControlName="BatchNo" readonly>
+                                        formControlName="BatchNo">
+                                        <!-- readonly -->
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="1 1 auto">
                                     <mat-label>Qty</mat-label>
                                     <input matInput  formControlName="Qty" required #qty autocomplete="off"
-                                        [(ngModel)]="Qty" (keydown)="addData()" onlyNumber>
+                                        [(ngModel)]="Qty" (keydown.enter)="addData()" onlyNumber>
                                 </mat-form-field>
+                                
 
+                                <!-- [disabled]="!add" -->
                                 <div class="input-add-button">
                                     <div matTooltip="Select  name to enable this button!!"
                                         [matTooltipDisabled]="!ItemSubform.invalid" [matTooltipPosition]="'above'">
-                                        <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="!add"
-                                            (click)="onAdd()">
+                                        <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
                                             </span>
@@ -171,7 +173,7 @@
                                 <ng-container matColumnDef="ItemId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>ItemId</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
-                                        <span> {{contact.ItemId}}</span>
+                                        <span> {{contact.ItemID}}</span>
                                     </mat-cell>
                                 </ng-container>
 
@@ -194,13 +196,20 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.Qty}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                                <!-- <ng-container matColumnDef="Qty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <mat-form-field appearance="legacy">
                                             <input matInput [(ngModel)]="contact.Qty" type="number"
                                                 (keyup)="getCellCalculation(contact,contact.Qty)"
                                                 (keypress)="keyPressAlphanumeric($event)" readonly>
                                         </mat-form-field>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="buttons" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef class="table-actions">Action

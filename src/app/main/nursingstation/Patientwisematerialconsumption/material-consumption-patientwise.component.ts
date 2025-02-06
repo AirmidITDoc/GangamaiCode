@@ -33,9 +33,19 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     hasSelectedContacts: boolean;
     autocompleteModestore: string = "Store";
 
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+    constructor(public _PatientwiseMaterialConsumptionService: PatientwiseMaterialConsumptionService, public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        public datePipe: DatePipe,) { }
+
+    ngOnInit(): void {
+    }
+
     gridConfig: gridModel = {
         // apiUrl: "Nursing/PatietWiseMatetialList",
-        apiUrl:"Prescription/PatietWiseMatetialList",
+        apiUrl:"IPPrescription/PatietWiseMatetialList",
         columnsList: [
             // { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Con.No", key: "consumptionNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -73,18 +83,14 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2020", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
         row: 25
     }
 
-    constructor(public _PatientwiseMaterialConsumptionService: PatientwiseMaterialConsumptionService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-    ngOnInit(): void {
-    }
 
     onSave(row: any = null) {
         let that = this;
