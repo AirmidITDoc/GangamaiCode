@@ -1,12 +1,7 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar
     dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
+    <!-- <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <!-- <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button> -->
-            <!-- <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 OP Browse List
             </span>
@@ -14,13 +9,11 @@
         <button class="btn btn-primary " color="accent" (click)="getBilllistview()">
             <span>Bill List</span>
         </button>
-    </mat-toolbar>
+    </mat-toolbar> -->
 
 
-    <mat-tab-group>
-
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <mat-tab label="OP Browse Bill List">
-
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
