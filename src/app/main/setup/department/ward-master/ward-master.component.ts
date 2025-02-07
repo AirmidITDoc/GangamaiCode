@@ -16,15 +16,16 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class WardMasterComponent implements OnInit {
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "WardMaster/List",
         columnsList: [
             { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Room Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RoomName", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsAvailable", key: "isAvailable", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -32,7 +33,8 @@ export class WardMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    }, 
+                    {
                         action: gridActions.delete, callback: (data: any) => {
                             this._wardService.deactivateTheStatus(data.roomId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
@@ -50,6 +52,7 @@ export class WardMasterComponent implements OnInit {
         ],
         row: 25
     }
+
     constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 

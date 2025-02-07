@@ -103,8 +103,8 @@ export class NewSubtapComponent implements OnInit {
             ],
             pinNo:[
                 { name: "required", Message: "PinCode is required" },
-                { name: "maxlength", Message: "Pincode must be greater than 3 digits" },
-                { name: "pattern", Message: "Only Digits allowed." }
+                { name: "maxlength", Message: "Pincode must be between 3 to 10 digits" },
+                { name: "pattern", Message: "Min 3, Only Digits allowed." }
             ],
             phoneNo:[
                 { name: "required", Message: "Phone Number is required" },

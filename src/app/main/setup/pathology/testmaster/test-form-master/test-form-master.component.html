@@ -353,12 +353,14 @@
                                                                                 <div fxLayout="row" fxLayoutGap="5px">
 
                                                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                                                        <airmid-dropdown label="TemplateName" 
-                                                                                            formControlName="TemplateName"
+                                                                                        <airmid-textbox 
+                                                                                            label="TemplateName" 
+                                                                                            formControlName="TemplateName" 
+                                                                                            [value]="data?.TemplateName"
                                                                                             [formGroup]="templatedetailsForm"
-                                                                                            [mode]="autocompleteModeTemplate"
-                                                                                            (selectDdlObject)="selectChangeTemplateName($event)">
-                                                                                        </airmid-dropdown>
+                                                                                            [validations]="_TestmasterService.getValidationMessages().TemplateName"
+                                                                                            [maxLength]="50">
+                                                                                        </airmid-textbox>
                                                                                     </div>
 
                                                                                     <button (click)="onAddTemplate()"

@@ -30,8 +30,8 @@ export class ItemGenericMasterComponent implements OnInit {
         apiUrl: "GenericMaster/List",
         columnsList: [
             { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "GenericName", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

@@ -28,8 +28,8 @@ export class DischargetypeMasterComponent implements OnInit {
         apiUrl: "DischargeType/List",
         columnsList: [
             { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Discharge Type Name", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DischargeTypeName", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

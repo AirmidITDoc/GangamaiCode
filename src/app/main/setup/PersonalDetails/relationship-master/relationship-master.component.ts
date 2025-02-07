@@ -23,8 +23,8 @@ export class RelationshipMasterComponent implements OnInit {
         apiUrl: "RelationshipMaster/List",
         columnsList: [
             { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Relationship Name", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RelationshipName", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

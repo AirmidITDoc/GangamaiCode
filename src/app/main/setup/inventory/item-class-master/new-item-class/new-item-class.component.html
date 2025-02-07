@@ -20,7 +20,7 @@
                 <input type="hidden" name="itemClassId" formControlName="itemClassId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <airmid-textbox 
-                            label="Item Class Name"
+                            label="ItemClassName"
                             formControlName="itemClassName"
                             [value]="data?.itemClassName"
                             [formGroup]="classForm"
@@ -32,9 +32,7 @@
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
  
                     <div>
-                       
                         <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="classForm" [(ngModel)]="isActive" ></app-airmid-slider>
-
                     </div>
          
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">

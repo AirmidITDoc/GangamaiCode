@@ -65,7 +65,7 @@ export class ParametermasterComponent implements OnInit {
         sortField: "UnitId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ParameterName", fieldValue: "Serum Uric Acid", opType: OperatorComparer.Contains },
+            { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],

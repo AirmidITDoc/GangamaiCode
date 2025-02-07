@@ -4,6 +4,7 @@ import { CompanyMasterService } from "../company-master.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
+import { CompanyMaster } from "../company-master.component";
 
 @Component({
     selector: "app-company-master-list",
@@ -20,7 +21,7 @@ export class CompanyMasterListComponent implements OnInit {
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
     autocompleteModecity: string = "City";
-
+    registerObj = new CompanyMaster({});
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public dialogRef: MatDialogRef<CompanyMasterListComponent>,
@@ -29,11 +30,21 @@ export class CompanyMasterListComponent implements OnInit {
     ) { }
    
     ngOnInit(): void {
+        debugger
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-        console.log(this.data)
-        if((this.data?.companyId??0) > 0)
-           this.companyForm.patchValue(this.data);
-        
+        // console.log(this.data)
+        // if((this.data?.companyId??0) > 0){
+        //    this.companyForm.patchValue(this.data);
+        // }
+        if ((this.data?.companyId?? 0) > 0) {
+            setTimeout(() => {
+                this._CompanyMasterService.getCompanyById(this.data.companyId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+                    this.companyForm.get("companyId").setValue(this.registerObj.companyId)
+                   });
+            }, 500);
+        }
     }
     
     onSubmit() {  

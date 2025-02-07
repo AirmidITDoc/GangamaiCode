@@ -87,3 +87,55 @@ export class CompanyMasterComponent implements OnInit {
         });
     }
 }
+
+
+
+export class CompanyMaster {
+    
+    companyId: number;
+    compTypeId: number;
+    companyName: string;
+    address: string;
+    city: String;
+    pinNo: String;
+    phoneNo: String;
+    mobileNo: String;
+    faxNo: String;
+    tariffId: number;
+    isDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    IsCancelled: boolean;
+    IsCancelledBy: number;
+    IsCancelledDate: Date;
+    // companyId: number;
+    // AddedByName: string;
+    /**
+   * Constructor
+   *
+export class CompanyMaster {
+   * @param export class CompanyMaster {
+
+   */
+    constructor(CompanyMaster) {
+        {
+            this.companyId = CompanyMaster.CompanyId || "";
+            this.compTypeId = CompanyMaster.CompTypeId || "";
+            this.companyName = CompanyMaster.CompanyName || "";
+            this.address = CompanyMaster.Address || "";
+            this.city = CompanyMaster.City || "";
+            this.pinNo = CompanyMaster.PinNo || "";
+            this.phoneNo = CompanyMaster.PhoneNo || "";
+            this.mobileNo = CompanyMaster.MobileNo || "";
+            this.faxNo = CompanyMaster.FaxNo || "";
+            this.tariffId = CompanyMaster.TariffId || "";
+            this.AddedBy = CompanyMaster.AddedBy || "";
+            this.isDeleted = CompanyMaster.IsDeleted || "false";
+            this.UpdatedBy = CompanyMaster.UpdatedBy || "";
+            this.IsCancelled = CompanyMaster.IsCancelled || "false";
+            this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
+            this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
+            // this.AddedByName = CompanyMaster.AddedByName || "";
+        }
+    }
+}

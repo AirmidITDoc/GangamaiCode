@@ -26,8 +26,8 @@ export class ItemClassMasterComponent implements OnInit {
         apiUrl: "ItemClassMaster/List",
         columnsList: [
             { heading: "Code", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Item Class Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ItemClassName", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

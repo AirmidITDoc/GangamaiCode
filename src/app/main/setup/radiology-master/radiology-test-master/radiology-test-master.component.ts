@@ -9,6 +9,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { values } from 'lodash';
 
 
 @Component({
@@ -46,8 +47,16 @@ export class RadiologyTestMasterComponent implements OnInit {
         sortField: "testId",
         sortOrder: 0,
         filters: [
-            { fieldName: "TestName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "CategoryId", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "%", opType: OperatorComparer.Equals },
         ],
         row:25
     }
