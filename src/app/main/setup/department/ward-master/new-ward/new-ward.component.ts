@@ -15,6 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
     isActive:boolean=true;
+    isAvailable: boolean=true;
 
     constructor( public _WardMasterService: WardMasterService,
     public dialogRef: MatDialogRef<NewWardComponent>,
@@ -29,13 +30,15 @@ export class NewWardComponent implements OnInit {
     classId = 0;
     roomType = 0;
 
-    
+    debugger
     ngOnInit(): void {
         this.roomForm = this._WardMasterService.createWardForm();
-        debugger
         if((this.data?.roomId??0) > 0)
-          this.roomForm.patchValue(this.data);
-        
+        {
+            this.isActive=this.data.isActive
+            this.isAvailable=this.data.isAvailable
+            this.roomForm.patchValue(this.data);
+        }
     }
 
     onSubmit() {

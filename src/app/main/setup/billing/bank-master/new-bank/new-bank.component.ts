@@ -17,7 +17,7 @@ export class NewBankComponent implements OnInit {
   
   bankForm: FormGroup;
   isActive:boolean=true;
-
+  bankName:any;
   constructor(
     public _BankMasterService: BankMasterService,
     public dialogRef: MatDialogRef<NewBankComponent>,
@@ -25,12 +25,18 @@ export class NewBankComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
+  
     ngOnInit(): void {
+        debugger
     this.bankForm=this._BankMasterService.createBankForm();
+   
         if((this.data?.bankId??0) > 0)
         {
+            this.bankName=this.data?.bankName.trim();
             this.isActive=this.data.isActive
-            this.bankForm.patchValue(this.data);
+
+            // this.bankForm.patchValue(this.data);
+            
         }
     }
 

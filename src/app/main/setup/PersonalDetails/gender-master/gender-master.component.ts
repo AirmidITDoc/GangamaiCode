@@ -45,7 +45,7 @@ export class GenderMasterComponent implements OnInit {
         sortField: "genderId",
         sortOrder: 0,
         filters: [
-            { fieldName: "genderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "GenderName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25

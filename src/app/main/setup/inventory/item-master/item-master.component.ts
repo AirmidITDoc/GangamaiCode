@@ -26,7 +26,7 @@ export class ItemMasterComponent implements OnInit {
         apiUrl: "ItemMaster/ItemMasterList",
         columnsList: [
             { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Hsn code", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Hsncode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
             { heading: "TypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' , width: 200},

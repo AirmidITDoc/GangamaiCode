@@ -19,16 +19,16 @@
         <form [formGroup]="bankForm">
             <div class="modal-body-container">
                 <input type="hidden" name="bankId" formControlName="bankId">
-                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <airmid-textbox 
-                            label="Bank Name"
+                            label="BankName"
                             formControlName="bankName"
-                            [value]="data?.bankName"
+                            [value]="bankName"
                             [formGroup]="bankForm"
                             [validations]="getValidationMessages().bankName"
                             [maxLength]="50">
                         </airmid-textbox> 
-                </div>
+                    </div>
             </div>
 
           

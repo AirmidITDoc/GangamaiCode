@@ -21,9 +21,9 @@
             <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                        label="Company Name" 
+                        label="CompanyName" 
                         formControlName="companyName" 
-                        [value]="data?.companyName" 
+                        [value]="registerObj?.companyName" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().companyName" 
                         [maxLength]="50">
@@ -31,9 +31,9 @@
                 </div>
                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-dropdown 
-                        label="Company Type Name" 
+                        label="CompanyTypeName" 
                         formControlName="compTypeId" 
-                        [value]="data?.compTypeId" 
+                        [value]="registerObj?.compTypeId" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().compTypeId" 
                         [mode]="autocompleteModetypeName">
@@ -46,41 +46,40 @@
                     <airmid-textbox 
                         label="Address" 
                         formControlName="address" 
-                        [value]="data?.address" 
+                        [value]="registerObj?.address" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().address" 
                         [maxLength]="100">
                     </airmid-textbox>       
                 </div>
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="Pin Code" 
-                        formControlName="pinNo" 
-                        [value]="data?.pinNo" 
-                        [formGroup]="companyForm"
-                        [validations]="getValidationMessages().pinNo" 
-                        [maxLength]="10">
-                    </airmid-textbox> 
-                </div>
                 <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-dropdown 
                         label="City" 
                         formControlName="city" 
-                        [value]="data?.city" 
+                        [value]="registerObj?.city" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().city" 
                         [mode]="autocompleteModecity">
                     </airmid-dropdown> 
                 </div>
-                
+                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox 
+                        label="PinCode" 
+                        formControlName="pinNo" 
+                        [value]="registerObj?.pinNo" 
+                        [formGroup]="companyForm"
+                        [validations]="getValidationMessages().pinNo" 
+                        [maxLength]="10">
+                    </airmid-textbox> 
+                </div>
             </div>
 
             <div fxLayout="row wrap" fxLayoutGap="12px grid">
                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                        label="Phone Number" 
+                        label="PhoneNumber" 
                         formControlName="phoneNo" 
-                        [value]="data?.phoneNo" 
+                        [value]="registerObj?.phoneNo" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().phoneNo" 
                         [maxLength]="10">
@@ -88,9 +87,9 @@
                 </div>
                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-textbox 
-                        label="Mobile Number" 
+                        label="MobileNumber" 
                         formControlName="mobileNo" 
-                        [value]="data?.mobileNo" 
+                        [value]="registerObj?.mobileNo" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().mobileNo" 
                         [maxLength]="10">
@@ -98,9 +97,9 @@
                 </div>
                 <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <airmid-dropdown 
-                        label="Tariff Id" 
+                        label="TariffId" 
                         formControlName="traiffId" 
-                        [value]="data?.traiffId" 
+                        [value]="registerObj?.tariffId" 
                         [formGroup]="companyForm"
                         [validations]="getValidationMessages().traiffId" 
                         [mode]="autocompleteModetariff">

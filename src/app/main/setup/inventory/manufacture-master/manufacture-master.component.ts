@@ -36,7 +36,7 @@ export class ManufactureMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._ManufactureMasterService.deactivateTheStatus(data.itemManufactureId).subscribe((response: any) => {
+                            this._ManufactureMasterService.deactivateTheStatus(data.manufId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });

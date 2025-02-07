@@ -26,8 +26,8 @@ export class PrefixMasterComponent implements OnInit {
         apiUrl: "Prefix/List",
         columnsList: [
             { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
-            { heading: "Prefix Name", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PrefixName", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

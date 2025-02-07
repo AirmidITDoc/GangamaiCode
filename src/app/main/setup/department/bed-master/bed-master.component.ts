@@ -22,8 +22,8 @@ export class BedMasterComponent implements OnInit {
         apiUrl: "BedMaster/List",
         columnsList: [
             { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Room Id", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "RoomId", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsAvailible", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {

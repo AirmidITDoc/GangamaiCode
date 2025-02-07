@@ -6,6 +6,7 @@ import { ApiCaller } from "app/core/services/apiCaller";
     providedIn: "root",
 })
 export class CompanyMasterService {
+  
     companyForm: FormGroup;
     myformSearch: FormGroup;
     constructor(
@@ -21,50 +22,50 @@ export class CompanyMasterService {
             companyId: [0],
             companyName: ["",
                 [
-                    // Validators.required, 
-                    // Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required, 
+                    Validators.maxLength(50),
+                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             compTypeId: ["",
-                // Validators.required
+                Validators.required
             ],
             address: ["",
-                //  Validators.required,
-                //  Validators.maxLength(100),
-                //  Validators.pattern("^[a-zA-Z0-9\s,.'-]+$")
+                 Validators.required,
+                 Validators.maxLength(100),
+                 Validators.pattern("^[a-zA-Z0-9\s,.'-]+$")
             ],
             city: ["",
                 [
-                    // Validators.required
+                    Validators.required
                 ],
             ],
             pinNo: ["", 
                 [
-                    // Validators.required,
-                    // Validators.required,Validators.maxLength(10),
-                    // Validators.pattern("^[0-9\s\-]{3,10}$")
+                    Validators.required,
+                    Validators.required,Validators.maxLength(10),
+                    Validators.pattern("^[0-9\s\-]{3,10}$")
                 ]
             ],
             phoneNo: ["",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    // Validators.maxLength(10),
+                    Validators.required,
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.maxLength(10),
                 ],
             ],
             mobileNo: [
                 "",
                 [
-                    // Validators.required,
-                    // Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    // Validators.maxLength(10),
+                    Validators.required,
+                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+                    Validators.maxLength(10),
                 ],
             ],
             faxNo: ["0"],
             traiffId: ["",
                 [
-                    // Validators.required
+                    Validators.required
                 ]
             ],
             isActive:[true,[Validators.required]]
@@ -90,5 +91,9 @@ export class CompanyMasterService {
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("CompanyMaster?Id=" + m_data.toString());
+    }
+
+    getCompanyById(companyId: any) {
+        return this._httpClient.GetData("Company/" + companyId);
     }
 }

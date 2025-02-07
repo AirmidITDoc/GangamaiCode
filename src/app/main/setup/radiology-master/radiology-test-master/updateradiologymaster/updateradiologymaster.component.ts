@@ -22,8 +22,10 @@ export class UpdateradiologymasterComponent implements OnInit {
     
     isActive:boolean=true;
 
-    autocompleteModeService:string="ServiceName";
-    autocompleteModeCategory:string="CategoryName";
+    autocompleteModeService:string="Service";
+    
+    autocompleteModeCategory:string="ItemCategory";
+
     autocompleteModeTemplate:string="TemplateName";
 
     vTestName: any;
@@ -83,7 +85,18 @@ export class UpdateradiologymasterComponent implements OnInit {
             console.log(this.registerObj)    
         }
     }
- 
+    
+    itemId=0;
+    selectChangeCategory(obj: any){
+        console.log(obj);
+        this.itemId=obj
+    }
+    
+    service=0;
+    selectChangeservice(obj: any){
+        console.log(obj);
+        this.service=obj
+    }
 
     private _filterTemplate(value: any): string[] {
         if (value) {
@@ -134,11 +147,11 @@ export class UpdateradiologymasterComponent implements OnInit {
         debugger
         this.ChargeList.push(
         {
-            TemplateName: this.AddParameterFrom.get('templateName').value,
-            TemplateId:this.AddParameterFrom.get('testId').value,
+            TemplateName: this.testForm.get('templateName').value,
+            TemplateId:this.testForm.get('testId').value,
         });
         this.DSTestList.data = this.ChargeList
-        this.AddParameterFrom.get('templateName').reset();
+        this.testForm.get('templateName').reset();
     }
  
     gettemplateMasterServicewise(el){

@@ -24,8 +24,8 @@ export class CurrencyMasterComponent implements OnInit {
         apiUrl: "CurrencyMaster/List",
         columnsList: [
             { heading: "Code", key: "currencyId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Currency Name", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CurrencyName", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

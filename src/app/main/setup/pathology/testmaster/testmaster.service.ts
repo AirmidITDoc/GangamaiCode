@@ -203,7 +203,7 @@ export class TestmasterService {
     }
     
     public getTemplateListfor(param) {
-        return this._httpClient.PostData("PathologyTemplate/List",param);
+        return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
     }
 
     public getParameterMasterCombo(emp,loader = true){

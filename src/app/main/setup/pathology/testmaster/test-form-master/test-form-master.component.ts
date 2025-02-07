@@ -44,9 +44,9 @@ export class TestFormMasterComponent implements OnInit {
     displayedColumns4: string[] = ['ParameterName'];
     displayedColumns5: string[] = ['TemplateName', 'Action'];
 
-    autocompleteModeCategoryId:string="CategoryName";
+    autocompleteModeCategoryId:string="ItemCategory";
     autocompleteModeServiceID:string="ServiceName";    
-    autocompleteModeTemplate:string="TemplateName";
+    autocompleteModeTemplate:string="Template";
 
     selectedItems: any;
     registerObj: any;
@@ -208,11 +208,35 @@ isActive: any;
 
     fetchTestlist() {
 
-        var m_data = {
-            "TestId": this.TestId
-        }
+        var m_data = 
+        {
+            "first": 0,
+            "rows": 10,
+            "sortField": "TestId",
+            "sortOrder": 0,
+            "filters": [
+              {
+                "fieldName": "TestId",
+                "fieldValue": "12",
+                "opType": "Equals"
+              },
+              {
+                "fieldName": "Start",
+                "fieldValue": "0",
+                "opType": "Equals"
+              },
+              {
+                "fieldName": "Length",
+                "fieldValue": "10",
+                "opType": "Equals"
+              }
+            ],
+            "exportType": "JSON"
+          }
+          
         this._TestmasterService.getTestListfor(m_data).subscribe(Visit => {
           this.DSTestList.data = Visit as TestList[];
+          console.log( this.DSTestList.data)
           this.dsTemparoryList.data = Visit as TestList[];
         });
        
@@ -297,6 +321,7 @@ isActive: any;
           "first": 0,
           "rows": 25,
           sortField: "UnitId",
+          sortField: "UnitId",
           sortOrder: 0,
           filters: [
               { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains },
@@ -306,6 +331,8 @@ isActive: any;
           ],
           "exportType": "JSON"
         }
+
+        console.log(param);
         this._TestmasterService.getParameterMasterList(param).subscribe(data => {
         
           this.DSTestList.data = data.data as TestList[];;

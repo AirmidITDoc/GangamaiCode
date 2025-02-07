@@ -24,8 +24,8 @@ export class UomMasterComponent implements OnInit {
         apiUrl: "UnitOfMeasurement/List",
         columnsList: [
             { heading: "Code", key: "unitofMeasurementId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Unit Name", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UnitOfMeasurementName", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

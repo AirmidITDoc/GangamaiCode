@@ -17,7 +17,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Category Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Test Master</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -63,6 +63,7 @@
                                                         [value]="data?.categoryId"
                                                         [formGroup]="testForm"
                                                         [validations]="getValidationMessages().categoryId"
+                                                        (selectDdlObject)="selectChangeCategory($event)"
                                                         [mode]="autocompleteModeCategory">
                                                     </airmid-dropdown>
                                                 </div>
@@ -85,6 +86,7 @@
                                                         [value]="data?.serviceId"
                                                         [formGroup]="testForm"
                                                         [validations]="getValidationMessages().serviceId"
+                                                        (selectDdlObject)="selectChangeservice($event)"
                                                         [mode]="autocompleteModeService">
                                                     </airmid-dropdown>
                                                 </div>
