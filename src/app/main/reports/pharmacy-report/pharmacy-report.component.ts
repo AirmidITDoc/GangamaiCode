@@ -641,7 +641,276 @@ var data={
     }
   }
 
+  dsExcelExportData = new MatTableDataSource<IndentList>()
+  ExcelData:any=[];
+  getExcelData(){
+    let DoctorID = 0;
+    if (this._PharmacyreportService.userForm.get('DoctorID').value)
+      DoctorID = this._PharmacyreportService.userForm.get('DoctorID').value.DoctorId
 
+    let StoreId=0;
+    if (this._PharmacyreportService.userForm.get('StoreId').value)
+      StoreId = this._PharmacyreportService.userForm.get('StoreId').value.StoreId
+
+    let AddUserId = 0;
+    if (this._PharmacyreportService.userForm.get('UserId').value)
+      AddUserId = this._PharmacyreportService.userForm.get('UserId').value.UserId
+ 
+    let ItemId=0;
+    if (this._PharmacyreportService.userForm.get('ItemId').value)
+      ItemId = this._PharmacyreportService.userForm.get('ItemId').value.ItemID 
+  
+    let RegNo=0;
+    if (this._PharmacyreportService.userForm.get('RegNo').value)
+      RegNo = this._PharmacyreportService.userForm.get('RegNo').value
+    
+    let DrugTypeId=0;
+     if (this._PharmacyreportService.userForm.get('DrugTypeId').value)
+        DrugTypeId = this._PharmacyreportService.userForm.get('DrugTypeId').value.ItemDrugTypeId
+
+
+ 
+    if (this.ReportName == 'Pharmacy Daily Collection') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId,
+        'AddedById':AddUserId
+      }               
+      this._PharmacyreportService.getSalesDailyCollectionlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });                  
+    } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId ,
+        'AddedById':AddUserId
+      }                  
+      this._PharmacyreportService.getSalesDailyCollectionSummarylist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });  
+    } else if (this.ReportName == 'Sales Summary Report') {
+      this.viewgetsalesSummaryReportPdf();
+    } else if (this.ReportName == 'Sales Patient Wise Report') {
+      this.viewgetSalesPatientWiseReportPdf();
+    // } 
+    // else if (this.ReportName == 'Sales Return Summary Report') {
+    //   this.viewgetSalesReturnReportPdf();
+    } else if (this.ReportName == 'Sales Return Summary Report') {
+      this.viewgetSalesReturnsummaryReportPdf();
+    } else if (this.ReportName == 'Sales Return PatientWise Report') {
+      this.viewgetSalesReturnPatientwiseReportPdf();
+    } else if (this.ReportName == 'Sales Credit Report') { 
+      this.viewgetSalesCreditReportPdf(); 
+    } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId ,
+        'AddedById':AddUserId
+      }                  
+      this._PharmacyreportService.getSalesDailyColleSummryUserwiselist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      }); 
+      this.viewgetPharCollsummDayuserwiseReportPdf();
+    }
+    else if (this.ReportName == 'Sales Cash Book Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId ,
+        'PaymentMode':this.PaymentMode
+      }                  
+      this._PharmacyreportService.getSalesCashBooklist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });  
+    }
+    else if (this.ReportName == 'Sales SCHEDULEH1 Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId,
+        'DrugTypeId':DrugTypeId, 
+      }               
+      this._PharmacyreportService.getScheduleH1SalesSummryReportlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      }); 
+    }
+    else if (this.ReportName == 'SCHEDULEH1 SalesSummary Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId,
+        'DrugTypeId':DrugTypeId, 
+      }               
+      this._PharmacyreportService.getScheduleH1SalesSummryReportlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });   
+    }
+    else if (this.ReportName == 'SalesH1 DrugCount Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId 
+      }               
+      this._PharmacyreportService.getSalesH1DrugCountlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      }); 
+    }
+    else if (this.ReportName == 'ItemWise DailySales Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId,
+        'ItemId':ItemId,
+        'RegNo':RegNo
+      }               
+      this._PharmacyreportService.getItemWiseDailyReportlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });  
+    }
+    else if (this.ReportName == 'WardWise HighRisk Drug Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId
+      }               
+      this._PharmacyreportService.getWardWiseHighRiskDrugReportlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });  
+    }
+    else if (this.ReportName == 'Purchase Re-Order List Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreID': StoreId
+      }               
+      this._PharmacyreportService.getPurchaseOrderlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });   
+    }
+    else if (this.ReportName == 'Pharmacy BillSummary Report') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
+        'StoreId': StoreId
+      }               
+      this._PharmacyreportService.getPharmacybillsummryReportlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });  
+    } 
+    else if (this.ReportName == 'Dr Wise Sales Report') {
+      let vdata = {
+        'DoctorId': DoctorID,
+        'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        'OP_IP_Type': this._PharmacyreportService.userForm.get("OPIPType").value,
+        'StoreId': StoreId
+      }               
+      this._PharmacyreportService.getDoctorWiseSalesReportlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IndentList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });   
+    } 
+  
+ 
+  }
+  exportIPBillReportExcel(){
+    if (this.ReportName == 'Pharmacy Daily Collection') {
+      this.viewparmacyDailyCollectionPdf();
+    } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
+      this.viewDailyCollectionSummaryPdf();
+    } else if (this.ReportName == 'Sales Summary Report') {
+      this.viewgetsalesSummaryReportPdf();
+    } else if (this.ReportName == 'Sales Patient Wise Report') {
+      this.viewgetSalesPatientWiseReportPdf();
+    // } else if (this.ReportName == 'Sales Return Summary Report') {
+    //   this.viewgetSalesReturnReportPdf();
+    } else if (this.ReportName == 'Sales Return Summary Report') {
+      this.viewgetSalesReturnsummaryReportPdf();
+    } else if (this.ReportName == 'Sales Return PatientWise Report') {
+      this.viewgetSalesReturnPatientwiseReportPdf();
+    } else if (this.ReportName == 'Sales Credit Report') {
+      this.viewgetSalesCreditReportPdf();
+    } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
+      this.viewgetPharCollsummDayuserwiseReportPdf();
+    }
+    else if (this.ReportName == 'Sales Cash Book Report') {
+      this.viewgetSalesCashBookReportPdf();
+    }
+    else if (this.ReportName == 'Sales SCHEDULEH1 Report') {
+      this.viewgetSCHEDULEH1ReportPdf();
+    }
+    else if (this.ReportName == 'SCHEDULEH1 SalesSummary Report') {
+      this.viewgetSCHEDULEH1SalesSummaryReportPdf();
+    }
+    else if (this.ReportName == 'SalesH1 DrugCount Report') {
+      this.viewgetSalesH1DrugCountReportPdf();
+    }
+    else if (this.ReportName == 'ItemWise DailySales Report') {
+      this.viewgetItemWiseDailySalesReportPdf();
+    }
+    else if (this.ReportName == 'WardWise HighRisk Drug Report') {
+      this.viewgetHighRiskDrugReportPdf();
+    }
+    else if (this.ReportName == 'Purchase Re-Order List Report') {
+      this.viewgetPurchaseReOrderListReportPdf();
+    }
+    else if (this.ReportName == 'Pharmacy BillSummary Report') {
+      this.viewgetPharmacyBillSummaryReportPdf();
+    } 
+    else if (this.ReportName == 'Dr Wise Sales Report') {
+      this.viewgetDrwisesalesReportPdf();
+    } 
+  }
   viewparmacyDailyCollectionPdf() {
     debugger
     let AddUserId = 0;

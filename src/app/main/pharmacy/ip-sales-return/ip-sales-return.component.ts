@@ -105,10 +105,8 @@ export class IpSalesReturnComponent implements OnInit {
   ];
   displayeditemColumns = [ 
     'ItemName',
-    'BatchNo',
-    'ExpDate',
-    'Qty', 
-    'Action'
+    'BatchNo', 
+    'Qty'  
   ];
  
 
@@ -171,7 +169,8 @@ export class IpSalesReturnComponent implements OnInit {
    this.vBedName = obj.BedName
    this.vGenderName = obj.GenderName
    this.vAge = obj.Age 
-   this.itemname.nativeElement.focus();
+   this.itemname.nativeElement.focus(); 
+   this.getIpPrescriptinRetrunlist();
   }
   filteredOptionsItem:any;
 OnRadioChange(){
@@ -607,7 +606,16 @@ keyPressAlphanumeric(event) {
       this.isLoading123=false;
     }, 2000);
   }
-
+getIpPrescriptinRetrunlist(){
+  var vdata={
+    "PresReId":this.vAdmissionID
+  }
+  console.log(vdata)
+  this._IpSalesRetService.getIpPrescriptinRetrunlist(vdata).subscribe(data=>{
+    this.dsIpRetrunItemList.data = data as IPSalesItemList[]
+    console.log(this.dsIpRetrunItemList.data)
+  })
+}
 
   ViewSalesRetPdf(SalesReturnId) {
     

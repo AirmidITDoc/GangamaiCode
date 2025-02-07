@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class IpSalesReturnService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+        private _loaderService: LoaderService,
   ) { 
     this.userFormGroup = this.CreateusefromGroup();
     this.IPFinalform= this.CreateaIpFinalform();
@@ -82,5 +84,10 @@ export class IpSalesReturnService {
   public getSalesReturnPdf(SalesId,OP_IP_Type) {
     return this._httpClient.get("Pharmacy/view-SalesTaxReturn_Report?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
     }
-  
+    public getIpPrescriptinRetrunlist(param,loader = true){
+      if(loader){
+        this._loaderService.show()
+      }
+      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescReturnItemDetOnSalesReturn",param);
+    }
 }

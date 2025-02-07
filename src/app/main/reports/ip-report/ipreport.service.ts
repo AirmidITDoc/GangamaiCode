@@ -404,12 +404,6 @@ public getBrowseIPDBillsummaryList(data,loader = true){
   return this._httpClient.post("Generic/GetByProc?procName=rptIPDBillDateWise",data)
 
 }
-public getDischargetypewiseData(data,loader = true){
-  if (loader) {
-    this._loaderService.show();
-} 
-  return this._httpClient.post("Generic/GetByProc?procName=rptDischargeTypeReport",data) 
-}
 
 
 public getRefundofbillview(FromDate,ToDate,loader = true){
@@ -492,5 +486,138 @@ public getConDoctorSharesReportView(FromDate,ToDate,DoctorId,OPD_IPD_Type,loader
 
   getPatientVisitedListSearch(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
+  }
+  getAdmitedPatietnlist(employee, loader = true) { 
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=rptListofAdmission",employee)
+  }
+  getIPDCurrentAdmitList(employee, loader = true) { 
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=rptCurrentAdmittedListReport",employee)
+  }
+  getIPDCurrentAdmitWardWiseList(employee, loader = true) { 
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=rptCurrentAdmittedListReportwithCharges",employee)
+  }
+  getIPDDepartmentWiseList(loader = true) { 
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPDepartWsSumry",{})
+  }
+  getIPDCurrentRefAdmitList(employee, loader = true) { 
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=RptCurrentRefAdmittedReport",employee)
+  }
+  getIPDDoctorWiseList(loader = true) { 
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPDocWsSumry",{})
+  }
+  public getDischargetypewiseData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDischargeTypeReport",data) 
+  }
+  public getDischargetypeCompanywiseData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDischargeTypeReport",data) 
+  }
+  public getRefDoctorwiseData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=RptRefDoctorWiseAdmission",data) 
+  }
+  public getDischargeDetailsData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDischargeTypeDetailsReport",data) 
+  }
+  public getDischargeMarkStatusData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDischargeMarkStatusReport",data) 
+  }
+  public getDischargebillSummryData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptDischargewithBillSummaryReport",data) 
+  }
+  public getOPtoIPCOnvertlistwithServiceData(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptOPtoIPCotAdmList",data) 
+  }
+  public getIPDailyCollectionRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDailyCollectionReport",data) 
+  }
+  public getIPAdvaceRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDAdvance",data) 
+  }
+  public getIPBillRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDBillDateWise",data) 
+  }
+  public getIPBillDetailsRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDBillDetails",data) 
+  }
+  public getIPCreditbillRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDCreditBills",data) 
+  }
+  public getIPRefOfAdvRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDRefundOfAdvance",data) 
+  }
+  public getIPRefOfBillRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDRefundOfBill",data) 
+  }
+  
+  public getIPbillgenerationpendingRpt(loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=IPPatientDischargeBillGenerationPending",{}) 
+  }
+  public getIPBillGenerationpayDueRpt(data,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=rptBillGeneratePatientPaymentDue",data) 
   }
 }

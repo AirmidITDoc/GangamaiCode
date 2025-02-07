@@ -2401,8 +2401,9 @@ export class IpReportComponent implements OnInit {
         });
      
   } 
-  dsDischargeTypeData = new MatTableDataSource<IpBillBrowseList>()
-  getIpDischargeType(){
+  dsExcelExportData = new MatTableDataSource<IpBillBrowseList>()
+  ExcelData:any=[];
+  getExcelData(){
     let DoctorId = 0
     if (this._IPReportService.userForm.get('DoctorId').value)
       DoctorId = this._IPReportService.userForm.get('DoctorId').value.DoctorId || 0;
@@ -2410,44 +2411,562 @@ export class IpReportComponent implements OnInit {
     let DischargeTypeId = 0
     if (this._IPReportService.userForm.get('DischargeTypeId').value)
       DischargeTypeId = this._IPReportService.userForm.get('DischargeTypeId').value.DischargeTypeId || 0;
+ 
+    let WardId = 0
+    if (this._IPReportService.userForm.get('RoomId').value)
+      WardId = this._IPReportService.userForm.get('RoomId').value.RoomId || 0;
+ 
+    let CompanyId = 0;
+    if (this._IPReportService.userForm.get('CompanyId').value)
+      CompanyId = this._IPReportService.userForm.get('CompanyId').value.CompanyId 
+    
+    let AddUserId = 0;
+    if (this._IPReportService.userForm.get('UserId').value)
+      AddUserId = this._IPReportService.userForm.get('UserId').value.UserId
 
-    var vdata = {
-      'DoctorId': DoctorId,
-      'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
-      'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
-      'DischargeTypeId': DischargeTypeId
+
+//IP Reports
+    if (this.ReportName == 'Admitted Patient List') {
+      var vdata = {
+        'DoctorId': DoctorId,
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        'WardId': WardId
+      }               
+      this._IPReportService.getAdmitedPatietnlist(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
     }
-    this._IPReportService.getDischargetypewiseData(vdata).subscribe(res => {
-      this.dsDischargeTypeData.data = res as IpBillBrowseList[]
-      console.log(this.dsDischargeTypeData.data)
-      if(this.dsDischargeTypeData.data.length>0){
-        this.exportIPBillReportExcel();
-      }
-    });
+ else if (this.ReportName == 'IPD Admission List Company Wise Details') {
+  let vdata = {
+    'DoctorId': DoctorId,
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+    'WardId': WardId
+  }               
+  this._IPReportService.getAdmitedPatietnlist(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  }); 
+    } else if (this.ReportName == 'IPD Admission List Company Wise Summary') {
+      this.viewgetAdmlistcompanywisesummaryReportPdf();
+
+    }
+    else if (this.ReportName == 'IPD Current Admitted List') {
+      let vdata = {
+        'DoctorId': DoctorId, 
+        'CompanyId':CompanyId,
+        'WardId': WardId
+      }               
+      this._IPReportService.getIPDCurrentAdmitList(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });  
+    }
+    else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
+      let vdata = {
+        'DoctorId': DoctorId, 
+        'CompanyId':CompanyId,
+        'WardId': WardId
+      }               
+      this._IPReportService.getIPDCurrentAdmitWardWiseList(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    } else if (this.ReportName == 'Department Wise Count Summary') { 
+      this._IPReportService.getIPDDepartmentWiseList().subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.dsExcelExportData.data.forEach(element=>{
+            this.ExcelData.push(
+              {
+                DepartmentName:element.DepartmentName,
+                Count:element.Lbl
+              }
+            ) 
+          })
+          this.dsExcelExportData.data = this.ExcelData
+          this.exportIPBillReportExcel()
+        }  
+ 
+      }); 
+    }
+    else if (this.ReportName == 'Doctor Wise Count Summary') {
+      this._IPReportService.getIPDDoctorWiseList().subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.dsExcelExportData.data.forEach(element=>{
+            this.ExcelData.push(
+              {
+                DocName:element.DocName,
+                Count:element.Lbl
+              }
+            ) 
+          })
+          this.dsExcelExportData.data = this.ExcelData
+          this.exportIPBillReportExcel()
+        }  
+      }); 
+    }
+ else if (this.ReportName == 'IPD Current Ref Admitted List') {
+  let vdata = {
+    'DoctorId': DoctorId 
+  }               
+  this._IPReportService.getIPDCurrentRefAdmitList(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+    }
+    else if (this.ReportName == 'IPD Discharge Type Wise') {
+      let vdata = {
+        'DoctorId': DoctorId,
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        'DischargeTypeId':DischargeTypeId                     
+      }               
+      this._IPReportService.getDischargetypewiseData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise') {
+      let vdata = {
+        'DoctorId': DoctorId,
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        'DischargeTypeId':DischargeTypeId                     
+      }               
+      this._IPReportService.getDischargetypeCompanywiseData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise Count') {
+      let vdata = {
+        'DoctorId': DoctorId,
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        'DischargeTypeId':DischargeTypeId                     
+      }               
+      this._IPReportService.getDischargetypeCompanywiseData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'IPD RefDoctor Wise') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+      }               
+      this._IPReportService.getRefDoctorwiseData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'IPD Discharge Detail') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900",
+        'DischargeTypeId':DischargeTypeId                     
+      }               
+      this._IPReportService.getDischargeDetailsData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Mark Status') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+      }               
+      this._IPReportService.getDischargeMarkStatusData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Bill Summary') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+      }               
+      this._IPReportService.getDischargebillSummryData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+    else if (this.ReportName == 'OP to IP Converted List With Service availed') {
+      let vdata = { 
+        'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+        'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+      }               
+      this._IPReportService.getOPtoIPCOnvertlistwithServiceData(vdata).subscribe(res => {
+        this.dsExcelExportData.data = res as IpBillBrowseList[]
+        console.log(this.dsExcelExportData.data)
+        if(this.dsExcelExportData.data.length>0){
+          this.exportIPBillReportExcel();
+        }
+      });
+    }
+
+
+    
+ if (this.ReportName == 'IP Daily Collection Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
+     'AddedById':AddUserId
+  }               
+  this._IPReportService.getIPDailyCollectionRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  }); 
+} 
+else if (this.ReportName == 'OP IP Bill Summary') {
+  this.viewgetBillSummaryReportPdf();
+}
+
+else if (this.ReportName == 'Advance Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+  }               
+  this._IPReportService.getIPAdvaceRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+}
+else if (this.ReportName == 'IP Bill Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" ,
+     'AddedById':AddUserId
+  }               
+  this._IPReportService.getIPBillRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  }); 
+} else if (this.ReportName == 'Bill Summary Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+  }               
+  this._IPReportService.getIPBillDetailsRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+}
+
+else if (this.ReportName == 'Credit Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+  }               
+  this._IPReportService.getIPCreditbillRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+}
+else if (this.ReportName == 'Refund of Advance Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+  }               
+  this._IPReportService.getIPRefOfAdvRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+}
+else if (this.ReportName == 'Refund of Bill Report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+  }               
+  this._IPReportService.getIPRefOfBillRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+}
+
+else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+            
+  this._IPReportService.getIPbillgenerationpendingRpt().subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+} else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+  let vdata = { 
+    'FromDate': this.datePipe.transform(this._IPReportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
+    'ToDate': this.datePipe.transform(this._IPReportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900" 
+  }               
+  this._IPReportService.getIPBillGenerationpayDueRpt(vdata).subscribe(res => {
+    this.dsExcelExportData.data = res as IpBillBrowseList[]
+    console.log(this.dsExcelExportData.data)
+    if(this.dsExcelExportData.data.length>0){
+      this.exportIPBillReportExcel();
+    }
+  });
+} 
   }
   exportIPBillReportExcel() {
-    // let fromdate = this.datePipe.transform(this._IPReportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    // let todate = this.datePipe.transform(this._IPReportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-
-    // var data = {
-    //   "FromDate": fromdate,
-    //   "ToDate": todate,
-    //   "AddedById": this._loggedUser.currentUserValue.user.id
-    // }
-    // this._IPReportService.getBrowseIPDBillsummaryList(data).subscribe(Visit => {
-    //   this.dsIPBrowseList.data = Visit as IpBillBrowseList[];
-    //   console.log(this.dsIPBrowseList.data)
-    //   if( this.dsIPBrowseList.data.length > 0)
-    //     this.IpbillsummaryExcel()
-    // }
-    // );
-    if (this.ReportName == 'IPD Discharge Type Wise') { 
+   
+    if (this.ReportName == 'Admitted Patient List') {
       this.sIsLoading == 'loading-data'
-      let exportHeaders = ['AdmissionDate', 'DischargeDate', 'IPDNo', 'PatientName', 'MobileNo', 'DoctorName', 'RefDoctorName', 'DepartmentName', 'Diagnosis','Procedurename1','Procedurename2','Procedurename3','NetPayableAmt'];
-      this.reportDownloadService.getExportJsonData(this.dsDischargeTypeData.data, exportHeaders, 'IPD Discharge Type Wise');
-      this.dsDischargeTypeData.data = [];
+      let exportHeaders = ['RegNo', 'IPDNo', 'PatientName', 'Age', 'GenderName', 'AdmissionDate', 'AdmissionDate', 'RefDocName', 'Address','RoomName'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Admitted Patient List');
+      this.dsExcelExportData.data = [];
       this.sIsLoading = '';
     }
+ else if (this.ReportName == 'IPD Admission List Company Wise Details') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['AdmissionDate', 'RegNo', 'CompanyName', 'PatientName', 'Age', 'IPDNo', 'DepartmentName', 'AdmittedDocName', 'RefDocName'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Admission List Company Wise Details');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+
+    } else if (this.ReportName == 'IPD Admission List Company Wise Summary') {
+      this.sIsLoading == 'loading-data'
+  let exportHeaders = ['CompanyName', 'Count'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Admission List Company Wise Summary');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+
+    }
+    else if (this.ReportName == 'IPD Current Admitted List') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo', 'RoomName' ,'IPDNo', 'PatientName', 'Age', 'GenderName', 'MobileNo', 'Address','DOA','DOT','AdmittedDoctorName','RefDoctorName','BedName','ChargesAmount','AdvanceAmount','BalPayAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Current Admitted List');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IPD Current Admitted - Ward Wise Charges') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo', 'IPDNo', 'RoomName', 'PatientName', 'Age', 'GenderName', 'MobileNo','Address','DOA','DOT','AdmittedDoctorName','RefDoctorName','BedName','ChargesAmount','AdvanceAmount','BalPayAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Current Admitted - Ward Wise Charges');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    } else if (this.ReportName == 'Department Wise Count Summary') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['DepartmentName', 'Count'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Department Wise Count Summary');
+      this.dsExcelExportData.data = [];
+      this.ExcelData = [];
+      this.sIsLoading = ''; 
+    }
+    else if (this.ReportName == 'Doctor Wise Count Summary') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['DocName', 'Count'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Doctor Wise Count Summary');
+      this.dsExcelExportData.data = [];
+      this.ExcelData = [];
+      this.sIsLoading = ''; 
+    }
+ else if (this.ReportName == 'IPD Current Ref Admitted List') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['AdmissionID', 'RegNo','DoctorName','PatientName','AdmissionDate'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Current Ref Admitted List');
+  this.dsExcelExportData.data = []; 
+  this.sIsLoading = ''; 
+    }
+    else if (this.ReportName == 'IPD Discharge Type Wise') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['AdmissionDate', 'DischargeDate', 'IPDNo', 'PatientName', 'MobileNo', 'DoctorName', 'RefDoctorName', 'DepartmentName', 'Diagnosis','Procedurename1','Procedurename2','Procedurename3','NetPayableAmt'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Discharge Type Wise');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo', 'IPDNo', 'PatientName', 'DischargeTypeName','AdmissionDate','DischargeDate','DoctorName','MobileNo'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Discharge Type Company Wise');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IPD Discharge Type Company Wise Count') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['DocDischargeTypeNameName'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Discharge Type Company Wise Count');
+      this.dsExcelExportData.data = []; 
+      this.sIsLoading = ''; 
+    }
+    else if (this.ReportName == 'IPD RefDoctor Wise') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo','PatientName','AdmissionDate','DischargeDate','AdmittedDoctorName'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD RefDoctor Wise');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IPD Discharge Detail') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo','PatientName','Address','MobileNo','RefDoctorName','DoctorName','Diagnosis'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Discharge Detail');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Mark Status') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['RegNo','PatientName','AdmissionDate','DischargeDate','IsMarkForDisNurDateTime','AdmissionDate','DischargeDate','DiffTimeInHr'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Discharge Report with Mark Status');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'IPD Discharge Report with Bill Summary') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PBillNo','BillDate','IPDNo','RegNo','PatientName','AdmissionDate','DischargeDate','DischargeTypeName','DoctorName','TotalAmt','ConcessionAmt','NetPayableAmt','CompanyName','Diagnosis'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IPD Discharge Report with Bill Summary');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+    else if (this.ReportName == 'OP to IP Converted List With Service availed') {
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PatientName','DoctorName','RefDoctorName','Medical','Pathology','Radiology'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'OP to IP Converted List With Service availed');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
+    }
+  
+
+
+    //Ip Billing
+ if (this.ReportName == 'IP Daily Collection Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['PaymentDate','RegNo','PatientName','NetPayableAmt','CashPayAmount','ChequePayAmount','CardPayAmount','PayTMAmount','AdvanceUsedAmount'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IP Daily Collection Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+} 
+else if (this.ReportName == 'OP IP Bill Summary') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['PatientName','DoctorName','RefDoctorName','Medical','Pathology','Radiology'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'OP IP Bill Summary');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+}
+
+else if (this.ReportName == 'Advance Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['AdvanceId','PaymentDate','RegId','PatientName','AdvanceAmount'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Advance Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+}
+else if (this.ReportName == 'IP Bill Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['BillNo','BillDate','RegNo','IPDNo','PatientName','PatientType','TotalAmt','ConcessionAmt','NetPayableAmt','PaidAmount','BalanceAmt','CashPay','ChequePay','CardPay','NeftPay','PayTMPay','AdvUsdPay'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IP Bill Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+} else if (this.ReportName == 'Bill Summary Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['BillNo','BillDate','RegId','ServiceName','PatientName','Price','Qty','TotalAmt','ConcessionAmt','NetPayableAmt','PaidAmount','BalanceAmt'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Bill Summary Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+}
+
+else if (this.ReportName == 'Credit Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['BillNo','BillDate','RegNo','PatientName','IPDNo','AdmittedDoctorName','TotalAmt','ConcessionAmt','NetPayableAmt','PaidAmount','BalanceAmt'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Credit Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+}
+else if (this.ReportName == 'Refund of Advance Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['RefundDate','RegId','PatientName','RefundAmount'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Refund of Advance Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = '';
+}
+else if (this.ReportName == 'Refund of Bill Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['RefundDate','PBillNo','RegNo','PatientName','RefundAmount'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Refund of Bill Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = ''; 
+}
+
+// else if (this.ReportName == 'IP Discharge & Bill Generation Pending report') {
+//   this.viewgetDiscbillgeneratingpendingReportPdf();
+// } 
+// else if (this.ReportName == 'IP Bill Generation Payment Due Report') {
+//   this.viewgetBillgenepaymentdueReportPdf();
+// }
+else if (this.ReportName == 'IP Discharge & Bill Generation Pending Report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['AdmissionDate','RegNo','IPDNo','PatientName','PatientType','AdmittedDoctorName','CompanyName','AdmissionDate','DischargeDate','NetAmount'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IP Discharge & Bill Generation Pending Report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = ''; 
+} else if (this.ReportName == 'IP Bill Generation Payment Due report') {
+  this.sIsLoading == 'loading-data'
+  let exportHeaders = ['BillDate','BillNo','RegNo','PatientName','DischargeDate','PaymentDate','TotalAmt','ConcessionAmt','NetPayableAmt','PaidAmt','BalanceAmt'];
+  this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'IP Bill Generation Payment Due report');
+  this.dsExcelExportData.data = [];
+  this.sIsLoading = ''; 
+}
   }
 
   IpbillsummaryExcel() {

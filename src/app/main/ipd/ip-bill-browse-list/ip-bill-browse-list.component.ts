@@ -1161,7 +1161,9 @@ export class IpBillBrowseList {
   TariffName: any;
   CompanyName: any;
   UnitName: any;
-
+  DepartmentName:any;
+  Lbl:any;
+  DocName:any;
   BalanceAmt: any;
   CashPay: any;
   CardPay: any;
@@ -1171,9 +1173,7 @@ export class IpBillBrowseList {
   PayCount: any;
   RefundAmount: any;
   // 'RefundCount',
-  CashCounterName: any;
-  
-
+  CashCounterName: any; 
   /**
    * Constructor
    *

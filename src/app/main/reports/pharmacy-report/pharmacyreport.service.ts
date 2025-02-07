@@ -215,5 +215,71 @@ export class PharmacyreportService {
   public getPatientRegisterListSearch(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
+  public getDoctorWiseSalesReportlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rptDoctorWiseSalesReport", employee)
+  }
+  public getPurchaseOrderlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rpt_PurReOrder_1", employee)
+  }
+  public getWardWiseHighRiskDrugReportlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPPatientWardWiseSalesList", employee)
+  }
+  public getPharmacybillsummryReportlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rptPharmacyBillSummaryReport", employee)
+  }
+  public getItemWiseDailyReportlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesProductWiseDaily", employee)
+  }
+  public getScheduleH1SalesSummryReportlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesH1DrugReport", employee)
+  }
+  public getSalesH1DrugCountlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=rptSalesH1DrugCount", employee)
+  }
+  public getSalesDailyCollectionlist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyCollection", employee)
+  }
+  public getSalesDailyCollectionSummarylist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyColSummary", employee)
+  } 
+  public getSalesCashBooklist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesCashbook", employee)
+  } 
+  public getSalesDailyColleSummryUserwiselist(employee,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesDailyColSummary_DayWise", employee)
+  } 
 }
 
