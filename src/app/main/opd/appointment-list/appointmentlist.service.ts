@@ -138,7 +138,7 @@ export class AppointmentlistService {
             visitTime: [(new Date()).toISOString()],
             UnitId: 1,
             PatientTypeId: [1, Validators.required],
-            ConsultantDocId: [0,Validators.required],
+            ConsultantDocId: ['',Validators.required],
             RefDocId: [0],
             TariffId: [1, Validators.required],
             CompanyId: 0,
@@ -149,7 +149,7 @@ export class AppointmentlistService {
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
             ClassId: 1,
-            DepartmentId: [0,Validators.required],
+            DepartmentId: ['',Validators.required],
             patientOldNew: 1,
             firstFollowupVisit: 0,
             AppPurposeId: [0],
@@ -195,6 +195,13 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("CrossConsultation/CrossConsultationInsert", Param);
 
     }
+
+      public UpdateQueryByStatement(query,loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
+      }
     // new API?
 
     public getAppointmentList(employee) {
@@ -243,12 +250,12 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("Report/ViewReport", Param);
       }
 
-      public UpdateQueryByStatement(query,loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
-      }
+    
+
+      public getDoctorsByDepartment(deptId) {
+        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+    }
+
 }
 
 //192.168.2.100:

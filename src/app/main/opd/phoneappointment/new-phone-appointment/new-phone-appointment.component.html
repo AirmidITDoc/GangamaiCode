@@ -20,8 +20,8 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="searchFormGroup">
-                <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
-                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId"
+                <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                    <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
                         placeholderText="Enter Patient Name/RegId.." ApiUrl="OutPatient/auto-complete?Keyword="
                         (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
@@ -36,28 +36,23 @@
                     </div>
                     <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                              <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Choose a AppointmentDate" name="AppointmentDate" formControlName="phAppDate">
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field> -->
-
-                            <airmid-datepicker [formGroup]="phoneappForm" [isRangePicker]="false"
-                                formControlName="phAppDate"></airmid-datepicker>
-
-
-                            <!-- <div>
-                        <label for="dateTime">Select Date and Time:</label>
-                        <input id="dateTime" type="datetime-local" formControlName="phAppDate" [value]="date1" [(ngModel)]="date1"/>
-                        </div> -->
-
-
-                            <!-- <mat-form-field appearance="outline">
-                            <mat-label>Collection Date / Time</mat-label>
-                            <input matInput type="datetime-local" placeholder="date" [value]="date1" [(ngModel)]="date1"
-                                (change)="date1=$event.target.value" formControlName="phAppDate" />
-                        </mat-form-field> -->
-
+                            <mat-form-field appearance="outline" class="dateField">
+                                <mat-label>Phone App Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="phAppDate"
+                                    (dateChange)="onChangeDate($event.value)">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"
+                                    [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" class="timeField">
+                                <mat-label>Phone App Time</mat-label>
+                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppTime"
+                                    (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                <mat-icon matSuffix
+                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                            </mat-form-field>
 
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -100,8 +95,7 @@
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
-                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor
-                               >
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor>
                             </airmid-dropdown>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="false">

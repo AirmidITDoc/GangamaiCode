@@ -33,6 +33,7 @@ import { OPBillingComponent } from '../op-search-list/op-billing/op-billing.comp
 import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/airmid-table1.component';
 import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { forEach } from 'lodash';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -75,6 +76,8 @@ export class AppointmentListComponent implements OnInit {
         // menu Button List
         this.menuActions.push("Change Consultant Doctor");
         this.menuActions.push("Change Refer Doctor");
+this.Appointdetail(this.gridConfig)
+
     }
 
     allfilters = [
@@ -166,9 +169,9 @@ export class AppointmentListComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
+            // if (result) {
                 that.grid.bindGridData();
-            }
+            // }
         });
     }
 
@@ -304,7 +307,7 @@ export class AppointmentListComponent implements OnInit {
         this.VCrossConscount = 0;
         console.log(data)
         this.Vtotalcount;
-
+console.log(data)
         for (var i = 0; i < data.length; i++) {
             if (data[i].patientOldNew == 1) {
                 this.VNewcount = this.VNewcount + 1;

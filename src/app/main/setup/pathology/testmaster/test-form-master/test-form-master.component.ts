@@ -296,11 +296,12 @@ isActive: any;
         var param={
           "first": 0,
           "rows": 25,
-          sortField: "ParameterShortName",
+          sortField: "UnitId",
           sortOrder: 0,
           filters: [
-              { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains }
-            //   { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+              { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains },
+              { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+              { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
           
           ],
           "exportType": "JSON"

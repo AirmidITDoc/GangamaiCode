@@ -37,6 +37,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { PhoneappointmentComponent } from './phoneappointment.component';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 import { PhoneAppointListService } from './phone-appoint-list.service';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 const routes: Routes = [
     {
@@ -90,7 +91,8 @@ const routes: Routes = [
         MatExpansionModule,
         MatListModule,
         MatDatepickerModule,
-        ReactiveFormsModule 
+        ReactiveFormsModule,
+        MatTimepickerModule,
     ],
     providers: [
         DatePipe, PhoneAppointListService, MatDatepickerInput

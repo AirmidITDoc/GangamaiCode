@@ -44,15 +44,15 @@
                             (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
                     </div>
-                  
+
                     <airmid-autocomplete lbl="Phone" [formGroup]="searchFormGroup" formControlName="PhoneRegId"
                         placeholderText="Enter PhoneRegId" ApiUrl="OutPatient/auto-complete?Keyword="
                         (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
 
-                        <airmid-dropdown label="UnitId" formControlName="UnitId" [value]="UnitId"
+                    <airmid-dropdown label="UnitId" formControlName="UnitId" [value]="UnitId"
                         [formGroup]="searchFormGroup" [mode]="autocompleteModeunit">
                     </airmid-dropdown>
-                
+
                 </div>
             </form>
             <div class="personal-panel">
@@ -269,7 +269,7 @@
                                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
-                           
+
                         </form>
                     </mat-expansion-panel>
 
@@ -324,22 +324,22 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Department Name" formControlName="DepartmentId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.departmentId"
-                                        [validations]="getValidationMessages().departmentId" ValueField="departmentId"
-                                        TextField="departmentName" (selectionChange)="selectChangedepartment($event)"
-                                        ApiUrl="DepartmentMaster/get-departments">
-                                    </airmid-dropdown>
 
+
+                                    <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                                        [value]="data?.departmentId" [formGroup]="VisitFormGroup"
+                                        [validations]="getValidationMessages().departmentId"
+                                        [mode]="autocompletedepartment"
+                                        (selectionChange)="selectChangedepartment($event)">
+                                    </airmid-dropdown>
 
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                     <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.doctorID"
-                                        [validations]="getValidationMessages().DoctorID" #ddldoctor
-                                        [mode]="autocompleteModedeptdoc">
+                                        [value]="data?.doctorID" [formGroup]="VisitFormGroup"
+                                        [validations]="getValidationMessages().DoctorID" #ddlDoctor>
                                     </airmid-dropdown>
                                 </div>
 

@@ -46,24 +46,24 @@ export class PhoneAppointListService {
                 Validators.required,
                 Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
-            middleName: [''],
+            middleName: ['%'],
             lastName: ['', [
                 Validators.required,
                 Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
             ]],
-            address: ['', Validators.required],
+            address: [''],
             mobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             phAppDate: [(new Date()).toISOString()],
-            phAppTime: [(new Date()).toISOString()],
+            phAppTime: [""],
             departmentId: ['', Validators.required],
             doctorId:['', Validators.required],
             addedBy: 1,
             updatedBy: 1,
-            regNo: [''],
+            regNo: ["0"],
 
         });
     }

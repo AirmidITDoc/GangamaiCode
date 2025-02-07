@@ -123,15 +123,15 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModetariff: string = "Tariff";
     autocompleteModecompany: string = "Company";
     autocompleteModesubcompany: string = "SubCompany";
-    autocompleteModedepartment: string = "Department";
+    autocompletedepartment: string = "Department";
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
-    @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
-
+    // @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
+    @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
 
     constructor(
@@ -221,7 +221,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onChangePatient(value) {
-
+debugger
         var mode = "Company"
         if (value.text == "Company") {
             this._AppointmentlistService.getMaster(mode, 1);
@@ -503,8 +503,20 @@ export class NewAppointmentComponent implements OnInit {
     onSave() {
        console.log(this.personalFormGroup.value)
        console.log(this.VisitFormGroup.value)
+
+
+       
        console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+debugger
+            if(this.isCompanySelected &&  this.VisitFormGroup.get('CompanyId').value==0){
+                this.toastr.warning('Please select valid Company ', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+
+
             this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
             this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
             this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
@@ -936,23 +948,15 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     selectChangedepartment(obj: any) {
-        console.log(obj);
-        this.departmentId = obj
+        debugger
+        console.log(obj)
+        this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data:any)=>{
+            this.ddlDoctor.options=data;
+            this.ddlDoctor.bindGridAutoComplete();
+        });
+      }
 
-        this.ddldoctor.SetSelection(obj.departmentId);
-        // this._AppointmentlistService.doctordepartmentData( this.departmentId ).subscribe((response) => {
-        //     this.toastr.success(response.message);
-        //      this.onClear(true);
-        //  }, (error) => {
-        //      this.toastr.error(error.message);
-        //  });
-    }
-
-    selectChangedeptdoc(obj: any) {
-
-    }
-
-    selectChangerefdoc(obj: any) {
+        selectChangerefdoc(obj: any) {
         console.log(obj);
         // this.refDocId = obj
     }

@@ -1,17 +1,64 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar
     dynamicTableHeight>
-    <!-- <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                OP Browse List
-            </span>
+  
+
+    <ng-template #actionsTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <!-- If patientOldNew is '1', show green -->
+            <mat-icon *ngIf="element.patientType !== '1' && element.patientType !== '2'"
+                matTooltip="Patient New" class="mat-accent">
+                circle
+            </mat-icon>
+
+            <!-- If patientOldNew is '2', show orange -->
+            <mat-icon *ngIf="element.patientType === '0'" matTooltip="Patient Old" class="mat-warn">
+                circle
+            </mat-icon>
         </div>
-        <button class="btn btn-primary " color="accent" (click)="getBilllistview()">
-            <span>Bill List</span>
-        </button>
-    </mat-toolbar> -->
+        <div>
+            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Bill IsCancelled"
+                class="mat-warn">circle</mat-icon>
 
+            <mat-icon style=" border: black 1px solid;" *ngIf="element.isCancelled=='0' "
+                matTooltip="Bill Not Generated" class="mat-accent">
+                circle
+            </mat-icon>
+        </div>
+    </ng-template>
 
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+
+            <!-- Button 1: Edit Patient Registration  -->
+            <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
+                <mat-icon>email</mat-icon>
+            </button>
+
+            <!-- Button 2: Edit Patient Registration  -->
+            <button *ngIf="false" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
+                <mat-icon>message</mat-icon>
+            </button>
+
+          
+            <!-- Button 8: Patient i card Print  -->
+            <button mat-icon-button matTooltip="Send message On WhatsApp"
+                (click)="getWhatsappshareBill(element)">
+                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+            </button>
+
+            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                (click)="$event.stopPropagation();">
+                <mat-icon class="secondary-text">more_vert</mat-icon>
+            </button>
+            <mat-menu #moreMenu="matMenu">
+                <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                        <span>{{m}}</span>
+                    </button>
+                </ng-container>
+            </mat-menu>
+        </div>
+    </ng-template>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <mat-tab label="OP Browse Bill List">
             <div fusePerfectScrollbar
@@ -91,6 +138,22 @@
             </div>
 
         </mat-tab>
+
+        <ng-template #actionButtonTemplate1 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+    
+                <button mat-icon-button matTooltip="Print" (click)="viewgetOPPaymentReportPdf(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+                  
+                <button mat-icon-button matTooltip="Send message On WhatsApp"
+                    (click)="getWhatsappshareBill(element)">
+                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                </button>
+    
+              
+            </div>
+        </ng-template>
 
         <mat-tab label="OP Browse Payment List">
 
@@ -185,6 +248,24 @@
             </div>
 
         </mat-tab>
+
+        <ng-template #actionButtonTemplate2 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+    
+                <button mat-icon-button matTooltip="print" (click)="viewgetOPRefundBillReportPdf(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+                  
+                <button mat-icon-button matTooltip="Send message On WhatsApp"
+                    (click)="getWhatsappshareBill(element)">
+                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                </button>
+    
+              
+            </div>
+        </ng-template>
+
+
         <mat-tab label="OP Browse Refund List">
 
             <div fusePerfectScrollbar

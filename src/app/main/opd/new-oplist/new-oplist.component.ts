@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -27,7 +27,7 @@ export class NewOPListComponent implements OnInit {
     myFilterbillform:FormGroup;
     myFilterpayform:FormGroup;
     myFilterrefundform:FormGroup;
-
+    menuActions: Array<string> = [];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
     fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
@@ -44,52 +44,69 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
     ]
+
+     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+        @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+        @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+        @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+    
+        ngAfterViewInit() {
+            // Assign the template to the column dynamically
+            this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate;
+            this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    
+        }
+
+        
     gridConfig: gridModel = {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:20,type:22 },
-            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,width:20,type:16},
+            { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA',type:22 },
+            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,type:16},
              { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-            { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', width:100 },
-            { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-            { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250},
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate}  // Assign ng-template to the column
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPBillReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            this.getWhatsappshareBill(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPBillReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.view, callback: (data: any) => {
+            //                 this.getWhatsappshareBill(data);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PbillNo",
         sortOrder: 0,
@@ -100,40 +117,42 @@ export class NewOPListComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "VisitDetail/OPPaymentList",
         columnsList: [
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
-            { heading: "Code", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:6 },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Bill Amount", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center", width: 150 },
-            { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center", width: 150 },
-            { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", width: 150 },
-            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Bill Amount", key: "neftpayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center" },
+            { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center" },
+            { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center"},
+            { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompantName", key: "companyName", sort: true, align: "center", width: 250 },
-          
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 150 },
+            { heading: "UserName", key: "userName", sort: true, align: "center", width: 150 },
+            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate1}  // Assign ng-template to the column
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPPaymentReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.whatsapp, callback: (data: any) => {
-                            this.getWhatsappsharePaymentReceipt(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPPaymentReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.whatsapp, callback: (data: any) => {
+            //                 this.getWhatsappsharePaymentReceipt(data);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RegNo",
         sortOrder: 0,
@@ -156,14 +175,15 @@ export class NewOPListComponent implements OnInit {
     gridConfig2: gridModel = {
         apiUrl: "VisitDetail/OPRefundList",
         columnsList: [
-            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+            { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA',type: 8 },
             { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
+           
+            { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA' },
@@ -171,24 +191,26 @@ export class NewOPListComponent implements OnInit {
             { heading: "PatientType", key: "patientType", sort: true, align: "center" },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "CompanyName", key: "companyName",sort: true, align: "center" },
+            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate2} 
             // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
             // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPRefundBillReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            this.getWhatsappshareRefundBill(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPRefundBillReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.view, callback: (data: any) => {
+            //                 this.getWhatsappshareRefundBill(data);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RefundId",
         sortOrder: 0,
@@ -214,6 +236,9 @@ export class NewOPListComponent implements OnInit {
              this.myFilterbillform=this._OPListService.myFilterbillbrowseform();
         this.myFilterpayform=this._OPListService.myFilterpaymentbrowseform();
          this.myFilterrefundform=this._OPListService.myFilterrefundbrowseform();
+
+         this.menuActions.push("Print Final Bill");
+         this.menuActions.push("Print Final Bill with Package Details");
     }
 
     onSave(row: any = null) {
@@ -245,40 +270,19 @@ export class NewOPListComponent implements OnInit {
      }
     getWhatsappshareRefundBill(Id) { }
 
-    EditRefund() {
-        
-        let that = this;
-        const dialogRef = this._matDialog.open(NewOPRefundofbillComponent,
-            {
-                maxWidth: "95vw",
-                height: '95%',
-                width: '80%',
-                // data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
 
-    EditOPBill() {
-        
-        let that = this;
-        const dialogRef = this._matDialog.open(NewOPBillingComponent,
-            {
-                maxWidth: "95vw",
-                height: '95%',
-                width: '80%',
-                // data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
+       OngetRecord(element, m){
+            console.log('Third action clicked for:', element); 
+            if (m == "Print Final Bill") {
+                
+        this.commonService.Onprint("BillNo",element.billNo,"OpBillReceipt");
             }
-        });
-    }
+            else if (m == "Print Final Bill with Package Details") {
+                this.commonService.Onprint("BillNo",element.billNo,"OpBillReceipt");
+            }
+        }
 
+  
 
     onChangeDate(selectDate) {
         if (selectDate) {
@@ -320,45 +324,51 @@ export class NewOPListComponent implements OnInit {
     }
 
 
-    getBilllistview(){
-        let param={
+    // getBilllistview(){
+    //     let param={
       
-            "searchFields": [
-                  {
-                    "fieldName": "FromDate",
-                    "fieldValue": "10-01-2024",
-                    "opType": "13"
-                  },
-              {
-                    "fieldName": "ToDate",
-                    "fieldValue": "12-12-2024",
-                    "opType": "13"
-                  }
-                ],
-                "mode": "OPDailyCollectionReport"
-              }
-        console.log(param)
-         setTimeout(() => {
+    //         "searchFields": [
+    //               {
+    //                 "fieldName": "FromDate",
+    //                 "fieldValue": "10-01-2024",
+    //                 "opType": "13"
+    //               },
+    //           {
+    //                 "fieldName": "ToDate",
+    //                 "fieldValue": "12-12-2024",
+    //                 "opType": "13"
+    //               }
+    //             ],
+    //             "mode": "OPDailyCollectionReport"
+    //           }
+    //     console.log(param)
+    //      setTimeout(() => {
         
-                    this._OPListService.getBilllistReport(param
-                    ).subscribe(res => {
-                        const dialogRef = this._matDialog.open(PdfviewerComponent,
-                            {
-                                maxWidth: "85vw",
-                                height: '750px',
-                                width: '100%',
-                                data: {
-                                    base64: res["base64"] as string,
-                                    title: "OP Bill  Viewer"
-                                }
-                            });
-                        dialogRef.afterClosed().subscribe(result => {
+    //                 this._OPListService.getBilllistReport(param
+    //                 ).subscribe(res => {
+    //                     const dialogRef = this._matDialog.open(PdfviewerComponent,
+    //                         {
+    //                             maxWidth: "85vw",
+    //                             height: '750px',
+    //                             width: '100%',
+    //                             data: {
+    //                                 base64: res["base64"] as string,
+    //                                 title: "OP Bill  Viewer"
+    //                             }
+    //                         });
+    //                     dialogRef.afterClosed().subscribe(result => {
         
-                        });
-                    });
+    //                     });
+    //                 });
         
-                }, 100);
-    }
+    //             }, 100);
+
+    //             this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt"); 
+    // }
+
+
+    Onemail(data){}
+    Onmessage(data){}
 }
 export class BrowseOPDBill {
     BillNo: Number;

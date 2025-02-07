@@ -8,10 +8,12 @@
             <div class="modal-header-right">
                 <div class="comman-date-container">
                     <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -113,25 +115,26 @@
                                             [(ngModel)]="registerObj1.regId">
 
 
-
                                         <mat-form-field appearance="outline" fxFlex.sm="50%">
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
                                                 formControlName="visitTime"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
+                                     
+
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                            [formGroup]="crossconForm" [value]="registerObj1?.departmentId"
+                                            [value]="registerObj1?.departmentId" [formGroup]="crossconForm"
                                             [validations]="getValidationMessages().Departmentid"
-                                            ValueField="departmentId" TextField="departmentName"
-                                            (selectionChange)="selectChangedepartment($event)"
-                                            ApiUrl="DepartmentMaster/get-departments">
+                                            [mode]="autocompletedepartment"
+                                            (selectionChange)="selectChangedepartment($event)">
                                         </airmid-dropdown>
 
-                                        <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
-                                            [formGroup]="crossconForm" [value]="registerObj1?.consultantDocId"
-                                            [validations]="getValidationMessages().consultantDocId" #ddldoctor
-                                            [mode]="autocompleteModedeptdoc">
-                                        </airmid-dropdown>
+
+                                      
+                                        <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
+                                        [value]="data?.doctorID" [formGroup]="crossconForm"
+                                        [validations]="getValidationMessages().consultantDocId" #ddldoctor>
+                                    </airmid-dropdown>
 
                                         <mat-form-field appearance="outline" fxFlex.sm="10%"
                                             style="visibility: hidden;">
@@ -139,6 +142,7 @@
                                                 formControlName="visitDate"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
                                         </mat-form-field>
+                                        
                                     </div>
                                 </div>
                             </div>

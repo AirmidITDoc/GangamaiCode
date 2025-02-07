@@ -24,13 +24,11 @@ export class CrossConsultationComponent implements OnInit {
   date = new Date().toISOString();
   
   screenFromString = 'admission-form';
-  Departmentid = 0;
-  DoctorID = 0;
-  DoctorID1 = 0
+
   registerObj1 = new VisitMaster1({});
   
-
-  autocompleteModedepartment: string = "Department";
+  
+  autocompletedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
   @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
 
@@ -47,6 +45,8 @@ export class CrossConsultationComponent implements OnInit {
   }
 
   ngOnInit(): void {   
+    this.crossconForm = this.createCrossConForm();
+    
       if ((this.data?.visitId ?? 0) > 0) {
       setTimeout(() => {
         this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
@@ -57,7 +57,7 @@ export class CrossConsultationComponent implements OnInit {
       }, 500);
     }
    
-    this.crossconForm = this.createCrossConForm();
+   
    
   }
 
@@ -116,18 +116,19 @@ export class CrossConsultationComponent implements OnInit {
   onSubmit() {
     console.log(this.crossconForm.value);
    
-    let data=this.crossconForm.value;
-    data.departmentId=this.crossconForm.get('departmentId').value
-    data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
-    data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
-    data.visitDate=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-dd')
+  //   let data=this.crossconForm.value;
+  //   data.departmentId=this.crossconForm.get('departmentId').value
+  //   data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
+  //   data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
+  //   data.visitDate=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-dd')
+  //   data.visitId=0;
+  //   data.addedBy=0;
+  //   data.updatedBy=0;
+  // console.log(data);
 
-    data.visitId=0;
-    data.addedBy=0;
-    data.updatedBy=0;
+  this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-dd'))
 
-    console.log(data);
-    this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
+    this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {
@@ -143,10 +144,13 @@ export class CrossConsultationComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  selectChangedepartment(e){
-    this.ddldoctor.SetSelection(e.departmentId);
-  }
 
+  selectChangedepartment(obj: any) {
+    this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data:any)=>{
+        this.ddldoctor.options=data;
+        this.ddldoctor.bindGridAutoComplete();
+    });
+  }
 }
 
 
