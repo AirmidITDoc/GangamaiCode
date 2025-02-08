@@ -49,7 +49,7 @@ export class IPSearchListComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "Admission/AdmissionList",
         columnsList: [
-            { heading: "", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
+            { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
             { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},

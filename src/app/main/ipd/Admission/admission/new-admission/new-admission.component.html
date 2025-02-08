@@ -220,7 +220,7 @@
         <mat-card>
           <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="PatientType" formControlName="PatientTypeId"
                 [value]="registerObj1?.patientTypeId" [formGroup]="admissionFormGroup"
@@ -228,7 +228,7 @@
               </airmid-dropdown>
             </div>
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Tariff Name" formControlName="TariffId" [value]="registerObj1?.tariffId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().TariffId"
@@ -236,7 +236,7 @@
               </airmid-dropdown>
             </div>
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Department Name" formControlName="DepartmentId"
                 [value]="registerObj1?.departmentId" [formGroup]="admissionFormGroup"
@@ -244,7 +244,7 @@
               </airmid-dropdown>
             </div>
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Doctor Name " formControlName="DocNameId" [value]="registerObj1?.docNameId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().docNameId"
@@ -252,18 +252,21 @@
               </airmid-dropdown>
             </div>
 
+            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-dropdown label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
+                [value]="registerObj1?.admittedDoctor1" [formGroup]="admissionFormGroup"
+                [validations]="getValidationMessages().AdmittedDoctor1" [mode]="autocompleteModeDoctor">
+                </airmid-dropdown>
+            </div>
 
-            <airmid-dropdown label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
-              [value]="registerObj1?.admittedDoctor1" [formGroup]="admissionFormGroup"
-              [validations]="getValidationMessages().AdmittedDoctor1" [mode]="autocompleteModeDoctor">
-            </airmid-dropdown>
+            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-dropdown label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
+                [value]="registerObj1?.admittedDoctor2" [formGroup]="admissionFormGroup"
+                [validations]="getValidationMessages().AdmittedDoctor2" [mode]="autocompleteModeDoctor">
+                </airmid-dropdown>
+            </div>
 
-            <airmid-dropdown label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
-              [value]="registerObj1?.admittedDoctor2" [formGroup]="admissionFormGroup"
-              [validations]="getValidationMessages().AdmittedDoctor2" [mode]="autocompleteModeDoctor">
-            </airmid-dropdown>
-
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Ref.Doctor Name" formControlName="RefDocNameId"
                 [value]="registerObj1?.refDocNameId" [formGroup]="admissionFormGroup"
@@ -304,7 +307,7 @@
         <mat-card *ngIf="registredflag">
           <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Ward Name" formControlName="wardId" [value]="registerObj1?.wardId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().wardId"
@@ -312,7 +315,7 @@
               </airmid-dropdown>
             </div>
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Bed Name" formControlName="bedId" [value]="registerObj1?.bedId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().bedId"
@@ -320,7 +323,7 @@
               </airmid-dropdown>
             </div>
 
-            <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
 
               <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="registerObj1?.classId"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().ClassId"
@@ -340,22 +343,26 @@
         <mat-card>
           <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
 
-            <airmid-textbox label="Relative Name" formControlName="RelativeName" [value]="registerObj1.relativeName"
-              [formGroup]="admissionFormGroup" [validations]="getValidationMessages().RelativeName" [maxLength]="50">
-            </airmid-textbox>
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-textbox label="Relative Name" formControlName="RelativeName" [value]="registerObj1.relativeName"
+                [formGroup]="admissionFormGroup" [validations]="getValidationMessages().RelativeName" [maxLength]="50">
+                </airmid-textbox>
+            </div>
 
-            <airmid-textbox label="RelativeAddress" formControlName="RelativeAddress"
-              [value]="registerObj1.relativeAddress" [formGroup]="admissionFormGroup"
-              [validations]="getValidationMessages().RelativeAddress" [maxLength]="50">
-            </airmid-textbox>
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-textbox label="RelativeAddress" formControlName="RelativeAddress"
+                [value]="registerObj1.relativeAddress" [formGroup]="admissionFormGroup"
+                [validations]="getValidationMessages().RelativeAddress" [maxLength]="50">
+                </airmid-textbox>
+            </div>
 
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <airmid-textbox label="PhoneNo" formControlName="MobileNo" [value]="registerObj1.mobileNo"
+                [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="50">
+                </airmid-textbox>
+            </div>
 
-            <airmid-textbox label="PhoneNo" formControlName="MobileNo" [value]="registerObj1.mobileNo"
-              [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="50">
-            </airmid-textbox>
-
-            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
+            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-dropdown label="Relationship" formControlName="RelationshipId"
                 [value]="registerObj1?.relationshipId" [formGroup]="admissionFormGroup"
                 [validations]="getValidationMessages().RelationshipId" [mode]="autocompleteModerelationship">

@@ -1,19 +1,4 @@
-<!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"> -->
 <div class="modal-wrapper grid-container">
-    <!-- <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                {{_radiologytestService.myform.controls.TestId.value?"Modify Radiology Test Master":
-                "New Radiology Test Master"}}
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutALign="end start">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-        
-    </mat-toolbar> -->
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -30,284 +15,140 @@
         </div>
     </div>
 
-    <!-- <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style=" background-color: white; padding: 5px 10px 5px 10px;"> -->
-                    <div class="modal-body" fusePerfectScrollbar>
-                        <div class="modal-body-container">
-                            <form [formGroup]="testForm">
-                                <!-- <div class="dialog-content-wrapper"> -->
-                                    <!-- <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column"> -->
-                                        <!-- <div fxLayout="row"> -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="testForm">
+                <input type="hidden" name="testId" formControlName="testId">
 
-                                            <input type="hidden" name="testId" formControlName="testId">
-
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox 
-                                                        label="TestName" 
-                                                        formControlName="testName" 
-                                                        [value]="data?.testName"
-                                                        [formGroup]="testForm"
-                                                        [validations]="getValidationMessages().testName"
-                                                        [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown 
-                                                        label="CategoryName" 
-                                                        formControlName="categoryId"
-                                                        [value]="data?.categoryId"
-                                                        [formGroup]="testForm"
-                                                        [validations]="getValidationMessages().categoryId"
-                                                        (selectDdlObject)="selectChangeCategory($event)"
-                                                        [mode]="autocompleteModeCategory">
-                                                    </airmid-dropdown>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox 
-                                                        label="PrintTestName" 
-                                                        formControlName="printTestName" 
-                                                        [value]="data?.printTestName"
-                                                        [formGroup]="testForm"
-                                                        [validations]="getValidationMessages().printTestName"
-                                                        [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown 
-                                                        label="ServiceName" 
-                                                        formControlName="serviceId" 
-                                                        [value]="data?.serviceId"
-                                                        [formGroup]="testForm"
-                                                        [validations]="getValidationMessages().serviceId"
-                                                        (selectDdlObject)="selectChangeservice($event)"
-                                                        [mode]="autocompleteModeService">
-                                                    </airmid-dropdown>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox 
-                                                        label="TemplateName" 
-                                                        formControlName="templateName" 
-                                                        [value]="data?.templateName"
-                                                        [formGroup]="testForm"
-                                                        [validations]="getValidationMessages().templateName"
-                                                        [maxLength]="50">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                                <div matTooltip="Select All Value to enable this button!!">
-                                                   
-                                                    <button (click)="OnAdd($event)"  [disabled]="testForm.invalid"
-                                                        class="btn btn-primary btn-with-icon py-8"
-                                                        style="margin-left: 10px;">
-                                                        <span class="btn-icon">
-                                                            <mat-icon> add </mat-icon>
-                                                        </span>
-                                                    </button>
-                                                </div>
-
-                                                <mat-card style="height:300px;width:100%;">
-                                                    <mat-table  matSort [dataSource]="DSTestList"
-                                                        [@animateStagger]="{value:'50'}"
-                                                        style="overflow:auto; width: 100%;">
-
-                                                        <ng-container matColumnDef="ParameterName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Template Name
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                {{element.TemplateName}}
-                                                            </mat-cell>
-                                                        </ng-container>
-
-
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns1;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-
-                                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
-
-                                                    </mat-table>
-                                                </mat-card>
-
-                                            </div>
-
-                                        <!-- </div> -->
-                                        <!-- <div fxLayout="row">
-                                            <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
-                                                <mat-label>Print Test Name</mat-label>
-                                                <input name="PrintTestName" formControlName="PrintTestName" placeholder="PrintTestName"
-                                                     matInput #printName (keydown)="onEnterprintName($event)" required [(ngModel)]="vPrintName">
-                                                     <mat-error class="error"
-                                                     *ngIf="testForm.get('PrintTestName').invalid && testForm.get('PrintTestName').touched">
-                                                     PrintTestName is required Enter only Alphabets</mat-error>
-                                            </mat-form-field>
-
-                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="Service Name" formControlName="ServiceId"
-                                                    [formGroup]="testForm"
-                                                    [validations]="_radiologytestService.getValidationMessages().ServiceId"
-                                                    [mode]="autocompleteModeService">
-                                                </airmid-dropdown>
-                                            </div>
-
-                                        </div> -->
-                                        <!-- <mat-divider inset style="margin: 0px;padding: 5px;"></mat-divider> -->
-                                        <!-- <div fxLayout="column">
-                                            <form [formGroup]="testForm">
-                                                <div fxLayout="row">
-                                                    <input type="hidden" name="TestId" formControlName="TestId"> -->
-
-                                                    <!-- <mat-form-field appearance="outline" flex>
-                                                        <mat-label>Template Name</mat-label>
-                                                        <input matAutocompletePosition="below"
-                                                            type="text" [(ngModel)]="vTemplateName"
-                                                            placeholder="Enter Template Name" matInput
-                                                            formControlName="TemplateName"
-                                                            [matAutocomplete]="autotemp">
-                                                        <span matSuffix style="display: flex;">
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="testForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">close</mat-icon>
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="testForm.get('TemplateName').setValue(''); isTemplateNameSelected = false;">search</mat-icon>
-                                                        </span>
-                                                        <mat-autocomplete #autotemp="matAutocomplete"
-                                                            [displayWith]="getOptionTextTemplate">
-                                                            <mat-option
-                                                                *ngFor="let option of filteredOptionsisTemplate | async"
-                                                                [value]="option">
-                                                                {{option.TemplateName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field> -->
-                                                    
-                                                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-dropdown label="Template Name" formControlName="TemplateName"
-                                                            [formGroup]="testForm"
-                                                            [validations]="_radiologytestService.getValidationMessages().TemplateName"
-                                                            [mode]="autocompleteModeTemplate">
-                                                        </airmid-dropdown>
-                                                    </div>
-
-                                                    <div matTooltip="Select All Value to enable this button!!">
-                                                       
-                                                        <button (click)="OnAdd($event)"  [disabled]="testForm.invalid"
-                                                        class="btn btn-primary btn-with-icon py-8"
-                                                        style="margin-left: 10px;">
-                                                        <span class="btn-icon">
-                                                            <mat-icon> add </mat-icon>
-                                                        </span>
-                                                        </button>
-                                                    </div> -->
-
-
-                                                <!-- </div> -->
-                                                <!-- <mat-card style="height:300px;width:100%;">
-                                                    <mat-table  matSort [dataSource]="DSTestList"
-                                                        [@animateStagger]="{value:'50'}"
-                                                        style="overflow:auto; width: 100%;">
-
-                                                        <ng-container matColumnDef="ParameterName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Template Name
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                {{element.TemplateName}}
-                                                            </mat-cell>
-                                                        </ng-container>
-
-
-                                                        <ng-container matColumnDef="loading">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="noData">
-                                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                no data found...
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
-                                                        <mat-row *matRowDef="let row; columns: displayedColumns1;"
-                                                            class="element"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-
-                                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                                            [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
-                                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
-
-                                                    </mat-table>
-                                                </mat-card> -->
-
-                                            <!-- </form>
-                                        </div> -->
-
-                                    <!-- </div> -->
-                                <!-- </div> -->
-
-                             
-                                <!-- <div class="footer-navigation-container">
-                                   
-                                  <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px" style="margin-right: 10px;">
-                                    <mat-radio-button value='true' name="IsDeleted" [checked]="true"
-                                                    formControlName="IsDeleted">IsActive</mat-radio-button>
-
-                                        <button class="btn btn-danger-outline" (click)="onClear(false)">Clear</button>
-                                        <button class="btn btn-primary" (click)="onSubmit()"
-                                            [disabled]="_radiologytestService.myform.invalid">Save</button>
-                                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                                    </div>
-                                </div> -->
-                                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-                                    <div>
-                                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="testForm" [(ngModel)]="isActive" ></app-airmid-slider>
-                                    </div>
-                         
-                                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                                            <span>Save</span>
-                                        </button>
-                                    </div>
-                         
-                                </div>
-
-                            </form>
-                        </div>
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="TestName" 
+                            formControlName="testName" 
+                            [value]="data?.testName"
+                            [formGroup]="testForm"
+                            [validations]="getValidationMessages().testName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown 
+                            label="CategoryName" 
+                            formControlName="categoryId"
+                            [value]="data?.categoryId"
+                            [formGroup]="testForm"
+                            [validations]="getValidationMessages().categoryId"
+                            (selectDdlObject)="selectChangeCategory($event)"
+                            [mode]="autocompleteModeCategory">
+                        </airmid-dropdown>
                     </div>
                 </div>
-            <!-- </div>
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="PrintTestName" 
+                            formControlName="printTestName" 
+                            [value]="data?.printTestName"
+                            [formGroup]="testForm"
+                            [validations]="getValidationMessages().printTestName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown 
+                            label="ServiceName" 
+                            formControlName="serviceId" 
+                            [value]="data?.serviceId"
+                            [formGroup]="testForm"
+                            [validations]="getValidationMessages().serviceId"
+                            (selectDdlObject)="selectChangeservice($event)"
+                            [mode]="autocompleteModeService">
+                        </airmid-dropdown>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="TemplateName" 
+                            formControlName="templateName" 
+                            [value]="data?.templateName"
+                            [formGroup]="testForm"
+                            [validations]="getValidationMessages().templateName"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                    <div matTooltip="Select All Value to enable this button!!">
+                        
+                        <button (click)="OnAdd($event)"  [disabled]="testForm.invalid"
+                            class="btn btn-primary btn-with-icon py-8"
+                            style="margin-left: 10px;">
+                            <span class="btn-icon">
+                                <mat-icon> add </mat-icon>
+                            </span>
+                        </button>
+                    </div>
+
+                    <mat-card style="height:300px;width:100%;">
+                        <mat-table  matSort [dataSource]="DSTestList"
+                            [@animateStagger]="{value:'50'}"
+                            style="overflow:auto; width: 100%;">
+
+                            <ng-container matColumnDef="ParameterName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Template Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                    {{element.TemplateName}}
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent"
+                                *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns1;"
+                                class="element"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide':DSTestList!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(DSTestList!=null && DSTestList.data.length==0)}"></mat-footer-row>
+
+                        </mat-table>
+                    </mat-card>
+
+                </div>
+
+                        
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="testForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                    </div>
+            
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+            
+                </div>
+
+            </form>
         </div>
     </div>
-
-</div> -->
+</div>

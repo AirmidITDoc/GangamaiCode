@@ -44,6 +44,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
                 { heading: "AdvanceAmt", key: "advanceAmt", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "CashPay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "CardPay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "OnlinePay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "BalanceAmt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "RefundAmt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA'},

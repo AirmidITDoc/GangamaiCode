@@ -85,7 +85,7 @@ export class ItemMasterService {
                 ]
             ],
             taxPer: ["0"],
-            isBatchRequired: [false as boolean],
+            isBatchRequired: [true as boolean],
             minQty: ["",
                 [
                     Validators.required,

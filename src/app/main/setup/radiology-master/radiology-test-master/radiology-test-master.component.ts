@@ -44,55 +44,49 @@ export class RadiologyTestMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "testId",
+        sortField: "RadReportId",
         sortOrder: 0,
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "CategoryId", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "2024-01-01", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
         ],
         row:25
     }
 
-  
-  constructor(
-    public _radiologytestService: RadiologyTestMasterService,
-    public toastr: ToastrService,
-    public _matDialog: MatDialog,
-    private accountService: AuthenticationService,
-    private _fuseSidebarService: FuseSidebarService,
-  ) { }
+    constructor(
+        public _radiologytestService: RadiologyTestMasterService,
+        public toastr: ToastrService,
+        public _matDialog: MatDialog,
+        private accountService: AuthenticationService,
+        private _fuseSidebarService: FuseSidebarService,
+    ) { }
 
-  ngOnInit(): void {
-    
-   
-  }
-  onSearch() {
-    
-  }
-  onSave(row:any = null) {
-    const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
-    {
-        maxWidth: "90vw",
-        height: '90%',
-        width: '70%',
-        data: row
-    });
-    dialogRef.afterClosed().subscribe(result => {
-        if(result){
-            // this.getGenderMasterList();
-            // How to refresh Grid.
-        }
-        console.log('The dialog was closed - Action', result);
-    });
-}
+    ngOnInit(): void {}
+    onSearch() {}
+    onSave(row:any = null) {
+        const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
+        {
+            maxWidth: "70vw",
+            height: '95%',
+            width: '70%',
+            data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if(result){
+                // this.getGenderMasterList();
+                // How to refresh Grid.
+            }
+            console.log('The dialog was closed - Action', result);
+        });
+    }
 
 onDeactive(testId) {
     this.confirmDialogRef = this._matDialog.open(
