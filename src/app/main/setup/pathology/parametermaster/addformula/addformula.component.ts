@@ -31,6 +31,7 @@ export class AddformulaComponent implements OnInit {
   ParameterId: any;
   paranamenew: any;
   parameterName: any;
+  autocompleteParameter: string = "Parameter";
 
   results: Result[] = [
     { value: '1', viewValue: '+' },
@@ -54,58 +55,38 @@ export class AddformulaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
   ) {
-    this.getParameterNameCombobox();
     if (this.data) {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
-      this.ParameterId = this.registerObj.ParameterID
-      this.parameterName = this.registerObj.ParameterName
-      this.finalformula = this.registerObj.Formula
+      this.ParameterId = this.registerObj.parameterId
+      this.parameterName = this.registerObj.parameterName
+      this.finalformula = this.registerObj.formula
     }
   }
 
   ngOnInit(): void {
-
-    this.getParameterNameCombobox();
-  }
-
-
-
-  getParameterNameCombobox() {
-
-    var m_data = {
-      ParameterName: this._ParameterService.formulaform.get("ParameterId").value + "%" || "%",
-    };
-
-    this._ParameterService.getParameterMasterforformulaList(m_data).subscribe((data) => {
-      this.paramterList = data;
-      this.optionsPara = this.paramterList.slice();
-      this.filteredOptionsParameter = this._ParameterService.formulaform.get('ParameterId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterParameter(value) : this.paramterList.slice()),
-      );
-
-    });
-  }
-
-
-  private _filterParameter(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.ParameterName ? value.ParameterName.toLowerCase() : value.toLowerCase();
-      return this.optionsPara.filter(option => option.ParameterName.toLowerCase().includes(filterValue));
+    if (this.data) {
+      console.log(this.data)
+      this.registerObj = this.data.registerObj;
+      this.ParameterId = this.registerObj.parameterId
+      this.parameterName = this.registerObj.parameterName
+      this.finalformula = this.registerObj.formula
     }
-
   }
 
-
-
-  getOptionTextparameter(option) {
-    if(option){
-    this.paranamenew = "{{" + option.ParameterName + "}}"
-     this.paraname = option.ParameterName}
-    return option && option.ParameterName ? option.ParameterName : '';
-
+  selectChangeParameter(obj: any) {
+    debugger
+    console.log("Parameter:",obj);
   }
+
+  getValidationMessages() {
+    return {
+      ParameterId:[
+        { name: "required", Message: "Parameter Name is required" }
+      ]
+    };
+  }
+
   onChangeparaList(option) {
     
     this.paraname = option.ParameterName
@@ -121,8 +102,9 @@ export class AddformulaComponent implements OnInit {
     this.oprator = event
 
   }
+  
   addoprator1() {
-    
+    debugger
     this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName
     this.paranamenew = "{{" + this.paraname + "}}"
     this.finalformula = this.finalformula + this.paranamenew + this.oprator;

@@ -98,12 +98,12 @@ export class ParameterFormMasterComponent implements OnInit {
        
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
-        this.getunitNameCombobox();
-        this.getGenderNameCombobox();
-        this.getDscriptiveMasterList();
+        // this.getunitNameCombobox();
+        // this.getGenderNameCombobox();
+        // this.getDscriptiveMasterList();
 
         if (this.data) {
-            this.getUnitNameCombobox();
+            // this.getUnitNameCombobox();
             this.registerObj = this.data.registerObj;
         }
         console.log(this.data)
@@ -114,10 +114,10 @@ export class ParameterFormMasterComponent implements OnInit {
         }
 
 
-        this.filteredOptionsUnit = this.parameterForm.get('unitId').valueChanges.pipe(
-            startWith(''),
-            map(value => this._filterUnit(value)),
-        );
+        // this.filteredOptionsUnit = this.parameterForm.get('unitId').valueChanges.pipe(
+        //     startWith(''),
+        //     map(value => this._filterUnit(value)),
+        // );
 
         var mdata={
                 parameterId:this.data?.parameterId,
@@ -151,13 +151,22 @@ if (!this._ParameterService.is_numeric) {
 
     for (var val of this.selectedItems) {
         var data = {
-            parameterID: this.descForm.get("paraId").value, 
+            parameterID: 0, //this.descForm.get("paraId").value, 
             parameterValues: val,
             isDefaultValue: this.descForm.get("defaultValue").value ? true : false,
-            addedby: 1, 
+            // addedby: 1, 
             defaultValue: this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
         };
         data2.push(data);
+
+        // let mParameterDescriptiveMasters = this.selectedItems.data.map((row: any) => ({
+        //     "descriptiveId": 0,
+        //     "parameterId": 0,
+        //     "parameterValues": this.descForm.get("paraId").value || "string",
+        //     "isDefaultValue": this.descForm.get("defaultValue").value ? true : false,
+        //     "defaultValue": this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
+        // }));
+        // data2.push(mParameterDescriptiveMasters);
     }
 }
 else {
@@ -205,7 +214,12 @@ if (!this.parameterForm.get("parameterId").value) {
     this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
         
         if (data) {
-            this.parameterForm.reset();
+            this.parameterForm.reset({
+                isNumeric: ["1"],
+                isPrintDisSummary: true,
+                IsBold:['0'],
+                IsDeleted: [true],
+            });
             this.selectedItems = [];
             this.dsParameterAgeList.data = [];
 
@@ -318,59 +332,59 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
         this.UnitId=obj;
     }
 
-    getGenderNameCombobox() {
+    // getGenderNameCombobox() {
         
-        this._ParameterService.getGenderMasterCombo().subscribe(data => {
-            this.GendercmbList = data;
-            console.log(this.GendercmbList);
-        });
-    }
+    //     this._ParameterService.getGenderMasterCombo().subscribe(data => {
+    //         this.GendercmbList = data;
+    //         console.log(this.GendercmbList);
+    //     });
+    // }
 
-    getUnitNameCombobox() {
-        this._ParameterService.getUnitMasterCombo().subscribe((data) => {
-            this.UnitcmbList = data;
-            console.log(this.UnitcmbList)
-            if (this.data) {
-                const toSelectUnitId = this.UnitcmbList.find(c => c.UnitId == this.registerObj.UnitId);
-                this.parameterForm.get('UnitId').setValue(toSelectUnitId);
+    // getUnitNameCombobox() {
+    //     this._ParameterService.getUnitMasterCombo().subscribe((data) => {
+    //         this.UnitcmbList = data;
+    //         console.log(this.UnitcmbList)
+    //         if (this.data) {
+    //             const toSelectUnitId = this.UnitcmbList.find(c => c.UnitId == this.registerObj.UnitId);
+    //             this.parameterForm.get('UnitId').setValue(toSelectUnitId);
 
-            }
-        });
-    }
+    //         }
+    //     });
+    // }
 
 
-    private _filterUnit(value: any): string[] {
-        if (value) {
-          const filterValue = value && value.UnitName ? value.UnitName.toLowerCase() : value.toLowerCase();
-          return this.UnitcmbList.filter(option => option.UnitName.toLowerCase().includes(filterValue));
-        }
-      }
+//     private _filterUnit(value: any): string[] {
+//         if (value) {
+//           const filterValue = value && value.UnitName ? value.UnitName.toLowerCase() : value.toLowerCase();
+//           return this.UnitcmbList.filter(option => option.UnitName.toLowerCase().includes(filterValue));
+//         }
+//       }
     
-    getunitNameCombobox() {
-    this._ParameterService.getUnitMasterCombo().subscribe(data => {
-      this.UnitcmbList = data;
-      this.optionsUnit = this.UnitcmbList.slice();
-      this.filteredOptionsUnit = this.parameterForm.get('UnitId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterUnit(value) : this.UnitcmbList.slice()),
-      );
-    });
-  }
+//     getunitNameCombobox() {
+//     this._ParameterService.getUnitMasterCombo().subscribe(data => {
+//       this.UnitcmbList = data;
+//       this.optionsUnit = this.UnitcmbList.slice();
+//       this.filteredOptionsUnit = this.parameterForm.get('UnitId').valueChanges.pipe(
+//         startWith(''),
+//         map(value => value ? this._filterUnit(value) : this.UnitcmbList.slice()),
+//       );
+//     });
+//   }
 
 
-    getOptionTextUnit(option) {
-        return option && option.UnitName ? option.UnitName : " ";
-    }
+    // getOptionTextUnit(option) {
+    //     return option && option.UnitName ? option.UnitName : " ";
+    // }
 
 
-    getDscriptiveMasterList() {
-        this._ParameterService.getDescriptiveMasterList().subscribe((Menu) => {
-            this.dataSource.data = Menu as PathDescriptiveMaster[];
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            console.log(Menu)
-        });
-    }
+    // getDscriptiveMasterList() {
+    //     this._ParameterService.getDescriptiveMasterList().subscribe((Menu) => {
+    //         this.dataSource.data = Menu as PathDescriptiveMaster[];
+    //         this.dataSource.sort = this.sort;
+    //         this.dataSource.paginator = this.paginator;
+    //         console.log(Menu)
+    //     });
+    // }
     onClear(val: boolean) {
         this.parameterForm.reset();
         this.dialogRef.close(val);

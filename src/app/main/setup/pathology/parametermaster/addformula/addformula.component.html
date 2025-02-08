@@ -22,7 +22,7 @@
             <form [formGroup]="_ParameterService.formulaform">
                 <div fxLayout="column" class="gap-12">
 
-                    <div class="modal-card-container">
+                    <div class="modal-card-container" style="padding: 10px;">
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="65%">
@@ -32,7 +32,7 @@
                                 </mat-form-field>
                             </div>
                             <div fxLayout="column" class="gap-8">
-                                <mat-form-field appearance="outline">
+                                <!-- <mat-form-field appearance="outline">
                                     <mat-label>Parameter Name</mat-label>
                                     <input matAutocompletePosition="below" type="text" placeholder="Select Parameter"
                                         matInput formControlName="ParameterId" [matAutocomplete]="autopara" required>
@@ -49,9 +49,14 @@
                                             {{option.ParameterName}}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </mat-form-field>
+                                </mat-form-field> -->
                                 <!-- (onSelectionChange)="onChangeparaList(option)" -->
-
+                                <airmid-dropdown label="Parameter Name" 
+                                formControlName="ParameterId" [formGroup]="_ParameterService.formulaform"
+                                [validations]="getValidationMessages().ParameterId" 
+                                [mode]="autocompleteParameter"
+                                (selectionChange)="selectChangeParameter($event)">
+                            </airmid-dropdown>
 
                             </div>
                             <!--  -->

@@ -109,7 +109,7 @@ export class ParametermasterService {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
             Formula: [""],
-            parameterId:[""],
+            ParameterId:[""],
             Formulapara:[""],
             OPrator:[""],
             parameterName:[""],
@@ -151,13 +151,16 @@ export class ParametermasterService {
         return this._httpClient.PostData(
             "Generic/ExecByQueryStatement?query=" + m_data, {});
     }
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.DeleteData("PathCategoryMaster?Id=" + m_data.toString());
+    // }
 
     public insertParameterMaster(Param: any) {
         if (Param.parameterId) {
-            return this._httpClient.PutData("PathParameterMaster/" + Param.parameterId, Param);
+            return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
         } else 
         
-        return this._httpClient.PostData("PathParameterMaster", Param);
+        return this._httpClient.PostData("ParameterMaster/InsertEDMX", Param);
     }
 
     public updateParameterMaster(param) {
