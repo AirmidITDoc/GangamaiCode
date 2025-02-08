@@ -321,7 +321,6 @@ isActive: any;
           "first": 0,
           "rows": 25,
           sortField: "UnitId",
-          sortField: "UnitId",
           sortOrder: 0,
           filters: [
               { fieldName: "parameterName", fieldValue: "", opType: OperatorComparer.Contains },
