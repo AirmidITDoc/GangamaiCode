@@ -15,6 +15,7 @@ import * as converter from 'number-to-words';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { map, startWith } from 'rxjs/operators';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 
 @Component({
@@ -127,6 +128,7 @@ export class PharmacyReportComponent implements OnInit {
     public _PharmacyreportService: PharmacyreportService,
     public _PrintPreviewService: PrintPreviewService,
 
+     private reportDownloadService: ExcelDownloadService,
     // public _PharmacyreportService: SalesService,
     public _matDialog: MatDialog,
     private _ActRoute: Router,
@@ -147,7 +149,7 @@ export class PharmacyReportComponent implements OnInit {
     this.gePharStoreList();
     this.getDrugTypeList();
     this.getDoctorList();
-    // this.GetPaymentModeList();
+    this.GetPaymentModeList();
     this.getSearchItemList()
     const toSelect = this.UserList.find(c => c.UserId == this.UserId);
     this._PharmacyreportService.userForm.get('UserId').setValue(toSelect);
@@ -724,15 +726,14 @@ var data={
         if(this.dsExcelExportData.data.length>0){
           this.exportIPBillReportExcel();
         }
-      }); 
-      this.viewgetPharCollsummDayuserwiseReportPdf();
+      });  
     }
     else if (this.ReportName == 'Sales Cash Book Report') {
       let vdata = { 
         'FromDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         'ToDate': this.datePipe.transform(this._PharmacyreportService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", 
         'StoreId': StoreId ,
-        'PaymentMode':this.PaymentMode
+        'PaymentMode':this._PharmacyreportService.userForm.get('PaymentMode').value
       }                  
       this._PharmacyreportService.getSalesCashBooklist(vdata).subscribe(res => {
         this.dsExcelExportData.data = res as IndentList[]
@@ -865,9 +866,17 @@ var data={
   }
   exportIPBillReportExcel(){
     if (this.ReportName == 'Pharmacy Daily Collection') {
-      this.viewparmacyDailyCollectionPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PaymentDate','SalesNo','RegNo','PatientName','NetAmount','CashPayAmount','ChequePayAmount','CardPayAmount','NEFTPayAmount','PayTMAmount','AdvanceUsedAmount','BalanceAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Pharmacy Daily Collection');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary') {
-      this.viewDailyCollectionSummaryPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['TotalBillAmount','DiscAmount','NetAmount','BalAmount','PaidAmount','CashPay','CardPay','ChequePay','NEFTPay','OnlinePay','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Pharmacy Daily Collection Summary');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     } else if (this.ReportName == 'Sales Summary Report') {
       this.viewgetsalesSummaryReportPdf();
     } else if (this.ReportName == 'Sales Patient Wise Report') {
@@ -881,22 +890,38 @@ var data={
     } else if (this.ReportName == 'Sales Credit Report') {
       this.viewgetSalesCreditReportPdf();
     } else if (this.ReportName == 'Pharmacy Daily Collection Summary Day & User Wise') {
-      this.viewgetPharCollsummDayuserwiseReportPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PaymentDate','UserName','TotalBillAmount','NetAmount','BalAmount','PaidAmount','CashPay','CardPay','ChequePay','NEFTPay','OnlinePay'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Pharmacy Daily Collection Summary Day & User Wise');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     }
     else if (this.ReportName == 'Sales Cash Book Report') {
       this.viewgetSalesCashBookReportPdf();
     }
     else if (this.ReportName == 'Sales SCHEDULEH1 Report') {
-      this.viewgetSCHEDULEH1ReportPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PatientName','Address','DoctorName','ItemName','Qty','TotalAmount','SalesNo','Date'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Sales SCHEDULEH1 Report');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     }
     else if (this.ReportName == 'SCHEDULEH1 SalesSummary Report') {
-      this.viewgetSCHEDULEH1SalesSummaryReportPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['Date','SalesNo','PatientName','BatchNo','Qty','TotalAmount','DiscAmount','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'SCHEDULEH1 SalesSummary Report');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     }
     else if (this.ReportName == 'SalesH1 DrugCount Report') {
       this.viewgetSalesH1DrugCountReportPdf();
     }
     else if (this.ReportName == 'ItemWise DailySales Report') {
-      this.viewgetItemWiseDailySalesReportPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['PatientName','RegNo','SalesNo','Qty','Date','Time','Type','label'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'ItemWise DailySales Report');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     }
     else if (this.ReportName == 'WardWise HighRisk Drug Report') {
       this.viewgetHighRiskDrugReportPdf();
@@ -908,7 +933,11 @@ var data={
       this.viewgetPharmacyBillSummaryReportPdf();
     } 
     else if (this.ReportName == 'Dr Wise Sales Report') {
-      this.viewgetDrwisesalesReportPdf();
+      this.sIsLoading == 'loading-data'
+      let exportHeaders = ['Date','RegNo','PatientName','OPIPNo','SalesNo','NetAmount'];
+      this.reportDownloadService.getExportJsonData(this.dsExcelExportData.data, exportHeaders, 'Dr Wise Sales Report');
+      this.dsExcelExportData.data = [];
+      this.sIsLoading = '';
     } 
   }
   viewparmacyDailyCollectionPdf() {

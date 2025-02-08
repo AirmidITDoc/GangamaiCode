@@ -278,41 +278,7 @@ export class NewPrescriptionComponent implements OnInit {
     //   this.ItemId = obj.ItemID;
     //   this.BalanceQty = obj.BalanceQty;
     // }
-  }
-  onAdd1() {
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-      this.toastr.warning('Please enter a qty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    const iscekDuplicate = this.dsPresList.data.some(item => item.ItemID == this.ItemId)
-    if(!iscekDuplicate){
-    this.dsPresList.data = [];
-    this.PresItemlist.push(
-      {
-        ItemID: this.ItemId,
-        ItemName: this.ItemName,
-        Qty: this.vQty,
-        Remark: this.vRemark || '' 
-      });
-    this.dsPresList.data = this.PresItemlist
-    console.log(this.dsPresList.data); 
-    }else{
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    this.ItemForm.get('ItemId').reset('');
-    this.ItemForm.get('Qty').reset('');
-    this.ItemForm.get('Instruction').reset('');
-    this.itemid.nativeElement.focus();
-    this.add = false;
-    console.log(this.dsiVisitList.data)
-  }
-
-
+  } 
   doseList:any=[];
   getDoseList() {
     this._PrescriptionService.getDoseList().subscribe((data) => {
@@ -413,6 +379,12 @@ export class NewPrescriptionComponent implements OnInit {
 
   onAdd() {
     debugger
+    if ((this.RegNo == '' || this.RegNo == null || this.RegNo == undefined)) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if ((this.ItemForm.get('ItemId').value == '' || this.ItemForm.get('ItemId').value == null || this.ItemForm.get('ItemId').value == undefined)) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -469,8 +441,7 @@ export class NewPrescriptionComponent implements OnInit {
       });
       return;
     }
-    this.ItemForm.get('ItemId').reset('');
-    // this.ItemForm.get('DoseId').reset('');
+    this.ItemForm.get('ItemId').reset(''); 
     this.ItemForm.get('Qty').reset('');
     this.ItemForm.get('Instruction').reset('');
     this.itemid.nativeElement.focus(); 

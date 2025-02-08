@@ -42,6 +42,7 @@ import { QrcodegeneratorComponent } from './qrcodegenerator/qrcodegenerator.comp
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {NgxPrintModule} from 'ngx-print';
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { BarcodeSaveComponent } from './barcode-save/barcode-save.component';
 
 //import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -59,7 +60,8 @@ const routes: Routes = [
     UpdateGRNComponent,
     PurchaseorderComponent,
     GrnemailComponent,
-    QrcodegeneratorComponent
+    QrcodegeneratorComponent,
+    BarcodeSaveComponent
   ],
   imports: [
     CommonModule,

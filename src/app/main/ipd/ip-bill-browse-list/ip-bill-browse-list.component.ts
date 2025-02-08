@@ -299,7 +299,7 @@ export class IPBillBrowseListComponent implements OnInit {
     PatientHeaderObj['CompanyName'] = contact.CompanyName;
     PatientHeaderObj['RegNo'] = contact.RegNo;
     PatientHeaderObj['RegId'] = contact.RegId;
-    this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
+    this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
 console.log(PatientHeaderObj)
 

@@ -63,17 +63,17 @@ displayedAdvaColumn:string[] = [
   'AdvanceNo',
   'RegNo',
   'PatientName',
-  'IPDNo',
-  'DoctorName',
-  'RefDoctorName',
-  'CompanyName',
-  'MobileNo',
-  'WardName', 
+  // 'IPDNo',
+  // 'DoctorName',
+  // 'RefDoctorName',
+  //'CompanyName',
+  //'MobileNo',
+  //'WardName', 
   'AdvanceAmount',
-  'CashPayAmount',
-  'ChequePayAmount',
-  'CardPayAmount',
-  'PayTMAmount',
+  // 'CashPayAmount',
+  // 'ChequePayAmount',
+  // 'CardPayAmount',
+  // 'PayTMAmount',
   'BalanceAmount',
   'RefundAmount',
   'UserName',
@@ -323,6 +323,19 @@ displayedAdvaColumn:string[] = [
     dialogRef.afterClosed().subscribe(result => {
       this.getSearchRefOfBillList();
       this.getSearchRefOfAdvList();
+    });
+  }
+  AdvanceOfBillDateUpdate(contact) {  
+    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+      {
+        height: "35%",
+        width: '35%',
+        data: {
+          obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.onShow_IpdAdvance(); 
     });
   }
 

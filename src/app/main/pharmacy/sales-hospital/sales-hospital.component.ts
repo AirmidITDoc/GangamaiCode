@@ -4401,7 +4401,7 @@ export class Printsal {
   ChequeNo: any;
   PayTMTranNo: any;
   NEFTNo: any;
-
+  TermsAndCondition:any;
 
   GSTPer: any;
   GSTAmount: any;

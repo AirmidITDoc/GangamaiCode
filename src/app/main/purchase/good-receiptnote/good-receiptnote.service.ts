@@ -241,4 +241,7 @@ export class GoodReceiptnoteService {
   }
     return this._httpClient.post("Generic/ExecByQueryStatement?query="+data, {});
   }
+  public getBarcodeSave(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query="+data,  {});
+  }
 }

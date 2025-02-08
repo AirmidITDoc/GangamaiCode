@@ -1697,6 +1697,11 @@
     </div> -->
 </div>
 
+
+
+
+
+
 <div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
     <!-- <div class="watermark" style="position:absolute;
         top: 50%;
@@ -1721,7 +1726,7 @@
                 <td colspan="4"
                     style="vertical-align: top;border: 1px solid black;width:40%; padding:0 10px 10px;font-size:10px;">
                     <h3
-                        style="margin-top:0;margin-bottom:5px;color: #e26d14;text-transform: uppercase;font-size: 10px;">
+                        style="margin-top:0;margin-bottom:5px;color: black;text-transform: uppercase;font-size: 10px;">
                         {{reportPrintObjList[0]?.StoreName}}</h3>
 
                     <div>{{reportPrintObjList[0]?.StoreAddress}}</div>
@@ -1843,7 +1848,7 @@
                             Please consult your doctor before consuming the medicine
                         </li>
                         <li>
-                            All disputes are subject to Solapur jurisdiction only
+                            All disputes are subject to {{reportPrintObjList[0]?.TermsAndCondition}} jurisdiction only
                         </li>
                     </ul>
                 </td>

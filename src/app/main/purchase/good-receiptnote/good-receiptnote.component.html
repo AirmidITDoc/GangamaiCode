@@ -605,7 +605,8 @@
                                                 <mat-row class="min-width-1900"
                                                     *matRowDef="let contact; columns: displayedColumns1;"
                                                     [@animate]="{value:'*',params:{y:'100%'}}"
-                                                    (click)="LastThreeItemList(contact)">
+                                                    (click)="Onbarcode(contact)">
+                                                  <!--   (click)="LastThreeItemList(contact)" -->
                                                 </mat-row>
                                                 <mat-footer-row *matFooterRowDef="['loading']"
                                                     [ngClass]="{'hide':dsGrnItemList!=null}"></mat-footer-row>

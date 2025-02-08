@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
+import { difference, result } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
 import { RegInsert } from 'app/main/opd/appointment/appointment.component';
@@ -24,6 +24,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import * as XLSX from 'xlsx';
 import { ConfigService } from 'app/core/services/config.service';
+import { BarcodeSaveComponent } from './barcode-save/barcode-save.component';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -579,6 +580,21 @@ export class GoodReceiptnoteComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
             this.getGRNList();
         });
+    }
+
+    Onbarcode(contact){
+        const dialogRef = this._matDialog.open(BarcodeSaveComponent,
+            {
+                width:"70%",
+                height:"60%",
+                data:{
+                    Obj:contact
+                }
+            });
+            dialogRef.afterClosed().subscribe(result =>{
+                console.log('The dialog was closed - Insert Action', result);
+                this.getGRNList();
+            })
     }
 
     onVerify(row) {

@@ -1,6 +1,6 @@
-<mat-tab-group style="width: 100%;">
+<mat-tab-group style="width: 100%;" dynamicTableHeight>
     <mat-tab label="Bill Cancellation">
-        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" dynamicTableHeight>
+        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar"  >
             <mat-toolbar>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -266,7 +266,7 @@
     </mat-tab>
     
     <mat-tab label="Advance Cancellation">
-        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" dynamicTableHeight>
+        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
             <mat-toolbar>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -361,10 +361,10 @@
                                 <mat-table #table matSort [dataSource]="dsAdvancelist" [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="useraction" sticky>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-100">
-                                            <span class="mat-header-text">Patient</span>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-70">
+                                            
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-100">
+                                        <mat-cell *matCellDef="let contact" class="w-70">
                                             <div class="patient-column gap-12" fxLayout="row">
                                                 <div class="patient-old-new" fxLayout="row" fxLayoutAlign="center">
                                                     <div class="pill-icon" fxLayout="row" fxLayoutAlign="center">
@@ -374,8 +374,8 @@
                                                         <mat-icon *ngIf="!contact.PatientTypeId=='1'" matTooltip="Patient Category other">business
                                                         </mat-icon>
             
-                                                        <mat-icon title="Clse Menu" *ngIf="contact.IsCancelled==1" [disabled]="contact.disabled" class="disabled-icon">
-                                                            close</mat-icon>
+                                                        <!-- <mat-icon title="Clse Menu" *ngIf="contact.IsCancelled==1" [disabled]="contact.disabled" class="disabled-icon">
+                                                            close</mat-icon> -->
             
                                                         <mat-icon title="Refund" *ngIf="!contact.RefundAmount==0" [disabled]="contact.disabled" class="disabled-icon">
                                                             redo</mat-icon>
@@ -387,45 +387,45 @@
                                     </ng-container>
             
                                     <ng-container matColumnDef="Date" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Date</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            <span> {{contact.Date | date:'dd/mm/yyyy'}}</span>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-160">Date</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-160">
+                                         {{contact.Date | date:'dd/MM/yyyy'}}-{{contact.PaymentTime | date:'hh:mm a'}} 
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="AdvanceNo" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Advance No
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-100">Advance No
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-100">
                                             <span> {{contact.AdvanceNo}}</span>
                                         </mat-cell>
                                     </ng-container>
             
                                     <ng-container matColumnDef="RegNo" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>UHID
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-80">UHID
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-80">
                                             <span> {{contact.RegNo}}</span>
                                         </mat-cell>
                                     </ng-container>
             
                                     <ng-container matColumnDef="PatientName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">Patient
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-190">Patient
                                             Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
                                             <span> {{contact.PatientName}}</span>
                                         </mat-cell>
                                     </ng-container>
             
-                                    <ng-container matColumnDef="IPDNo" sticky>
+                                    <!-- <ng-container matColumnDef="IPDNo" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>IPDNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.IPDNo}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
             
-                                    <ng-container matColumnDef="DoctorName">
+                                    <!-- <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-220">DoctorName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-220">
@@ -439,49 +439,49 @@
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-220">
                                             <span> {{contact.RefDoctorName || '--' }}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
             
-                                    <ng-container matColumnDef="CompanyName">
+                                    <!-- <ng-container matColumnDef="CompanyName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-220">CompanyName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-220">
                                             <span> {{contact.CompanyName || '--'}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
             
             
-                                    <ng-container matColumnDef="MobileNo">
+                                    <!-- <ng-container matColumnDef="MobileNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>MobileNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.MobileNo || '--'}}</span>
                                         </mat-cell>
-                                    </ng-container>
-                                    <ng-container matColumnDef="WardName">
+                                    </ng-container> -->
+                                    <!-- <ng-container matColumnDef="WardName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-120">WardName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-120">
                                             <span> {{contact.WardName}} - {{contact.BedName}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
              
                                     <ng-container matColumnDef="AdvanceAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Advance Amt
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-130">Advance Amt
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-130">
                                             <span> {{contact.AdvanceAmount | currency:"INR":"symbol"}}</span>
                                         </mat-cell>
                                     </ng-container>
             
-                                    <ng-container matColumnDef="CashPayAmount">
+                                    <!-- <ng-container matColumnDef="CashPayAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>Cash Pay
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                             <span> {{contact.CashPayAmount | currency:"INR":"symbol"}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
             
-                                    <ng-container matColumnDef="ChequePayAmount">
+                                    <!-- <ng-container matColumnDef="ChequePayAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>Cheque Pay
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
@@ -503,23 +503,23 @@
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.PayTMAmount | currency:'INR'}}</span>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
             
                                     <ng-container matColumnDef="BalanceAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-130">
                                             BalanceAmt
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md style="background-color: lightcoral;">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md style="background-color: lightcoral;" class="w-130">
                                             {{contact.BalanceAmount | currency:'INR'}}
                                             
                                         </mat-cell>
                                     </ng-container>
             
                                     <ng-container matColumnDef="RefundAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-130">
                                             RefundAmount
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md style="background-color: aquamarine;">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md style="background-color: aquamarine;" class="w-130">
                                             {{contact.RefundAmount | currency:'INR'}}
                                             <button mat-icon-button matTooltip="View Refund">
                                                 <mat-icon *ngIf="!contact.RefundAmount==0">visibility</mat-icon>
@@ -528,18 +528,22 @@
                                     </ng-container>
             
                                     <ng-container matColumnDef="UserName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>UserName
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-130">UserName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-130">
                                             <span> {{contact.UserName }}</span>
                                         </mat-cell>
-                                    </ng-container>
-            
-                                    <ng-container matColumnDef="buttons" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact"> 
+                                    </ng-container> 
 
+                                    <ng-container matColumnDef="buttons" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef style="color: white;" class="w-220">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-220">  
+                                            <button class="btn btn-primary" matTooltip="Advacne Date Update" (click)="AdvanceOfBillDateUpdate(contact)">
+                                                Date Update</button>&nbsp;
+                                            <button class="btn btn-danger" matTooltip="Cancel Advance"  style="color: white;"
+                                           >
+                                                     Cancel</button>
                                         </mat-cell>
                                     </ng-container>
             
@@ -555,9 +559,9 @@
                                         </mat-footer-cell>
                                     </ng-container>
             
-                                    <mat-header-row class="accent min-width-2400"
+                                    <mat-header-row class="accent min-width-1640"
                                         *matHeaderRowDef="displayedAdvaColumn; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedAdvaColumn;" class="contact min-width-2400"
+                                    <mat-row *matRowDef="let contact; columns: displayedAdvaColumn;" class="contact min-width-1640"
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dsAdvancelist!=null}"></mat-footer-row>
@@ -577,7 +581,7 @@
     </mat-tab>
 
     <mat-tab label="Refund of Bill">
-        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" dynamicTableHeight>
+        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" >
             <mat-toolbar>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -766,7 +770,7 @@
     </mat-tab>
 
     <mat-tab label="Refund of Advance">
-        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" dynamicTableHeight>
+        <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" >
             <mat-toolbar>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">

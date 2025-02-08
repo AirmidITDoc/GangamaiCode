@@ -27,7 +27,8 @@ export class PharmacyreportService {
         ItemId:[''],
         DoctorID:[''],
         OPIPType:['2'],
-        RegID:['']
+        RegID:[''],
+        PaymentMode:['']
       })
     }
   public getDataByQuery(emp) {

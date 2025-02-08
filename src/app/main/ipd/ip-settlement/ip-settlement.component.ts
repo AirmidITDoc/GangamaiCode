@@ -59,8 +59,15 @@ export class IPSettlementComponent implements OnInit {
     AgeDay: any;
     GenderName: any;
     AgeMonth: any;
-    MobileNo: any;
+    Doctorname: any;
     SpinLoading: boolean = false;
+    DepartmentName:any;
+    AdmDateTime:any;
+    IPDNo:any;
+    PatientType:any;
+    RefDocName:any;
+    RoomName:any;
+    BedName:any;
 
     displayedColumns1: string[] = [
         'button',
@@ -102,9 +109,19 @@ export class IPSettlementComponent implements OnInit {
             this.RegNo = this.PatientHeaderObj.RegNo;
             this.PatientName = this.PatientHeaderObj.PatientName;
             this.AgeYear = this.PatientHeaderObj.PatientAge;
-            this.MobileNo = this.PatientHeaderObj.MobileNo;
+            this.Doctorname = this.PatientHeaderObj.Doctorname;
             this.vCompanyName = this.PatientHeaderObj.CompanyName;
             this.vTariif = this.PatientHeaderObj.TariffName;
+            this.DepartmentName = this.PatientHeaderObj.DepartmentName;
+            this.AdmDateTime = this.PatientHeaderObj.AdmDateTime;
+            this.IPDNo = this.PatientHeaderObj.IPDNo;
+            this.AgeMonth = this.PatientHeaderObj.AgeMonth;
+            this.AgeDay = this.PatientHeaderObj.AgeDay;
+            this.GenderName = this.PatientHeaderObj.GenderName;
+            this.PatientType = this.PatientHeaderObj.PatientType;
+            this.RefDocName  = this.PatientHeaderObj.RefDocName;
+            this.RoomName =  this.PatientHeaderObj.RoomName;
+            this.BedName = this.PatientHeaderObj.BedName;
             this.getCreditBillDetails();
         }
         else {
@@ -137,6 +154,7 @@ export class IPSettlementComponent implements OnInit {
     getSelectedObj(obj) {
         console.log(obj)
         this.registerObj = obj;
+        this.selectedAdvanceObj = obj;
         this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
         this.RegId = obj.RegId;
         this.vAdmissionID = obj.AdmissionID;
@@ -145,7 +163,16 @@ export class IPSettlementComponent implements OnInit {
         this.AgeDay = obj.AgeDay;
         this.AgeMonth = obj.AgeMonth;
         this.GenderName = obj.GenderName;
-        this.MobileNo = obj.MobileNo;
+        this.Doctorname = obj.MobileNo;
+        this.DepartmentName = obj.DepartmentName;
+        this.AdmDateTime = obj.AdmDateTime
+        this.IPDNo = obj.IPDNo ;
+        this.vCompanyName = obj.CompanyName;
+        this.vTariif = obj.TariffName;
+        this.PatientType = obj.PatientType;
+        this.RefDocName = obj.RefDocName;
+        this.RoomName = obj.RoomName;
+        this.BedName = obj.BedName;
         this.getCreditBillDetails();
     }
 
@@ -162,7 +189,16 @@ export class IPSettlementComponent implements OnInit {
         this.AgeDay = '';
         this.AgeMonth = '';
         this.GenderName = '';
-        this.MobileNo = '';
+        this.Doctorname = '';
+        this.DepartmentName = '';
+        this.AdmDateTime = '';
+        this.IPDNo = '';
+        this.vCompanyName  = '';
+        this.vTariif = '';
+        this.PatientType = '';
+        this.RefDocName = '';
+        this.RoomName = '';
+        this.BedName = '';
     }
     getCreditBillDetails() {
         this.sIsLoading = 'loading-data';
@@ -304,8 +340,8 @@ export class IPSettlementComponent implements OnInit {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
         PatientHeaderObj['PatientName'] = this.PatientName; 
-        PatientHeaderObj['AdvanceAmount'] = contact.NetPayableAmt;
-        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+        PatientHeaderObj['AdvanceAmount'] = contact.BalanceAmt;
+        PatientHeaderObj['NetPayAmount'] = contact.BalanceAmt;
         PatientHeaderObj['BillNo'] = contact.BillNo;
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
         PatientHeaderObj['IPDNo'] = contact.IPDNo;

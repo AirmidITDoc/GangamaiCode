@@ -38,6 +38,7 @@ export class BillDateUpdateComponent implements OnInit {
       this.RefundId = this.resigterObj.RefundId;
       this.PaymentId = this.resigterObj.PaymentId;
       this.BillNo = this.resigterObj.BillNo;
+      console.log(this.resigterObj) 
       console.log(this.RefundId) 
       console.log(this.BillNo) 
       console.log(this.PaymentId) 
@@ -82,7 +83,25 @@ export class BillDateUpdateComponent implements OnInit {
             });
 
           }
-        }  
+        }
+         else if(this.resigterObj.AdvanceId){
+          Query = "update advancedetail set Date='"+formattedDate+"',Time='"+formattedTime+"'where AdvanceDetailID=" +this.resigterObj.AdvanceDetailID 
+          if(this.PaymentId){
+            let PayQuery = "update payment set PaymentDate='"+formattedDate+"',PaymentTime='"+formattedTime+"'where PaymentId=" +this.PaymentId 
+            this._CancellationService.getDateTimeChangeReceipt(PayQuery).subscribe(response => {
+              if (response) {
+                this.toastr.success('Payment Receipt Date & Time Updated Successfuly', 'Updated !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });  
+              } else {
+                this.toastr.error('API Error!', 'Error !', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                }); 
+              }
+            });
+
+          }
+        }
 
       console.log(Query);
         this._CancellationService.getDateTimeChange(Query).subscribe(response => {

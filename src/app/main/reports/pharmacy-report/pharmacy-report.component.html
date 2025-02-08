@@ -146,8 +146,7 @@
                                         </span>
                                         <mat-autocomplete #autoPayment="matAutocomplete"
                                             [displayWith]="getOptionTextPaymentMode">
-                                            <mat-option *ngFor="let option of filteredOptionsPaymentmode | async"
-                                                [value]="option" (onSelectionChange)="PaymentModeChk(option)">
+                                            <mat-option *ngFor="let option of filteredOptionsPaymentmode | async"  [value]="option"  >
                                                 {{option.PaymentMode}}
                                             </mat-option>
                                         </mat-autocomplete>
