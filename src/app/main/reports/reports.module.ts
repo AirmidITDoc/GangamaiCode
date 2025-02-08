@@ -78,6 +78,13 @@ const appRoutes: Routes = [
             ),
     },
     {
+        path: "report-generation",
+        loadChildren: () =>
+            import("./report-generation/report-generation.module").then(
+                (m) => m.ReportGenerationModule
+            ),
+    },
+    {
         path: "inventoryreport",
         loadChildren: () =>
             import("./inventory-report/inventory.module").then(

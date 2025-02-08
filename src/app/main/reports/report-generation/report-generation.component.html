@@ -1,0 +1,166 @@
+<div id="contacts" fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- HEADER -->
+
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
+
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                style="font-size: 20px;width: 70%; font-weight: 400;">
+                REPORTS GENERATE
+            </span>
+
+            <div fxLayout="column" fxLayout.gt-xs="row">
+
+                <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
+                    (click)="OnClose()">
+                    close
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+    <div class="content" style="width: 100% !important; height: 100% !important;">
+        <!-- CENTER -->
+        <div class="center p-24 pb-56" style="width: 100% !important; height: 100% !important;">
+            <!-- CONTENT -->
+            <div class="content-card" style="width: 100% !important; height: 100% !important;">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                    <div fxlayout="column" style="width: 50%;">
+                        <!-- style="width: 100%;" -->
+                        <div fxFlex.gt-sm="100%" style="width: 99%;">
+                            <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
+                                class="backgroundBlur" style="height: 100%;">
+                                <div class="spinner-border text-danger"></div>
+                            </div>
+                            <mat-toolbar>Reports</mat-toolbar>
+                            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+                                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                                  <button mat-icon-button (click)="GetReportDeails(node)"></button> 
+                                  {{node.name}} - {{node.id}} - {{node.mode}}
+                                </mat-tree-node>
+                                <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+                                  <button mat-icon-button matTreeNodeToggle
+                                          [attr.aria-label]="'toggle ' + node.name">
+                                    <mat-icon class="mat-icon-rtl-mirror">
+                                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                    </mat-icon>
+                                  </button>
+                                  {{node.name}}
+                                </mat-tree-node>
+                              </mat-tree>
+                        </div>
+
+                    </div>
+
+                    <div fxlayout="column" style="width: 50%;">
+
+                        <div class="dialog-content-wrapper" style="width: 100%;">
+                            <!-- ================================ LABEL HEADER  -->
+                            <form [formGroup]="_ReportService.userForm" style="padding: 6px 6px 5px 5px;"
+                                fusePerfectScrollbar>
+                                <div>
+                                    <span
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);padding: 10px;">Selected
+                                        Report :<span style="font-weight: bold;">{{ReportName}}</span> |</span>
+
+                                    <span
+                                        style="font-family: 'Times New Roman', Times, serif;font-size: medium;color: rgb(3, 29, 79);float: right;">Current
+                                        User : <span style="font-weight:bold ;"> {{UId}} | {{UserName}}
+                                        </span></span>
+                                </div>
+                                <br />
+                               <div fxLayout="row" fxLayoutAlign="start none">
+                                    <br />
+                                    <mat-form-field appearance="outline" style="margin-left: 2%;" fxFlex="40%">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="StartDate" placeholder="Start date">
+                                            <input matEndDate formControlName="EndDate" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="start none">
+                                    <div *ngIf="flagUserSelected" style="margin-left:2%;">
+                                        <div fxFlex="41%">
+                                            <airmid-autocomplete label="User" [formGroup]="_ReportService.userForm" formControlName="UserId" 
+                                            placeholderText="Enter User" ApiUrl="Report/UserList/auto-complete?Keyword=" 
+                                            (selectionChange)="SelectedUserObj($event)"></airmid-autocomplete>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="flagDoctorSelected" style="margin-left:2%;">
+                                        <div fxFlex="41%">
+                                            <airmid-autocomplete label="Doctor" [formGroup]="_ReportService.userForm" formControlName="DoctorID" 
+                                            placeholderText="Enter Doctor" ApiUrl="Report/DoctorList/auto-complete?Keyword=" 
+                                            (selectionChange)="SelectedDoctorObj($event)"></airmid-autocomplete>
+                                        </div>
+                                    </div>             
+                                    <div *ngIf="flagServiceSelected" style="margin-left:2%;">
+                                        <div fxFlex="41%">
+                                            <airmid-autocomplete label="Service Name" [formGroup]="_ReportService.userForm" formControlName="ServiceId" 
+                                            placeholderText="Enter Service Name" ApiUrl="Report/ServiceList/auto-complete?Keyword=" 
+                                            (selectionChange)="SelectedServiceObj($event)"></airmid-autocomplete>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="flagDepartmentSelected" style="margin-left:2%;">
+                                        <div fxFlex="41%">
+                                            <airmid-autocomplete label="Department Name" [formGroup]="_ReportService.userForm" formControlName="DepartmentId" 
+                                            placeholderText="Enter Department Name" ApiUrl="Report/DepartmentList/auto-complete?Keyword=" 
+                                            (selectionChange)="SelectedDepartmentObj($event)"></airmid-autocomplete>
+                                        </div>
+                                    </div>                                                                
+                                    <div *ngIf="flagCashcounterSelected" style="margin-left:2%;">
+                                        <div fxFlex="41%">
+                                            <airmid-autocomplete label="Cash Counter" [formGroup]="_ReportService.userForm" formControlName="CashCounterId" 
+                                            placeholderText="Enter Cash Counter" ApiUrl="Report/CashCounterList/auto-complete?Keyword=" 
+                                            (selectionChange)="SelecteCashCounterObj($event)"></airmid-autocomplete>
+                                        </div>
+                                    </div>    
+                                    <!--      <div>
+                                        <mat-form-field appearance="outline" *ngIf="FlagVisitSelected">
+                                            <mat-label>Group Id</mat-label>
+                                            <input name="GroupId" formControlName="GroupId" placeholder="GroupId"
+                                                matInput>
+    
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <mat-form-field appearance="outline" *ngIf="FlaOPIPTypeSelected" style="margin-left:2%;">
+                                            <mat-label>OPIP Type</mat-label>
+                                            <input name="OPIPType" formControlName="OPIPType" placeholder="OPIPType"
+                                                matInput>
+    
+                                        </mat-form-field>
+                                    </div>-->
+                                </div> 
+                                <div fxLayout="row" fxLayoutAlign="start none">
+                                    <button class="btn btn-primary " color="accent" (click)="GetPrint()"
+                                        style="margin-left:2%;">
+                                        <span>Print</span>
+                                    </button>
+
+                                </div>
+                            </form>
+
+
+                            <!-- ================================ LABEL HEADER  -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <!-- / CENTER -->
+</div>
+
+
