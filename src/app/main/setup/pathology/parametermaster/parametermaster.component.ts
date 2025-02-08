@@ -25,7 +25,7 @@ export class ParametermasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
-        apiUrl: "ParameterMaster/MPathParameterList", //PathParameterMaster/List
+        apiUrl: "ParameterMaster/MPathParameterList",
         columnsList: [
             { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -51,6 +51,11 @@ export class ParametermasterComponent implements OnInit {
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onAdd(data) // EDIT Records
+                        }
+                    },
+                    {
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onaddformula(data) // add formula Records
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -173,6 +178,7 @@ export class ParametermasterComponent implements OnInit {
         });
     }
     onaddformula(row) {
+        debugger
 
         const dialogRef = this._matDialog.open(AddformulaComponent, {
             maxWidth: "50vw",

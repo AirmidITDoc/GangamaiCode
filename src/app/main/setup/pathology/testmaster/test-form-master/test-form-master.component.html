@@ -64,7 +64,7 @@
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationCategoryMessages().CategoryId"
                                                     [mode]="autocompleteModeCategoryId" 
-                                                    (selectDdlObject)="selectChangeCategoryId($event)">
+                                                    (selectionChange)="selectChangeCategoryId($event)">
                                                 </airmid-dropdown>
 
                                             </div>
@@ -76,7 +76,7 @@
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationServiceMessages().ServiceId"
                                                     [mode]="autocompleteModeServiceID" 
-                                                    (selectDdlObject)="selectChangeServiceID($event)"
+                                                    (selectionChange)="selectChangeServiceID($event)"
                                                     *ngIf="serviceflag">
                                                 </airmid-dropdown>
                                             </div>
@@ -108,7 +108,7 @@
 
                                                 <mat-form-field style="width: 22rem">
                                                     <input matInput placeholder="Search" autocomplete="off"
-                                                        name="ParameterNameSearch" (keyup)="onSearch()" [(ngModel)]="ParameterName" 
+                                                        name="ParameterNameSearch" (keyup)="onSearch()"
                                                         formControlName="ParameterNameSearch" />
                                                     <button matSuffix mat-icon-button aria-label="Clear"
                                                         (click)="onSearchClear()" (keyup)="onSearch()">
@@ -133,7 +133,7 @@
                                                     <mat-card style="height:267px;width: 100%;overflow: auto;">
 
 
-                                                        <mat-table matSort [dataSource]="DSTestList"
+                                                        <mat-table matSort [dataSource]="paramterList"
                                                             [@animateStagger]="{value:'50'}"
                                                             style="overflow:auto; width: 100%;">
 
@@ -182,7 +182,7 @@
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                                     (click)="onAdd(element)">
-                                                                    {{element.TestName}}
+                                                                    {{element.parameterName}}
                                                                 </mat-cell>
 
                                                             </ng-container>
@@ -472,7 +472,7 @@
                                         <div fxLayout="row" fxLayoutGap="5px" *ngIf="!_TestmasterService.is_templatetest">
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline" fxFlex="98%">
+                                                <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Foot Note</mat-label>
                                                     <textarea matInput display="block" rows="2" formControlName="FootNote"
                                                         name="FootNote">
@@ -485,7 +485,7 @@
                                             </div>
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline" fxFlex="98%">
+                                                <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Suggestion Note</mat-label>
                                                     <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
                                                         name="SuggestionNote">

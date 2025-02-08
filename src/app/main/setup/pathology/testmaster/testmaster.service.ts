@@ -195,7 +195,10 @@ export class TestmasterService {
     }
     
     public getParameterMasterList(param) {
-        return this._httpClient.PostData("PathParameterMaster/List",param);
+        return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
+    }
+    public getIsSubTestList(param) {
+        return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
     }
     
     public getTestListfor(param) {
@@ -225,6 +228,7 @@ export class TestmasterService {
     }
 
     public getquerydata(data){
+        debugger
         return this._httpClient.PostData("Generic/GetBySelectQuery?query="+data, {})
     }
 
