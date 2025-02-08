@@ -190,8 +190,8 @@ export class ServiceMaster {
      */
     constructor(ServiceMaster) {
         {
-            this.ServiceId = ServiceMaster.ServiceId || "";
-            this.GroupId = ServiceMaster.GroupId || "";
+            this.ServiceId = ServiceMaster.ServiceId || "11730";
+            this.GroupId = ServiceMaster.GroupId || 0;
             this.ServiceShortDesc = ServiceMaster.ServiceShortDesc || "";
             this.ServiceName = ServiceMaster.ServiceName || "";
             this.Price = ServiceMaster.Price || "";

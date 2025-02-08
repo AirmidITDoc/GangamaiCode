@@ -32,6 +32,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { CompanysettlementComponent } from './companysettlement.component';
+import { NewSettlementComponent } from './new-settlement/new-settlement.component';
 
 
 const routes: Routes = [
@@ -41,7 +42,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [CompanysettlementComponent],
+  declarations: [CompanysettlementComponent, NewSettlementComponent],
   imports: [
    RouterModule.forChild(routes),
            MatButtonModule,

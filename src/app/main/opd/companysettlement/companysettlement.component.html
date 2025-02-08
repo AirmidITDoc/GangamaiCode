@@ -16,7 +16,7 @@
             <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                 <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
 
-                    <div class="redio-container" style="width: 40%;">
+                    <div class="redio-container" style="width: 40%;padding: 10px;">
                         <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="regID" placeholderText="Enter regID" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
                     </div>  
                 </div>
@@ -35,23 +35,24 @@
                                         <div class="patient-col">
                                             <span class="patient-col-key">UHID No</span>
                                             <span>:</span>
-                                            <!-- <span class="patient-col-value">{{RegNo}}</span> -->
+                                            <span class="patient-col-value">{{registerObj.regId}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
-                                            <!-- <span class="patient-col-value">{{PatientName}}</span> -->
+                                            <span class="patient-col-value">{{registerObj.firstName}} {{registerObj.lastName}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
-                                            <!-- <span class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}D |
-                                                {{GenderName}}</span> -->
+                                            <span class="patient-col-value">{{registerObj.ageYear}}Y
+                                                <!-- |{{registerObj.ageMonth}}M|{{registerObj.ageDay}}D | -->
+                                                {{registerObj.genderId}}</span>
                                         </div> 
                                         <div class="patient-col">
                                             <span class="patient-col-key">Mobile No</span>
                                             <span>:</span>
-                                            <!-- <span class="patient-col-value">{{MobileNo}}</span> -->
+                                            <span class="patient-col-value">{{registerObj.mobileNo}}</span>
                                         </div>
                 
                                     </div>
@@ -65,21 +66,27 @@
 
         <airmid-table [gridConfig]="gridConfig"  class="content">
             <ng-container filters>
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Company Name</mat-label>
-                    <input matInput placeholder="Search Company Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                <form [formGroup]="myFormGroup">
+                <mat-form-field appearance="outline">
+                    <mat-label>RegId</mat-label>
+                    <input matInput placeholder="Search RegId" autocomplete="off" [formGroup]="myFormGroup"
+                        formControlName="RegId" [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
 
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                <!-- <airmid-autocomplete lbl="RgId" [formGroup]="myFormGroup" formControlName="RegId" placeholderText="Enter regID"
+                 ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
+                 [(ngModel)]="gridConfig.filters[0].fieldValue"></airmid-autocomplete> -->
+
+                </form>
+                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
                     <mat-radio-button value="">All</mat-radio-button>
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                     <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
+                </mat-radio-group> -->
             </ng-container>
         </airmid-table>
     </div>

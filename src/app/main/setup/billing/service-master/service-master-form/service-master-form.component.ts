@@ -87,9 +87,6 @@ export class ServiceMasterFormComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) {
-
-        //this.getClassList();
-
     }
 
     @ViewChild(MatSort) sort: MatSort;
@@ -106,7 +103,7 @@ export class ServiceMasterFormComponent implements OnInit {
     ngOnInit(): void {
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
 
-        this.getClassList()
+
         //  this.getServicewiseClassMasterList();
 
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
@@ -116,12 +113,12 @@ export class ServiceMasterFormComponent implements OnInit {
 
 
         if (this.data) {
-            // this.getServicewiseClassMasterList();
+            console.log(this.data.registerObj)
             this.registerObj = this.data.registerObj;
             this.vServiceName = this.data.registerObj.ServiceName;
             this.vServiceShortDesc = this.data.registerObj.ServiceShortDesc;
         }
-
+        this.getClassList(this.registerObj.ServiceId)
     }
     @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
         const focusedElement = document.activeElement as HTMLElement;
@@ -144,24 +141,36 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
 
-    getClassList() {
+    getClassList(serviceId) {
+        debugger
         var param = {
             "first": 0,
-            "rows": 25,
-            sortField: "classId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-
+            "rows": 20,
+            "sortField": "ServiceDetailId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ServiceId",
+                    "fieldValue": String(serviceId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Start",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Length",
+                    "fieldValue": "10",
+                    "opType": "Equals"
+                }
             ],
             "exportType": "JSON"
         }
+        console.log(param)
         this._serviceMasterService.getClassMasterList(param).subscribe(Menu => {
 
             this.DSServicedetailList.data = Menu.data as Servicedetail[];;
-            this.DSServicedetailList.sort = this.sort;
-            this.DSServicedetailList.paginator = this.paginator;
             console.log(this.DSServicedetailList.data)
         });
     }
@@ -234,7 +243,7 @@ export class ServiceMasterFormComponent implements OnInit {
                     "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
                 }
                 this.DSServicedetailList.data.forEach(element => {
-                    
+
                     let c = JSON.parse(JSON.stringify(class_det));
                     c['classId'] = element.ClassId;
                     c['classRate'] = element.ClassRate || 0;

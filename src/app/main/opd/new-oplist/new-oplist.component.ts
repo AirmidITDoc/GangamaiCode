@@ -55,6 +55,7 @@ export class NewOPListComponent implements OnInit {
             this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     
         }
 
@@ -68,7 +69,7 @@ export class NewOPListComponent implements OnInit {
              { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "Total Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
@@ -81,14 +82,14 @@ export class NewOPListComponent implements OnInit {
             { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+            { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250},
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
@@ -117,7 +118,7 @@ export class NewOPListComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "VisitDetail/OPPaymentList",
         columnsList: [
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:6 },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:6, width: 100  },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -132,11 +133,11 @@ export class NewOPListComponent implements OnInit {
             { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center"},
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 150 },
-            { heading: "UserName", key: "userName", sort: true, align: "center", width: 150 },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+            { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
+            { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
             { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate1}  // Assign ng-template to the column
             // {
@@ -185,12 +186,12 @@ export class NewOPListComponent implements OnInit {
             { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
+            { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
+            { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
             { heading: "PatientType", key: "patientType", sort: true, align: "center" },
-            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CompanyName", key: "companyName",sort: true, align: "center" },
+            { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' , width: 200 },
+            { heading: "CompanyName", key: "companyName",sort: true, align: "center", width: 200  },
             { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate2} 
             // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },

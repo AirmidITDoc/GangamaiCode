@@ -24,8 +24,9 @@ export class BankMasterService {
             bankId: [0],
             bankName: ["", 
                 [
-                    Validators.required,Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.required,
+                    // Validators.maxLength(50),
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isActive:[true,[Validators.required]]

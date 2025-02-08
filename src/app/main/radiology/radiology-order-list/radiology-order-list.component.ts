@@ -83,7 +83,7 @@ export class RadiologyOrderListComponent implements OnInit {
             { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "30", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: "01/01/2021", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "01/01/2024", opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals },

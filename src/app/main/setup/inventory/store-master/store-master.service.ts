@@ -118,10 +118,10 @@ export class StoreMasterService {
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
-            isDeleted: ["true"],
-            UpdatedBy: ["0"],
-            AddedByName: ["0"],
-            Header: [""],
+            // isDeleted: ["true"],
+            // UpdatedBy: ["0"],
+            // AddedByName: ["0"],
+            // Header: [""],
             pharSalCountId: ["",
                 [
                     Validators.required
@@ -137,7 +137,7 @@ export class StoreMasterService {
                     Validators.required
                 ]
             ],
-            isActive: [true, [Validators.required]],
+            // isActive: [true, [Validators.required]],
             workOrderPrefix: "0",
             workOrderNo: "0",
             pharAdvId: 0,
@@ -176,12 +176,13 @@ export class StoreMasterService {
     }
 
     public storeMasterSave(Param: any) {
-        if (Param.storeId) {
+    if (Param.storeId) {
             debugger
-            return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param);
+            return this._httpClient.PutData("StoreMaster/", Param);
         } else return this._httpClient.PostData("StoreMaster", Param);
     }
 
+  
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("StoreMaster?Id" + m_data.toString());
     }

@@ -8,6 +8,9 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { fuseAnimations } from '@fuse/animations';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { RegInsert } from '../registration/registration.component';
+import { NewSettlementComponent } from './new-settlement/new-settlement.component';
+import Swal from 'sweetalert2';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-companysettlement',
@@ -18,9 +21,11 @@ import { RegInsert } from '../registration/registration.component';
 })
 export class CompanysettlementComponent implements OnInit {
     searchFormGroup: FormGroup
-    phoneappForm: FormGroup
-
+    myFormGroup: FormGroup
+RegId1="39";
+BillNo:any;
     constructor(public _CompanysettlementService: CompanysettlementService, 
+         private commonService: PrintserviceService,
                 public _matDialog: MatDialog,
                 public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) 
                 { }
@@ -44,20 +49,19 @@ export class CompanysettlementComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CompanysettlementService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
+                    }, 
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.viewgetOPPayemntPdf(data);
                         }
-                    }]
+                    }
+                    ]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "BillNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "RegId", fieldValue: "39", opType: OperatorComparer.Contains },
+            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
         ],
@@ -66,27 +70,64 @@ export class CompanysettlementComponent implements OnInit {
 
     ngOnInit(): void {
         this.searchFormGroup = this.createSearchForm();
+        this.myFormGroup= this.createSearchForm1();
     }
 
-    onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+    onSave(contact: any = null) {
+        let PatientHeaderObj = {};
+        // PatientHeaderObj['Date'] = formattedDate,
+        let PatientName = contact.firstName +" "+ contact.lastName
+        PatientHeaderObj['RegNo'] = contact.regId;
+        PatientHeaderObj['PatientName'] = PatientName;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
+        PatientHeaderObj['Age'] = contact.ageYear;
+        PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+        PatientHeaderObj['DoctorName'] = contact.DoctorName;
+        PatientHeaderObj['TariffName'] = contact.TariffName;
+        PatientHeaderObj['CompanyName'] = contact.CompanyName;
+        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt; 
+        console.log(PatientHeaderObj)
+        const dialogRef = this._matDialog.open(NewSettlementComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '95%',
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "OP-Bill"
+                  }
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                console.log(result)
+                if (result.IsSubmitFlag == true) {
+        debugger
+                //   this.vpaidamt = result.PaidAmt;
+                //   this.vbalanceamt = result.BalAmt
         
-        // let that = this;
-        // const dialogRef = this._matDialog.open(NewconfigComponent,
-        //     {
-        //         maxWidth: "95vw",
-        //         height: '95%',
-        //         width: '95%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
+                  let updateBillobj = {};
+                  updateBillobj['BillNo'] = this.BillNo;
+                  updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;  //result.BalAmt;
+               
+                  let Data = {
+                    "billDetails": updateBillobj,
+                    "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
+                  };
+                  console.log(Data)
+                  this._CompanysettlementService.InsertOPBillingsettlement(Data).subscribe(response => {
+                    this.toastr.success(response.message);
+                   this.viewgetOPPayemntPdf(response);
+                  }, (error) => {
+                    this.toastr.error(error.message);
+                  });
+               
+                }
+              });
     }
 
+
+    viewgetOPPayemntPdf(data){
+        this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
+    }
     
     createSearchForm() {
         return this.formBuilder.group({
@@ -94,26 +135,39 @@ export class CompanysettlementComponent implements OnInit {
         AppointmentDate: [(new Date()).toISOString()],
         });
     }
+    createSearchForm1() {
+        return this.formBuilder.group({
+        RegId: 0       
+        });
+    }
 
-    RegId = 0;
+   
     registerObj = new RegInsert({});
-
+    RegId=0;
+    PatientName:any;
     getSelectedObj(obj) {
-        console.log(obj)
-        this.RegId = obj.value;
         debugger
-        if ((this.RegId ?? 0) > 0) {
-
-        setTimeout(() => {
-            this._CompanysettlementService.getRegistraionById(this.RegId).subscribe((response) => {
+        console.log(obj)
+        this.RegId1 = obj.value;
+        this.PatientName=obj.text;
+       setTimeout(() => {
+            this._CompanysettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
             this.registerObj = response;
             console.log(response)
 
             });
 
         }, 500);
-        }
+        
+        filters: [
+            { fieldName: "RegId", fieldValue: String(this.RegId1), opType: OperatorComparer.Contains },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals },
+        ]
+        // this.gridConfig.filters[0].fieldValue = obj.value
+        this.grid.bindGridData();
+}
 
-    }
+
 
 }

@@ -71,6 +71,46 @@ export class StoreFormMasterComponent implements OnInit {
 
     onSubmit() {
 
+        // var s={            
+        //         "storeId": 0,
+        //         "storeShortName": "shilpa",
+        //         "storeName": "medical",
+        //         "indentPrefix": "abc",
+        //         "indentNo": "123",
+        //         "purchasePrefix": "xyz",
+        //         "purchaseNo": "453",
+        //         "grnPrefix": "sss",
+        //         "grnNo": "5643",
+        //         "grnreturnNoPrefix": "123",
+        //         "grnreturnNo": "string",
+        //         "issueToDeptPrefix": "string",
+        //         "issueToDeptNo": "11",
+        //         "returnFromDeptNoPrefix": "string",
+        //         "returnFromDeptNo": "string",
+        //         "workOrderPrefix": "string",
+        //         "workOrderNo": "string",
+        //         "pharSalCountId": 0,
+        //         "pharSalRecCountId": 0,
+        //         "pharSalReturnCountId": 0,
+        //         "pharAdvId": 0,
+        //         "pharAdvReptId": 0,
+        //         "pharAdvRefId": 0,
+        //         "pharAdvRefReptId": 0,
+        //         "printStoreName": "string",
+        //         "dlNo": "string",
+        //         "gstin": "string",
+        //         "storeAddress": "pune",
+        //         "hospitalMobileNo": "9987654311",
+        //         "hospitalEmailId": "shilpameshra@23gmail.com",
+        //         "printStoreUnitName": "facewash",
+        //         "isPharStore": true,
+        //         "isWhatsAppMsg": true,
+        //         "whatsAppTemplateId": "string",
+        //         "isSmsmsg": true,
+        //         "smstemplateId": "string"
+        //       }
+              
+        
         // if (!this.storeForm.invalid) {
             console.log("StoreCategoryMaster Insert:", this.storeForm.value)
             debugger

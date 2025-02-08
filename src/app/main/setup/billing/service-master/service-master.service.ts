@@ -87,7 +87,7 @@ export class ServiceMasterService {
     }
 
     public getClassMasterList(param) {
-        return this._httpClient.PostData("ClassMaster/List",param);
+        return this._httpClient.PostData("Billing/ServiceClassdetaillList",param);
     }
 
   

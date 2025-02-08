@@ -66,11 +66,11 @@ export class CompanysettlementService {
         this.createForm();
     }
 
-    // public classMasterSave(Param: any) {
-    //     if (Param.roleId) {
-    //         return this._httpClient.PutData("RoleTemplate/" + Param.roleId, Param);
-    //     } else return this._httpClient.PostData("RoleTemplate", Param);
-    // }
+    public InsertOPBillingsettlement(Param: any) {
+        // if (Param.roleId) {
+            return this._httpClient.PutData("OPSettlement/SettlementInsert" , Param);
+        // } else return this._httpClient.PostData("RoleTemplate", Param);
+    }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("CurrencyMaster?Id=" + m_data.toString());
@@ -79,4 +79,6 @@ export class CompanysettlementService {
     public getRegistraionById(Id) {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
+
+
 }

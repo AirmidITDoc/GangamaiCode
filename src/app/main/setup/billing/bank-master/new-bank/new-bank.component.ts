@@ -32,11 +32,11 @@ export class NewBankComponent implements OnInit {
    
         if((this.data?.bankId??0) > 0)
         {
-            this.bankName=this.data?.bankName.trim();
+           
             this.isActive=this.data.isActive
-
-            // this.bankForm.patchValue(this.data);
-            
+            this.data.bankName=this.data.bankName.trim()
+          this.bankForm.patchValue(this.data);
+            console.log( this.data)
         }
     }
 
@@ -68,9 +68,9 @@ export class NewBankComponent implements OnInit {
 
     getValidationMessages(){
         return{
-            bankName:[
+          bankName:[
                 { name: "required", Message: "Bank Name is required" },
-                { name: "maxlength", Message: "Bank Name should not be greater than 50 char." },
+                // { name: "maxlength", Message: "Bank Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         }
