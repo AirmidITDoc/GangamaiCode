@@ -88,7 +88,7 @@ export class ParametermasterService {
         return this._formBuilder.group({
             descriptiveId: 0,
             paraId: 0,
-            parameterValues: ["XYZ", 
+            parameterValues: ["", 
                 // Validators.required
             ],
             isDefaultValue: true,
@@ -156,11 +156,18 @@ export class ParametermasterService {
     // }
 
     public insertParameterMaster(Param: any) {
-        if (Param.parameterId) {
-            return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
-        } else 
+        // if (Param.parameterId) {
+        //     return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
+        // } else 
         
         return this._httpClient.PostData("ParameterMaster/InsertEDMX", Param);
+    }
+
+    public update1ParameterMaster(Param: any) {
+        debugger
+        if (Param.parameterId) {
+            return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
+        }        
     }
 
     public updateParameterMaster(param) {

@@ -211,6 +211,7 @@ export class ParametermasterComponent implements OnInit {
 
 export class PathparameterMaster {
     ParameterID: number;
+    parameterId:any;
     ParameterShortName: string;
     ParameterName: string;
     PrintParameterName: string;
@@ -233,6 +234,7 @@ export class PathparameterMaster {
     constructor(PathparameterMaster) {
         {
             this.ParameterID = PathparameterMaster.parameterId || "";
+            this.parameterId=PathparameterMaster.parameterId || "";
             this.ParameterShortName = PathparameterMaster.ParameterShortName || "";
             this.ParameterName = PathparameterMaster.ParameterName || "";
             this.MethodName = PathparameterMaster.MethodName || "";

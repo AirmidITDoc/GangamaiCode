@@ -76,6 +76,7 @@ export class ParameterFormMasterComponent implements OnInit {
     isTxtUnique = true;
     paraId: any;
     defaultValue:any;
+    vParameterId:any;
 
     ChargeList:any=[];
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
@@ -91,20 +92,17 @@ export class ParameterFormMasterComponent implements OnInit {
         public toastr: ToastrService    ) { }
 
     ngOnInit(): void {
+        debugger
         this.parameterForm=this._ParameterService.createParameterForm();
         this.numericForm=this._ParameterService.numericForm();
         this.descForm=this._ParameterService.descForm();
-       
-       
+           
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
-        // this.getunitNameCombobox();
-        // this.getGenderNameCombobox();
-        // this.getDscriptiveMasterList();
 
         if (this.data) {
-            // this.getUnitNameCombobox();
-            this.registerObj = this.data.registerObj;
+            this.registerObj = this.data;
+            this.vParameterId=this.registerObj.parameterId;
         }
         console.log(this.data)
         if (this.parameterForm.get("parameterId").value) {
@@ -112,12 +110,6 @@ export class ParameterFormMasterComponent implements OnInit {
             this.dsParameterAgeList.data = this._ParameterService.numericList;
             this.selectedItems = this._ParameterService.descriptiveList;
         }
-
-
-        // this.filteredOptionsUnit = this.parameterForm.get('unitId').valueChanges.pipe(
-        //     startWith(''),
-        //     map(value => this._filterUnit(value)),
-        // );
 
         var mdata={
                 parameterId:this.data?.parameterId,
@@ -134,7 +126,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
 OnSave(){
-
+debugger
 if(this._ParameterService.myform.get("IsBold").value)
     var BoldValue="B"
 else
@@ -146,69 +138,90 @@ else
  var is_numeric="0"
 
 var numeric_info = [];
+var mPathParaRangeMasters = [];
 var data2 = [];
 if (!this._ParameterService.is_numeric) {
 
+    // for (var val of this.selectedItems) {
+    //     var data = {
+    //         parameterID: 0, //this.descForm.get("paraId").value, 
+    //         parameterValues: val,
+    //         isDefaultValue: this.descForm.get("defaultValue").value ? true : false,
+    //         // addedby: 1, 
+    //         defaultValue: this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
+    //     };
+    //     data2.push(data);
+
     for (var val of this.selectedItems) {
         var data = {
-            parameterID: 0, //this.descForm.get("paraId").value, 
+            descriptiveId:0,
+            parameterId: 0, //this.descForm.get("paraId").value, 
             parameterValues: val,
             isDefaultValue: this.descForm.get("defaultValue").value ? true : false,
             // addedby: 1, 
             defaultValue: this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
         };
         data2.push(data);
-
-        // let mParameterDescriptiveMasters = this.selectedItems.data.map((row: any) => ({
-        //     "descriptiveId": 0,
-        //     "parameterId": 0,
-        //     "parameterValues": this.descForm.get("paraId").value || "string",
-        //     "isDefaultValue": this.descForm.get("defaultValue").value ? true : false,
-        //     "defaultValue": this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
-        // }));
-        // data2.push(mParameterDescriptiveMasters);
     }
 }
 else {
-    var info: any = {
-        paraId: 0 || +this._ParameterService.myform.get("parameterId").value,
-        sexId: 0,
-        minValue: "%",
-        MaxValue: "%",
-        addedby:1,
-        ageType: "%",
-        minAge: 0,
-        IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
-        maxAge: 0
-    };
-    this.dsParameterAgeList.data.forEach(element => {
-        let c = JSON.parse(JSON.stringify(info));
-        c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
-        c['minValue'] = element.MinValue;
-        c['minAge'] = +element.MinAge;
-        c['maxAge'] = +element.MaxAge;
-        c['maxvalue'] = element.MaxValue;
-        c['ageType'] = element.AgeType;
-        c['IsDeleted'] = element.IsDeleted;
-      numeric_info.push(c)
-    });
+    mPathParaRangeMasters = this.dsParameterAgeList.data.map((row: any) => ({
+        "pathparaRangeId": 0,
+        "paraId": 0,
+        "sexId": row.GenderName, //this.numericForm.get("sexId").value || 1,
+        "minValue": row.MinValue, //this.numericForm.get("minValue").value,
+        "maxvalue": row.MaxValue, //this.numericForm.get("maxvalue").value
+    }));
+    // var info: any = {
+    //     paraId: 0 || +this._ParameterService.myform.get("parameterId").value,
+    //     sexId: 0,
+    //     minValue: "%",
+    //     maxValue: "%",
+    //     addedby:1,
+    //     ageType: "%",
+    //     minAge: 0,
+    //     IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
+    //     maxAge: 0
+    // };
+    // this.dsParameterAgeList.data.forEach(element => {
+    //     let c = JSON.parse(JSON.stringify(info));
+    //     c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
+    //     c['minValue'] = element.MinValue;
+    //     c['minAge'] = +element.MinAge;
+    //     c['maxAge'] = +element.MaxAge;
+    //     c['maxvalue'] = element.MaxValue;
+    //     c['ageType'] = element.AgeType;
+    //     c['IsDeleted'] = element.IsDeleted;
+    //   numeric_info.push(c)
+    // });
 }
 
-var m_data={
-    "parameterId": 0,
-    "parameterShortName":this.parameterForm.get('parameterShortName').value,
-    "parameterName": this.parameterForm.get('parameterName').value,
-    "printParameterName": this.parameterForm.get('printParameterName').value,
-    "unitId":  this.parameterForm.get('unitId').value,
-    "isNumeric": 1,
-    "isPrintDisSummary": true,
-    "mParameterDescriptiveMasters": data2,
-    "mPathParaRangeMasters":numeric_info
-    
-  }
+// var m_data={
+//     "parameterId": 0,
+//     "parameterShortName":this.parameterForm.get('parameterShortName').value,
+//     "parameterName": this.parameterForm.get('parameterName').value,
+//     "printParameterName": this.parameterForm.get('printParameterName').value,
+//     "unitId":  this.parameterForm.get('unitId').value,
+//     "isNumeric": is_numeric, //0,
+//     "isPrintDisSummary": true,
+//     "mParameterDescriptiveMasters": data2,
+//     "mPathParaRangeMasters":mPathParaRangeMasters, //numeric_info
+//   }
 
 
 if (!this.parameterForm.get("parameterId").value) {
+
+    var m_data={
+        "parameterId": 0,
+        "parameterShortName":this.parameterForm.get('parameterShortName').value,
+        "parameterName": this.parameterForm.get('parameterName').value,
+        "printParameterName": this.parameterForm.get('printParameterName').value,
+        "unitId":  this.parameterForm.get('unitId').value,
+        "isNumeric": is_numeric, //0,
+        "isPrintDisSummary": true,
+        "mParameterDescriptiveMasters": data2,
+        "mPathParaRangeMasters":mPathParaRangeMasters, //numeric_info
+      }
     console.log(m_data);
 
     this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
@@ -222,29 +235,46 @@ if (!this.parameterForm.get("parameterId").value) {
             });
             this.selectedItems = [];
             this.dsParameterAgeList.data = [];
-
+            this.onClose();
             this.toastr.success('Record Saved Successfully.', 'Saved !', {
                 toastClass: 'tostr-tost custom-toast-success',
             });
         } 
     });
 } else {
+    var m_data1={
+        "parameterId": this.vParameterId,
+        "parameterShortName":this.parameterForm.get('parameterShortName').value,
+        "parameterName": this.parameterForm.get('parameterName').value,
+        "printParameterName": this.parameterForm.get('printParameterName').value,
+        "unitId":  this.parameterForm.get('unitId').value,
+        "isNumeric": is_numeric, //0,
+        "isPrintDisSummary": true,
+        "mParameterDescriptiveMasters": data2,
+        "mPathParaRangeMasters":mPathParaRangeMasters, //numeric_info
+      }
+    console.log(m_data1);
+
+    this._ParameterService.update1ParameterMaster(m_data1).subscribe((data) => {
+        
+        if (data) {
+            this.parameterForm.reset({
+                isNumeric: ["1"],
+                isPrintDisSummary: true,
+                IsBold:['0'],
+                IsDeleted: [true],
+            });
+            this.selectedItems = [];
+            this.dsParameterAgeList.data = [];
+            this.onClose();
+
+            this.toastr.success('Record Updated Successfully.', 'Updated !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+        } 
+    });
 }
 
-console.log("data:-",m_data);
-//////////////////:-
-this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
-               
-    if (data) {
-        this._ParameterService.myform.reset();
-        this.selectedItems = [];
-        this.dsParameterAgeList.data = [];
-
-        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-        });
-        }
-    });
 }
     
     getValidationMessages() 
@@ -332,65 +362,13 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
         this.UnitId=obj;
     }
 
-    // getGenderNameCombobox() {
-        
-    //     this._ParameterService.getGenderMasterCombo().subscribe(data => {
-    //         this.GendercmbList = data;
-    //         console.log(this.GendercmbList);
-    //     });
-    // }
-
-    // getUnitNameCombobox() {
-    //     this._ParameterService.getUnitMasterCombo().subscribe((data) => {
-    //         this.UnitcmbList = data;
-    //         console.log(this.UnitcmbList)
-    //         if (this.data) {
-    //             const toSelectUnitId = this.UnitcmbList.find(c => c.UnitId == this.registerObj.UnitId);
-    //             this.parameterForm.get('UnitId').setValue(toSelectUnitId);
-
-    //         }
-    //     });
-    // }
-
-
-//     private _filterUnit(value: any): string[] {
-//         if (value) {
-//           const filterValue = value && value.UnitName ? value.UnitName.toLowerCase() : value.toLowerCase();
-//           return this.UnitcmbList.filter(option => option.UnitName.toLowerCase().includes(filterValue));
-//         }
-//       }
-    
-//     getunitNameCombobox() {
-//     this._ParameterService.getUnitMasterCombo().subscribe(data => {
-//       this.UnitcmbList = data;
-//       this.optionsUnit = this.UnitcmbList.slice();
-//       this.filteredOptionsUnit = this.parameterForm.get('UnitId').valueChanges.pipe(
-//         startWith(''),
-//         map(value => value ? this._filterUnit(value) : this.UnitcmbList.slice()),
-//       );
-//     });
-//   }
-
-
-    // getOptionTextUnit(option) {
-    //     return option && option.UnitName ? option.UnitName : " ";
-    // }
-
-
-    // getDscriptiveMasterList() {
-    //     this._ParameterService.getDescriptiveMasterList().subscribe((Menu) => {
-    //         this.dataSource.data = Menu as PathDescriptiveMaster[];
-    //         this.dataSource.sort = this.sort;
-    //         this.dataSource.paginator = this.paginator;
-    //         console.log(Menu)
-    //     });
-    // }
     onClear(val: boolean) {
         this.parameterForm.reset();
         this.dialogRef.close(val);
     }
     onClose() {
         this.parameterForm.reset();
+        this.numericForm.reset();
         this.dialogRef.close();
     }
 
@@ -462,12 +440,12 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
             });
 
         }
-        this.parameterForm.get("sexId").reset();
-        this.parameterForm.get("minAge").reset();
-        this.parameterForm.get("maxAge").reset();
-        this.parameterForm.get("minValue").reset();
-        this.parameterForm.get("maxvalue").reset();
-        this.parameterForm.get("ageType").reset();
+        this.numericForm.get("sexId").reset();
+        this.numericForm.get("minAge").reset();
+        this.numericForm.get("maxAge").reset();
+        this.numericForm.get("minValue").reset();
+        this.numericForm.get("maxvalue").reset();
+        this.numericForm.get("ageType").reset();
     }
 
     @ViewChild('minage') minage: ElementRef;
@@ -479,24 +457,19 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
             this.toastr.warning('Please Enter Valid Minium Age ', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
-
             this.minage.nativeElement.focus();
         }
         return;
-
     }
 
     ageyear1check(event) {
-
         if (parseInt(event) > 110) {
             this.toastr.warning('Please Enter Valid Maximum Age.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
-
             this.maxage.nativeElement.focus();
         }
         return;
-
     }
 
     public onEnteragey(event, value): void {
@@ -524,12 +497,9 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
         }
     }
 
-
-
     get f() {
         return this._ParameterService.myform.controls;
     }
-
 
     onEdit() {
     }
@@ -544,9 +514,6 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
     removeItem(index: number) {
         this.selectedItems.splice(index, 1);
     }
-
-
-
 
     currentval = "";
     AddData1(val) {
@@ -573,6 +540,8 @@ this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
                     confirmButtonText: 'OK'
                 });
             }
+            this.descForm.get("paraId").reset();
+        this.descForm.get("defaultValue").reset();
         // }
     }
 
