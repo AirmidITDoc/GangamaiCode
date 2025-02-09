@@ -73,6 +73,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.minDate = new Date();
 
     this.phoneappForm = this._phoneAppointListService.createphoneForm();
+    this.phoneappForm.markAllAsTouched();
     this.searchFormGroup = this.createSearchForm();
   }
 

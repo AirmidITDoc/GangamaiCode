@@ -66,8 +66,7 @@ export class AppointmentlistService {
 
    
     createPesonalForm() {
-
-       return this._formBuilder.group({
+        return this._formBuilder.group({
                 RegId: [0],
                 RegNo: "0",
                 PrefixId: ['', [Validators.required]],

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppointmentlistService } from '../appointmentlist.service';
@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
@@ -26,6 +27,7 @@ export class EditConsultantDoctorComponent implements OnInit {
   autocompleteModedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
   screenFromString = 'admission-form';
+@ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
   constructor(
     public _AppointmentlistService: AppointmentlistService,
@@ -48,6 +50,8 @@ export class EditConsultantDoctorComponent implements OnInit {
 
   }
 
+
+  
 
   getValidationMessages() {
     return {
@@ -88,10 +92,13 @@ export class EditConsultantDoctorComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
   selectChangedepartment(obj: any) {
-    console.log(obj);
-
+    debugger
+    console.log(obj)
+    this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data:any)=>{
+        this.ddlDoctor.options=data;
+        this.ddlDoctor.bindGridAutoComplete();
+    });
   }
 
   selectChangedeptdoc(obj: any) {

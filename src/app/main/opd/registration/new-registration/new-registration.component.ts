@@ -79,6 +79,7 @@ export class NewRegistrationComponent implements OnInit {
     }
     ngOnInit(): void {
         this.personalFormGroup = this._registerService.createPesonalForm1();
+        this.personalFormGroup.markAllAsTouched();
         this.minDate = new Date();
         debugger
            if ((this.data?.regId?? 0) > 0) {

@@ -110,11 +110,11 @@
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
                                             [formGroup]="ConsdrForm" [value]="data?.departmentId"
                                             [validations]="getValidationMessages().departmentId" 
-                                             [mode]="autocompleteModedepartment">
+                                             [mode]="autocompleteModedepartment"  (selectionChange)="selectChangedepartment($event)">
                                         </airmid-dropdown>
 
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
-                                            [formGroup]="ConsdrForm" [value]="data?.consultantDocId"
+                                            [formGroup]="ConsdrForm" [value]="data?.doctorId"
                                             [validations]="getValidationMessages().consultantDocId"
                                             [mode]="autocompleteModedeptdoc">
                                         </airmid-dropdown>

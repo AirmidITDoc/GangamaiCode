@@ -1,12 +1,11 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar
-    dynamicTableHeight>
-  
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
 
     <ng-template #actionsTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
             <!-- If patientOldNew is '1', show green -->
-            <mat-icon *ngIf="element.patientType !== '1' && element.patientType !== '2'"
-                matTooltip="Patient New" class="mat-accent">
+            <mat-icon *ngIf="element.patientType !== '1' && element.patientType !== '2'" matTooltip="Patient New"
+                class="mat-accent">
                 circle
             </mat-icon>
 
@@ -16,8 +15,7 @@
             </mat-icon>
         </div>
         <div>
-            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Bill IsCancelled"
-                class="mat-warn">circle</mat-icon>
+            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Bill IsCancelled" class="mat-warn">circle</mat-icon>
 
             <mat-icon style=" border: black 1px solid;" *ngIf="element.isCancelled=='0' "
                 matTooltip="Bill Not Generated" class="mat-accent">
@@ -28,7 +26,10 @@
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-
+             
+             <button mat-icon-button matTooltip="Print OP Bill" (click)="viewgetOPBillReportPdf(element,true)">
+                <mat-icon> print</mat-icon>
+            </button>
             <!-- Button 1: Edit Patient Registration  -->
             <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
                 <mat-icon>email</mat-icon>
@@ -39,13 +40,12 @@
                 <mat-icon>message</mat-icon>
             </button>
 
-          
+
             <!-- Button 8: Patient i card Print  -->
-            <button mat-icon-button matTooltip="Send message On WhatsApp"
-                (click)="getWhatsappshareBill(element)">
+            <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
             </button>
-
+            <!-- 
             <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
                 (click)="$event.stopPropagation();">
                 <mat-icon class="secondary-text">more_vert</mat-icon>
@@ -56,7 +56,7 @@
                         <span>{{m}}</span>
                     </button>
                 </ng-container>
-            </mat-menu>
+            </mat-menu> -->
         </div>
     </ng-template>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
@@ -139,7 +139,7 @@
 
         </mat-tab>
 
-        <ng-template #actionButtonTemplate1 let-element>
+        <!-- <ng-template #actionButtonTemplate1 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
     
                 <button mat-icon-button matTooltip="Print" (click)="viewgetOPPaymentReportPdf(element)">
@@ -153,7 +153,7 @@
     
               
             </div>
-        </ng-template>
+        </ng-template> -->
 
         <mat-tab label="OP Browse Payment List">
 
@@ -249,7 +249,7 @@
 
         </mat-tab>
 
-        <ng-template #actionButtonTemplate2 let-element>
+        <!-- <ng-template #actionButtonTemplate2 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
     
                 <button mat-icon-button matTooltip="print" (click)="viewgetOPRefundBillReportPdf(element)">
@@ -263,7 +263,7 @@
     
               
             </div>
-        </ng-template>
+        </ng-template> -->
 
 
         <mat-tab label="OP Browse Refund List">

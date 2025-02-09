@@ -13,10 +13,8 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave()">New Admissin
             </button>
-        
+
         </div>
-
-
     </div>
     <div class="info-badge-top pb-2 border-bottom" style="padding-left: 100px;">
         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
@@ -55,14 +53,87 @@
         </div>
 
     </div>
+
+    <ng-template #actionsTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon *ngIf="element.patientTypeID =='1'" matTooltip="Patient Category Self">account_box
+            </mat-icon>
+
+            <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
+            </mat-icon>
+<!-- 
+
+            <mat-icon title="OPTOIPConvert" *ngIf="element.IsOpToIPconv==1" [disabled]="element.disabled"
+                class="disabled-icon">
+                redo</mat-icon> -->
+        </div>
+    </ng-template>
+    <ng-template #actionsTemplate1 let-element>
+        <div>
+         
+            <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
+                (click)="getMLCdetailview(element.amissionId)">
+                <mat-icon>print</mat-icon>
+            </button>
+            <!-- <ng-template #noMLC>
+                <span>--</span>
+            </ng-template> -->
+        </div>
+    </ng-template>
+
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+
+
+            <button mat-icon-button matTooltip="Edit Registration" (click)="EditRegistration(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Print IP Case papaer"
+                (click)="getAdmittedPatientCasepaperview(element,true)">
+                <mat-icon> print</mat-icon>
+            </button>
+
+
+            <button mat-icon-button matTooltip="Template Print"
+                (click)="getAdmittedPatientCasepaperTempview(element,m)">
+                <mat-icon>print</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Edit Admission" (click)="getEditAdmission(element)">
+                <mat-icon> account_circle</mat-icon>
+            </button>
+
+            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                (click)="$event.stopPropagation();">
+                <mat-icon class="secondary-text">more_vert</mat-icon>
+            </button>
+            <mat-menu #moreMenu="matMenu">
+                <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                        <span>{{m}}</span>
+                    </button>
+                </ng-container>
+            </mat-menu>
+        </div>
+    </ng-template>
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <airmid-table  [gridConfig]="gridConfig" class="content">
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform" fusePerfectScrollbar>
-                   
+
                     <div fxLayout="column" fxLayoutAlign="start none">
-                     
+
+                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                        formStartControlName="fromDate" formEndControlName="enddate"
+                        [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+
 
                         <mat-form-field appearance="outline">
                             <mat-label>FirstName</mat-label>
@@ -85,7 +156,7 @@
                             </button>
                         </mat-form-field>
 
-                     
+
 
                         <mat-form-field appearance="outline">
                             <mat-label>LastName</mat-label>
@@ -97,7 +168,7 @@
                             </button>
                         </mat-form-field>
 
-                      
+
                         <mat-form-field appearance="outline">
                             <mat-label>RegNo</mat-label>
                             <input matInput placeholder="RegNo" autocomplete="off" [formGroup]="myFilterform"
@@ -108,7 +179,7 @@
                             </button>
                         </mat-form-field>
 
-                 
+
                         <mat-form-field appearance="outline">
                             <mat-label>IPDNo</mat-label>
                             <input matInput placeholder="IPDNo" autocomplete="off" [formGroup]="myFilterform"
@@ -119,28 +190,22 @@
                             </button>
                         </mat-form-field>
 
-                        
-
 
                         <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
-                        [(ngModel)]="gridConfig.filters[3].fieldValue"
-                        [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc"
-                        (selectionChange)="selectChangedeptdoc($event)">
-                    </airmid-dropdown>
+                            [(ngModel)]="gridConfig.filters[3].fieldValue"
+                            [validations]="getValidationdoctorMessages().searchDoctorId"
+                            [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
+                        </airmid-dropdown>
 
-                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
-                    [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
-                  
-                  
-                    <div class="addmision-list mt-12">
-                        <button mat-raised-button class="btn btn-primary w-100-p"
-                            (click)="getAdmittedPatientListview()" matTooltip="search">
-                            Dr Wise Admission List
-                        </button>
+                       
+                        <div class="addmision-list mt-12">
+                            <button mat-raised-button class="btn btn-primary w-100-p"
+                                (click)="getAdmittedPatientListview()" matTooltip="search">
+                                Dr Wise Admission List
+                            </button>
 
 
-                    </div>
+                        </div>
 
                     </div>
 
@@ -149,7 +214,7 @@
 
 
             </ng-container>
-        </airmid-table >
+        </airmid-table>
 
     </div>
 

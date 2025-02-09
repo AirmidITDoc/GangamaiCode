@@ -156,6 +156,9 @@ export class NewAppointmentComponent implements OnInit {
 
         this.personalFormGroup = this._AppointmentlistService.createPesonalForm();
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
+        this.personalFormGroup.markAllAsTouched();
+        this.VisitFormGroup.markAllAsTouched();
+
         this.searchFormGroup = this.createSearchForm();
 
         if (this.data)
@@ -508,7 +511,7 @@ debugger
        
        console.log("Personal", this.personalFormGroup.valid, "Visit", this.VisitFormGroup.valid)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
-debugger
+
             if(this.isCompanySelected &&  this.VisitFormGroup.get('CompanyId').value==0){
                 this.toastr.warning('Please select valid Company ', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',

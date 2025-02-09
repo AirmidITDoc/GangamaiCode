@@ -47,15 +47,15 @@ export class NewOPListComponent implements OnInit {
 
      @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
         @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-        @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
-        @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+        // @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+        // @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
     
         ngAfterViewInit() {
             // Assign the template to the column dynamically
             this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+            // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     
         }
 
@@ -92,22 +92,22 @@ export class NewOPListComponent implements OnInit {
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate}  // Assign ng-template to the column
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            // { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            //     template: this.actionButtonTemplate}  // Assign ng-template to the column
+            {
+                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPBillReportPdf(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.view, callback: (data: any) => {
-            //                 this.getWhatsappshareBill(data);
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.viewgetOPBillReportPdf(data);
+                        }
+                    },
+                    {
+                        action: gridActions.view, callback: (data: any) => {
+                            this.getWhatsappshareBill(data);
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PbillNo",
         sortOrder: 0,
@@ -138,22 +138,22 @@ export class NewOPListComponent implements OnInit {
             { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "CompanyName", key: "companyName", sort: true, align: "center", width: 200 },
             { heading: "UserName", key: "userName", sort: true, align: "center", width: 200 },
-            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate1}  // Assign ng-template to the column
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            // { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            //     template: this.actionButtonTemplate1}  // Assign ng-template to the column
+            {
+                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPPaymentReportPdf(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.whatsapp, callback: (data: any) => {
-            //                 this.getWhatsappsharePaymentReceipt(data);
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.viewgetOPPaymentReportPdf(data);
+                        }
+                    },
+                    {
+                        action: gridActions.whatsapp, callback: (data: any) => {
+                            this.getWhatsappsharePaymentReceipt(data);
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RegNo",
         sortOrder: 0,
@@ -192,26 +192,26 @@ export class NewOPListComponent implements OnInit {
             { heading: "PatientType", key: "patientType", sort: true, align: "center" },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' , width: 200 },
             { heading: "CompanyName", key: "companyName",sort: true, align: "center", width: 200  },
-            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-                template: this.actionButtonTemplate2} 
-            // { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
-            // { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
-            // {
-            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            // { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            //     template: this.actionButtonTemplate2} 
+            { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "CardPay", key: "cardPay", sort: true,align: "center" },
+            { heading: "AdvUsedPay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-            //         {
-            //             action: gridActions.print, callback: (data: any) => {
-            //                 this.viewgetOPRefundBillReportPdf(data);
-            //             }
-            //         },
-            //         {
-            //             action: gridActions.view, callback: (data: any) => {
-            //                 this.getWhatsappshareRefundBill(data);
-            //             }
-            //         }]
-            // } //Action 1-view, 2-Edit,3-delete
+                    {
+                        action: gridActions.print, callback: (data: any) => {
+                            this.viewgetOPRefundBillReportPdf(data);
+                        }
+                    },
+                    {
+                        action: gridActions.view, callback: (data: any) => {
+                            this.getWhatsappshareRefundBill(data);
+                        }
+                    }]
+            } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "RefundId",
         sortOrder: 0,
@@ -253,10 +253,14 @@ export class NewOPListComponent implements OnInit {
         this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
    
-    viewgetOPBillReportPdf(data) {
-         
-        this.commonService.Onprint("BillNo",data.billNo,"OpBillReceipt");
+    
+    viewgetOPBillReportPdf(element){
+        debugger
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt"); 
     }
+
+
     getWhatsappshareBill(Id) { }
 
     viewgetOPPaymentReportPdf(data) { 

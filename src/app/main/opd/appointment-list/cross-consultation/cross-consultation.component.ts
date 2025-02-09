@@ -36,7 +36,7 @@ export class CrossConsultationComponent implements OnInit {
   optionsDoctor: any[] = [];
   filteredOptionsdoc: Observable<string[]>;
   isdocSelected: boolean = false;
-
+  regId=0;
   constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<CrossConsultationComponent>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog, public toastr: ToastrService
@@ -51,6 +51,7 @@ export class CrossConsultationComponent implements OnInit {
       setTimeout(() => {
         this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
           this.registerObj1 = response;
+          this.regId=response.regId;
           this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
           console.log(response)
         });

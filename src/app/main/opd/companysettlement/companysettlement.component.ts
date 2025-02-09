@@ -85,13 +85,13 @@ BillNo:any;
         PatientHeaderObj['DoctorName'] = contact.DoctorName;
         PatientHeaderObj['TariffName'] = contact.TariffName;
         PatientHeaderObj['CompanyName'] = contact.CompanyName;
-        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt; 
+        PatientHeaderObj['NetPayAmount'] = 1211,//contact.NetPayableAmt; 
         console.log(PatientHeaderObj)
         const dialogRef = this._matDialog.open(NewSettlementComponent,
             {
-                maxWidth: "95vw",
-                height: '95%',
-                width: '95%',
+                maxWidth: "90vw",
+                height: '80%',
+                width: '90%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "OP-Bill"

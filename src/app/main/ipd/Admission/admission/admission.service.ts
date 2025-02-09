@@ -67,14 +67,14 @@ export class AdmissionService {
             GenderID: new FormControl('', [Validators.required]),
             Address: '',
             DateofBirth: [(new Date()).toISOString()],
-            Age: ['0'],
-            AgeYear: ['0', [
+            Age: ['30'],
+            AgeYear: ['10', [
                 // Validators.required,
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['0', [
+            AgeMonth: ['20', [
                 Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['0', [
+            AgeDay: ['10', [
                 Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
@@ -91,13 +91,13 @@ export class AdmissionService {
             Validators.pattern("^[0-9]*$")
             ]],
             panCardNo: '',
-            MaritalStatusId: '',
+            MaritalStatusId: 0,
             ReligionId: 0,
             AreaId: 0,
             CityId: 0,
-            City: ['d'],
-            StateId: 0,
-            CountryId: 0,
+            City: ['Pune'],
+            StateId: '',
+            CountryId: '',
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: 1,
@@ -125,8 +125,8 @@ export class AdmissionService {
             IsDischarged: 0,
             IsBillGenerated: 0,
             CompanyId: 0,
-            TariffId: ['', [Validators.required]],
-            ClassId: ['', [Validators.required]],
+            TariffId: [1, [Validators.required]],
+            ClassId: [1, [Validators.required]],
             DepartmentId: ['', [Validators.required]],
             RelativeName: "",
             RelativeAddress: "",
@@ -178,7 +178,7 @@ export class AdmissionService {
     }
 
     public AdmissionRegisteredInsert(employee) {
-        return this._httpClient.post("InPatient/AdmissionRegistredInsert", employee);
+        return this._httpClient1.PostData("InPatient/AdmissionRegistredInsert", employee);
     }
 
 
@@ -242,5 +242,11 @@ export class AdmissionService {
             return this._httpClient1.PutData("MlcInformation" + Param.mlcid, Param);
         } else return this._httpClient1.PostData("MlcInformation", Param);
     }
+
+
+    public getDoctorsByDepartment(deptId) {
+        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+    }
+
 }
 
