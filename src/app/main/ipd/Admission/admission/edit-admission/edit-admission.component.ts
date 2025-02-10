@@ -788,25 +788,67 @@ export class EditAdmissionComponent implements OnInit {
 
   onNewSave() {
 
-    if (!this.TariffList.some(item => item.TariffName === this.hospitalFormGroup.get('TariffId').value.TariffName)) {
-      this.toastr.warning('Please Select valid TariffName', 'Warning !', {
+    if ((this.hospitalFormGroup.get('PatientTypeID').value == '' || this.hospitalFormGroup.get('PatientTypeID').value == null || this.hospitalFormGroup.get('PatientTypeID').value == undefined)) {
+      this.toastr.warning('Please select Patient Type ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
+    }
+    if(this.hospitalFormGroup.get('PatientTypeID').value){
+      if (!this.PatientTypeList.some(item => item.PatientType === this.hospitalFormGroup.get('PatientTypeID').value.PatientType)) {
+        this.toastr.warning('Please Select valid PatientType', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if ((this.hospitalFormGroup.get('TariffId').value == '' || this.hospitalFormGroup.get('TariffId').value == null || this.hospitalFormGroup.get('TariffId').value == undefined)) {
+      this.toastr.warning('Please select Tariff Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.hospitalFormGroup.get('TariffId').value){
+      if (!this.TariffList.some(item => item.TariffName === this.hospitalFormGroup.get('TariffId').value.TariffName)) {
+        this.toastr.warning('Please Select valid TariffName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if ((this.hospitalFormGroup.get('Departmentid').value == '' || this.hospitalFormGroup.get('Departmentid').value == null || this.hospitalFormGroup.get('Departmentid').value == undefined)) {
+      this.toastr.warning('Please select DepartmentName ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+ 
+    if(this.hospitalFormGroup.get('Departmentid').value){
+      if (!this.DepartmentList.some(item => item.departmentName === this.hospitalFormGroup.get('Departmentid').value.departmentName)) {
+        this.toastr.warning('Please Select valid departmentName', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
 
-    if (!this.DepartmentList.some(item => item.departmentName === this.hospitalFormGroup.get('Departmentid').value.departmentName)) {
-      this.toastr.warning('Please Select valid departmentName', 'Warning !', {
+    if ((this.hospitalFormGroup.get('DoctorId').value == '' || this.hospitalFormGroup.get('DoctorId').value == null || this.hospitalFormGroup.get('DoctorId').value == undefined)) {
+      this.toastr.warning('Please select Doctor Name ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.DoctorList.some(item => item.Doctorname === this.hospitalFormGroup.get('DoctorId').value.Doctorname)) {
-      this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+ 
+    if(this.hospitalFormGroup.get('DoctorId').value){
+      if (!this.DoctorList.some(item => item.Doctorname === this.hospitalFormGroup.get('DoctorId').value.Doctorname)) {
+        this.toastr.warning('Please Select valid Doctorname', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
+   
+  
     if (this.hospitalFormGroup.get('admittedDoctor1').value) {
       if (!this.Doctor1List.some(item => item.Doctorname === this.hospitalFormGroup.get('admittedDoctor1').value.Doctorname)) {
         this.toastr.warning('Please Select valid AdmitDoctorName11', 'Warning !', {

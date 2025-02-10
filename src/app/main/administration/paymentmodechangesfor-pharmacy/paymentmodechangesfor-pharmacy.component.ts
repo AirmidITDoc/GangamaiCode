@@ -11,6 +11,7 @@ import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.co
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { BillDateUpdateComponent } from '../cancellation/bill-date-update/bill-date-update.component';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -161,10 +162,21 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.getSalesList();
     });
   }
-  BillDate(){
-    Swal.fire('Api Error !', 'Bill Date Update!')
-  }  
-
+  BillDate(contact){ 
+    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+      {
+        height: "35%",
+        width: '35%',
+        data: {
+          obj: contact,
+          FormName:'Pharmacy-Bill'
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getSalesList(); 
+      this.getIPPharAdvanceList();
+    });
+  }   
 }
 export class PaymentPharmayList {
   Date: Number;

@@ -129,24 +129,37 @@ public getPatientTypeCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ReligionMasterForCombo", {})
   }
 
-  public getGenderCombo(Id) {
+  public getGenderCombo(Id,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SexMasterForCombo_Conditional", {"Id":Id})
   }
   public getGenderMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_GenderMasterForCombo", {})
   }
-  public getStateList(CityId) {
+  public getStateList(CityId,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional",{"Id": CityId})
   }
-  public getCountryList(StateId) {
+  public getCountryList(StateId,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_CountryMasterForCombo_Conditional",{"Id": StateId})
   }
-  public regInsert(employee)
-  {    
+  public regInsert(employee,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("OutPatient/OPDRegistrationSave",employee);
   }
-  public regUpdate(employee)
-  {    
+  public regUpdate(employee,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("OutPatient/OPDRegistrationUpdate",employee);
   }
 

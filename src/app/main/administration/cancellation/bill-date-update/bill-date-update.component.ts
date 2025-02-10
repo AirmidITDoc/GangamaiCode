@@ -48,10 +48,10 @@ export class BillDateUpdateComponent implements OnInit {
     this.dateTimeObj = dateTimeObj; 
     console.log(this.dateTimeObj)
   } 
-  BillDate() { 
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd");
-    const formattedTime = formattedDate+this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
-    
+  BillDate() {
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+
     Swal.fire({
       title: 'Do you want to Update Bill Date & Time ',
       text: "You won't be able to revert this!",
@@ -61,54 +61,70 @@ export class BillDateUpdateComponent implements OnInit {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */ 
-      if (result.isConfirmed) { 
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
         let Query
-        if(this.BillNo){
-          Query = "update bill set BillDate='"+formattedDate+"',BillTime='"+formattedTime+"'where BillNo=" +this.BillNo 
-        }else if(this.RefundId){
-          Query = "update refund set RefundDate='"+formattedDate+"',RefundTime='"+formattedTime+"'where RefundId=" +this.RefundId 
-          if(this.PaymentId){
-            let PayQuery = "update payment set PaymentDate='"+formattedDate+"',PaymentTime='"+formattedTime+"'where PaymentId=" +this.PaymentId 
+        if (this.BillNo) {
+          Query = "update bill set BillDate='" + formattedDate + "',BillTime='" + formattedTime + "'where BillNo=" + this.BillNo
+        } else if (this.RefundId) {
+          Query = "update refund set RefundDate='" + formattedDate + "',RefundTime='" + formattedTime + "'where RefundId=" + this.RefundId
+          if (this.PaymentId) {
+            let PayQuery = "update payment set PaymentDate='" + formattedDate + "',PaymentTime='" + formattedTime + "'where PaymentId=" + this.PaymentId
             this._CancellationService.getDateTimeChangeReceipt(PayQuery).subscribe(response => {
               if (response) {
                 this.toastr.success('Payment Receipt Date & Time Updated Successfuly', 'Updated !', {
                   toastClass: 'tostr-tost custom-toast-success',
-                });  
+                });
               } else {
                 this.toastr.error('API Error!', 'Error !', {
                   toastClass: 'tostr-tost custom-toast-error',
-                }); 
+                });
               }
             });
 
           }
         }
-         else if(this.resigterObj.AdvanceId){
-          Query = "update advancedetail set Date='"+formattedDate+"',Time='"+formattedTime+"'where AdvanceDetailID=" +this.resigterObj.AdvanceDetailID 
-          if(this.PaymentId){
-            let PayQuery = "update payment set PaymentDate='"+formattedDate+"',PaymentTime='"+formattedTime+"'where PaymentId=" +this.PaymentId 
+        else if (this.resigterObj.AdvanceId) {
+          Query = "update advancedetail set Date='" + formattedDate + "',Time='" + formattedTime + "'where AdvanceDetailID=" + this.resigterObj.AdvanceDetailID
+          if (this.PaymentId) {
+            let PayQuery = "update payment set PaymentDate='" + formattedDate + "',PaymentTime='" + formattedTime + "'where PaymentId=" + this.PaymentId
             this._CancellationService.getDateTimeChangeReceipt(PayQuery).subscribe(response => {
               if (response) {
                 this.toastr.success('Payment Receipt Date & Time Updated Successfuly', 'Updated !', {
                   toastClass: 'tostr-tost custom-toast-success',
-                });  
+                });
               } else {
                 this.toastr.error('API Error!', 'Error !', {
                   toastClass: 'tostr-tost custom-toast-error',
-                }); 
+                });
               }
             });
 
           }
         }
-
-      console.log(Query);
+        else if (this.resigterObj.SalesId) {
+          Query = "update T_SalesHeader set Date='" + formattedDate + "',Time='" + formattedTime + "'where SalesId=" + this.resigterObj.SalesId
+          if (this.PaymentId) {
+            let PayQuery = "update paymentpharmacy set PaymentDate='" + formattedDate + "',PaymentTime='" + formattedTime + "'where PaymentId=" + this.PaymentId
+            this._CancellationService.getDateTimeChangeReceipt(PayQuery).subscribe(response => {
+              if (response) {
+                this.toastr.success('Payment Receipt Date & Time Updated Successfuly', 'Updated !', {
+                  toastClass: 'tostr-tost custom-toast-success',
+                });
+              } else {
+                this.toastr.error('API Error!', 'Error !', {
+                  toastClass: 'tostr-tost custom-toast-error',
+                });
+              }
+            }); 
+          }
+        }
+        console.log(Query);
         this._CancellationService.getDateTimeChange(Query).subscribe(response => {
           if (response) {
             this.toastr.success('Bill Date & Time Updated Successfuly', 'Updated !', {
               toastClass: 'tostr-tost custom-toast-success',
-            }); 
+            });
             this.onClose();
           } else {
             this.toastr.error('API Error!', 'Error !', {
@@ -118,7 +134,7 @@ export class BillDateUpdateComponent implements OnInit {
           }
         });
       }
-    }); 
+    });
   }
 
 

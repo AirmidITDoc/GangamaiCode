@@ -198,15 +198,15 @@
                             </ng-container>
 
                             <ng-container matColumnDef="action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-100">Action
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-210">Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100">
+                                <mat-cell *matCellDef="let contact" class="w-210">
                                     <!-- <button mat-icon-button matTooltip="Print" (click)="onEdit(contact)">
                                         <mat-icon>edit</mat-icon>
                                     </button> -->
 
-                                    <!-- <button class="btn btn-info"  
-                                    matTooltip="Payment Date Update" (click)="BillDate()">Date Update</button>&nbsp; -->
+                                    <button class="btn btn-info"  
+                                    matTooltip="Payment Date Update" (click)="BillDate(contact)">Date Update</button>&nbsp;
                                     <button class="btn btn-primary" (click)="onEdit(contact)" matTooltip="Payment Mode Change" style="color: white;">
                                       Edit
                                      </button>

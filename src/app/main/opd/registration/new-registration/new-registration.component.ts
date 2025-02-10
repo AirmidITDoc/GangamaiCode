@@ -15,6 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { SearchPageComponent } from '../../op-search-list/search-page/search-page.component';
 import { MatSelect } from '@angular/material/select';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-registration',
@@ -118,6 +119,7 @@ export class NewRegistrationComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public datePipe: DatePipe,
     private router: Router,
+        public toastr: ToastrService,
 
   ) {
   
@@ -547,6 +549,53 @@ debugger
   }
   onSubmit() {
     debugger
+
+    if ((this.personalFormGroup.get('PrefixID').value == '' || this.personalFormGroup.get('PrefixID').value == null || this.personalFormGroup.get('PrefixID').value == undefined)) {
+      this.toastr.warning('Please select Prefix Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.personalFormGroup.get('PrefixID').value){
+      if (!this.PrefixList.some(item => item.PrefixName === this.personalFormGroup.get('PrefixID').value.PrefixName)) {
+        this.toastr.warning('Please Select valid Prefix Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if ((this.personalFormGroup.get('FirstName').value == '' || this.personalFormGroup.get('FirstName').value == null || this.personalFormGroup.get('FirstName').value == undefined)) {
+      this.toastr.warning('Please select First Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.personalFormGroup.get('LastName').value == '' || this.personalFormGroup.get('LastName').value == null || this.personalFormGroup.get('LastName').value == undefined)) {
+      this.toastr.warning('Please select Last Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.personalFormGroup.get('CityId').value == '' || this.personalFormGroup.get('CityId').value == null || this.personalFormGroup.get('CityId').value == undefined)) {
+      this.toastr.warning('Please select City Name ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if(this.personalFormGroup.get('CityId').value){
+      if (!this.cityList.some(item => item.CityName === this.personalFormGroup.get('CityId').value.CityName)) {
+        this.toastr.warning('Please Select valid City Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if ((this.personalFormGroup.get('MobileNo').value == '' || this.personalFormGroup.get('MobileNo').value == null || this.personalFormGroup.get('MobileNo').value == undefined)) {
+      this.toastr.warning('Please select MobileNo', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }  
     if (this.registerObj.Age != 0  || this.registerObj.AgeMonth != 0 || this.registerObj.AgeDay != 0) {
     this.isLoading = 'submit';
     if (!this.registerObj.RegId && this.RegID ==0) {

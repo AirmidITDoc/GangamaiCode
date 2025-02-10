@@ -183,16 +183,25 @@ export class AdmissionService {
 
 
 
-  public AdmissionNewInsert(employee) {
+  public AdmissionNewInsert(employee,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/AdmissionNewInsert", employee);
   }
 
-  public AdmissionRegisteredInsert(employee) {
+  public AdmissionRegisteredInsert(employee,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/AdmissionRegistredInsert", employee);
   }
 
 
-  public AdmissionUpdate(employee) {
+  public AdmissionUpdate(employee,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("InPatient/AdmissionUpdate", employee);
   }
 
