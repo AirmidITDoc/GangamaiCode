@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { Subscription } from 'rxjs';
 import { ChargesList } from '../../OPBilling/new-opbilling/new-opbilling.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -67,11 +68,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
 
     // Total amounts
-    constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder) { }
+    constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder, private toastrService: ToastrService) { }
 
     ngOnInit() {
         this.searchForm = this.createSearchForm();
-        this.chargeForm = this.createchargeForm();
+        this.chargeForm = this.createChargeForm();
         this.totalChargeForm = this.createTotalChargeForm();
         this.dataSource = new MatTableDataSource(this.chargeList);
 
@@ -82,6 +83,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     private setupFormListener(): void {
+        this.handleChange('price', () => this.calculateTotalCharge());
         this.handleChange('qty', () => this.calculateTotalCharge());
         this.handleChange('discountPer', () => this.updateDiscountAmount());
         this.handleChange('discountAmount', () => this.updateDiscountPercentage());
@@ -101,6 +103,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 { name: "pattern", Message: "only Number allowed." }
             ],
             qty: [
+                { name: "required", Message: "Qty required!", },
                 { name: "pattern", Message: "only Number allowed.", },
                 { name: "min", Message: "Enter valid qty.", }
             ],
@@ -145,7 +148,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.chargeForm.get("discountAmount").setValue(0);
             this.chargeForm.get("discountPer").setValue(0);
             this.isUpdating = false;
-            this.isUpdating = false;
+            this.toastrService.error("Enter discount % between 0-100");
             return;
         }
         let percentage = perControl.value;
@@ -153,8 +156,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
         // let discountAmount = this.getFixedDecimal(totalAmount * percentage / 100);
         // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
-        let discountAmount = Number((totalAmount * percentage / 100).toFixed(2));
-        let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+        let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+        let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
         this.chargeForm.patchValue({
             discountAmount: discountAmount,
@@ -176,6 +179,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.chargeForm.get("discountAmount").setValue(0);
             this.chargeForm.get("discountPer").setValue(0);
             this.isUpdating = false;
+            this.toastrService.error("Discount must be between 0 and the total amount.");
             return;
         }
 
@@ -208,16 +212,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
 
-    createchargeFormArray() {
+    createChargeFormArray() {
         return this.formBuilder.group({
-            rows: this.formBuilder.array([this.createchargeForm()])
+            rows: this.formBuilder.array([this.createChargeForm()])
         });
     }
     // Create a FormGroup for each row in the FormArray
-    createchargeForm() {
+    createChargeForm() {
         return this.formBuilder.group({
             serviceName: ['Default service name for testing..', Validators.required],
-            price: [100],
+            price: [100, [Validators.required]],
             qty: [0, [Validators.required, Validators.min(1)]],
             totalAmount: [0,],
             discountPer: [0, [Validators.min(0), Validators.max(100)]],
@@ -231,7 +235,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             totalAmount: [0],
             totalDiscountPer: [0, [Validators.min(0), Validators.max(100)]],
             totalDiscountAmount: [0, [Validators.required]],
-            totalNetAmount: [0, [Validators.min(0)]]
+            totalNetAmount: [0, [Validators.min(0)]],
+            paymentType: ['CashPay']
         });
     }
 
@@ -249,8 +254,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 Price: formValue.price,
                 Qty: formValue.qty,
                 TotalAmt: totalAmount,
-                DiscPer: formValue.discountPer,
-                DiscAmt: discountAmount,
+                DiscPer: formValue.discountPer || 0,
+                DiscAmt: discountAmount || 0,
                 NetAmount: netAmount,
                 DoctorName: formValue.doctorName || '-',
                 ClassName: formValue.className || '-',
@@ -260,18 +265,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.isDiscountApplied = true;
             }
             const newCharge = new ChargesList(newRow);
+            newCharge.DiscAmt = newCharge.DiscAmt || 0;
+            newCharge.DiscPer = newCharge.DiscPer || 0;
             this.chargeList.push(newCharge);
             this.dataSource.data = this.chargeList;
-            this.calculateTotalAmount(newCharge);
+            this.calculateTotalAmount();
 
             // Reset form with initial values
             this.resetForm();
         }
     }
-    deleteCharge(index: number, row: ChargesList = null) {
+    deleteCharge(index: number) {
         this.chargeList.splice(index, 1);
         this.dataSource.data = this.chargeList;
-        this.calculateTotalAmount(row, true);
+        this.calculateTotalAmount();
         if (!this.chargeList.length) {
             this.isDiscountApplied = false;
         }
@@ -281,22 +288,63 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         const control = this.totalChargeForm.get(key);
         return control ? control.value : 0;
     }
-    calculateTotalAmount(row: ChargesList, isDeleting = false): void {
-        const currentTotalAmount = +this.totalChargeForm.get("totalAmount").value;
-        const currentTotalDiscountAmount = +this.totalChargeForm.get("totalDiscountAmount").value;
 
-        const chargeAmount = +row.TotalAmt;
-        const chargeDiscountAmount = +row.DiscAmt;
+    // Calculation of total amount.
+    calculateTotalAmount(): void {
+        let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+        let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+        let totalNet = totalSum - totalDiscount;
 
-        const totalAmount = isDeleting ? currentTotalAmount - chargeAmount : currentTotalAmount + chargeAmount;
-        const totalDiscount = isDeleting ? currentTotalDiscountAmount - chargeDiscountAmount : currentTotalDiscountAmount + chargeDiscountAmount;
-
-        const netAmount = totalAmount - totalDiscount;
         this.totalChargeForm.patchValue({
-            totalAmount: totalAmount,
-            totalNetAmount: netAmount,
-            totalDiscountAmount: totalDiscount
+            totalAmount: totalSum,
+            totalDiscountAmount: totalDiscount,
+            totalNetAmount: totalNet
         }, { emitEvent: false });
+    }
+    onPriceOrQtyChange(row: ChargesList = null): void {
+        if (!row) return;
+        const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+        // If discount percentage exists, recalculate discount amount
+        if (row.DiscPer) {
+            row.DiscAmt = parseFloat(((totalAmount * row.DiscPer) / 100).toFixed(2));
+        }
+        row.TotalAmt = totalAmount;
+        row.NetAmount = totalAmount - row.DiscAmt;
+
+        this.calculateTotalAmount();
+    }
+    onDiscountPerChange(row: ChargesList): void {
+        if (!row) return;
+        let discountPer = +row.DiscPer || 0;
+        const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+        if (discountPer < 0 || discountPer > 100) {
+            discountPer = 0; // Reset if out of range
+            row.DiscPer = 0;
+            this.toastrService.error("Enter discount % between 0-100");
+        }
+        row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+        row.TotalAmt = totalAmount;
+        row.NetAmount = totalAmount - row.DiscAmt;
+
+        this.calculateTotalAmount();
+    }
+    onDiscountAmtChange(row: ChargesList): void {
+        if (!row) return;
+        let discountAmt = +row.DiscAmt || 0;
+        const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+        if (discountAmt < 0 || discountAmt > totalAmount) {
+            row.DiscAmt = 0;
+            discountAmt = 0;
+            this.toastrService.error("Discount must be between 0 and the total amount.");
+        }
+        row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+        row.TotalAmt = totalAmount;
+        row.NetAmount = totalAmount - discountAmt;
+
+        this.calculateTotalAmount();
     }
     updateTotalDiscountAmt(): void {
         const discountControl = this.totalChargeForm.get("totalDiscountPer");
@@ -313,7 +361,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     resetForm(): void {
         this.chargeForm.reset({
-            serviceName: '',
+            serviceName: 'Default service name for testing',
             price: 100,
             qty: 0,
             totalAmount: 0,
@@ -324,7 +372,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     onSubmit(): void {
         if (this.totalChargeForm.valid && this.chargeList.length > 0) {
-            console.log("FORM: ", { chargeList: this.chargeList, totalInfo: this.totalChargeForm.value });
+            console.log("FORM: ", { chargeList: this.chargeList, paymentDetail: this.totalChargeForm.value });
             // Pending task
         }
     }
