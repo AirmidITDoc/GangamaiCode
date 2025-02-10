@@ -11,6 +11,7 @@ import { RegInsert } from '../registration/registration.component';
 import { NewSettlementComponent } from './new-settlement/new-settlement.component';
 import Swal from 'sweetalert2';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-companysettlement',
@@ -24,9 +25,13 @@ export class CompanysettlementComponent implements OnInit {
     myFormGroup: FormGroup
 RegId1="39";
 BillNo:any;
+vpaidamt: any = 0;
+vbalanceamt: any = 0;
+
     constructor(public _CompanysettlementService: CompanysettlementService, 
          private commonService: PrintserviceService,
                 public _matDialog: MatDialog,
+                public datePipe: DatePipe,
                 public toastr: ToastrService, public formBuilder: UntypedFormBuilder,) 
                 { }
         
@@ -74,10 +79,13 @@ BillNo:any;
     }
 
     onSave(contact: any = null) {
-        let PatientHeaderObj = {};
-        // PatientHeaderObj['Date'] = formattedDate,
+
+        console.log(contact)
+        debugger
         let PatientName = contact.firstName +" "+ contact.lastName
-        PatientHeaderObj['RegNo'] = contact.regId;
+        let PatientHeaderObj = {};
+        PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+        PatientHeaderObj['RegNo'] = contact.regID;
         PatientHeaderObj['PatientName'] = PatientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.OPDNo;
         PatientHeaderObj['Age'] = contact.ageYear;
@@ -85,13 +93,12 @@ BillNo:any;
         PatientHeaderObj['DoctorName'] = contact.DoctorName;
         PatientHeaderObj['TariffName'] = contact.TariffName;
         PatientHeaderObj['CompanyName'] = contact.CompanyName;
-        PatientHeaderObj['NetPayAmount'] = 1211,//contact.NetPayableAmt; 
-        console.log(PatientHeaderObj)
+        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt; 
+      
         const dialogRef = this._matDialog.open(NewSettlementComponent,
             {
-                maxWidth: "90vw",
-                height: '80%',
-                width: '90%',
+                maxWidth: "80vw",
+               width: '70%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "OP-Bill"
@@ -100,17 +107,17 @@ BillNo:any;
             dialogRef.afterClosed().subscribe(result => {
                 console.log(result)
                 if (result.IsSubmitFlag == true) {
-        debugger
-                //   this.vpaidamt = result.PaidAmt;
-                //   this.vbalanceamt = result.BalAmt
+        
+                  this.vpaidamt = result.PaidAmt;
+                  this.vbalanceamt = result.BalAmt
         
                   let updateBillobj = {};
-                  updateBillobj['BillNo'] = this.BillNo;
+                  updateBillobj['BillNo'] = contact.billNo;
                   updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;  //result.BalAmt;
-               
+                  let PaymentObj = result.submitDataPay.ipPaymentInsert
                   let Data = {
                     "billDetails": updateBillobj,
-                    "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
+                    PaymentObj
                   };
                   console.log(Data)
                   this._CompanysettlementService.InsertOPBillingsettlement(Data).subscribe(response => {

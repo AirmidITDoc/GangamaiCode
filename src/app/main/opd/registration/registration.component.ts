@@ -323,6 +323,7 @@ export class RegInsert {
             this.LastName = RegInsert.LastName || '';
             this.Address = RegInsert.Address || '';
             this.RegNo = RegInsert.RegNo || '';
+            this.regNo = RegInsert.regNo || '';
             this.City = RegInsert.City || 'SS';
             this.PinNo = RegInsert.PinNo || '';
             this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;

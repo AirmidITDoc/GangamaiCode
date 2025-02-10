@@ -45,8 +45,8 @@ export class PrescriptionComponent implements OnInit {
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
             // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Vst_Adm_Date", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Pres_DateTime", key: "pres_DateTime", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Vst_Adm_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Pres_DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             // { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
             // { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -73,9 +73,9 @@ export class PrescriptionComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "10004", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "20", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25

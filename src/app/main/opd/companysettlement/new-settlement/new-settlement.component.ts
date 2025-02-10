@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import { CompanysettlementService } from '../companysettlement.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { OPSearhlistService } from '../../op-search-list/op-searhlist.service';
+import { RegInsert } from '../../registration/registration.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-settlement',
@@ -150,6 +152,7 @@ debugger
   Age:any;
   OPD_IPD_Id:any;
   TariffName:any;
+  registerObj=new RegInsert({});
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<NewSettlementComponent>,
@@ -157,13 +160,23 @@ debugger
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _CompanysettlementService: CompanysettlementService,
     public datePipe: DatePipe,
-    // private snackBarService: SnackBarService
+      public toastr: ToastrService,
   ) {
     this.nowDate = new Date();
 
     if (data) {
       this.advanceData = this.data.vPatientHeaderObj;
       console.log(this.advanceData)
+
+      setTimeout(() => {
+        this._CompanysettlementService.getRegistraionById(this.advanceData.RegNo).subscribe((response) => {
+            this.registerObj = response;
+            console.log(this.registerObj)
+            // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+           });
+    }, 500);
+
+      
     }
     if (this.data.FromName == "Advance") {
 
@@ -315,6 +328,12 @@ debugger
     this.dialogRef.close();
   }
 
+ 
+  
+    onClear(){
+
+    }
+  
   Paymentobj = {};
   onSubmit() {
     const currentDate = new Date();
@@ -511,7 +530,6 @@ debugger
 
     console.log(JSON.stringify(this.Paymentobj));
 
-    // const ipPaymentInsert = new IpPaymentInsert(this.Paymentobj);
     let submitDataPay = {
       ipPaymentInsert: this.Paymentobj
     };

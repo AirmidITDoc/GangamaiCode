@@ -52,13 +52,14 @@ export class CrossConsultationComponent implements OnInit {
         this._AppointmentlistService.getVisitById(this.data.visitId).subscribe((response) => {
           this.registerObj1 = response;
           this.regId=response.regId;
+          debugger
+          this.ddldoctor.SetSelection(this.registerObj1.consultantDocId);
+    
           this.registerObj1.visitTime= this.datePipe.transform(new Date(),'yyyy-MM-ddTHH:mm')
           console.log(response)
         });
       }, 500);
     }
-   
-   
    
   }
 
@@ -117,19 +118,21 @@ export class CrossConsultationComponent implements OnInit {
   onSubmit() {
     console.log(this.crossconForm.value);
    
-  //   let data=this.crossconForm.value;
-  //   data.departmentId=this.crossconForm.get('departmentId').value
-  //   data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
-  //   data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
-  //   data.visitDate=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-dd')
-  //   data.visitId=0;
-  //   data.addedBy=0;
-  //   data.updatedBy=0;
-  // console.log(data);
+    let data=this.crossconForm.value;
+    data.departmentId=this.crossconForm.get('departmentId').value
+    data.consultantDocId=parseInt(this.crossconForm.get('consultantDocId').value)
+    data.visitTime=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-ddTHH:mm')
+    data.visitDate=this.datePipe.transform(this.crossconForm.get('visitTime').value,'yyyy-MM-dd')
+    data.visitId=0;
+    data.addedBy=0;
+    data.updatedBy=0;
+    
 
-  this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-dd'))
+  console.log(data);
+debugger
+  // this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-dd'))
 
-    this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
+    this._AppointmentlistService.crossconsultSave(data).subscribe((response) => {
       this.toastr.success(response.message);
       this.onClear(true);
     }, (error) => {

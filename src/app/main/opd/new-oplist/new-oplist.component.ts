@@ -13,6 +13,9 @@ import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { FormGroup } from '@angular/forms';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
+import Swal from 'sweetalert2';
+import { UpdateBill } from '../op-search-list/op-advance-payment/op-advance-payment.component';
 
 
 @Component({
@@ -32,7 +35,9 @@ export class NewOPListComponent implements OnInit {
     hasSelectedContacts: boolean;
     fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
-
+    vMobileNo:any;
+    vbalanceamt:any;
+    vpaidamt:any;
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -54,6 +59,7 @@ export class NewOPListComponent implements OnInit {
             // Assign the template to the column dynamically
             this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
+            // this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
             // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     
@@ -64,8 +70,9 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Patient", key: "patientType", sort: true, align: 'left', emptySign: 'NA',type:22 },
-            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,type:16},
+            { heading: "Patient", key: "patientType", sort: true, align: 'left',type: gridColumnTypes.template, emptySign: 'NA',},
+            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,},
+            // { heading: "-", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,},
              { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -92,22 +99,22 @@ export class NewOPListComponent implements OnInit {
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            // { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-            //     template: this.actionButtonTemplate}  // Assign ng-template to the column
-            {
-                heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
+            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate}  // Assign ng-template to the column
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 200, type: gridColumnTypes.action, actions: [
                    
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetOPBillReportPdf(data);
-                        }
-                    },
-                    {
-                        action: gridActions.view, callback: (data: any) => {
-                            this.getWhatsappshareBill(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.viewgetOPBillReportPdf(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.view, callback: (data: any) => {
+            //                 this.getWhatsappshareBill(data);
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "PbillNo",
         sortOrder: 0,
@@ -118,7 +125,7 @@ export class NewOPListComponent implements OnInit {
     gridConfig1: gridModel = {
         apiUrl: "VisitDetail/OPPaymentList",
         columnsList: [
-            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:6, width: 100  },
+            { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA',type:6, width: 150  },
             { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -150,7 +157,7 @@ export class NewOPListComponent implements OnInit {
                     },
                     {
                         action: gridActions.whatsapp, callback: (data: any) => {
-                            this.getWhatsappsharePaymentReceipt(data);
+                            this.getWhatsappsharePaymentReceipt(data,true);
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
@@ -267,7 +274,7 @@ export class NewOPListComponent implements OnInit {
         
         this.commonService.Onprint("PaymentId",data.paymentId,"OPPaymentReceipt");
     }
-    getWhatsappsharePaymentReceipt(Id) { }
+    getWhatsappsharePaymentReceipt(Id,Mobile) { }
 
     viewgetOPRefundBillReportPdf(data) {
      
@@ -279,7 +286,7 @@ export class NewOPListComponent implements OnInit {
        OngetRecord(element, m){
             console.log('Third action clicked for:', element); 
             if (m == "Print Final Bill") {
-                
+                debugger
         this.commonService.Onprint("BillNo",element.billNo,"OpBillReceipt");
             }
             else if (m == "Print Final Bill with Package Details") {
@@ -328,6 +335,67 @@ export class NewOPListComponent implements OnInit {
         }
     }
 
+
+    openPaymentpopup(contact){
+        console.log(contact)
+        let PatientHeaderObj = {};
+        PatientHeaderObj['Date'] = this.datePipe.transform(contact.BillDate, 'MM/dd/yyyy') || '01/01/1900',
+        PatientHeaderObj['RegNo'] = contact.RegNo;
+        PatientHeaderObj['PatientName'] = contact.PatientName;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
+        PatientHeaderObj['Age'] = contact.PatientAge;
+        PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
+        PatientHeaderObj['DoctorName'] = contact.DoctorName;
+        PatientHeaderObj['TariffName'] = contact.TariffName;
+        PatientHeaderObj['CompanyName'] = contact.CompanyName;
+        PatientHeaderObj['NetPayAmount'] = contact.NetPayableAmt;
+        this.vMobileNo = contact.MobileNo;
+        
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
+          {
+    
+            maxWidth: "80vw",
+           // height: '600px',
+            width: '70%',
+            data: {
+              vPatientHeaderObj: PatientHeaderObj,
+              FromName: "OP-Bill"
+            }
+          });
+    
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(result)
+            if (result.IsSubmitFlag == true) {
+              this.vpaidamt = result.submitDataPay.ipPaymentInsert.PaidAmt;
+              this.vbalanceamt = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+              let updateBillobj = {};
+              updateBillobj['BillNo'] = contact.BillNo;
+              updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.balanceAmountController || result.submitDataPay.ipPaymentInsert.BalanceAmt;//result.BalAmt;
+              const updateBill = new UpdateBill(updateBillobj);
+              let Data = {
+                "updateBill": updateBill,
+                "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
+              };
+              console.log(Data)
+              this._OPListService.InsertOPBillingsettlement(Data).subscribe(response => {
+                if (response) {
+                  Swal.fire('OP Credit Bill With Payment!', 'Credit Bill Payment Successfully !', 'success').then((result) => {
+                    if (result.isConfirmed) {
+                      
+                      this.viewgetOPPaymentReportPdf(response)
+                      this._matDialog.closeAll();
+                     
+                      this.getWhatsappsharePaymentReceipt(response,this.vMobileNo);
+                    }
+                  });
+                }
+                else {
+                  Swal.fire('Error !', 'OP Billing Payment not saved', 'error');
+                }
+              });
+            }
+          });
+      }
 
     // getBilllistview(){
     //     let param={

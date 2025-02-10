@@ -84,4 +84,9 @@ public getBilllistReport(Param: any) {
 public getReportView(Param) {
   return this._httpClient1.PostData("Report/ViewReport", Param);
 }
+
+public InsertOPBillingsettlement(Param: any) {
+  return this._httpClient.PutData("OPBill/OPSettlementCreditPayment" , Param);
+  
+}
 }

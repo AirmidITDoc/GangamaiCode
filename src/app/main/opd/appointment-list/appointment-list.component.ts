@@ -98,7 +98,7 @@ this.Appointdetail(this.gridConfig)
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
+        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
@@ -106,8 +106,8 @@ this.Appointdetail(this.gridConfig)
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
-            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            // { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -267,6 +267,7 @@ this.Appointdetail(this.gridConfig)
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
+        console.log(element)
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
                 maxWidth: '75vw',
@@ -515,7 +516,7 @@ export class VisitMaster1 {
             this.patientTypeId = VisitMaster1.patientTypeId || 1;
             this.companyId = VisitMaster1.companyId || 1;
             this.tariffId = VisitMaster1.tariffId || 1;
-            this.consultantDocId = VisitMaster1.consultantDocId || 1;
+            this.consultantDocId = VisitMaster1.consultantDocId || '';
             this.refDocId = VisitMaster1.refDocId || 1;
             this.departmentId = VisitMaster1.departmentId || 1;
             this.patientOldNew = VisitMaster1.patientOldNew || 0;

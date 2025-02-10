@@ -74,7 +74,7 @@ export class NewAdmissionComponent implements OnInit {
   screenFromString = 'admission-form';
 
 
-  
+
   @Input() panelWidth: string | number;
   @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
@@ -88,11 +88,13 @@ export class NewAdmissionComponent implements OnInit {
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
     private router: Router,
-      private commonService: PrintserviceService,
+    private commonService: PrintserviceService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     dialogRef.disableClose = true;
+    this.personalFormGroup = this._AdmissionService.createPesonalForm();
+    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
   }
 
 
@@ -130,40 +132,37 @@ export class NewAdmissionComponent implements OnInit {
     this.isAlive = true;
     // this.personalFormGroup = this._AdmissionService.createPesonalForm();
     // this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-
     this.searchFormGroup = this.createSearchForm();
 
-    if ((this.data?.regId ?? 0) > 0) {
-    console.log(this.data)
-      this.AdmissionId = this.data.admissionId;
-      this.registredflag = false;
+    // if ((this.data?.regId ?? 0) > 0) {
+    //   console.log(this.data)
+    //   this.AdmissionId = this.data.admissionId;
+    //   this.registredflag = false;
 
-      setTimeout(() => {
-        this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
+    //   setTimeout(() => {
+    //     this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
+    //       // this.registerObj = response;
+    //       console.log(response)
 
-        });
+    //     });
 
-        // this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-        //   this.registerObj1 = response;
-        //   console.log(this.registerObj1)
+    //     // this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
+    //     //   this.registerObj1 = response;
+    //     //   console.log(this.registerObj1)
 
-        // });
+    //     // });
 
 
-      }, 500);
-    }
-    this.personalFormGroup = this._AdmissionService.createPesonalForm();
-    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+    //   }, 500);
+    // }
+    // this.personalFormGroup = this._AdmissionService.createPesonalForm();
+    // this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
   }
-
-
 
 
   createSearchForm() {
@@ -175,25 +174,25 @@ export class NewAdmissionComponent implements OnInit {
   }
 
 
-  
+
   getSelectedObj(obj) {
     console.log(obj)
     // this.RegOrPhoneflag = 'Entry from Registration';
-  debugger
+    debugger
     if ((obj.value ?? 0) > 0) {
 
-        console.log(this.data)
-        setTimeout(() => {
-            this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
-                this.registerObj = response;
-                console.log(this.registerObj)
+      console.log(this.data)
+      setTimeout(() => {
+        this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
 
-            });
+        });
 
-        }, 500);
+      }, 500);
     }
 
-}
+  }
 
   getValidationMessages() {
     return {
@@ -235,23 +234,35 @@ export class NewAdmissionComponent implements OnInit {
       countryId: [
         { name: "required", Message: "Country Name is required" }
       ],
+      maritalStatusId: [
+        { name: "required", Message: "Mstatus Name is required" }
+      ],
       stateId: [
         { name: "required", Message: "State Name is required" }
       ],
       mobileNo: [
-        { name: "required", Message: "mobileNo Name is required" }
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Mobile No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
       ],
-      PhoneNo: [
-        { name: "required", Message: "Phone is required" }
+      phoneNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        // { name: "required", Message: "phoneNo No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
       ],
       aadharCardNo: [
-        { name: "required", Message: "aadharCardNo is required" }
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "AadharCard No is required" },
+        { name: "minLength", Message: "12 digit required." },
+        { name: "maxLength", Message: "More than 12 digits not allowed." }
       ],
-
-      maritalStatusId: [
+      MaritalStatusId: [
         { name: "required", Message: "Mstatus Name is required" }
       ],
-
       AdmittedDoctor1: [
         { name: "required", Message: "AdmittedDoctor1 is required" }
       ],
@@ -303,7 +314,7 @@ export class NewAdmissionComponent implements OnInit {
       HospitalId: [
         { name: "required", Message: "HospitalId Name is required" }
       ],
-      phoneNo: [
+      RphoneNo: [
         { name: "required", Message: "RelatvieMobileNo Name is required" }
       ],
       docNameId: [
@@ -356,7 +367,7 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
 
   }
- 
+
   onNewSave() {
 
     // if ((!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
@@ -382,23 +393,23 @@ export class NewAdmissionComponent implements OnInit {
 
   onChangePatient(value) {
     debugger
-            var mode = "Company"
-            if (value.text == "Company") {
-                this._AdmissionService.getMaster(mode, 1);
-                this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
-                this.isCompanySelected = true;
-                this.patienttype = 2;
-            } else if (value.text != "Company") {
-                this.isCompanySelected = false;
-                this.admissionFormGroup.get('CompanyId').clearValidators();
-                this.admissionFormGroup.get('SubCompanyId').clearValidators();
-                this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-                this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
-                this.patienttype = 1;
-            }
-    
-    
-        }
+    var mode = "Company"
+    if (value.text == "Company") {
+      this._AdmissionService.getMaster(mode, 1);
+      this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.isCompanySelected = true;
+      this.patienttype = 2;
+    } else if (value.text != "Company") {
+      this.isCompanySelected = false;
+      this.admissionFormGroup.get('CompanyId').clearValidators();
+      this.admissionFormGroup.get('SubCompanyId').clearValidators();
+      this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
+      this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+      this.patienttype = 1;
+    }
+
+
+  }
 
 
 
@@ -406,16 +417,16 @@ export class NewAdmissionComponent implements OnInit {
   CompanyId: any = 0;
   SubCompanyId: any = 0;
   OnSaveAdmission() {
-   
+
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-       
+
     // if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
-      if(this.isCompanySelected &&  this.admissionFormGroup.get('CompanyId').value==0){
-        this.toastr.warning('Please select valid Company ', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
+    if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
+      this.toastr.warning('Please select valid Company ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
     debugger
     if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
@@ -438,31 +449,33 @@ export class NewAdmissionComponent implements OnInit {
 
 
     }
-       else {
+    else {
       console.log(this.registerObj1)
+      console.log(this.personalFormGroup.value)
+
       console.log(this.admissionFormGroup.value)
+      debugger
+      // this.registerObj1.departmentId = this.admissionFormGroup.get("DepartmentId").value
+      // this.registerObj1.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
+      // this.registerObj1.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
+      // this.registerObj1.relationshipId = this.admissionFormGroup.get("RelationshipId").value
+      // this.registerObj1.relativeName = this.admissionFormGroup.get("RelativeName").value
+      // this.registerObj1.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
+      // this.registerObj1.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
+      // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
+      // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
+      // this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
+      // if (this.admissionFormGroup.get("CompanyId").value)
+      //   this.registerObj1.companyId = this.admissionFormGroup.get("CompanyId").value
 
-      this.registerObj1.departmentId = this.admissionFormGroup.get("DepartmentId").value
-      this.registerObj1.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
-      this.registerObj1.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
-      this.registerObj1.relationshipId = this.admissionFormGroup.get("RelationshipId").value
-      this.registerObj1.relativeName = this.admissionFormGroup.get("RelativeName").value
-      this.registerObj1.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
-      this.registerObj1.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
-      this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
-      this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
-      this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
-      if (this.admissionFormGroup.get("CompanyId").value)
-        this.registerObj1.companyId = this.admissionFormGroup.get("CompanyId").value
-
-      this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
-      this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
-      this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
+      // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
+      // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
+      // this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
 
 
       let submitData = {
         "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION":this.admissionFormGroup.value
+        "ADMISSION": this.admissionFormGroup.value
       };
       console.log(submitData);
 
@@ -572,9 +585,9 @@ export class NewAdmissionComponent implements OnInit {
     //   });
 
     // }, 100);
- 
- 
-    this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport"); 
+
+
+    this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
   }
 
   displayFn(user: any): string {

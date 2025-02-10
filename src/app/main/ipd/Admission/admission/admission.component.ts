@@ -41,6 +41,7 @@ import { User } from 'app/core/models/user';
 import { BedTransferComponent } from '../../ip-search-list/bed-transfer/bed-transfer.component';
 import { DischargeComponent } from '../../ip-search-list/discharge/discharge.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { DischargeSummaryComponent } from '../../ip-search-list/discharge-summary/discharge-summary.component';
 
 
 @Component({
@@ -435,7 +436,7 @@ export class AdmissionComponent implements OnInit {
       buttonElement.blur(); // Remove focus from the button
 
       let that = this;
-      const dialogRef = this._matDialog.open(MLCInformationComponent,
+      const dialogRef = this._matDialog.open(DischargeSummaryComponent,
           {
               maxWidth: "70vw",
               height: "390px",
@@ -555,8 +556,8 @@ export class AdmissionComponent implements OnInit {
 
   NewMLc(contact) {
 
-
-    this._AdmissionService.populateForm(contact);
+debugger
+    // this._AdmissionService.populateForm(contact);
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
@@ -771,6 +772,7 @@ export class Bed {
 }
 
 export class AdmissionPersonlModel {
+  admissionId:any;
   AadharCardNo: any;
   Address: any;
   PrefixId: any;
@@ -1105,6 +1107,7 @@ export class AdmissionPersonlModel {
       this.DocNameId = AdmissionPersonl.DocNameId || ''
       this.regId = AdmissionPersonl.regId || 0
       this.mobileNo = AdmissionPersonl.mobileNo || ''
+      this.admissionId=AdmissionPersonl.admissionId ||0
 
     }
   }

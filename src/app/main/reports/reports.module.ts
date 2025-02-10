@@ -73,16 +73,18 @@ const appRoutes: Routes = [
    {
         path: "commanreport",
         loadChildren: () =>
-            import("./common-report/common-report.module").then(
-                (m) => m.CommonReportModule
+            import("./report-generation/report-generation.module").then(
+                (m) => m.ReportGenerationModule
             ),
     },
     {
         path: "report-generation",
-        loadChildren: () =>
-            import("./report-generation/report-generation.module").then(
-                (m) => m.ReportGenerationModule
-            ),
+      
+
+            loadChildren: () =>
+                import("./common-report/common-report.module").then(
+                    (m) => m.CommonReportModule
+                ),
     },
     {
         path: "inventoryreport",
