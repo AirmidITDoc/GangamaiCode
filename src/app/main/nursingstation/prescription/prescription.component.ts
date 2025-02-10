@@ -68,14 +68,14 @@ export class PrescriptionComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "PresReId",
+        sortField: "PresReld",
         sortOrder: 0,
         filters: [
             { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: "01/01/2025", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "13936", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "10004", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
         row: 25
