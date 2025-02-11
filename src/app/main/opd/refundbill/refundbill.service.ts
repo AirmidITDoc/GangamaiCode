@@ -52,6 +52,9 @@ export class RefundbillService {
             opdNo: [""], //"OP-38"
             departmentName: [""],
             // isActive:[true,[Validators.required]],
+
+
+
         });
     }
     
@@ -79,11 +82,14 @@ export class RefundbillService {
     }
 
     public getRefundofBillOPDList(employee) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_OPBillListforRefund", employee)
+        console.log(employee)
+     return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList",employee);
+
     }
 
     public getRefundofBillServiceList(employee) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_OPBill_For_Refund", employee)
+        // return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_OPBill_For_Refund", employee)
+        return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList",employee);
     }
 
     public InsertOPRefundBilling(Param: any) {
