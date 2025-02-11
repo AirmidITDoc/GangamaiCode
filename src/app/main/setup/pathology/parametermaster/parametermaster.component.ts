@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ParametermasterService } from "./parametermaster.service";
 import { fuseAnimations } from "@fuse/animations";
@@ -23,6 +23,16 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class ParametermasterComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+        @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+        @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
+
+        ngAfterViewInit() {
+            // Assign the template to the column dynamically
+            this.gridConfig.columnsList.find(col => col.key === 'isNumericParameter')!.template = this.actionsNumeric;
+            // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    
+        }
 
     gridConfig: gridModel = {
         apiUrl: "ParameterMaster/MPathParameterList",
@@ -37,35 +47,42 @@ export class ParametermasterComponent implements OnInit {
 
             { heading: "Unit Name", key: "unitId", width: 200, sort: true, align: 'left', emptySign: 'NA' },
 
-            { heading: "IsNumeric", key: "isNumeric", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+            { 
+                heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template,
+                template: this.actionButtonTemplate 
+            },
 
             { heading: "IsPrintDisSummary", key: "isPrintDisSummary", width: 100, sort: true, align: 'left', emptySign: 'NA' },
             
-            { heading: "Formula", key: "Formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             
             { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
             { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
+            // {
+            //     heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onEdit(data) // EDIT Records
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onaddformula(data) // add formula Records
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._ParameterService.deactivateTheStatus(data.parameterId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // }, //Action 1-view, 2-Edit,3-delete
             {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onAdd(data) // EDIT Records
-                        }
-                    },
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onaddformula(data) // add formula Records
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._ParameterService.deactivateTheStatus(data.parameterId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
         ],
         sortField: "parameterId",
         sortOrder: 0,
@@ -107,50 +124,102 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        console.log()
-        var m_data = {
-            ParameterID: row.ParameterID,
-            ParameterShortName: row.ParameterShortName.trim(),
-            ParameterName: row.ParameterName.trim(),
-            PrintParameterName: row.PrintParameterName.trim(),
-            UnitId: row.UnitId,
-            IsNumeric: row.IsNumericParameter,
-            IsDeleted: JSON.stringify(row.Isdeleted),
-            UpdatedBy: row.UpdatedBy,
-            IsPrintDisSummary: JSON.stringify(row.IsPrintDisSummary),
-            MethodName: row.MethodName,
-            ParaMultipleRange: row.ParaMultipleRange,
-            Formula: row.Formula,
-        };
+        console.log(row)
+        // var m_data = {
+        //     ParameterID: row.parameterId,
+        //     ParameterShortName: row.parameterShortName.trim(),
+        //     ParameterName: row.parameterName.trim(),
+        //     PrintParameterName: row.printParameterName.trim(),
+        //     UnitId: row.unitId,
+        //     IsNumeric: row.IsNumericParameter,
+        //     IsDeleted: JSON.stringify(row.Isdeleted),
+        //     UpdatedBy: row.UpdatedBy,
+        //     IsPrintDisSummary: JSON.stringify(row.isPrintDisSummary),
+        //     MethodName: row.methodName,
+        //     ParaMultipleRange: row.ParaMultipleRange,
+        //     Formula: row.formula,
+        // };
 
-        this._ParameterService.getTableData(row.ParameterID).subscribe((data) => {
-            if (row.IsNumericParameter == 1) {
-
-                m_data['numericList'] = data;
-                m_data['descriptiveList'] = [];
-
-            }
-            else {
-                let updatedData = []
-                for (const key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        const element = data[key];
-                        updatedData.push(element.ParameterValues);
+        // wroung api used
+        if(row.IsNumericParameter==1){
+            var param = {
+                "first": 0,
+                "rows": 10,
+                "sortField": "ParameterId",
+                "sortOrder": 0,
+                "filters": [
+                    {
+                        "fieldName": "ParameterId",
+                        "fieldValue": String(row.parameterId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "Start",
+                        "fieldValue": "0",
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "Length",
+                        "fieldValue": "10",
+                        "opType": "Equals"
                     }
-                }
-
-                m_data['descriptiveList'] = updatedData;
-                m_data['numericList'] = [];
+                ],
+                "exportType": "JSON"
             }
-            this._ParameterService.populateForm(m_data);
+        }
+        else{
+            var param = {
+                "first": 0,
+                "rows": 10,
+                "sortField": "ParameterId",
+                "sortOrder": 0,
+                "filters": [
+                    {
+                        "fieldName": "ParameterId",
+                        "fieldValue": String(row.parameterId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "Start",
+                        "fieldValue": "0",
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "Length",
+                        "fieldValue": "10",
+                        "opType": "Equals"
+                    }
+                ],
+                "exportType": "JSON"
+            }
+        }
+        
+        
+        console.log(param)
+
+        this._ParameterService.getTableData(param).subscribe((data) => {
+            // if (row.IsNumericParameter == 1) {
+
+            //     m_data['numericList'] = data;
+            //     m_data['descriptiveList'] = [];
+            // }
+            // else {
+            //     let updatedData = []
+            //     for (const key in data) {
+            //         if (data.hasOwnProperty(key)) {
+            //             const element = data[key];
+            //             updatedData.push(element.ParameterValues);
+            //         }
+            //     }
+            //     m_data['descriptiveList'] = updatedData;
+            //     m_data['numericList'] = [];
+            // }
+            this._ParameterService.populateForm(param);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
-                maxWidth: "75vw",
-                maxHeight: "95vh",
-                width: "100%",
-                height: "100%",
-                data: {
-                    registerObj: row,
-                }
+                maxWidth: "100vw",
+                height: '95%',
+                width: '70%',
+                data:row
             });
 
             dialogRef.afterClosed().subscribe((result) => {
@@ -160,15 +229,13 @@ export class ParametermasterComponent implements OnInit {
         })
     }
 
-    onAdd(row: any = null) {
-        
+    onAdd() {
         let that = this;
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
             {
                 maxWidth: "100vw",
                 height: '95%',
-                width: '70%',
-                data: row
+                width: '70%'
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {

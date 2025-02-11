@@ -187,6 +187,7 @@ export class ParametermasterService {
     }
 
     public getTableData(param){
+        debugger
         if(this.is_numeric) {
             return this._httpClient.PostData(
                 "Generic/GetByProc?procName=m_Rtrv_PathParameterRangeWithAge",
@@ -236,8 +237,8 @@ export class ParametermasterService {
     populateForm(param) {
         ;
         this.myform.patchValue(param);
-        this.myform.get("IsPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
-        this.myform.get("IsNumeric").setValue(param.IsNumeric == 1? 1: 2);
+        this.myform.get("isPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
+        this.myform.get("isNumeric").setValue(param.IsNumeric == 1? 1: 2);
         this.is_numeric = param.IsNumeric == 1? true : false;
         this.numericList = param.numericList;
         this.descriptiveList = param.descriptiveList;

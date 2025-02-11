@@ -194,13 +194,18 @@ export class TestmasterService {
         );
     }
     
+    // get parameter master list
     public getParameterMasterList(param) {
         return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
     }
+    // retrive parameter master list
+
+    // get subTest master list of checkbox
     public getIsSubTestList(param) {
         return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
     }
     
+    // get Test master list
     public getTestListfor(param) {
         return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
     }
@@ -269,9 +274,16 @@ export class TestmasterService {
     }
 
     public unitMasterSave(Param: any) {
-        if (Param.TestId) {
-            return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param);
-        } else return this._httpClient.PostData("PathTestMaster/Insert", Param);
+        // if (Param.TestId) {
+        //     return this._httpClient.PutData("PathTestMaster/Insert" + Param.TestId, Param);
+        // } else
+         return this._httpClient.PostData("PathTestMaster/Insert", Param);
+    }
+
+    public unitMasterUpdate(Param: any) {
+        if (Param.id) {
+         return this._httpClient.PutData("PathTestMaster/Edit/" + Param.id, Param);
+        }
     }
 
     public deactivateTheStatus(m_data) {

@@ -218,7 +218,7 @@
                                                     </div>
                                                     <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <div matTooltip="Select All Value to enable this button!!" fxLayout="row" fxLayoutAlign="end">
-                                                            <button class="btn btn-primary btn-with-icon " (click)="AddData(paraId)">
+                                                            <button class="btn btn-primary btn-with-icon " (click)="onAddDescrow()">
                                                                 <span class="btn-icon">
                                                                     <mat-icon> add_to_photos </mat-icon>
                                                                 </span>
@@ -240,7 +240,7 @@
                                                                         <mat-icon >delete</mat-icon>
                                                                     </button> -->
                                                                     <div class="list-item-content" fxLayout="row" fxLayoutAlign="space-between center">
-                                                                        <div class="list-item-title">{{ item }}
+                                                                        <div class="list-item-title">{{ item.ParameterName }}
                                                                         </div>
                                                                         <button mat-icon-button color="warn" (click)="removeItem(i)">
                                                                             <mat-icon>delete</mat-icon>

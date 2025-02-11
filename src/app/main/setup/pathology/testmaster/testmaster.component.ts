@@ -22,9 +22,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class TestmasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-
+    parameter = this._TestService.myform.get("ParameterNameSearch").value + "%" || '%';
     gridConfig: gridModel = {
-        apiUrl: "PathTestMaster/TestMasterList",
+        apiUrl: "Pathology/PathologyTestList",
         columnsList: [
             { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },            
@@ -52,10 +52,12 @@ export class TestmasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
+
+        
         sortField: "TestId",
         sortOrder: 0,
         filters: [
-            { fieldName: "TestId", fieldValue: "12", opType: OperatorComparer.Contains },
+            { fieldName: "ServiceName", fieldValue: this.parameter, opType: OperatorComparer.StartsWith },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
