@@ -370,7 +370,7 @@ export class NewAdmissionComponent implements OnInit {
 
   onNewSave() {
 
-    // if ((!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid)) {
+    if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid ){
 
     Swal.fire({
       title: 'Do you want to Save the Admission ',
@@ -387,7 +387,9 @@ export class NewAdmissionComponent implements OnInit {
         this.OnSaveAdmission();
       }
     })
-    // }
+    }else{
+      Swal.fire("Enter Peroepr values..orm Id Invalid")
+    }
   }
 
 
@@ -438,10 +440,12 @@ export class NewAdmissionComponent implements OnInit {
       console.log(submitData);
 
       this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+        console.log(response)
         this.toastr.success(response.message);
+        this.getAdmittedPatientCasepaperview(response.admissionId);
         this.onClear();
         this._matDialog.closeAll();
-        this.getAdmittedPatientCasepaperview(response);
+       
       }, (error) => {
         this.toastr.error(error.message);
 
@@ -455,24 +459,7 @@ export class NewAdmissionComponent implements OnInit {
 
       console.log(this.admissionFormGroup.value)
       debugger
-      // this.registerObj1.departmentId = this.admissionFormGroup.get("DepartmentId").value
-      // this.registerObj1.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
-      // this.registerObj1.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
-      // this.registerObj1.relationshipId = this.admissionFormGroup.get("RelationshipId").value
-      // this.registerObj1.relativeName = this.admissionFormGroup.get("RelativeName").value
-      // this.registerObj1.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
-      // this.registerObj1.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
-      // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
-      // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
-      // this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
-      // if (this.admissionFormGroup.get("CompanyId").value)
-      //   this.registerObj1.companyId = this.admissionFormGroup.get("CompanyId").value
-
-      // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
-      // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
-      // this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
-
-
+     
       let submitData = {
         "AdmissionReg": this.personalFormGroup.value,
         "ADMISSION": this.admissionFormGroup.value
@@ -481,6 +468,8 @@ export class NewAdmissionComponent implements OnInit {
 
       this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
         this.toastr.success(response.message);
+        console.log(response)
+        this.getAdmittedPatientCasepaperview(response.admissionId);
         this.onClear();
         this._matDialog.closeAll();
       }, (error) => {

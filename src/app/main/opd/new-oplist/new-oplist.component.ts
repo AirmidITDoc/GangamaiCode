@@ -284,6 +284,8 @@ export class NewOPListComponent implements OnInit {
 
 
        OngetRecord(element, m){
+        console.log(element)
+        element.billNo=216366
             console.log('Third action clicked for:', element); 
             if (m == "Print Final Bill") {
                 debugger

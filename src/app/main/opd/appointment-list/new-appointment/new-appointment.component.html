@@ -42,7 +42,7 @@
                     <div fxLayout="row" fxLayoutGap="18px" fxLayoutAlign="center center">
                     <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
 
-                        <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
+                        <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" fxFlex="50%"
                             placeholderText="Enter Patient Name" ApiUrl="OutPatient/auto-complete?Keyword="
                             (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 

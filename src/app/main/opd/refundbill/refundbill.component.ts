@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -21,11 +21,15 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { fuseAnimations } from '@fuse/animations';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-refundbill',
   templateUrl: './refundbill.component.html',
-  styleUrls: ['./refundbill.component.scss']
+  styleUrls: ['./refundbill.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
+  
 })
 export class RefundbillComponent implements OnInit {
   
@@ -110,14 +114,14 @@ export class RefundbillComponent implements OnInit {
   
     @ViewChild('picker') datePickerElement = MatDatepicker;
     displayedColumns1 = [
-      'ServiceName',
-      'Qty',
-      'Price',
-      'NetAmount',
-      'ChargesDocName',
-      'RefAmount',
-      'BalanceAmount',
-      'RefundAmount'
+      'serviceName',
+      'qty',
+      'price',
+      'netAmount',
+      'chargesDocName',
+      'refAmount',
+      'balanceAmount',
+      'refundAmount'
     ];
   
     displayedColumns = [
@@ -172,7 +176,6 @@ export class RefundbillComponent implements OnInit {
       public _matDialog: MatDialog,
       // private advanceDataStored: AdvanceDataStored,
       public datePipe: DatePipe,
-      private accountService: AuthenticationService,
       private formBuilder: FormBuilder,
       public toastr: ToastrService,
       public _WhatsAppEmailService: WhatsAppEmailService,
@@ -186,18 +189,13 @@ export class RefundbillComponent implements OnInit {
   
   
     ngOnInit(): void {
-      this.RefundOfBillFormGroup = this.refundForm();
+      // this.RefundOfBillFormGroup = this.refundForm();
       this.searchFormGroup = this.createSearchForm();
   
-      this.refundBillForm();
-      this.getRefundofBillOPDListByReg(this.RegId);
-      this.getservicedtailList(this.RegId);
-  
-  
-      console.log(this.datePickerElement)
-      console.log(this.datePickerElement['opened'])
-  
-    }
+      // this.refundBillForm();
+      // this.getRefundofBillOPDListByReg(this.RegId);
+      // this.getservicedtailList(this.RegId);
+      }
   
   
   
@@ -251,29 +249,7 @@ export class RefundbillComponent implements OnInit {
     AgeMonth:any;
     AgeDay:any;
     GenderName:any;
-    // getSelectedObj1(obj) {
-    //   this.dataSource.data = [];
-    //   console.log(obj)
-    //   this.registerObj = obj;
-    //   this.PatientName = obj.FirstName + " " + obj.LastName;
-    //   this.RegId = obj.RegId; 
-    //   this.RegNo = obj.RegNo;
-    //   this.City = obj.City;
-    //   this.AgeMonth = obj.AgeMonth;
-    //   this.GenderName = obj.GenderName;
-    //   this.AgeDay = obj.AgeDay;
-    //   this.AgeYear = obj.AgeYear;
-    //   this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
-    //   this.CompanyName = obj.CompanyName;
-    //   this.Tarrifname = obj.TariffName;
-    //   this.Doctorname = obj.DoctorName;
-    //   this.vOPDNo = obj.RegId;
-    //   this.vTariffId = obj.TariffId;
-    //   this.vClassId = obj.classId
-    //   this.AgeYear = obj.AgeYear;
-    //   this.vMobileNo = obj.MobileNo;
-    //   this.getRefundofBillOPDListByReg();
-    // }
+ 
   
     getOptionText1(option) {
       if (!option)
@@ -315,7 +291,8 @@ export class RefundbillComponent implements OnInit {
         
         this._RefundbillService.getRefundofBillOPDList(m_data).subscribe(Visit => {
             console.log(Visit);
-        this.dataSource3.data = Visit as RegRefundBillMaster[];
+        this.dataSource3.data = Visit.data 
+        // as RegRefundBillMaster[];
         console.log(this.dataSource3.data);
         // this.dataSource3.sort = this.sort;
         // this.dataSource3.paginator = this.paginator;
@@ -329,7 +306,7 @@ export class RefundbillComponent implements OnInit {
     TRefundamt = 0;
   
     getservicedtailList(row) {
-  
+  debugger
       // this.vBillBalanceAmt=row.BalanceAmt;
         var m_data = {
             "first": 0,
@@ -357,13 +334,13 @@ export class RefundbillComponent implements OnInit {
         }
     
         console.log(m_data)
-        this.isLoadingStr = 'loading';
+        // this.isLoadingStr = 'loading';
         this._RefundbillService.getRefundofBillServiceList(m_data).subscribe(Visit => {
-          this.dataSource2.data = Visit as InsertRefundDetail[];
-          this.dataSource2.sort = this.sort;
-          this.dataSource2.paginator = this.paginator;
-          console.log(this.dataSource2.data);
-          this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
+          this.dataSource2.data = Visit.data as InsertRefundDetail[];
+          // this.dataSource2.sort = this.sort;
+          // this.dataSource2.paginator = this.paginator;
+          console.log(Visit);
+          // this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
         });
         this.dataSource2.data["BalanceAmount"] = 0;
     }
@@ -512,7 +489,7 @@ export class RefundbillComponent implements OnInit {
           InsertRefundObj['RefundAmount'] = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
           InsertRefundObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value;
           InsertRefundObj['TransactionId'] = 2;
-          InsertRefundObj['AddedBy'] = this.accountService.currentUserValue.user.id,
+          InsertRefundObj['AddedBy'] = 1,//this.accountService.currentUserValue.user.id,
           InsertRefundObj['IsCancelled'] = 0;
           InsertRefundObj['IsCancelledBy'] = 0;
           InsertRefundObj['IsCancelledDate'] = this.dateTimeObj.date;
@@ -527,10 +504,10 @@ export class RefundbillComponent implements OnInit {
             InsertRefundDetailObj['RefundID'] = 0;
             InsertRefundDetailObj['ServiceId'] = element.ServiceId || 0;
             InsertRefundDetailObj['ServiceAmount'] = element.NetAmount || 0;
-            InsertRefundDetailObj['RefundAmount'] =  element.RefundAmt || 0;
+            InsertRefundDetailObj['RefundAmount'] =  element.refundAmt || 0;
             InsertRefundDetailObj['DoctorId'] =  element.DoctorId
             InsertRefundDetailObj['Remark'] = this.RefundOfBillFormGroup.get('Remark').value || '';
-            InsertRefundDetailObj['AddBy'] = this.accountService.currentUserValue.user.id,
+            InsertRefundDetailObj['AddBy'] =1,// this.accountService.currentUserValue.user.id,
             InsertRefundDetailObj['ChargesId'] =element.ChargesId
             RefundDetailarr.push(InsertRefundDetailObj); 
           })  
@@ -540,7 +517,7 @@ export class RefundbillComponent implements OnInit {
             debugger
             let AddchargesRefundAmountObj = {};
             AddchargesRefundAmountObj['ChargesId'] = element.ChargesId || 0;
-            AddchargesRefundAmountObj['RefundAmount'] = parseFloat(element.RefundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
+            AddchargesRefundAmountObj['RefundAmount'] = parseFloat(element.refundAmt) || 0;// parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount').value);
             AddchargesRefundAmountarr.push(AddchargesRefundAmountObj);
           });
   
@@ -777,6 +754,9 @@ export class RefundbillComponent implements OnInit {
     //
     refund:any=0;
     onEdit(row) {
+      this.getservicedtailList(row);
+  
+      
       this.TotalRefundAmount = 0
       this.RefundBalAmount = 0
       console.log(row);
@@ -786,7 +766,7 @@ export class RefundbillComponent implements OnInit {
       this.BillDate = datePipe.transform(row.BillDate, 'dd/MM/yyyy hh:mm a');
       this.NetBillAmount = row.NetPayableAmt;
       this.RefundAmount = row.RefundAmount;
-      this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
+      // this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
       this.vFinalrefundbamt = this.RefundBalAmount
       this.vOPIPId = row.VisitId; 
       //Testing
@@ -795,22 +775,14 @@ export class RefundbillComponent implements OnInit {
           "BillNo": row.BillNo
         }
         this.isLoadingStr = 'loading';
-        // this._ddlGender.getRefundofBillDetailList(m_data1).subscribe(Visit => {
-        //   this.dataSource1.data = Visit as BillRefundMaster[];
-  
-        //   this.dataSource1.sort = this.sort;
-        //   this.dataSource1.paginator = this.paginator;
-        //   this.isLoadingStr = this.dataSource1.data.length == 0 ? 'no-data' : '';
-        // });
-  
+        
         this.RefAmt1 = this.RefundBalAmount;
-        this.getservicedtailList(row);
+        // this.getservicedtailList(row);
       } else {
         Swal.fire("Already Refund")
         this.refund = 1;
       }
      
-  
   
     }
   
@@ -882,44 +854,44 @@ export class RefundbillComponent implements OnInit {
   export class InsertRefundDetail {
     RefundID: any;;
     ServiceId: number;
-    ServiceName: any;
+    serviceName: any;
     ServiceAmount: number;
-    RefundAmount: number;
+    refundAmount: number;
     DoctorId: number;
     Remark: String;
     AddBy: number;
     ChargesId: number;
     ChargesDate: Date;
-    Price: number;
-    Qty: number;
+    price: number;
+    qty: number;
     TotalAmt: number;
     NetAmount: number;
     ChargesDocName: any;
-    RefundAmt: any;
-    BalanceAmount: any;
-    RefAmount:any;
+    refundAmt: any;
+    balanceAmount: any;
+    refAmount:any;
   
     constructor(InsertRefundDetailObj) {
       {
         this.RefundID = InsertRefundDetailObj.RefundID || 0;
         this.ServiceId = InsertRefundDetailObj.ServiceId || 0;
-        this.ServiceName = InsertRefundDetailObj.ServiceName || 0;
+        this.serviceName = InsertRefundDetailObj.serviceName || 0;
         this.ServiceAmount = InsertRefundDetailObj.ServiceAmount || 0;
-        this.RefundAmount = InsertRefundDetailObj.RefundAmount || 0;
+        this.refundAmount = InsertRefundDetailObj.refundAmount || 0;
         this.DoctorId = InsertRefundDetailObj.DoctorId || 0;
         this.Remark = InsertRefundDetailObj.Remark || '';
         this.AddBy = InsertRefundDetailObj.AddBy || 0;
         this.ChargesId = InsertRefundDetailObj.ChargesId || 0;
         this.ChargesDate = InsertRefundDetailObj.ChargesDate || '';
-        this.Price = InsertRefundDetailObj.Price || 0;
-        this.Qty = InsertRefundDetailObj.Qty || 0;
+        this.price = InsertRefundDetailObj.price || 0;
+        this.qty = InsertRefundDetailObj.qty || 0;
         this.TotalAmt = InsertRefundDetailObj.TotalAmt || 0;
         this.NetAmount = InsertRefundDetailObj.NetAmount || '';
         this.ChargesDocName = InsertRefundDetailObj.ChargesDocName || 0;
-        this.Qty = InsertRefundDetailObj.Qty || 0;
-        this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
-        this.BalanceAmount = InsertRefundDetailObj.BalanceAmount || 0;
-        this.RefAmount = InsertRefundDetailObj.RefAmount || 0;
+        // this.Qty = InsertRefundDetailObj.ty || 0;
+        this.refundAmt = InsertRefundDetailObj.refundAmt || 0;
+        this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
+        this.refAmount = InsertRefundDetailObj.refAmount || 0;
       }
     }
   }

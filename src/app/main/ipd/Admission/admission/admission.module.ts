@@ -48,6 +48,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CompanyInformationComponent } from '../../company-information/company-information.component';
 // import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 const routes: Routes = [
   { 
@@ -108,7 +109,8 @@ const routes: Routes = [
         MatAutocompleteModule,
         MatChipsModule,
         MatTooltipModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+         MatTimepickerModule,
     ],
     providers: [
         AdmissionService,

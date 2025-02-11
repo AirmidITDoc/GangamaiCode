@@ -185,40 +185,22 @@ phdatetime: any;
      
       this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
 
-      if(!this.timeflag){
+      // if(!this.timeflag){
 
-        let selectedDate = new Date(this.phoneappForm.get('phAppTime').value);
-        let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        let splitTime = this.phoneappForm.get('phAppTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        this.isTimeChanged = true;
-        this.phdatetime=splitTime[1]
-      }
+      //   let selectedDate = new Date(this.phoneappForm.get('phAppTime').value);
+      //   let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      //   let splitTime = this.phoneappForm.get('phAppTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      //   this.isTimeChanged = true;
+      //   this.phdatetime=splitTime[1]
+      // }
     
     if (!this.phoneappForm.invalid) {
       
-      this.phdatetime = this.phoneappForm.get('phAppDate').value + "" + this.phdatetime
-      console.log(this.phdatetime)
-      console.log(this.phoneappForm.value);
+      // this.phdatetime = this.phoneappForm.get('phAppDate').value + "" + this.phdatetime
+      // console.log(this.phdatetime)
+      // console.log(this.phoneappForm.value);
       
-      // var data = {
-      //   "phoneAppId": 0,
-      //   "appDate": this.phoneappForm.get('appDate').value,
-      //   "appTime": this.phoneappForm.get('appTime').value,
-      //   "firstName": this.phoneappForm.get('firstName').value,
-      //   "middleName": this.phoneappForm.get('middleName').value,
-      //   "lastName": this.phoneappForm.get('lastName').value,
-      //   "address": this.phoneappForm.get('address').value,
-      //   "mobileNo": this.phoneappForm.get('mobileNo').value,
-      //   "phAppDate": this.phoneappForm.get('phAppDate').value,
-      //   "phAppTime": this.phdatetime,// this.phoneappForm.get('phAppTime').value,
-      //   "departmentId": this.phoneappForm.get('departmentId').value,
-      //   "doctorId": this.phoneappForm.get('doctorId').value,
-      //   "addedBy": 1,
-      //   "updatedBy": 1,
-      //   "regNo": ""
-      // }
-      // console.log(data);
-
+   
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);

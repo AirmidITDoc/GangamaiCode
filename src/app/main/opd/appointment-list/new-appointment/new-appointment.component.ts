@@ -18,6 +18,7 @@ import { RegInsert } from '../../registration/registration.component';
 import { fuseAnimations } from '@fuse/animations';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-new-appointment',
@@ -145,6 +146,7 @@ export class NewAppointmentComponent implements OnInit {
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder,
         public matDialog: MatDialog,
+              private commonService: PrintserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
     ) {
@@ -170,6 +172,15 @@ export class NewAppointmentComponent implements OnInit {
 
 
 
+    createSearchForm() {
+        return this.formBuilder.group({
+            regRadio: ['registration'],
+            regRadio1: ['registration1'],
+            RegId: [''],
+            PhoneRegId: [''],
+            UnitId: [1]
+        });
+    }
 
 
     onChangeReg(event) {
@@ -210,17 +221,12 @@ export class NewAppointmentComponent implements OnInit {
 
 
     }
-
-    createSearchForm() {
-        return this.formBuilder.group({
-            regRadio: ['registration'],
-            regRadio1: ['registration1'],
-            RegId: [''],
-            PhoneRegId: [''],
-            UnitId: [1]
-        });
+    OnViewReportPdf(element) {
+        debugger
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
-
+  
 
 
     onChangePatient(value) {
@@ -531,6 +537,8 @@ debugger
                 this.onSaveRegistered();
                 this.onClose();
             }
+
+            
         } else {
             Swal.fire("Form Invalid chk....")
         }
@@ -548,6 +556,8 @@ debugger
         debugger
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
+            console.log(response)
+            this.OnViewReportPdf(response.visitId)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {
@@ -569,6 +579,7 @@ debugger
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             this.toastr.success(response.message);
+            this.OnViewReportPdf(response.visitId)
             this.onClear(true);
             this._matDialog.closeAll();
         }, (error) => {

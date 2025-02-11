@@ -131,7 +131,7 @@ export class EditAdmissionComponent implements OnInit {
   }
 
   selectChangedepartment(obj: any) {
-    debugger
+    
     console.log(obj)
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
@@ -141,7 +141,7 @@ export class EditAdmissionComponent implements OnInit {
 
 
   onChangePatient(value) {
-    debugger
+    
             var mode = "Company"
             if (value.text == "Company") {
                 this._AdmissionService.getMaster(mode, 1);
@@ -164,45 +164,27 @@ export class EditAdmissionComponent implements OnInit {
   SubCompanyId = 0;
   OnSaveAdmission() {
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-   
-    
-    // if (this.patienttype != 2) {
-    //   this.CompanyId = 0;
-    //   this.SubCompanyId = 0;
-    // } else if (this.patienttype == 2) {
+   console.log(this.admissionFormGroup.value)
+   console.log(this.admissionFormGroup.value)
+    if (this.patienttype != 2) {
+      this.CompanyId = 0;
+      this.SubCompanyId = 0;
+    } else if (this.patienttype == 2) {
 
-    //   this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
-    //   this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
+      this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
+      this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
 
-    //   if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
-    //     this.toastr.warning('Please select Company.', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // }
+      if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
+        this.toastr.warning('Please select Company.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
     debugger
-    // if (!this.admissionFormGroup.invalid &&  !this.otherFormGroup.invalid) {
+    if (!this.admissionFormGroup.invalid) {
     console.log(this.registerObj)
     console.log(this.admissionFormGroup.value)
-
-    // this.registerObj1.departmentId = this.admissionFormGroup.get("DepartmentId").value
-    // this.registerObj1.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
-    // this.registerObj1.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
-    // this.registerObj1.relationshipId = this.admissionFormGroup.get("RelationshipId").value
-    // this.registerObj1.relativeName = this.admissionFormGroup.get("RelativeName").value
-    // this.registerObj1.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
-    // this.registerObj1.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
-    // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
-    // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
-    // this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
-    // if (this.admissionFormGroup.get("CompanyId").value)
-    //   this.registerObj1.companyId = this.admissionFormGroup.get("CompanyId").value
-
-    // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
-    // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
-    // this.registerObj.phoneNo = this.admissionFormGroup.get("MobileNo").value
-
 
     let submitData = {
       "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
@@ -218,7 +200,9 @@ export class EditAdmissionComponent implements OnInit {
       this.toastr.error(error.message);
 
     });
-
+  }else{
+    Swal.fire("Enter All values ...Form Is Invalid")
+  }
 
   }
 

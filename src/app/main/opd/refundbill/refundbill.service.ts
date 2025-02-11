@@ -13,8 +13,8 @@ export class RefundbillService {
     constructor(private _httpClient: ApiCaller,
     private _formBuilder: UntypedFormBuilder) 
     {
-        this.myformSearch = this.createSearchForm();
-        this.myform = this.createForm(); 
+        // this.myformSearch = this.createSearchForm();
+        // this.myform = this.createForm(); 
     }
    
 
@@ -83,13 +83,13 @@ export class RefundbillService {
 
     public getRefundofBillOPDList(employee) {
         console.log(employee)
+        debugger
      return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList",employee);
 
     }
 
     public getRefundofBillServiceList(employee) {
-        // return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_OPBill_For_Refund", employee)
-        return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList",employee);
+       return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList",employee);
     }
 
     public InsertOPRefundBilling(Param: any) {

@@ -40,7 +40,7 @@
           </div>
           <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
 
-            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
+            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" fxFlex="50%"
               placeholderText="Enter Patient Name" ApiUrl="OutPatient/auto-complete?Keyword="
               (selectionChange)="getSelectedObj($event)" fxFlex="50%"></airmid-autocomplete>
 
@@ -350,7 +350,7 @@
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
               <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.mobileNo"
-                [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="50">
+                [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="10">
               </airmid-textbox>
             </div>
 

@@ -421,7 +421,7 @@ export class AdmissionComponent implements OnInit {
         const dialogRef = this._matDialog.open(MLCInformationComponent,
             {
                 maxWidth: "70vw",
-                height: "390px",
+                height: "500px",
                 width: "50%",
                 data: element
             });
@@ -535,7 +535,7 @@ export class AdmissionComponent implements OnInit {
     
     debugger
     console.log('Third action clicked for:', element);
-    this.commonService.Onprint("AdmissionId", 111, "IpCasepaperReport"); 
+    this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport"); 
   }
 
 
@@ -781,6 +781,9 @@ export class AdmissionPersonlModel {
   AgeDay: any;
   AgeMonth: any;
   AgeYear: any;
+  ageDay: any;
+  ageMonth: any;
+  ageYear: any;
   AreaId: Number;
   CityName: string;
   CityId: Number;
@@ -797,6 +800,7 @@ export class AdmissionPersonlModel {
   MobileNo: string;
   PanCardNo: any;
   PatientName: string;
+  patientName: string;
   PhoneNo: string;
   phoneNo: string;
   PinNo: string;
@@ -806,6 +810,7 @@ export class AdmissionPersonlModel {
   RegDate: any;
   RegId: Number;
   RegNo: Number;
+  regNo: Number;
   RegNoWithPrefix: string;
   RegTime: string;
   RegTimeDate: string;
@@ -831,6 +836,7 @@ export class AdmissionPersonlModel {
   MaritalStatusName: string;
   IsMLC: any;
   CompanyName: any;
+  companyName: any;
   RelationshipName: string;
   RefDoctorName: string;
   AdmittedDoctor2: any;
@@ -838,13 +844,17 @@ export class AdmissionPersonlModel {
   AdmittedDoctor1: any;
   admittedDoctor1: any;
   RefDocName: any;
+  refDocName: any;
   BedId: any;
   bedId: any;
   BedName: any;
+  bedName: any;
   IPDNo: any;
   ipdno:any;
   TariffName: any;
+  tariffName: any;
   DepartmentName: any;
+  departmentName: any;
   RefDoctorId: any;
   VisitId: any;
   CompanyId: any;
@@ -852,6 +862,7 @@ export class AdmissionPersonlModel {
   HospitalId: any;
   patientTypeId: any;
   PatientType: any;
+  patientType: any;
   SubCompanyId: any;
   subCompanyId: any;
   Aadharcardno: any;
@@ -864,7 +875,9 @@ export class AdmissionPersonlModel {
   IsBillGenerated: any;
   RoomId: any;
   RoomName: any;
+  roomName: any;
   Doctorname: any;
+  doctorname: any;
   AdmDateTime: any;
   TariffId: any;
   tariffId: any;
@@ -954,6 +967,9 @@ export class AdmissionPersonlModel {
       this.AgeDay = AdmissionPersonl.AgeDay || '';
       this.AgeMonth = AdmissionPersonl.AgeMonth || '';
       this.AgeYear = AdmissionPersonl.AgeYear || '';
+      this.ageDay = AdmissionPersonl.ageDay || '';
+      this.ageMonth = AdmissionPersonl.ageMonth || '';
+      this.ageYear = AdmissionPersonl.ageYear || '';
       this.AreaId = AdmissionPersonl.AreaId || '';
       this.CityName = AdmissionPersonl.CityName || '';
       this.CityId = AdmissionPersonl.CityId || 0;
@@ -970,6 +986,7 @@ export class AdmissionPersonlModel {
       this.MobileNo = AdmissionPersonl.MobileNo || '';
       this.PanCardNo = AdmissionPersonl.PanCardNo || '';
       this.PatientName = AdmissionPersonl.PatientName || '';
+      this.patientName = AdmissionPersonl.patientName || '';
       this.PhoneNo = AdmissionPersonl.PhoneNo || '';
       this.phoneNo = AdmissionPersonl.phoneNo || '';
       this.PinNo = AdmissionPersonl.PinNo || '';
@@ -979,6 +996,7 @@ export class AdmissionPersonlModel {
       this.RegDate = AdmissionPersonl.RegDate || '';
       this.RegId = AdmissionPersonl.RegId || '';
       this.RegNo = AdmissionPersonl.RegNo || '';
+      this.regNo = AdmissionPersonl.regNo || '';
       this.RegNoWithPrefix = AdmissionPersonl.RegNoWithPrefix || '';
       this.RegTime = AdmissionPersonl.RegTime || '';
       this.RegTimeDate = AdmissionPersonl.RegTimeDate || '';
@@ -1002,16 +1020,20 @@ export class AdmissionPersonlModel {
       this.MaritalStatusName = AdmissionPersonl.MaritalStatusName || '';
       this.IsMLC = AdmissionPersonl.IsMLC || 0;
       this.CompanyName = AdmissionPersonl.CompanyName || '';
+      this.companyName = AdmissionPersonl.companyName || '';
       this.RelationshipName = AdmissionPersonl.RelationshipName || '';
 
       this.RefDoctorName = AdmissionPersonl.RefDoctorName || '';
       this.AdmittedDoctor2 = AdmissionPersonl.AdmittedDoctor2 || 0;
       this.AdmittedDoctor1 = AdmissionPersonl.AdmittedDoctor1 || 0;
       this.BedName = AdmissionPersonl.BedName || '';
+      this.bedName = AdmissionPersonl.bedName || '';
       this.IPDNo = AdmissionPersonl.IPDNo || '';
       this.ipdno= AdmissionPersonl.ipdno || '';
       this.TariffName = AdmissionPersonl.TariffName || '';
+      this.tariffName = AdmissionPersonl.tariffName || '';
       this.DepartmentName = AdmissionPersonl.DepartmentName || '';
+      this.departmentName = AdmissionPersonl.departmentName || '';
       this.RefDoctorId = AdmissionPersonl.RefDoctorId || 0;
       this.VisitId = AdmissionPersonl.VisitId || 0;
       this.HospitalId = AdmissionPersonl.HospitalId || 0;
@@ -1019,10 +1041,12 @@ export class AdmissionPersonlModel {
       this.companyId = AdmissionPersonl.companyId || 0;
       this.patientTypeId = AdmissionPersonl.patientTypeId || 0;
       this.PatientType = AdmissionPersonl.PatientType || '';
+      this.patientType = AdmissionPersonl.patientType || '';
       this.SubCompanyId = AdmissionPersonl.SubCompanyId || 0;
       this.Aadharcardno = AdmissionPersonl.Aadharcardno || ''
       this.Pancardno = AdmissionPersonl.Pancardno || '';
       this.RefDocName = AdmissionPersonl.RefDocName || '';
+      this.refDocName = AdmissionPersonl.refDocName || '';
       this.RelativePhoneNo = AdmissionPersonl.RelativePhoneNo || '';
       this.DepartmentId = AdmissionPersonl.DepartmentId || 0;
       this.IsOpToIPconv = AdmissionPersonl.IsOpToIPconv || 0;
@@ -1033,8 +1057,10 @@ export class AdmissionPersonlModel {
       this.ClassName = AdmissionPersonl.ClassName || ''
       this.IsBillGenerated = AdmissionPersonl.IsBillGenerated || 0
       this.RoomName = AdmissionPersonl.RoomName || ''
+        this.roomName = AdmissionPersonl.roomName || ''
       this.Doctorname = AdmissionPersonl.Doctorname || ''
       this.DoctorName = AdmissionPersonl.DoctorName || ''
+         this.doctorname = AdmissionPersonl.doctorname || ''
       this.AdmDateTime = AdmissionPersonl.AdmDateTime || ''
       this.TariffId = AdmissionPersonl.TariffId || 0;
       this.tariffId = AdmissionPersonl.tariffId || 0;
@@ -1120,6 +1146,7 @@ export class RegInsert {
   RegDate: Date;
   regDate: Date;
   PatientName: string;
+  patientName: string;
   RegTime: Time;
   prefixId: number;
   PrefixId: number;
@@ -1212,6 +1239,7 @@ export class RegInsert {
       this.LastName = RegInsert.LastName || '';
       this.Address = RegInsert.Address || '';
       this.RegNo = RegInsert.RegNo || '';
+      this.regNo = RegInsert.regNo || '';
       this.City = RegInsert.City || 'SS';
       this.PinNo = RegInsert.PinNo || '';
       this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;

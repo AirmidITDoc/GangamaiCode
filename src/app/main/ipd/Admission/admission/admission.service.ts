@@ -124,8 +124,8 @@ export class AdmissionService {
             HospitalID: 1,
             DocNameId: ['', [Validators.required]],
             RefDocNameId: 0,
-            DischargeDate: "2024-08-10",
-            DischargeTime: "2024-09-18T11:24:02.655Z",
+            DischargeDate: "1900-01-01",
+            DischargeTime: "1900-01-01T11:24:02.655Z",
             IsDischarged: 0,
             IsBillGenerated: 0,
             CompanyId: 0,
@@ -248,8 +248,9 @@ export class AdmissionService {
 
 
     public MlcInsert(Param: any) {
+        debugger
             if (Param.mlcid) {
-            return this._httpClient1.PutData("MlcInformation" + Param.mlcid, Param);
+            return this._httpClient1.PutData("MlcInformation/" + Param.mlcid, Param);
         } else return this._httpClient1.PostData("MlcInformation", Param);
     }
 
@@ -258,5 +259,10 @@ export class AdmissionService {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
     }
 
+    
+
+    public getMLCById(Id) {
+        return this._httpClient1.GetData("MlcInformation/" + Id);
+    }
 }
 

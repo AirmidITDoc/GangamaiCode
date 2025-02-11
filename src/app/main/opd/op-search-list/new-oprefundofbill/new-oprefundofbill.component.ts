@@ -190,9 +190,6 @@ export class NewOPRefundofbillComponent implements OnInit {
     this.refundBillForm();
       }
 
-
-
-
   createSearchForm() {
     return this.formBuilder.group({
       RegId: ['']
