@@ -15,7 +15,7 @@ import { fuseAnimations } from '@fuse/animations';
 export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
     isActive:boolean=true;
-    isAvailable: boolean=true;
+    isAvailible:boolean=true;
 
     constructor( public _WardMasterService: WardMasterService,
     public dialogRef: MatDialogRef<NewWardComponent>,
@@ -35,8 +35,8 @@ export class NewWardComponent implements OnInit {
         this.roomForm = this._WardMasterService.createWardForm();
         if((this.data?.roomId??0) > 0)
         {
-            this.isActive=this.data.isActive
-            this.isAvailable=this.data.isAvailable
+            this.isActive=this.data.isActive;
+            this.isAvailible=this.data.isAvailible;
             this.roomForm.patchValue(this.data);
         }
     }

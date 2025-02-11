@@ -31,7 +31,7 @@ export class WardMasterService {
                 Validators.required
             ],
             roomType: [0],
-            isAvailable: true,
+            isAvailible: true,
             isActive:[true,[Validators.required]],
         });
     }

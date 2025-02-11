@@ -12,23 +12,23 @@
 
 <mat-card>
     <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
-        <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
+        <input type="hidden" name="serviceId" formControlName="serviceId" style="top:155px;">
 
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
 
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-dropdown label="Group Name" formControlName="GroupId"
+            <airmid-dropdown label="Group Name" formControlName="groupId"
                 [formGroup]="serviceForm"
-                [validations]="getValidationGroupMessages().GroupId"
+                [validations]="getValidationMessages().groupId"
                 [mode]="autocompleteModesubGroupName">
             </airmid-dropdown>
             </div>
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId"
+            <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
                 [formGroup]="serviceForm"
-                [validations]="getValidationSubGroupNameMessages().SubGroupId"
+                [validations]="getValidationMessages().subGroupId"
                 [mode]="autocompleteModegroupName">
             </airmid-dropdown>
             </div>
@@ -40,7 +40,7 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Service Name</mat-label>
-                    <input name="ServiceName" formControlName="ServiceName" placeholder="ServiceName"
+                    <input name="ServiceName" formControlName="serviceName" placeholder="ServiceName"
                             matInput (keydown)="onEnterServiceName($event)" #serviceName
                             [(ngModel)]="vServiceName">
                     <mat-error
@@ -51,7 +51,7 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Price</mat-label>
-                <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber
+                <input name="Price" placeholder="Select Price" formControlName="price" OnlyNumber
                     (keypress)="keyPressCharater($event)" [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
                     matInput required maxlength="5">
                     <mat-error
@@ -62,7 +62,7 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>PrintOrder</mat-label>
-                <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput required
+                <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="printOrder" matInput required
                     OnlyNumber (keypress)="keyPressCharater($event)"
                     [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
                     <mat-error
@@ -73,7 +73,7 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>ServiceShortDesc</mat-label>
-                    <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
+                    <input name="Service Short Desc" formControlName="serviceShortDesc" placeholder="ServiceShortDesc"
                             matInput (keydown)="onEnterServiceShortDesc($event)" #serviceShortDesc
                             [(ngModel)]="vServiceShortDesc">
                     <mat-error
@@ -89,9 +89,9 @@
         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
             <!-- [value]="TariffId" -->
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                <airmid-dropdown label="TariffId" formControlName="TariffId"
+                <airmid-dropdown label="TariffId" formControlName="tariffId"
                     [formGroup]="serviceForm" 
-                    [validations]="getValidationTariffMessages().TariffId"
+                    [validations]="getValidationMessages().tariffId"
                     [mode]="autocompleteModetariff">
                 </airmid-dropdown>            
             </div> 
@@ -106,7 +106,7 @@
 
             <!-- <mat-form-field appearance="outline" fxFlex>
             <mat-label>Doctor Name</mat-label>
-            <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="DoctorId" required >
+            <mat-select placeholder="Select Doctor Name" name="DoctorId" formControlName="doctorId" required >
 
                 <mat-option *ngFor="let M of DoctorcmbList" [value]="M.DoctorID">
                     {{ M.DoctorName }}

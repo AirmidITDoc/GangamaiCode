@@ -47,14 +47,28 @@ export class SupplierMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    }, 
+                    // {
+                    //     action: gridActions.delete, callback: (data: any) => {
+                    //         this._supplierService.deactivateTheStatus(data.supplierId).subscribe((response: any) => {
+                    //             this.toastr.success(response.message);
+                    //             this.grid.bindGridData();
+                    //         });
+                    //     }
+                    // },
+                    {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._supplierService.deactivateTheStatus(data.supplierId).subscribe((response: any) => {
+                            debugger
+                            let s={
+                                supplierId:data.supplierId
+                            }
+                            this._supplierService.SupplierMasterCancle(s).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
-                    }]
+                    }
+                ]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "SupplierId", //SupplierName
@@ -159,7 +173,7 @@ export class SupplierMasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             
             if (result) {
-                this._supplierService.deactivateTheStatus(doctorId).subscribe((data: any) => {
+                this._supplierService.SupplierMasterCancle(doctorId).subscribe((data: any) => {
                     //  this.msg = data
                     if (data.StatusCode == 200) {
                         this.toastr.success(

@@ -25,7 +25,7 @@ export class WardMasterComponent implements OnInit {
             { heading: "RoomName", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsAvailable", key: "isAvailable", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsAvailable", key: "isAvailible", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

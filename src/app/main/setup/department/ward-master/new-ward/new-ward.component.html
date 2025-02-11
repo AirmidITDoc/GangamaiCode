@@ -73,11 +73,10 @@
                     class="new-appointment-actions gap-8 mt-12"
                     fxLayout="row"
                     fxLayoutAlign="space-between">
-                    <div class="form-group">
-                        <div> 
-                            <app-airmid-slider label="IsAvailable/NotAvailable"   formControlName="isAvailable" [formGroup]="roomForm" [(ngModel)]="isAvailable" ></app-airmid-slider>
-                        </div>
-                    </div> 
+                    <div>
+                        <app-airmid-slider label="IsAvailable/NotAvailable"   formControlName="isAvailible" [formGroup]="roomForm" [(ngModel)]="isAvailible" ></app-airmid-slider>
+        
+                    </div>
                     <div>
                         <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
                             [formGroup]="roomForm"

@@ -37,6 +37,7 @@ export class TaxMasterComponent implements OnInit {
                     }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
+                        debugger
                         this._TaxMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
                             this.toastr.success(response.message);
                             this.grid.bindGridData();

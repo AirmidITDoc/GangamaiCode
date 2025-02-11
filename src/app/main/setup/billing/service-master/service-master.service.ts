@@ -19,50 +19,90 @@ export class ServiceMasterService {
 
     createServicemasterForm(): FormGroup {
         return this._formBuilder.group({
-            ServiceId: [""],
-            GroupId: [""],
+            serviceId: [""],
+            groupId: [""],
             GroupName: [""],
-            ServiceShortDesc: ["", 
+            serviceShortDesc: ["", 
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            ServiceName: ["",
+            serviceName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            IsEditable: ["0"],
-            CreditedtoDoctor: ["0"],
-            IsPathology: ["0"],
-            IsRadiology: ["0"],
+            price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            isEditable: ["0"],
+            creditedtoDoctor: ["0"],
+            isPathology: ["0"],
+            isRadiology: ["0"],
             IsDeleted: ["0"],
-            PrintOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            IsPackage: ["0"],
-            SubGroupId: [""],
-            DoctorId: [""],
+            printOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            isPackage: ["0"],
+            subGroupId: [""],
+            doctorId: [""],
             FirstName: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
-            IsEmergency: ["0"],
-            EmgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            EmgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            IsDocEditable: ["0"],
+            isEmergency: true,
+            emgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            emgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            isDocEditable: true,
             AddedBy: [""],
             UpdatedBy: [""],
             IsActive:[true],
-            ServiceDetailId: [""],
-            TariffId: ["",
-                [
-                    Validators.required
-                ]
+            serviceDetails: [
+                {
+                    serviceDetailId : 0,
+                    serviceId : 0,
+                    tariffId : 0,
+                    classId : 0,
+                    classRate : 0
+                }
             ],
-            ClassId: ["0"],
-            ClassRate: ["0"],
+            // tariffId: ["",
+            //     [
+            //         Validators.required
+            //     ]
+            // ],
+            // classId: ["0"],
+            // classRate: ["0"],
             EffectiveDate: [""],
         });
     }
+
+    /**
+             * {
+  "serviceId": 0,
+  "groupId": 0,
+  "serviceShortDesc": "shilpa",
+  "serviceName": "xyz",
+  "price": 500,
+  "isEditable": true,
+  "creditedtoDoctor": true,
+  "isPathology": 0,
+  "isRadiology": 0,
+  "printOrder": 0,
+  "isPackage": 0,
+  "subGroupId": 0,
+  "doctorId": 0,
+  "isEmergency": true,
+  "emgAmt": 0,
+  "emgPer": 0,
+  "isDocEditable": true,
+  "serviceDetails": [
+    {
+      "serviceDetailId": 0,
+      "serviceId": 0,
+      "tariffId": 123,
+      "classId": 0,
+      "classRate": 0
+    }
+  ]
+}
+
+             */
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TariffId:[""],

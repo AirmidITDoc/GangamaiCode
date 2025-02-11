@@ -16,6 +16,7 @@ export class NewBedComponent implements OnInit {
 
   bedForm: FormGroup;
   isActive:boolean=true;
+  isAvailible:boolean= true;
   
   constructor(
       public _BedMasterService: BedMasterService,
@@ -32,7 +33,8 @@ export class NewBedComponent implements OnInit {
     this.bedForm = this._BedMasterService.createBedForm();
     if((this.data?.bedId??0) > 0)
     {
-        this.isActive=this.data.isActive
+        this.isActive=this.data.isActive;
+        this.isAvailible=this.data.isAvailible;
         this.bedForm.patchValue(this.data);
     }
   }

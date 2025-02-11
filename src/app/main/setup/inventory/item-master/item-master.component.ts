@@ -52,14 +52,20 @@ export class ItemMasterComponent implements OnInit {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
+                    }, 
+                    {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._itemService.deactivateTheStatus(data.itemID).subscribe((response: any) => {
+                            debugger
+                            let s={
+                                itemID:data.itemID
+                            }
+                            this._itemService.ItemMasterCancle(s).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
-                    }]
+                    }
+                ]
             } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "ItemID",

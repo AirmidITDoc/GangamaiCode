@@ -125,9 +125,9 @@ export class SupplierMasterService {
         });
     }
 
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("Supplier/Cancel?Id=" + m_data.toString());
-    }
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.DeleteData("Supplier/Cancel?Id=" + m_data.toString());
+    // }
 
     public SupplierSave(Param: any) {
 
@@ -146,6 +146,11 @@ export class SupplierMasterService {
 
     populateForm(param) {
         this.supplierForm.patchValue(param);
+    }
+
+    public SupplierMasterCancle(Param: any) {
+        // debugger
+      return this._httpClient.PostData("Supplier/Cancel", Param);
     }
 }
 

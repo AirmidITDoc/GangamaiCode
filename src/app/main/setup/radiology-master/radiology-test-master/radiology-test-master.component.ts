@@ -51,7 +51,7 @@ export class RadiologyTestMasterComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "2024-01-01", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "2025-11-11", opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },

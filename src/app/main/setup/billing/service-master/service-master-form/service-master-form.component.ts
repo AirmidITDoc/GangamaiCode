@@ -394,26 +394,18 @@ export class ServiceMasterFormComponent implements OnInit {
         this.tariffId = obj.value
     }
 
-    getValidationGroupMessages() {
+    getValidationMessages() {
         return {
-            GroupId: [
+            groupId: [
                 { name: "required", Message: "Group Name is required" }
-            ]
-        };
-    }
-    getValidationSubGroupNameMessages() {
-        return {
-            SubGroupId: [
+            ],
+            subGroupId: [
                 { name: "required", Message: "SubGroup Name is required" }
-            ]
-        }
-    }
-    getValidationTariffMessages() {
-        return {
-            TariffId: [
+            ],
+            tariffId: [
                 { name: "required", Message: "Tariff Name is required" }
             ]
-        }
+        };
     }
 
 

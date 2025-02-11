@@ -197,4 +197,9 @@ export class ItemMasterService {
     public getstoreById(Id) {
         return this._httpClient.GetData("ItemMaster/" + Id);
     }
+
+    public ItemMasterCancle(Param: any) {
+        // debugger
+      return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);
+    }
 }
