@@ -121,10 +121,10 @@ export class RefundbillComponent implements OnInit {
     ];
   
     displayedColumns = [
-      'BillDate',
-      'BillNo',
-      'NetPayableAmt',
-      'RefundAmount'
+      'billDate',
+      'billNo',
+      'netPayableAmt',
+      'refundAmount'
       // 'action'
     ];
   
@@ -132,6 +132,26 @@ export class RefundbillComponent implements OnInit {
       'RefundDate',
       'RefundAmount'
     ];
+
+    getSelectedObj(obj) {
+        console.log(obj)
+        this.RegId = obj.value;
+        
+        if ((this.RegId ?? 0) > 0) {
+    
+          setTimeout(() => {
+            this._RefundbillService.getRegistraionById(this.RegId).subscribe((response) => {
+              this.registerObj = response;
+              this.RegId=this.registerObj.regId
+              console.log(response)
+    
+            });
+    
+          }, 500);
+        }
+        
+      this.getRefundofBillOPDListByReg(this.RegId);
+    }
   
   
     // Billdetail
@@ -170,8 +190,8 @@ export class RefundbillComponent implements OnInit {
       this.searchFormGroup = this.createSearchForm();
   
       this.refundBillForm();
-      // this.getRefundofBillOPDListByReg();
-      // this.getServiceListCombobox();
+      this.getRefundofBillOPDListByReg(this.RegId);
+      this.getservicedtailList(this.RegId);
   
   
       console.log(this.datePickerElement)
@@ -231,29 +251,29 @@ export class RefundbillComponent implements OnInit {
     AgeMonth:any;
     AgeDay:any;
     GenderName:any;
-    getSelectedObj1(obj) {
-      this.dataSource.data = [];
-      console.log(obj)
-      this.registerObj = obj;
-      this.PatientName = obj.FirstName + " " + obj.LastName;
-      this.RegId = obj.RegId; 
-      this.RegNo = obj.RegNo;
-      this.City = obj.City;
-      this.AgeMonth = obj.AgeMonth;
-      this.GenderName = obj.GenderName;
-      this.AgeDay = obj.AgeDay;
-      this.AgeYear = obj.AgeYear;
-      this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
-      this.CompanyName = obj.CompanyName;
-      this.Tarrifname = obj.TariffName;
-      this.Doctorname = obj.DoctorName;
-      this.vOPDNo = obj.RegId;
-      this.vTariffId = obj.TariffId;
-      this.vClassId = obj.classId
-      this.AgeYear = obj.AgeYear;
-      this.vMobileNo = obj.MobileNo;
-      this.getRefundofBillOPDListByReg();
-    }
+    // getSelectedObj1(obj) {
+    //   this.dataSource.data = [];
+    //   console.log(obj)
+    //   this.registerObj = obj;
+    //   this.PatientName = obj.FirstName + " " + obj.LastName;
+    //   this.RegId = obj.RegId; 
+    //   this.RegNo = obj.RegNo;
+    //   this.City = obj.City;
+    //   this.AgeMonth = obj.AgeMonth;
+    //   this.GenderName = obj.GenderName;
+    //   this.AgeDay = obj.AgeDay;
+    //   this.AgeYear = obj.AgeYear;
+    //   this.RegDate = this.datePipe.transform(obj.RegTime, 'dd/MM/yyyy hh:mm a');
+    //   this.CompanyName = obj.CompanyName;
+    //   this.Tarrifname = obj.TariffName;
+    //   this.Doctorname = obj.DoctorName;
+    //   this.vOPDNo = obj.RegId;
+    //   this.vTariffId = obj.TariffId;
+    //   this.vClassId = obj.classId
+    //   this.AgeYear = obj.AgeYear;
+    //   this.vMobileNo = obj.MobileNo;
+    //   this.getRefundofBillOPDListByReg();
+    // }
   
     getOptionText1(option) {
       if (!option)
@@ -264,20 +284,45 @@ export class RefundbillComponent implements OnInit {
   
   
     //Give BillNumber For List
-    getRefundofBillOPDListByReg() {
-      ;
-  
-      var m_data = {
-        "RegId": this.RegId //2
-  
-      }
-  
-      this._RefundbillService.getRefundofBillOPDList(m_data).subscribe(Visit => {
+    getRefundofBillOPDListByReg(RegId) {
+      
+        var m_data = {
+               "first": 0,
+                "rows": 10,
+                "sortField": "BillNo",
+                "sortOrder": 0,
+                "filters": [
+                    {
+                    "fieldName": "RegId",
+                    "fieldValue": "1",
+                    "opType": "Equals"
+                    },
+                {
+                    "fieldName": "Start",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                    },
+                    {
+                    "fieldName": "Length",
+                    "fieldValue": "10",
+                    "opType": "Equals"
+                    }
+                ],
+                "exportType": "JSON"
+        }
+
+        console.log(m_data);
+        
+        this._RefundbillService.getRefundofBillOPDList(m_data).subscribe(Visit => {
+            console.log(Visit);
         this.dataSource3.data = Visit as RegRefundBillMaster[];
-        this.dataSource3.sort = this.sort;
-        this.dataSource3.paginator = this.paginator;
-  
+        console.log(this.dataSource3.data);
+        // this.dataSource3.sort = this.sort;
+        // this.dataSource3.paginator = this.paginator;
+
       });
+
+
     }
   
     TServiceamt = 0;
@@ -287,9 +332,31 @@ export class RefundbillComponent implements OnInit {
   
       // this.vBillBalanceAmt=row.BalanceAmt;
         var m_data = {
-          "BillNo": this.BillNo //74//
+            "first": 0,
+            "rows": 10,
+            "sortField": "BillNo",
+            "sortOrder": 0,
+            "filters": [
+                {
+                "fieldName": "BillNo",
+                "fieldValue": "215938",
+                "opType": "Equals"
+                },
+            {
+                "fieldName": "Start",
+                "fieldValue": "0",
+                "opType": "Equals"
+                },
+                {
+                "fieldName": "Length",
+                "fieldValue": "10",
+                "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON"
         }
     
+        console.log(m_data)
         this.isLoadingStr = 'loading';
         this._RefundbillService.getRefundofBillServiceList(m_data).subscribe(Visit => {
           this.dataSource2.data = Visit as InsertRefundDetail[];
@@ -925,18 +992,18 @@ export class RefundbillComponent implements OnInit {
   
   export class RegRefundBillMaster {
   
-    NetPayableAmt: number;
-    RefundAmount: number;
-    BillDate: any;
-    BillNo: any;
+    netPayableAmt: number;
+    refundAmount: number;
+    billDate: any;
+    billNo: any;
   
     constructor(RegRefundBillMaster) {
       {
   
-        this.NetPayableAmt = RegRefundBillMaster.NetPayableAmt || 0;
-        this.RefundAmount = RegRefundBillMaster.RefundAmount || 0;
-        this.BillDate = RegRefundBillMaster.BillDate || 0;
-        this.BillNo = RegRefundBillMaster.BillNo || 0;
+        this.netPayableAmt = RegRefundBillMaster.netPayableAmt || 0;
+        this.refundAmount = RegRefundBillMaster.refundAmount || 0;
+        this.billDate = RegRefundBillMaster.billDate || 0;
+        this.billNo = RegRefundBillMaster.billNo || 0;
   
       }
     }

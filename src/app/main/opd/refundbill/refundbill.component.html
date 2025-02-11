@@ -25,7 +25,7 @@
                         
                             <div class="patient-search">
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-                                    <mat-form-field class=searchRegId appearance="outline" fxFlex="60%">
+                                    <!-- <mat-form-field class=searchRegId appearance="outline" fxFlex="60%">
                                         <input type="text" name="RegId" formControlName="RegId" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto1" (input)="getSearchList()" maxlength="10">
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close" (click)="searchFormGroup.get('RegId').setValue(''); isRegIdSelected = false;">close</mat-icon>
@@ -38,7 +38,13 @@
                                                 {{option.MobileNo}} | {{option.DoctorName}} | {{option.OPDNo}}
                                             </mat-option>
                                         </mat-autocomplete>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                                        <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                                            placeholderText="Enter Patient Name/RegId.." ApiUrl="OutPatient/auto-complete?Keyword="
+                                            (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                    
+                                    </div>
                                 </div>
                             </div>
                         
@@ -144,36 +150,36 @@
                                 <div class="table-wrapper">
                                     <mat-table class="h-200" matSort [dataSource]="dataSource3" [@animateStagger]="{value:'50'}">
 
-                                        <ng-container matColumnDef="BillNo">
+                                        <ng-container matColumnDef="billNo">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                 BillNo
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <span> {{element.PBillNo}}</span>
+                                                <span> {{element.billNo}}</span>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="BillDate">
+                                        <ng-container matColumnDef="billDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                 BillDate </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <span> {{element.BillDate | date:'shortDate'}}</span>
+                                                <span> {{element.billDate | date:'shortDate'}}</span>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="NetPayableAmt">
+                                        <ng-container matColumnDef="netPayableAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                 BillAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <span> {{element.NetPayableAmt}}</span>
+                                                <span> {{element.netPayableAmt}}</span>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="RefundAmount">
+                                        <ng-container matColumnDef="refundAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                 RefundAmount </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <span> {{element.RefundAmount}}</span>
+                                                <span> {{element.refundAmount}}</span>
                                             </mat-cell>
                                         </ng-container>
 

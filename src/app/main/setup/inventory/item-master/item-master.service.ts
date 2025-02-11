@@ -191,7 +191,7 @@ export class ItemMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("itemMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("ItemMaster/ItemCanceled?Id=" + m_data.toString());
     }
 
     public getstoreById(Id) {

@@ -49,7 +49,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         filters: [
             { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "%", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "2024-01-01", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "2025-01-01", opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
