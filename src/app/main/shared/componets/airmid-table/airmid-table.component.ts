@@ -35,6 +35,9 @@ export class AirmidTableComponent implements OnInit {
     // }
     headers = [];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @Output() onSelectRow = new EventEmitter<any>();
+    @Input() ShowFilter :boolean=true;
+    @Input() FullWidth :boolean=false;
     public defaultColumnWidth = 120;
     ngOnInit(): void {
         this.bindGridData();
@@ -83,5 +86,8 @@ export class AirmidTableComponent implements OnInit {
             }
             this.confirmDialogRef = null;
         });
+    }
+    SelectRow(row){
+        this.onSelectRow.emit(row);
     }
 }

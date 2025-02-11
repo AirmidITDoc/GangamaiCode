@@ -35,22 +35,23 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations
 })
 export class PrescriptionComponent implements OnInit {
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('grid') grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
     hasSelectedContacts: boolean;
 
 
     gridConfig: gridModel = {
         apiUrl: "Nursing/PrescriptionWardList",
         columnsList: [
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "Code", key: "presReId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Vst_Adm_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Pres_DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Vst_Adm_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Pres_DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "OP_IP_Id", key: "oP_IP_Id", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "oP_IP_Type", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action,
                 actions: [
@@ -80,44 +81,52 @@ export class PrescriptionComponent implements OnInit {
         ],
         row: 25
     }
-
-    gridConfig1: gridModel = {
-        apiUrl: "Nursing/PrescriptionDetailList",
-        columnsList: [
-            // { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
-            // { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            // { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            {
-                heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._PrescriptionService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ipMedID",
-        sortOrder: 0,
-        filters: [
-            //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
-            { fieldName: "ipMedID", fieldValue: "113582", opType: OperatorComparer.Equals },
-            //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
+    GetDetails(data) {
+        debugger
+        this.gridConfig1 = {
+            apiUrl: "Nursing/PrescriptionDetailList",
+            columnsList: [
+                // { heading: "Code", key: "ipMedID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+                // { heading: "MedicalRecoredId", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                // { heading: "OP_IP_ID", key: "oP_IP_ID", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                {
+                    heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
+                        {
+                            action: gridActions.edit, callback: (data: any) => {
+                                this.onSave(data);
+                            }
+                        }, {
+                            action: gridActions.delete, callback: (data: any) => {
+                                this._PrescriptionService.deactivateTheStatus(data.ipMedID).subscribe((response: any) => {
+                                    this.toastr.success(response.message);
+                                    this.grid.bindGridData();
+                                });
+                            }
+                        }]
+                } //Action 1-view, 2-Edit,3-delete
+            ],
+            sortField: "ipMedID",
+            sortOrder: 0,
+            filters: [
+                //   { fieldName: "FromDate", fieldValue: "01/01/2023", opType: OperatorComparer.Equals },
+                { fieldName: "ipMedID", fieldValue: data.ipMedID.toString(), opType: OperatorComparer.Equals },
+                //   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
+                // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+        this.isShowDetailTable = true;
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
     }
+
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
     ngOnInit(): void {

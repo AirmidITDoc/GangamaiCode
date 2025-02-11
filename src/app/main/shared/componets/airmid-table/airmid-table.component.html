@@ -1,6 +1,6 @@
-<div class="search-bar-container">
+<div class="search-bar-container" *ngIf="ShowFilter==true && FullWidth==false;else elseBlock">
     <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
-        <div class="sidebar-content">
+        <div class="sidebar-content" *ngIf="ShowFilter==true">
             <div class="sidebar-header accent">
                 <span class="search-title">Search Facility</span>
             </div>
@@ -24,6 +24,13 @@
         </div>
     </fuse-sidebar>
 </div>
+<ng-template #elseBlock>
+    <div class="search-bar-container">
+        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar table-filter-wrapper">
+
+        </fuse-sidebar>
+    </div>
+</ng-template>
 <div class="center p-12 pb-56 airmid-table-container" fxFlexAlign="start center">
     <div class="content-card">
         <div class="table-wrapper">
@@ -115,7 +122,8 @@
                 </ng-container>
                 <mat-header-row class="accent" *matHeaderRowDef="Headers; sticky: true">
                 </mat-header-row>
-                <mat-row [ngClass]="{'selected-row': row['selected'] == true}" *matRowDef="let row; columns: Headers;" class="element"></mat-row>
+                <mat-row [ngClass]="{'selected-row': row['selected'] == true}" *matRowDef="let row; columns: Headers;"
+                    class="element" (click)="SelectRow(row)"></mat-row>
             </mat-table>
         </div>
         <div class="table-footer-wrapper">
