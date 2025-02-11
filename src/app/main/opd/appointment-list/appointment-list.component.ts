@@ -49,8 +49,8 @@ export class AppointmentListComponent implements OnInit {
     myformSearch: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     menuActions: Array<string> = [];
-    
-    
+
+
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         public toastr: ToastrService, public datePipe: DatePipe,
@@ -72,11 +72,11 @@ export class AppointmentListComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myformSearch = this._AppointmentlistService.filterForm();
-        
+
         // menu Button List
         this.menuActions.push("Change Consultant Doctor");
         this.menuActions.push("Change Refer Doctor");
-this.Appointdetail(this.gridConfig)
+        this.Appointdetail(this.gridConfig)
 
     }
 
@@ -98,7 +98,7 @@ this.Appointdetail(this.gridConfig)
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
+        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
@@ -106,8 +106,8 @@ this.Appointdetail(this.gridConfig)
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: [
-            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
-            { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            // { heading: "-", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
             { heading: "UHID", key: "regId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -119,7 +119,8 @@ this.Appointdetail(this.gridConfig)
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            {
+                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
             }
             // {heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.action, actions: [
@@ -147,7 +148,7 @@ this.Appointdetail(this.gridConfig)
             //         },
             //     ]
             // }, //Action 1-view, 2-Edit,3-delete
-           
+
         ],
 
         sortField: "VisitId",
@@ -170,7 +171,7 @@ this.Appointdetail(this.gridConfig)
             });
         dialogRef.afterClosed().subscribe(result => {
             // if (result) {
-                that.grid.bindGridData();
+            that.grid.bindGridData();
             // }
         });
     }
@@ -211,12 +212,12 @@ this.Appointdetail(this.gridConfig)
         });
     }
 
-    OngetRecord(element, m){
-        console.log('Third action clicked for:', element); 
+    OngetRecord(element, m) {
+        console.log('Third action clicked for:', element);
         if (m == "Change Consultant Doctor") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
-    
+
             let that = this;
             const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
                 {
@@ -251,22 +252,32 @@ this.Appointdetail(this.gridConfig)
         }
     }
 
-    OnViewReportPdf(element){
+    OnViewReportPdf(element) {
         debugger
         console.log('Third action clicked for:', element);
-        this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt"); 
+        this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
 
-    OnBillPayment(element){
-        console.log('Third action clicked for:', element); 
+    OnBillPayment(row: any = null) {
+        // console.log('Third action clicked for:', row);
+        // Pending...
+        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+            maxWidth: "90vw",
+            height: "98vh",
+            width: "80%",
+            data: {
+                patientDetail: row
+            }
+        });
     }
 
-    OnNewCrossConsultation(element){
-        console.log('Third action clicked for:', element); 
+    OnNewCrossConsultation(element) {
+        console.log('Third action clicked for:', element);
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
+        console.log(element)
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
                 maxWidth: '75vw',
@@ -280,16 +291,16 @@ this.Appointdetail(this.gridConfig)
         });
     }
 
-    OnVitalInfo(element){
-        console.log('Third action clicked for:', element); 
-    }
-
-    OnPrintPatientIcard(element){
+    OnVitalInfo(element) {
         console.log('Third action clicked for:', element);
     }
 
-    OnWhatsAppAppointmentSend(element){
-       console.log('Third action clicked for:', element);
+    OnPrintPatientIcard(element) {
+        console.log('Third action clicked for:', element);
+    }
+
+    OnWhatsAppAppointmentSend(element) {
+        console.log('Third action clicked for:', element);
     }
 
     Vtotalcount = 0;
@@ -307,7 +318,7 @@ this.Appointdetail(this.gridConfig)
         this.VCrossConscount = 0;
         console.log(data)
         this.Vtotalcount;
-console.log(data)
+        console.log(data)
         for (var i = 0; i < data.length; i++) {
             if (data[i].patientOldNew == 1) {
                 this.VNewcount = this.VNewcount + 1;
@@ -515,7 +526,7 @@ export class VisitMaster1 {
             this.patientTypeId = VisitMaster1.patientTypeId || 1;
             this.companyId = VisitMaster1.companyId || 1;
             this.tariffId = VisitMaster1.tariffId || 1;
-            this.consultantDocId = VisitMaster1.consultantDocId || 1;
+            this.consultantDocId = VisitMaster1.consultantDocId || '';
             this.refDocId = VisitMaster1.refDocId || 1;
             this.departmentId = VisitMaster1.departmentId || 1;
             this.patientOldNew = VisitMaster1.patientOldNew || 0;

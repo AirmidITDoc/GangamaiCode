@@ -46,8 +46,6 @@
                             placeholderText="Enter Patient Name" ApiUrl="OutPatient/auto-complete?Keyword="
                             (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                    
-
                     <airmid-autocomplete lbl="Phone" [formGroup]="searchFormGroup" formControlName="PhoneRegId" *ngIf="IsPhoneAppflag"
                         placeholderText="Enter PhoneRegId" ApiUrl="OutPatient/auto-complete?Keyword="
                         (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>

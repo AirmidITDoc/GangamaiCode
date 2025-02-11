@@ -56,136 +56,153 @@
         <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
 
-        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" *ngIf="registredflag">
+        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
 
-          <div fxFlex="99%" fxFlex.xs="100%" fxFlex.sm="90%" fxLayout="row wrap" fxLayoutGap="4px grid">
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap"
+                fxLayoutGap="4px grid">
 
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-              <airmid-dropdown label="Prefix" formControlName="PrefixId" [formGroup]="personalFormGroup"
-                [value]="registerObj?.prefixId" [validations]="getValidationMessages().prefixId" ValueField="prefixId"
-                TextField="prefixName" (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
-              </airmid-dropdown>
+                    <airmid-dropdown label="Prefix" formControlName="PrefixId"
+                        [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
+                        [validations]="getValidationMessages().prefixId" ValueField="prefixId"
+                        TextField="prefixName" (selectionChange)="onChangePrefix($event)"
+                        ApiUrl="Prefix/get-prefixs">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="First Name" formControlName="FirstName"
+                        [value]="registerObj.firstName" [formGroup]="personalFormGroup"
+                        [validations]="getValidationMessages().firstName" [maxLength]="50">
+                    </airmid-textbox>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                        [value]="registerObj.middleName" [formGroup]="personalFormGroup"
+                        [validations]="getValidationMessages().middleName" [maxLength]="50">
+                    </airmid-textbox>
+
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="Last Name" formControlName="LastName"
+                        [value]="registerObj.lastName" [formGroup]="personalFormGroup"
+                        [validations]="getValidationMessages().lastName" [maxLength]="50">
+                    </airmid-textbox>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="Gender" formControlName="GenderId"
+                        [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
+                        [validations]="getValidationMessages().genderId" #ddlGender
+                        [disabled]="true" [mode]="autocompleteModegender">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                        formControlName="DateOfBirth"
+                        [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+
+                </div>
+
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                    <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                        [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup"
+                        [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
+                    </airmid-textbox>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="Address" formControlName="Address"
+                        [value]="registerObj.address" [formGroup]="personalFormGroup"
+                        [validations]="getValidationMessages().address">
+                    </airmid-textbox>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="Area" formControlName="AreaId"
+                        [value]="registerObj?.areaId" [formGroup]="personalFormGroup"
+                        [validations]="getValidationMessages().areaId"
+                        [mode]="autocompleteModearea">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="City" formControlName="CityId"
+                        [formGroup]="personalFormGroup" [value]="registerObj?.cityId"
+                        [validations]="getValidationMessages().cityId" ValueField="cityId"
+                        TextField="cityName" (selectionChange)="onChangecity($event)"
+                        ApiUrl="CityMaster/get-cities">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="State" formControlName="StateId"
+                        [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
+                        [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
+                        [mode]="autocompleteModestate">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="Country" formControlName="CountryId"
+                        [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
+                        [disabled]="true" [validations]="getValidationMessages().countryId"
+                        #ddlCountry [mode]="autocompleteModecountry">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxLayout="row" class="gap-8">
+
+                        <airmid-dropdown label="MaritalStatus" fxFlex="50%" fxFlex.xs="100%"
+                            fxFlex.sm="50%" formControlName="MaritalStatusId"
+                            [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup"
+                            [validations]="getValidationMessages().maritalStatusId"
+                            [mode]="autocompleteModemstatus">
+                        </airmid-dropdown>
+                        <airmid-dropdown label="Religion Name" fxFlex="50%" fxFlex.xs="100%"
+                            fxFlex.sm="50%" formControlName="ReligionId"
+                            [value]="registerObj?.religionId" [formGroup]="personalFormGroup"
+                            [validations]="getValidationMessages().religionId"
+                            [mode]="autocompleteModereligion">
+                        </airmid-dropdown>
+                    </div>
+                </div>
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxLayout="row" class="gap-8">
+
+                        <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                            label="MobileNo" formControlName="MobileNo"
+                            [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
+                            [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+                        </airmid-textbox>
+
+                        <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                            label="PhoneNo" formControlName="PhoneNo"
+                            [validations]="getValidationMessages().phoneNo"
+                            [value]="registerObj.phoneNo" [formGroup]="personalFormGroup"
+                            [maxLength]="10">
+                        </airmid-textbox>
+
+                    </div>
+                </div>
+
+                           
             </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-textbox label="First Name" formControlName="FirstName" [value]="registerObj.firstName"
-                [formGroup]="personalFormGroup" [validations]="getValidationMessages().firstName" [maxLength]="50">
-              </airmid-textbox>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-textbox label="Middle Name" formControlName="MiddleName" [value]="registerObj.middleName"
-                [formGroup]="personalFormGroup" [validations]="getValidationMessages().middleName" [maxLength]="50">
-              </airmid-textbox>
-
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-textbox label="Last Name" formControlName="LastName" [value]="registerObj.lastName"
-                [formGroup]="personalFormGroup" [validations]="getValidationMessages().lastName" [maxLength]="50">
-              </airmid-textbox>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-dropdown label="Gender" formControlName="GenderID" [formGroup]="personalFormGroup"
-                [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId" #ddlGender
-                [disabled]="true" [mode]="autocompleteModegender">
-              </airmid-dropdown>
-            </div>
-
-            <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateofBirth"
-                [(value)]="registerObj.DateofBirth"></app-airmid-dateofbirth>
-
-            </div>
-
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-              <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo" [value]="registerObj.aadharCardNo"
-                [formGroup]="personalFormGroup" [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
-              </airmid-textbox>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-textbox label="Address" formControlName="Address" [value]="registerObj.address"
-                [formGroup]="personalFormGroup" [validations]="getValidationMessages().address">
-              </airmid-textbox>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId"
-                [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId"
-                [mode]="autocompleteModearea">
-              </airmid-dropdown>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup"
-                [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId" ValueField="cityId"
-                TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
-              </airmid-dropdown>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.stateId"
-                [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId"
-                #ddlState [mode]="autocompleteModestate">
-              </airmid-dropdown>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-dropdown label="Country" formControlName="CountryId" [value]="registerObj?.countryId"
-                [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().countryId"
-                #ddlCountry [mode]="autocompleteModecountry">
-              </airmid-dropdown>
-            </div>
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <div fxLayout="row" class="gap-8">
-              <airmid-dropdown label="MaritalStatus" formControlName="MaritalStatusId" fxFlex="50%" fxFlex.xs="100%"
-              fxFlex.sm="50%"
-                [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup"
-                [validations]="getValidationMessages().maritalStatusId" [mode]="autocompleteModemstatus">
-              </airmid-dropdown>
-
-              <airmid-dropdown label="Religion Name" formControlName="ReligionId" [value]="registerObj?.religionId" fxFlex="50%" fxFlex.xs="100%"
-              fxFlex.sm="50%"
-              [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId"
-              [mode]="autocompleteModereligion">
-            </airmid-dropdown>
-            </div>
-            </div>
-
-            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              
-             
-            </div> -->
-
-            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <div fxLayout="row" class="gap-8">
-
-                <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo"
-                  formControlName="MobileNo" [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
-                  [validations]="getValidationMessages().mobileNo" [maxLength]="10">
-                </airmid-textbox>
-
-                <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo" formControlName="PhoneNo"
-                  [validations]="getValidationMessages().PhoneNo" [value]="registerObj.phoneNo"
-                  [formGroup]="personalFormGroup" [maxLength]="10">
-                </airmid-textbox>
-
-              </div>
-            </div>
-
-
-          </div>
-
+          
         </div>
       </form>
       <br>
       <form [formGroup]="admissionFormGroup" fxLayout="column" style="padding: 0 20px;">
+        <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
+
         <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
           class="top-header accent heading-container h-40 border-radius-4">
           <span style="font-size:15px;font-weight: bolder; color:white;padding:7px;">Hospital
@@ -332,7 +349,7 @@
             </div>
 
             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-              <airmid-textbox label="PhoneNo" formControlName="MobileNo" [value]="registerObj1.mobileNo"
+              <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.mobileNo"
                 [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="50">
               </airmid-textbox>
             </div>

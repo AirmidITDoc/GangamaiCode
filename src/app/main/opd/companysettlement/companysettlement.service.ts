@@ -67,9 +67,8 @@ export class CompanysettlementService {
     }
 
     public InsertOPBillingsettlement(Param: any) {
-        // if (Param.roleId) {
-            return this._httpClient.PutData("OPSettlement/SettlementInsert" , Param);
-        // } else return this._httpClient.PostData("RoleTemplate", Param);
+      return this._httpClient.PutData("OPBill/OPSettlementCreditPayment" , Param);
+      
     }
 
     public deactivateTheStatus(m_data) {
@@ -80,5 +79,9 @@ export class CompanysettlementService {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
 
+
+    public OPSettlementData(m_data) {
+        return this._httpClient.PostData("OutPatient/RegistrationInsert", m_data);
+    }
 
 }

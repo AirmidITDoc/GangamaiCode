@@ -12,7 +12,7 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
-          
+
         </div>
 
 
@@ -47,26 +47,35 @@
 
         <ng-template #actionsTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <!-- If patientOldNew is '1', show green -->
-                <mat-icon *ngIf="element.patientOldNew !== '1' && element.patientOldNew !== '2'"
-                    matTooltip="Patient New" class="mat-accent">
-                    circle
+
+
+                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew"
+                    class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.patientOldNew=='2'" matTooltip="PatientOld"
+                    class="pill orange-600 s-16">circle
                 </mat-icon>
 
-                <!-- If patientOldNew is '2', show orange -->
-                <mat-icon *ngIf="element.patientOldNew === '0'" matTooltip="Patient Old" class="mat-warn">
-                    circle
-                </mat-icon>
             </div>
-            <div>
-                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
-                    class="mat-warn">circle</mat-icon>
+            <!-- <div>
 
-                <mat-icon style=" border: black 1px solid;" *ngIf="element.MPbillNo=='0' "
-                    matTooltip="Bill Not Generated" class="mat-accent">
+                <mat-icon *ngIf="contact.mPbillNo=='1'|| contact.mPbillNo=='2' " matTooltip="Bill Generated"
+                    class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon style=" border: black 1px solid;" *ngIf="contact.mPbillNo=='0' "
+                    matTooltip="Did not Generated Bill" class="pill white-600 s-16">
                     circle
                 </mat-icon>
-            </div>
+            </div> -->
+            <!-- <div>
+                <mat-icon *ngIf="contact.PhoneAppId !== 0"
+                matTooltip="Phone Appointment" class=" cyan-600 s-16">
+                settings_phone
+            </mat-icon>
+
+            <mat-icon title="CrossConsulFlag"
+                *ngIf="contact.CrossConsulFlag==1"
+                class="active-icon green-600 s-16">cached
+                icon</mat-icon>
+            </div> -->
         </ng-template>
 
         <ng-template #actionButtonTemplate let-element>

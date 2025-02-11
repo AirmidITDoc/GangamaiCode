@@ -24,6 +24,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
 import { Console } from 'console';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 
 @Component({
@@ -66,9 +67,9 @@ export class EditAdmissionComponent implements OnInit {
 
   reportPrintObj: AdmissionPersonlModel;
   printTemplate: any;
-  selectedAdvanceObj: AdvanceDetailObj;
-  registerObj = new AdmissionPersonlModel({});
-  registerObj1 = new RegInsert({});
+  // selectedAdvanceObj: AdvanceDetailObj;
+  registerObj1 = new AdmissionPersonlModel({});
+  registerObj = new RegInsert({});
   bedObj = new Bed({});
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
@@ -78,6 +79,7 @@ export class EditAdmissionComponent implements OnInit {
   public now: Date = new Date();
   isLoading: string = '';
   screenFromString = 'admission-form';
+
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -92,6 +94,7 @@ export class EditAdmissionComponent implements OnInit {
     dialogRef.disableClose = true;
   }
 
+@ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModetariff: string = "Tariff";
@@ -100,23 +103,23 @@ export class EditAdmissionComponent implements OnInit {
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeCompany: string = "Company";
   autocompleteModerelationship: string = "Relationship";
+  autocompleteModeSubCompany: string = "SubCompany";
 
   ngOnInit(): void {
     this.isAlive = true;
-    debugger
+    console.log(this.data)
     if ((this.data?.regId ?? 0) > 0) {
-      debugger
-      console.log(this.data)
+     
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
-          this.registerObj1 = response;
-          console.log(this.registerObj1)
+          this.registerObj= response;
+          console.log(this.registerObj)
 
         });
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
+          this.registerObj1 = response;
+          console.log(this.registerObj1)
 
         });
 
@@ -127,60 +130,87 @@ export class EditAdmissionComponent implements OnInit {
 
   }
 
+  selectChangedepartment(obj: any) {
+    debugger
+    console.log(obj)
+    this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+      this.ddlDoctor.options = data;
+      this.ddlDoctor.bindGridAutoComplete();
+    });
+  }
 
 
-
+  onChangePatient(value) {
+    debugger
+            var mode = "Company"
+            if (value.text == "Company") {
+                this._AdmissionService.getMaster(mode, 1);
+                this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
+                this.isCompanySelected = true;
+                this.patienttype = 2;
+            } else if (value.text != "Company") {
+                this.isCompanySelected = false;
+                this.admissionFormGroup.get('CompanyId').clearValidators();
+                this.admissionFormGroup.get('SubCompanyId').clearValidators();
+                this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
+                this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+                this.patienttype = 1;
+            }
+    
+    
+        }
 
   CompanyId = 0;
   SubCompanyId = 0;
   OnSaveAdmission() {
-    if (this.patienttype != 2) {
-      this.CompanyId = 0;
-      this.SubCompanyId = 0;
-    } else if (this.patienttype == 2) {
+    this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+   
+    
+    // if (this.patienttype != 2) {
+    //   this.CompanyId = 0;
+    //   this.SubCompanyId = 0;
+    // } else if (this.patienttype == 2) {
 
-      this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
-      this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
+    //   this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
+    //   this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
 
-      if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
-        this.toastr.warning('Please select Company.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    //   if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
+    //     this.toastr.warning('Please select Company.', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
     debugger
     // if (!this.admissionFormGroup.invalid &&  !this.otherFormGroup.invalid) {
     console.log(this.registerObj)
     console.log(this.admissionFormGroup.value)
 
-    this.registerObj.departmentId = this.admissionFormGroup.get("DepartmentId").value
-    this.registerObj.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
-    this.registerObj.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
-    this.registerObj.relationshipId = this.admissionFormGroup.get("RelationshipId").value
-    this.registerObj.relativeName = this.admissionFormGroup.get("RelativeName").value
-    this.registerObj.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
-    this.registerObj.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
-    this.registerObj.tariffId = this.admissionFormGroup.get("TariffId").value
-    this.registerObj.docNameId = this.admissionFormGroup.get("DocNameId").value
-    this.registerObj.phoneNo = this.admissionFormGroup.get("MobileNo").value
-    if (this.admissionFormGroup.get("CompanyId").value)
-      this.registerObj.companyId = this.admissionFormGroup.get("CompanyId").value
+    // this.registerObj1.departmentId = this.admissionFormGroup.get("DepartmentId").value
+    // this.registerObj1.admittedDoctor1 = this.admissionFormGroup.get("AdmittedDoctor1").value
+    // this.registerObj1.admittedDoctor2 = this.admissionFormGroup.get("AdmittedDoctor2").value
+    // this.registerObj1.relationshipId = this.admissionFormGroup.get("RelationshipId").value
+    // this.registerObj1.relativeName = this.admissionFormGroup.get("RelativeName").value
+    // this.registerObj1.relativeAddress = this.admissionFormGroup.get("RelativeAddress").value
+    // this.registerObj1.patientTypeId = this.admissionFormGroup.get("PatientTypeId").value
+    // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
+    // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
+    // this.registerObj1.phoneNo = this.admissionFormGroup.get("MobileNo").value
+    // if (this.admissionFormGroup.get("CompanyId").value)
+    //   this.registerObj1.companyId = this.admissionFormGroup.get("CompanyId").value
 
-    this.registerObj.tariffId = this.admissionFormGroup.get("TariffId").value
-    this.registerObj.docNameId = this.admissionFormGroup.get("DocNameId").value
-    this.registerObj.phoneNo = this.admissionFormGroup.get("MobileNo").value
-
-
+    // this.registerObj1.tariffId = this.admissionFormGroup.get("TariffId").value
+    // this.registerObj1.docNameId = this.admissionFormGroup.get("DocNameId").value
+    // this.registerObj.phoneNo = this.admissionFormGroup.get("MobileNo").value
 
 
     let submitData = {
-      "AdmissionReg": this.registerObj1,// this.personalFormGroup.value,
-      "ADMISSION": this.registerObj,// this.admissionFormGroup.value
+      "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
+      "ADMISSION":this.admissionFormGroup.value
     };
     console.log(submitData);
 
-    this._AdmissionService.AdmissionUpdate(submitData).subscribe(response => {
+    this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId,submitData).subscribe(response => {
       this.toastr.success(response.message);
       this.onClear();
       this._matDialog.closeAll();
@@ -192,11 +222,9 @@ export class EditAdmissionComponent implements OnInit {
 
   }
 
-
   getValidationMessages() {
     return {
       RegId: [],
-
       AdmittedDoctor1: [
         { name: "required", Message: "AdmittedDoctor1 is required" }
       ],
@@ -239,9 +267,12 @@ export class EditAdmissionComponent implements OnInit {
       HospitalId: [
         { name: "required", Message: "HospitalId Name is required" }
       ],
-      RelatvieMobileNo: [
+      phoneNo: [
         { name: "required", Message: "RelatvieMobileNo Name is required" }
-      ]
+      ],
+      docNameId: [
+        { name: "required", Message: "RelatvieMobileNo Name is required" }
+      ],
     };
   }
   Close() { }

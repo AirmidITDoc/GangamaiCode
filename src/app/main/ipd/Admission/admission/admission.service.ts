@@ -51,31 +51,35 @@ export class AdmissionService {
     createPesonalForm() {
         return this._formBuilder.group({
             RegId: [0],
-            RegNo: '',
+            RegNo: "0",
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
             MiddleName: ['', [
-                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
             LastName: ['', [
                 Validators.required,
-                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                // Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
             ]],
-            GenderID: new FormControl('', [Validators.required]),
+            GenderId: new FormControl('', [Validators.required]),
             Address: '',
-            DateofBirth: [(new Date()).toISOString()],
-            Age: ['30'],
-            AgeYear: ['10', [
+            DateOfBirth: [(new Date()).toISOString()],
+            Age: ['0'],
+            AgeYear: ['0', [
                 // Validators.required,
                 Validators.maxLength(3),
-                Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['20', [
-                Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['10', [
-                Validators.pattern("^[0-9]*$")]],
+                // Validators.pattern("^[0-9]*$")
+            ]
+            ],
+            AgeMonth: ['0', [
+                // Validators.pattern("^[0-9]*$")
+            ]],
+            AgeDay: ['0', [
+                // Validators.pattern("^[0-9]*$")
+            ]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
@@ -90,14 +94,15 @@ export class AdmissionService {
             Validators.maxLength(12),
             Validators.pattern("^[0-9]*$")
             ]],
+
             panCardNo: '',
-            MaritalStatusId: 0,
+            MaritalStatusId:0,
             ReligionId: 0,
             AreaId: 0,
-            CityId: 0,
-            City: ['Pune'],
-            StateId: '',
-            CountryId: '',
+            CityId: [0, [Validators.required]],
+            City: [''],
+            StateId:  [0, [Validators.required]],
+            CountryId:  [0, [Validators.required]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: 1,
@@ -106,7 +111,6 @@ export class AdmissionService {
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
             PinNo: [''],
-            IsHealthCard: 0
         });
     }
 
@@ -130,7 +134,11 @@ export class AdmissionService {
             DepartmentId: ['', [Validators.required]],
             RelativeName: "",
             RelativeAddress: "",
-            PhoneNo: "",
+            PhoneNo: ['', [Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
             MobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
@@ -152,10 +160,10 @@ export class AdmissionService {
             RefDoctorDept: "",
             AdmissionType: 1,
 
-            wardId: ['', [Validators.required]],
-            bedId: ['', [Validators.required]],
+            wardId: [0, [Validators.required]],
+            bedId: [0, [Validators.required]],
             // ClassId: ['', [Validators.required]],
-
+            unitId:1,
 
             IsMLC: [false],
             OPIPChange: [false],
@@ -178,12 +186,14 @@ export class AdmissionService {
     }
 
     public AdmissionRegisteredInsert(employee) {
-        return this._httpClient1.PostData("InPatient/AdmissionRegistredInsert", employee);
+        return this._httpClient1.PostData("Admission/AdmissionRegisteredInsertSP", employee);
     }
 
 
-    public AdmissionUpdate(employee) {
-        return this._httpClient1.PostData("Admission/AdmissionUpdateSP", employee);
+    public AdmissionUpdate(Id,employee) {
+        debugger
+        // return this._httpClient1.PutData("Admission/AdmissionUpdateSP", employee);
+            return this._httpClient1.PutData("Admission/Edit/"+Id,employee);
     }
 
 
