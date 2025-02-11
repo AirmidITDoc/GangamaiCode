@@ -405,6 +405,49 @@ displayedAdvaColumn:string[] = [
 
     }, 100);
   }
+
+  CancelAdvance(contact){ 
+    Swal.fire({
+      title: 'Do you want to cancel the Advance',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!" 
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {  
+        this.isLoading123 = true;
+        let AdvCancellationParamObj = {};
+        AdvCancellationParamObj['IsCancelled'] = 1;
+        AdvCancellationParamObj['AdvanceId'] = contact.AdvanceId || 0;
+        AdvCancellationParamObj['AdvanceDetailId'] = contact.AdvanceDetailID || 0;
+ 
+        let SubmitDate ={
+          "billCancellationParam":AdvCancellationParamObj
+        }
+        this._CancellationService.SaveCancelAdvance(SubmitDate).subscribe(response => {
+          if (response) {
+            this.toastr.success('Record Successfully Updated', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+            this.onShow_IpdAdvance(); 
+            this.isLoading123 = false; 
+          } else {
+            this.toastr.error('Record not Updated Successfully!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+            this.isLoading123 = false;
+          } 
+          this.isLoading123 = false;
+        });  
+      }else{
+        this.onShow_IpdAdvance(); 
+      }
+    })
+  }
+
   keyPressCharater(event){
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {

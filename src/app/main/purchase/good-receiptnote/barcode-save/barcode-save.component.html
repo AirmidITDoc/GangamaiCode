@@ -30,7 +30,7 @@
                         <form [formGroup]="GRNBarcodeFrom" >
 
                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px"> 
-                                <div fxLayout="column" fxLayout.gt-xs="row">
+                                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Item Name</mat-label>
                                         <input matInput name="ItemName" formControlName="ItemName" type="text" [(ngModel)]="vItemName" required>
@@ -55,10 +55,13 @@
                                     type="text" required [(ngModel)]="vBarcodeNo">
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlig="end" fxLayoutGap="6px"> 
-                                    <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
-                                    <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                                <div>
+                                    <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px"> 
+                                        <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
+                                        <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                                    </div>
                                 </div>
+                              
 
                             </div>
                         </form>

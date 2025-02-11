@@ -102,4 +102,10 @@ public getIpdAdvanceBrowseList(employee,loader = true) {
 }
   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_BrowseIPAdvanceList", employee)
 } 
+public SaveCancelAdvance(employee,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+}
+  return this._httpClient.post("Generic/GetByProc?procName=UpdateAdvanceCancel", employee)
+} 
 }
