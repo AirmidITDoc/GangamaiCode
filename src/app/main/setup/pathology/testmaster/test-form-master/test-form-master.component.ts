@@ -52,7 +52,7 @@ export class TestFormMasterComponent implements OnInit {
 
     selectedItems: any;
     registerObj: any;
-    TestId: any;
+    vTestId: any;
     TemplateId: any = 0;
     // /////////////////////////////////
 
@@ -120,7 +120,7 @@ export class TestFormMasterComponent implements OnInit {
         if (this.data) {
             this.registerObj = this.data.registerObj;
             console.log(this.registerObj);
-            this.TestId = this.registerObj.TestId
+            this.vTestId = this.registerObj.TestId
             this.TemplateId = this.registerObj.TemplateId;
 
             if (!this.registerObj.IsTemplateTest && !this.registerObj.IsSubTest) {
@@ -128,7 +128,7 @@ export class TestFormMasterComponent implements OnInit {
                 this.Statusflag = false;
                 this._TestmasterService.is_templatetest = false;
                 this.testForm.get("Status").setValue(1);
-                this.fetchTestlist();
+                this.fetchTestlist(this.registerObj);
 
             } else if (this.registerObj.IsTemplateTest) {
                 this._TestmasterService.is_templatetest = true;
@@ -136,7 +136,7 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestmasterService.is_Test = false;
                 this.Statusflag = true;
                 this.testForm.get("Status").setValue(3);
-                this.fetchTemplate()
+                this.fetchTemplate(this.registerObj)
 
             } else if (!this.registerObj.IsTemplateTest && this.registerObj.IsSubTest) {
                 this.Subtest = this.registerObj.IsSubTest
@@ -146,7 +146,7 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestmasterService.is_Test = false;
                 this.serviceflag = false;
                 this.testForm.get("Status").setValue(2);
-                this.fetchTestlist();
+                this.fetchTestlist(this.registerObj);
             }
 
             // this._TestmasterService.populateForm(this.registerObj);
@@ -186,6 +186,7 @@ export class TestFormMasterComponent implements OnInit {
             this.serviceflag = false;
             this.Subtest = 1
             this._TestmasterService.is_templatetest = false;
+            // get issubtest list
         } else if (val == "3") {
             this._TestmasterService.is_templatetest = true;
             this._TestmasterService.is_subtest = false;
@@ -211,7 +212,7 @@ export class TestFormMasterComponent implements OnInit {
             this.getSubTestMasterList();
     }
 
-    fetchTestlist() {
+    fetchTestlist(obj) {
 
         var m_data =
         {
@@ -222,7 +223,7 @@ export class TestFormMasterComponent implements OnInit {
             "filters": [
                 {
                     "fieldName": "TestId",
-                    "fieldValue": "12",
+                    "fieldValue": String(obj.testId),
                     "opType": "Equals"
                 },
                 {
@@ -255,10 +256,10 @@ export class TestFormMasterComponent implements OnInit {
         this.DSTestList.data = this.ChargeList;
     }
 
-    fetchTemplate() {
+    fetchTemplate(obj) {
 
         var m_data = {
-            "TestId": this.TestId
+            "TestId": String(obj.testId)
         }
         this._TestmasterService.getTemplateListfor(m_data).subscribe(Visit => {
             this.Templatetdatasource.data = Visit as TemplatedetailList[];
@@ -278,15 +279,16 @@ export class TestFormMasterComponent implements OnInit {
         //   })
         //   return;
         //   }else{
-        if (!this.testForm.get("TestId").value) {
+        // if (!this.testForm.get("TestId").value) 
+            if(!this.vTestId){
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
                 "PtemplateId": 0,
-                "TestId": 11,
+                "TestId": 0,
                 "TemplateId": 12,
             }));
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
                 "TestDetId": 0,
-                "TestId": 11,
+                "TestId": 0,
                 "SubTestId": 12,
                 "ParameterId": row.ParameterID
             }));
@@ -324,7 +326,7 @@ export class TestFormMasterComponent implements OnInit {
                 "FootNote": this.testForm.get("FootNote").value,
                 "IsDeleted": true,
                 "ServiceId": this.testForm.get("ServiceId").value.value || 15,
-                "IsTemplateTest": true,
+                "IsTemplateTest": this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
@@ -339,13 +341,47 @@ export class TestFormMasterComponent implements OnInit {
                 this.toastr.error(error.message);
             });
         } else {
+            let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
+                "PtemplateId": 0,
+                "TestId": 0,
+                "TemplateId": 12,
+            }));
+            let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
+                "TestDetId": 0,
+                "TestId": 0,
+                "SubTestId": 12,
+                "ParameterId": row.ParameterID
+            }));
+            var mdata1 = {
+                "TestId": this.vTestId,
+                "TestName": this.testForm.get("TestName").value,
+                "PrintTestName": this.testForm.get("PrintTestName").value,
+                "CategoryId": this.testForm.get("CategoryId").value || 12,
+                "IsSubTest": true, //this.testForm.get('IsSubTest').value,
+                "TechniqueName": this.testForm.get("TechniqueName").value,
+                "MachineName": this.testForm.get("MachineName").value,
+                "SuggestionNote": this.testForm.get("SuggestionNote").value,
+                "FootNote": this.testForm.get("FootNote").value,
+                "IsDeleted": true,
+                "ServiceId": this.testForm.get("ServiceId").value.value || 15,
+                "IsTemplateTest": this.testForm.get('IsTemplateTest').value,
+                "TestTime": formattedTime,
+                "TestDate": formattedDate,//"2022-07-11",
+                "MPathTemplateDetails": mPathTemplateDetails,
+                "MPathTestDetailMasters": mPathTestDetailMasters
+            }
 
+            console.log("json of Test:", mdata1)
+            this._TestmasterService.unitMasterSave(mdata1).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClose(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
         }
         //   }
 
     }
-
-    // parameter=this._TestmasterService.myform.get("ParameterNameSearch").value+ "%" || '%';
 
     getParameterList() {
 
@@ -372,6 +408,7 @@ export class TestFormMasterComponent implements OnInit {
         });
     }
 
+    // isSubtest checkbox list 
     getSubTestMasterList() {
 
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';

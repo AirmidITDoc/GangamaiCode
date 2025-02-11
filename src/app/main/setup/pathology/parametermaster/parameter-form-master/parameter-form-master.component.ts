@@ -22,12 +22,12 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class ParameterFormMasterComponent implements OnInit {
-    parameterForm:FormGroup;
-    numericForm:FormGroup;
-    descForm:FormGroup;
+    parameterForm: FormGroup;
+    numericForm: FormGroup;
+    descForm: FormGroup;
 
     isPrintDisSummaryChecked: boolean = false;
-    autocompleteModeUnitId:string = "Unit";
+    autocompleteModeUnitId: string = "Unit";
 
     ageType: string[] = ["Days", "Months", "Years"];
 
@@ -61,48 +61,48 @@ export class ParameterFormMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    registerObj=new PathparameterMaster({});
+    registerObj = new PathparameterMaster({});
 
-    vParameterShortName:any;
-    vParameterName:any;
-    vPrintParameterName:any;
-    vMethodName:any;
-    vFormula:any;
-    vUnitId:any;
+    vParameterShortName: any;
+    vParameterName: any;
+    vPrintParameterName: any;
+    vMethodName: any;
+    vFormula: any;
+    vUnitId: any;
 
     selectedToAdd: any;
     groupsArray: any = [];
     selectedItems: any = [];
     isTxtUnique = true;
     paraId: any;
-    defaultValue:any;
-    vParameterId:any;
+    defaultValue: any;
+    vParameterId: any;
 
-    ChargeList:any=[];
+    ChargeList: any = [];
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
-    autocompleteModeGender:String="Gender";
+    autocompleteModeGender: String = "Gender";
 
     constructor(
         public _ParameterService: ParametermasterService,
         public dialogRef: MatDialogRef<ParametermasterComponent>,
         public _matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService    ) { }
+        public toastr: ToastrService) { }
 
     ngOnInit(): void {
         debugger
-        this.parameterForm=this._ParameterService.createParameterForm();
-        this.numericForm=this._ParameterService.numericForm();
-        this.descForm=this._ParameterService.descForm();
-           
+        this.parameterForm = this._ParameterService.createParameterForm();
+        this.numericForm = this._ParameterService.numericForm();
+        this.descForm = this._ParameterService.descForm();
+
         this.selectedItems = [];
         this.dsParameterAgeList.data = [];
 
         if (this.data) {
             this.registerObj = this.data;
-            this.vParameterId=this.registerObj.parameterId;
+            this.vParameterId = this.registerObj.parameterId;
         }
         console.log(this.data)
         if (this.parameterForm.get("parameterId").value) {
@@ -111,255 +111,232 @@ export class ParameterFormMasterComponent implements OnInit {
             this.selectedItems = this._ParameterService.descriptiveList;
         }
 
-        var mdata={
-                parameterId:this.data?.parameterId,
-                parameterShortName:this.data?.parameterShortName,
-                parameterName:this.data?.parameterName,
-                printParameterName:this.data?.printParameterName,
-                MethodName:this.data?.MethodName,
-                Formula:this.data?.Formula,
-                unitId:this.data?.unitId,
-                isNumeric:this.data?.isNumeric,
-                isActive: JSON.stringify(this.data?.isActive),
-            };
-            this.parameterForm.patchValue(mdata);
-    }
-
-OnSave(){
-debugger
-if(this._ParameterService.myform.get("IsBold").value)
-    var BoldValue="B"
-else
- var BoldValue=""
-
- if(this._ParameterService.is_numeric)
-    var is_numeric="1"
-else
- var is_numeric="0"
-
-var numeric_info = [];
-var mPathParaRangeMasters = [];
-var data2 = [];
-if (!this._ParameterService.is_numeric) {
-
-    // for (var val of this.selectedItems) {
-    //     var data = {
-    //         parameterID: 0, //this.descForm.get("paraId").value, 
-    //         parameterValues: val,
-    //         isDefaultValue: this.descForm.get("defaultValue").value ? true : false,
-    //         // addedby: 1, 
-    //         defaultValue: this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
-    //     };
-    //     data2.push(data);
-
-    for (var val of this.selectedItems) {
-        var data = {
-            descriptiveId:0,
-            parameterId: 0, //this.descForm.get("paraId").value, 
-            parameterValues: val,
-            isDefaultValue: this.descForm.get("defaultValue").value ? true : false,
-            // addedby: 1, 
-            defaultValue: this.descForm.get("defaultValue").value ? this.descForm.get("defaultValue").value.trim() : "%",
+        var mdata = {
+            parameterId: this.data?.parameterId,
+            parameterShortName: this.data?.parameterShortName,
+            parameterName: this.data?.parameterName,
+            printParameterName: this.data?.printParameterName,
+            MethodName: this.data?.MethodName,
+            Formula: this.data?.Formula,
+            unitId: this.data?.unitId,
+            isNumeric: this.data?.isNumeric,
+            isActive: JSON.stringify(this.data?.isActive),
         };
-        data2.push(data);
+        this.parameterForm.patchValue(mdata);
     }
-}
-else {
-    mPathParaRangeMasters = this.dsParameterAgeList.data.map((row: any) => ({
-        "pathparaRangeId": 0,
-        "paraId": 0,
-        "sexId": row.GenderName, //this.numericForm.get("sexId").value || 1,
-        "minValue": row.MinValue, //this.numericForm.get("minValue").value,
-        "maxvalue": row.MaxValue, //this.numericForm.get("maxvalue").value
-    }));
-    // var info: any = {
-    //     paraId: 0 || +this._ParameterService.myform.get("parameterId").value,
-    //     sexId: 0,
-    //     minValue: "%",
-    //     maxValue: "%",
-    //     addedby:1,
-    //     ageType: "%",
-    //     minAge: 0,
-    //     IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
-    //     maxAge: 0
-    // };
-    // this.dsParameterAgeList.data.forEach(element => {
-    //     let c = JSON.parse(JSON.stringify(info));
-    //     c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
-    //     c['minValue'] = element.MinValue;
-    //     c['minAge'] = +element.MinAge;
-    //     c['maxAge'] = +element.MaxAge;
-    //     c['maxvalue'] = element.MaxValue;
-    //     c['ageType'] = element.AgeType;
-    //     c['IsDeleted'] = element.IsDeleted;
-    //   numeric_info.push(c)
-    // });
-}
 
-// var m_data={
-//     "parameterId": 0,
-//     "parameterShortName":this.parameterForm.get('parameterShortName').value,
-//     "parameterName": this.parameterForm.get('parameterName').value,
-//     "printParameterName": this.parameterForm.get('printParameterName').value,
-//     "unitId":  this.parameterForm.get('unitId').value,
-//     "isNumeric": is_numeric, //0,
-//     "isPrintDisSummary": true,
-//     "mParameterDescriptiveMasters": data2,
-//     "mPathParaRangeMasters":mPathParaRangeMasters, //numeric_info
-//   }
+    OnSave() {
+        debugger
+        if (this._ParameterService.myform.get("IsBold").value)
+            var BoldValue = "B"
+        else
+            var BoldValue = ""
 
+        if (this._ParameterService.is_numeric)
+            var is_numeric = "0"
+        else
+            var is_numeric = "1"
 
-if (!this.parameterForm.get("parameterId").value) {
+        var numeric_info = [];
+        var mPathParaRangeMasters = [];
+        var data2 = [];
+        if (!this._ParameterService.is_numeric) {
 
-    var m_data={
-        "parameterId": 0,
-        "parameterShortName":this.parameterForm.get('parameterShortName').value,
-        "parameterName": this.parameterForm.get('parameterName').value,
-        "printParameterName": this.parameterForm.get('printParameterName').value,
-        "unitId":  this.parameterForm.get('unitId').value,
-        "isNumeric": is_numeric, //0,
-        "isPrintDisSummary": true,
-        "mParameterDescriptiveMasters": data2,
-        "mPathParaRangeMasters":mPathParaRangeMasters, //numeric_info
-      }
-    console.log(m_data);
+            console.log('selected:', this.selectedItems)
+            for (var val of this.selectedItems) {
+                debugger
+                var data = {
+                    descriptiveId: 0,
+                    parameterId: 0, //this.descForm.get("paraId").value, 
+                    parameterValues: val.ParameterName,
+                    isDefaultValue: val.DefaultValue ? true : false,
+                    defaultValue: val.DefaultValue
+                };
+                data2.push(data);
+            }
+        }
+        else {
+            mPathParaRangeMasters = this.dsParameterAgeList.data.map((row: any) => ({
+                "pathparaRangeId": 0,
+                "paraId": 0,
+                "sexId": row.GenderName, //this.numericForm.get("sexId").value || 1,
+                "minValue": row.MinValue, //this.numericForm.get("minValue").value,
+                "maxvalue": row.MaxValue, //this.numericForm.get("maxvalue").value
+            }));
+            // var info: any = {
+            //     paraId: 0 || +this._ParameterService.myform.get("parameterId").value,
+            //     sexId: 0,
+            //     minValue: "%",
+            //     maxValue: "%",
+            //     addedby:1,
+            //     ageType: "%",
+            //     minAge: 0,
+            //     IsDeleted:this._ParameterService.myform.get("IsDeleted").value ||1,
+            //     maxAge: 0
+            // };
+            // this.dsParameterAgeList.data.forEach(element => {
+            //     let c = JSON.parse(JSON.stringify(info));
+            //     c['sexId'] = element.GenderName == 'Male' ? 1 : element.GenderName == 'Female' ? 2 : 3;
+            //     c['minValue'] = element.MinValue;
+            //     c['minAge'] = +element.MinAge;
+            //     c['maxAge'] = +element.MaxAge;
+            //     c['maxvalue'] = element.MaxValue;
+            //     c['ageType'] = element.AgeType;
+            //     c['IsDeleted'] = element.IsDeleted;
+            //   numeric_info.push(c)
+            // });
+        }
 
-    this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
-        
-        if (data) {
-            this.parameterForm.reset({
-                isNumeric: ["1"],
-                isPrintDisSummary: true,
-                IsBold:['0'],
-                IsDeleted: [true],
+        if (!this.parameterForm.get("parameterId").value) {
+
+            var m_data = {
+                "parameterId": 0,
+                "parameterShortName": this.parameterForm.get('parameterShortName').value,
+                "parameterName": this.parameterForm.get('parameterName').value,
+                "printParameterName": this.parameterForm.get('printParameterName').value,
+                "unitId": this.parameterForm.get('unitId').value,
+                "isNumeric": is_numeric, //0,
+                "isPrintDisSummary": true,
+                "mParameterDescriptiveMasters": data2,
+                "mPathParaRangeMasters": mPathParaRangeMasters, //numeric_info
+            }
+            console.log(m_data);
+
+            this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
+
+                if (data) {
+                    this.parameterForm.reset({
+                        isNumeric: ["1"],
+                        isPrintDisSummary: true,
+                        IsBold: ['0'],
+                        IsDeleted: [true],
+                    });
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
+                    this.onClose();
+                    this.toastr.success('Record Saved Successfully.', 'Saved !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                }
             });
-            this.selectedItems = [];
-            this.dsParameterAgeList.data = [];
-            this.onClose();
-            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-        } 
-    });
-} else {
-    var m_data1={
-        "parameterId": this.vParameterId,
-        "parameterShortName":this.parameterForm.get('parameterShortName').value,
-        "parameterName": this.parameterForm.get('parameterName').value,
-        "printParameterName": this.parameterForm.get('printParameterName').value,
-        "unitId":  this.parameterForm.get('unitId').value,
-        "isNumeric": is_numeric, //0,
-        "isPrintDisSummary": true,
-        "mParameterDescriptiveMasters": data2,
-        "mPathParaRangeMasters":mPathParaRangeMasters, //numeric_info
-      }
-    console.log(m_data1);
+        } else {
+            var m_data1 = {
+                "parameterId": this.vParameterId,
+                "parameterShortName": this.parameterForm.get('parameterShortName').value,
+                "parameterName": this.parameterForm.get('parameterName').value,
+                "printParameterName": this.parameterForm.get('printParameterName').value,
+                "unitId": this.parameterForm.get('unitId').value,
+                "isNumeric": is_numeric, //0,
+                "isPrintDisSummary": true,
+                "mParameterDescriptiveMasters": data2,
+                "mPathParaRangeMasters": mPathParaRangeMasters, //numeric_info
+            }
+            console.log(m_data1);
 
-    this._ParameterService.update1ParameterMaster(m_data1).subscribe((data) => {
-        
-        if (data) {
-            this.parameterForm.reset({
-                isNumeric: ["1"],
-                isPrintDisSummary: true,
-                IsBold:['0'],
-                IsDeleted: [true],
-            });
-            this.selectedItems = [];
-            this.dsParameterAgeList.data = [];
-            this.onClose();
+            this._ParameterService.update1ParameterMaster(m_data1).subscribe((data) => {
 
-            this.toastr.success('Record Updated Successfully.', 'Updated !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-        } 
-    });
-}
+                if (data) {
+                    this.parameterForm.reset({
+                        isNumeric: ["1"],
+                        isPrintDisSummary: true,
+                        IsBold: ['0'],
+                        IsDeleted: [true],
+                    });
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
+                    this.onClose();
 
-}
-    
-    getValidationMessages() 
-    {
+                    this.toastr.success('Record Updated Successfully.', 'Updated !', {
+                        toastClass: 'tostr-tost custom-toast-success',
+                    });
+                }
+            });
+        }
+
+    }
+
+    getValidationMessages() {
         return {
             parameterShortName: [
                 // { name: "required", Message: "Parameter Short Name is required" },
                 // { name: "maxlength", Message: "Parameter Short Name should not be greater than 50 char." },
                 // { name: "pattern", Message: "Special char not allowed." }
             ],
-            parameterName:[
+            parameterName: [
                 // { name: "required", Message: "Parameter Name is required" },
                 // { name: "maxlength", Message: "Parameter Name should not be greater than 50 char." },
                 // { name: "pattern", Message: "Special char not allowed." }
             ],
-            printParameterName:[
+            printParameterName: [
                 // { name: "required", Message: "Print Parameter Name is required" },
                 // { name: "maxlength", Message: "Print Parameter Name should not be greater than 50 char." },
                 // { name: "pattern", Message: "Special char not allowed." }
             ],
-            MethodName:[
+            MethodName: [
                 // { name: "required", Message: "Method Name is required" },
             ],
-            Formula:[
+            Formula: [
                 // { name: "required", Message: "Formula is required" },
             ],
-            unitId:[
+            unitId: [
                 // { name: "required", Message: "Unit Id is required" },
             ],
-            sexId:[
+            sexId: [
                 // { name: "required", Message: "Sex Id is required" },
             ],
-            MinAge:[
+            MinAge: [
                 // { name: "required", Message: "Min Age is required" },
             ],
-            MaxAge:[
+            MaxAge: [
                 // { name: "required", Message: "Max Age is required" },
             ],
-            AgeType:[
+            AgeType: [
                 // { name: "required", Message: "Age Type is required" },
             ],
-            minValue:[
+            minValue: [
                 // { name: "required", Message: "Min Value is required" },
             ],
-            maxValue:[
+            maxValue: [
                 // { name: "required", Message: "Max Value is required" },
             ],
-            paraId:[],
-            defaultValue:[],
+            paraId: [],
+            defaultValue: [],
         };
     }
 
-    public onEnterParameterShortName(event):void{
+    public onEnterParameterShortName(event): void {
         if (event.which === 13) {
-                this.vParameterName.nativeElement.focus();
-            }
+            this.vParameterName.nativeElement.focus();
+        }
     }
-    public onEnterParameterName(event):void{
+    public onEnterParameterName(event): void {
         if (event.which === 13) {
-         this.vPrintParameterName.nativeElement.focus();
-      }
+            this.vPrintParameterName.nativeElement.focus();
+        }
     }
-    public onEnterPrintParameterName(event):void{
+    public onEnterPrintParameterName(event): void {
         if (event.which === 13) {
-                this.vMethodName.nativeElement.focus();
-            }
+            this.vMethodName.nativeElement.focus();
+        }
     }
-    public onEnterMethodName(event):void{
+    public onEnterMethodName(event): void {
         if (event.which === 13) {
-         this.vFormula.nativeElement.focus();
-      }
+            this.vFormula.nativeElement.focus();
+        }
     }
-    public onEnterFormula(event):void{
-        if (event.which === 13) {
-            this.UnitId.nativeElement.focus();
-         }
-    }
-    public onEnterUnitId(event):void{
+    public onEnterFormula(event): void {
         if (event.which === 13) {
             this.UnitId.nativeElement.focus();
-         }
+        }
     }
-    selectChangeUnitId(obj:any){
+    public onEnterUnitId(event): void {
+        if (event.which === 13) {
+            this.UnitId.nativeElement.focus();
+        }
+    }
+    selectChangeUnitId(obj: any) {
         console.log(obj);
-        this.UnitId=obj;
+        this.UnitId = obj;
     }
 
     onClear(val: boolean) {
@@ -381,14 +358,12 @@ if (!this.parameterForm.get("parameterId").value) {
             && formValues.ageType
             && formValues.minValue
             && formValues.maxvalue;
-        if(!fieldsTobeChecked) 
-        {
+        if (!fieldsTobeChecked) {
             event.preventDefault;
             this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
         }
-        else
-        {
-         this.onAdd(event);
+        else {
+            this.onAdd(event);
         }
     }
 
@@ -414,11 +389,11 @@ if (!this.parameterForm.get("parameterId").value) {
         debugger
         const newRow: any = {
             GenderName: this.numericForm.get('sexId').value || "",
-            MinAge:this.numericForm.get('minAge').value,
-            MaxAge:this.numericForm.get('maxAge').value,
-            MinValue:this.numericForm.get('minValue').value,
-            MaxValue:this.numericForm.get('maxvalue').value,
-            IsDeleted:1,
+            MinAge: this.numericForm.get('minAge').value,
+            MaxAge: this.numericForm.get('maxAge').value,
+            MinValue: this.numericForm.get('minValue').value,
+            MaxValue: this.numericForm.get('maxvalue').value,
+            IsDeleted: 1,
             AgeType: this.numericForm.get('ageType').value,
         };
         console.log("sata:-",)
@@ -520,12 +495,15 @@ if (!this.parameterForm.get("parameterId").value) {
         console.warn(val);
         this.currentval = this.currentval + "  " + val;
     }
-   
-  
+
+
 
     AddData(txt) {
-        txt=this.descForm.get('paraId').value
-        // if (txt.replace(/\s/g, '').length !== 0) {
+        debugger
+        // console.log(this.descForm.get("paraId").value)
+        txt = this.descForm.get('paraId').value + this.descForm.get('defaultValue').value
+
+        if (txt.replace(/\s/g, '').length !== 0) {
 
             if (!this.selectedItems.includes(txt)) {
                 this.selectedItems = this.selectedItems.concat(txt);
@@ -541,22 +519,26 @@ if (!this.parameterForm.get("parameterId").value) {
                 });
             }
             this.descForm.get("paraId").reset();
-        this.descForm.get("defaultValue").reset();
-        // }
+            this.descForm.get("defaultValue").reset();
+        }
     }
 
-    
-    onAddDescrow(event) {
+
+    onAddDescrow() {
         console.log("event is :" + event)
 
-        this.ChargeList = this.dsTemparoryList.data;
-       
+        // this.ChargeList = this.dsTemparoryList.data;
+
         this.ChargeList.push(
             {
-                ParameterName:this._ParameterService.descform.get("ParaId").value,
-                DefaultValue:this._ParameterService.descform.get("DefaultValue").value,
+                ParameterName: this.descForm.get("paraId").value,
+                DefaultValue: this.descForm.get("defaultValue").value,
             });
-        this.dsTemparoryList.data = this.ChargeList;
+        // this.dsTemparoryList.data = this.ChargeList;
+        this.selectedItems = this.ChargeList;
+        console.log(this.selectedItems)
+        this.descForm.get("paraId").reset();
+        this.descForm.get("defaultValue").reset();
     }
 }
 
@@ -570,7 +552,7 @@ export class PathParaRangeAgeMaster {
     AgeType: any;
     MinAge: any;
     MaxAge: any;
-    IsDeleted:any;
+    IsDeleted: any;
     /**
      * Constructor
      *

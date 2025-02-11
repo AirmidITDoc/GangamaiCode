@@ -16,6 +16,52 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- Button 1: Edit Patient Registration  -->
+                <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Button 2: Edit Patient Registration  -->
+                <button mat-icon-button matTooltip="Add Formula" (click)="onaddformula(element)">
+                    <mat-icon>add</mat-icon>
+                </button>
+
+                <!-- Button 3: Print Patient Case paper  -->
+                <button mat-icon-button matTooltip="Delete" (click)="_ParameterService.deactivateTheStatus(data.parameterId)">
+                    <mat-icon> delete</mat-icon>
+                </button>
+
+                <!-- <mat-menu #moreMenu="matMenu">
+                    <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                            <span>{{m}}</span>
+                        </button>
+                    </ng-container>
+                </mat-menu> -->
+            </div>
+        </ng-template>
+
+        <ng-template #actionsNumeric let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- Button 2: Edit Patient Registration  -->
+                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                    <mat-icon *ngIf="element.IsNumericParameter== 1" title="IsNumeric">
+                        <img width="20px" height="20px" src="assets/images/logos/radiology.png">
+                    </mat-icon>
+                    <mat-icon *ngIf="element.IsNumericParameter== 0" title="IsDescriptive">
+                        <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
+                    </mat-icon>
+
+                </mat-cell>
+
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>

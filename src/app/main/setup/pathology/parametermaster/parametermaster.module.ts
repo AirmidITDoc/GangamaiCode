@@ -30,6 +30,7 @@ import { AddformulaComponent } from './addformula/addformula.component';
 import { SharedModule } from "app/main/shared/shared.module";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatListModule } from "@angular/material/list";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const routes: Routes = [
     {
@@ -68,7 +69,8 @@ const routes: Routes = [
         MatTabsModule,
         SharedModule,
         MatDialogModule,
-        MatListModule
+        MatListModule,
+        MatTooltipModule
     ],
     providers: [ParametermasterService, DatePipe]
 })

@@ -20,7 +20,11 @@
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Test Name</mat-label>
-                    <input matInput placeholder="Search Test Name" autocomplete="off"
+                    <!-- <input matInput placeholder="Search Test Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" /> -->
+                        <input matInput placeholder="Search Test Name" autocomplete="off"
+                        name="ParameterNameSearch"
+                        formControlName="ParameterNameSearch" 
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
