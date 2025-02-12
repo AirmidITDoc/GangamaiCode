@@ -72,14 +72,6 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-                                <!-- <airmid-dropdown label="Cash Counter" formControlName="cashCounterId" [value]="patientDetail?.areaId" [formGroup]="searchForm" fxFlex>
-                                </airmid-dropdown> -->
-
-                                <!-- <airmid-dropdown label="CashCounterID" formControlName="CashCounterID"
-                                    [formGroup]="searchFormGroup" [(value)]="registerObj.CashCounterID"
-                                    [validations]="getValidationMessages().CashCounterID"
-                                    [mode]="autocompleteModeCashcounter">
-                                </airmid-dropdown> -->
                             </div>
                         </form>
                     </div>
@@ -165,6 +157,7 @@
                             <form [formGroup]="chargeForm">
                                 <div fxLayout="row" fxLayoutGap="5px">
 
+                                    <!-- Autocomplete Dropdown binding is pending... -->
                                     <div fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="33%" *ngIf="false">
                                         <mat-form-field appearance="outline" #myInput>
                                             <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename placeholder="Service Name" matInput [matAutocomplete]="auto" (keydown)="onEnterservice($event)" (input)="getServiceListCombobox()" required id="myInput">

@@ -98,14 +98,4 @@ export class LoginComponent implements OnInit {
             }
         );
     }
-    OnBillPayment(row: any = null) {
-        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
-            maxWidth: "90vw",
-            height: "98vh",
-            width: "80%",
-            data: {
-                patientDetail: row
-            }
-        });
-    }
 }

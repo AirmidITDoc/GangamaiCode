@@ -85,9 +85,28 @@ $modalHeader: 60px;
                         font-weight: 600;
                     }
                 }
+                .detail-container {
+                    .detail-header {
+                        display: flex;
+                        align-items: center;
+                        padding: 8px 16px;
+                        margin-bottom: 8px;
+                        border-radius: 4px;
+                        background-color: $primary-600;
+                        color: $primary-25;
+                        .title {
+                            @include font-size(15px);
+                            font-weight: 600;
+                        }
+                    }
+                }
             }
             .modal-footer {
                 padding: 0 $modal-gap $modal-gap $modal-gap;
+                .modal-footer-container {
+                    display: flex;
+                    justify-content: space-between;
+                }
                 .modal-footer-buttons {
                     display: flex;
                     justify-content: flex-end;
