@@ -62,9 +62,10 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
+                                
                                 <mat-form-field class="example-full-width" fxFlex>
-                                    <mat-label>Patient Name (enter 2 char)/ MR No/ Mobile No </mat-label>
-                                    <input type="text" placeholder="Patient Name (enter 2 char)/ MR No/ Mobile No " matInput [matAutocomplete]="auto">
+                                    <mat-label>Cash Counter </mat-label>
+                                    <input type="text" placeholder="Cash Counter" matInput [matAutocomplete]="auto">
                                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                         <mat-option *ngFor="let option of [] " [value]="option">
                                             {{option}}
@@ -247,11 +248,11 @@
                     <mat-card fxFlex.gt-sm="100%" fxFlex>
                         <mat-card-content class="py-4">
                             <div fxLayout="row" fxLayoutGap="6px">
-                                <div fxFlex="70%" fxFlex.xs="10%" fxFlex.sm="10%">
+                                <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                                     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                                         <mat-tab label="Charges List">
                                             <div class="airmid-table-container">
-                                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}" class="airmid-table mt-4 h-200">
+                                                <mat-table matSort [dataSource]="dsChargeList" [@animateStagger]="{value:'50'}" class="airmid-table mt-4 h-200">
 
                                                     <!-- <ng-container matColumnDef="IsCheck" sticky>
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90">Status</mat-header-cell>
@@ -269,12 +270,17 @@
                                                         </mat-cell>
                                                     </ng-container> -->
 
-                                                    <ng-container matColumnDef="serviceName">
+                                                    <ng-container matColumnDef="Status">
+                                                        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                                                        <!-- Status -->
+                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow">--</span></mat-cell>
+                                                    </ng-container>
+                                                    <ng-container matColumnDef="ServiceName">
                                                         <mat-header-cell *matHeaderCellDef class="w-180">Service Name</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-180"><span class="text-overflow">{{contact.ServiceName}} </span></mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="price">
+                                                    <ng-container matColumnDef="Price">
                                                         <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
                                                         <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
                                                         <mat-cell *matCellDef="let contact">
@@ -284,7 +290,7 @@
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="qty">
+                                                    <ng-container matColumnDef="Qty">
                                                         <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
                                                         <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Qty || 0}} </span></mat-cell> -->
                                                         <mat-cell *matCellDef="let contact">
@@ -294,12 +300,12 @@
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="totalAmount">
+                                                    <ng-container matColumnDef="TotalAmount">
                                                         <mat-header-cell *matHeaderCellDef>Total Amt</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{(contact.TotalAmt || 0 )| currency:"INR"}} </span></mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="discountPer">
+                                                    <ng-container matColumnDef="DiscountPer">
                                                         <mat-header-cell *matHeaderCellDef>Disc %</mat-header-cell>
                                                         <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscPer || 0}} </span></mat-cell> -->
                                                         <mat-cell *matCellDef="let contact">
@@ -309,7 +315,7 @@
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="discountAmount">
+                                                    <ng-container matColumnDef="DiscountAmount">
                                                         <mat-header-cell *matHeaderCellDef>Disc Amt</mat-header-cell>
                                                         <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscAmt || 0}} </span></mat-cell> -->
                                                         <mat-cell *matCellDef="let contact">
@@ -319,27 +325,27 @@
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="netAmount">
+                                                    <ng-container matColumnDef="NetAmount">
                                                         <mat-header-cell *matHeaderCellDef>Net Amt</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{(contact.NetAmount || 0) | currency:"INR"}} </span></mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="doctorName">
+                                                    <ng-container matColumnDef="DoctorName">
                                                         <mat-header-cell *matHeaderCellDef>Doctor Name</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DoctorName}} </span></mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="className">
+                                                    <ng-container matColumnDef="ClassName">
                                                         <mat-header-cell *matHeaderCellDef>Class Name</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.ClassName}} </span></mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="chargesAddedName">
+                                                    <ng-container matColumnDef="ChargesAddedName">
                                                         <mat-header-cell *matHeaderCellDef>Added By</mat-header-cell>
                                                         <mat-cell *matCellDef="let contact">{{contact.ChargesAddedName}}</mat-cell>
                                                     </ng-container>
 
-                                                    <ng-container matColumnDef="action" stickyEnd>
+                                                    <ng-container matColumnDef="Action" stickyEnd>
                                                         <mat-header-cell *matHeaderCellDef> Action
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact; let i=index">
@@ -349,14 +355,16 @@
                                                         </mat-cell>
                                                     </ng-container>
 
-                                                    <mat-header-row class="accent min-width-1350" *matHeaderRowDef="displayedColumns; sticky: true">
+                                                    <ng-container matColumnDef="NoData">
+                                                        <mat-footer-cell *matFooterCellDef>
+                                                            <span>No Data Found</span>
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+
+                                                    <mat-header-row class="accent min-width-1350" *matHeaderRowDef="displayedChargeColumns; sticky: true">
                                                     </mat-header-row>
-                                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="min-width-1350" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                    <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}">
-                                                    </mat-footer-row>
-                                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                                    </mat-footer-row> -->
-                                                    phar-label
+                                                    <mat-row *matRowDef="let contact; columns: displayedChargeColumns;" class="min-width-1350" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
                                                 </mat-table>
                                             </div>
                                             <div class="amt-container py-4">
@@ -379,9 +387,174 @@
                                             </div>
                                         </mat-tab>
                                         <mat-tab label="Package List">
-                                            <h1>Package list pending....</h1>
+                                            <div class="airmid-table-container">
+                                                <mat-table matSort [dataSource]="dsPackageList" [@animateStagger]="{value:'50'}" class="airmid-table mt-4 h-200">
+
+                                                    <ng-container matColumnDef="Status">
+                                                        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                                                        <!-- Status -->
+                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow">--</span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="ServiceName">
+                                                        <mat-header-cell *matHeaderCellDef class="w-180">Service Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" class="w-180"><span class="text-overflow">{{contact.ServiceName}} </span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="PackageName">
+                                                        <mat-header-cell *matHeaderCellDef class="w-180">Package Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" class="w-180"><span class="text-overflow">{{contact.PackageName}} </span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Price">
+                                                        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
+                                                        <mat-cell *matCellDef="let contact">
+                                                            <mat-form-field floatLabel="never">
+                                                                <input matInput placeholder="Price" [(ngModel)]="contact.Price" required (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                            </mat-form-field>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Qty">
+                                                        <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
+                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Qty || 0}} </span></mat-cell> -->
+                                                        <mat-cell *matCellDef="let contact">
+                                                            <mat-form-field floatLabel="never" appearance="fill">
+                                                                <input matInput placeholder="Qty" [(ngModel)]="contact.Qty" required (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                            </mat-form-field>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="TotalAmount">
+                                                        <mat-header-cell *matHeaderCellDef>Total Amt</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{(contact.TotalAmt || 0 )| currency:"INR"}} </span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="DiscountPer">
+                                                        <mat-header-cell *matHeaderCellDef>Disc %</mat-header-cell>
+                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscPer || 0}} </span></mat-cell> -->
+                                                        <mat-cell *matCellDef="let contact">
+                                                            <mat-form-field floatLabel="never" appearance="fill">
+                                                                <input matInput placeholder="Disc %" [(ngModel)]="contact.DiscPer" type="number" [min]="0" [max]="100" (ngModelChange)="onDiscountPerChange(contact)">
+                                                            </mat-form-field>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="DiscountAmount">
+                                                        <mat-header-cell *matHeaderCellDef>Disc Amt</mat-header-cell>
+                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscAmt || 0}} </span></mat-cell> -->
+                                                        <mat-cell *matCellDef="let contact">
+                                                            <mat-form-field floatLabel="never" appearance="fill">
+                                                                <input matInput placeholder="Disc Amt" [(ngModel)]="contact.DiscAmt" type="number" [min]="0" [max]="contact.TotalAmt" (ngModelChange)="onDiscountAmtChange(contact)">
+                                                            </mat-form-field>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="NetAmount">
+                                                        <mat-header-cell *matHeaderCellDef>Net Amt</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{(contact.NetAmount || 0) | currency:"INR"}} </span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="DoctorName">
+                                                        <mat-header-cell *matHeaderCellDef>Doctor Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DoctorName}} </span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="ClassName">
+                                                        <mat-header-cell *matHeaderCellDef>Class Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.ClassName}} </span></mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="ChargesAddedName">
+                                                        <mat-header-cell *matHeaderCellDef>Added By</mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact">{{contact.ChargesAddedName}}</mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Action" stickyEnd>
+                                                        <mat-header-cell *matHeaderCellDef> Action
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact; let i=index">
+                                                            <button mat-icon-button color="warn" (click)="deleteCharge(i,contact)">
+                                                                <mat-icon>delete_outline</mat-icon>
+                                                            </button>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="NoData">
+                                                        <mat-footer-cell *matFooterCellDef>
+                                                            <span>No Data Found</span>
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+
+                                                    <mat-header-row class="accent min-width-1450" *matHeaderRowDef="displayedPackageColumns; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let contact; columns: displayedPackageColumns;" class="min-width-1450" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{'hide':dsPackageList.data.length > 0}"></mat-footer-row>
+                                                </mat-table>
+                                            </div>
                                         </mat-tab>
                                     </mat-tab-group>
+                                </div>
+                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="70%">
+                                    <div class="airmid-table-container">
+                                        <div class="table-header mt-8 mb-3">
+                                            <span class="fw-600 h3">Service List</span>
+                                            <hr>
+                                        </div>
+                                        <div class="table-body">
+                                            <div class="airmid-table">
+                                                <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{value:'50'}">
+
+                                                    <ng-container matColumnDef="ServiceName">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                                            Item Name
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" class="w-180">
+                                                            <span> {{contact.ServiceName}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Price">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                            Price
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact">
+                                                            <span> {{contact.Price | currency:'INR' }}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="Qty">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact">
+                                                            <span> {{contact.Qty}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="TotalAmt">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">
+                                                            Total Amt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" class="w-110">
+                                                            <span> {{contact.TotalAmt | currency:'INR' }}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+
+                                                    <ng-container matColumnDef="NoData">
+                                                        <mat-footer-cell *matFooterCellDef>
+                                                            <span>No Data Found</span>
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+
+                                                    <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true"> </mat-header-row>
+                                                    <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{'hide':dsServiceList.data.length > 0}"></mat-footer-row>
+                                                </mat-table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -398,7 +571,7 @@
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
-                                        <airmid-textbox label="Discount %" formControlName="totalDiscountPer" [formGroup]="totalChargeForm" [validations]="getValidationMessages().discountPer" [type]="'number'" [readonly]="isDiscountApplied" >
+                                        <airmid-textbox label="Discount %" formControlName="totalDiscountPer" [formGroup]="totalChargeForm" [validations]="getValidationMessages().discountPer" [type]="'number'" [readonly]="isDiscountApplied">
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
