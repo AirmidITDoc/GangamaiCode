@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar class="accent top-header" fusePerfectScrollbar>
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{serviceForm.controls.ServiceId.value?"Modify Service Master":"New
+            <h3>{{serviceForm.controls.serviceId.value?"Modify Service Master":"New
                 Service Master"}}</h3>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -44,7 +44,7 @@
                             matInput (keydown)="onEnterServiceName($event)" #serviceName
                             [(ngModel)]="vServiceName">
                     <mat-error
-                        *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
+                        *ngIf="serviceForm.get('serviceName').invalid && serviceForm.get('serviceName').touched">
                         service Name is required Enter only Alphabets
                         </mat-error>
             </mat-form-field>&nbsp;&nbsp;
@@ -55,7 +55,7 @@
                     (keypress)="keyPressCharater($event)" [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
                     matInput required maxlength="5">
                     <mat-error
-                        *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">
+                        *ngIf="serviceForm.get('price').invalid && serviceForm.get('price').touched">
                         Price is required Enter only Digits
                         </mat-error>
             </mat-form-field>&nbsp;&nbsp;
@@ -66,7 +66,7 @@
                     OnlyNumber (keypress)="keyPressCharater($event)"
                     [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
                     <mat-error
-                    *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">
+                    *ngIf="serviceForm.get('printOrder').invalid && serviceForm.get('printOrder').touched">
                     PrintOrder is required Enter only Digits
                     </mat-error>
             </mat-form-field>&nbsp;&nbsp;
@@ -77,7 +77,7 @@
                             matInput (keydown)="onEnterServiceShortDesc($event)" #serviceShortDesc
                             [(ngModel)]="vServiceShortDesc">
                     <mat-error
-                    *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
+                    *ngIf="serviceForm.get('serviceShortDesc').invalid && serviceForm.get('serviceShortDesc').touched">
                     ServiceShortDesc is required Enter only Alphabets
                     </mat-error>
             </mat-form-field>
