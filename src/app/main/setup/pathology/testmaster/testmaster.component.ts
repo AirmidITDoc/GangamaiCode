@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { fuseAnimations } from "@fuse/animations";
 import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
 import { TestmasterService } from "./testmaster.service";
@@ -22,46 +22,17 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class TestmasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    parameter = this._TestService.myform.get("ParameterNameSearch").value + "%" || '%';
-    gridConfig: gridModel = {
-        apiUrl: "Pathology/PathologyTestList",
-        columnsList: [
-            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },            
-            { heading: "Print Test Name", key: "PrintTestName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Category Name", key: "CategoryId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Billing Service Name", key: "ServiceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Technique Name", key: "TechniqueName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Machine Name", key: "MachineName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsSub Test", key: "IsSubTest", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._TestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionsIsSubTest') actionsIsSubTest!: TemplateRef<any>;
+    @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
 
-        
-        sortField: "TestId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "ServiceName", fieldValue: this.parameter, opType: OperatorComparer.StartsWith },
-            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "0", opType: OperatorComparer.Equals }
-        ],
-        row: 25
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'isSubTest')!.template = this.actionsIsSubTest;
+        this.gridConfig.columnsList.find(col => col.key === 'isTemplateTest')!.template = this.actionsisTemplateTest;
+        // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
     }
 
     constructor(
@@ -77,9 +48,64 @@ export class TestmasterComponent implements OnInit {
 
     }
 
+    parameter = this._TestService.myform.get("ParameterNameSearch").value + "%" || '%';
+    gridConfig: gridModel = {
+        apiUrl: "Pathology/PathologyTestList",
+        columnsList: [
+            { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Print Test Name", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Category Name", key: "CategoryId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { 
+                heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100, 
+                template: this.actionsIsSubTest
+            },
+            { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Suggestion Note", key: "suggestionNote", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Foot Note", key: "footNote", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { 
+                heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left',  type: gridColumnTypes.template, width: 100,
+                template: this.actionsisTemplateTest
+             },
+            { heading: "Billing Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+            { heading: "IsActive", key: "isdeleted", type: gridColumnTypes.status, align: "center", width: 100 },
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         }, {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._TestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
+            {
+                heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+        ],
+
+
+        sortField: "TestId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+        ],
+        row: 25
+    }
 
     onSave(row: any = null) {
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(TestFormMasterComponent,
             {

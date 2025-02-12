@@ -39,7 +39,7 @@
                                                 <airmid-textbox 
                                                     label="Test name" 
                                                     formControlName="TestName" 
-                                                    [value]="data?.TestName"
+                                                    [value]="registerObj?.testName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().TestName"
                                                     [maxLength]="50">
@@ -50,7 +50,7 @@
                                                 <airmid-textbox 
                                                     label="PrintTestName" 
                                                     formControlName="PrintTestName" 
-                                                    [value]="data?.PrintTestName"
+                                                    [value]="registerObj?.printTestName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().PrintTestName"
                                                     [maxLength]="50">
@@ -60,7 +60,8 @@
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-dropdown 
                                                     label="CategoryName" 
-                                                    formControlName="CategoryId"
+                                                    formControlName="CategoryId" 
+                                                    [value]="registerObj?.categoryId"
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationCategoryMessages().CategoryId"
                                                     [mode]="autocompleteModeCategoryId" 
@@ -73,6 +74,7 @@
                                                 <airmid-dropdown 
                                                     label="ServiceName" 
                                                     formControlName="ServiceId"
+                                                    [value]="registerObj?.serviceID"
                                                     [formGroup]="testForm"
                                                     [validations]="getValidationServiceMessages().ServiceId"
                                                     [mode]="autocompleteModeServiceID" 
@@ -343,7 +345,7 @@
                                                             <div fxFlex.gt-sm="100%" fxFlex>
                                                                 <div fxlayout="row"
                                                                     style=" background-color: white;padding: 5px 10px 5px 10px;">
-                                                                    <form [formGroup]="_TestmasterService.templatedetailsForm">
+                                                                    <form [formGroup]="templatedetailsForm">
                                                                         <input type="hidden" name="TemplateId"
                                                                             formControlName="TemplateId">
 
@@ -356,7 +358,7 @@
                                                                                         <airmid-textbox 
                                                                                             label="TemplateName" 
                                                                                             formControlName="TemplateName" 
-                                                                                            [value]="data?.TemplateName"
+                                                                                            [value]="registerObj?.TemplateName"
                                                                                             [formGroup]="templatedetailsForm"
                                                                                             [validations]="_TestmasterService.getValidationMessages().TemplateName"
                                                                                             [maxLength]="50">
@@ -449,7 +451,7 @@
                                                 <airmid-textbox 
                                                     label="TechniqueName" 
                                                     formControlName="TechniqueName" 
-                                                    [value]="data?.TechniqueName"
+                                                    [value]="registerObj?.techniqueName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().TechniqueName"
                                                     [maxLength]="50">
@@ -460,7 +462,7 @@
                                                 <airmid-textbox 
                                                     label="MachineName" 
                                                     formControlName="MachineName" 
-                                                    [value]="data?.MachineName"
+                                                    [value]="registerObj?.machineName"
                                                     [formGroup]="testForm"
                                                     [validations]="_TestmasterService.getValidationMessages().MachineName"
                                                     [maxLength]="50">
@@ -474,7 +476,7 @@
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Foot Note</mat-label>
-                                                    <textarea matInput display="block" rows="2" formControlName="FootNote"
+                                                    <textarea matInput display="block" rows="2" formControlName="FootNote" [(ngModel)]="vFootNote"
                                                         name="FootNote">
                                                     </textarea>
                                                     <mat-error class="error"
@@ -488,7 +490,7 @@
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Suggestion Note</mat-label>
                                                     <textarea matInput display="block" rows="2" formControlName="SuggestionNote"
-                                                        name="SuggestionNote">
+                                                        name="SuggestionNote" [(ngModel)]="vSuggestionNote">
                                                     </textarea>
                                                     <mat-error class="error"
                                                         *ngIf="testForm.get('SuggestionNote').invalid && testForm.get('SuggestionNote').touched">

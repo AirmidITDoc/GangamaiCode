@@ -49,7 +49,7 @@ export class ParametermasterComponent implements OnInit {
 
             { 
                 heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template,
-                template: this.actionButtonTemplate 
+                template: this.actionsNumeric 
             },
 
             { heading: "IsPrintDisSummary", key: "isPrintDisSummary", width: 100, sort: true, align: 'left', emptySign: 'NA' },
@@ -124,6 +124,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
+        debugger
         console.log(row)
         // var m_data = {
         //     ParameterID: row.parameterId,
@@ -141,7 +142,7 @@ export class ParametermasterComponent implements OnInit {
         // };
 
         // wroung api used
-        if(row.IsNumericParameter==1){
+        // if(row.IsNumericParameter==0){
             var param = {
                 "first": 0,
                 "rows": 10,
@@ -166,38 +167,40 @@ export class ParametermasterComponent implements OnInit {
                 ],
                 "exportType": "JSON"
             }
-        }
-        else{
-            var param = {
-                "first": 0,
-                "rows": 10,
-                "sortField": "ParameterId",
-                "sortOrder": 0,
-                "filters": [
-                    {
-                        "fieldName": "ParameterId",
-                        "fieldValue": String(row.parameterId),
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "Start",
-                        "fieldValue": "0",
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "Length",
-                        "fieldValue": "10",
-                        "opType": "Equals"
-                    }
-                ],
-                "exportType": "JSON"
-            }
-        }
+        // }
+        // else{
+            // var param = {
+            //     "first": 0,
+            //     "rows": 10,
+            //     "sortField": "ParameterId",
+            //     "sortOrder": 0,
+            //     "filters": [
+            //         {
+            //             "fieldName": "ParameterId",
+            //             "fieldValue": String(row.parameterId),
+            //             "opType": "Equals"
+            //         },
+            //         {
+            //             "fieldName": "Start",
+            //             "fieldValue": "0",
+            //             "opType": "Equals"
+            //         },
+            //         {
+            //             "fieldName": "Length",
+            //             "fieldValue": "10",
+            //             "opType": "Equals"
+            //         }
+            //     ],
+            //     "exportType": "JSON"
+            // }
+        // }
         
         
         console.log(param)
 
         this._ParameterService.getTableData(param).subscribe((data) => {
+
+            console.log("data:",data.data)
             // if (row.IsNumericParameter == 1) {
 
             //     m_data['numericList'] = data;
@@ -214,7 +217,7 @@ export class ParametermasterComponent implements OnInit {
             //     m_data['descriptiveList'] = updatedData;
             //     m_data['numericList'] = [];
             // }
-            this._ParameterService.populateForm(param);
+            // this._ParameterService.populateForm(param);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
                 maxWidth: "100vw",
                 height: '95%',

@@ -16,6 +16,48 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Delete" (click)="_ParameterService.deactivateTheStatus(data.testId)">
+                    <mat-icon> delete</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #actionsIsSubTest let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                    <mat-icon *ngIf="element.isSubTest == true" title="IsSubTest">
+                        <img width="15px" height="8px" src="assets/images/logos/radiology.png">
+                    </mat-icon>
+                    <mat-icon *ngIf="element.isSubTest == false" title="IsTest">
+                        <img width="15px" height="9px" src="assets/images/logos/pathology.png">  
+                    </mat-icon>
+                </mat-cell>
+
+            </div>
+        </ng-template>
+
+        <ng-template #actionsisTemplateTest let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                    <mat-icon *ngIf="element.isTemplateTest==='1'" title="IsTemplateTest">assignment</mat-icon>
+                    <mat-icon *ngIf="element.isTemplateTest==='0'" title="Test">
+                        <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                    </mat-icon>
+                </mat-cell>
+
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
@@ -23,11 +65,9 @@
                     <!-- <input matInput placeholder="Search Test Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" /> -->
                         <input matInput placeholder="Search Test Name" autocomplete="off"
-                        name="ParameterNameSearch"
-                        formControlName="ParameterNameSearch" 
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
+                        (click)="gridConfig.filters[0].fieldValue='%'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>

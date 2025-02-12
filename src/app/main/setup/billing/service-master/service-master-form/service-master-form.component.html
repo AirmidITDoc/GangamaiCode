@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar class="accent top-header" fusePerfectScrollbar>
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <h3>{{serviceForm.controls.serviceId.value?"Modify Service Master":"New
+            <h3>{{serviceForm.controls.ServiceId.value?"Modify Service Master":"New
                 Service Master"}}</h3>
             <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -12,23 +12,23 @@
 
 <mat-card>
     <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px;">
-        <input type="hidden" name="serviceId" formControlName="serviceId" style="top:155px;">
+        <input type="hidden" name="ServiceId" formControlName="ServiceId" style="top:155px;">
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master" style="padding-top: 10px;">
-
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6" style="padding-top: 10px;">
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+
             <airmid-dropdown label="Group Name" formControlName="groupId"
-                [formGroup]="serviceForm"
-                [validations]="getValidationMessages().groupId"
-                [mode]="autocompleteModesubGroupName">
+             [formGroup]="serviceForm" (selectionChange)="selectChangegroupName($event)"
+             [validations]="getValidationMessages().groupId" 
+             [mode]="autocompleteModesubGroupName">
             </airmid-dropdown>
             </div>
 
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
-                [formGroup]="serviceForm"
-                [validations]="getValidationMessages().subGroupId"
+            <airmid-dropdown label="SubGroup Name" formControlName="SubGroupId"
+                [formGroup]="serviceForm" (selectionChange)="selectChangesubGroupName($event)"
+                [validations]="getValidationMessages().SubGroupId"
                 [mode]="autocompleteModegroupName">
             </airmid-dropdown>
             </div>
@@ -40,44 +40,44 @@
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Service Name</mat-label>
-                    <input name="ServiceName" formControlName="serviceName" placeholder="ServiceName"
-                            matInput (keydown)="onEnterServiceName($event)" #serviceName
+                    <input name="ServiceName" formControlName="ServiceName" placeholder="ServiceName"
+                            matInput (keydown)="onEnterServiceName($event)" #ServiceName
                             [(ngModel)]="vServiceName">
                     <mat-error
-                        *ngIf="serviceForm.get('serviceName').invalid && serviceForm.get('serviceName').touched">
+                        *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
                         service Name is required Enter only Alphabets
                         </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Price</mat-label>
-                <input name="Price" placeholder="Select Price" formControlName="price" OnlyNumber
+                <input name="Price" placeholder="Select Price" formControlName="Price" OnlyNumber
                     (keypress)="keyPressCharater($event)" [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
                     matInput required maxlength="5">
                     <mat-error
-                        *ngIf="serviceForm.get('price').invalid && serviceForm.get('price').touched">
+                        *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">
                         Price is required Enter only Digits
                         </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>PrintOrder</mat-label>
-                <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="printOrder" matInput required
+                <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="PrintOrder" matInput required
                     OnlyNumber (keypress)="keyPressCharater($event)"
                     [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }" min="0" maxlength="5">
                     <mat-error
-                    *ngIf="serviceForm.get('printOrder').invalid && serviceForm.get('printOrder').touched">
+                    *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">
                     PrintOrder is required Enter only Digits
                     </mat-error>
             </mat-form-field>&nbsp;&nbsp;
 
             <mat-form-field appearance="outline" fxFlex>
                 <mat-label>ServiceShortDesc</mat-label>
-                    <input name="Service Short Desc" formControlName="serviceShortDesc" placeholder="ServiceShortDesc"
-                            matInput (keydown)="onEnterServiceShortDesc($event)" #serviceShortDesc
+                    <input name="Service Short Desc" formControlName="ServiceShortDesc" placeholder="ServiceShortDesc"
+                            matInput (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc
                             [(ngModel)]="vServiceShortDesc">
                     <mat-error
-                    *ngIf="serviceForm.get('serviceShortDesc').invalid && serviceForm.get('serviceShortDesc').touched">
+                    *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
                     ServiceShortDesc is required Enter only Alphabets
                     </mat-error>
             </mat-form-field>
@@ -86,11 +86,11 @@
         </div>
 
 
-        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
             <!-- [value]="TariffId" -->
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                 <airmid-dropdown label="TariffId" formControlName="tariffId"
-                    [formGroup]="serviceForm" 
+                    [formGroup]="serviceForm" (selectionChange)="selectChangetariff($event)"
                     [validations]="getValidationMessages().tariffId"
                     [mode]="autocompleteModetariff">
                 </airmid-dropdown>            
@@ -154,7 +154,7 @@
                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                     <!-- <mat-form-field appearance="legacy"> -->
                                         <mat-form-field appearance="outline">
-                                        <input matInput [(ngModel)]="element.ClassRate" OnlyNumber
+                                        <input matInput [(ngModel)]="element.classRate" OnlyNumber
                                             (keyup)="gettableclassrate(element,$event.value)"
                                             (keypress)="keyPressCharater($event)">
                                     </mat-form-field>
@@ -268,7 +268,7 @@
 
 
                                 <!-- <divclass="emg-amt-input" style="margin-left: 30px;"> -->
-                                <mat-form-field appearance="outline" fxFlex
+                                <!-- <mat-form-field appearance="outline" fxFlex
                                     style="width: 24vw !important;margin-left: 20px;" *ngIf="showDoctor">
                                     <mat-label>Doctor Name</mat-label>
                                     <mat-select placeholder="Select Doctor Name" name="DoctorId"
@@ -279,9 +279,12 @@
                                         </mat-option>
                                     </mat-select>
                                     <mat-error>Please Select Doctor Name </mat-error>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-
+                                <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [value]="data?.doctorId"
+                                [formGroup]="serviceForm" [validations]="getValidationMessages().DoctorId"
+                                [mode]="autocompleteModedoctor" *ngIf="showDoctor">
+                            </airmid-dropdown>
                                 <!-- </div> -->
 
                             </section>

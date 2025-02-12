@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { DatePipe } from "@angular/common";
+import {CommonModule, DatePipe } from "@angular/common";
 import { RouterModule, Routes } from "@angular/router";
 import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
@@ -69,6 +69,7 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatCardModule,
         MatDialogModule,
+        CommonModule,
     ],
     providers: [ServiceMasterService, DatePipe]
 })
