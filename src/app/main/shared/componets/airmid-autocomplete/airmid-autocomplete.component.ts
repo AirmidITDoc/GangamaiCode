@@ -1,10 +1,9 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter, ChangeDetectorRef, Optional, Self, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
-import { ReplaySubject, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, take, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: "airmid-autocomplete",
@@ -13,7 +12,7 @@ import { take, takeUntil } from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AirmidAutoCompleteComponent implements OnInit {
-    @Input() filteredOptions: any[] = [];
+    @Input() filteredOptions: Observable<any[]>;
     @Output() selectionChange = new EventEmitter<any>();
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
@@ -103,17 +102,23 @@ export class AirmidAutoCompleteComponent implements OnInit {
     stateChanges: Subject<void> = new Subject();
     ngOnInit() {
         //this.onSearchData("");
+        this.filteredOptions = this.formGroup.controls[this.formControlName].valueChanges.pipe(
+            debounceTime(300), // Wait 300ms after user stops typing
+            distinctUntilChanged(), // Only emit if value is different from previous value
+            switchMap((inputValue) => {
+                if (inputValue && inputValue.length > 0 && (this.ApiUrl ?? "") != "") { // Make API call only if input is not empty
+                    return this.getSuggestions(inputValue); // Call your API
+                } else {
+                    return of([]); // Return empty array if input is empty
+                }
+            })
+        );
     }
-    onSearchData(e: string) {
-        if ((this.ApiUrl ?? "") != "") {
-            if (e.length > 0) {
-                this._httpClient.GetData(this.ApiUrl + e).subscribe((data: any) => {
-                    this.filteredOptions = data as [];
-                });
-            }
-            else
-                this.filteredOptions = [];
-        }
+    getSuggestions(inputValue: string): Observable<any[]> {
+        return this._httpClient.GetData(this.ApiUrl + inputValue);
+    }
+    onSearchData(e:string){
+        this.value=e;
     }
     displayFn(user: any): string {
         return user[this["ariaLabel"]];
