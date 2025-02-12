@@ -229,8 +229,7 @@ displayedAdvaColumn:string[] = [
         this.sIsLoading = '';
       });
   }  
-    onShow_IpdAdvance(){
-      debugger
+    onShow_IpdAdvance(){ 
       var D_data= {
         "F_Name":  this._CancellationService.AdvanceFormGroup.get('FirstName').value || '%',
         "L_Name": this._CancellationService.AdvanceFormGroup.get('LastName').value || '%',
@@ -420,13 +419,16 @@ displayedAdvaColumn:string[] = [
       if (result.isConfirmed) {  
         this.isLoading123 = true;
         let AdvCancellationParamObj = {};
-        AdvCancellationParamObj['IsCancelled'] = 1;
-        AdvCancellationParamObj['AdvanceId'] = contact.AdvanceId || 0;
-        AdvCancellationParamObj['AdvanceDetailId'] = contact.AdvanceDetailID || 0;
- 
+        AdvCancellationParamObj['isCancelled'] = 1;
+        AdvCancellationParamObj['advanceId'] = contact.AdvanceId || 0;
+        AdvCancellationParamObj['advanceDetailId'] = contact.AdvanceDetailID || 0;
+        AdvCancellationParamObj['advanceAmount'] = contact.AdvanceAmount || 0;
+        AdvCancellationParamObj['userId'] = this._loggedService.currentUserValue.user.id || 0;
+     
         let SubmitDate ={
-          "billCancellationParam":AdvCancellationParamObj
+          "advanceParamCancelPrams":AdvCancellationParamObj
         }
+        console.log(SubmitDate)
         this._CancellationService.SaveCancelAdvance(SubmitDate).subscribe(response => {
           if (response) {
             this.toastr.success('Record Successfully Updated', 'Updated !', {

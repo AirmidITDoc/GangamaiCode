@@ -106,6 +106,6 @@ public SaveCancelAdvance(employee,loader = true) {
   if (loader) {
     this._loaderService.show();
 }
-  return this._httpClient.post("Generic/GetByProc?procName=UpdateAdvanceCancel", employee)
+  return this._httpClient.post("InPatient/UpdateAdvanceCancel", employee)
 } 
 }

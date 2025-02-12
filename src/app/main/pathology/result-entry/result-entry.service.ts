@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ export class ResultEntryService {
   myformSearch: FormGroup;
 
   myform: FormGroup;
-  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder) { 
+  constructor(private _httpClient: HttpClient, private _formBuilder: FormBuilder,
+    private _loaderService:LoaderService
+  ) { 
     this.myformSearch = this.createSearchForm();
     this.myform = this.createtemplateForm();
   }
@@ -51,11 +54,17 @@ export class ResultEntryService {
   }
 
   // m_Rtrv_PathPatientList_Ptnt_Dtls
-  public getPatientList(employee) {
+  public getPatientList(employee, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathPatientList_Ptnt_Dtls", employee)
   }
 
-  public getPathologyResultList(query) {
+  public getPathologyResultList(query, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
   public getHelpresultData(query){
@@ -73,33 +82,51 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
-  public getPathologyResultListforIP(query){
+  public getPathologyResultListforIP(query, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
 
   }
-  public getPathologyResultListforOP(query){
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
-
-  }
-
-
-  public getPathologyTemplateforIP(query){
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
-
-  }
-  public getPathologyTemplateforOP(query){
+  public getPathologyResultListforOP(query, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
 
   }
 
-  public getPathTemplatePrint(No) {
+
+  public getPathologyTemplateforIP(query, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+
+  }
+  public getPathologyTemplateforOP(query, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+
+  }
+
+  public getPathTemplatePrint(No, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPathologyReportTemplate", No)
   }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
 
-  public getSampleList(employee) {
+  public getSampleList(employee, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathResultEntryList_Test_Dtls", employee)
   }
 
@@ -107,10 +134,16 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query, {})
   }
 
-  getPathologyPrint(employee) {
+  getPathologyPrint(employee, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
   }
-  public getTestList(employee){
+  public getTestList(employee, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathResultEntryList_Test_Dtls", employee)
   }
   // Rtrv_PathResultEntryList_Test_Dtls1
@@ -131,11 +164,17 @@ export class ResultEntryService {
     return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
   }
 
-  public getPathTestwithheaderReport(OP_IP_Type){
+  public getPathTestwithheaderReport(OP_IP_Type, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.get("Pathology/view-PathReportMultipleWithHeader?OP_IP_Type=" + OP_IP_Type);
   }
 
-  public getPathologyTempReport(PathReportId,OP_IP_Type){
+  public getPathologyTempReport(PathReportId,OP_IP_Type, loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.get("Pathology/view-PathTemplate?PathReportId=" + PathReportId + "&OP_IP_Type="+OP_IP_Type);
   }
 

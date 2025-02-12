@@ -1215,7 +1215,19 @@ getIpDischargeReceipt(AdmId){
  viewgetDischargesummaryPathologyReportPdf(AdmissionID){
   return this._httpClient.get("Pathology/View-PathologyReport?AdmissionID=" + AdmissionID)
  }
+ getIpDischargesummaryTemplateWithoutletterhead(AdmissionID,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
+  return this._httpClient.get("InPatient/view-NewDischargSummaryTemplateWithouHeader?AdmissionID=" + AdmissionID)
+ }
 
+ getIpDischargesummaryWithoutletterhead(AdmissionID,loader = true) {
+  if (loader) {
+    this._loaderService.show();
+} 
+  return this._httpClient.get("InPatient/view-DischargSummaryWithouHeader?AdmissionID=" + AdmissionID)
+ }
 
  getIpDischargesummaryTempReceipt(AdmissionID){
   return this._httpClient.get("InPatient/view-NewDischargSummaryTemplate?AdmissionID=" + AdmissionID)

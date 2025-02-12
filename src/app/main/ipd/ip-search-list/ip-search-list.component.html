@@ -282,8 +282,8 @@
                             </ng-container>
 
                             <ng-container matColumnDef="buttons1" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions w-100">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100" >
+                                <mat-header-cell *matHeaderCellDef class="table-actions w-120">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-120" >
                                     <div fxLayout="row">
                                        
                                         <button mat-icon-button (click)="printDischargeslip(contact)"  *ngIf="contact.IsDischarged"
@@ -292,12 +292,21 @@
                                                 <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg" style="background:-moz-linear-gradient(00,9,22);"> 
                                             </mat-icon> 
                                         </button>
+
+                                        
                                         <button mat-icon-button (click)="printDischargesummary(contact)"  *ngIf="contact.IsDischarged"
                                             matTooltip="Discharge Summary Print">
                                             <mat-icon>
                                                 <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg" style="background-color: transparent;">
                                             </mat-icon>
     
+                                        </button>
+
+                                        <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(contact)"  *ngIf="contact.IsDischarged"
+                                            matTooltip="Discharge Summary Without LetterHead Print">
+                                            <mat-icon>
+                                                <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png" style="background-color: transparent;">
+                                            </mat-icon> 
                                         </button>
                                       
                                                                     
@@ -318,8 +327,8 @@
                             </ng-container>
 
                             <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions w-70">Action</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-70">
+                                <mat-header-cell *matHeaderCellDef class="table-actions w-50"> </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-50">
                                     <div fxFlex="row" fxLayoutAlign="start center">
                                         <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="moreMenu"
                                             aria-label="More" (click)="$event.stopPropagation();">

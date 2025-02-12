@@ -51,7 +51,7 @@ export class PrescriptionReturnComponent implements OnInit {
     private dialog: MatDialog,
     private reportDownloadService: ExcelDownloadService,
     public _matDialog: MatDialog,
-    public datePipe: DatePipe,
+    public datePipe: DatePipe, 
   ) { }
 
   ngOnInit(): void {
@@ -119,11 +119,15 @@ export class PrescriptionReturnComponent implements OnInit {
   }
 
   //window
-  OpenNewPrescriptionret() {
-    this.dialog.open(NewPrescriptionreturnComponent, {
-      height: '85vh',
-      width: '70vw'
-    })
+  OpenNewPrescriptionret() {  
+    const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
+      {
+         height: '85vh',
+          width: '70vw'
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getPriscriptionretList(); 
+    });
   }
 
   exportReportPdf() {

@@ -147,25 +147,16 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   getSelectedObjItem(obj) {
-    console.log(obj)
-    if (this.dsItemlist.data.length > 0) {
-      if (this.dsItemlist.data.some(item => item.ItemId == obj.ItemId)) {
-        this.ItemSubform.reset();
-        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    else {
+    console.log(obj) 
       this.ItemName = obj.ItemName;
       this.ItemId = obj.ItemId;
       this.Qty = obj.BalanceQty;
       this.OP_IP_Id = obj.OP_IP_ID
       this.getBatch(obj);
-    }
+   
   }
   getBatch(obj) {
+    debugger
     this.qty.nativeElement.focus();
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
@@ -240,6 +231,17 @@ export class NewPrescriptionreturnComponent implements OnInit {
       });
       return;
     }
+    if (this.dsItemlist.data.length > 0) {
+      if (this.dsItemlist.data.some(item => item.BatchNo == this.BatchNo)) {
+        this.ItemSubform.reset();
+        this.ItemSubform.get('PatientType').setValue('1')
+        this.toastr.warning('Selected Item Batch No already added in the list ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    } 
+
     this.dsItemlist.data = [];
     this.Itemchargeslist.push(
       {

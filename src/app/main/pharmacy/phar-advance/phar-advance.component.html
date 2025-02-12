@@ -276,7 +276,7 @@
                                             <mat-date-range-input [rangePicker]="picker">
                                                 <input matStartDate formControlName="start" placeholder="Start date">
                                                 <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChange)="getIPAdvanceList()">
+                                                    (dateChange)="getIPAdvanceRefundList()">
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -284,24 +284,24 @@
         
                                         <mat-form-field appearance="outline">
                                             <mat-label>Search RegNo</mat-label>
-                                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getIPAdvanceList()">
+                                            <input name="RegNo" formControlName="RegNo" matInput (keyup)="getIPAdvanceRefundList()">
                                         </mat-form-field>
                                         <mat-form-field appearance="outline">
                                             <mat-label>First Name</mat-label>
                                             <input name="FirstName" formControlName="F_Name" matInput
-                                                (keyup)="getIPAdvanceList()">
+                                                (keyup)="getIPAdvanceRefundList()">
                                         </mat-form-field>
         
                                         <mat-form-field appearance="outline">
                                             <mat-label>Last Name</mat-label>
                                             <input name="LastName" formControlName="L_Name" matInput
-                                                (keyup)="getIPAdvanceList()">
+                                                (keyup)="getIPAdvanceRefundList()">
                                         </mat-form-field>
         
                                         <!-- <mat-form-field appearance="outline">
                                             <mat-label>Advance No</mat-label>
                                             <input name="AdvanceNo" formControlName="AdvanceNo" matInput
-                                                (keyup)="getIPAdvanceList()">
+                                                (keyup)="getIPAdvanceRefundList()">
                                         </mat-form-field> -->
         
                                         <div class="action-buttons mt-12">

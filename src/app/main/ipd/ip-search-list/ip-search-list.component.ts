@@ -748,7 +748,40 @@ export class IPSearchListComponent implements OnInit {
         });
     });
   }
+  printDischargesummaryWithoutletterhead(contact) {
 
+    if (this._configue.configParams.IsDischargeTemplate) {
+      this._IpSearchListService.getIpDischargesummaryTemplateWithoutletterhead(
+        contact.AdmissionID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Discharge SummaryViewer"
+            }
+          });
+      });
+    } else {
+      this._IpSearchListService.getIpDischargesummaryWithoutletterhead(
+        contact.AdmissionID
+      ).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Discharge SummaryViewer"
+            }
+          });
+      });
+    } 
+  }
   
 }
 

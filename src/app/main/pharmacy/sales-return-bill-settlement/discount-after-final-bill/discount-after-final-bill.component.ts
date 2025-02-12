@@ -163,34 +163,33 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       return
     } 
     var m_data1 = {
-      "billDiscountAfterUpdate": {
-        "billNo": this.selectedAdvanceObj.BillNo || 0,
+      "phBillDiscountAfterUpdate": {
+        "salesId": this.selectedAdvanceObj.salesId || 0,
         "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
-        "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0,
-        "compDiscAmt": this.MyFrom.get('CompanyDiscAmt').value || 0,
+        "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0, 
         "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,
         "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
       }
-    }
+    } 
     console.log(m_data1)
-    //  this._BrowsSalesBillService.BillDiscountAfter(m_data1).subscribe(response =>{
-    //   if (response) {
-    //     this.toastr.success('Record  Saved Successfully.', 'Saved !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     }); 
-    //     this._matDialog.closeAll();
-    //     this.onClose(); 
+     this._SelseSettelmentservice.BillDiscountAfter(m_data1).subscribe(response =>{
+      if (response) {
+        this.toastr.success('Record  Saved Successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        }); 
+        this._matDialog.closeAll();
+        this.onClose(); 
       
-    //   } else {
-    //     this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   } 
-    // }, error => {
-    //   this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
-    //     toastClass: 'tostr-tost custom-toast-error',
-    //   });
-    // });  
+      } else {
+        this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      } 
+    }, error => {
+      this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
+    });  
   }
   onClose(){
     this.dialogRef.close();

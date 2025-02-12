@@ -72,4 +72,10 @@ export class SalesReturnBillSettlementService {
   }
     return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
   }
+  public BillDiscountAfter(emp, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  }
+    return this._httpClient.post("InPatient/Update_PhBillDiscountAfter", emp);
+  }
 }
