@@ -4,7 +4,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ChargesList } from '../../OPBilling/new-opbilling/new-opbilling.component';
 import { ToastrService } from 'ngx-toastr';
 
@@ -16,6 +16,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public subscription: Array<Subscription> = [];
+    // For testing purpose
+    public serviceNames: string[] = ['Blood Test', 'X-Ray', 'MRI Scan', 'CT Scan', 'Ultrasound', 'ECG', 'Physical Therapy', 'General Checkup', 'Dental Cleaning'];
 
     // For testing purpose
     public patientDetail: any = {
@@ -61,10 +63,21 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public isDoctor = false;
     public isUpdating = false;
 
-    public displayedColumns: string[] = ['serviceName', 'price', 'qty', 'totalAmount', 'discountPer', 'discountAmount', 'netAmount', 'doctorName', 'className', 'chargesAddedName', 'action'];
+    public displayedChargeColumns: string[] = ['ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+    public displayedPackageColumns: string[] = ['PackageName', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+    public displayedPrescriptionColumns = ['ServiceName', 'Qty', 'Price', 'TotalAmt'];
     //   public dataSource = new MatTableDataSource<ChargesList>();
-    public dataSource = new MatTableDataSource<any>();
+    public dsChargeList = new MatTableDataSource<ChargesList>();
+    public dsPackageList = new MatTableDataSource<ChargesList>();
+    public dsServiceList = new MatTableDataSource<ChargesList>();
     public chargeList: ChargesList[] = [];
+    public packageList: ChargesList[] = [];
+    public serviceList: ChargesList[] = [];
+
+    // public filteredServices: string[] = [];
+    public filteredServices$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(this.serviceNames);
+
+
 
 
     // Total amounts
@@ -74,7 +87,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.searchForm = this.createSearchForm();
         this.chargeForm = this.createChargeForm();
         this.totalChargeForm = this.createTotalChargeForm();
-        this.dataSource = new MatTableDataSource(this.chargeList);
+
+        this.dsChargeList = new MatTableDataSource(this.chargeList);
+        this.dsPackageList = new MatTableDataSource(this.packageList);
+        this.dsServiceList = new MatTableDataSource(this.serviceList);
 
         this.setupFormListener();
         if (this.data && this.data.patientDetail) {
@@ -83,6 +99,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     private setupFormListener(): void {
+        this.handleChange('serviceName', () => this.filterServiceName());
         this.handleChange('price', () => this.calculateTotalCharge());
         this.handleChange('qty', () => this.calculateTotalCharge());
         this.handleChange('discountPer', () => this.updateDiscountAmount());
@@ -136,6 +153,18 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.updateDiscountAmount();
         this.updateDiscountPercentage();
 
+    }
+
+    filterServiceName(): void {
+        const serviceNameValue = this.chargeForm.get('serviceName')?.value || '';
+        const filterValue = serviceNameValue.toLowerCase();
+
+        const filteredList = this.serviceNames.filter(service =>
+            service.toLowerCase().includes(filterValue)
+          );
+      
+          this.filteredServices$.next(filteredList);
+        //   console.log("Service Change", { filteredServices: filteredList, filterValue });
     }
 
     // Trigger when discount percentage change
@@ -220,7 +249,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     // Create a FormGroup for each row in the FormArray
     createChargeForm() {
         return this.formBuilder.group({
-            serviceName: ['Default service name for testing..', Validators.required],
+            serviceName: ['', Validators.required],
             price: [100, [Validators.required]],
             qty: [0, [Validators.required, Validators.min(1)]],
             totalAmount: [0,],
@@ -268,7 +297,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             newCharge.DiscAmt = newCharge.DiscAmt || 0;
             newCharge.DiscPer = newCharge.DiscPer || 0;
             this.chargeList.push(newCharge);
-            this.dataSource.data = this.chargeList;
+            this.dsChargeList.data = this.chargeList;
             this.calculateTotalAmount();
 
             // Reset form with initial values
@@ -277,7 +306,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     deleteCharge(index: number) {
         this.chargeList.splice(index, 1);
-        this.dataSource.data = this.chargeList;
+        this.dsChargeList.data = this.chargeList;
         this.calculateTotalAmount();
         if (!this.chargeList.length) {
             this.isDiscountApplied = false;

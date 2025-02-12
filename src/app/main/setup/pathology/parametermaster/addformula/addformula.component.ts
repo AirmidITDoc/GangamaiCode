@@ -65,6 +65,7 @@ export class AddformulaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     if (this.data) {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
@@ -74,9 +75,11 @@ export class AddformulaComponent implements OnInit {
     }
   }
 
+  parameterData=""
   selectChangeParameter(obj: any) {
     debugger
     console.log("Parameter:",obj);
+    this.parameterData=obj.text;
   }
 
   getValidationMessages() {
@@ -105,7 +108,8 @@ export class AddformulaComponent implements OnInit {
   
   addoprator1() {
     debugger
-    this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName
+    // this.paraname=this._ParameterService.formulaform.get("ParameterId").value.parameterName
+    this.paraname=this.parameterData
     this.paranamenew = "{{" + this.paraname + "}}"
     this.finalformula = this.finalformula + this.paranamenew + this.oprator;
 

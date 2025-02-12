@@ -188,18 +188,18 @@ export class ParametermasterService {
 
     public getTableData(param){
         debugger
-        if(this.is_numeric) {
+        // if(this.is_numeric) {
             return this._httpClient.PostData(
-                "Generic/GetByProc?procName=m_Rtrv_PathParameterRangeWithAge",
-                { parameterId: param }
+                "Pathology/PathParaFillList",param
+                // { parameterId: param }
             ); 
-        }
-        else{
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=m_Rtrv_PathDescriptiveValues_1",
-            { parameterId: param }
-        ); 
-    }
+        // }
+    //     else{
+    //     return this._httpClient.PostData(
+    //         "Generic/GetByProc?procName=m_Rtrv_PathDescriptiveValues_1",
+    //         { parameterId: param }
+    //     ); 
+    // }
     }
 
     //Descriptive

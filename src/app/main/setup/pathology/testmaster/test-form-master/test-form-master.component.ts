@@ -102,6 +102,9 @@ export class TestFormMasterComponent implements OnInit {
     @ViewChild('auto2') auto2: MatAutocomplete;
     Statusflag: any = false;
     isActive: any;
+    vFootNote:any;
+    vSuggestionNote:any;
+    vTestName:any;
     // ///////////////////////
 
     constructor(
@@ -113,24 +116,28 @@ export class TestFormMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        debugger
         this.testForm = this._TestmasterService.createPathtestForm();
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
 
         if (this.data) {
-            this.registerObj = this.data.registerObj;
+            this.registerObj = this.data;
             console.log(this.registerObj);
-            this.vTestId = this.registerObj.TestId
+            this.vTestId = this.registerObj.testId
+            this.vTestName=this.registerObj.testName
+            this.vFootNote=this.registerObj.footNote
+            this.vSuggestionNote=this.registerObj.suggestionNote
             this.TemplateId = this.registerObj.TemplateId;
 
-            if (!this.registerObj.IsTemplateTest && !this.registerObj.IsSubTest) {
+            if (!this.registerObj.isTemplateTest && !this.registerObj.isSubTest) {
                 this._TestmasterService.is_subtest = false;
                 this.Statusflag = false;
                 this._TestmasterService.is_templatetest = false;
                 this.testForm.get("Status").setValue(1);
                 this.fetchTestlist(this.registerObj);
 
-            } else if (this.registerObj.IsTemplateTest) {
+            } else if (this.registerObj.isTemplateTest) {
                 this._TestmasterService.is_templatetest = true;
                 this._TestmasterService.is_subtest = false;
                 this._TestmasterService.is_Test = false;
@@ -138,7 +145,7 @@ export class TestFormMasterComponent implements OnInit {
                 this.testForm.get("Status").setValue(3);
                 this.fetchTemplate(this.registerObj)
 
-            } else if (!this.registerObj.IsTemplateTest && this.registerObj.IsSubTest) {
+            } else if (!this.registerObj.isTemplateTest && this.registerObj.isSubTest) {
                 this.Subtest = this.registerObj.IsSubTest
                 this.Statusflag = false;
                 this._TestmasterService.is_templatetest = false;
@@ -146,7 +153,7 @@ export class TestFormMasterComponent implements OnInit {
                 this._TestmasterService.is_Test = false;
                 this.serviceflag = false;
                 this.testForm.get("Status").setValue(2);
-                this.fetchTestlist(this.registerObj);
+                this.fetchSubTestlist(this.registerObj);
             }
 
             // this._TestmasterService.populateForm(this.registerObj);
@@ -157,8 +164,14 @@ export class TestFormMasterComponent implements OnInit {
 
         this.getParameterList();
         var m_data = {
-            testId: this.data?.testId,
-            unitName: this.data?.unitName.trim(),
+            TestId: this.data?.testId,
+            TestName: this.data?.testName,
+            PrintTestName: this.data?.printTestName,
+            CategoryId: this.data?.categoryId,
+            ServiceId: this.data?.serviceID,
+            TechniqueName: this.data?.techniqueName,
+            MachineName: this.data?.machineName
+            // unitName: this.data?.unitName.trim(),
             //   printSeqNo: this.data?.printSeqNo,
             //   isconsolidated: JSON.stringify(this.data?.isconsolidated),
             //   isConsolidatedDR: JSON.stringify(this.data?.isConsolidatedDR),
@@ -176,7 +189,7 @@ export class TestFormMasterComponent implements OnInit {
 
         if (val == "1") {
             this._TestmasterService.is_Test = true;
-            this.Subtest = 0
+            this.Subtest = false
             this.Statusflag = false;
             this.serviceflag = true;
             this._TestmasterService.is_templatetest = false;
@@ -184,7 +197,7 @@ export class TestFormMasterComponent implements OnInit {
             this._TestmasterService.is_subtest = true;
             this._TestmasterService.is_Test = false;
             this.serviceflag = false;
-            this.Subtest = 1
+            this.Subtest = true
             this._TestmasterService.is_templatetest = false;
             // get issubtest list
         } else if (val == "3") {
@@ -193,10 +206,10 @@ export class TestFormMasterComponent implements OnInit {
             this._TestmasterService.is_Test = false;
             this.Statusflag = true;
             this.serviceflag = true;
+            this.Subtest = false
         }
-
-
     }
+    
     onSearchClear() {
         this.testForm.get("ParameterNameSearch").setValue("");
         this.ParameterName = ""
@@ -213,7 +226,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTestlist(obj) {
-
+        debugger
         var m_data =
         {
             "first": 0,
@@ -241,6 +254,44 @@ export class TestFormMasterComponent implements OnInit {
         }
 
         this._TestmasterService.getTestListfor(m_data).subscribe(Visit => {
+            this.DSTestList.data = Visit as TestList[];
+            console.log(this.DSTestList.data)
+            this.dsTemparoryList.data = Visit as TestList[];
+        });
+
+    }
+
+    // wroung api list used
+    fetchSubTestlist(obj) {
+debugger
+        var m_data =
+        {
+            "first": 0,
+            "rows": 10,
+            "sortField": "ParameterId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ParameterId",
+                    "fieldValue": String(obj.ParameterId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Start",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Length",
+                    "fieldValue": "10",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON"
+        }
+
+        this._TestmasterService.getSubTestList(m_data).subscribe(Visit => {
+            console.log("VisitSubtestList:",Visit.data)
             this.DSTestList.data = Visit as TestList[];
             console.log(this.DSTestList.data)
             this.dsTemparoryList.data = Visit as TestList[];
@@ -319,14 +370,14 @@ export class TestFormMasterComponent implements OnInit {
                 "TestName": this.testForm.get("TestName").value,
                 "PrintTestName": this.testForm.get("PrintTestName").value,
                 "CategoryId": this.testForm.get("CategoryId").value || 12,
-                "IsSubTest": true, //this.testForm.get('IsSubTest').value,
+                "IsSubTest": this.Subtest, //this.testForm.get('IsSubTest').value,
                 "TechniqueName": this.testForm.get("TechniqueName").value,
                 "MachineName": this.testForm.get("MachineName").value,
                 "SuggestionNote": this.testForm.get("SuggestionNote").value,
                 "FootNote": this.testForm.get("FootNote").value,
                 "IsDeleted": true,
-                "ServiceId": this.testForm.get("ServiceId").value.value || 15,
-                "IsTemplateTest": this.testForm.get('IsTemplateTest').value,
+                "ServiceId": this.testForm.get("ServiceId").value || 15,
+                "IsTemplateTest": this._TestmasterService.is_templatetest,//this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
@@ -357,14 +408,14 @@ export class TestFormMasterComponent implements OnInit {
                 "TestName": this.testForm.get("TestName").value,
                 "PrintTestName": this.testForm.get("PrintTestName").value,
                 "CategoryId": this.testForm.get("CategoryId").value || 12,
-                "IsSubTest": true, //this.testForm.get('IsSubTest').value,
+                "IsSubTest": this.Subtest !== undefined ? this.Subtest : false, //this.Subtest, //this.testForm.get('IsSubTest').value,
                 "TechniqueName": this.testForm.get("TechniqueName").value,
                 "MachineName": this.testForm.get("MachineName").value,
                 "SuggestionNote": this.testForm.get("SuggestionNote").value,
                 "FootNote": this.testForm.get("FootNote").value,
                 "IsDeleted": true,
-                "ServiceId": this.testForm.get("ServiceId").value.value || 15,
-                "IsTemplateTest": this.testForm.get('IsTemplateTest').value,
+                "ServiceId": this.testForm.get("ServiceId").value || 15,
+                "IsTemplateTest": this._TestmasterService.is_templatetest, //this.testForm.get('IsTemplateTest').value,
                 "TestTime": formattedTime,
                 "TestDate": formattedDate,//"2022-07-11",
                 "MPathTemplateDetails": mPathTemplateDetails,
@@ -372,7 +423,7 @@ export class TestFormMasterComponent implements OnInit {
             }
 
             console.log("json of Test:", mdata1)
-            this._TestmasterService.unitMasterSave(mdata1).subscribe((response) => {
+            this._TestmasterService.unitMasterUpdate(mdata1).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose(true);
             }, (error) => {

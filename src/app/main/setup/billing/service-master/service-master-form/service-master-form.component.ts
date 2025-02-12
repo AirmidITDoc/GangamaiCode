@@ -80,6 +80,7 @@ export class ServiceMasterFormComponent implements OnInit {
     autocompleteModegroupName: string = "GroupName";
     autocompleteModesubGroupName: string = "SubGroupName";
     autocompleteModetariff: string = "Tariff";
+    autocompleteModedoctor: string = "ConDoctor";
     grid: any;
 
     constructor(public _serviceMasterService: ServiceMasterService,
@@ -101,25 +102,41 @@ export class ServiceMasterFormComponent implements OnInit {
     ];
 
     ngOnInit(): void {
+        debugger
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
-
-
         //  this.getServicewiseClassMasterList();
-
         this.serviceForm = this._serviceMasterService.createServicemasterForm();
 
         this.serviceForm.get('EffectiveDate').setValue(new Date());
 
-
-
         if (this.data) {
-            console.log(this.data.registerObj)
-            this.registerObj = this.data.registerObj;
-            this.vServiceName = this.data.registerObj.ServiceName;
-            this.vServiceShortDesc = this.data.registerObj.ServiceShortDesc;
+            console.log(this.data)
+            this.registerObj = this.data;
+            this.vServiceName = this.registerObj.serviceName;
+            this.vServiceShortDesc = this.registerObj.serviceShortDesc;
         }
-        this.getClassList(this.registerObj.ServiceId)
+        this.getClassList(this.registerObj.serviceId)
+
+        var mdata = {
+            ServiceId: this.data?.serviceId,
+            groupId: this.data?.groupId,
+            GroupName: this.data?.groupName,
+            ServiceShortDesc: this.data?.serviceShortDesc,
+            ServiceName: this.data?.serviceName,
+            Price: this.data?.price,
+            IsEditable: this.data?.isEditable,
+            CreditedtoDoctor: this.data?.creditedtoDoctor,
+            IsPathology: this.data?.isPathology,
+            IsRadiology: this.data?.isRadiology,
+            IsDeleted: JSON.stringify(this.data?.isActive),
+            PrintOrder: this.data?.printOrder,
+            tariffId:this.data?.tariffId,
+            IsEmergency: this.data?.isEmergency,
+            EmgAmt: this.data?.emgAmt,
+        };
+        this.serviceForm.patchValue(mdata);
     }
+
     @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
         const focusedElement = document.activeElement as HTMLElement;
         if (event.key === 'Enter' || event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
@@ -192,18 +209,14 @@ export class ServiceMasterFormComponent implements OnInit {
 
     // }
 
-
-
     get f() { return this.serviceForm.controls; }
-
-
 
     valuechange(event, cls) {
         cls['ClassRate'] = parseInt(event.target.value);
     }
 
     onSubmit() {
-        ;
+        debugger
         if (this.showEmg) {
             this.serviceForm.get('EmgAmt').setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('EmgPer').setValidators([Validators.required, Validators.min(0)]);
@@ -215,21 +228,20 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('EmgAmt').updateValueAndValidity();
         this.serviceForm.get('EmgPer').updateValueAndValidity();
 
-        if (this.serviceForm.invalid) {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            })
-            return;
-        } else {
+        // if (this.serviceForm.invalid) {
+        //     this.toastr.warning('please check from is invalid', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     })
+        //     return;
+        // } else {
 
             let subGroupId = 0;
             if (this.serviceForm.get("SubGroupId").value)
-                subGroupId = this.serviceForm.get("SubGroupId").value.SubGroupId
-
+                subGroupId = this.serviceForm.get("SubGroupId").value
 
             let doctorId = 0;
             if (this.serviceForm.get("DoctorId").value)
-                doctorId = this.serviceForm.get("DoctorId").value.DoctorID
+                doctorId = this.serviceForm.get("DoctorId").value
 
             if (!this.serviceForm.get("ServiceId").value) {
 
@@ -237,7 +249,7 @@ export class ServiceMasterFormComponent implements OnInit {
                 var clas_d = [];
                 var class_det = {
                     "serviceId": parseInt(this.serviceForm.get("ServiceId").value || 0),
-                    "tariffId": this.serviceForm.get("TariffId").value || 0,
+                    "tariffId": this.serviceForm.get("tariffId").value || 0,
                     "classId": 0,
                     "classRate": 0,
                     "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
@@ -265,7 +277,7 @@ export class ServiceMasterFormComponent implements OnInit {
                     "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
                     "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1,
                     "subGroupId": this.subGroupId || 0,
-                    "doctorId": 0,
+                    "doctorId": doctorId || 0,
                     "isEmergency": this.serviceForm.get("IsEmergency").value,
                     "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
                     "emgPer": this.serviceForm.get("EmgPer").value || 0,
@@ -284,34 +296,82 @@ export class ServiceMasterFormComponent implements OnInit {
 
             else {
                 //update
+
+                var data1 = [];
+                var clas_d = [];
+                var class_det = {
+                    "serviceId": parseInt(this.serviceForm.get("ServiceId").value || 0),
+                    "tariffId": this.serviceForm.get("tariffId").value || 0,
+                    "classId": 0,
+                    "classRate": 0,
+                    "effectiveDate": this.serviceForm.get("EffectiveDate").value || "01/01/1900",
+                }
+                this.DSServicedetailList.data.forEach(element => {
+
+                    let c = JSON.parse(JSON.stringify(class_det));
+                    c['classId'] = element.ClassId;
+                    c['classRate'] = element.ClassRate || 0;
+                    clas_d.push(c)
+                });
+
+                console.log("ServiceUpdate data1:", data1);
+
+                var mdata1 = {
+                    "serviceId": this.serviceForm.get("ServiceId").value,
+                    "groupId": this.groupId || 0,
+                    "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
+                    "serviceName": this.serviceForm.get("ServiceName").value,
+                    "price": parseInt(this.serviceForm.get("Price").value),
+                    "isEditable": String(this.serviceForm.get("IsEditable").value) == 'false' ? false : true,
+                    "creditedtoDoctor": this.serviceForm.get("CreditedtoDoctor").value,
+                    "isPathology": String(this.serviceForm.get("IsPathology").value) == 'false' ? 0 : 1,
+                    "isRadiology": String(this.serviceForm.get("IsRadiology").value) == 'false' ? 0 : 1,
+                    "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
+                    "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1,
+                    "subGroupId": this.subGroupId || 0,
+                    "doctorId": doctorId || 0,
+                    "isEmergency": this.serviceForm.get("IsEmergency").value,
+                    "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
+                    "emgPer": this.serviceForm.get("EmgPer").value || 0,
+                    "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,
+                    "serviceDetails": clas_d
+                }
+                console.log("Update mdata:", mdata1);
+                this._serviceMasterService.serviceMasterUpdate(mdata1).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                }, (error) => {
+                    this.toastr.error(error.message);
+                })
             }
-        }
+        // }
 
 
         this.dialogRef.close();
 
     }
 
-    @ViewChild('serviceName') serviceName: ElementRef;
-    @ViewChild('serviceShortDesc') serviceShortDesc: ElementRef;
+    @ViewChild('ServiceName') ServiceName: ElementRef;
+    @ViewChild('ServiceShortDesc') ServiceShortDesc: ElementRef;
 
     public onEnterServiceName(event): void {
         if (event.which === 13) {
-            this.serviceShortDesc.nativeElement.focus();
+            this.ServiceShortDesc.nativeElement.focus();
         }
     }
     public onEnterServiceShortDesc(event): void {
         if (event.which === 13) {
-            this.serviceName.nativeElement.focus();
+            this.ServiceName.nativeElement.focus();
         }
     }
 
     onEdit(row) {
+        debugger
         this.isEditMode = true;
         var m_data = {
             "ServiceId": row.ServiceId,
-            "ServiceShortDesc": row.ServiceShortDesc.trim(),
-            "ServiceName": row.ServiceName.trim(),
+            "ServiceShortDesc": row.ServiceShortDesc,
+            "ServiceName": row.ServiceName,
             "Price": row.Price,
             "IsEditable": JSON.stringify(row.IsEditable),
             "CreditedtoDoctor": JSON.stringify(row.CreditedtoDoctor),
@@ -399,12 +459,15 @@ export class ServiceMasterFormComponent implements OnInit {
             groupId: [
                 { name: "required", Message: "Group Name is required" }
             ],
-            subGroupId: [
+            SubGroupId: [
                 { name: "required", Message: "SubGroup Name is required" }
             ],
             tariffId: [
                 { name: "required", Message: "Tariff Name is required" }
-            ]
+            ],
+            DoctorId: [
+                { name: "required", Message: "Doctor Name is required" }
+              ]
         };
     }
 

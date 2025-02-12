@@ -49,7 +49,7 @@ export class ServiceMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._serviceMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
+                            this._serviceMasterService.deactivateTheStatus(data.serviceId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -60,7 +60,7 @@ export class ServiceMasterComponent implements OnInit {
         sortField: "ServiceId",
         sortOrder: 0,
         filters: [
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
             { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
@@ -160,28 +160,29 @@ export class ServiceMasterComponent implements OnInit {
 }
 
 export class ServiceMaster {
-    ServiceId: number;
-    GroupId: number;
-    ServiceShortDesc: string;
-    ServiceName: string;
-    Price: number;
-    IsEditable: any;
-    CreditedtoDoctor: any;
-    IsPathology: any;
-    IsRadiology: any;
-    IsActive: any;
-    PrintOrder: number;
-    IsPackage: any;
-    SubGroupId: number;
-    DoctorId: number;
-    IsEmergency: any;
-    EmgAmt: number;
-    EmgPer: number;
-    IsDocEditable: any;
+    serviceId: number;
+    groupId: number;
+    serviceShortDesc: string;
+    serviceName: string;
+    price: number;
+    isEditable: any;
+    creditedtoDoctor: any;
+    isPathology: any;
+    isRadiology: any;
+    isActive: any;
+    printOrder: number;
+    isPackage: any;
+    subGroupId: number;
+    doctorId: number;
+    isEmergency: any;
+    emgAmt: number;
+    emgPer: number;
+    isDocEditable: any;
     AddedBy: number;
     UpdatedBy: number;
     AddedByName: string;
     IsDeleted: any;
+    tariffId:any;
 
     /**
      * Constructor
@@ -190,28 +191,29 @@ export class ServiceMaster {
      */
     constructor(ServiceMaster) {
         {
-            this.ServiceId = ServiceMaster.ServiceId || "11730";
-            this.GroupId = ServiceMaster.GroupId || 0;
-            this.ServiceShortDesc = ServiceMaster.ServiceShortDesc || "";
-            this.ServiceName = ServiceMaster.ServiceName || "";
-            this.Price = ServiceMaster.Price || "";
-            this.IsEditable = ServiceMaster.IsEditable || 0;
-            this.CreditedtoDoctor = ServiceMaster.CreditedtoDoctor || 0;
-            this.IsPathology = ServiceMaster.IsPathology || 0;
-            this.IsRadiology = ServiceMaster.IsRadiology || 0;
-            this.IsActive = ServiceMaster.IsActive || 1;
-            this.PrintOrder = ServiceMaster.PrintOrder || "";
-            this.IsPackage = ServiceMaster.IsPackage || 0;
-            this.SubGroupId = ServiceMaster.SubGroupId || "";
-            this.DoctorId = ServiceMaster.DoctorId || "";
-            this.IsEmergency = ServiceMaster.IsEmergency || 0;
-            this.EmgAmt = ServiceMaster.EmgAmt || "";
-            this.EmgPer = ServiceMaster.EmgPer || "";
-            this.IsDocEditable = ServiceMaster.DoctorId || "";
+            this.serviceId = ServiceMaster.serviceId || "11730";
+            this.groupId = ServiceMaster.groupId || 0;
+            this.serviceShortDesc = ServiceMaster.serviceShortDesc || "";
+            this.serviceName = ServiceMaster.serviceName || "";
+            this.price = ServiceMaster.Price || "";
+            this.isEditable = ServiceMaster.IsEditable || 0;
+            this.creditedtoDoctor = ServiceMaster.CreditedtoDoctor || 0;
+            this.isPathology = ServiceMaster.IsPathology || 0;
+            this.isRadiology = ServiceMaster.IsRadiology || 0;
+            this.isActive = ServiceMaster.isActive || 1;
+            this.printOrder = ServiceMaster.printOrder || "";
+            this.isPackage = ServiceMaster.isPackage || 0;
+            this.subGroupId = ServiceMaster.subGroupId || "";
+            this.doctorId = ServiceMaster.doctorId || "";
+            this.isEmergency = ServiceMaster.isEmergency || 0;
+            this.emgAmt = ServiceMaster.emgAmt || "";
+            this.emgPer = ServiceMaster.emgPer || "";
+            this.isDocEditable = ServiceMaster.DoctorId || "";
             this.AddedBy = ServiceMaster.AddedBy || "";
             this.UpdatedBy = ServiceMaster.UpdatedBy || "";
             this.AddedByName = ServiceMaster.AddedByName || "";
             this.IsDeleted = ServiceMaster.IsDeleted || "";
+            this.tariffId = ServiceMaster.tariffId || "";
         }
     }
 }
