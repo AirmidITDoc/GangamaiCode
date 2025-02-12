@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -7,20 +7,23 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { MenuMasterService } from './menu-master.service';
 import { NewMenuComponent } from './new-menu/new-menu.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-menu-master',
     templateUrl: './menu-master.component.html',
-    styleUrls: ['./menu-master.component.scss']
+    styleUrls: ['./menu-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class MenuMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "MenuMaster/List",
+        apiUrl: "Administration/MenuMasterList",
         columnsList: [
             { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Menu Name", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+            { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Icon", key: "icon", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "Action", key: "linkAction", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             //   { heading: "Sort Order", key: "sortOrder", sort: true, align: 'left', emptySign: 'NA', width:100 },
@@ -36,7 +39,7 @@ export class MenuMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._MenuMasterService.deactivateTheStatus(data.bedId).subscribe((response: any) => {
+                            this._MenuMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -44,10 +47,12 @@ export class MenuMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "id",
+        sortField: "UserId",
         sortOrder: 0,
         filters: [
-            { fieldName: "Menu Name", fieldValue: "", opType: OperatorComparer.Contains }
+            { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
         ],
         row: 25
     }

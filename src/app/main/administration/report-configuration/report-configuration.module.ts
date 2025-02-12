@@ -22,6 +22,21 @@ import { ReportConfigurationComponent } from './report-configuration.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/main/shared/shared.module';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatRippleModule } from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FuseConfirmDialogModule} from '@fuse/components';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatListModule } from '@angular/material/list';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const routes: Routes = [
     {
@@ -50,6 +65,45 @@ const routes: Routes = [
     FuseSidebarModule,
     MatDialogModule,
     SharedModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatCardModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    MatDialogModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    MatDividerModule,
+    MatDialogModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    NgxMatSelectSearchModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatExpansionModule,
 
   ],
   providers: [ReportConfigurationService, DatePipe]

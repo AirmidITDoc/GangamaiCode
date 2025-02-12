@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { NewcreateUserComponent } from './newcreate-user/newcreate-user.component';
+import { NUserComponent } from './nuser/nuser.component';
 
 @Component({
   selector: 'app-create-user',
@@ -26,22 +27,22 @@ export class CreateUserComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "LoginManager/LoginList",
             columnsList: [
-                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "LoginName", key: "loginName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "RoleName", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "LoginName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+                { heading: "RoleName", key: "roleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
                 { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 60 },
                 {
-                    heading: "Action", key: "action" , align: "right", type: gridColumnTypes.action, actions: [
+                    heading: "Action", key: "action" , width: 100, align: "right", type: gridColumnTypes.action, actions: [
                         {
                             action: gridActions.edit, callback: (data: any) => {
                                 this.onSave(data);
                             }
                         }, {
                             action: gridActions.delete, callback: (data: any) => {
-                                this._CreateUserService.deactivateTheStatus(data.userName).subscribe((response: any) => {
+                                this._CreateUserService.deactivateTheStatus(data.userId).subscribe((response: any) => {
                                     this.toastr.success(response.message);
                                     this.grid.bindGridData();
                                 });
@@ -66,7 +67,7 @@ export class CreateUserComponent implements OnInit {
             buttonElement.blur(); // Remove focus from the button
     
             let that = this;
-            const dialogRef = this._matDialog.open( NewcreateUserComponent, 
+            const dialogRef = this._matDialog.open( NUserComponent, 
                 {
                     maxHeight: '95vh',
                     width: '90%',

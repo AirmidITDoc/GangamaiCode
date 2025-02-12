@@ -62,7 +62,7 @@
                                                 </span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{RegNo}}</span>
+                                                class="patient-col-value">{{registerObj.regId}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span
@@ -70,14 +70,14 @@
                                                 </span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{PatientName}}</span>
+                                                class="patient-col-value">{{registerObj.firstName}} {{registerObj.lastName}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span
                                                 class="patient-col-key">Age | Gender</span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}D | {{GenderName}}</span>
+                                                class="patient-col-value">{{registerObj.ageYear}}Y | {{registerObj.genderId}}</span>
                                         </div>
                                         
                                     </div>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
             </div>
-                <div class="layout-card-container">
+                <!-- <div class="layout-card-container">
                     <form [formGroup]="searchFormGroup">
                         <mat-card style="padding: 6px;">
                             <div class="patient-info-container">
@@ -97,7 +97,7 @@
                                         <div class="patient-sub">
                                             <div class="patient-info-row" fxLayout="row" fxLayoutAlign="space-between center">
                                                 <div class="patient-col">
-                                                    <span class="patient-col-key ">Patient Name</span>
+                                                    <span class="patient-col-key ">PatientName</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{PatientName}}</span>
                                                 </div>
@@ -128,7 +128,7 @@
                             </div>
                         </mat-card>
                     </form>
-                </div>
+                </div> -->
                 <div class="layout-card-container table-container">
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                         <!-- Table 1 -->
@@ -401,7 +401,7 @@
                         <mat-card style="padding: 6px;">
                             <div class="net-amt-form">
                                 <div fxLayout="row" class="gap-8">
-                                    <!-- <mat-form-field appearance="outline">
+                                    <mat-form-field appearance="outline">
                                         <mat-label>Total Refund Amount</mat-label>
                                         <input matInput [(ngModel)]="TotalRefundAmount" readonly formControlName="TotalRefundAmount" name="TotalRefundAmount" (keyup)="calculateTotalRefund()" required>
                                     </mat-form-field>
@@ -414,7 +414,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Remark</mat-label>
                                         <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark">
-                                    </mat-form-field> -->
+                                    </mat-form-field>
                                     <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                                     <div class="layout-footer">
                                         <div class="footer-navigation-container">

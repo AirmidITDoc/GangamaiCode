@@ -38,7 +38,7 @@ export class CreateUserService {
             isDateInterval: true,
             isDateIntervalDays: 0,
             mailId: [""],
-            mailDomain: [""],
+            mailDomain: ["1"],
             loginStatus: true,
             addChargeIsDelete: true,
             isIndentVerify: true,
@@ -51,15 +51,35 @@ export class CreateUserService {
             pharOpopt: 0,
             pharIpopt: 0,
 
-            // loginname:[""],
-            // rolename:[""],
-            // storename:[""],
-            // doctorname:[""],
-            // days:[""]
+            roomId:[""],
+            mobileNo:[""],
+            browseDay:[""],
+            DiscLimitPer:[""],
+            IsDoctor:[""],
 
+            Poverify: '',
+            Ipoverify: '',
+            Grnverify: '',
+            Indentverify: '',
+            IIverify: '',
+            CollectionInformation: '',
+            CurrentStock: '',
+            PatientInformation: '',
+            ViewBrowseBill: '0',
+            IsAddChargeDelete: '',
+            IsPharmacyBalClearnace: '',
+            BedStatus: '',
+            // IsActive: 'true',
+            PharExpOpt:'',
+            PharIPOpt:'',
+            PharOPOpt:'',
+            IsDicslimit:'',
+
+            isActive:[true,[Validators.required]],
         });
     }
-    
+
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DoctorNameSearch: [""],
@@ -129,31 +149,31 @@ export class CreateUserService {
 //    this.createuserForm();
 //  }
 
-//  public getUserList() {
-//    return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList",{})
-//  }
+ public getUserList() {
+   return this._httpClient.PostData("Generic/GetByProc?procName=RtrvUserList",{})
+ }
 
-//  public getRoleCombobox() {
-//    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_RoleTemplateForCombo", {})
-//  }
+ public getRoleCombobox() {
+   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_RoleTemplateForCombo", {})
+ }
 
-//  public getStoreCombo() {
-//    return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo", {})
-//  }
+ public getStoreCombo() {
+   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Retrieve_StoreMasterForCombo", {})
+ }
 
  
-//  public getDoctorMasterCombo() {
-//    return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_DoctorMasterForCombo", {})
-//  }
+ public getDoctorMasterCombo() {
+   return this._httpClient.PostData("Generic/GetByProc?procName=ps_Cmb_DoctorMasterForCombo", {})
+ }
 
   
-//  public userInsert(employee) {
-//    return this._httpClient.post("DoctorMaster/DoctorSave", employee);
-//  }
+ public userInsert(employee) {
+   return this._httpClient.PostData("DoctorMaster/DoctorSave", employee);
+ }
  
-//  public UserUpdate(employee) {
-//    return this._httpClient.post("DoctorMaster/DoctorUpdate", employee);
-//  }
+ public UserUpdate(employee) {
+   return this._httpClient.PostData("DoctorMaster/DoctorUpdate", employee);
+ }
 
  
 //  populateForm(employee) {
@@ -162,14 +182,14 @@ export class CreateUserService {
 //  public getUserList(employee) {
 //   return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
 // }
-// public getpasswwordupdate(data) {
-//   return this._httpClient.post("Generic/ExecByQueryStatement?query=" + data, {})
-// }
+public getpasswwordupdate(data) {
+  return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})
+}
 
 
-// public getpasswwordChange(data) {
-//   return this._httpClient.post("Administration/UserChangePassword" ,data)
-// }
+public getpasswwordChange(data) {
+  return this._httpClient.PostData("Administration/UserChangePassword" ,data)
+}
 
 
 }
