@@ -74,6 +74,43 @@ throw new Error('Method not implemented.');
     }
 
     gridConfig1: gridModel = {
+      apiUrl: "MReportConfig/List",
+      columnsList: [
+          { heading: "Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "UHID", key: "uHIDNo", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Advance Amt ", key: "advanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Balance Amt ", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' },
+          {
+              heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                  {
+                      action: gridActions.edit, callback: (data: any) => {
+                          this.onSave(data);
+                      }
+                  }, {
+                      action: gridActions.delete, callback: (data: any) => {
+                          this._CancellationService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
+                              this.toastr.success(response.message);
+                              this.grid.bindGridData();
+                          });
+                      }
+                  }]
+          } //Action 1-view, 2-Edit,3-delete
+      ],
+      sortField: "ReportName",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "Date", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "RegistrationNo", fieldValue: "", opType: OperatorComparer.Contains },
+          { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.Equals },
+          { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.Equals },
+      ],
+      row: 25
+  }
+
+    gridConfig2: gridModel = {
         apiUrl: "MReportConfig/List",
         columnsList: [
             { heading: "RefundDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
@@ -109,7 +146,7 @@ throw new Error('Method not implemented.');
         row: 25
     }
      
-    gridConfig2: gridModel = {
+    gridConfig3: gridModel = {
         apiUrl: "MReportConfig/List",
         columnsList: [
             { heading: "RefundDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },

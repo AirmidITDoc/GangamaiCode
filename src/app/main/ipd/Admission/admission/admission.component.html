@@ -1,8 +1,5 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -11,47 +8,38 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Admissin
+            <button mat-raised-button (click)="onSave()">New Admission
             </button>
 
         </div>
     </div>
-    <div class="info-badge-top pb-2 border-bottom" style="padding-left: 100px;">
-        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">New Admissions : {{VNewcount}}</span>
-                </div>
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg"> Total Admissions :
-                        {{VAdmissioncount}}</span>
-                </div>
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg"> Total BillGenerated :
-                        {{VBillcount}}</span>
-                </div>
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="orange-600-fg">Today's Discharges
-                        :{{vIsDischarg}}</span>
-                </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">OPTOIPConvert :
-                        {{VOPtoIPcount}}</span>
-                </div>
-                <div style="margin-left: 600px;">
-                    <button type="button" mat-icon-button>
-                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                    </button>
-                </div>
-
+    <div class="info-badge-top p-12 border-bottom">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+            <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                <span class="blue-600-fg">New Admissions : {{VNewcount}}</span>
+            </div>
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg"> Total Admissions :
+                    {{VAdmissioncount}}</span>
+            </div>
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg"> Total BillGenerated :
+                    {{VBillcount}}</span>
+            </div>
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span class="orange-600-fg">Today's Discharges
+                    :{{vIsDischarg}}</span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="red-600-fg">OPTOIPConvert :
+                    {{VOPtoIPcount}}</span>
             </div>
         </div>
-
     </div>
 
     <ng-template #actionsTemplate let-element>
@@ -61,7 +49,7 @@
 
             <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
             </mat-icon>
-<!-- 
+            <!-- 
 
             <mat-icon title="OPTOIPConvert" *ngIf="element.IsOpToIPconv==1" [disabled]="element.disabled"
                 class="disabled-icon">
@@ -70,12 +58,11 @@
     </ng-template>
     <ng-template #actionsTemplate1 let-element>
         <div>
-         
+
             <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
-                (click)="getMLCdetailview(element.amissionId)">
+            <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper" (click)="getMLCdetailview(element.amissionId)">
                 <mat-icon>print</mat-icon>
             </button>
             <!-- <ng-template #noMLC>
@@ -92,14 +79,12 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Print IP Case papaer"
-                (click)="getAdmittedPatientCasepaperview(element,true)">
+            <button mat-icon-button matTooltip="Print IP Case papaer" (click)="getAdmittedPatientCasepaperview(element,true)">
                 <mat-icon> print</mat-icon>
             </button>
 
 
-            <button mat-icon-button matTooltip="Template Print"
-                (click)="getAdmittedPatientCasepaperTempview(element,m)">
+            <button mat-icon-button matTooltip="Template Print" (click)="getAdmittedPatientCasepaperTempview(element,m)">
                 <mat-icon>print</mat-icon>
             </button>
 
@@ -107,8 +92,7 @@
                 <mat-icon> account_circle</mat-icon>
             </button>
 
-            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                (click)="$event.stopPropagation();">
+            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
                 <mat-icon class="secondary-text">more_vert</mat-icon>
             </button>
             <mat-menu #moreMenu="matMenu">
@@ -125,22 +109,17 @@
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <form [formGroup]="myFilterform" fusePerfectScrollbar>
+                <form [formGroup]="myFilterform">
 
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
-                        formStartControlName="fromDate" formEndControlName="enddate"
-                        [(fromValue)]="gridConfig.filters[4].fieldValue"
-                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
 
                         <mat-form-field appearance="outline">
                             <mat-label>FirstName</mat-label>
-                            <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[0].fieldValue=''">
+                            <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
@@ -148,10 +127,8 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>MiddleName</mat-label>
-                            <input matInput placeholder="MiddleName" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="MiddleName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[1].fieldValue=''">
+                            <input matInput placeholder="MiddleName" autocomplete="off" [formGroup]="myFilterform" formControlName="MiddleName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[1].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
@@ -160,10 +137,8 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>LastName</mat-label>
-                            <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="LastName" [(ngModel)]="gridConfig.filters[7].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[7].fieldValue=''">
+                            <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform" formControlName="LastName" [(ngModel)]="gridConfig.filters[7].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[7].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
@@ -171,10 +146,8 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>RegNo</mat-label>
-                            <input matInput placeholder="RegNo" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[2].fieldValue=''">
+                            <input matInput placeholder="RegNo" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo" [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
@@ -182,25 +155,19 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>IPDNo</mat-label>
-                            <input matInput placeholder="IPDNo" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="IPDNo" [(ngModel)]="gridConfig.filters[8].fieldValue" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)="gridConfig.filters[8].fieldValue=''">
+                            <input matInput placeholder="IPDNo" autocomplete="off" [formGroup]="myFilterform" formControlName="IPDNo" [(ngModel)]="gridConfig.filters[8].fieldValue" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[8].fieldValue=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
 
 
-                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
-                            [(ngModel)]="gridConfig.filters[3].fieldValue"
-                            [validations]="getValidationdoctorMessages().searchDoctorId"
-                            [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
+                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc" (selectionChange)="selectChangedeptdoc($event)">
                         </airmid-dropdown>
 
-                       
-                        <div class="addmision-list mt-12">
-                            <button mat-raised-button class="btn btn-primary w-100-p"
-                                (click)="getAdmittedPatientListview()" matTooltip="search">
+
+                        <div class="addmision-list">
+                            <button mat-raised-button class="btn btn-primary w-100-p" (click)="getAdmittedPatientListview()" matTooltip="search">
                                 Dr Wise Admission List
                             </button>
 

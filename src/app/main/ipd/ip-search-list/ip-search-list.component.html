@@ -38,6 +38,43 @@
                 <!-- CONTENT -->
                 <div class="content">
                     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                        <ng-template #iconPatientCategory let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                
+                                <mat-icon *ngIf="element.patientType =='Self'"
+                                matTooltip="Patient Category Self">account_box
+                            </mat-icon>
+
+                            <mat-icon *ngIf="element.patientType !== 'Self'"
+                                matTooltip="Patient Category Company">business
+                            </mat-icon>
+
+                            </div>
+                        </ng-template>
+
+                        <ng-template #actionButtonTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                
+                                <!-- Button 1: Edit Patient Registration  -->
+                                <!-- <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button> -->
+                                
+                                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                    (click)="$event.stopPropagation();">
+                                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #moreMenu="matMenu">
+                                    <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                            <span>{{m}}</span>
+                                        </button>
+                                    </ng-container>
+                                </mat-menu>
+                            </div>
+                        </ng-template>
+
                         <airmid-table [gridConfig]="gridConfig" class="content">
                             <ng-container filters>
                                 <mat-form-field appearance="outline" fxFlex>

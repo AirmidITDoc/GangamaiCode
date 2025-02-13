@@ -78,6 +78,8 @@ vbalanceamt: any = 0;
         this.myFormGroup= this.createSearchForm1();
     }
 
+    
+  
     onSave(contact: any = null) {
 
         console.log(contact)
@@ -107,20 +109,35 @@ vbalanceamt: any = 0;
             dialogRef.afterClosed().subscribe(result => {
                 console.log(result)
                 if (result.IsSubmitFlag == true) {
-        
-                  this.vpaidamt = result.PaidAmt;
+                    let PaymentObj = result.submitDataPay.ipPaymentInsert
+                    // this.PaymentObj1= result.submitDataPay.ipPaymentInsert
+                  
+                    // console.log(this.PaymentObj1)
+
+                    this.vpaidamt = result.PaidAmt;
                   this.vbalanceamt = result.BalAmt
-        
+                  PaymentObj['BillNo']=contact.billNo;
                   let updateBillobj = {};
                   updateBillobj['BillNo'] = contact.billNo;
-                  updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;  //result.BalAmt;
-                  let PaymentObj = result.submitDataPay.ipPaymentInsert
-                  let Data = {
-                    "billDetails": updateBillobj,
-                    PaymentObj
-                  };
-                  console.log(Data)
-                  this._CompanysettlementService.InsertOPBillingsettlement(Data).subscribe(response => {
+                  updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;  //result.BalAmt;
+                let p= result.submitDataPay.ipPaymentInsert
+                 let data={
+                  p,
+                    "bill": {
+                        "billNo":  contact.billNo,
+                        "balanceAmt": result.submitDataPay.ipPaymentInsert.BalanceAmt
+                    },
+                 }
+
+               
+                //   let Data = {
+                    // PaymentObj,
+                    // this.PaymentObj1.push(updateBillobj),
+                    // "bill": updateBillobj,
+                  
+                //   };
+                  console.log(data)
+                  this._CompanysettlementService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                    this.viewgetOPPayemntPdf(response);
                   }, (error) => {

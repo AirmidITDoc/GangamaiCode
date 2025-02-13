@@ -1,5 +1,5 @@
 import { DatePipe, Time } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -45,10 +45,21 @@ export class IPSearchListComponent implements OnInit {
 
     autocompleteModedeptdoc: string = "ConDoctor";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('iconPatientCategory') iconPatientCategory!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    }
 
     gridConfig: gridModel = {
         apiUrl: "Admission/AdmissionList",
         columnsList: [
+            {
+                 heading: "", key: "patientType", sort: true, align: 'left',type: gridColumnTypes.template,
+                 template: this.iconPatientCategory
+             },
             { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
             { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.status, },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
@@ -61,33 +72,37 @@ export class IPSearchListComponent implements OnInit {
             { heading: "PatientType", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.status, },
             { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10 },
             {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    },
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onAdvanceSave(data);
-                        }
-                    },
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onBedTransferSave(data);
-                        }
-                    },
+                heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+            // {
+            //     heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onAdvanceSave(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onBedTransferSave(data);
+            //             }
+            //         },
 
-                    {
+            //         {
 
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 this._IpSearchListService.deactivateTheStatus(data.AdmissionId).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "AdmissionId",
         sortOrder: 0,
@@ -179,7 +194,6 @@ export class IPSearchListComponent implements OnInit {
     public doctorFilterCtrl: FormControl = new FormControl();
     public filtereddoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-
     public wardFilterCtrl: FormControl = new FormControl();
     public filteredward: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -205,10 +219,7 @@ export class IPSearchListComponent implements OnInit {
         'buttons'
     ];
 
-
-
     menuActions: Array<string> = [];
-
 
     constructor(
         public _IpSearchListService: IPSearchListService,
@@ -356,6 +367,46 @@ export class IPSearchListComponent implements OnInit {
         }
     }
 
+    OngetRecord(element, m) {
+        debugger
+            console.log('Third action clicked for:', element);
+            if (m == "Advance") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(IPAdvanceComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '95%',
+                        width: '80%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+            else if (m == "Bed Transfer") {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
+    
+                let that = this;
+                const dialogRef = this._matDialog.open(BedTransferComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '70%',
+                        width: '80%',
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
+                });
+            }
+        }
 
     dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
 
@@ -846,33 +897,33 @@ export class IPSearchListComponent implements OnInit {
         // this.doctorID = obj
     }
 
-    onAdvanceSave(data) {
-        const dialogRef = this._matDialog.open(IPAdvanceComponent,
-            {
-                maxWidth: "100%",
-                height: '95%',
-                width: '80%',
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-        });
-    }
+    // onAdvanceSave(data) {
+    //     const dialogRef = this._matDialog.open(IPAdvanceComponent,
+    //         {
+    //             maxWidth: "100%",
+    //             height: '95%',
+    //             width: '80%',
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed - Insert Action', result);
+    //     });
+    // }
 
-    onBedTransferSave(data) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+    // onBedTransferSave(data) {
+    //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    //     buttonElement.blur(); // Remove focus from the button
 
-        const dialogRef = this._matDialog.open(BedTransferComponent,
-            {
-                maxWidth: "100%",
-                height: '70%',
-                width: '80%',
-                data:data
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-        });
-    }
+    //     const dialogRef = this._matDialog.open(BedTransferComponent,
+    //         {
+    //             maxWidth: "100%",
+    //             height: '70%',
+    //             width: '80%',
+    //             data:data
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed - Insert Action', result);
+    //     });
+    // }
 }
 
 

@@ -85,7 +85,9 @@ export class IPAdvanceComponent implements OnInit {
   vMobileNo:any;
   isCashCounterSelected:boolean=false;
   filteredOptionsCashCounter:Observable<string[]>;
-
+  registerObj:any;
+  vRegNo:any;
+  vPatientName:any
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _opappointmentService: OPSearhlistService,
@@ -93,6 +95,7 @@ export class IPAdvanceComponent implements OnInit {
     private _ActRoute: Router,
     public datePipe: DatePipe,
     private advanceDataStored: AdvanceDataStored,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public _WhatsAppEmailService:WhatsAppEmailService,
     private dialogRef: MatDialogRef<IPAdvanceComponent>,
     private accountService: AuthenticationService,
@@ -102,6 +105,7 @@ export class IPAdvanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     this.AdvFormGroup = this.formBuilder.group({
       advanceAmt: ['', [Validators.pattern('^[0-9]{2,8}$')]],
       comment: [''],
@@ -109,6 +113,11 @@ export class IPAdvanceComponent implements OnInit {
       cashpay: ['1'],
       CashCounterID:['']
     });
+
+    if(this.data){
+      console.log("Advance data:",this.data)
+      this.registerObj = this.data;
+    }
 
     if (this.advanceDataStored.storage) {
      
@@ -120,6 +129,7 @@ export class IPAdvanceComponent implements OnInit {
     let AdmissionId = this._IpSearchListService.myShowAdvanceForm.get("AdmissionID").value
     this.getAdvanceList();
     this.getCashCounterComboList();
+
   }
 getAdvanceDetaId(){
   let Query ;
@@ -129,9 +139,10 @@ getAdvanceDetaId(){
 }
 vAdvanceDetId:any;
   getAdvanceList() {
+    debugger
     this.isLoadingStr = 'loading';
     var m_data = {
-      "AdmissionID": this.selectedAdvanceObj.AdmissionID
+      "AdmissionID": this.selectedAdvanceObj.admissionId
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';

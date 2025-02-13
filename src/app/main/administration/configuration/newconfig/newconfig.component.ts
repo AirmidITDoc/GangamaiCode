@@ -17,7 +17,11 @@ export class NewconfigComponent implements OnInit {
     myform: FormGroup;
     isActive:boolean=true;
     isPatientSelected: boolean = false;
-    autocompleteModeItem: string = "Item";
+    autocompleteModeItem: string = "PatientType";
+    autocompleteModeCashcounter: string = "CashCounter";
+    autocompleteModeDepartment : String = "Department";
+    autocompleteModedoctorty: string = "ConDoctor";
+    
     itemId = 0;
 
     
