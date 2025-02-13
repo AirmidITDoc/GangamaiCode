@@ -10,6 +10,8 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree"
 import { Observable } from "rxjs";
 import { map, startWith } from 'rxjs/operators';
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
+import { ActivatedRoute } from "@angular/router";
+import { OperatorComparer } from "app/core/models/gridRequest";
 
 
 interface FoodNode {
@@ -55,6 +57,7 @@ export class ReportGenerationComponent implements OnInit {
     ServiceId: any;
     DepartmentId: any;
     CashCounterId: any;
+    rid: number = 0;
     UId: any = 0;
     UserName: any;
     ReportName: any;
@@ -88,7 +91,8 @@ export class ReportGenerationComponent implements OnInit {
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
         private _loggedUser: AuthenticationService,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+        private _activeRoute: ActivatedRoute
     ) {
         this.UId = this._loggedUser.currentUserValue.userId;
         this.UserName = this._loggedUser.currentUserValue.userName;
@@ -97,19 +101,24 @@ export class ReportGenerationComponent implements OnInit {
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
+        this._activeRoute.paramMap.subscribe(params => {
+            this.rid = ~~(params.get('rid') || 106);
+        });
         this.GetAllReporConfig();
-        // this.datePipe.transform(this._ReportService.userForm.get("StartDate").value, "MM-dd-yyyy") || "01/01/1900",
-        // this.datePipe.transform(this._ReportService.userForm.get("EndDate").value, "MM-dd-yyyy") || "01/01/1900",
-
     }
     GetAllReporConfig() {
+        let paramFilter = [{
+            "fieldName": "menuId",
+            "fieldValue": this.rid.toString(),
+            "opType": OperatorComparer.Equals
+        }];
         var param: any =
         {
             "first": 0,
             "rows": 100,
             "sortField": "reportId",
             "sortOrder": 1,
-            "filters": [],
+            "filters": paramFilter || [],
             "exportType": "JSON"
         }
         this._ReportService.getAllReporConfig(param).subscribe(
@@ -165,43 +174,43 @@ export class ReportGenerationComponent implements OnInit {
                 {
                 "fieldName": "FromDate",
                 "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value,"dd-MM-yyyy"),//"10-01-2024",
-                "opType": "13"
+                "opType": OperatorComparer.Equals
                 },
                 {
                 "fieldName": "ToDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"MM-dd-yyyy"),//"12-12-2024",
-                "opType": "13"
+                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"dd-MM-yyyy"),//"12-12-2024",
+                "opType": OperatorComparer.Equals
                 }
             ];
             if(this.flagUserSelected)
                 paramFilterList.push({
                     "fieldName": "UserId",
                     "fieldValue": this.UserId,
-                    "opType": "13"            
+                    "opType": OperatorComparer.Equals         
                 });
             if(this.flagDoctorSelected)
                 paramFilterList.push({
                     "fieldName": "DoctorId",
                     "fieldValue": this.DoctorId,
-                    "opType": "13"            
+                    "opType": OperatorComparer.Equals        
                 });  
             if(this.flagDepartmentSelected)
                 paramFilterList.push({
                     "fieldName": "DepartmentId",
                     "fieldValue": this.DepartmentId,
-                    "opType": "13"            
+                    "opType": OperatorComparer.Equals          
                 });      
             if(this.flagServiceSelected)
                 paramFilterList.push({
                     "fieldName": "ServiceId",
                     "fieldValue": this.ServiceId,
-                    "opType": "13"            
+                    "opType": OperatorComparer.Equals          
                 });
             if(this.flagCashcounterSelected)
                 paramFilterList.push({
                     "fieldName": "CashcounterId",
                     "fieldValue": this.CashCounterId,
-                    "opType": "13"            
+                    "opType": OperatorComparer.Equals          
                 });                                                            
             let param = {
                 "searchFields": paramFilterList,
@@ -217,20 +226,23 @@ export class ReportGenerationComponent implements OnInit {
               }
             console.log(param)
             this._ReportService.getReportView(param).subscribe(res => {
-            const matDialog = this._matDialog.open(PdfviewerComponent,
-            {
-                maxWidth: "85vw",
-                height: '750px',
-                width: '100%',
-                data: {
-                    base64: res["base64"] as string,
-                    title: this.reportDetail.reportMode + " " + "Viewer"
-                }
-            });
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: this.reportDetail.reportMode + " " + "Viewer"
+                    }
+                });
 
-            matDialog.afterClosed().subscribe(result => {
-                debugger
-            });
+                matDialog.afterClosed().subscribe(result => {
+                    debugger
+                });
+            },
+            (error) => {
+                this.toastr.error(error.message);
             });
 
         }, 100);

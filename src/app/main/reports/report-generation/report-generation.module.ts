@@ -1,54 +1,46 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatRippleModule } from '@angular/material/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {  MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatSelectModule } from '@angular/material/select';
-import { FuseSharedModule } from '@fuse/shared.module';
+import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatCardModule } from '@angular/material/card';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
+import { MatTreeModule } from '@angular/material/tree';
 import { ReportGenerationComponent } from './report-generation.component';
 import { ReportService } from './service/report-generation.service';
-import { MatTreeModule } from '@angular/material/tree';
-
-
 
 const routes: Routes = [
     {
-        path: '**',
-        component: ReportGenerationComponent
+        path: "**",
+        component: ReportGenerationComponent,
     },
 ];
 @NgModule({
-    declarations: [
-        ReportGenerationComponent
-       
-         
-    ],
+    declarations: [ReportGenerationComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
@@ -80,8 +72,8 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
-       MatTreeModule,
+        MatTreeModule,
     ],
-    providers: [ReportService,DatePipe],
+    providers: [ReportService, DatePipe],
 })
 export class ReportGenerationModule {}

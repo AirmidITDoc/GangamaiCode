@@ -21,8 +21,10 @@ export class ReportService {
         });
     }
     createUserFormGroup() {
+        var date = new Date();
+        date.setDate(date.getDate() - 7);
         return this._formBuilder.group({
-            StartDate: [new Date().toISOString()],
+            StartDate: [date.toISOString()],
             EndDate: [new Date().toISOString()],
             UserId: [""],
             DoctorId: [""],
