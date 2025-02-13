@@ -1,11 +1,13 @@
 <mat-form-field appearance="outline" fxFlex>
     <mat-label>{{label}}</mat-label>
-    <input matInput [placeholder]="placeholderText" [formControl]="formGroup.controls[formControlName]" [disabled]="disabled" [(ngModel)]="value" 
-        [formControlName]="formControlName" onlyNumber [matAutocomplete]="auto" (input)="onSearchData($event.target.value)" (focus)="onSearchData($event.target.value)">
-    <mat-autocomplete requireSelection (optionSelected)="selectedOption($event.option.value)" #auto="matAutocomplete" [displayWith]="displayFn" aria-label="{{TextField}}">
-        <mat-option *ngFor="let option of filteredOptions" [value]="option">
+    <input matInput [placeholder]="placeholderText" [formControl]="formGroup.controls[formControlName]"
+        [disabled]="disabled" [formControlName]="formControlName" onlyNumber [matAutocomplete]="auto"
+        (input)="onSearchData($event.target.value)">
+    <mat-autocomplete requireSelection (optionSelected)="selectedOption($event.option.value)" #auto="matAutocomplete"
+        [displayWith]="displayFn" aria-label="{{TextField}}">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option[TextField]}}
-          </mat-option>
+        </mat-option>
     </mat-autocomplete>
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">

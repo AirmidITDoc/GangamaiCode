@@ -18,7 +18,7 @@
         </div>
     </div>
 </mat-form-field> -->
-<mat-form-field appearance="outline" fxFlex>
+<mat-form-field appearance="outline" fxFlex class="airmid-dropdown">
     <mat-label>{{label}}</mat-label>
     <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle">
         <mat-option>
@@ -28,6 +28,11 @@
             {{ddl[TextField]}}
         </mat-option>
     </mat-select>
+
+    <!-- Pending... -->
+    <button mat-icon-button aria-label="Clear" class="dropdown-close-icon" *ngIf="false">
+        <mat-icon>close</mat-icon>
+    </button>
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">
             {{ error }}

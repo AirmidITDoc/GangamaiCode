@@ -78,6 +78,13 @@ const appRoutes: Routes = [
             ),
     },
     {
+        path: "commanreport/:rid",
+        loadChildren: () =>
+            import("./report-generation/report-generation.module").then(
+                (m) => m.ReportGenerationModule
+            ),
+    },    
+    {
         path: "report-generation",
       
 
