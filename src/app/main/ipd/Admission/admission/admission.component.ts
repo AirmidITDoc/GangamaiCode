@@ -159,7 +159,7 @@ export class AdmissionComponent implements OnInit {
       { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
       { heading: "RelativeName", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
       {
-        heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
         template: this.actionButtonTemplate  // Assign ng-template to the column
       }
 
@@ -741,7 +741,8 @@ debugger
     const dialogRef = this._matDialog.open(NewAdmissionComponent,
       {
         maxWidth: "95vw",
-        maxHeight: "115vh", width: '100%', height: "100%",
+        width: '100%', 
+        height: "98vh",
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
