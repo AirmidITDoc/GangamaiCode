@@ -21,48 +21,69 @@ export class CreateUserService {
     createuserForm(): FormGroup {
         return this._formBuilder.group({
             userId: [0],
-            firstName: [""],
-            lastName: [""],
-            userName: [""],
-            password: [""],
+            firstName: ['', [
+              Validators.required,
+              Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+          ]],
+            lastName: ['', [
+              Validators.required,
+              Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+          ]],
+            userName: ['', 
+              [
+                  Validators.required, 
+                  Validators.pattern('[a-zA-Z0-9_]*')
+              ]],
+            password:[
+              "",
+              Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
+          ],
             roleId: [""],
             storeId: 0,
-            isDoctorType: true,
+            isDoctorType: "",
             doctorId: 0,
-            isPoverify: true,
-            isGrnverify: true,
-            isCollection: true,
-            isBedStatus: true,
-            isCurrentStk: true,
-            isPatientInfo: true,
-            isDateInterval: true,
+            isPoverify: "",
+            isGrnverify: "",
+            isCollection: "",
+            isBedStatus: "",
+            isCurrentStk: "",
+            isPatientInfo: "",
+            isDateInterval: "",
             isDateIntervalDays: 0,
-            mailId: [""],
+            mailId: [
+              "",
+              Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+          ],
             mailDomain: ["1"],
-            loginStatus: true,
-            addChargeIsDelete: true,
-            isIndentVerify: true,
-            isPoinchargeVerify: true,
-            isRefDocEditOpt: true,
-            isInchIndVfy: true,
+            loginStatus: "",
+            addChargeIsDelete: "",
+            isIndentVerify: "",
+            isPoinchargeVerify: "",
+            isRefDocEditOpt: "",
+            isInchIndVfy: "",
             webRoleId: 0,
             userToken: [""],
-            pharExtOpt: 0,
-            pharOpopt: 0,
-            pharIpopt: 0,
+            PharExpOpt:"",
+            PharIPOpt:"",
+            PharOPOpt:"",
 
             roomId:[""],
-            mobileNo:[""],
+            mobileNo:[ "", [
+              Validators.required,
+              Validators.minLength(10),
+              Validators.maxLength(10),
+              Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+          ]],
             browseDay:[""],
             DiscLimitPer:[""],
             IsDoctor:[""],
 
-            Poverify: '',
-            Ipoverify: '',
-            Grnverify: '',
-            Indentverify: '',
-            IIverify: '',
-            CollectionInformation: '',
+            Poverify: "",
+            Ipoverify: "",
+            // Grnverify: '',
+            Indentverify: "",
+            IIverify: "",
+            CollectionInformation: "",
             CurrentStock: '',
             PatientInformation: '',
             ViewBrowseBill: '0',
@@ -70,15 +91,90 @@ export class CreateUserService {
             IsPharmacyBalClearnace: '',
             BedStatus: '',
             // IsActive: 'true',
-            PharExpOpt:'',
-            PharIPOpt:'',
-            PharOPOpt:'',
             IsDicslimit:'',
-
+            DoctorID:'',
             isActive:[true,[Validators.required]],
         });
     }
 
+  //   createuserForm(): FormGroup {
+  //     return this._formBuilder.group({
+  //         userId: [0],
+  //         firstName: ['', [
+  //           Validators.required,
+  //           Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+  //       ]],
+  //         lastName: ['', [
+  //           Validators.required,
+  //           Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+  //       ]],
+  //         userName: ['', 
+  //           [
+  //               Validators.required, 
+  //               Validators.pattern('[a-zA-Z0-9_]*')
+  //           ]],
+  //         password:[
+  //           "",
+  //           Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
+  //       ],
+  //         roleId: [""],
+  //         storeId: 0,
+  //         isDoctorType: true,
+  //         doctorId: 0,
+  //         isPoverify: true,
+  //         isGrnverify: true,
+  //         isCollection: true,
+  //         isBedStatus: true,
+  //         isCurrentStk: true,
+  //         isPatientInfo: true,
+  //         isDateInterval: true,
+  //         isDateIntervalDays: 0,
+  //         mailId: [
+  //           "",
+  //           Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
+  //       ],
+  //         mailDomain: ["1"],
+  //         loginStatus: true,
+  //         addChargeIsDelete: true,
+  //         isIndentVerify: true,
+  //         isPoinchargeVerify: true,
+  //         isRefDocEditOpt: true,
+  //         isInchIndVfy: true,
+  //         webRoleId: 0,
+  //         userToken: [""],
+  //         PharExpOpt:true,
+  //         PharIPOpt:true,
+  //         PharOPOpt:true,
+
+  //         roomId:[""],
+  //         mobileNo:[ "", [
+  //           Validators.required,
+  //           Validators.minLength(10),
+  //           Validators.maxLength(10),
+  //           Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+  //       ]],
+  //         browseDay:[""],
+  //         DiscLimitPer:[""],
+  //         IsDoctor:[""],
+
+  //         Poverify: '',
+  //         Ipoverify: '',
+  //         // Grnverify: '',
+  //         Indentverify: '',
+  //         IIverify: '',
+  //         CollectionInformation: '',
+  //         CurrentStock: '',
+  //         PatientInformation: '',
+  //         ViewBrowseBill: '0',
+  //         IsAddChargeDelete: '',
+  //         IsPharmacyBalClearnace: '',
+  //         BedStatus: '',
+  //         // IsActive: 'true',
+  //         IsDicslimit:'',
+  //         DoctorID:'',
+  //         isActive:[true,[Validators.required]],
+  //     });
+  // }
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -92,10 +188,14 @@ export class CreateUserService {
     }
 
     public insertuser(Param: any) {
-        if (Param.userId) {
-            return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
-        } else return this._httpClient.PostData("LoginManager/Insert", Param);
+        return this._httpClient.PostData("LoginManager/Insert", Param);
     }
+
+    public updateuser(Param: any) {
+      if (Param.userId) {
+          return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
+      }
+  }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("LoginManager/LoginCanceled?Id=" + m_data.toString());

@@ -1,6 +1,6 @@
 <div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+    <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
             <div class="top-header-title">
@@ -9,7 +9,18 @@
                 </span>
             </div>
         </div>
-    </div>
+    </div> -->
+
+    <mat-toolbar style="height: 50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box</mat-icon>
+            <span class="=logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Payment Mode Change
+            </span>
+        </div>
+    </mat-toolbar>
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <!-- <div class="info-badge-top pb-2 border-bottom"> 
             <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"> 
@@ -27,7 +38,10 @@
             class="backgroundBlur">
             <div class="spinner-border text-danger"></div>
         </div> -->
+
         <airmid-table [gridConfig]="gridConfig"  class="content">
+        <!-- <form [formGroup]="_PaymentmodechangesService.UseFormGroup" fxLayout="row" > -->
+
             <ng-container filters>
 
                 <mat-form-field appearance="outline" style="margin-left: 2%;">
@@ -39,6 +53,11 @@
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
+
+                <!-- <airmid-datepicker [formGroup]="_PaymentmodechangesService.UseFormGroup" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                [(toValue)]="gridConfig.filters[0].fieldValue">
+                            </airmid-datepicker> -->
 
                 <mat-form-field appearance="outline">
                     <mat-label>RegNo</mat-label>
@@ -59,16 +78,21 @@
                     <input name="SalesNo" formControlName="SalesNo" matInput (keyup)="getsearchList()">
                 </mat-form-field>
 
+                <form [formGroup]="_PaymentmodechangesService.UseFormGroup" fxLayout="row" > 
                 <mat-radio-group formControlName="Radio" name="Radio">
                     <mat-label>Type : </mat-label>
-                    <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPReceiptList()">
-                        OP Receipt</mat-radio-button>
-                    <mat-radio-button value="1" (click)="getIPReceiptList()">IP Receipt</mat-radio-button>
-                    <mat-radio-button value="2" style="margin-left:32px;" (click)="getIPAdvanceList()">IP
-                        Advance</mat-radio-button>
+
+                        <mat-radio-button value="0" (click)="getOPReceiptList()">
+                            OP Receipt</mat-radio-button>
+                        <mat-radio-button value="1" (click)="getIPReceiptList()">
+                            IP Receipt</mat-radio-button>
+                        <mat-radio-button value="2" (click)="getIPAdvanceList()">
+                            IP Advance</mat-radio-button>
                 </mat-radio-group>
+                </form>
                 
             </ng-container> 
+        <!-- </form> -->
         </airmid-table>
     </div>
 </div>

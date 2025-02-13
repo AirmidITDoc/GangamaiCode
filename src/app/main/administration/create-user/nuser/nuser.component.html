@@ -26,11 +26,10 @@
                             <airmid-dropdown 
                                 label="UnitName" 
                                 formControlName="roomId"
-                                [value]="data?.roomId" 
                                 [formGroup]="myuserform"
                                 [validations]="getValidationMessages().roomId"
                                 [mode]="autocompleteModeUnitName"
-                                (selectDdlObject)="selectChangeUnitName($event)">
+                                (selectionChange)="selectChangeUnitName($event)">
                             </airmid-dropdown>
                         </div>
 
@@ -38,10 +37,10 @@
                             <airmid-textbox 
                                 label="MobileNo" 
                                 formControlName="mobileNo" 
-                                [value]="data?.mobileNo" 
                                 [formGroup]="myuserform" 
                                 [validations]="getValidationMessages().mobileNo" 
-                                [maxLength]="30">
+                                [maxLength]="10">
+                                <!-- [value]="data.mobileNo"  -->
                             </airmid-textbox>
                         </div>
                     </div>
@@ -51,7 +50,6 @@
                             <airmid-textbox 
                                 label="FirstName" 
                                 formControlName="firstName" 
-                                [value]="data?.firstName" 
                                 [formGroup]="myuserform" 
                                 [validations]="getValidationMessages().firstName" 
                                 [maxLength]="30">
@@ -61,8 +59,7 @@
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="LastName" 
-                                formControlName="lastName" 
-                                [value]="data?.lastName" 
+                                formControlName="lastName"
                                 [formGroup]="myuserform" 
                                 [validations]="getValidationMessages().lastName" 
                                 [maxLength]="30">
@@ -74,8 +71,7 @@
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="UserName" 
-                                formControlName="userName" 
-                                [value]="data?.userName" 
+                                formControlName="userName"
                                 [formGroup]="myuserform" 
                                 [validations]="getValidationMessages().userName" 
                                 [maxLength]="30">
@@ -85,8 +81,7 @@
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="PassWord" 
-                                formControlName="password" 
-                                [value]="data?.password" 
+                                formControlName="password"
                                 [formGroup]="myuserform" 
                                 [validations]="getValidationMessages().password" 
                                 [maxLength]="30">
@@ -98,8 +93,7 @@
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="MailID" 
-                                formControlName="mailId" 
-                                [value]="data?.mailId" 
+                                formControlName="mailId"
                                 [formGroup]="myuserform" 
                                 [validations]="getValidationMessages().mailId" 
                                 [maxLength]="30">
@@ -110,11 +104,10 @@
                             <airmid-dropdown 
                                 label="RoleName" 
                                 formControlName="roleId"
-                                [value]="data?.roleId" 
                                 [formGroup]="myuserform"
                                 [validations]="getValidationMessages().roleId"
                                 [mode]="autocompleteModeRoleName"
-                                (selectDdlObject)="selectChangeRoleName($event)">
+                                (selectionChange)="selectChangeRoleName($event)">
                             </airmid-dropdown>
                         </div>
                     </div>
@@ -124,11 +117,10 @@
                             <airmid-dropdown 
                                 label="StoreName" 
                                 formControlName="storeId"
-                                [value]="data?.storeId" 
                                 [formGroup]="myuserform"
                                 [validations]="getValidationMessages().storeId"
                                 [mode]="autocompleteModeStoreName"
-                                (selectDdlObject)="selectChangeStoreName($event)">
+                                (selectionChange)="selectChangeStoreName($event)">
                             </airmid-dropdown>
                         </div>
 
@@ -136,41 +128,26 @@
                             <airmid-dropdown 
                                 label="WebRoleName" 
                                 formControlName="webRoleId"
-                                [value]="data?.webRoleId" 
                                 [formGroup]="myuserform"
                                 [validations]="getValidationMessages().webRoleId"
                                 [mode]="autocompleteModeWebRoleName"
-                                (selectDdlObject)="selectChangeWebRoleName($event)">
+                                (selectionChange)="selectChangeWebRoleName($event)">
                             </airmid-dropdown>
                         </div>
                     </div>
 
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" >
-                            <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)" 
-                            [(ngModel)]="registerObj.DoctorID" style="padding: 10px;">IsDoctor
+                            <mat-checkbox formControlName="isDoctorType" (change)="chkdoctor($event)" 
+                             style="padding: 10px;">IsDoctor
                             </mat-checkbox>&nbsp;
+                            <!-- [(ngModel)]="data.isDoctorType" -->
+
+                            <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                            [formGroup]="myuserform" [validations]="getValidationMessages().DoctorID"
+                            [mode]="autocompleteModedoctor" *ngIf="docflag">
+                        </airmid-dropdown>
                             
-                            <mat-form-field appearance="outline" fxFlex *ngIf="docflag">
-                                <mat-label>DocotorName</mat-label>
-                                <input matAutocompletePosition="below" type="text"
-                                    placeholder="Select RoleName" matInput #docname
-                                    formControlName="DoctorID" [matAutocomplete]="autoDocName" required
-                                    (keydown)="onEnterdocName($event)">
-                                <span matSuffix style="display: flex;">
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="myuserform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                    <mat-icon class="mat-icon-close"
-                                        (click)="myuserform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                </span>
-                                <mat-autocomplete #autoDocName="matAutocomplete"
-                                    [displayWith]="getOptionTextDoctorName">
-                                    <mat-option *ngFor="let option of filteredOptionsDoctorName| async"
-                                        [value]="option">
-                                        {{option.Doctorname}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
                         </div>
 
                         <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%" >
@@ -181,7 +158,8 @@
                             <mat-form-field appearance="outline" fxFlex *ngIf="DisclimitFlag">
                                 <mat-label>Discount %</mat-label>
                                 <input matAutocompletePosition="below" type="text" matInput  
-                                    formControlName="DiscLimitPer" (keyup)="chkdisclimit()"> 
+                                    formControlName="DiscLimitPer"> 
+                                    <!-- (keyup)="chkdisclimit()" -->
                             </mat-form-field>
                         </div>
                     </div>
@@ -191,22 +169,22 @@
                             <!-- [checked] -->
                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                 class="w-100-p gap-8">
-                                <mat-checkbox formControlName="Grnverify"
-                                    [(ngModel)]="registerObj.IsGRNVerify">GRN
-                                    Verify</mat-checkbox>
-                                <mat-checkbox formControlName="Poverify"
-                                    [(ngModel)]="registerObj.IsPOVerify">PO
-                                    Verify</mat-checkbox>
-                                <mat-checkbox formControlName="Ipoverify"
-                                    [(ngModel)]="registerObj.isPOInchargeVerify">Incharge
+                                <mat-checkbox formControlName="isGrnverify">
+                                    GRN Verify</mat-checkbox>
+                                    <!-- [(ngModel)]="data.isGrnverify" -->
+                                <mat-checkbox formControlName="isPoverify">
                                     PO Verify</mat-checkbox>
+                                    <!-- [(ngModel)]="data.isPoverify" -->
+                                <mat-checkbox formControlName="Ipoverify">
+                                    Incharge PO Verify</mat-checkbox>
+                                    <!-- [(ngModel)]="data.isPOInchargeVerify" -->
                                
-                                <mat-checkbox formControlName="Indentverify"
-                                    [(ngModel)]="registerObj.IsIndentVerify">Indent
-                                    Verify</mat-checkbox>
-                                <mat-checkbox formControlName="IIverify"
-                                    [(ngModel)]="registerObj.IsInchIndVfy">Incharge
+                                <mat-checkbox formControlName="Indentverify">
                                     Indent Verify</mat-checkbox>
+                                    <!-- [(ngModel)]="data.isIndentVerify" -->
+                                <mat-checkbox formControlName="IIverify">
+                                    Incharge Indent Verify</mat-checkbox>
+                                    <!-- [(ngModel)]="data.isInchIndVfy" -->
                             </div>
                         </div>
                     </div>
@@ -216,11 +194,17 @@
                             <!-- [checked] -->
                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                 class="w-100-p gap-8" fxFlex="50%">
-                                <mat-checkbox formControlName="PharExpOpt" [(ngModel)]="vPharExpOpt">PharmacyExternalopt
+                                <mat-checkbox formControlName="PharExpOpt" >
+                                    <!-- [(ngModel)]="data.PharExpOpt" -->
+                                    PharmacyExternalopt
                                 </mat-checkbox>
-                                <mat-checkbox formControlName="PharIPOpt" [(ngModel)]="vPharIPOpt">PharmacyIPDopt
+                                <mat-checkbox formControlName="PharIPOpt">
+                                    <!--  [(ngModel)]="data.PharIPOpt" -->
+                                    PharmacyIPDopt
                                 </mat-checkbox>
-                                <mat-checkbox formControlName="PharOPOpt" [(ngModel)]="vPharOPOpt">PharmacyOPDopt
+                                <mat-checkbox formControlName="PharOPOpt">
+                                    <!--  [(ngModel)]="data.PharOPOpt" -->
+                                    PharmacyOPDopt
                                 </mat-checkbox>  
                             </div>
                         </div>
@@ -235,35 +219,29 @@
                             <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid"> -->
                                 <div class="icon-info-col " fxLayout="row wrap" style="row-gap: 4px;">
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="CollectionInformation"
-                                            [(ngModel)]="registerObj.IsCollection">
+                                        <mat-checkbox formControlName="CollectionInformation">
                                             Daily Dashboard</mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="PatientInformation"
-                                            [(ngModel)]="registerObj.IsPatientInfo">
+                                        <mat-checkbox formControlName="PatientInformation" >
                                             PatientInformation</mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="BedStatus"
-                                            [(ngModel)]="registerObj.IsBedStatus">
+                                        <mat-checkbox formControlName="BedStatus">
                                             Bed Occupaincy Dashboard</mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%"> 
-                                        <mat-checkbox formControlName="IsPharmacyBalClearnace"
-                                            [(ngModel)]="registerObj.IsPharmacyBalClearnace">
+                                        <mat-checkbox formControlName="IsPharmacyBalClearnace">
                                             Is Pharmacy Bal Clearnace
                                         </mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="CurrentStock"
-                                            [(ngModel)]="registerObj.IsCurrentStk">
+                                        <mat-checkbox formControlName="CurrentStock">
                                             Pharmacy Dashboard
                                         </mat-checkbox>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
-                                        <mat-checkbox formControlName="IsAddChargeDelete"
-                                            [(ngModel)]="registerObj.AddChargeIsDelete">
+                                        <mat-checkbox formControlName="IsAddChargeDelete">
                                             IsAddChargeDelete
                                         </mat-checkbox>
                                     </div>
@@ -272,7 +250,6 @@
                                     <airmid-textbox 
                                         label="BrowseDays" 
                                         formControlName="browseDay" 
-                                        [value]="data?.mobileNo" 
                                         [formGroup]="myuserform" 
                                         [validations]="getValidationMessages().mobileNo" 
                                         [maxLength]="30">

@@ -11,6 +11,7 @@
         </mat-toolbar>
     
         <mat-tab-group>
+            <!-- 1st -->
             <mat-tab label="Bill Cancellation">
                 <div fusePerfectScrollbar
                     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -26,17 +27,10 @@
                         <airmid-table [gridConfig]="gridConfig" class="content">
                             <ng-container filters>
     
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a Date Range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                            placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field> 
+                                <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                [(toValue)]="gridConfig.filters[0].fieldValue">
+                            </airmid-datepicker>
                                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Registration No</mat-label>
@@ -77,13 +71,86 @@
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
+
+                                <form [formGroup]="_CancellationService.UserFormGroup" >
+                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
+                                        <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
+                                            <mat-label>Type : </mat-label>
+                                            <div>
+                                                <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPDBillsList()">
+                                                    OPD
+                                                </mat-radio-button>
+                                                <mat-radio-button value="1" (click)="getIpdBillList()">
+                                                    IPD
+                                                </mat-radio-button>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div>
+                                </form>
                             </ng-container>
                         </airmid-table>
                     </div>
                 </div>
             </mat-tab>
 
-            <!-- 2nd -->
+             <!-- 2nd -->
+         <mat-tab label="Advance List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <mat-toolbar class="top-header accent">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            Advance List
+                        </span>
+                    </div>
+                </mat-toolbar>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig1" class="content">
+                        <ng-container filters>
+
+                            <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[0].fieldValue">
+                        </airmid-datepicker>
+                            
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Registration No</mat-label>
+                                <input matInput placeholder="Search Registration No" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[1].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[2].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="gridConfig.filters[3].fieldValue=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+            <!-- 3nd -->
                 <mat-tab label="Refund Of Bill">
                     <div fusePerfectScrollbar
                         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -96,20 +163,13 @@
                             </div>
                         </mat-toolbar>
                         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                            <airmid-table [gridConfig]="gridConfig1" class="content">
+                            <airmid-table [gridConfig]="gridConfig2" class="content">
                                 <ng-container filters>
         
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Enter a Date Range</mat-label>
-                                        <mat-date-range-input [rangePicker]="picker">
-                                            <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                                placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date"
-                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                        </mat-date-range-input>
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-date-range-picker #picker></mat-date-range-picker>
-                                    </mat-form-field> 
+                                    <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                [(toValue)]="gridConfig.filters[0].fieldValue">
+                            </airmid-datepicker>
                                     
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Registration No</mat-label>
@@ -148,7 +208,7 @@
                 </mat-tab>
 
 
-                <!-- 3rd -->
+                <!-- 4rd -->
                 <mat-tab label="Refund Of Advance">
                     <div fusePerfectScrollbar
                         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -161,20 +221,13 @@
                             </div>
                         </mat-toolbar>
                         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                            <airmid-table [gridConfig]="gridConfig2" class="content">
+                            <airmid-table [gridConfig]="gridConfig3" class="content">
                                 <ng-container filters>
         
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Enter a Date Range</mat-label>
-                                        <mat-date-range-input [rangePicker]="picker">
-                                            <input matStartDate formControlName="start"  [(ngModel)]="gridConfig.filters[0].fieldValue" 
-                                                placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date"
-                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                        </mat-date-range-input>
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-date-range-picker #picker></mat-date-range-picker>
-                                    </mat-form-field> 
+                                    <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
+                                    formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                    [(toValue)]="gridConfig.filters[0].fieldValue">
+                                </airmid-datepicker>
                                     
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Registration No</mat-label>
