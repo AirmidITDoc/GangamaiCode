@@ -67,7 +67,7 @@ export class CompanysettlementService {
     }
 
     public InsertOPBillingsettlement(Param: any) {
-      return this._httpClient.PutData("OPBill/OPSettlementCreditPayment" , Param);
+      return this._httpClient.PutData("OPSettlement/InsertEDMX" , Param);
       
     }
 
