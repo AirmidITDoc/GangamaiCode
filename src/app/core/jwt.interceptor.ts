@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
     constructor(@Inject(APP_CONFIG) private config: AppConfig,
-        private _ls: LoaderService,public toastr: ToastrService,private router: Router,
+        private _ls: LoaderService, public toastr: ToastrService, private router: Router,
         private authenticationService: AuthenticationService) { }
 
     intercept(
@@ -34,7 +34,7 @@ export class JwtInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             catchError((err: HttpErrorResponse) => { // Type the error as HttpErrorResponse
                 this._ls.hide();
-                if(err.status==401){
+                if (err.status == 401) {
                     this.toastr.error(err.error.message, 'Authentication !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });

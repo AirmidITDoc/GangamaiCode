@@ -27,12 +27,12 @@ export class ApiCaller {
                 }
             }),
             catchError((err: any): any => {
-                let errorMessage = 'An unknown error occurred';
-                if (err.error instanceof ErrorEvent) {
-                    errorMessage = `Error: ${err.error.message}`;
-                } else {
-                    errorMessage = `Error Code: ${err.status}\nMessage: ${err.message}`;
-                }
+                let errorMessage = 'An unknown error occurred. Please try again after sometime';
+                // if (err.error instanceof ErrorEvent) {
+                //     errorMessage = `Error: ${err.error.message}`;
+                // } else {
+                //     errorMessage = `Error Code: ${err.status}\nMessage: ${err.message}`;
+                // }
                 this.toastr.error(errorMessage, 'Error !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
