@@ -53,12 +53,10 @@ const appRoutes: Routes = [
    },
    {
     path:"tallyinterface",
-    // loadChildren: () => import("./cancellation/cancellation.module").then((m)=>m.CancellationModule),
-    
-    loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
+    loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
    },
    {
-    path:"pharmacypayipadvmode",
+    path:"pharamacypayipadvmode", 
     loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m)=>m.PharmacypayipadvmodeModule),
    },
    {
