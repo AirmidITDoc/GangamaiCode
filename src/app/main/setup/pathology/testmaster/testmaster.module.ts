@@ -37,6 +37,7 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatBadgeModule } from "@angular/material/badge";
 import { TestmasterService } from "./testmaster.service";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const routes: Routes = [
     {
@@ -85,6 +86,7 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
+        MatTooltipModule
     ],
     providers: [DatePipe, TestmasterService]
 })

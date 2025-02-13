@@ -77,6 +77,7 @@ export class ParameterFormMasterComponent implements OnInit {
     paraId: any;
     defaultValue: any;
     vParameterId: any;
+    parameterValue:any;
 
     ChargeList: any = [];
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();

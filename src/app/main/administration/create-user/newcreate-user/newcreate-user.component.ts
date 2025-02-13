@@ -73,6 +73,7 @@ export class NewcreateUserComponent implements OnInit{
             this.vUserId = this.registerObj.UserId;
             this.vPharExpOpt = this.registerObj.PharExpOpt;
             this.vPharIPOpt = this.registerObj.PharIPOpt;
+            
             this.vPharOPOpt = this.registerObj.PharOPOpt;
             if(this.registerObj.isDiscApply == true){
               this.UserForm.get('IsDicslimit').setValue(true)

@@ -96,7 +96,8 @@ export class TestmasterService {
             TestTime: ["2022-09-10"],
             TestDate: ["2022-07-11"],
             ParameterNameSearch:[""],
-            isActive:[true,[Validators.required]]
+            isActive:[true,[Validators.required]],
+            Status:[1],
         });
     }
     /**
@@ -209,6 +210,11 @@ export class TestmasterService {
     public getTestListfor(param) {
         return this._httpClient.PostData("PathTestMaster/TestMasterList",param);
     }
+
+    // retrive subtest list
+    public getSubTestListfor(param) {
+        return this._httpClient.PostData("Pathology/PathSubtestFillList",param);
+    }
     
     public getTemplateListfor(param) {
         return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
@@ -281,8 +287,9 @@ export class TestmasterService {
     }
 
     public unitMasterUpdate(Param: any) {
-        if (Param.id) {
-         return this._httpClient.PutData("PathTestMaster/Edit/" + Param.id, Param);
+        debugger
+        if (Param.TestId) {
+         return this._httpClient.PutData("PathTestMaster/Edit/" + Param.TestId, Param);
         }
     }
 

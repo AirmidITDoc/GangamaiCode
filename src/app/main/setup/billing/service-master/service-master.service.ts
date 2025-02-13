@@ -19,40 +19,39 @@ export class ServiceMasterService {
 
     createServicemasterForm(): FormGroup {
         return this._formBuilder.group({
-            serviceId: [""],
+            ServiceId: [""],
             groupId: [""],
             GroupName: [""],
-            serviceShortDesc: ["", 
+            ServiceShortDesc: ["", 
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            serviceName: ["",
+            ServiceName: ["",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z0-9]+$")
                 ]
             ],
-            price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            isEditable: ["0"],
-            creditedtoDoctor: ["0"],
-            isPathology: ["0"],
-            isRadiology: ["0"],
+            Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            IsEditable: ["0"],
+            CreditedtoDoctor: ["0"],
+            IsPathology: ["0"],
+            IsRadiology: ["0"],
             IsDeleted: ["0"],
-            printOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            isPackage: ["0"],
-            subGroupId: [""],
-            doctorId: [""],
+            PrintOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            IsPackage: ["0"],
+            SubGroupId: [""],
             FirstName: ["", Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
-            isEmergency: true,
-            emgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            emgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            isDocEditable: true,
+            IsEmergency: true,
+            EmgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            EmgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            IsDocEditable: true,
             AddedBy: [""],
             UpdatedBy: [""],
             IsActive:[true],
-            serviceDetails: [
+            ServiceDetails: [
                 {
                     serviceDetailId : 0,
                     serviceId : 0,
@@ -61,11 +60,12 @@ export class ServiceMasterService {
                     classRate : 0
                 }
             ],
-            // tariffId: ["",
-            //     [
-            //         Validators.required
-            //     ]
-            // ],
+            DoctorId:[""],
+            tariffId: ["",
+                [
+                    // Validators.required
+                ]
+            ],
             // classId: ["0"],
             // classRate: ["0"],
             EffectiveDate: [""],
@@ -121,9 +121,13 @@ export class ServiceMasterService {
     }
 
     public serviceMasterInsert(Param: any) {
+        return this._httpClient.PostData("BillingService/InsertEDMX", Param);
+    }
+
+    public serviceMasterUpdate(Param: any) {
         if (Param.serviceId) {
-            return this._httpClient.PutData("BillingService/InsertEDMX" + Param.serviceId, Param);
-        } else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
+            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+        }
     }
 
     public getClassMasterList(param) {

@@ -198,6 +198,24 @@
                     height: 40px;
                 }
             }
+            .mat-mdc-form-field{
+                .mat-mdc-form-field-infix{
+                    padding: 0 !important;
+                    min-height: auto;
+                    width: 100%;
+                }
+                .mat-mdc-form-field-subscript-wrapper{
+                    display: none;
+                }
+            }
+            mat-footer-row{
+                mat-footer-cell{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-bottom: 1px solid $gray-400;
+                }
+            }
         }
         .table-footer-wrapper {
             display: flex;

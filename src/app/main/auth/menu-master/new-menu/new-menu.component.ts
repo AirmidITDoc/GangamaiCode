@@ -1,13 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { MenuMasterService } from '../menu-master.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
-  selector: 'app-new-menu',
-  templateUrl: './new-menu.component.html',
-  styleUrls: ['./new-menu.component.scss']
+    selector: 'app-new-menu',
+    templateUrl: './new-menu.component.html',
+    styleUrls: ['./new-menu.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewMenuComponent implements OnInit {
 
@@ -70,7 +73,7 @@ export class NewMenuComponent implements OnInit {
             "tableNames": 1
         }
 
-        console.log("BedMaster Insert:",m_data)
+        console.log("MenuMaster Insert:",m_data)
 
         this._MenuMasterService.menuMasterSave(m_data).subscribe((response) => {
         this.toastr.success(response.message);

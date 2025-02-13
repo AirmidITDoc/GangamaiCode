@@ -24,12 +24,11 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 type NewType = Observable<any[]>;
 @Component({
-  selector: 'app-refundbill',
-  templateUrl: './refundbill.component.html',
-  styleUrls: ['./refundbill.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
-  
+    selector: 'app-refundbill',
+    templateUrl: './refundbill.component.html',
+    styleUrls: ['./refundbill.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class RefundbillComponent implements OnInit {
   
@@ -273,7 +272,7 @@ export class RefundbillComponent implements OnInit {
                     "fieldValue": "1",
                     "opType": "Equals"
                     },
-                {
+                    {
                     "fieldName": "Start",
                     "fieldValue": "0",
                     "opType": "Equals"
@@ -307,6 +306,7 @@ export class RefundbillComponent implements OnInit {
   
     getservicedtailList(row) {
   debugger
+//   row.billNo=215938
       // this.vBillBalanceAmt=row.BalanceAmt;
         var m_data = {
             "first": 0,
@@ -316,7 +316,7 @@ export class RefundbillComponent implements OnInit {
             "filters": [
                 {
                 "fieldName": "BillNo",
-                "fieldValue": "215938",
+                "fieldValue": String(row.billNo),
                 "opType": "Equals"
                 },
             {

@@ -36,6 +36,20 @@ export class MenuMasterService {
                 isDisplay: true,
                 permissionCode:[""],
                 tableNames:[""],
+
+                /**
+                 * {
+  "id": 0,
+  "upId": 0,
+  "linkName": "string",
+  "icon": "string",
+  "linkAction": "string",
+  "sortOrder": 0,
+  "isDisplay": true,
+  "permissionCode": "string",
+  "tableNames": "string"
+}
+                 */
             });
     }
 
@@ -52,8 +66,8 @@ export class MenuMasterService {
 
       public menuMasterSave(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("MenuMaster" + Param.id, Param);
-        } else return this._httpClient.PostData("MenuMaster", Param);
+            return this._httpClient.PutData("LoginManager/Edit/" + Param.id, Param);
+        } else return this._httpClient.PostData("LoginManager/Insert", Param);
     }
 
     getValidationMessages() {

@@ -51,7 +51,6 @@ export class FixSupplierComponent implements OnInit
      
        ngOnInit(): void {
          this.supplierForm = this._supplierService.createSuppliermasterForm();
-        debugger
          if ((this.data?.supplierId??0) > 0) {
            
             this.isActive = this.data.isActive;

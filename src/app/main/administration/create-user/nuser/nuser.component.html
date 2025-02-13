@@ -1,0 +1,305 @@
+<!-- New -->
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New User Details</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myuserform">
+                <input type="hidden" name="userId" formControlName="userId">
+                <div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown 
+                                label="UnitName" 
+                                formControlName="roomId"
+                                [value]="data?.roomId" 
+                                [formGroup]="myuserform"
+                                [validations]="getValidationMessages().roomId"
+                                [mode]="autocompleteModeUnitName"
+                                (selectDdlObject)="selectChangeUnitName($event)">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="MobileNo" 
+                                formControlName="mobileNo" 
+                                [value]="data?.mobileNo" 
+                                [formGroup]="myuserform" 
+                                [validations]="getValidationMessages().mobileNo" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="FirstName" 
+                                formControlName="firstName" 
+                                [value]="data?.firstName" 
+                                [formGroup]="myuserform" 
+                                [validations]="getValidationMessages().firstName" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="LastName" 
+                                formControlName="lastName" 
+                                [value]="data?.lastName" 
+                                [formGroup]="myuserform" 
+                                [validations]="getValidationMessages().lastName" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="UserName" 
+                                formControlName="userName" 
+                                [value]="data?.userName" 
+                                [formGroup]="myuserform" 
+                                [validations]="getValidationMessages().userName" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="PassWord" 
+                                formControlName="password" 
+                                [value]="data?.password" 
+                                [formGroup]="myuserform" 
+                                [validations]="getValidationMessages().password" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="MailID" 
+                                formControlName="mailId" 
+                                [value]="data?.mailId" 
+                                [formGroup]="myuserform" 
+                                [validations]="getValidationMessages().mailId" 
+                                [maxLength]="30">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown 
+                                label="RoleName" 
+                                formControlName="roleId"
+                                [value]="data?.roleId" 
+                                [formGroup]="myuserform"
+                                [validations]="getValidationMessages().roleId"
+                                [mode]="autocompleteModeRoleName"
+                                (selectDdlObject)="selectChangeRoleName($event)">
+                            </airmid-dropdown>
+                        </div>
+                    </div>
+                   
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown 
+                                label="StoreName" 
+                                formControlName="storeId"
+                                [value]="data?.storeId" 
+                                [formGroup]="myuserform"
+                                [validations]="getValidationMessages().storeId"
+                                [mode]="autocompleteModeStoreName"
+                                (selectDdlObject)="selectChangeStoreName($event)">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown 
+                                label="WebRoleName" 
+                                formControlName="webRoleId"
+                                [value]="data?.webRoleId" 
+                                [formGroup]="myuserform"
+                                [validations]="getValidationMessages().webRoleId"
+                                [mode]="autocompleteModeWebRoleName"
+                                (selectDdlObject)="selectChangeWebRoleName($event)">
+                            </airmid-dropdown>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" >
+                            <mat-checkbox formControlName="IsDoctor" (change)="chkdoctor($event)" 
+                            [(ngModel)]="registerObj.DoctorID" style="padding: 10px;">IsDoctor
+                            </mat-checkbox>&nbsp;
+                            
+                            <mat-form-field appearance="outline" fxFlex *ngIf="docflag">
+                                <mat-label>DocotorName</mat-label>
+                                <input matAutocompletePosition="below" type="text"
+                                    placeholder="Select RoleName" matInput #docname
+                                    formControlName="DoctorID" [matAutocomplete]="autoDocName" required
+                                    (keydown)="onEnterdocName($event)">
+                                <span matSuffix style="display: flex;">
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="myuserform.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
+                                    <mat-icon class="mat-icon-close"
+                                        (click)="myuserform.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
+                                </span>
+                                <mat-autocomplete #autoDocName="matAutocomplete"
+                                    [displayWith]="getOptionTextDoctorName">
+                                    <mat-option *ngFor="let option of filteredOptionsDoctorName| async"
+                                        [value]="option">
+                                        {{option.Doctorname}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%" >
+                            <mat-checkbox formControlName="IsDicslimit" (change)="chkDiscLimit($event)" 
+                                    style="padding: 10px;">IsDiscountLimit
+                            </mat-checkbox>&nbsp;
+                            
+                            <mat-form-field appearance="outline" fxFlex *ngIf="DisclimitFlag">
+                                <mat-label>Discount %</mat-label>
+                                <input matAutocompletePosition="below" type="text" matInput  
+                                    formControlName="DiscLimitPer" (keyup)="chkdisclimit()"> 
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="user-form-col py-12" fxLayout="column">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                            <!-- [checked] -->
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                class="w-100-p gap-8">
+                                <mat-checkbox formControlName="Grnverify"
+                                    [(ngModel)]="registerObj.IsGRNVerify">GRN
+                                    Verify</mat-checkbox>
+                                <mat-checkbox formControlName="Poverify"
+                                    [(ngModel)]="registerObj.IsPOVerify">PO
+                                    Verify</mat-checkbox>
+                                <mat-checkbox formControlName="Ipoverify"
+                                    [(ngModel)]="registerObj.isPOInchargeVerify">Incharge
+                                    PO Verify</mat-checkbox>
+                               
+                                <mat-checkbox formControlName="Indentverify"
+                                    [(ngModel)]="registerObj.IsIndentVerify">Indent
+                                    Verify</mat-checkbox>
+                                <mat-checkbox formControlName="IIverify"
+                                    [(ngModel)]="registerObj.IsInchIndVfy">Incharge
+                                    Indent Verify</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <hr> 
+                    <div class="user-form-col py-12" fxLayout="column">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                            <!-- [checked] -->
+                            <div fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                class="w-100-p gap-8" fxFlex="50%">
+                                <mat-checkbox formControlName="PharExpOpt" [(ngModel)]="vPharExpOpt">PharmacyExternalopt
+                                </mat-checkbox>
+                                <mat-checkbox formControlName="PharIPOpt" [(ngModel)]="vPharIPOpt">PharmacyIPDopt
+                                </mat-checkbox>
+                                <mat-checkbox formControlName="PharOPOpt" [(ngModel)]="vPharOPOpt">PharmacyOPDopt
+                                </mat-checkbox>  
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="user-form-col py-12" fxLayout="column">
+                        <div class="user-form-col-content">
+                            <div class="icon-info-title mb-3">
+                                <mat-label class="h4 mb-2"> Icon Info.</mat-label>
+                            </div>
+                            <div class="icon-info-row" fxLayout="column" fxLayout.gt-xs="row">
+                            <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid"> -->
+                                <div class="icon-info-col " fxLayout="row wrap" style="row-gap: 4px;">
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-checkbox formControlName="CollectionInformation"
+                                            [(ngModel)]="registerObj.IsCollection">
+                                            Daily Dashboard</mat-checkbox>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-checkbox formControlName="PatientInformation"
+                                            [(ngModel)]="registerObj.IsPatientInfo">
+                                            PatientInformation</mat-checkbox>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-checkbox formControlName="BedStatus"
+                                            [(ngModel)]="registerObj.IsBedStatus">
+                                            Bed Occupaincy Dashboard</mat-checkbox>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%"> 
+                                        <mat-checkbox formControlName="IsPharmacyBalClearnace"
+                                            [(ngModel)]="registerObj.IsPharmacyBalClearnace">
+                                            Is Pharmacy Bal Clearnace
+                                        </mat-checkbox>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-checkbox formControlName="CurrentStock"
+                                            [(ngModel)]="registerObj.IsCurrentStk">
+                                            Pharmacy Dashboard
+                                        </mat-checkbox>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-checkbox formControlName="IsAddChargeDelete"
+                                            [(ngModel)]="registerObj.AddChargeIsDelete">
+                                            IsAddChargeDelete
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <div class="icon-info-col" fxLayoutGap="50px">
+                                    <airmid-textbox 
+                                        label="BrowseDays" 
+                                        formControlName="browseDay" 
+                                        [value]="data?.mobileNo" 
+                                        [formGroup]="myuserform" 
+                                        [validations]="getValidationMessages().mobileNo" 
+                                        [maxLength]="30">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="modal-footer-actins">
+                            <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myuserform" [(ngModel)]="isActive"></app-airmid-slider>
+                        </div>
+                        <div class="modal-footer-buttons">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

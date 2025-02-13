@@ -73,10 +73,11 @@ export class PrefixMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrefixComponent,
             {
-                maxWidth: "45vw",
-                height: '35%',
-                width: '70%',
+                maxWidth: "100vw",
+                maxHeight: '95vh',
+                width: '50%',
                 data: row
+
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {

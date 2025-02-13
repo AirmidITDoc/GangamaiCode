@@ -19,6 +19,7 @@
             <form [formGroup]="patienttypeForm">
                 <input type="hidden" name="patientTypeId" formControlName="patientTypeId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex>
                         <airmid-textbox 
                             label="Patient Type Name"
                             formControlName="patientType"
@@ -27,6 +28,7 @@
                             [validations]="getValidationMessages().patientType"
                             [maxLength]="50">
                         </airmid-textbox> 
+                    </div>
                 </div>
 
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">

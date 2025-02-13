@@ -7,6 +7,8 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import Swal from "sweetalert2";
 import { ServerMonitoringService } from "app/core/services/servermonitoring.service";
 import { setInterval, setTimeout } from "timers";
+import { MatDialog } from "@angular/material/dialog";
+import { AppointmentBillingComponent } from "app/main/opd/appointment-list/appointment-billing/appointment-billing.component";
 
 @Component({
     selector: "login",
@@ -29,7 +31,8 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
-        private serverMonitoringService: ServerMonitoringService
+        private serverMonitoringService: ServerMonitoringService,
+        private _matDialog: MatDialog
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -81,7 +84,7 @@ export class LoginComponent implements OnInit {
         }
         this.authenticationService.login(this.obj).subscribe(
             (data) => {
-                if ((data?.userId??0) >0) {
+                if ((data?.userId ?? 0) > 0) {
                     this.router.navigate([this.returnUrl]);
                 }
                 else {
