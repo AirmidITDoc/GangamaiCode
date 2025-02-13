@@ -245,6 +245,11 @@ export class AppointmentlistService {
         return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
     }
 
+    
+    public getRegVisitdetail(keyword) {
+        return this._httpClient1.GetData("VisitDetail/search-patient?Keyword=" + keyword);
+    }
+
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
       }
@@ -254,8 +259,8 @@ export class AppointmentlistService {
       public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
     }
-
+ // Get billing Service List 
+ public getBillingServiceList(employee) {
+   return this._httpClient1.PostData("BillingService/BillingList", employee)
 }
-
-//192.168.2.100:
-// "url": "http://192.168.2.100:9090/api"
+}

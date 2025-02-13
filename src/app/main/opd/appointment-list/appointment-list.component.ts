@@ -586,6 +586,9 @@ export class Regdetail {
     VisitId: any;
     WardId: any;
     BedId: any;
+    companyId:any;
+    tarrifId:any;
+    departmentId:any;
     /**
      * Constructor
      *
@@ -635,6 +638,9 @@ export class Regdetail {
             this.VisitId = RegInsert.VisitId || 0;
             this.WardId = RegInsert.WardId || 0;
             this.BedId = RegInsert.BedId || 0;
+            this.companyId=RegInsert.companyId || 0;
+            this.tarrifId=RegInsert.tarrifId || 0;
+            this.departmentId=RegInsert.departmentId || 0;
         }
     }
 }
