@@ -21,66 +21,73 @@ import { ToastrService } from 'ngx-toastr';
     animations: fuseAnimations
 })
 export class PhoneappointmentComponent implements OnInit {
-    myFilterform:FormGroup;
+    myFilterform: FormGroup;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd") 
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     DoctorId = "0";
     autocompleteModedeptdoc: string = "ConDoctor";
 
-     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-        @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
 
     ngAfterViewInit() {
         // Assign the template to the column dynamically
-        this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
         // this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template1 = this.actionsflgBillNo;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
     }
     gridConfig: gridModel = {
         apiUrl: "PhoneAppointment2/PhoneAppList",
         columnsList: [
-             { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template,width:150 },
-            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "-", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
+            { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left"},
-            { heading: "Doctor Name", key: "doctorName",  emptySign: 'NA',align: "left"},
-            
+            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Department", key: "departmentName", emptySign: 'NA', align: "left" },
+            { heading: "Doctor Name", key: "doctorName", emptySign: 'NA', align: "left" },
             {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    // {
-                    //     action: gridActions.edit, callback: (data: any) => {
-                    //         this.onSave(data);
-                    //     }
-                    // },
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.Appprint(data);
-                        }
-                    },
-                    {
-                        action: gridActions.whatsapp, callback: (data: any) => {
-                            this.whatsappAppoitment(data);
-                        }
-                    },
-                                      
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                            let s={
-                                phoneAppId:data.phoneAppId
-                            }
-                            this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
+                heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
+            // {
+            //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+            //         {
+            //             action: gridActions.edit, callback: (data: any) => {
+            //                 this.onSave(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.print, callback: (data: any) => {
+            //                 this.Appprint(data);
+            //             }
+            //         },
+            //         {
+            //             action: gridActions.whatsapp, callback: (data: any) => {
+            //                 this.whatsappAppoitment(data);
+            //             }
+            //         },
+
+            //         {
+            //             action: gridActions.delete, callback: (data: any) => {
+            //                 debugger
+            //                 let s={
+            //                     phoneAppId:data.phoneAppId
+            //                 }
+            //                 this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
+            //                     this.toastr.success(response.message);
+            //                     this.grid.bindGridData();
+            //                 });
+            //             }
+            //         }]
+            // } //Action 1-view, 2-Edit,3-delete
         ],
         sortField: "phoneAppId",
         sortOrder: 0,
@@ -89,10 +96,10 @@ export class PhoneappointmentComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
-            
+
         ],
         row: 25
     }
@@ -105,11 +112,11 @@ export class PhoneappointmentComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.myFilterform=this._PhoneAppointListService.filterForm();
+        this.myFilterform = this._PhoneAppointListService.filterForm();
     }
 
 
-    changeStatus(status: any) {}
+    changeStatus(status: any) { }
     onChangeStartDate(value) {
         this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
@@ -149,7 +156,15 @@ export class PhoneappointmentComponent implements OnInit {
         };
     }
 
-    Appprint(data){}
-    Appointmentcancle(data){}
-    whatsappAppoitment(data){}
+    OnViewReportPdf(data) { }
+    Appointmentcancle(data) {
+        let s = {
+            phoneAppId: data.phoneAppId
+        }
+        this._PhoneAppointListService.phoneMasterCancle(s).subscribe((response: any) => {
+            this.toastr.success(response.message);
+            this.grid.bindGridData();
+        });
+    }
+    whatsappAppoitment(data) { }
 }

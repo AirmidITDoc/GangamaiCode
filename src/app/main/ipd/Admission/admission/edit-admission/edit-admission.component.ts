@@ -119,6 +119,19 @@ export class EditAdmissionComponent implements OnInit {
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
+          if(this.registerObj1){
+            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
+
+
+          this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+     
+
+            
+
+
+          }
           console.log(this.registerObj1)
 
         });
@@ -165,26 +178,26 @@ export class EditAdmissionComponent implements OnInit {
   OnSaveAdmission() {
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
    console.log(this.admissionFormGroup.value)
-   console.log(this.admissionFormGroup.value)
-    if (this.patienttype != 2) {
-      this.CompanyId = 0;
-      this.SubCompanyId = 0;
-    } else if (this.patienttype == 2) {
+   
+    // if (this.patienttype != 2) {
+    //   this.CompanyId = 0;
+    //   this.SubCompanyId = 0;
+    // } else if (this.patienttype == 2) {
 
-      this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
-      this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
+    //   this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
+    //   this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
 
-      if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
-        this.toastr.warning('Please select Company.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    debugger
-    if (!this.admissionFormGroup.invalid) {
+    //   if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
+    //     this.toastr.warning('Please select Company.', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
+    // debugger
+    // if (!this.admissionFormGroup.invalid) {
     console.log(this.registerObj)
-    console.log(this.admissionFormGroup.value)
+    
 
     let submitData = {
       "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
@@ -200,9 +213,9 @@ export class EditAdmissionComponent implements OnInit {
       this.toastr.error(error.message);
 
     });
-  }else{
-    Swal.fire("Enter All values ...Form Is Invalid")
-  }
+  // }else{
+  //   Swal.fire("Enter All values ...Form Is Invalid")
+  // }
 
   }
 
@@ -259,7 +272,9 @@ export class EditAdmissionComponent implements OnInit {
       ],
     };
   }
-  Close() { }
+  Close() { 
+    this._matDialog.closeAll();
+  }
   onClear() { }
 
 

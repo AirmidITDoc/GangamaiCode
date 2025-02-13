@@ -34,8 +34,6 @@ export class BedTransferComponent implements OnInit {
   vClassId: any=0; 
   AdmissionId=0
   
-  
-
   menuActions: Array<string> = [];
   advanceAmount: any = 12345;
 
@@ -56,7 +54,7 @@ export class BedTransferComponent implements OnInit {
 
   ngOnInit(): void {
     debugger
-    // this.Bedtransfer = this.bedsaveForm();
+    this.Bedtransfer = this.bedsaveForm();
     if(this.data){
     console.log("Data:",this.data);
     

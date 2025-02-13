@@ -34,6 +34,7 @@ import { AirmidTable1Component } from 'app/main/shared/componets/airmid-table1/a
 import { AppointmentBillingComponent } from './appointment-billing/appointment-billing.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { forEach } from 'lodash';
+import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -74,8 +75,9 @@ export class AppointmentListComponent implements OnInit {
         this.myformSearch = this._AppointmentlistService.filterForm();
 
         // menu Button List
-        this.menuActions.push("Change Consultant Doctor");
-        this.menuActions.push("Change Refer Doctor");
+        this.menuActions.push("Update Consultant Doctor");
+        this.menuActions.push("Update Referred Doctor");
+        this.menuActions.push("Medical Record");
         this.Appointdetail(this.gridConfig)
 
     }
@@ -214,7 +216,7 @@ export class AppointmentListComponent implements OnInit {
 
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
-        if (m == "Change Consultant Doctor") {
+        if (m == "Update Consultant Doctor") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
@@ -232,7 +234,7 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-        else if (m == "Change Refer Doctor") {
+        else if (m == "Update Referred Doctor") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
@@ -242,6 +244,24 @@ export class AppointmentListComponent implements OnInit {
                     maxWidth: "70vw",
                     height: "390px",
                     width: "50%",
+                    data: element
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    that.grid.bindGridData();
+                }
+            });
+        }
+        else if (m == "Medical Record") {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            let that = this;
+            const dialogRef = this._matDialog.open(NewCasepaperComponent,
+                {
+                    maxWidth: "90vw",
+                    height: "890px",
+                    width: "100%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {

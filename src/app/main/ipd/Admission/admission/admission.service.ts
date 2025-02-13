@@ -99,10 +99,10 @@ export class AdmissionService {
             MaritalStatusId:0,
             ReligionId: 0,
             AreaId: 0,
-            CityId: [0, [Validators.required]],
+            CityId: ['', [Validators.required]],
             City: [''],
-            StateId:  [0, [Validators.required]],
-            CountryId:  [0, [Validators.required]],
+            StateId:  ['', [Validators.required]],
+            CountryId:  [1, [Validators.required]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: 1,
@@ -162,7 +162,7 @@ export class AdmissionService {
 
             wardId: [0, [Validators.required]],
             bedId: [0, [Validators.required]],
-            // ClassId: ['', [Validators.required]],
+            
             unitId:1,
 
             IsMLC: [false],

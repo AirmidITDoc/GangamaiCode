@@ -55,29 +55,31 @@
                             </mat-form-field>
 
                         </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="First Name" formControlName="firstName"
                                 [value]="registerObj.firstName" [formGroup]="phoneappForm"
-                                [validations]="getValidationMessages().firstName" [maxLength]="10">
+                                [validations]="getValidationMessages().firstName" [maxLength]="50">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Middle Name" formControlName="middleName"
                                 [value]="registerObj.middleName" [formGroup]="phoneappForm"
-                                [validations]="getValidationMessages().middleName" [maxLength]="10">
+                                [validations]="getValidationMessages().middleName" [maxLength]="50">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Last Name" formControlName="lastName" [value]="registerObj.lastName"
                                 [formGroup]="phoneappForm" [validations]="getValidationMessages().lastName"
-                                [maxLength]="10">
+                                [maxLength]="50">
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm"
-                                [validations]="getValidationMessages().address" [maxLength]="10">
+                            <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm" [value]="registerObj.address"
+                                [validations]="getValidationMessages().address" [maxLength]="100">
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

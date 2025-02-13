@@ -40,9 +40,9 @@
           </div>
           <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
 
-            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" fxFlex="50%"
+            <airmid-autocomplete lbl="RgId" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" fxFlex
               placeholderText="Enter Patient Name" ApiUrl="OutPatient/auto-complete?Keyword="
-              (selectionChange)="getSelectedObj($event)" fxFlex="50%"></airmid-autocomplete>
+              (selectionChange)="getSelectedObj($event)" ></airmid-autocomplete>
 
             <airmid-dropdown label="HospitalId" formControlName="HospitalId" [formGroup]="searchFormGroup"
               [validations]="getValidationMessages().HospitalId" [mode]="autocompleteModehospital">

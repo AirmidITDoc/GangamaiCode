@@ -50,15 +50,16 @@ export class NewOPListComponent implements OnInit {
 
     ]
 
-     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+     @ViewChild('actionsTemplate') actionsTemplate1!: TemplateRef<any>;
+     @ViewChild('actionsTemplate') actionsTemplate2!: TemplateRef<any>;
         @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
         // @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
         // @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
     
         ngAfterViewInit() {
             // Assign the template to the column dynamically
-            this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate;
-            this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
+            this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+            this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate2;
             // this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.actionsTemplate;
             this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
             // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
@@ -70,8 +71,12 @@ export class NewOPListComponent implements OnInit {
 
         apiUrl: "VisitDetail/OPBillList",
         columnsList: [
-            { heading: "Patient", key: "patientType", sort: true, align: 'left',type: gridColumnTypes.template, emptySign: 'NA',},
-            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,},
+            { heading: "Patient", key: "patientType", sort: true, align: 'left',type: gridColumnTypes.template, emptySign: 'NA',
+                template: this.actionsTemplate1
+            },
+            { heading: "BillCancelled", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,
+                template: this.actionsTemplate2
+            },
             // { heading: "-", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' ,type: gridColumnTypes.template,},
              { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
             { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },

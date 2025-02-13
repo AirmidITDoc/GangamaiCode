@@ -1,7 +1,7 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
 
 
-    <ng-template #actionsTemplate let-element>
+    <ng-template #actionsTemplate1 let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
 
             <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew"
@@ -9,6 +9,18 @@
             <mat-icon *ngIf="element.patientOldNew=='2'" matTooltip="PatientOld" class="pill orange-600 s-16">circle
             </mat-icon>
         </div>
+        <!-- <div>
+            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Bill IsCancelled" class="mat-warn">circle</mat-icon>
+
+            <mat-icon style=" border: black 1px solid;" *ngIf="element.isCancelled=='0' "
+                matTooltip="Bill Not Generated" class="mat-accent">
+                circle
+            </mat-icon>
+        </div> -->
+    </ng-template>
+
+    <ng-template #actionsTemplate2 let-element>
+       
         <div>
             <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Bill IsCancelled" class="mat-warn">circle</mat-icon>
 

@@ -121,7 +121,7 @@ export class AdmissionComponent implements OnInit {
   nowdate = new Date();
   firstDay = new Date(this.nowdate.getFullYear(), this.nowdate.getMonth(), 1);
 
-  fromDate = this.datePipe.transform(this.firstDay, 'dd/MM/yyyy');
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
   autocompleteModedeptdoc: string = "ConDoctor";
@@ -587,20 +587,16 @@ debugger
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "90vw",
-        height: '750px',
+        height: '550px',
         width: '100%',
         data: row
-        //  {
-        //   data: row,
-        //   Submitflag: true
-        // }
-      });
+             });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
 
 
     });
-
+    this.grid.bindGridData();
   }
   getEditAdmission(row) {
 
@@ -620,7 +616,7 @@ debugger
       console.log('The dialog was closed - Insert Action', result);
 
     });
-
+    this.grid.bindGridData();
   }
 
   getEditCompany(row) {
@@ -657,7 +653,7 @@ debugger
     const dialogRef = this._matDialog.open(BedTransferComponent,
       {
         maxWidth: "70vw",
-        height: '540px',
+        height: '640px',
         width: '100%',
         data: row
       });
@@ -748,7 +744,7 @@ debugger
 
     });
 
-
+    this.grid.bindGridData();
   }
 }
 
@@ -951,6 +947,7 @@ export class AdmissionPersonlModel {
   docNameId: any;
   mobileNo: any;
   admissionTime:any;
+  dischargeTime:any;
   /**
 * Constructor
 *
@@ -1134,6 +1131,7 @@ export class AdmissionPersonlModel {
       this.regId = AdmissionPersonl.regId || 0
       this.mobileNo = AdmissionPersonl.mobileNo || ''
       this.admissionId=AdmissionPersonl.admissionId ||0
+      this.dischargeTime  =AdmissionPersonl.dischargeTime ||''
 
     }
   }

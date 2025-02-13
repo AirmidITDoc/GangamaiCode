@@ -7,6 +7,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ChargesList } from '../../OPBilling/new-opbilling/new-opbilling.component';
 import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from '../../registration/registration.component';
+import { AppointmentlistService } from '../appointmentlist.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -17,42 +20,42 @@ import { ToastrService } from 'ngx-toastr';
 export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public subscription: Array<Subscription> = [];
     // For testing purpose
-    public serviceNames: string[] = ['Blood Test', 'X-Ray', 'MRI Scan', 'CT Scan', 'Ultrasound', 'ECG', 'Physical Therapy', 'General Checkup', 'Dental Cleaning'];
+//   /  public serviceNames: string[] = ['Blood Test', 'X-Ray', 'MRI Scan', 'CT Scan', 'Ultrasound', 'ECG', 'Physical Therapy', 'General Checkup', 'Dental Cleaning'];
 
-    // For testing purpose
-    public patientDetail: any = {
-        "visitId": 226469,
-        "regId": 1,
-        "patientName": "Mr. Newcs S Malakedakar",
-        "prefixId": 1,
-        "aadharCardNo": "222222222222",
-        "dateofBirth": "1993-02-08T12:23:29.437",
-        "address": "A/P:Vijayapur",
-        "maritalStatusId": 5,
-        "firstName": "Newcs",
-        "middleName": "S",
-        "lastName": "Malakedakar",
-        "visitDate": "2025-01-22T10:28:00",
-        "dVisitDate": "22/01/2025",
-        "visitTime": " 10:28AM",
-        "hospitalId": 1,
-        "hospitalName": "JSS SUPER SPECIALITY HOSPITAL",
-        "patientTypeId": 1,
-        "patientType": "Self",
-        "vistDateTime": "22/01/2025  10:28AM",
-        "opdNo": "OP-20033",
-        "tariffId": 1,
-        "tariffName": "Hospital",
-        "departmentId": 2,
-        "appPurposeId": 0,
-        "companyId": 1,
-        "companyName": "Haire",
-        "phoneAppId": 0,
-        "crossConsulFlag": 1,
-        "mPbillNo": "0",
-        "patientOldNew": 0
-    };
-    public filteredOptionsService: Array<any> = [];
+   //new
+   ServiceList: any = [];
+   CreditedtoDoctor: any;
+ IsPathology: any;
+ IsRadiology: any;
+ isLoading: String = '';
+ vIsPackage: any;
+ vPrice = '0';
+ vQty: any;
+ vChargeTotalAmount: any = 0;
+ vDoctor: any;
+ SrvcName1: any = ""
+ vCahrgeNetAmount: any;
+ serviceId: any;
+ VchargeDiscPer: any;
+ vchargeDisAmount: any;
+ DoctornewId: any;
+ ChargesDoctorname: any;
+ vClassName: any;
+ filteredOptionsService: any;
+ vFinalConcessionAmt:any;
+ FinalNetAmt:any;
+ vFinalconcessionDiscPer:any;
+ vFinalTotalAmt:any;
+ patientDetail = new RegInsert({});
+ patientDetail1 = new RegInsert({});
+RegId=0
+Consessionres: boolean = false;
+autocompleteModeCashcounter: string = "CashCounter";
+autocompleteModedeptdoc: string = "ConDoctor";
+autocompleteModeService: string = "Service";
+autocompleteModeConcession: string = "Concession";
+public dataSource = new MatTableDataSource<any>();
+    // public filteredOptionsService: Array<any> = [];
 
     public searchForm!: FormGroup;
     public chargeForm!: FormGroup;
@@ -75,13 +78,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public serviceList: ChargesList[] = [];
 
     // public filteredServices: string[] = [];
-    public filteredServices$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(this.serviceNames);
+    // public filteredServices$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(this.serviceNames);
 
 
 
 
     // Total amounts
-    constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder, private toastrService: ToastrService) { }
+    constructor(private _matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, 
+    public _AppointmentlistService: AppointmentlistService,private dialogRef: MatDialogRef<AppointmentBillingComponent>, private formBuilder: FormBuilder, private toastrService: ToastrService) { }
 
     ngOnInit() {
         this.searchForm = this.createSearchForm();
@@ -159,11 +163,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         const serviceNameValue = this.chargeForm.get('serviceName')?.value || '';
         const filterValue = serviceNameValue.toLowerCase();
 
-        const filteredList = this.serviceNames.filter(service =>
-            service.toLowerCase().includes(filterValue)
-          );
+        // const filteredList = this.serviceNames.filter(service =>
+        //     service.toLowerCase().includes(filterValue)
+        //   );
       
-          this.filteredServices$.next(filteredList);
+        //   this.filteredServices$.next(filteredList);
         //   console.log("Service Change", { filteredServices: filteredList, filterValue });
     }
 
@@ -250,7 +254,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     createChargeForm() {
         return this.formBuilder.group({
             serviceName: ['', Validators.required],
-            price: [100, [Validators.required]],
+            price: [0, [Validators.required]],
             qty: [0, [Validators.required, Validators.min(1)]],
             totalAmount: [0,],
             discountPer: [0, [Validators.min(0), Validators.max(100)]],
@@ -279,7 +283,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
             // Create a new row of data
             const newRow = {
-                ServiceName: formValue.serviceName,
+                ServiceName: formValue.serviceName.serviceName,
                 Price: formValue.price,
                 Qty: formValue.qty,
                 TotalAmt: totalAmount,
@@ -391,7 +395,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     resetForm(): void {
         this.chargeForm.reset({
             serviceName: 'Default service name for testing',
-            price: 100,
+            price: 0,
             qty: 0,
             totalAmount: 0,
             discountPer: 0,
@@ -410,4 +414,115 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.subscription.forEach(s => s.unsubscribe());
         }
     }
+
+      //service list 
+      getServiceListCombobox() {
+        debugger
+        let sname = this.chargeForm.get('serviceName').value + '%' || '%'
+        var m_data = {
+    
+          "first": 0,
+          "rows": 100,
+          "sortField": "ServiceId",
+          "sortOrder": 0,
+          "filters": [
+            { "fieldName": "ServiceName", "fieldValue": sname, "opType": "StartsWith" },
+            { "fieldName": "TariffId", "fieldValue": "0", "opType": "Equals" },
+            { "fieldName": "GroupId", "fieldValue": "0", "opType": "Equals" },
+            { "fieldName": "Start", "fieldValue": "0", "opType": "Equals" },
+            { "fieldName": "Length", "fieldValue": "30", "opType": "Equals" }
+          ],
+          "exportType": "JSON"
+        }
+    
+        console.log(m_data)
+    
+        this._AppointmentlistService.getBillingServiceList(m_data).subscribe(data => {
+          this.filteredOptionsService = data.data;
+          this.ServiceList = data.data;
+    
+        //   if (this.filteredOptionsService.length == 0) {
+        //     this.noOptionFound = true;
+        //   } else {
+        //     this.noOptionFound = false;
+        //   }
+        });
+    
+    
+      }
+      
+      getSelectedserviceObj(obj) {
+        if (this.dataSource.data.length > 0) {
+          this.dataSource.data.forEach((element) => {
+            if (obj.serviceId == element.serviceId) {
+    
+              Swal.fire('Selected Item already added in the list ');
+    
+            //   this.onClearServiceAddList();
+            }
+    
+          });
+        } else {
+          console.log(obj)
+    
+          this.SrvcName1 = obj.serviceName;
+          this.vPrice = obj.price;
+          this.vQty = 1;
+          this.vChargeTotalAmount = obj.price;
+          this.vCahrgeNetAmount = obj.price;
+          this.serviceId = obj.serviceId;
+          this.IsPathology = obj.isPathology;
+          this.IsRadiology = obj.isRadiology;
+          this.vIsPackage = obj.IsPackage;
+          this.CreditedtoDoctor = obj.creditedtoDoctor;
+        //   if (this.CreditedtoDoctor == true) {
+        //     this.isDoctor = true;
+        //     this.registeredForm.get('DoctorID').reset();
+        //     this.registeredForm.get('DoctorID').setValidators([Validators.required]);
+        //     this.registeredForm.get('DoctorID').enable();
+    
+        //   } else {
+        //     this.isDoctor = false;
+        //     this.registeredForm.get('DoctorID').reset();
+        //     this.registeredForm.get('DoctorID').clearValidators();
+        //     this.registeredForm.get('DoctorID').updateValueAndValidity();
+        //     this.registeredForm.get('DoctorID').disable();
+        //   }
+        }
+    
+    
+      }
+    
+    getOptionText(option) {
+    
+        return option && option.serviceName ? option.serviceName : '';
+      }
+
+      //reglist
+      getSelectedObj(obj) {
+       if ((obj.value ?? 0) > 0) {
+            console.log(this.data)
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(obj.value).subscribe((response) => {
+                    this.patientDetail = response;
+                    console.log(this.patientDetail)
+                });
+
+            }, 500);
+
+            // setTimeout(() => {
+            //     this._AppointmentlistService.getVisitById(obj.value).subscribe((response) => {
+            //         this.patientDetail1 = response;
+            //         console.log(this.patientDetail1)
+            //     });
+
+            // }, 500);
+        }
+
+    }
+
+    onScroll(){
+        // this.nextPage$.next();
+    }
+    
 }
