@@ -201,12 +201,7 @@
                                                                 <img width="10px" height="6px"
                                                                     src="assets/images/logos/pathology.png">
                                                             </mat-icon>
-                                                            <!-- <mat-icon *ngIf="option.IsPackage == true"
-                                                                matTooltip="IsPackage">
-                                                                <img width="10px" height="6px"
-                                                                    src="assets/images/logos/package.png">
-                                                            </mat-icon> -->
-                                                        </span>
+                                                          </span>
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <mat-error *ngIf="registeredForm.get('SrvcName').hasError('required')">
@@ -214,22 +209,6 @@
                                                 </mat-error>
                                             </mat-form-field>
 
-                                            <!-- <mat-form-field appearance="outline">
-                                                <mat-label>Service Name</mat-label>
-                                                <mat-select formControlName="SrvcName" name="SrvcName" (selectionChange)="onChangeServiceList($event.value)">
-                                                    <mat-option></mat-option>
-                                                    <mat-option *ngFor="let m of ServiceList" [value]="m">
-                                                        {{m.serviceName}} || {{m.price}} ({{m.ServiceId}})
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field> -->
-
-
-                                            <!-- <airmid-dropdown label="SrvcName" formControlName="SrvcName"
-                                                [formGroup]="registeredForm" [(value)]="text"
-                                                [validations]="getValidationMessages().SrvcName"
-                                                [mode]="autocompleteModeService">
-                                            </airmid-dropdown> -->
 
                                             <mat-form-field appearance="outline" #Price fxFlex="10%">
                                                 <mat-label>Price</mat-label>

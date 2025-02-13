@@ -1,0 +1,54 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Tally Interface</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="bankForm">
+                <input type="hidden" name="bankId" formControlName="bankId">
+                
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox 
+                            label="TallyInterfaceName" 
+                            formControlName="bankName" 
+                            [value]="data?.bankName"
+                            [formGroup]="bankForm"
+                            [validations]="getValidationMessages().bankName">
+                        </airmid-textbox>
+                    </div>
+                                   
+                </div>
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="bankForm" ></app-airmid-slider>
+                    </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
+                            <span>Save</span>
+                        </button>
+                    </div>
+         
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -85,6 +85,14 @@ $modalHeader: 60px;
                         font-weight: 600;
                     }
                 }
+                .detail-wrapper{
+                    mat-card{
+                        mat-card-content{
+                            padding-top: 4px;
+                            padding-bottom: 4px;
+                        }
+                    }
+                }
                 .detail-container {
                     .detail-header {
                         display: flex;
@@ -94,9 +102,9 @@ $modalHeader: 60px;
                         border-radius: 4px;
                         background-color: $primary-600;
                         color: $primary-25;
+                        @include font-size(15px);
+                        font-weight: 600;
                         .title {
-                            @include font-size(15px);
-                            font-weight: 600;
                         }
                     }
                 }
