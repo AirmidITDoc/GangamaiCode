@@ -969,14 +969,28 @@ return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
     return this._httpClient.post("InPatient/InsertIPRefundofBill", employee)
   }
-  public getAdvcanceDetails(query) {
+  public getAdvcanceDetails(query,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }
-  public UpdateipbillService(query) {
+  public UpdateipbillService(query,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
    //return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
     return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query,{});
 
   }
+  public UpdateipbillDoc(query,loader = true){
+    if (loader) {
+      this._loaderService.show();
+  }
+    //return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+     return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query,{});
+ 
+   }
   public getPreRefundofBill(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
   }

@@ -335,8 +335,7 @@ export class IPBillingComponent implements OnInit {
       ClassId: [],
       SrvcName: [''],
       price: [Validators.required],
-      qty: [Validators.required,
-      Validators.pattern("^[0-9]*$")],
+      qty: [Validators.required],
       totalAmount: [Validators.required],
       DoctorID: [''],
       discPer: [''],
@@ -347,7 +346,8 @@ export class IPBillingComponent implements OnInit {
       ChargeDate: [new Date()],
       Date:[new Date()],
       balanceAmt: [''],
-      ChargeClass: ['']
+      ChargeClass: [''],
+      EditDoctor:['']
     });
   } 
   createBillForm() {
@@ -860,7 +860,7 @@ ServiceList:any=[];
     this._IpSearchListService.getchargesList1(m).subscribe(data => {
       this.chargeslist1 = data as ChargesList[];
       this.dataSource1.data = this.chargeslist1;
-     // console.log(this.dataSource1.data)
+      console.log(this.dataSource1.data)
       this.isLoading = 'list-loaded';
     },
       (error) => {
@@ -1008,7 +1008,7 @@ ServiceList:any=[];
 //Calculate Service Total Amt
   calculateTotalAmt() {
     if (this.vPrice && this.vQty) {
-      this.vServiceTotalAmt = Math.round(parseInt(this.vPrice) * parseInt(this.vQty)).toString();
+      this.vServiceTotalAmt = Math.round(parseFloat(this.vPrice) * parseFloat(this.vQty)).toString();
       this.vServiceNetAmt = this.vServiceTotalAmt;
     } 
   }
@@ -2283,6 +2283,58 @@ CalculateAdminCharge(){
     this.serviceId = selectedItem.ServiceId;
     this.serviceName = selectedItem.ServiceName; 
   }
+    EditDoctor: boolean = false;
+    DocenableEditing(row: Bill) {
+      row.EditDoctor = true;
+      row.DoctorName = '';
+    }
+    DoctorisableEditing(row: Bill) {
+      row.EditDoctor = false;
+      this.getChargesList()
+    } 
+    EditedDocValue:any;
+    DropDownValue(Obj,contact) {
+      console.log(Obj) 
+      this.EditedDocValue = Obj  
+    }
+        //Doctor list 
+        filteredOptionsDoctorsEdit:any
+        getAdmittedDoctorEditable() { 
+          var vdata={
+            "Keywords": this.Serviceform.get('EditDoctor').value + "%" || "%"
+          }  
+          this._IpSearchListService.getAdmittedDoctorCombo(vdata).subscribe(data => { 
+            this.filteredOptionsDoctorsEdit = data;  
+              if (this.filteredOptionsDoctorsEdit.length == 0) {
+                this.noOptionFound = true;
+              } else {
+                this.noOptionFound = false;
+              }  
+          });  
+        }
+        getOptionTextDoctorEdit(option) {
+          return option && option.Doctorname ? option.Doctorname : '';
+        }
+
+        OnSaveEditDoc(element) {  
+          console.log(element)
+          let Query; 
+          Query = "update addcharges set DoctorId="+this.EditedDocValue.DoctorId+"where ChargesId="+element.ChargesId;
+           
+         // console.log(Query)
+          this._IpSearchListService.UpdateipbillDoc(Query).subscribe(data => {
+            if (data) { 
+              this.toastr.success('Record Successfuly Updated','Updated !',{
+                toastClass: 'tostr-tost custom-toast-success',
+              })
+              this.getChargesList();
+            } else { 
+              this.toastr.error('Record data not  Updated','Updated !',{
+                toastClass: 'tostr-tost custom-toast-error',
+              })
+            }
+          }); 
+        }
 }
 
 export class Bill {
@@ -2324,6 +2376,8 @@ export class Bill {
   QtyEditable:any;
   Qty:any;
   Price:any;
+  EditDoctor:any;
+  DoctorName:any;
 
   constructor(InsertBillUpdateBillNoObj) {
     this.AdmissionID = InsertBillUpdateBillNoObj.AdmissionID || 0;

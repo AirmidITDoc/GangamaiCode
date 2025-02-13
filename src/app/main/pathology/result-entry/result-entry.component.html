@@ -1,6 +1,6 @@
 
 
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar " dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar "  >
     <!-- HEADER -->
     <div class="top-header">
         <div class="top-header-info">
@@ -331,7 +331,7 @@
                                         <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                                         </mat-footer-row>
                                     </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                                    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
                                     </mat-paginator>
                                 </div>
                             </div>
@@ -354,23 +354,30 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
-                                    
+                                    </div> 
                                 </div> -->
+
+                                <div class="table-header">
+                                    <div class="table-header-left">
+                                        <div class="export-buttons">
+                                            <div fxLayout="row" fxLayoutAlign="start" class="gap-8">
+                                                <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
+                                                    Result Entry
+                                                  </button>
+                                                  <button mat-raised-button (click)="Printresultentry()" *ngIf="selection.selected.length>0">
+                                                        Print Result
+                                                   </button>
+                                                   <button mat-raised-button (click)="Printresultentrywithheader(contact)" *ngIf="selection.selected.length>0">
+                                                      Print With Header
+                                                    </button> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="table-wrapper">
                                   
-                                    <!-- *ngIf="selection.selected.length>0" -->
-                                    <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
-                                      Result Entry
-                                    </button>
-                                    <button mat-raised-button (click)="Printresultentry()" *ngIf="selection.selected.length>0">
-                                          Print Result
-                                     </button>
-                                     <button mat-raised-button (click)="Printresultentrywithheader(contact)" *ngIf="selection.selected.length>0">
-                                        Print With Header
-                                      </button>
-                                      
-                                    <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
+                                    <!-- *ngIf="selection.selected.length>0" --> 
+                                    <mat-table class="mat-table-2 h-210" #table1 matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
                                         <ng-container matColumnDef="select">
                                             <th mat-header-cell *matHeaderCellDef>
                                                 <mat-checkbox (change)="$event ? masterToggle() : null" 
@@ -518,7 +525,7 @@
                                         <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
                                         </mat-footer-row>
                                     </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                                    <mat-paginator #secondPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
                                     </mat-paginator>
                                 </div>
                             </div>

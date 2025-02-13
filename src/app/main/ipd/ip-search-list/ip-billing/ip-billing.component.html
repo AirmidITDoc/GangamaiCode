@@ -123,7 +123,7 @@
                                             <input matInput [(ngModel)]="vQty" name="Qty" #qty required type="text"
                                                 OnlyNumber (keyup)="calculateTotalAmt()" (keydown)="onEnterqty($event)"
                                                 formControlName="qty" id="qty" required
-                                                (keypress)="keyPressAlphanumeric($event)">
+                                                (keypress)="keyPressCharater($event)">
                                             <mat-error
                                                 *ngIf="Serviceform.get('qty').invalid && Serviceform.get('qty').touched">
                                                 Qty is required</mat-error>
@@ -508,7 +508,7 @@
                                     <ng-template #showInput> 
                                       <mat-form-field appearance="legacy" class="w-60">
                                         <input matInput  type="text" OnlyNumber (keyup)="getPricetable(contact,contact.Price)"
-                                            (keypress)="keyPressAlphanumeric($event)" autocomplete="off" [(ngModel)]="contact.Price">
+                                        (keypress)="keyPressCharater($event)" autocomplete="off" [(ngModel)]="contact.Price">
                                     </mat-form-field>
                                         <mat-icon matTooltip="Close" (click)="PricedisableEditing(contact)">cancel</mat-icon>
                                     
@@ -554,7 +554,7 @@
                                     <ng-template #showInput> 
                                       <mat-form-field appearance="legacy" class="w-50">
                                         <input matInput  type="text" OnlyNumber (keyup)="getQtytable(contact,contact.Qty)"
-                                            (keypress)="keyPressAlphanumeric($event)" autocomplete="off" [(ngModel)]="contact.Qty">
+                                        (keypress)="keyPressCharater($event)" autocomplete="off" [(ngModel)]="contact.Qty">
                                     </mat-form-field>
                                         <mat-icon matTooltip="Close" (click)="QtydisableEditing(contact)">cancel</mat-icon> 
                                         <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
@@ -596,14 +596,50 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="DoctorName">
+                            <!-- <ng-container matColumnDef="DoctorName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-200">ChargeDoctorName
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     <span> {{contact.DoctorName || '--'}}</span>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="DoctorName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-200">
+                                    ChargeDoctorName</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    <span>{{contact.DoctorName}}</span>
+                                    <ng-container *ngIf="!contact.EditDoctor; else showInput">
+                                        <button mat-icon-button (click)="DocenableEditing(contact)" class="clear-button">
+                                            <mat-icon>edit</mat-icon></button>
+                                    </ng-container>
+                                    <ng-template #showInput> 
+                                        <form [formGroup]="Serviceform">
+                                        <mat-form-field appearance="legacy" class="w-120">
+                                            <mat-label>Select Doctor</mat-label>
+                                            <input matAutocompletePosition="below" type="text"
+                                                placeholder="Select Doctor" matInput formControlName="EditDoctor"
+                                                [matAutocomplete]="autoDocId"  
+                                                (input)="getAdmittedDoctorEditable(contact)"> 
+                                            <mat-autocomplete #autoDocId="matAutocomplete"
+                                                [displayWith]="getOptionTextDoctorEdit"   class="package-auto-complete"
+                                                (optionSelected)='DropDownValue($event.option.value,contact)'>
+                                                <mat-option *ngFor="let option of filteredOptionsDoctorsEdit"
+                                                    [value]="option">
+                                                    {{option.Doctorname}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>&nbsp;
+                                        </form> 
+                                        <mat-icon matTooltip="Close" (click)="DoctorisableEditing(contact)">cancel</mat-icon> 
+                                        <buttom mati-icon-button (click)="OnSaveEditDoc(contact)" matTooltip="Save">
+                                            <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                        </buttom> 
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>   
 
                             <ng-container matColumnDef="ClassId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">ClassId

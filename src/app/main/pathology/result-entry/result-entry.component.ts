@@ -93,8 +93,13 @@ export class ResultEntryComponent implements OnInit {
     ServiceIdData: any = [];
 
 
+    // @ViewChild(MatSort) sort: MatSort;
+    // @ViewChild(MatPaginator) paginator: MatPaginator;
+
     @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
+    @ViewChild('thirdPaginator', { static: true }) public thirdPaginator: MatPaginator;
 
     dataSource = new MatTableDataSource<PatientList>();
     dataSource1 = new MatTableDataSource<SampleList>();
@@ -213,10 +218,9 @@ export class ResultEntryComponent implements OnInit {
 
         this._SampleService.getSampleList(m_data).subscribe(Visit => {
             this.dataSource1.data = Visit as SampleList[];
-            console.log(this.dataSource1.data);
-
+            console.log(this.dataSource1.data); 
             this.dataSource1.sort = this.sort;
-            this.dataSource1.paginator = this.paginator;
+            this.dataSource1.paginator = this.secondPaginator;
             this.sIsLoading = '';
             this.click = false;
         },
