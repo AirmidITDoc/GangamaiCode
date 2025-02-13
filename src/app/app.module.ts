@@ -226,7 +226,7 @@ class PickDateAdapter extends NativeDateAdapter {
 
         BandwidthService,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
+        // { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true },
         { provide: DateAdapter, useClass: PickDateAdapter },
         { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
         //APIServices,
