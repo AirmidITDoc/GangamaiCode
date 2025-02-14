@@ -38,7 +38,13 @@ export class JwtInterceptor implements HttpInterceptor {
                     this.toastr.error(err.error.message, 'Authentication !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
-                    this.router.navigate(["/"]);
+                    this.router.navigate(["/unauthorize"]);
+                }
+                else if (err.status == 403) {
+                    this.toastr.error(err.error.message, 'Authentication !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                    this.router.navigate(["/forbidden"]);
                 }
                 return throwError(() => err); // Return an Observable using throwError
             }),
