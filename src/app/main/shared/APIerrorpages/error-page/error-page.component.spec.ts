@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { 401Component } from './401.component';
+import { ErrorPageComponent } from './error-page.component';
 
-describe('401Component', () => {
-  let component: 401Component;
-  let fixture: ComponentFixture<401Component>;
+describe('ErrorPageComponent', () => {
+  let component: ErrorPageComponent;
+  let fixture: ComponentFixture<ErrorPageComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [401Component]
+      declarations: [ErrorPageComponent]
     });
-    fixture = TestBed.createComponent(401Component);
+    fixture = TestBed.createComponent(ErrorPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

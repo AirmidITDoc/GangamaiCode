@@ -1,0 +1,22 @@
+<!-- Reusable ERROR PAGE -->
+<div class="error-page-container">
+    <div class="error-container">
+        <div class="error-image">
+            <img [src]="errorImage" [alt]="'Error ' + errorCode">
+        </div>
+        <div class="error-content">
+            <div class="error-title">
+                <span>{{ errorTitle }} {{ errorCode }}</span>
+            </div>
+            <div class="error-description">
+                <p>{{ errorMessage }}</p>
+            </div>
+            <div class="error-button">
+                <button class="btn btn-primary btn-with-icon" (click)="goToHome()">
+                    <span class="btn-icon"><mat-icon>keyboard_arrow_left</mat-icon></span>
+                    <span>{{buttonText }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

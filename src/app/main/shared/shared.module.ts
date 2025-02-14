@@ -48,11 +48,15 @@ import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.c
 import { AirmidAutoCompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
 import { TableSearchBarComponent } from './componets/airmid-table/table-search-bar/table-search-bar.component';
 import { PrintCallingComponent } from './componets/print-calling/print-calling.component';
+import { ErrorPageComponent } from './APIerrorpages/error-page/error-page.component';
+import { Error401Component } from './APIerrorpages/error-401/error-401.component';
+import { Error403Component } from './APIerrorpages/error-403/error-403.component';
+import { Error404Component } from './APIerrorpages/error-404/error-404.component';
 
 
 @NgModule({
-    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent,AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-         AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent],
+    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        AirmidTable1Component, AirmidTextbox1Component, AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -101,7 +105,10 @@ import { PrintCallingComponent } from './componets/print-calling/print-calling.c
         AirmidDateofbirthComponent,
         AirmidSliderComponent,
         AirmidDatepickerComponent,
-        PrintCallingComponent
+        PrintCallingComponent,
+        Error401Component,
+        Error403Component,
+        Error404Component
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

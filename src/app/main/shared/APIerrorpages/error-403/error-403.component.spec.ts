@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { 404Component } from './404.component';
+import { Error403Component } from './error-403.component';
 
-describe('404Component', () => {
-  let component: 404Component;
-  let fixture: ComponentFixture<404Component>;
+describe('Error403Component', () => {
+  let component: Error403Component;
+  let fixture: ComponentFixture<Error403Component>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [404Component]
+      declarations: [Error403Component]
     });
-    fixture = TestBed.createComponent(404Component);
+    fixture = TestBed.createComponent(Error403Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
