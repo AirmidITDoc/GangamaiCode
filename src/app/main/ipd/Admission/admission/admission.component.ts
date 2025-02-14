@@ -61,7 +61,7 @@ export class AdmissionComponent implements OnInit {
   selectedAdvanceObj: AdmissionPersonlModel;
   newRegSelected: any = 'registration';
 
-  filteredOptions: any;
+ 
   hasSelectedContacts: boolean;
   SpinLoading: boolean = false;
   isLoadings = false;
@@ -77,7 +77,7 @@ export class AdmissionComponent implements OnInit {
   saveflag: boolean = false;
   capturedImage: any;
   registration: any;
-
+  filteredOptions: any;
 
   Vtotalcount = 0;
   VNewcount = 0;
@@ -104,14 +104,7 @@ export class AdmissionComponent implements OnInit {
 
 
   menuActions: Array<string> = [];
-  centered = false;
-  unbounded = false;
-
-  radius: number;
-  color: string;
-  filteredDoctor: any;
-  dialogRef: any;
-  isLoading: string;
+ 
   Regflag: boolean = false;
 
   // new Api
@@ -249,13 +242,10 @@ export class AdmissionComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
   private commonService: PrintserviceService,
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
 
-    this.isAlive = true;
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
    // menu Button List
@@ -267,8 +257,6 @@ export class AdmissionComponent implements OnInit {
    this.menuActions.push("Refund Of Bill");
    this.menuActions.push("Refund Of Advance");
    
-
-
   }
 
   onChangeStartDate(value) {
@@ -316,10 +304,11 @@ export class AdmissionComponent implements OnInit {
         maxWidth: "100vw",
                 maxHeight: '70%',
                 width: '95%',
-        data: {
-          data1: row,
-          Submitflag: false
-        },
+        data: row
+        // {
+        //   data1: row,
+        //   Submitflag: false
+        // },
       }
     );
 
@@ -385,8 +374,8 @@ export class AdmissionComponent implements OnInit {
             const dialogRef = this._matDialog.open(BedTransferComponent,
                 {
                     maxWidth: "70vw",
-                    height: "390px",
-                    width: "50%",
+                    height: "500px",
+                    width: "90%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -421,7 +410,7 @@ export class AdmissionComponent implements OnInit {
         const dialogRef = this._matDialog.open(MLCInformationComponent,
             {
                 maxWidth: "70vw",
-                height: "500px",
+                height: "400px",
                 width: "50%",
                 data: element
             });
@@ -857,7 +846,7 @@ export class AdmissionPersonlModel {
   CompanyId: any;
   companyId: any;
   HospitalId: any;
-  patientTypeId: any;
+  patientTypeID: any;
   PatientType: any;
   patientType: any;
   SubCompanyId: any;
@@ -1037,7 +1026,7 @@ export class AdmissionPersonlModel {
       this.HospitalId = AdmissionPersonl.HospitalId || 0;
       this.CompanyId = AdmissionPersonl.CompanyId || 0;
       this.companyId = AdmissionPersonl.companyId || 0;
-      this.patientTypeId = AdmissionPersonl.patientTypeId || 0;
+      this.patientTypeID = AdmissionPersonl.patientTypeID || 0;
       this.PatientType = AdmissionPersonl.PatientType || '';
       this.patientType = AdmissionPersonl.patientType || '';
       this.SubCompanyId = AdmissionPersonl.SubCompanyId || 0;

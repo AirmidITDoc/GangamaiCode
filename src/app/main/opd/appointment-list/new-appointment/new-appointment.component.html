@@ -96,8 +96,9 @@
                                     </div>
 
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
-
+                                       <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                                        formControlName="DateOfBirth"
+                                        [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
                                     </div>
 
 
@@ -180,17 +181,17 @@
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
                                     <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                                         <div class="photp-capture-image">
-                                            <img class="h-100-p w-100-p border-radius-4" [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/default.jpg'" />
+                                            <!-- <img class="h-100-p w-100-p border-radius-4" [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/default.jpg'" /> -->
                                         </div>
                                         <div class="photo-capture-button ">
 
-                                            <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 " (click)="openCamera('camera','photo')">
+                                            <!-- <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 " (click)="openCamera('camera','photo')">
                                                 <span class="btn-icon">
                                                     <mat-icon>camera_enhance</mat-icon>
                                                 </span>
 
                                                 <span>Capture image</span>
-                                            </label>
+                                            </label> -->
 
                                         </div>
                                     </div>
@@ -224,12 +225,12 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                    <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="VisitFormGroup" [value]="data?.tariffId" [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff" (selectionChange)="selectChangetariff($event)">
+                                    <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="VisitFormGroup" [value]="data?.tariffId" [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup" [value]="data?.companyId" [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany" (selectionChange)="selectChangecompany($event)">
+                                    <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup" [value]="data?.companyId" [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany" >
                                     </airmid-dropdown>
 
                                 </div>

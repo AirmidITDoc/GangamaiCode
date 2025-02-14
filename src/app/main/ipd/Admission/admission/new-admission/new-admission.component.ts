@@ -40,18 +40,11 @@ export class NewAdmissionComponent implements OnInit {
   optionRegSearch: any[] = [];
   subscriptionArr: Subscription[] = [];
 
-
-
-  filteredOptions: any;
-  registration: any;
   matDialogRef: any;
   patienttype: any;
-  capturedImage: any;
   AdmissionId: any = 0;
-  saveflag: boolean = false;
   isCompanySelected: boolean = false;
   Regflag: boolean = false;
-  showtable: boolean = false;
   Regdisplay: boolean = false;
   isAlive = false;
   savedValue: number = null;
@@ -73,12 +66,13 @@ export class NewAdmissionComponent implements OnInit {
   isLoading: string = '';
   screenFromString = 'admission-form';
 
-
-
   @Input() panelWidth: string | number;
   @ViewChild('admissionFormStepper') admissionFormStepper: MatStepper;
   @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+  @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+  @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
+  @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
 
   constructor(public _AdmissionService: AdmissionService,
@@ -96,8 +90,6 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup = this._AdmissionService.createPesonalForm();
     this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
   }
-
-
 
   autocompleteModeprefix: string = "Prefix";
   autocompleteModemaritalstatus: string = "MaritalStatus";
@@ -123,40 +115,8 @@ export class NewAdmissionComponent implements OnInit {
 
   autocompleteModehospital: string = "Hospital";
 
-  @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
-  @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
-  @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
-
-
-  ngOnInit(): void {
-    this.isAlive = true;
-    // this.personalFormGroup = this._AdmissionService.createPesonalForm();
-    // this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-    this.searchFormGroup = this.createSearchForm();
-
-    // if ((this.data?.regId ?? 0) > 0) {
-    //   console.log(this.data)
-    //   this.AdmissionId = this.data.admissionId;
-    //   this.registredflag = false;
-
-    //   setTimeout(() => {
-    //     this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
-    //       // this.registerObj = response;
-    //       console.log(response)
-
-    //     });
-
-    //     // this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
-    //     //   this.registerObj1 = response;
-    //     //   console.log(this.registerObj1)
-
-    //     // });
-
-
-    //   }, 500);
-    // }
-    // this.personalFormGroup = this._AdmissionService.createPesonalForm();
-    // this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+ ngOnInit(): void {
+   this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
 
@@ -172,8 +132,6 @@ export class NewAdmissionComponent implements OnInit {
       HospitalId: 1
     });
   }
-
-
 
   getSelectedObj(obj) {
     console.log(obj)
@@ -194,6 +152,181 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
+  chkHealthcard(e) { }
+  ///New Admission 
+  //Radio btn
+  onChangeReg(event) {
+    if (event.value == 'registration') {
+      this.Regflag = false;
+      this.personalFormGroup.get('RegId').reset();
+      this.personalFormGroup.get('RegId').disable();
+      // this.isRegSearchDisabled = true;
+      this.registerObj1 = new AdmissionPersonlModel({});
+      this.personalFormGroup.reset();
+
+      this.personalFormGroup = this._AdmissionService.createPesonalForm();
+      this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+
+      this.Regdisplay = false;
+      // this.showtable = false;
+
+    } else {
+      this.Regdisplay = true;
+      this.Regflag = true;
+      this.searchFormGroup.get('RegId').enable();
+      // this.isRegSearchDisabled = false;
+
+      this.personalFormGroup = this._AdmissionService.createPesonalForm();
+      this.personalFormGroup.markAllAsTouched();
+      this.admissionFormGroup.markAllAsTouched();
+
+
+      // this.showtable = true;
+    }
+
+   
+  }
+
+  onNewSave() {
+
+    if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid ){
+
+    Swal.fire({
+      title: 'Do you want to Save the Admission ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save!"
+
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.OnSaveAdmission();
+      }
+    })
+    }else{
+      Swal.fire("Enter Peroepr values..orm Id Invalid")
+    }
+  }
+
+
+  onChangePatient(value) {
+    
+    var mode = "Company"
+    if (value.text == "Company") {
+      this._AdmissionService.getMaster(mode, 1);
+      this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.isCompanySelected = true;
+      this.patienttype = 2;
+    } else if (value.text != "Company") {
+      this.isCompanySelected = false;
+      this.admissionFormGroup.get('CompanyId').clearValidators();
+      this.admissionFormGroup.get('SubCompanyId').clearValidators();
+      this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
+      this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+      this.patienttype = 1;
+    }
+
+
+  }
+
+  OnSaveAdmission() {
+
+    this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
+    this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+
+     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
+      this.toastr.warning('Please select valid Company ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    
+    if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
+
+      let submitData = {
+        "AdmissionReg": this.personalFormGroup.value,
+        "ADMISSION": this.admissionFormGroup.value
+      };
+      console.log(submitData);
+
+      this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+        console.log(response)
+        this.toastr.success(response.message);
+        this.getAdmittedPatientCasepaperview(response.admissionId);
+        this.onClear();
+        this._matDialog.closeAll();
+       
+      }, (error) => {
+        this.toastr.error(error.message);
+
+      });
+
+
+    }
+    else {
+      console.log(this.registerObj1)
+      console.log(this.personalFormGroup.value)
+
+      console.log(this.admissionFormGroup.value)
+           
+      let submitData = {
+        "AdmissionReg": this.personalFormGroup.value,
+        "ADMISSION": this.admissionFormGroup.value
+      };
+      console.log(submitData);
+
+      this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
+        this.toastr.success(response.message);
+        console.log(response)
+        this.getAdmittedPatientCasepaperview(response.admissionId);
+        this.onClear();
+        this._matDialog.closeAll();
+      }, (error) => {
+        this.toastr.error(error.message);
+
+      });
+    }
+  }
+
+
+  selectChangedepartment(obj: any) {
+    debugger
+    console.log(obj)
+    this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+      this.ddlDoctor.options = data;
+      this.ddlDoctor.bindGridAutoComplete();
+    });
+  }
+ 
+
+  getAdmittedPatientCasepaperview(AdmissionId) {
+       this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
+  }
+
+  displayFn(user: any): string {
+    return user.text;
+  }
+  onChangePrefix(e) {
+    this.ddlGender.SetSelection(e.sexId);
+  }
+
+  onChangestate(e) {
+    this.ddlCountry.SetSelection(e.stateId);
+  }
+
+  onChangecity(e) {
+    this.ddlState.SetSelection(e.cityId);
+    this.ddlCountry.SetSelection(e.stateId);
+  }
+
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    console.log('dateTimeObj==', dateTimeObj);
+    this.dateTimeObj = dateTimeObj;
+  }
   getValidationMessages() {
     return {
       RegId: [],
@@ -322,183 +455,12 @@ export class NewAdmissionComponent implements OnInit {
       ],
     };
   }
-
-
-
-  chkHealthcard(e) { }
-  ///New Admission 
-  //Radio btn
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.Regflag = false;
-      this.personalFormGroup.get('RegId').reset();
-      this.personalFormGroup.get('RegId').disable();
-      // this.isRegSearchDisabled = true;
-      this.registerObj1 = new AdmissionPersonlModel({});
-      this.personalFormGroup.reset();
-
-      this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-
-      this.Regdisplay = false;
-      this.showtable = false;
-
-    } else {
-      this.Regdisplay = true;
-      this.Regflag = true;
-      this.searchFormGroup.get('RegId').enable();
-      // this.isRegSearchDisabled = false;
-
-      this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      this.personalFormGroup.markAllAsTouched();
-      this.admissionFormGroup.markAllAsTouched();
-
-
-      this.showtable = true;
-    }
-
-    const todayDate = new Date();
-    const dob = new Date(this.currentDate);
-    const timeDiff = Math.abs(Date.now() - dob.getTime());
-    this.registerObj.AgeYear = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
-    this.registerObj.AgeMonth = Math.abs(todayDate.getMonth() - dob.getMonth());
-    this.registerObj.AgeDay = Math.abs(todayDate.getDate() - dob.getDate());
-    this.registerObj.DateofBirth = this.currentDate;
-    this.personalFormGroup.get('DateOfBirth').setValue(this.currentDate);
-
-  }
-
-  onNewSave() {
-
-    if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid ){
-
-    Swal.fire({
-      title: 'Do you want to Save the Admission ',
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Save!"
-
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        this.OnSaveAdmission();
-      }
-    })
-    }else{
-      Swal.fire("Enter Peroepr values..orm Id Invalid")
-    }
-  }
-
-
-  onChangePatient(value) {
-    debugger
-    var mode = "Company"
-    if (value.text == "Company") {
-      this._AdmissionService.getMaster(mode, 1);
-      this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
-      this.isCompanySelected = true;
-      this.patienttype = 2;
-    } else if (value.text != "Company") {
-      this.isCompanySelected = false;
-      this.admissionFormGroup.get('CompanyId').clearValidators();
-      this.admissionFormGroup.get('SubCompanyId').clearValidators();
-      this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-      this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
-      this.patienttype = 1;
-    }
-
-
-  }
-
-
-
-
-  CompanyId: any = 0;
-  SubCompanyId: any = 0;
-  OnSaveAdmission() {
-
-    this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
-    this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-
-    // if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.wardFormGroup.invalid && !this.otherFormGroup.invalid) {
-    if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
-      this.toastr.warning('Please select valid Company ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    debugger
-    if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
-
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
-      console.log(submitData);
-
-      this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
-        console.log(response)
-        this.toastr.success(response.message);
-        this.getAdmittedPatientCasepaperview(response.admissionId);
-        this.onClear();
-        this._matDialog.closeAll();
-       
-      }, (error) => {
-        this.toastr.error(error.message);
-
-      });
-
-
-    }
-    else {
-      console.log(this.registerObj1)
-      console.log(this.personalFormGroup.value)
-
-      console.log(this.admissionFormGroup.value)
-      debugger
-     
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
-      console.log(submitData);
-
-      this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        console.log(response)
-        this.getAdmittedPatientCasepaperview(response.admissionId);
-        this.onClear();
-        this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
-
-      });
-    }
-  }
-
-
-  selectChangedepartment(obj: any) {
-    debugger
-    console.log(obj)
-    this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-      this.ddlDoctor.options = data;
-      this.ddlDoctor.bindGridAutoComplete();
-    });
-  }
-
-
-
-
   onClear() { }
   onClose() {
 
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
     this.isCompanySelected = false;
-    // this.admissionFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
     this.admissionFormGroup.get('CompanyId').clearValidators();
     this.admissionFormGroup.get('SubCompanyId').clearValidators();
     this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
@@ -507,7 +469,7 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('CityId').reset();
   }
   onReset() {
-    // this._AdmissionService.mySaveForm.reset();
+    
     this.personalFormGroup.get('RegId').reset();
     this.personalFormGroup.get('RegId').disable();
 
@@ -515,7 +477,6 @@ export class NewAdmissionComponent implements OnInit {
       this.searchFormGroup.get('RegId').disable();
     else
       this.searchFormGroup.get('RegId').enable();
-
 
     this.registerObj1 = new AdmissionPersonlModel({});
     this.personalFormGroup.reset();
@@ -526,9 +487,6 @@ export class NewAdmissionComponent implements OnInit {
     this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
     this.admissionFormGroup.markAllAsTouched();
 
-
-
-    // this.admissionFormGroup.get('CompanyId').setValue(this.CompanyList[-1]);
     this.admissionFormGroup.get('CompanyId').clearValidators();
     this.admissionFormGroup.get('SubCompanyId').clearValidators();
     this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
@@ -536,71 +494,6 @@ export class NewAdmissionComponent implements OnInit {
 
 
   }
-  AdList: boolean = false;
-  SpinLoading: boolean = false;
-  getAdmittedPatientCasepaperview(AdmissionId) {
-    // setTimeout(() => {
-
-    //   let param = {
-    //     "searchFields": [
-    //       {
-    //         "fieldName": "AdmissionId",
-    //         "fieldValue": "111",
-    //         "opType": "13"
-    //       }
-    //     ],
-    //     "mode": "IpCasepaperReport"
-    //   }
-
-    //   debugger
-    //   console.log(param)
-    //   this._AdmissionService.getReportView(param).subscribe(res => {
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "Op Bill  Viewer"
-
-    //         }
-
-    //       });
-
-    //     matDialog.afterClosed().subscribe(result => {
-
-    //     });
-    //   });
-
-    // }, 100);
-
-
-    this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
-  }
-
-  displayFn(user: any): string {
-    return user.text;
-  }
-  onChangePrefix(e) {
-    this.ddlGender.SetSelection(e.sexId);
-  }
-
-  onChangestate(e) {
-    this.ddlCountry.SetSelection(e.stateId);
-  }
-
-  onChangecity(e) {
-    this.ddlState.SetSelection(e.cityId);
-    this.ddlCountry.SetSelection(e.stateId);
-  }
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
 
 
 

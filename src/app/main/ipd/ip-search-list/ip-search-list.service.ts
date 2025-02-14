@@ -1081,9 +1081,7 @@ getIpDischargeReceipt(AdmId){
 public getModenameListCombo(){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrvm_modeOfDischarge",{});
 }
-public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
-}
+
 public getDoseList() {
   return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
 }
@@ -1123,6 +1121,23 @@ public insertIPDDischargSummary(employee)
   return this._httpClient1.PostData("DischargeSummary/Insert",employee);
 }
 
+
+public getRegistraionById(Id) {
+  return this._httpClient1.GetData("OutPatient/" + Id);
+}
+
+public getAdmissionById(Id) {
+  return this._httpClient1.GetData("Admission/" + Id);
+}
+
+public getRegistrations(keyword) {
+  return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
+}
+
+
+public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
+  return this._httpClient1.PostData("ItemMaster/ItemMasterList",Param)
+}
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

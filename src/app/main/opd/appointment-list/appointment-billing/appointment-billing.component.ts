@@ -97,8 +97,8 @@ public dataSource = new MatTableDataSource<any>();
         this.dsServiceList = new MatTableDataSource(this.serviceList);
 
         this.setupFormListener();
-        if (this.data && this.data.patientDetail) {
-            this.patientDetail = this.data.patientDetail;
+        if (this.data) {
+            this.patientDetail = this.data;
             console.log("DATA : ", this.patientDetail);
         }
     }
@@ -110,40 +110,7 @@ public dataSource = new MatTableDataSource<any>();
         this.handleChange('discountAmount', () => this.updateDiscountPercentage());
         this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.totalChargeForm);
     }
-    getValidationMessages() {
-        return {
-            serviceName: [
-                { name: "required", Message: "Service Name is required" },
-            ],
-            cashCounterId: [
-                { name: "required", Message: "First Name is required" },
-
-                { name: "pattern", Message: "only Number allowed." }
-            ],
-            price: [
-                { name: "pattern", Message: "only Number allowed." }
-            ],
-            qty: [
-                { name: "required", Message: "Qty required!", },
-                { name: "pattern", Message: "only Number allowed.", },
-                { name: "min", Message: "Enter valid qty.", }
-            ],
-            totalAmount: [
-                {
-                    name: "pattern", Message: "only Number allowed."
-                }
-            ],
-            doctoreId: [
-                { name: "pattern", Message: "only Char allowed." }
-            ],
-            discountPer: [
-                { name: "pattern", Message: "only Number allowed." }
-            ],
-            discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
-            netAmount: [{ name: "pattern", Message: "only Number allowed." }],
-            concessionId: [{}]
-        }
-    }
+  
     calculateTotalCharge(row: any = null): void {
         let qty = this.chargeForm.get("qty").value;
         let price = this.chargeForm.get("price").value;
@@ -455,8 +422,7 @@ public dataSource = new MatTableDataSource<any>();
         if (this.dataSource.data.length > 0) {
           this.dataSource.data.forEach((element) => {
             if (obj.serviceId == element.serviceId) {
-    
-              Swal.fire('Selected Item already added in the list ');
+                Swal.fire('Selected Item already added in the list ');
     
             //   this.onClearServiceAddList();
             }
@@ -520,7 +486,40 @@ public dataSource = new MatTableDataSource<any>();
         }
 
     }
+    getValidationMessages() {
+        return {
+            serviceName: [
+                { name: "required", Message: "Service Name is required" },
+            ],
+            cashCounterId: [
+                { name: "required", Message: "First Name is required" },
 
+                { name: "pattern", Message: "only Number allowed." }
+            ],
+            price: [
+                { name: "pattern", Message: "only Number allowed." }
+            ],
+            qty: [
+                { name: "required", Message: "Qty required!", },
+                { name: "pattern", Message: "only Number allowed.", },
+                { name: "min", Message: "Enter valid qty.", }
+            ],
+            totalAmount: [
+                {
+                    name: "pattern", Message: "only Number allowed."
+                }
+            ],
+            doctoreId: [
+                { name: "pattern", Message: "only Char allowed." }
+            ],
+            discountPer: [
+                { name: "pattern", Message: "only Number allowed." }
+            ],
+            discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
+            netAmount: [{ name: "pattern", Message: "only Number allowed." }],
+            concessionId: [{}]
+        }
+    }
     onScroll(){
         // this.nextPage$.next();
     }

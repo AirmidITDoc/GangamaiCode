@@ -93,7 +93,7 @@
                                                   <span class="patient-col-key">Patient Type</span>
                                                   <span>:</span>
                                                   <span
-                                                      class="patient-col-value">{{registerObj1.patientTypeId}}-{{registerObj1.tariffId}}</span>
+                                                      class="patient-col-value">{{registerObj1.patientTypeID}}-{{registerObj1.tariffId}}</span>
                                               </div>
                                               <div class="patient-col gap-1" fxFlex="30%">
                                                   <span class="patient-col-key">Ref Dr.Name</span>
@@ -134,7 +134,7 @@
                     <input type="hidden" name="AdmissionId" formControlName="AdmissionId" [(ngModel)]="registerObj1.admissionId">
                     <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
 
-                    <airmid-dropdown label="PatientType" formControlName="PatientTypeId" [value]="registerObj1?.patientTypeId"
+                    <airmid-dropdown label="PatientType" formControlName="PatientTypeId" [value]="registerObj1?.patientTypeID"
                       [formGroup]="admissionFormGroup" [validations]="getValidationMessages().PatientTypeId"
                       [mode]="autocompleteModepatienttype" (selectionChange)="onChangePatient($event)">
                     </airmid-dropdown>

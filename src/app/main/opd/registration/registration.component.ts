@@ -158,46 +158,7 @@ export class RegistrationComponent implements OnInit {
             this.confirmDialogRef = null;
         });
     }
-    // getRegistrationlistrview() {
-    //     setTimeout(() => {
-    //         let param = {
-    //             "searchFields": [
-    //                 {
-    //                     "fieldName": "FromDate",
-    //                     "fieldValue": "12-12-2024",//this.datePipe.transform(this.fromDate,"dd-MM-yyyy"),//"10-01-2024",
-    //                     "opType": "13"
-    //                 },
-    //                 {
-    //                     "fieldName": "ToDate",
-    //                     "fieldValue": "12-12-2025",//this.datePipe.transform(this.toDate,"dd-MM-yyyy"),//"12-12-2024",
-    //                     "opType": "13"
-    //                 }
-    //             ],
-    //             "mode": "RegistrationReport"
-    //         }
-    //         console.log(param)
-    //         this._RegistrationService.getPatientListView(param).subscribe(res => {
-    //             const matDialog = this._matDialog.open(PdfviewerComponent,
-    //                 {
-    //                     maxWidth: "85vw",
-    //                     height: '750px',
-    //                     width: '100%',
-    //                     data: {
-    //                         base64: res["base64"] as string,
-    //                         title: "Registration List  Viewer"
-
-    //                     }
-
-    //                 });
-
-    //             matDialog.afterClosed().subscribe(result => {
-
-    //             });
-    //         });
-
-    //     }, 100);
-    // }
-
+  
 
     getValidationMessages() {
         return {

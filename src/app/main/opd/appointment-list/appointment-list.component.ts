@@ -50,14 +50,6 @@ export class AppointmentListComponent implements OnInit {
     myformSearch: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     menuActions: Array<string> = [];
-
-
-    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-        private commonService: PrintserviceService,
-        public toastr: ToastrService, public datePipe: DatePipe,
-    ) {
-
-    }
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -65,12 +57,19 @@ export class AppointmentListComponent implements OnInit {
     autocompleteModedeptdoc: string = "ConDoctor";
     doctorID = "0";
 
-    onChangeStartDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
+    Vtotalcount = 0;
+    VNewcount = 0;
+    VFollowupcount = 0;
+    VBillcount = 0;
+    VCrossConscount = 0;
+
+    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
+        private commonService: PrintserviceService,
+        public toastr: ToastrService, public datePipe: DatePipe,
+    ) {}
+    
+
+   
     ngOnInit(): void {
         this.myformSearch = this._AppointmentlistService.filterForm();
 
@@ -94,9 +93,7 @@ export class AppointmentListComponent implements OnInit {
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }
 
     ];
-    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+ 
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
@@ -104,6 +101,8 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
@@ -159,6 +158,12 @@ export class AppointmentListComponent implements OnInit {
         row: 25
     }
 
+    onChangeStartDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -201,11 +206,7 @@ export class AppointmentListComponent implements OnInit {
                 maxHeight: '90%',
                 width: '90%',
                 data: row
-                //  {
-                //     data1: row,
-                //     Submitflag: true
-                // },
-
+              
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -273,15 +274,11 @@ export class AppointmentListComponent implements OnInit {
     }
 
     OnViewReportPdf(element) {
-        debugger
-        console.log('Third action clicked for:', element);
-        this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+      this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
 
     OnBillPayment(row: any = null) {
-        // console.log('Third action clicked for:', row);
-        // Pending...
-        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+       const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "90vw",
             height: "98vh",
             width: "80%",
@@ -322,13 +319,6 @@ export class AppointmentListComponent implements OnInit {
     OnWhatsAppAppointmentSend(element) {
         console.log('Third action clicked for:', element);
     }
-
-    Vtotalcount = 0;
-    VNewcount = 0;
-    VFollowupcount = 0;
-    VBillcount = 0;
-    VCrossConscount = 0;
-
 
     Appointdetail(data) {
         this.Vtotalcount = 0;
@@ -453,46 +443,7 @@ export class AppointmentListComponent implements OnInit {
         });
 
     }
-    // getAppointmentrview() {
-    //     let param = {
-    //         "searchFields": [
-    //             {
-    //                 "fieldName": "FromDate",
-    //                 "fieldValue": "10-01-2024",
-    //                 "opType": "13"
-    //             },
-    //             {
-    //                 "fieldName": "ToDate",
-    //                 "fieldValue": "12-12-2024",
-    //                 "opType": "13"
-    //             }
-    //         ],
-    //         "mode": "AppointmentListReport"
-    //     }
-    //     console.log(param)
-    //     setTimeout(() => {
-
-    //         this._AppointmentlistService.getAppointmenttemplateReport(param
-    //         ).subscribe(res => {
-    //             const dialogRef = this._matDialog.open(PdfviewerComponent,
-    //                 {
-    //                     maxWidth: "85vw",
-    //                     height: '750px',
-    //                     width: '100%',
-    //                     data: {
-    //                         base64: res["base64"] as string,
-    //                         title: "Appointment  Viewer"
-    //                     }
-    //                 });
-    //             dialogRef.afterClosed().subscribe(result => {
-
-    //             });
-    //         });
-
-    //     }, 100);
-
-    // }
-
+   
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value
     }
@@ -521,6 +472,7 @@ export class VisitMaster1 {
     tariffId: number;
     consultantDocId: number;
     refDocId: number;
+    doctorId: number;
     departmentId: number;
     appPurposeId: number;
     patientOldNew: Boolean;
@@ -548,6 +500,7 @@ export class VisitMaster1 {
             this.tariffId = VisitMaster1.tariffId || 1;
             this.consultantDocId = VisitMaster1.consultantDocId || '';
             this.refDocId = VisitMaster1.refDocId || 1;
+            this.doctorId = VisitMaster1.doctorId || 1;
             this.departmentId = VisitMaster1.departmentId || 1;
             this.patientOldNew = VisitMaster1.patientOldNew || 0;
             this.phoneAppId = VisitMaster1.phoneAppId || 0

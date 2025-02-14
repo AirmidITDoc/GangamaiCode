@@ -41,25 +41,8 @@ export class EditRefranceDoctorComponent implements OnInit {
 
   ngOnInit(): void {
     this.RefrancedrForm = this._AppointmentlistService.createRefranceDrForm();
-    // if (this.data) {
-    //   console.log(this.data)
-    //   this.RegId = this.data.regId
-    //   this.VisitId = this.data.visitId
-    // }
+      this.RefrancedrForm.patchValue(this.data);
 
-    
-    this.RefrancedrForm.patchValue(this.data);
-
-  }
-
-
-   
-  getValidationMessages() {
-    return {
-      refDocId: [
-            { name: "required", Message: "Doctor Name is required" }
-        ]
-    };
   }
 
   onSubmit() {
@@ -76,31 +59,30 @@ export class EditRefranceDoctorComponent implements OnInit {
   }
   RefDoctorId=0;
   onCancleRefDoc() {
-    this.RefDoctorId = 0;
-    let query = '';
-    if (this.data.FormName == "Appointment") {
-      query = "Update VisitDetails set RefDocId= " + this.RefDoctorId + " where Visitid=" + this.VisitId + " ";
+    
+    var data={
+      RefDocId:this.RefDoctorId,
+      VisitId:this.VisitId
     }
 
-    console.log(query);
-    this._AppointmentlistService.UpdateQueryByStatement(query).subscribe(response => {
-      if (response) {
-        Swal.fire('Congratulations !', 'Reference Doctor removed Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Reference Doctor removed ', 'error');
-      }
-      // this.isLoading = '';
-
+    console.log(data);
+    this._AppointmentlistService.RefDoctorCancle(data).subscribe(response => {
+      this.toastr.success(response.message);
+      this.onClear(true);
+    }, (error) => {
+      this.toastr.error(error.message);
     });
-
+     
   }
 
-
+ 
+  getValidationMessages() {
+    return {
+      refDocId: [
+            { name: "required", Message: "Doctor Name is required" }
+        ]
+    };
+  }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

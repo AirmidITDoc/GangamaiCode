@@ -114,10 +114,7 @@ phdatetime: any;
   }, 500);
   }
 
-  onClose() {
-    this.dialogRef.close();
-  }
-
+ 
 
 
   onSubmit() {
@@ -233,6 +230,11 @@ phdatetime: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+
+  onClose() {
+    this.dialogRef.close();
+  }
+
 }
 
 

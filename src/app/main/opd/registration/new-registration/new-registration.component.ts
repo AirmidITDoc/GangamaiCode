@@ -42,10 +42,7 @@ export class NewRegistrationComponent implements OnInit {
     matDialogRef: any;
     RegID: number = 0;
    
-   
-   
-    ApiUrl1 = 'Prefix/get-prefixs'
-    
+      
     // New Api
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -154,16 +151,7 @@ export class NewRegistrationComponent implements OnInit {
         debugger
         this.ddlState.SetSelection(e.stateId);
         console.log(this.ddlState)
-        // if(this.personalFormGroup.get("StateId").value)
-
-        //     setTimeout(() => {
-        //         this._registerService.getstateId(e.stateId).subscribe((response) => {
-        //             console.log(response)
-                   
-        //            });
-        //     }, 500);
-
-        this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
+         this.ddlCountry.SetSelection(this.personalFormGroup.get("StateId").value)
       
     }
 

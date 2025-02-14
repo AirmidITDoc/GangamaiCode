@@ -37,22 +37,12 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 export class EditAdmissionComponent implements OnInit {
   personalFormGroup: FormGroup;
   admissionFormGroup: FormGroup;
-  wardFormGroup: FormGroup;
-  otherFormGroup: FormGroup;
-  searchFormGroup: FormGroup;
-
-
   options = [];
   msg: any = [];
   optionRegSearch: any[] = [];
   subscriptionArr: Subscription[] = [];
 
-  filteredOptions: any;
-  registration: any;
-  matDialogRef: any;
   patienttype: any;
-  capturedImage: any;
-
   saveflag: boolean = false;
   isCompanySelected: boolean = false;
   Regflag: boolean = false;
@@ -67,7 +57,6 @@ export class EditAdmissionComponent implements OnInit {
 
   reportPrintObj: AdmissionPersonlModel;
   printTemplate: any;
-  // selectedAdvanceObj: AdvanceDetailObj;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
   bedObj = new Bed({});
@@ -94,7 +83,7 @@ export class EditAdmissionComponent implements OnInit {
     dialogRef.disableClose = true;
   }
 
-@ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModetariff: string = "Tariff";
@@ -106,31 +95,29 @@ export class EditAdmissionComponent implements OnInit {
   autocompleteModeSubCompany: string = "SubCompany";
 
   ngOnInit(): void {
-    this.isAlive = true;
+    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+
     console.log(this.data)
     if ((this.data?.regId ?? 0) > 0) {
-     
+
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
-          this.registerObj= response;
+          this.registerObj = response;
           console.log(this.registerObj)
 
         });
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
-          if(this.registerObj1){
-            this.registerObj1.phoneNo=this.registerObj1.phoneNo.trim()
-            this.registerObj1.mobileNo=this.registerObj1.mobileNo.trim()
+          if (this.registerObj1) {
+            this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
+            this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
 
-
-          this.registerObj1.admissionTime=  this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-          this.registerObj1.dischargeTime=  this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
-     
-
-            
-
-
+            this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
+            this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
+            this.admissionFormGroup.get("DocNameId").setValue(this.registerObj1.docNameId)
+            if(this.registerObj1.patientTypeID==2)
+              this.isCompanySelected=true
           }
           console.log(this.registerObj1)
 
@@ -139,12 +126,11 @@ export class EditAdmissionComponent implements OnInit {
 
       }, 500);
     }
-    this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-
+   
   }
 
   selectChangedepartment(obj: any) {
-    
+
     console.log(obj)
     this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
@@ -154,58 +140,43 @@ export class EditAdmissionComponent implements OnInit {
 
 
   onChangePatient(value) {
-    
-            var mode = "Company"
-            if (value.text == "Company") {
-                this._AdmissionService.getMaster(mode, 1);
-                this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
-                this.isCompanySelected = true;
-                this.patienttype = 2;
-            } else if (value.text != "Company") {
-                this.isCompanySelected = false;
-                this.admissionFormGroup.get('CompanyId').clearValidators();
-                this.admissionFormGroup.get('SubCompanyId').clearValidators();
-                this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-                this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
-                this.patienttype = 1;
-            }
-    
-    
-        }
 
-  CompanyId = 0;
-  SubCompanyId = 0;
+    var mode = "Company"
+    if (value.text == "Company") {
+      this._AdmissionService.getMaster(mode, 1);
+      this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.isCompanySelected = true;
+      this.patienttype = 2;
+    } else if (value.text != "Company") {
+      this.isCompanySelected = false;
+      this.admissionFormGroup.get('CompanyId').clearValidators();
+      this.admissionFormGroup.get('SubCompanyId').clearValidators();
+      this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
+      this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+      this.patienttype = 1;
+    }
+}
+
+
   OnSaveAdmission() {
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-   console.log(this.admissionFormGroup.value)
-   
-    // if (this.patienttype != 2) {
-    //   this.CompanyId = 0;
-    //   this.SubCompanyId = 0;
-    // } else if (this.patienttype == 2) {
+    console.log(this.admissionFormGroup.value)
 
-    //   this.CompanyId = this.admissionFormGroup.get('CompanyId').value.value;
-    //   this.SubCompanyId = this.admissionFormGroup.get('SubCompanyId').value.value;
-
-    //   if ((this.CompanyId == 0 || this.CompanyId == undefined || this.SubCompanyId == 0)) {
-    //     this.toastr.warning('Please select Company.', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // }
-    // debugger
+    if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
+      this.toastr.warning('Please select valid Company ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     // if (!this.admissionFormGroup.invalid) {
     console.log(this.registerObj)
-    
-
     let submitData = {
       "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
-      "ADMISSION":this.admissionFormGroup.value
+      "ADMISSION": this.admissionFormGroup.value
     };
     console.log(submitData);
 
-    this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId,submitData).subscribe(response => {
+    this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
       this.toastr.success(response.message);
       this.onClear();
       this._matDialog.closeAll();
@@ -213,9 +184,9 @@ export class EditAdmissionComponent implements OnInit {
       this.toastr.error(error.message);
 
     });
-  // }else{
-  //   Swal.fire("Enter All values ...Form Is Invalid")
-  // }
+    // }else{
+    //   Swal.fire("Enter All values ...Form Is Invalid")
+    // }
 
   }
 
@@ -272,7 +243,7 @@ export class EditAdmissionComponent implements OnInit {
       ],
     };
   }
-  Close() { 
+  Close() {
     this._matDialog.closeAll();
   }
   onClear() { }

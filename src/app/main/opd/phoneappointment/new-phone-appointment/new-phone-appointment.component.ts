@@ -28,10 +28,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   searchFormGroup: FormGroup
   hasSelectedContacts: boolean;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-  timeflag=0
+ 
   RegId = 0;
-
-  public now: Date = new Date();
 
   screenFromString = 'admission-form';
   submitted = false;
@@ -45,8 +43,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
   autocompletedepartment: string = "Department";
   autocompleteModedoctor: string = "ConDoctor";
   dateTimeString: any;
- 
-
+  timeflag=0
+  public now: Date = new Date();
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _phoneAppointListService: PhoneAppointListService,
     public formBuilder: UntypedFormBuilder,

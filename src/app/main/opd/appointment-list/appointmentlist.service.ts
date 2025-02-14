@@ -185,6 +185,11 @@ export class AppointmentlistService {
 
         return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param);
     }
+    
+    public RefDoctorCancle(Param: any) {
+
+        return this._httpClient1.PostData("ConsRefDoctor/RefDoctorUpdate", Param);
+    }
 
     public deactivateTheStatus(m_data) {
         return this._httpClient1.PostData("VisitDetail", m_data);
@@ -195,12 +200,7 @@ export class AppointmentlistService {
 
     }
 
-      public UpdateQueryByStatement(query,loader = true) {
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.post("Generic/ExecByQueryStatement?query="+query, {})
-      }
+    
     // new API?
 
     public getAppointmentList(employee) {

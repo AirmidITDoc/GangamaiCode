@@ -55,14 +55,14 @@ export class AdmissionService {
             PrefixId: ['', [Validators.required]],
             FirstName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
             MiddleName: ['', [
-                // Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
+                Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
             ]],
             LastName: ['', [
                 Validators.required,
-                // Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
+                Validators.pattern("^[A-Za-z () ]*[a-zA-z() ]*$"),
             ]],
             GenderId: new FormControl('', [Validators.required]),
             Address: '',
@@ -174,13 +174,7 @@ export class AdmissionService {
             template: [false]
         });
     }
-    //-------------------Insert methods-----------
-
-
-
-
-
-
+   
     public AdmissionNewInsert(employee) {
         return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
     }
@@ -191,9 +185,7 @@ export class AdmissionService {
 
 
     public AdmissionUpdate(Id,employee) {
-        debugger
-        // return this._httpClient1.PutData("Admission/AdmissionUpdateSP", employee);
-            return this._httpClient1.PutData("Admission/Edit/"+Id,employee);
+     return this._httpClient1.PutData("Admission/Edit/"+Id,employee);
     }
 
 
@@ -253,7 +245,13 @@ export class AdmissionService {
             return this._httpClient1.PutData("MlcInformation/" + Param.mlcid, Param);
         } else return this._httpClient1.PostData("MlcInformation", Param);
     }
-
+    
+    public subcompanyTPAInsert(Param: any) {
+        debugger
+            if (Param.mlcid) {
+            return this._httpClient1.PutData("MlcInformation/" + Param.mlcid, Param);
+        } else return this._httpClient1.PostData("MlcInformation", Param);
+    }
 
     public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)

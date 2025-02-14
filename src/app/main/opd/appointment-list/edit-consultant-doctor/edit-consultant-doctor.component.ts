@@ -8,6 +8,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { VisitMaster1 } from '../appointment-list.component';
 
 @Component({
   selector: 'app-edit-consultant-doctor',
@@ -24,7 +25,8 @@ export class EditConsultantDoctorComponent implements OnInit {
   RegId: any = 0;
   Departmentid = 0;
   DoctorID = 0;
-  autocompleteModedepartment: string = "Department";
+  regobj=new VisitMaster1({})
+  autocompletedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
   screenFromString = 'admission-form';
 @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
@@ -41,28 +43,18 @@ export class EditConsultantDoctorComponent implements OnInit {
     this.ConsdrForm = this._AppointmentlistService.createConsultatDrForm();
 
     if (this.data) {
-      console.log(this.data)
-
-      this.RegId = this.data.regId
-      this.VisitId = this.data.visitId
-      this.ConsdrForm.patchValue(this.data);
+     
+      this.regobj=this.data
+      this.ConsdrForm.get("visitId").setValue(this.regobj.visitId)
+      this.ConsdrForm.get("regId").setValue(this.regobj.regId)
+      this.ConsdrForm.get("departmentId").setValue(this.regobj.departmentId)
+      this.ConsdrForm.get("consultantDocId").setValue(this.regobj.doctorId)
+      // this.ddlDoctor.SetSelection(this.data.doctorId)
     }
 
   }
 
-
   
-
-  getValidationMessages() {
-    return {
-      departmentId: [
-        { name: "required", Message: "Department Name is required" }
-      ],
-      consultantDocId: [
-        { name: "required", Message: "Doctor Name is required" }
-      ]
-    };
-  }
 
   onSubmit() {
     if (this.ConsdrForm.valid) {
@@ -78,6 +70,25 @@ export class EditConsultantDoctorComponent implements OnInit {
   }
 
 
+
+  getValidationMessages() {
+    return {
+      departmentId: [
+        { name: "required", Message: "Department Name is required" }
+      ],
+      doctorId: [
+        { name: "required", Message: "Doctor Name is required" }
+      ]
+    };
+  }
+
+  selectChangedepartment(obj: any) {
+    this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+      this.ddlDoctor.options = data;
+      this.ddlDoctor.bindGridAutoComplete();
+  });
+   }
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -92,17 +103,7 @@ export class EditConsultantDoctorComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-  selectChangedepartment(obj: any) {
-    debugger
-    console.log(obj)
-    this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data:any)=>{
-        this.ddlDoctor.options=data;
-        this.ddlDoctor.bindGridAutoComplete();
-    });
-  }
 
-  selectChangedeptdoc(obj: any) {
-    console.log(obj);
 
-  }
+  
 }
