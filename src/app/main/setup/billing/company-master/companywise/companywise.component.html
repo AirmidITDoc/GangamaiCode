@@ -31,8 +31,6 @@
                         <form [formGroup]="myFormGroup">
                             <div fxLayout="column" fxLayoutGap="8px">
 
-                                
-
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Company Name</mat-label>
                                         <input name="CompanyName"   formControlName="CompanyName"  
@@ -58,9 +56,7 @@
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
-                           
-
-                                
+                                                        
                                     <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
                                         (change)="getServiceListdata()">
                                         <mat-radio-button value="1">Pathology

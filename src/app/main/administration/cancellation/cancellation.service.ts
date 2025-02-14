@@ -25,7 +25,7 @@ export class CancellationService {
       FirstName: '',
       LastName: '',
       PBillNo: '',
-      OP_IP_Type: ['1']
+      OP_IP_Type: ['0']
 
     })
   }

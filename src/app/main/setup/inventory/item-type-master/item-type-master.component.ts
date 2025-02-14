@@ -16,8 +16,7 @@ import { NewItemtypeComponent } from "./new-itemtype/new-itemtype.component";
     animations: fuseAnimations,
 })
 export class ItemTypeMasterComponent implements OnInit {
-    constructor(public _ItemTypeMasterService: ItemTypeMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "ItemType/List",
@@ -50,7 +49,9 @@ export class ItemTypeMasterComponent implements OnInit {
         ],
         row: 25
     }
-
+    
+    constructor(public _ItemTypeMasterService: ItemTypeMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
 

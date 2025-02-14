@@ -17,8 +17,6 @@ import { NewManufactureComponent } from "./new-manufacture/new-manufacture.compo
 })
 export class ManufactureMasterComponent implements OnInit {
 
-    constructor(public _ManufactureMasterService: ManufactureMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "ManufactureMaster/List",
@@ -53,7 +51,9 @@ export class ManufactureMasterComponent implements OnInit {
         row: 25
     }
 
-
+    constructor(public _ManufactureMasterService: ManufactureMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+        
     ngOnInit(): void { }
 
     onSave(row: any = null) {

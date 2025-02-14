@@ -17,9 +17,9 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class CreditReasonMasterComponent implements OnInit {
-    constructor(public _CreditreasonService: CreditreasonService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "CreditReasonMaster/List",
         columnsList: [
@@ -52,12 +52,17 @@ export class CreditReasonMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(
+        public _CreditreasonService: CreditreasonService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewCreditReasonComponent,
             {

@@ -5,61 +5,57 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemCategoryMasterService } from '../item-category-master.service';
 
 @Component({
-  selector: 'app-new-itemcategory',
-  templateUrl: './new-itemcategory.component.html',
-  styleUrls: ['./new-itemcategory.component.scss']
+    selector: 'app-new-itemcategory',
+    templateUrl: './new-itemcategory.component.html',
+    styleUrls: ['./new-itemcategory.component.scss']
 })
 export class NewItemcategoryComponent implements OnInit {
 
-  categoryForm: FormGroup;
-  isActive:boolean=true;
+    categoryForm: FormGroup;
+    isActive: boolean = true;
+    autocompleteModeItem: string = "Item";
 
-  autocompleteModeItem: string = "Item";
+    constructor(
+        public _CategorymasterService: ItemCategoryMasterService,
+        public dialogRef: MatDialogRef<NewItemcategoryComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
-  constructor(
-    public _CategorymasterService: ItemCategoryMasterService,
-    public dialogRef: MatDialogRef<NewItemcategoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService
-  ) { }
- 
-  ngOnInit(): void {
-    this.categoryForm = this._CategorymasterService.createItemCategoryForm();
-    if((this.data?.itemCategoryId??0) > 0)
-        {
-        this.isActive=this.data.isActive
-        this.categoryForm.patchValue(this.data);
-    }
-  }
-
-    
-    onSubmit() {
-        if(!this.categoryForm.invalid)
-        {
-
-            console.log("ItemCategoryMaster Insert:",this.categoryForm.value)
-        
-            this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);}, 
-            (error) => {
-            this.toastr.error(error.message);
-            });
+    ngOnInit(): void {
+        this.categoryForm = this._CategorymasterService.createItemCategoryForm();
+        if ((this.data?.itemCategoryId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.categoryForm.patchValue(this.data);
         }
-        else
-        {
+    }
+
+    onSubmit() {
+        if (!this.categoryForm.invalid) {
+
+            console.log("ItemCategoryMaster Insert:", this.categoryForm.value)
+
+            this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            },
+                (error) => {
+                    this.toastr.error(error.message);
+                });
+        }
+        else {
             this.toastr.warning('please check from is invalid', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
     }
-    
-    itemId=0;
 
-    selectChangeItem(obj: any){
+    itemId = 0;
+
+    selectChangeItem(obj: any) {
         console.log(obj);
-        this.itemId=obj
+        this.itemId = obj
     }
 
     onClear(val: boolean) {

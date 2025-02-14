@@ -16,10 +16,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
     animations: fuseAnimations,
 })
 export class TermsOfPaymentMasterComponent implements OnInit {
-    constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
-        public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "TermsOfPayment/List",
@@ -53,6 +50,9 @@ export class TermsOfPaymentMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
 

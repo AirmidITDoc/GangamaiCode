@@ -21,6 +21,7 @@ export class MenuMasterService {
     createMenuForm(): FormGroup {
     return this._formBuilder.group({
                 id:[""],
+                bedName:[""],
                 upId: ["",
                     [
                         // Validators.required,
@@ -32,10 +33,11 @@ export class MenuMasterService {
                 icon: [""],
                 linkAction: [""],
                 sortOrder: [""],
-                isActive: true,
+                isActive:[true,[Validators.required]],
                 isDisplay: true,
                 permissionCode:[""],
                 tableNames:[""],
+                IsBlock:[""],
 
                 /**
                  * {
@@ -65,9 +67,13 @@ export class MenuMasterService {
     }
 
       public menuMasterSave(Param: any) {
+       return this._httpClient.PostData("MenuMaster/Insert", Param);
+    }
+
+    public menuMasterUpdate(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("LoginManager/Edit/" + Param.id, Param);
-        } else return this._httpClient.PostData("LoginManager/Insert", Param);
+            return this._httpClient.PutData("MenuMaster/Edit/" + Param.id, Param);
+        }
     }
 
     getValidationMessages() {

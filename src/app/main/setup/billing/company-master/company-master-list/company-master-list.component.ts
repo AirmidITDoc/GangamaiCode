@@ -17,11 +17,11 @@ export class CompanyMasterListComponent implements OnInit {
   
     companyForm: FormGroup;
     isActive:boolean=true;
-
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
     autocompleteModecity: string = "City";
     registerObj = new CompanyMaster({});
+
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public dialogRef: MatDialogRef<CompanyMasterListComponent>,
@@ -32,10 +32,6 @@ export class CompanyMasterListComponent implements OnInit {
     ngOnInit(): void {
         debugger
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-        // console.log(this.data)
-        // if((this.data?.companyId??0) > 0){
-        //    this.companyForm.patchValue(this.data);
-        // }
         if ((this.data?.companyId?? 0) > 0) {
             setTimeout(() => {
                 this._CompanyMasterService.getCompanyById(this.data.companyId).subscribe((response) => {
@@ -74,8 +70,6 @@ export class CompanyMasterListComponent implements OnInit {
         this.companyForm.reset();
         this.dialogRef.close(val);
     }
-
-     
 
       onClose(){
         this.companyForm.reset();

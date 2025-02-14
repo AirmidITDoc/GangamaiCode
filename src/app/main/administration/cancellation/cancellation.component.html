@@ -28,16 +28,16 @@
                             <ng-container filters>
     
                                 <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                [(toValue)]="gridConfig.filters[0].fieldValue">
+                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue">
                             </airmid-datepicker>
                                 
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Registration No</mat-label>
                                     <input matInput placeholder="Search Registration No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue=''">
+                                        (click)="gridConfig.filters[4].fieldValue='0'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -45,9 +45,9 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[2].fieldValue=''">
+                                        (click)="gridConfig.filters[0].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -55,32 +55,32 @@
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[3].fieldValue=''">
+                                        (click)="gridConfig.filters[1].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
     
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>PBill No</mat-label>
                                     <input matInput placeholder="Search PBill No" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue=''">
+                                        (click)="gridConfig.filters[5].fieldValue='%'">
                                         <mat-icon>close</mat-icon>
                                     </button>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
                                 <form [formGroup]="_CancellationService.UserFormGroup" >
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
                                         <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type">
                                             <mat-label>Type : </mat-label>
                                             <div>
-                                                <mat-radio-button value="0" style="margin-bottom:10px;" (click)="getOPDBillsList()">
+                                                <mat-radio-button value="0" style="margin-bottom:10px;">
                                                     OPD
                                                 </mat-radio-button>
-                                                <mat-radio-button value="1" (click)="getIpdBillList()">
+                                                <mat-radio-button value="1">
                                                     IPD
                                                 </mat-radio-button>
                                             </div>
@@ -167,16 +167,16 @@
                                 <ng-container filters>
         
                                     <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                [(toValue)]="gridConfig.filters[0].fieldValue">
+                                formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                [(toValue)]="gridConfig.filters[3].fieldValue">
                             </airmid-datepicker>
                                     
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Registration No</mat-label>
                                         <input matInput placeholder="Search Registration No" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                                            [(ngModel)]="gridConfig.filters[4].fieldValue" />
                                         <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[1].fieldValue=''">
+                                            (click)="gridConfig.filters[4].fieldValue=''">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -184,9 +184,9 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>First Name</mat-label>
                                         <input matInput placeholder="Search First Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                         <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[2].fieldValue=''">
+                                            (click)="gridConfig.filters[0].fieldValue='%'">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -194,9 +194,9 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Last Name</mat-label>
                                         <input matInput placeholder="Search Last Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
                                         <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[3].fieldValue=''">
+                                            (click)="gridConfig.filters[1].fieldValue='%'">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -225,8 +225,8 @@
                                 <ng-container filters>
         
                                     <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                    [(toValue)]="gridConfig.filters[0].fieldValue">
+                                    formStartControlName="startdate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue">
                                 </airmid-datepicker>
                                     
                                     <mat-form-field appearance="outline" fxFlex>
@@ -242,9 +242,9 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>First Name</mat-label>
                                         <input matInput placeholder="Search First Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[2].fieldValue" />
+                                            [(ngModel)]="gridConfig.filters[0].fieldValue" />
                                         <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[2].fieldValue=''">
+                                            (click)="gridConfig.filters[0].fieldValue='%'">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -252,9 +252,19 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Last Name</mat-label>
                                         <input matInput placeholder="Search Last Name" autocomplete="off"
-                                            [(ngModel)]="gridConfig.filters[3].fieldValue" />
+                                            [(ngModel)]="gridConfig.filters[1].fieldValue" />
                                         <button matSuffix mat-icon-button aria-label="Clear"
-                                            (click)="gridConfig.filters[3].fieldValue=''">
+                                            (click)="gridConfig.filters[1].fieldValue='%'">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>RegNo</mat-label>
+                                        <input matInput placeholder="Search First Name" autocomplete="off"
+                                            [(ngModel)]="gridConfig.filters[4].fieldValue" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="gridConfig.filters[4].fieldValue=''">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>

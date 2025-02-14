@@ -59,13 +59,13 @@ export class CreateUserService {
             addChargeIsDelete: "",
             isIndentVerify: "",
             isPoinchargeVerify: "",
-            isRefDocEditOpt: "",
+            isRefDocEditOpt: true,
             isInchIndVfy: "",
             webRoleId: 0,
             userToken: [""],
-            PharExpOpt:"",
-            PharIPOpt:"",
-            PharOPOpt:"",
+            PharExpOpt:0,
+            PharIPOpt:0,
+            PharOPOpt:0,
 
             roomId:[""],
             mobileNo:[ "", [

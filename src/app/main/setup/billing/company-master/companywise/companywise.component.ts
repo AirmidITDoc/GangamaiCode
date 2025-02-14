@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./companywise.component.scss']
 })
 export class CompanywiseComponent {
+
     displayedServiceColumns: string[] = [
         'ServiceName',
         'Action' 
@@ -25,8 +26,7 @@ export class CompanywiseComponent {
           'Qty',
           'Price',
           'buttons'
-        ]
-    
+        ]    
         
       isClasselected:boolean=false;
       vClassName:any;
@@ -67,6 +67,7 @@ export class CompanywiseComponent {
         } 
         this.getclassNameCombo();
       }
+      
       CreateServCompForm(){
         return this.formBuilder.group({
           IsPathRad: ['3'], 

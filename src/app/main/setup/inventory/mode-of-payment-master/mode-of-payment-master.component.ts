@@ -16,8 +16,7 @@ import { MatDialog } from "@angular/material/dialog";
     animations: fuseAnimations,
 })
 export class ModeOfPaymentMasterComponent implements OnInit {
-    constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,public _matDialog: MatDialog,
-    public toastr : ToastrService,) {}
+   
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
         gridConfig: gridModel = {
             apiUrl: "ModeOfPayment/List",
@@ -49,7 +48,9 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             ],
             row: 25
         }
-    
+        
+        constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,public _matDialog: MatDialog,
+            public toastr : ToastrService,) {}
      
         ngOnInit(): void { }
         onSave(row: any = null) {

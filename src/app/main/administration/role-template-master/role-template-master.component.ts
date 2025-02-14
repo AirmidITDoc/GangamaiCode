@@ -26,7 +26,7 @@ export class RoleTemplateMasterComponent implements OnInit {
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
     gridConfig: gridModel = {
-        apiUrl: "RoleTemplate/List",
+        apiUrl: "RoleMaster/List",
         columnsList: [
             { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
@@ -54,16 +54,14 @@ export class RoleTemplateMasterComponent implements OnInit {
                 ]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "RoleName",
+        sortField: "RoleId",
         sortOrder: 0,
         filters: [
             { fieldName: "roleName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ],
-        row: 25
+        row: 10
     }
-    
-        
     
     ngOnInit(): void {
         // this.getRoleMasterList();

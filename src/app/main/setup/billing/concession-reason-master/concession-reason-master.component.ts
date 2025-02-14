@@ -8,8 +8,6 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { NewConcessionreasonComponent } from "./new-concessionreason/new-concessionreason.component";
 
-
-
 @Component({
     selector: "app-concession-reason-master",
     templateUrl: "./concession-reason-master.component.html",
@@ -17,10 +15,11 @@ import { NewConcessionreasonComponent } from "./new-concessionreason/new-concess
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
+
 export class ConcessionReasonMasterComponent implements OnInit {
-    constructor(public _ConcessionReasonMasterService: ConcessionReasonMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "ConcessionReasonMaster/List",
         columnsList: [
@@ -53,12 +52,17 @@ export class ConcessionReasonMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(
+        public _ConcessionReasonMasterService: ConcessionReasonMasterService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewConcessionreasonComponent,
             {
