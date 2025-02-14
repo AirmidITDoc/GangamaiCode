@@ -17,9 +17,6 @@ import { NewItemClassComponent } from "./new-item-class/new-item-class.component
 })
 export class ItemClassMasterComponent implements OnInit {
     
-    constructor(public _ItemClassMasterService: ItemClassMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
     gridConfig: gridModel = {
@@ -54,7 +51,9 @@ export class ItemClassMasterComponent implements OnInit {
         row: 25
     }
 
-
+    constructor(public _ItemClassMasterService: ItemClassMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+        
     ngOnInit(): void { }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

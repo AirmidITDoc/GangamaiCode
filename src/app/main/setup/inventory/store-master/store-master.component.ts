@@ -16,8 +16,7 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
     animations: fuseAnimations,
 })
 export class StoreMasterComponent implements OnInit {
-    constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "StoreMaster/List",
@@ -64,6 +63,9 @@ export class StoreMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+        
     ngOnInit(): void { }
 
     onSave(row: any = null) {

@@ -47,14 +47,14 @@ export class MenuMasterComponent implements OnInit {
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "UserId",
+        sortField: "UpId",
         sortOrder: 0,
         filters: [
-            { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Id", fieldValue: "217", opType: OperatorComparer.Equals },
             { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Length", fieldValue: "100", opType: OperatorComparer.Equals }
+            { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
         ],
-        row: 25
+        row: 10
     }
 
     constructor(

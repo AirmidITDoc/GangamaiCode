@@ -16,13 +16,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class DischargetypeMasterComponent implements OnInit {
-    constructor(
-        public _dischargetypeService: DischargetypeMasterService,
-        public toastr: ToastrService,
-
-        public _matDialog: MatDialog
-    ) { }
-    
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "DischargeType/List",
@@ -56,9 +50,14 @@ export class DischargetypeMasterComponent implements OnInit {
         row: 25
     }
 
-
+    constructor(
+        public _dischargetypeService: DischargetypeMasterService,
+        public toastr: ToastrService,
+        public _matDialog: MatDialog
+    ) { }
 
     ngOnInit(): void { }
+    
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

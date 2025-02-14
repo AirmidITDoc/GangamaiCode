@@ -185,7 +185,7 @@ export class NUserComponent implements OnInit{
                 "userName": this.myuserform.get('userName').value || '',
                 "password": this.myuserform.get('password').value || 0,
                 "roleId": this.myuserform.get('roleId').value || 1,
-                "storeId": this.myuserform.get('storeId').value || 0,
+                "storeId": parseInt(this.myuserform.get('storeId').value) || 0,
                 "isDoctorType": this.myuserform.get('isDoctorType').value || 0,
                 "doctorId": this.myuserform.get('DoctorID').value || 0,
                 "isPoverify": this.myuserform.get('isPoverify').value || 0,
@@ -205,10 +205,10 @@ export class NUserComponent implements OnInit{
                 "isRefDocEditOpt": this.myuserform.get('isRefDocEditOpt').value,
                 "isInchIndVfy": this.myuserform.get('IIverify').value,
                 "webRoleId": this.myuserform.get('webRoleId').value || 0, 
-                "userToken": "string",
-                "pharExtOpt": this.myuserform.get('PharExpOpt').value || 0,
-                "pharOpopt":this.myuserform.get('PharOPOpt').value || 0,
-                "pharIpopt": this.myuserform.get('PharIPOpt').value || 0,
+                "userToken": "",
+                "pharExtOpt": Number(this.myuserform.get('PharExpOpt').value )|| 0,
+                "pharOpopt":Number(this.myuserform.get('PharOPOpt').value) || 0,
+                "pharIpopt": Number(this.myuserform.get('PharIPOpt').value) || 0,
               }
         
               console.log(m_data);
@@ -234,8 +234,8 @@ export class NUserComponent implements OnInit{
                     "lastName": this.myuserform.get('lastName').value || '',
                     "userName": this.myuserform.get('userName').value || '',
                     "password": this.myuserform.get('password').value || 0,
-                    "roleId": this.myuserform.get('roleId').value || 1,
-                    "storeId": this.myuserform.get('storeId').value || 0,
+                    "roleId": parseInt(this.myuserform.get('roleId').value) || 1,
+                    "storeId": parseInt(this.myuserform.get('storeId').value) || 0,
                     "isDoctorType": this.myuserform.get('isDoctorType').value || 0,
                     "doctorId": this.myuserform.get('DoctorID').value || 0,
                     "isPoverify": this.myuserform.get('isPoverify').value || 0,
@@ -255,10 +255,10 @@ export class NUserComponent implements OnInit{
                     "isRefDocEditOpt": this.myuserform.get('isRefDocEditOpt').value,
                     "isInchIndVfy": this.myuserform.get('IIverify').value,
                     "webRoleId": this.myuserform.get('webRoleId').value || 0, 
-                    "userToken": "string",
-                    "pharExtOpt": this.myuserform.get('PharExpOpt').value || 0,
-                    "pharOpopt":this.myuserform.get('PharOPOpt').value || 0,
-                    "pharIpopt": this.myuserform.get('PharIPOpt').value || 0,
+                    "userToken": "",
+                    "pharExtOpt": Number(this.myuserform.get('PharExpOpt').value )|| 0,
+                    "pharOpopt":Number(this.myuserform.get('PharOPOpt').value) || 0,
+                    "pharIpopt": Number(this.myuserform.get('PharIPOpt').value) || 0,
                   }
             
                   console.log(m_data1);

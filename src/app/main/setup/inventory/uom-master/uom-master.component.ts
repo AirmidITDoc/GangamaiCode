@@ -16,9 +16,7 @@ import { NewUMOComponent } from "./new-umo/new-umo.component";
     animations: fuseAnimations,
 })
 export class UomMasterComponent implements OnInit {
-    constructor(public _UomMasterService: UomMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "UnitOfMeasurement/List",
@@ -52,6 +50,8 @@ export class UomMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(public _UomMasterService: UomMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
     onSave(row: any = null) {

@@ -45,14 +45,19 @@ export class RoleTemplateService {
         this.createRoleForm();
     }
 
-    public classMasterSave(Param: any) {
+    public roleMasterSave(Param: any) {
+        return this._httpClient.PostData("RoleMaster", Param);
+    }
+    public roleMasterUpdate(Param: any) {
+        debugger
         if (Param.roleId) {
-            return this._httpClient.PutData("RoleTemplate/" + Param.roleId, Param);
-        } else return this._httpClient.PostData("RoleTemplate", Param);
+            return this._httpClient.PutData("RoleMaster/" + Param.roleId, Param);
+        }
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("RoleTemplate?Id=" + m_data.toString());
+        debugger
+        return this._httpClient.DeleteData("RoleMaster?Id=" + m_data.toString());
     }
 
     

@@ -17,17 +17,15 @@ export class NewBedComponent implements OnInit {
   bedForm: FormGroup;
   isActive:boolean=true;
   isAvailible:boolean= true;
-  
+  autocompleteModeroomId: string = "Room"; 
+  roomId = 0;
+
   constructor(
       public _BedMasterService: BedMasterService,
       public dialogRef: MatDialogRef<NewBedComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       public toastr: ToastrService
   ) { }
-
-  autocompleteModeroomId: string = "Room"; 
-
-  roomId = 0;
 
   ngOnInit(): void {
     this.bedForm = this._BedMasterService.createBedForm();
@@ -38,24 +36,10 @@ export class NewBedComponent implements OnInit {
         this.bedForm.patchValue(this.data);
     }
   }
-
-  getValidationMessages() {
-    return {
-      roomId: [
-            { name: "required", Message: "Room Name is required" }
-        ],
-        bedName: [
-          { name: "required", Message: "Bed Name is required" },
-          { name: "pattern", Message: "Special char not allowed." }
-        ]
-    };
-  }
-
-  
+    
   onSubmit() {
     if(!this.bedForm.invalid) 
     {
-
         console.log("BedMaster Insert:",this.bedForm.value)
 
         this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
@@ -72,7 +56,6 @@ export class NewBedComponent implements OnInit {
         });
         return;
     }
-  
 }
 
   selectChangeroomId(obj: any){
@@ -83,5 +66,17 @@ export class NewBedComponent implements OnInit {
   onClear(val: boolean) {
       this.bedForm.reset();
       this.dialogRef.close(val);
+  }
+
+  getValidationMessages() {
+    return {
+      roomId: [
+            { name: "required", Message: "Room Name is required" }
+        ],
+        bedName: [
+          { name: "required", Message: "Bed Name is required" },
+          { name: "pattern", Message: "Special char not allowed." }
+        ]
+    };
   }
 }

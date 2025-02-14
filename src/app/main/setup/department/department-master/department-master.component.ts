@@ -17,10 +17,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class DepartmentMasterComponent implements OnInit {
     msg: any;
-    constructor(public _departmentService: DepartmentMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "DepartmentMaster/List",
         columnsList: [
@@ -52,12 +50,18 @@ export class DepartmentMasterComponent implements OnInit {
         ],
         row: 25
     }
+
+    constructor(
+        public _departmentService: DepartmentMasterService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+
     ngOnInit(): void { }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewDepartmentComponent,
             {

@@ -16,9 +16,7 @@ import { NewCurrencyComponent } from "./new-currency/new-currency.component";
     animations: fuseAnimations,
 })
 export class CurrencyMasterComponent implements OnInit {
-    constructor(public _CurrencymasterService: CurrencymasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "CurrencyMaster/List",
@@ -52,7 +50,11 @@ export class CurrencyMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(public _CurrencymasterService: CurrencymasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+
     ngOnInit(): void { }
+    
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

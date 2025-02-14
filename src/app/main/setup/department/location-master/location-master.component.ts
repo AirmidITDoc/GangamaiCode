@@ -18,9 +18,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 
 export class LocationMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    constructor(public _locationService: LocationMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
-
+    
     gridConfig: gridModel = {
         apiUrl: "LocationMaster/List",
         columnsList: [
@@ -52,6 +50,9 @@ export class LocationMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(public _locationService: LocationMasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+        
     ngOnInit(): void { }
 
     onSave(row: any = null) {

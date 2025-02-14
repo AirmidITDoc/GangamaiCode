@@ -21,19 +21,16 @@ export class NewDischargetypeComponent implements OnInit {
       public toastr: ToastrService
   ) { }
 
-
     ngOnInit(): void {
         this.dischargetypeForm = this._DischargetypeMasterService.createDischargetypeForm();
         if((this.data?.dischargeTypeId??0) > 0){
         this.isActive=this.data.isActive
         this.dischargetypeForm.patchValue(this.data);}
     }
-
         
     onSubmit() {
         if(!this.dischargetypeForm.invalid)
-        {
-            
+        {            
             console.log("dischragetype JSON :",this.dischargetypeForm.value);
 
             this._DischargetypeMasterService.dischargeTypeMasterSave(this.dischargetypeForm.value).subscribe((response) => {
@@ -52,6 +49,11 @@ export class NewDischargetypeComponent implements OnInit {
         }
     }
   
+    onClear(val: boolean) {
+        this.dischargetypeForm.reset();
+        this.dialogRef.close(val);
+    }
+
     getValidationMessages() {
         return {
             dischargeTypeName: [
@@ -60,10 +62,5 @@ export class NewDischargetypeComponent implements OnInit {
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         };
-    }
-
-    onClear(val: boolean) {
-        this.dischargetypeForm.reset();
-        this.dialogRef.close(val);
     }
 }

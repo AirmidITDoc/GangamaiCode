@@ -22,7 +22,9 @@ export class ServiceMasterComponent implements OnInit {
     autocompleteModegroupName: string = "GroupName";
     tariffId = "0";
     groupId = "0";
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
         columnsList: [
@@ -83,38 +85,21 @@ export class ServiceMasterComponent implements OnInit {
 
     }
 
-    getValidationtariffMessages() {
-        return {
-            TariffId: [
-                { name: "required", Message: "Tariff Name is required" }
-            ]
-        };
-    }
-
-    getValidationgroupMessages() {
-        return {
-            GroupId: [
-                { name: "required", Message: "Group Name is required" }
-            ]
-        };
-    }
-
     onSearchClear() {
         this._serviceMasterService.myformSearch.reset({
             ServiceNameSearch: "",
             IsDeletedSearch: "2",
         });
     }
+
     get f() {
         return this._serviceMasterService.myform.controls;
     }
-
 
     onClear() {
         this._serviceMasterService.myform.reset({ IsDeleted: "false" });
         this._serviceMasterService.initializeFormGroup();
     }
-
 
     selectChangegroup(obj: any) {
         this.groupId = String(obj);
@@ -124,7 +109,6 @@ export class ServiceMasterComponent implements OnInit {
         { fieldName: "Start", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "Length", fieldValue: "30", opType: OperatorComparer.Equals }]
     }
-
 
     selectChangetariff(obj: any) {
         console.log(obj);
@@ -156,6 +140,21 @@ export class ServiceMasterComponent implements OnInit {
         });
     }
 
+    getValidationtariffMessages() {
+        return {
+            TariffId: [
+                { name: "required", Message: "Tariff Name is required" }
+            ]
+        };
+    }
+
+    getValidationgroupMessages() {
+        return {
+            GroupId: [
+                { name: "required", Message: "Group Name is required" }
+            ]
+        };
+    }
 
 }
 

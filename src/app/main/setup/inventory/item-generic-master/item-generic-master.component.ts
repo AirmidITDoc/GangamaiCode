@@ -18,14 +18,8 @@ import { FormGroup } from "@angular/forms";
 })
 export class ItemGenericMasterComponent implements OnInit {
     genericForm: FormGroup;
-
-    constructor(public _ItemGenericMasterService: ItemGenericMasterService,
-        public _matDialog: MatDialog,
-        public toastr: ToastrService,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) { }
-
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
@@ -58,6 +52,11 @@ export class ItemGenericMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(public _ItemGenericMasterService: ItemGenericMasterService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) { }
 
     ngOnInit(): void { }
 

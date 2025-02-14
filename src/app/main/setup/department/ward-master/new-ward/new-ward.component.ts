@@ -16,21 +16,18 @@ export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
     isActive:boolean=true;
     isAvailible:boolean=true;
-
-    constructor( public _WardMasterService: WardMasterService,
-    public dialogRef: MatDialogRef<NewWardComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService) { }
-
     autocompleteModelocation: string = "City";
     autocompleteModeclass: string = "Class";
     autocompleteModeroomId: string = "Room"; 
-
     locationId =0;
     classId = 0;
     roomType = 0;
 
-    debugger
+    constructor( public _WardMasterService: WardMasterService,
+        public dialogRef: MatDialogRef<NewWardComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService) { }
+
     ngOnInit(): void {
         this.roomForm = this._WardMasterService.createWardForm();
         if((this.data?.roomId??0) > 0)

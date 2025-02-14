@@ -16,12 +16,7 @@ import { NewTaxComponent } from "./new-tax/new-tax.component";
     animations: fuseAnimations,
 })
 export class TaxMasterComponent implements OnInit {
-    constructor(
-        public _TaxMasterService: TaxMasterService,
-        public toastr: ToastrService,
-        public _matDialog: MatDialog
-    ) { }
-
+   
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
         apiUrl: "TaxMaster/List",
@@ -55,6 +50,12 @@ export class TaxMasterComponent implements OnInit {
         row: 25
     }
 
+    constructor(
+        public _TaxMasterService: TaxMasterService,
+        public toastr: ToastrService,
+        public _matDialog: MatDialog
+    ) { }
+    
     ngOnInit(): void { }
 
     onSave(row: any = null) {

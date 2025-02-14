@@ -16,6 +16,7 @@ export class NewRoletemplateComponent implements OnInit {
 
     myform: FormGroup;
     isActive:boolean=true;
+    vRoleId:any;
 
     constructor(
         public _RoleTemplateService: RoleTemplateService,
@@ -28,22 +29,51 @@ export class NewRoletemplateComponent implements OnInit {
         this.myform = this._RoleTemplateService.createRoleForm();
         if((this.data?.roleId??0) > 0)
         {
+            console.log(this.data)
+            this.vRoleId=this.data.roleId;
             this.isActive=this.data.isActive
             this.myform.patchValue(this.data);
         }
     }
     onSubmit() {
+        debugger
    
         if (this.myform.valid) {
 
             console.log("JSON :-",this.myform.value)
         
-            this._RoleTemplateService.classMasterSave(this.myform.value).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
+            if(!this.vRoleId){
+                var mdata = {
+                    "roleId": 0,
+                    "roleName": this.myform.get("roleName").value,
+                    "isActive": JSON.parse(this.myform.get("isActive").value),
+                  };
+
+                  console.log('json mdata:', mdata);
+
+                this._RoleTemplateService.roleMasterSave(mdata).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+            }
+            else{
+                var mdata1 = {
+                    "roleId": this.vRoleId,
+                    "roleName": this.myform.get("roleName").value,
+                    "isActive": JSON.parse(this.myform.get("isActive").value),
+                  };
+
+                  console.log('json mdata:', mdata1);
+
+                this._RoleTemplateService.roleMasterUpdate(mdata1).subscribe((response) => {
+                    this.toastr.success(response.message);
+                    this.onClear(true);
+                }, (error) => {
+                    this.toastr.error(error.message);
+                });
+            }
         }
         else
         {

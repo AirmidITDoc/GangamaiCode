@@ -36,31 +36,11 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         public dialogRef: MatDialogRef<NewDoctorComponent>,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) { }
+
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
     }
 
-    onChangePrefix(e) {
-        this.ddlGender.SetSelection(e.sexId);
-    }
-    onViewSignature() {
-        const dialogRef = this.matDialog.open(SignatureViewComponent,
-            {
-                width: '900px',
-                height: '400px',
-                data: {
-
-                }
-            }
-        );
-        dialogRef.afterClosed().subscribe(result => {
-            this.sanitizeImagePreview = result;
-            this.myForm.value.signature = this.sanitizeImagePreview;
-        });
-    }
-    toggleSelectAll() {
-
-    }
     ngOnInit(): void {
         this.myForm = this._doctorService.createdDoctormasterForm();
         if ((this.data?.doctorId ?? 0) > 0) {
@@ -85,6 +65,29 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             this.myForm.get('IsConsultant').setValue(true);
         }
     }
+
+    onChangePrefix(e) {
+        this.ddlGender.SetSelection(e.sexId);
+    }
+    onViewSignature() {
+        const dialogRef = this.matDialog.open(SignatureViewComponent,
+            {
+                width: '900px',
+                height: '400px',
+                data: {
+
+                }
+            }
+        );
+        dialogRef.afterClosed().subscribe(result => {
+            this.sanitizeImagePreview = result;
+            this.myForm.value.signature = this.sanitizeImagePreview;
+        });
+    }
+    toggleSelectAll() {
+
+    }
+    
     removeDepartment(item) {
         let removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
         this.myForm.value.MDoctorDepartmentDets.splice(removedIndex, 1);
@@ -191,8 +194,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         };
     }
 }
-
-
 
 export class DepartmenttList {
     DeptId: number;
