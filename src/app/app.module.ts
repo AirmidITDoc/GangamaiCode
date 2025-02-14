@@ -44,6 +44,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import {  MatPaginatorModule } from '@angular/material/paginator';
+import { Error404Component } from './main/shared/APIerrorpages/error-404/error-404.component';
+import { Error401Component } from './main/shared/APIerrorpages/error-401/error-401.component';
+import { Error403Component } from './main/shared/APIerrorpages/error-403/error-403.component';
 
 const appRoutes: Routes = [
     {
@@ -150,8 +153,21 @@ const appRoutes: Routes = [
             import("./main/ambulancemanagement/ambulancemanagement.module").then((m) => m.AmbulancemanagementModule),
     },
     {
+        path: '',
+        redirectTo: 'auth/login',
+        pathMatch:'full'
+    },
+    {
+        path: 'unauthorize',
+        component:Error401Component
+    },
+    {
+        path: 'forbidden',
+        component:Error403Component
+    },
+    {
         path: '**',
-        redirectTo: 'auth/login'
+        component:Error404Component
     },
 
 ];
