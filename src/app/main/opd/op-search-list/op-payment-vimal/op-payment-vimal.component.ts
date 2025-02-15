@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { IpdAdvanceBrowseModel } from 'app/main/ipd/browse-ipadvance/browse-ipadvance.component';
 import { IPSettlementService } from 'app/main/ipd/ip-settlement/ip-settlement.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-op-payment',
@@ -94,12 +95,21 @@ export class OpPaymentVimalComponent implements OnInit {
     IsAllowAdd() {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
-    GetBalanceAmt() {
+    GetBalanceAmt() { 
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
        // this.balanceAmt = (Number(this.netPayAmt || 0) -  Number(this.amount1 || 0));
     }
-    GetAmt(){
+    GetAmt() {
+        if (this.amount1 > this.netPayAmt) {
+            this.toastr.warning('Amount should not be greater than Net Amount', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            })
+            this.amount1 = 0
+            this.setPaidAmount();
+            this.GetBalanceAmt()
+            return;
+        }
         this.setPaidAmount();
         this.GetBalanceAmt();
     }
@@ -210,7 +220,8 @@ export class OpPaymentVimalComponent implements OnInit {
         private opService: OPSearhlistService,
         private _loggedService: AuthenticationService,
         public datePipe: DatePipe,
-        private ipSearchService: IPSettlementService,
+        private ipSearchService: IPSettlementService, 
+            public toastr: ToastrService,
         // private snackBarService: SnackBarService
     ) {
         this.nowDate = new Date();
@@ -423,15 +434,15 @@ export class OpPaymentVimalComponent implements OnInit {
         // this.Paymentobj["CardPayAmount"] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
         // console.log(JSON.stringify(this.Paymentobj));
         this.onAddPayment();
-        if (this.balanceAmt != 0) {
-            Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
-            return
-        }
-        if (this.amount1 != 0) {
-            let balamt = this.netPayAmt - this.paidAmt
-            Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
-            return
-        }
+        // if (this.balanceAmt != 0) {
+        //     Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
+        //     return
+        // }
+        // if (this.amount1 != 0) {
+        //     let balamt = this.netPayAmt - this.paidAmt
+        //     Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
+        //     return
+        // }
 
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT") {
             this.Paymentobj['PaymentId'] = '0';

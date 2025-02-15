@@ -68,8 +68,9 @@ export class IPBillingComponent implements OnInit {
   tableColumns = [  
     'ServiceName',
     'Price',
-    'UserName',
+    'DoctorName',
     'BillDate',
+    'UserName', 
     'Action', 
   ]; 
   PrevBillColumns = [

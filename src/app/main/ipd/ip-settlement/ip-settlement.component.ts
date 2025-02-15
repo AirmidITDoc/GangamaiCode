@@ -328,7 +328,7 @@ export class IPSettlementComponent implements OnInit {
             }
         });
     }
-
+//new payment form
     addpayment1(contact) {
         console.log(contact)
         const currentDate = new Date();

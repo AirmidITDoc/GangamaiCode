@@ -63,6 +63,7 @@ export class NewRequestforlabComponent implements OnInit {
   displayedServiceselected: string[] = [
     'ServiceName',
     'Price',
+    'DoctorName',
     'buttons'
   ]
 
@@ -309,7 +310,9 @@ export class NewRequestforlabComponent implements OnInit {
       {
         ServiceId: row.ServiceId,
         ServiceName: row.ServiceName,
-        Price: row.Price || 0
+        Price: row.Price || 0,
+        DoctorName:row.DoctorName || '',
+        DoctorId:row.DoctorId || 0
       });
     this.isLoading = '';
     console.log(this.chargeslist);
